@@ -1,10 +1,10 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import { AthleteProfile, estimateE1RM } from './domain';
 import { BrowserStorageStore, VersionedRepository } from './platform/persistence';
-import { DoctorCoachState, emptyDoctorCoachState, readinessScore } from './platform/clinical-data';
+import { DoctorCoachState, emptyDoctorCoachState, normalizeDoctorCoachState, readinessScore } from './platform/clinical-data';
 
 type LoggedSet = { exerciseId: string; setNumber: number; load: number; reps: number; effort: number; completed: boolean; pain?: number };
-type TrainingState = { plan: Array<{ id: string; name: string; day: string; targetEffort: number }>; logs: LoggedSet[]; readiness: { sleep: number; fatigue: number; pain: number; completed: boolean }; substitutionRequests: string[] };
+type TrainingState = { plan: Array<{ id: string; name: string; day: string; sets?: number; targetEffort: number }>; logs: LoggedSet[]; readiness: { sleep: number; fatigue: number; pain: number; completed: boolean }; substitutionRequests: string[] };
 type RehabEntry = { id: string; recordedAt: string; exercise: string; painBefore: number; painDuring: number; painAfter: number; painNextDay: number; rom: number; completed: boolean };
 type RehabState = { activePhase: number; phases: Array<{ id: string; name: string; target: string; complete: boolean }>; entries: RehabEntry[]; bodyWeight: Array<{ id: string; recordedAt: string; kg: number }> };
 
@@ -23,7 +23,7 @@ export default function ProgressDashboard({ profile }: { profile: AthleteProfile
 
   useEffect(() => {
     Promise.all([clinicalRepo.load(), trainingRepo.load(), rehabRepo.load()]).then(([c, t, r]) => {
-      if (c) setClinical(c);
+      setClinical(normalizeDoctorCoachState(c));
       if (t) setTraining(t);
       if (r) setRehab(r);
     });
@@ -35,15 +35,18 @@ export default function ProgressDashboard({ profile }: { profile: AthleteProfile
   const weight = rehab.bodyWeight.map((entry) => ({ label: new Date(entry.recordedAt).toLocaleDateString(), value: entry.kg }));
 
   const e1rm = useMemo(() => training.logs.filter((x) => x.completed).map((set, index) => ({ label: `${set.exerciseId} #${index + 1}`, value: estimateE1RM({ load: set.load, reps: set.reps, effort: set.effort }, profile.trainingMode) })).filter((x) => x.value > 0), [training.logs, profile.trainingMode]);
-  const adherence = training.plan.length ? Math.round((training.logs.filter((x) => x.completed).length / Math.max(1, training.plan.reduce((sum: number, item: any) => sum + (item.sets || 1), 0))) * 100) : 0;
+  const adherence = training.plan.length ? Math.min(100, Math.round((training.logs.filter((x) => x.completed).length / Math.max(1, training.plan.reduce((sum, item) => sum + (item.sets || 1), 0))) * 100)) : 0;
   const latestE1rm = e1rm.length ? e1rm[e1rm.length - 1].value : null;
   const latestWeight = weight.length ? weight[weight.length - 1].value : null;
   const latestPain = pain.length ? pain[pain.length - 1].value : null;
   const latestRom = rom.length ? rom[rom.length - 1].value : null;
+  const latestReadiness = readiness.length ? readiness[readiness.length - 1].value : null;
 
   return <div className="content-grid">
     <section className="hero-card"><p className="eyebrow">PROGRESS DASHBOARD</p><h2>Clinical recovery and performance in one view.</h2><p>DoctorCoach combines training, rehabilitation and clinical tracking without turning trends into automated diagnosis.</p></section>
+    <section className="card"><h3>Medical clearance</h3><strong className="big-number">{clinical.medicalClearance.status}</strong><small>{clinical.medicalClearance.restrictions || 'No restrictions recorded'}</small></section>
     <section className="card"><h3>Latest e1RM</h3><strong className="big-number">{latestE1rm == null ? '—' : `${latestE1rm} kg`}</strong><small>{e1rm.length} logged performance points</small></section>
+    <section className="card"><h3>Readiness</h3><strong className="big-number">{latestReadiness == null ? '—' : `${latestReadiness}%`}</strong><small>{readiness.length} readiness entries</small></section>
     <section className="card"><h3>Training adherence</h3><strong className="big-number">{adherence}%</strong><small>Completed logged sets vs prescribed structure</small></section>
     <section className="card"><h3>Body weight</h3><strong className="big-number">{latestWeight == null ? '—' : `${latestWeight} kg`}</strong><small>{weight.length} entries</small></section>
     <section className="card"><h3>Pain / ROM</h3><strong className="big-number">{latestPain == null ? '—' : `${latestPain}/10`}</strong><small>{latestRom == null ? 'No ROM yet' : `Latest ROM ${latestRom}°`}</small></section>
