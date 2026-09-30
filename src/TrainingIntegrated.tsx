@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import TrainingWorkspace from './TrainingWorkspace';
+import TrainingVideoReview from './TrainingVideoReview';
 import { AthleteProfile } from './domain';
 import { AuthUser, can } from './platform/auth';
 import { BrowserStorageStore, VersionedRepository } from './platform/persistence';
@@ -44,5 +45,6 @@ export default function TrainingIntegrated({ profile, setProfile, user }: {
       <div className="version-list">{versions.length === 0 ? <span className="muted">No saved versions yet.</span> : versions.map((version) => <div key={version.id} className="version-row"><span><strong>v{version.version}</strong> · {version.status}<small>{version.reason || 'No reason'} · {new Date(version.createdAt).toLocaleString()}</small></span>{version.status !== 'active' && <button className="ghost-button" disabled={!canAssign} onClick={() => activate(version.id)}>Activate</button>}</div>)}</div>
     </section>
     <TrainingWorkspace profile={profile} setProfile={setProfile} />
+    <TrainingVideoReview profile={profile} user={user} />
   </>;
 }
