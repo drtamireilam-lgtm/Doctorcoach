@@ -1,12 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import TrainingWorkspace from './TrainingWorkspace';
 import TrainingVideoReview from './TrainingVideoReview';
-import { AthleteProfile } from './domain';
+import { AthleteProfile, hasRedFlags } from './domain';
 import { AuthUser, can } from './platform/auth';
 import { BrowserStorageStore, VersionedRepository } from './platform/persistence';
 import { DoctorCoachState, activateProgramVersion, createProgramVersion, emptyDoctorCoachState } from './platform/clinical-data';
 
 const repo = new VersionedRepository<DoctorCoachState>(new BrowserStorageStore(), 'clinical-state', 1);
+const clearanceRepo = new VersionedRepository<'pending' | 'restricted' | 'cleared'>(new BrowserStorageStore(), 'medical-clearance', 1);
 
 export default function TrainingIntegrated({ profile, setProfile, user }: {
   profile: AthleteProfile;
@@ -14,13 +15,21 @@ export default function TrainingIntegrated({ profile, setProfile, user }: {
   user: AuthUser;
 }) {
   const [state, setState] = useState<DoctorCoachState>(emptyDoctorCoachState);
+  const [clearance, setClearance] = useState<'pending' | 'restricted' | 'cleared'>('pending');
   const [loaded, setLoaded] = useState(false);
   const [reason, setReason] = useState('Program adjustment');
   const canAssign = can(user, 'training:assign') || can(user, 'admin:manage');
   const programId = profile.assignedPlanId || 'nadav-demo-a';
   const versions = state.programVersions.filter((v) => v.programId === programId).sort((a, b) => b.version - a.version);
+  const medicalHold = hasRedFlags(profile.intake) && clearance === 'pending';
 
-  useEffect(() => { repo.load().then((saved) => { if (saved) setState(saved); setLoaded(true); }); }, []);
+  useEffect(() => {
+    Promise.all([repo.load(), clearanceRepo.load()]).then(([saved, savedClearance]) => {
+      if (saved) setState(saved);
+      if (savedClearance) setClearance(savedClearance);
+      setLoaded(true);
+    });
+  }, []);
   useEffect(() => { if (loaded) repo.save(state); }, [loaded, state]);
 
   const createVersion = () => {
@@ -44,7 +53,8 @@ export default function TrainingIntegrated({ profile, setProfile, user }: {
       {!canAssign && <small className="muted">Current role may execute/log training but cannot create or activate coach program versions.</small>}
       <div className="version-list">{versions.length === 0 ? <span className="muted">No saved versions yet.</span> : versions.map((version) => <div key={version.id} className="version-row"><span><strong>v{version.version}</strong> · {version.status}<small>{version.reason || 'No reason'} · {new Date(version.createdAt).toLocaleString()}</small></span>{version.status !== 'active' && <button className="ghost-button" disabled={!canAssign} onClick={() => activate(version.id)}>Activate</button>}</div>)}</div>
     </section>
-    <TrainingWorkspace profile={profile} setProfile={setProfile} />
+    {medicalHold && <section className="alert">Medical review is required before injury-specific training guidance or workout logging can continue.</section>}
+    <TrainingWorkspace profile={profile} setProfile={setProfile} user={user} medicalHold={medicalHold} />
     <TrainingVideoReview profile={profile} user={user} />
   </>;
 }
