@@ -1,4 +1,4 @@
-export type Section = 'home' | 'medical' | 'rehabilitation' | 'training' | 'nutrition' | 'progress' | 'education' | 'team';
+export type Section = 'home' | 'medical' | 'rehabilitation' | 'training' | 'nutrition' | 'progress' | 'education' | 'team' | 'appointments';
 export type Side = 'left' | 'right' | 'central' | '';
 export type EffortMode = 'RPE' | 'RIR';
 
@@ -35,43 +35,17 @@ export type AthleteProfile = {
   assignedPlanId?: string;
 };
 
-export type ExerciseSet = {
-  reps: number;
-  load: number;
-  effort: number;
-};
+export type ExerciseSet = { reps: number; load: number; effort: number };
 
 export const initialIntake: Intake = {
-  injured: null,
-  injuryRegion: '',
-  side: '',
-  onset: '',
-  mechanism: '',
-  painNow: 0,
-  painWorst: 0,
-  numbnessWeakness: false,
-  bowelBladderChange: false,
-  majorTrauma: false,
-  chestPainSyncope: false,
-  feverUnexplainedSymptoms: false,
-  unableToBearWeight: false,
-  age: '',
-  medicalHistory: '',
-  medications: '',
-  priorInjuries: '',
-  goals: '',
-  frequency: '',
-  style: '',
-  restrictions: '',
+  injured: null, injuryRegion: '', side: '', onset: '', mechanism: '', painNow: 0, painWorst: 0,
+  numbnessWeakness: false, bowelBladderChange: false, majorTrauma: false, chestPainSyncope: false,
+  feverUnexplainedSymptoms: false, unableToBearWeight: false, age: '', medicalHistory: '', medications: '',
+  priorInjuries: '', goals: '', frequency: '', style: '', restrictions: '',
 };
 
 export const hasRedFlags = (intake: Intake) => Boolean(
-  intake.bowelBladderChange ||
-  intake.majorTrauma ||
-  intake.chestPainSyncope ||
-  intake.feverUnexplainedSymptoms ||
-  intake.unableToBearWeight ||
-  intake.numbnessWeakness
+  intake.bowelBladderChange || intake.majorTrauma || intake.chestPainSyncope || intake.feverUnexplainedSymptoms || intake.unableToBearWeight || intake.numbnessWeakness
 );
 
 export function estimateE1RM(set: ExerciseSet, mode: EffortMode): number {
@@ -90,14 +64,4 @@ export function suggestedNextLoad(set: ExerciseSet, targetEffort: number, mode: 
   return `${suggested} kg`;
 }
 
-export const bodyRegions = [
-  'Neck / Cervical spine',
-  'Shoulder',
-  'Elbow',
-  'Wrist / Hand',
-  'Thoracic spine',
-  'Lumbar spine',
-  'Hip / Groin',
-  'Knee',
-  'Ankle / Foot',
-];
+export const bodyRegions = ['Neck / Cervical spine','Shoulder','Elbow','Wrist / Hand','Thoracic spine','Lumbar spine','Hip / Groin','Knee','Ankle / Foot'];
