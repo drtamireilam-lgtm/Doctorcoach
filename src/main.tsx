@@ -1,7 +1,8 @@
 import React, { useMemo, useState } from 'react';
 import { createRoot } from 'react-dom/client';
 import './styles.css';
-import { AthleteProfile, EffortMode, Section, bodyRegions, estimateE1RM, hasRedFlags, initialIntake, suggestedNextLoad } from './domain';
+import TrainingWorkspace from './TrainingWorkspace';
+import { AthleteProfile, Section, bodyRegions, hasRedFlags, initialIntake } from './domain';
 
 const sections: Array<{ id: Section; label: string; subtitle: string }> = [
   { id: 'home', label: 'Dashboard', subtitle: 'Your care and performance hub' },
@@ -37,7 +38,7 @@ function App() {
       <header className="topbar"><div><p className="eyebrow">DOCTORCOACH</p><h1>{active.label}</h1><p>{active.subtitle}</p></div><button className="outline-button" onClick={() => { setShowOnboarding(true); setStep(0); }}>Run onboarding</button></header>
       {section === 'home' && <Dashboard redFlags={redFlags} profile={profile} onGo={setSection} />}
       {section === 'medical' && <Medical profile={profile} updateIntake={updateIntake} />}
-      {section === 'training' && <Training profile={profile} setProfile={setProfile} />}
+      {section === 'training' && <TrainingWorkspace profile={profile} setProfile={setProfile} />}
       {section === 'nutrition' && <Module title="Nutrition" text="Dietitian-led nutrition planning linked to body-weight and training data." items={['Nutrition assessment', 'Calories/macros or flexible principles', 'Training-day vs rest-day plan', 'Daily adherence check-in', 'Weekly dietitian check-in']} />}
       {section === 'progress' && <Module title="Progress" text="One dashboard for rehabilitation and performance trends." items={['Body weight', 'Working load and e1RM', 'Pain before/during/after/next day', 'ROM tracking', 'Readiness trends']} />}
       {section === 'education' && <Education profile={profile} selectBodyRegion={selectBodyRegion} />}
@@ -82,13 +83,6 @@ function Medical({ profile, updateIntake }: { profile: AthleteProfile; updateInt
 
 function Education({ profile, selectBodyRegion }: { profile: AthleteProfile; selectBodyRegion: (region: string) => void }) {
   return <div className="content-grid"><section className="module-card body-map-card"><p className="eyebrow">BODY MAP</p><h2>Select a region</h2><div className="body-map"><div className="silhouette">◯<div>│</div><div>╱│╲</div><div>│</div><div>╱ ╲</div></div><div className="region-list">{bodyRegions.map((r) => <button key={r} className={profile.selectedBodyRegion === r ? 'region-button selected' : 'region-button'} onClick={() => selectBodyRegion(r)}>{r}</button>)}</div></div>{profile.selectedBodyRegion && <div className="selected-panel"><strong>{profile.selectedBodyRegion}</strong><span>Next: anatomy, common injury patterns, rehab phases and contextual feedback.</span></div>}</section></div>;
-}
-
-function Training({ profile, setProfile }: { profile: AthleteProfile; setProfile: React.Dispatch<React.SetStateAction<AthleteProfile>> }) {
-  const [reps, setReps] = useState(8); const [load, setLoad] = useState(80); const [effort, setEffort] = useState(profile.trainingMode === 'RPE' ? 8 : 2); const target = profile.trainingMode === 'RPE' ? 8 : 2;
-  const set = { reps, load, effort }; const e1rm = estimateE1RM(set, profile.trainingMode); const suggested = suggestedNextLoad(set, target, profile.trainingMode);
-  const changeMode = (mode: EffortMode) => { setProfile((p) => ({ ...p, trainingMode: mode })); setEffort(mode === 'RPE' ? 8 : 2); };
-  return <div className="content-grid"><section className="module-card"><p className="eyebrow">COACH-ASSIGNED PLAN</p><h2>Workout A · Lower body</h2><div className="permission-note">This plan is assigned by the coach. Trainees can log performance but cannot replace the coached program unless a substitution is approved.</div><div className="mode-switch"><button className={profile.trainingMode === 'RPE' ? 'choice selected' : 'choice'} onClick={() => changeMode('RPE')}>RPE</button><button className={profile.trainingMode === 'RIR' ? 'choice selected' : 'choice'} onClick={() => changeMode('RIR')}>RIR</button></div><div className="exercise-card"><div><p className="eyebrow">EXERCISE 1</p><h3>Leg Press</h3><small>Target: 3 × 8 · {profile.trainingMode} {target}</small></div><div className="set-grid"><label>Load (kg)<input type="number" value={load} onChange={(e) => setLoad(Number(e.target.value))} /></label><label>Reps<input type="number" value={reps} onChange={(e) => setReps(Number(e.target.value))} /></label><label>{profile.trainingMode}<input type="number" step="0.5" min="0" max="10" value={effort} onChange={(e) => setEffort(Number(e.target.value))} /></label></div><div className="calculation-strip"><div><span>Estimated 1RM</span><strong>{e1rm || '—'} kg</strong></div><div><span>Next-set suggestion</span><strong>{suggested}</strong></div></div></div></section></div>;
 }
 
 function Module({ title, text, items }: { title: string; text: string; items: string[] }) { return <section className="module-card"><p className="eyebrow">MODULE</p><h2>{title}</h2><p>{text}</p><div className="feature-grid">{items.map((item) => <Mini key={item} title={item} text="Planned in the DoctorCoach roadmap" />)}</div></section>; }
