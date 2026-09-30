@@ -6,12 +6,30 @@ import {
   ReadinessEntry,
 } from '../advanced-domain';
 
+export type MedicalClearanceStatus = 'pending-review' | 'cleared' | 'cleared-with-restrictions' | 'hold';
+
+export type MedicalClearance = {
+  status: MedicalClearanceStatus;
+  reviewerId?: string;
+  reviewerName?: string;
+  reviewedAt?: string;
+  restrictions: string;
+  notes: string;
+};
+
 export type DoctorCoachState = {
   timeline: ClientTimelineEvent[];
   programVersions: ProgramVersion[];
   readiness: ReadinessEntry[];
   painResponses: PainResponseEntry[];
   outcomes: OutcomeMeasure[];
+  medicalClearance: MedicalClearance;
+};
+
+export const emptyMedicalClearance: MedicalClearance = {
+  status: 'pending-review',
+  restrictions: '',
+  notes: '',
 };
 
 export const emptyDoctorCoachState: DoctorCoachState = {
@@ -20,13 +38,49 @@ export const emptyDoctorCoachState: DoctorCoachState = {
   readiness: [],
   painResponses: [],
   outcomes: [],
+  medicalClearance: emptyMedicalClearance,
 };
+
+export function normalizeDoctorCoachState(state?: Partial<DoctorCoachState> | null): DoctorCoachState {
+  return {
+    timeline: state?.timeline ?? [],
+    programVersions: state?.programVersions ?? [],
+    readiness: state?.readiness ?? [],
+    painResponses: state?.painResponses ?? [],
+    outcomes: state?.outcomes ?? [],
+    medicalClearance: {
+      ...emptyMedicalClearance,
+      ...(state?.medicalClearance ?? {}),
+    },
+  };
+}
 
 export function appendTimelineEvent(state: DoctorCoachState, event: ClientTimelineEvent): DoctorCoachState {
   return {
     ...state,
     timeline: [...state.timeline, event].sort((a, b) => b.occurredAt.localeCompare(a.occurredAt)),
   };
+}
+
+export function updateMedicalClearance(
+  state: DoctorCoachState,
+  clearance: MedicalClearance,
+  athleteId: string,
+): DoctorCoachState {
+  const reviewedAt = clearance.reviewedAt ?? new Date().toISOString();
+  const next = { ...clearance, reviewedAt };
+  return appendTimelineEvent(
+    { ...state, medicalClearance: next },
+    {
+      id: `medical-clearance-${Date.now()}`,
+      athleteId,
+      occurredAt: reviewedAt,
+      type: 'medical-review',
+      title: 'Medical clearance updated',
+      detail: `${next.status}${next.restrictions ? ` · Restrictions: ${next.restrictions}` : ''}`,
+      source: 'medical',
+    },
+  );
 }
 
 export function addReadiness(state: DoctorCoachState, entry: ReadinessEntry): DoctorCoachState {
