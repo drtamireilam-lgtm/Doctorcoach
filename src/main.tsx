@@ -1,7 +1,8 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import { createRoot } from 'react-dom/client';
 import './styles.css';
-import TrainingWorkspace from './TrainingWorkspace';
+import './integrated-care.css';
+import TrainingIntegrated from './TrainingIntegrated';
 import IntegratedCareWorkspace from './IntegratedCareWorkspace';
 import { AthleteProfile, Section, bodyRegions, hasRedFlags, initialIntake } from './domain';
 import { AuthUser } from './platform/auth';
@@ -41,7 +42,6 @@ function App() {
   useEffect(() => { profileRepo.load().then((saved) => { if (saved) setProfile(saved); setLoaded(true); }); }, []);
   useEffect(() => { if (loaded) profileRepo.save(profile); }, [loaded, profile]);
 
-  const updateIntake = (patch: Partial<AthleteProfile['intake']>) => setProfile((p) => ({ ...p, intake: { ...p.intake, ...patch } }));
   const selectBodyRegion = (region: string) => setProfile((p) => ({ ...p, selectedBodyRegion: region, intake: { ...p.intake, injuryRegion: region } }));
 
   return <div className="app-shell">
@@ -56,7 +56,7 @@ function App() {
       <header className="topbar"><div><p className="eyebrow">DOCTORCOACH</p><h1>{active.label}</h1><p>{active.subtitle}</p></div><button className="outline-button" onClick={() => { setShowOnboarding(true); setStep(0); }}>Run onboarding</button></header>
       {section === 'home' && <Dashboard redFlags={redFlags} profile={profile} onGo={setSection} user={user} />}
       {section === 'medical' && <IntegratedCareWorkspace mode="medical" profile={profile} user={user} updateProfile={setProfile} />}
-      {section === 'training' && <TrainingWorkspace profile={profile} setProfile={setProfile} />}
+      {section === 'training' && <TrainingIntegrated profile={profile} setProfile={setProfile} user={user} />}
       {section === 'nutrition' && <Module title="Nutrition" text="Dietitian-led planning connected to the shared athlete profile." items={['Nutrition assessment', 'Calories/macros or flexible principles', 'Training-day vs rest-day plan', 'Daily adherence check-in', 'Weekly dietitian check-in']} />}
       {section === 'progress' && <IntegratedCareWorkspace mode="progress" profile={profile} user={user} updateProfile={setProfile} />}
       {section === 'education' && <Education profile={profile} selectBodyRegion={selectBodyRegion} />}
@@ -84,7 +84,7 @@ function Onboarding({ profile, setProfile, step, setStep, close, complete }: { p
 }
 
 function Dashboard({ redFlags, profile, onGo, user }: { redFlags: boolean; profile: AthleteProfile; onGo: (s: Section) => void; user: AuthUser }) {
-  return <div className="content-grid"><section className="hero-card"><p className="eyebrow">TODAY</p><h2>Your plan adapts to injury, performance and recovery.</h2><p>Profile data now persists locally in the MVP and is connected to medical clearance, readiness, pain, outcomes and timeline events.</p><div className="hero-actions"><button className="primary-button" onClick={() => onGo(redFlags ? 'medical' : 'training')}>{redFlags ? 'Open medical review' : 'Open today’s workout'}</button><button className="outline-button" onClick={() => onGo('progress')}>View timeline</button></div></section><section className="card"><h3>Signed-in demo role</h3><p>{user.displayName}</p><small>Role permissions are enforced in the integrated medical workflow.</small></section><section className="card"><h3>Profile status</h3><p>{profile.intake.injured ? `Injury: ${profile.intake.injuryRegion || 'region not selected'}` : 'No current injury recorded'}</p><p>{redFlags ? '⚠ Medical review required' : '✓ No red flags recorded'}</p></section></div>;
+  return <div className="content-grid"><section className="hero-card"><p className="eyebrow">TODAY</p><h2>Your plan adapts to injury, performance and recovery.</h2><p>Profile data now persists locally in the MVP and is connected to medical clearance, readiness, pain, outcomes, program versions and timeline events.</p><div className="hero-actions"><button className="primary-button" onClick={() => onGo(redFlags ? 'medical' : 'training')}>{redFlags ? 'Open medical review' : 'Open today’s workout'}</button><button className="outline-button" onClick={() => onGo('progress')}>View timeline</button></div></section><section className="card"><h3>Signed-in demo role</h3><p>{user.displayName}</p><small>Role permissions are enforced in medical clearance and program versioning.</small></section><section className="card"><h3>Profile status</h3><p>{profile.intake.injured ? `Injury: ${profile.intake.injuryRegion || 'region not selected'}` : 'No current injury recorded'}</p><p>{redFlags ? '⚠ Medical review required' : '✓ No red flags recorded'}</p></section></div>;
 }
 
 function Education({ profile, selectBodyRegion }: { profile: AthleteProfile; selectBodyRegion: (region: string) => void }) {
