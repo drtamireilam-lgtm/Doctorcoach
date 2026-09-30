@@ -1,4 +1,4 @@
-export type Section = 'home' | 'medical' | 'training' | 'nutrition' | 'progress' | 'education' | 'team';
+export type Section = 'home' | 'medical' | 'rehabilitation' | 'training' | 'nutrition' | 'progress' | 'education' | 'team';
 export type Side = 'left' | 'right' | 'central' | '';
 export type EffortMode = 'RPE' | 'RIR';
 
