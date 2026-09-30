@@ -9,12 +9,13 @@ import TeamNutritionWorkspace from './TeamNutritionWorkspace';
 import ServicesEducationWorkspace from './ServicesEducationWorkspace';
 import ProgressDashboard from './ProgressDashboard';
 import PilotWorkspace from './PilotWorkspace';
+import HomeDashboard from './HomeDashboard';
 import { AthleteProfile, Section, bodyRegions, hasRedFlags, initialIntake } from './domain';
 import { AuthUser } from './platform/auth';
 import { BrowserStorageStore, VersionedRepository } from './platform/persistence';
 
 const sections: Array<{ id: Section; label: string; subtitle: string }> = [
-  { id: 'home', label: 'Dashboard', subtitle: 'Your care and performance hub' },
+  { id: 'home', label: 'Dashboard', subtitle: 'What you need to do today' },
   { id: 'medical', label: 'Medical', subtitle: 'Assessment, clearance and safety review' },
   { id: 'rehabilitation', label: 'Rehabilitation', subtitle: 'Injury journey, pain, ROM and milestones' },
   { id: 'training', label: 'Training', subtitle: 'Coach-assigned plan, RPE / RIR, e1RM and video review' },
@@ -60,7 +61,7 @@ function App() {
 
     <main className="main-panel">
       <header className="topbar"><div><p className="eyebrow">DOCTORCOACH</p><h1>{active.label}</h1><p>{active.subtitle}</p></div><button className="outline-button" onClick={() => { setShowOnboarding(true); setStep(0); }}>Run onboarding</button></header>
-      {section === 'home' && <Dashboard redFlags={redFlags} profile={profile} onGo={setSection} user={user} />}
+      {section === 'home' && <HomeDashboard redFlags={redFlags} profile={profile} onGo={setSection} user={user} />}
       {section === 'medical' && <IntegratedCareWorkspace mode="medical" profile={profile} user={user} updateProfile={setProfile} />}
       {section === 'rehabilitation' && <RehabWorkspace profile={profile} />}
       {section === 'training' && <TrainingIntegrated profile={profile} setProfile={setProfile} user={user} />}
