@@ -2,7 +2,7 @@ import React, { useEffect, useMemo, useState } from 'react';
 import { AthleteProfile } from './domain';
 import { AuthUser, can } from './platform/auth';
 import { BrowserStorageStore, VersionedRepository } from './platform/persistence';
-import { productionReady, runtimeConfig } from './platform/runtime-config';
+import { hasBackendConfiguration, runtimeConfig } from './platform/runtime-config';
 
 type PilotParticipant = {
   id: string;
@@ -58,7 +58,7 @@ export default function PilotWorkspace({ profile, user }: { profile: AthleteProf
 
   const activeCount = useMemo(() => state.participants.filter((p) => p.enabled).length, [state.participants]);
   const current = state.participants.find((p) => p.athleteId === profile.id);
-  const ready = productionReady();
+  const configured = hasBackendConfiguration();
 
   const addParticipant = () => {
     if (!admin || activeCount >= runtimeConfig.pilotMaxUsers || current) return;
@@ -88,7 +88,7 @@ export default function PilotWorkspace({ profile, user }: { profile: AthleteProf
   };
 
   return <div className="content-grid">
-    <section className="hero-card"><p className="eyebrow">PILOT MODE</p><h2>Controlled testing before production rollout.</h2><p>Participants, consent versions, feature flags and feedback are tracked separately from the normal app workflow.</p><div className={ready ? 'safe-box' : 'alert'}>{ready ? 'Production API/auth configuration is present.' : 'Production provider credentials are not configured yet. Pilot remains local-only and must not be used for real medical data.'}</div></section>
+    <section className="hero-card"><p className="eyebrow">PILOT MODE</p><h2>Controlled testing before production rollout.</h2><p>Participants, consent versions, feature flags and feedback are tracked separately from the normal app workflow.</p><div className="alert">{configured ? 'Backend settings are present, but the production connection has not been implemented or verified. ' : 'Backend settings are missing. '}This pilot uses browser-local demo data. Use fictional test data only.</div></section>
 
     <section className="card"><h3>Pilot capacity</h3><strong className="big-number">{activeCount}/{runtimeConfig.pilotMaxUsers}</strong><small>{runtimeConfig.pilotEnabled ? 'Pilot flag enabled by environment.' : 'Pilot flag is not enabled by environment.'}</small>{admin && !current && <><label className="stacked-label">Participant label<input value={participantLabel} onChange={(e) => setParticipantLabel(e.target.value)} /></label><button className="primary-button" onClick={addParticipant} disabled={activeCount >= runtimeConfig.pilotMaxUsers}>Add current athlete</button></>}</section>
 

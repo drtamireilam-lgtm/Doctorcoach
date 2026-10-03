@@ -2,6 +2,14 @@
 
 _Last consolidated: 2026-09-30_
 
+## Current verification — 2026-10-03 (local changes awaiting approval)
+
+Latest inspected `main`: `8d6ee337d429e3b409e989bc6b2b813a0c5332c7`; latest three CI runs succeeded. October 2 additions include athlete-specific assignment/history, history-backed Progress and the expanded exercise library/builder. Do not rebuild these from the older checklist below.
+
+P0 batch prepared: production-mode demo gate, explicit athlete assignment checks, unauthenticated HTTP request rejection and automated regression tests. See `docs/P0_ACCESS_BOUNDARY_2026-10-03.md`. Authentication, the production database and server-side permission enforcement remain incomplete; these safeguards do not mark those P0 requirements complete.
+
+The user-selected Supabase project is active with no public tables observed. No live schema or permission changes were made. Commit/push and deployment require the user's explicit approval.
+
 ## 1. Product vision
 
 DoctorCoach is an integrated platform connecting **medicine, rehabilitation, strength training, nutrition and longitudinal progress** for active people and trainees managing injuries.

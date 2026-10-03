@@ -1,4 +1,5 @@
-export type RuntimeMode = 'local' | 'pilot' | 'production';
+import { resolveRuntimeMode, type RuntimeMode } from './runtime-policy';
+export type { RuntimeMode } from './runtime-policy';
 
 export type RuntimeConfig = {
   mode: RuntimeMode;
@@ -20,7 +21,7 @@ function numberEnv(name: string, fallback: number): number {
 }
 
 export const runtimeConfig: RuntimeConfig = {
-  mode: (env('VITE_DOCTORCOACH_MODE') as RuntimeMode) || 'local',
+  mode: resolveRuntimeMode(env('VITE_DOCTORCOACH_MODE'), import.meta.env.DEV === true),
   apiBaseUrl: env('VITE_DOCTORCOACH_API_URL') || '',
   authIssuer: env('VITE_DOCTORCOACH_AUTH_ISSUER'),
   authClientId: env('VITE_DOCTORCOACH_AUTH_CLIENT_ID'),
@@ -29,6 +30,6 @@ export const runtimeConfig: RuntimeConfig = {
   pilotMaxUsers: numberEnv('VITE_DOCTORCOACH_PILOT_MAX_USERS', 25),
 };
 
-export function productionReady(config = runtimeConfig): boolean {
+export function hasBackendConfiguration(config = runtimeConfig): boolean {
   return Boolean(config.apiBaseUrl && config.authIssuer && config.authClientId);
 }

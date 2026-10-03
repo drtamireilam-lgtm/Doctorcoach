@@ -13,6 +13,8 @@ import HomeDashboard from './HomeDashboard';
 import { AthleteProfile, Section, bodyRegions, hasRedFlags, initialIntake } from './domain';
 import { AuthUser } from './platform/auth';
 import { BrowserStorageStore, VersionedRepository } from './platform/persistence';
+import { runtimeConfig } from './platform/runtime-config';
+import { canUseDemoWorkspace } from './platform/runtime-policy';
 
 const sections: Array<{ id: Section; label: string; subtitle: string }> = [
   { id: 'home', label: 'Dashboard', subtitle: 'What you need to do today' },
@@ -56,10 +58,11 @@ function App() {
       <div className="brand"><div className="brand-mark">DC</div><div><strong>DoctorCoach</strong><span>Medicine × Training × Nutrition</span></div></div>
       <nav>{sections.map((item) => <button key={item.id} className={section === item.id ? 'nav-item active' : 'nav-item'} onClick={() => setSection(item.id)}><span>{item.label}</span><small>{item.subtitle}</small></button>)}</nav>
       <div className="role-box"><small>Demo role</small><select value={user.roles[0]} onChange={(e) => setUser(demoUsers[e.target.value])}>{Object.keys(demoUsers).map((role) => <option key={role} value={role}>{role}</option>)}</select><span>{user.displayName}</span></div>
-      <div className="sidebar-footer"><span className="status-dot" /> Persisted MVP · pilot controls enabled</div>
+      <div className="sidebar-footer"><span className="status-dot" /> Demo · fictional test data only</div>
     </aside>
 
     <main className="main-panel">
+      <div className="alert" role="note">Demo workspace. Roles can be simulated and data stays in this browser. Use fictional test data only.</div>
       <header className="topbar"><div><p className="eyebrow">DOCTORCOACH</p><h1>{active.label}</h1><p>{active.subtitle}</p></div><button className="outline-button" onClick={() => { setShowOnboarding(true); setStep(0); }}>Run onboarding</button></header>
       {section === 'home' && <HomeDashboard redFlags={redFlags} profile={profile} onGo={setSection} user={user} />}
       {section === 'medical' && <IntegratedCareWorkspace mode="medical" profile={profile} user={user} updateProfile={setProfile} />}
@@ -99,4 +102,14 @@ function Dashboard({ redFlags, profile, onGo, user }: { redFlags: boolean; profi
 
 function RangeInput({ label, value, setValue }: { label: string; value: number; setValue: (value: number) => void }) { return <label>{label} 0–10<input type="range" min="0" max="10" value={value} onChange={(e) => setValue(Number(e.target.value))} /><b>{value}/10</b></label>; }
 
-createRoot(document.getElementById('root')!).render(<React.StrictMode><App /></React.StrictMode>);
+function RuntimeEntry() {
+  if (canUseDemoWorkspace(runtimeConfig.mode)) return <App />;
+  // Do not mount App: its effects load/write browser data and expose demo roles.
+  return <main className="main-panel"><section className="hero-card" role="status">
+    <p className="eyebrow">DOCTORCOACH</p><h1>Secure access is not available yet</h1>
+    <p>This version is not connected to the production sign-in and data service. Personal records and training entry are unavailable until that connection is ready.</p>
+    <p>הכניסה המאובטחת עדיין אינה זמינה. אפשר יהיה להיכנס ולשמור מידע אישי לאחר השלמת החיבור.</p>
+  </section></main>;
+}
+
+createRoot(document.getElementById('root')!).render(<React.StrictMode><RuntimeEntry /></React.StrictMode>);

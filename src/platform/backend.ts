@@ -68,6 +68,12 @@ export type ServerAuthorizationContext = {
   userId: string;
   roles: UserRole[];
   athleteId?: string;
+  /** Load active assignments from trusted server data, never from a request body. */
+  athleteAssignments?: Array<{
+    athleteId: string;
+    role: 'coach' | 'medical' | 'dietitian';
+    active: boolean;
+  }>;
 };
 
 /**
@@ -75,10 +81,20 @@ export type ServerAuthorizationContext = {
  * must be repeated server-side for every read/write. Athlete-scoped resources
  * should use row-level checks and signed/private object access for media.
  */
-export function canAccessAthlete(ctx: ServerAuthorizationContext, athleteId: string): boolean {
-  if (ctx.roles.includes('admin')) return true;
-  if (ctx.roles.includes('trainee')) return ctx.athleteId === athleteId;
-  return ctx.roles.some((role) => role === 'coach' || role === 'medical' || role === 'dietitian');
+export function canAccessAthlete(
+  ctx: ServerAuthorizationContext,
+  athleteId: string,
+  requiredStaffRole?: 'coach' | 'medical' | 'dietitian',
+): boolean {
+  if (!ctx.userId.trim() || !athleteId.trim()) return false;
+  if (!requiredStaffRole && ctx.roles.includes('trainee') && ctx.athleteId === athleteId) return true;
+  // Administrator status alone never grants access to every clinical record.
+  // This is a resource-scope check, not a replacement for action/consent checks.
+  return (ctx.athleteAssignments ?? []).some((assignment) =>
+    assignment.active && assignment.athleteId === athleteId &&
+    ctx.roles.includes(assignment.role) &&
+    (!requiredStaffRole || assignment.role === requiredStaffRole),
+  );
 }
 
 export class HttpDoctorCoachApi implements DoctorCoachApi {
@@ -86,11 +102,12 @@ export class HttpDoctorCoachApi implements DoctorCoachApi {
 
   private async request<T>(path: string, init?: RequestInit): Promise<T> {
     const token = await this.getToken();
+    if (!token?.trim()) throw new Error('Authentication required');
     const response = await fetch(`${this.baseUrl}${path}`, {
       ...init,
       headers: {
         'content-type': 'application/json',
-        ...(token ? { authorization: `Bearer ${token}` } : {}),
+        authorization: `Bearer ${token}`,
         ...(init?.headers || {}),
       },
     });
