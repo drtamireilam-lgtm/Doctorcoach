@@ -18,11 +18,13 @@ try {
     });
     writeFileSync(join(buildDir, `${name}.js`), compiled.outputText);
   }
-    const tests = spawnSync(process.execPath, ['--test', '--test-isolation=none', 'tests/foundation.test.cjs'], {
-      stdio: 'inherit', env: { ...process.env, DOCTORCOACH_TEST_BUILD: buildDir },
-    });
-    if (tests.error) throw tests.error;
-    process.exitCode = tests.status ?? 1;
+  // node:test executes registered tests when this file runs directly as well.
+  // Avoid isolation flags that differ between the Node 22 CI and Node 24 host.
+  const tests = spawnSync(process.execPath, ['tests/foundation.test.cjs'], {
+    stdio: 'inherit', env: { ...process.env, DOCTORCOACH_TEST_BUILD: buildDir },
+  });
+  if (tests.error) throw tests.error;
+  process.exitCode = tests.status ?? 1;
 } finally {
   rmSync(buildDir, { recursive: true, force: true });
 }
