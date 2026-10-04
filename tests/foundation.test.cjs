@@ -3,6 +3,32 @@ const assert = require('node:assert/strict');
 const { join } = require('node:path');
 const { canAccessAthlete, HttpDoctorCoachApi } = require(join(process.env.DOCTORCOACH_TEST_BUILD, 'backend.js'));
 const { resolveRuntimeMode, canUseDemoWorkspace } = require(join(process.env.DOCTORCOACH_TEST_BUILD, 'runtime-policy.js'));
+const { validateProfile, validAccountConfig, AccountService } = require(join(process.env.DOCTORCOACH_TEST_BUILD, 'account.js'));
+
+test('account inputs exclude privilege fields and reject invalid names or effort scales',()=>{
+  assert.deepEqual(validateProfile({display_name:' Name ',effort_mode:'RIR',roles:['admin'],assignedPlanId:'fake'}),{display_name:'Name',effort_mode:'RIR'});
+  assert.throws(()=>validateProfile({display_name:' ',effort_mode:'RPE'}));
+  assert.throws(()=>validateProfile({display_name:'A',effort_mode:'bad'}));
+  assert.equal(validAccountConfig('https://nlnyvrbejaqzdbekwlgi.supabase.co','sb_publishable_test'),true);
+  for(const key of ['sb_secret_test','service_role','eyJhbGciOi']) assert.equal(validAccountConfig('https://nlnyvrbejaqzdbekwlgi.supabase.co',key),false);
+  assert.equal(validAccountConfig('http://evil.invalid','sb_publishable_test'),false);
+});
+
+test('account service fails closed on expired or anonymous authentication',async()=>{
+  for(const user of [null,{id:'a',is_anonymous:true}]) {
+    const api=new AccountService({auth:{getUser:async()=>({data:{user},error:null})},from:()=>{throw Error('Database must not be called');}});
+    await assert.rejects(api.load(),/נדרשת התחברות/);
+    await assert.rejects(api.save({display_name:'A',effort_mode:'RPE'},null),/נדרשת התחברות/);
+  }
+});
+
+test('account save uses the verified user and expected version; conflicts never claim success',async()=>{
+  const calls=[];
+  const request={eq:(k,v)=>{calls.push([k,v]);return request;},select:()=>request,maybeSingle:async()=>({data:null,error:null})};
+  const api=new AccountService({auth:{getUser:async()=>({data:{user:{id:'verified',is_anonymous:false}},error:null})},from:()=>({update:values=>{calls.push(values);return request;}})});
+  await assert.rejects(api.save({display_name:'A',effort_mode:'RIR',id:'other'},3),/הפרופיל השתנה/);
+  assert.deepEqual(calls,[{display_name:'A',effort_mode:'RIR'},['id','verified'],['version',3]]);
+});
 
 test('unconfigured and invalid release modes never expose demo roles', () => {
   for (const value of [undefined, '', 'prodution', 'PRODUCTION']) {

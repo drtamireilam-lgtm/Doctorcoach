@@ -10,7 +10,7 @@ const buildDir = mkdtempSync(join(tmpdir(), 'doctorcoach-foundation-'));
 try {
   // Use the supported compiler API rather than an unexported CLI subpath.
   // The separate build step performs full project type checking.
-  for (const name of ['auth', 'backend', 'runtime-policy']) {
+  for (const name of ['auth', 'backend', 'runtime-policy', 'account']) {
     const fileName = `src/platform/${name}.ts`;
     const compiled = ts.transpileModule(readFileSync(fileName, 'utf8'), {
       fileName,
@@ -21,7 +21,7 @@ try {
   // node:test executes registered tests when this file runs directly as well.
   // Avoid isolation flags that differ between the Node 22 CI and Node 24 host.
   const tests = spawnSync(process.execPath, ['tests/foundation.test.cjs'], {
-    stdio: 'inherit', env: { ...process.env, DOCTORCOACH_TEST_BUILD: buildDir },
+    stdio: 'inherit', env: { ...process.env, DOCTORCOACH_TEST_BUILD: buildDir, NODE_PATH: join(process.cwd(), 'node_modules') },
   });
   if (tests.error) throw tests.error;
   process.exitCode = tests.status ?? 1;

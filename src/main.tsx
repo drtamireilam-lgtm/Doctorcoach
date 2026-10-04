@@ -15,6 +15,8 @@ import { AuthUser } from './platform/auth';
 import { BrowserStorageStore, VersionedRepository } from './platform/persistence';
 import { runtimeConfig } from './platform/runtime-config';
 import { canUseDemoWorkspace } from './platform/runtime-policy';
+import AccountWorkspace from './AccountWorkspace';
+import { validAccountConfig } from './platform/account';
 
 const sections: Array<{ id: Section; label: string; subtitle: string }> = [
   { id: 'home', label: 'Dashboard', subtitle: 'What you need to do today' },
@@ -103,7 +105,10 @@ function Dashboard({ redFlags, profile, onGo, user }: { redFlags: boolean; profi
 function RangeInput({ label, value, setValue }: { label: string; value: number; setValue: (value: number) => void }) { return <label>{label} 0–10<input type="range" min="0" max="10" value={value} onChange={(e) => setValue(Number(e.target.value))} /><b>{value}/10</b></label>; }
 
 function RuntimeEntry() {
-  if (canUseDemoWorkspace(runtimeConfig.mode)) return <App />;
+  if (runtimeConfig.accountEnabled && validAccountConfig(runtimeConfig.supabaseUrl, runtimeConfig.supabasePublishableKey)) {
+    return <AccountWorkspace url={runtimeConfig.supabaseUrl} publishableKey={runtimeConfig.supabasePublishableKey}/>;
+  }
+  if (!runtimeConfig.accountEnabled && canUseDemoWorkspace(runtimeConfig.mode)) return <App />;
   // Do not mount App: its effects load/write browser data and expose demo roles.
   return <main className="main-panel"><section className="hero-card" role="status">
     <p className="eyebrow">DOCTORCOACH</p><h1>Secure access is not available yet</h1>

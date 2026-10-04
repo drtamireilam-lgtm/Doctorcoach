@@ -2,7 +2,13 @@
 
 _Last consolidated: 2026-09-30_
 
-## Current verification — 2026-10-03 (local changes awaiting approval)
+## Current verification — 2026-10-04
+
+Published baseline: `94c7fc1185baa441435659cbea6f23def932fcad`; CI run `37175781770` passed all seven foundation tests and the build. The previous P0 access-boundary batch is uploaded.
+
+Account batch approved for upload on 2026-10-04: Supabase password sign-in for existing verified accounts, in-memory sessions, an account-only profile screen, owner-only profile schema with optimistic concurrency, a dependency lockfile, and executable local PostgreSQL RLS tests. Migration `20261004041645_doctorcoach_profiles.sql` was applied to the existing project; hosted transactional permission tests passed and the security advisor returned no findings. See `docs/SUPABASE_ACCOUNT_STAGE.md`. No site deployment occurred; password-login/PostgREST/browser end-to-end verification and full production integration remain incomplete.
+
+### Previous baseline
 
 Latest inspected `main`: `8d6ee337d429e3b409e989bc6b2b813a0c5332c7`; latest three CI runs succeeded. October 2 additions include athlete-specific assignment/history, history-backed Progress and the expanded exercise library/builder. Do not rebuild these from the older checklist below.
 

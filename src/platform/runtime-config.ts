@@ -9,6 +9,9 @@ export type RuntimeConfig = {
   mediaMaxBytes: number;
   pilotEnabled: boolean;
   pilotMaxUsers: number;
+  accountEnabled: boolean;
+  supabaseUrl: string;
+  supabasePublishableKey: string;
 };
 
 function env(name: string): string | undefined {
@@ -28,6 +31,9 @@ export const runtimeConfig: RuntimeConfig = {
   mediaMaxBytes: numberEnv('VITE_DOCTORCOACH_MEDIA_MAX_BYTES', 250 * 1024 * 1024),
   pilotEnabled: env('VITE_DOCTORCOACH_PILOT_ENABLED') === 'true',
   pilotMaxUsers: numberEnv('VITE_DOCTORCOACH_PILOT_MAX_USERS', 25),
+  accountEnabled: env('VITE_DOCTORCOACH_ACCOUNT_ENABLED') === 'true',
+  supabaseUrl: env('VITE_SUPABASE_URL') || '',
+  supabasePublishableKey: env('VITE_SUPABASE_PUBLISHABLE_KEY') || '',
 };
 
 export function hasBackendConfiguration(config = runtimeConfig): boolean {
