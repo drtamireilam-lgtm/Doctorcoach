@@ -1,5 +1,6 @@
-import {NotificationSettings} from './notification-settings';
 'use client';
+import {BillingSandbox} from './billing-sandbox';
+import {NotificationSettings} from './notification-settings';
 import {Localize} from "../components/language-provider";
 import {ArrowLeft,Home,UserRound,ClipboardList,History,Menu} from 'lucide-react';
 import {areaFor,areaLinks,mobileTabFor,traineeAreas} from '../lib/mobile-navigation';
@@ -32,4 +33,4 @@ export function SiteIntroduction({go,completed}:{go:Go;completed:boolean}){
 export function ContactArea({go}:{go:Go}){return <Localize>{<div className="care-stack"><div className="workspace-heading"><div><h1>יצירת קשר</h1><p>הודעות לצוות, תיאום מפגשים ומשוב על האפליקציה.</p></div></div><nav className="daily-links" aria-label="דרכים ליצור קשר">{[
  ['messages','הודעות לצוות','רפואה, אימון, תזונה ותיאום עם הצוות המשויך'],['appointments','התורים שלי','בקשות לתור ומעקב אחר מפגשים'],['consult','ייעוץ ותיאום','היכרות עם שירותי הליווי'],['feedback','משוב והצעות','עזרו לנו לשפר את החוויה'],
  ].map(([id,label,description])=><button key={id} onClick={()=>go(id)}><span><strong>{label}</strong><small>{description}</small></span><ArrowLeft size={18}/></button>)}</nav><section className="panel care-form"><InstagramLinks/></section></div>}</Localize>;}
-export function SettingsArea({go,onTour}:{go:Go;onTour:()=>void}){return <Localize>{<div className="care-stack"><div className="workspace-heading"><div><h1>הגדרות וחשבון</h1><p>המנוי האישי, פרטי הפרופיל והעדפות הפרטיות שלך.</p></div></div><nav className="daily-links" aria-label="הגדרות חשבון">{[['onboarding','עדכון פרופיל ושאלון'],['membership','מסלול ומנוי אישי'],['privacy','פרטיות, הסכמות ונתונים']].map(([id,label])=><button key={id} onClick={()=>go(id)}><span>{label}</span><ArrowLeft size={18}/></button>)}</nav><button className="button secondary" onClick={onTour}>סיור בשבעת אזורי האפליקציה</button><NotificationSettings/></div>}</Localize>;}
+export function SettingsArea({go,onTour}:{go:Go;onTour:()=>void}){return <Localize>{<div className="care-stack"><div className="workspace-heading"><div><h1>הגדרות וחשבון</h1><p>המנוי האישי, פרטי הפרופיל והעדפות הפרטיות שלך.</p></div></div><nav className="daily-links" aria-label="הגדרות חשבון">{[['onboarding','עדכון פרופיל ושאלון'],['membership','מסלול ומנוי אישי'],['privacy','פרטיות, הסכמות ונתונים']].map(([id,label])=><button key={id} onClick={()=>go(id)}><span>{label}</span><ArrowLeft size={18}/></button>)}</nav><button className="button secondary" onClick={onTour}>סיור בשבעת אזורי האפליקציה</button><NotificationSettings/><BillingSandbox/></div>}</Localize>;}

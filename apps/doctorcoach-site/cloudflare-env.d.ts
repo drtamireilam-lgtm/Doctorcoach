@@ -3,6 +3,7 @@ declare namespace Cloudflare {
     DB?: D1Database;
     BUCKET?: R2Bucket;
     DOCTORCOACH_ADMIN_EMAILS?: string;
+    DOCTORCOACH_BILLING_MODE?: string;
     DOCTORCOACH_CLINICIAN_EMAILS?: string;
   }
 }
