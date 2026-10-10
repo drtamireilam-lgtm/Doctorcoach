@@ -1,0 +1,440 @@
+[
+  {
+    "injury_id": "rotator-cuff-tendinopathy",
+    "region": "shoulder",
+    "name_he": "טנדינופתיה של השרוול המסובב",
+    "muscles": [
+      "supraspinatus",
+      "infraspinatus",
+      "teres-minor",
+      "subscapularis"
+    ],
+    "rehab": [
+      "band-external-rotation",
+      "side-lying-external-rotation",
+      "scaption",
+      "serratus-wall-slide"
+    ],
+    "train_around_recommended": [
+      "cable-row",
+      "chest-supported-row"
+    ],
+    "train_around_modify": [
+      "bench-press",
+      "incline-db-press",
+      "overhead-press"
+    ],
+    "avoid_if_provocative": [
+      "overhead-press"
+    ],
+    "clinical_note": "Educational scaffold only; final exercise selection and load progression require clinician/coach review and symptom response.",
+    "status": "seed-ready"
+  },
+  {
+    "injury_id": "subacromial-pain-syndrome",
+    "region": "shoulder",
+    "name_he": "תסמונת כאב סאב-אקרומיאלית",
+    "muscles": [
+      "supraspinatus",
+      "deltoid",
+      "serratus-anterior",
+      "trapezius"
+    ],
+    "rehab": [
+      "scaption",
+      "serratus-wall-slide",
+      "push-up-plus",
+      "face-pull"
+    ],
+    "train_around_recommended": [
+      "cable-row",
+      "chest-supported-row"
+    ],
+    "train_around_modify": [
+      "bench-press",
+      "incline-db-press",
+      "overhead-press"
+    ],
+    "avoid_if_provocative": [
+      "overhead-press"
+    ],
+    "clinical_note": "Educational scaffold only; final exercise selection and load progression require clinician/coach review and symptom response.",
+    "status": "seed-ready"
+  },
+  {
+    "injury_id": "lateral-epicondylalgia",
+    "region": "elbow",
+    "name_he": "טניס אלבו",
+    "muscles": [
+      "extensor-carpi-radialis-brevis",
+      "extensor-digitorum"
+    ],
+    "rehab": [
+      "wrist-extension-eccentric",
+      "grip-isometric"
+    ],
+    "train_around_recommended": [
+      "cable-row"
+    ],
+    "train_around_modify": [
+      "bench-press",
+      "lat-pulldown"
+    ],
+    "avoid_if_provocative": [],
+    "clinical_note": "Educational scaffold only; final exercise selection and load progression require clinician/coach review and symptom response.",
+    "status": "seed-ready"
+  },
+  {
+    "injury_id": "medial-epicondylalgia",
+    "region": "elbow",
+    "name_he": "גולפרס אלבו",
+    "muscles": [
+      "flexor-carpi-radialis",
+      "flexor-carpi-ulnaris",
+      "pronator-teres"
+    ],
+    "rehab": [
+      "wrist-flexion-eccentric",
+      "forearm-pronation-band",
+      "grip-isometric"
+    ],
+    "train_around_recommended": [
+      "cable-row"
+    ],
+    "train_around_modify": [
+      "lat-pulldown",
+      "deadlift"
+    ],
+    "avoid_if_provocative": [],
+    "clinical_note": "Educational scaffold only; final exercise selection and load progression require clinician/coach review and symptom response.",
+    "status": "seed-ready"
+  },
+  {
+    "injury_id": "de-quervain",
+    "region": "wrist_hand",
+    "name_he": "דה קרוון",
+    "muscles": [
+      "abductor-pollicis-longus",
+      "extensor-pollicis-brevis"
+    ],
+    "rehab": [
+      "finger-extension-band",
+      "grip-isometric"
+    ],
+    "train_around_recommended": [],
+    "train_around_modify": [
+      "bench-press",
+      "lat-pulldown"
+    ],
+    "avoid_if_provocative": [],
+    "clinical_note": "Educational scaffold only; final exercise selection and load progression require clinician/coach review and symptom response.",
+    "status": "seed-ready"
+  },
+  {
+    "injury_id": "cervical-radiculopathy",
+    "region": "cervical_neck",
+    "name_he": "רדיקולופתיה צווארית",
+    "muscles": [
+      "deep-neck-flexors",
+      "scalenes",
+      "upper-trapezius"
+    ],
+    "rehab": [
+      "chin-tuck",
+      "deep-neck-flexor-hold",
+      "cervical-isometric-rotation"
+    ],
+    "train_around_recommended": [
+      "chest-supported-row"
+    ],
+    "train_around_modify": [
+      "overhead-press",
+      "back-squat"
+    ],
+    "avoid_if_provocative": [],
+    "clinical_note": "Educational scaffold only; final exercise selection and load progression require clinician/coach review and symptom response.",
+    "status": "seed-ready"
+  },
+  {
+    "injury_id": "mechanical-low-back-pain",
+    "region": "lumbar",
+    "name_he": "כאב גב תחתון מכני",
+    "muscles": [
+      "erector-spinae",
+      "multifidus",
+      "transversus-abdominis",
+      "quadratus-lumborum"
+    ],
+    "rehab": [
+      "dead-bug",
+      "bird-dog",
+      "side-plank",
+      "mcgill-curl-up",
+      "hip-hinge-dowel"
+    ],
+    "train_around_recommended": [
+      "split-squat",
+      "leg-press"
+    ],
+    "train_around_modify": [
+      "back-squat",
+      "deadlift",
+      "romanian-deadlift"
+    ],
+    "avoid_if_provocative": [],
+    "clinical_note": "Educational scaffold only; final exercise selection and load progression require clinician/coach review and symptom response.",
+    "status": "seed-ready"
+  },
+  {
+    "injury_id": "lumbar-radiculopathy",
+    "region": "lumbar",
+    "name_he": "רדיקולופתיה מותנית",
+    "muscles": [
+      "multifidus",
+      "erector-spinae",
+      "transversus-abdominis"
+    ],
+    "rehab": [
+      "dead-bug",
+      "bird-dog",
+      "pallof-press"
+    ],
+    "train_around_recommended": [
+      "split-squat"
+    ],
+    "train_around_modify": [
+      "back-squat",
+      "deadlift",
+      "romanian-deadlift"
+    ],
+    "avoid_if_provocative": [],
+    "clinical_note": "Educational scaffold only; final exercise selection and load progression require clinician/coach review and symptom response.",
+    "status": "seed-ready"
+  },
+  {
+    "injury_id": "adductor-related-groin-pain",
+    "region": "groin",
+    "name_he": "כאב מפשעה הקשור לאדקטורים",
+    "muscles": [
+      "adductor-longus",
+      "adductor-brevis",
+      "adductor-magnus",
+      "gracilis"
+    ],
+    "rehab": [
+      "adductor-squeeze",
+      "copenhagen-short-lever",
+      "copenhagen-long-lever",
+      "cossack-squat-stretch"
+    ],
+    "train_around_recommended": [
+      "romanian-deadlift",
+      "glute-bridge"
+    ],
+    "train_around_modify": [
+      "back-squat",
+      "front-squat",
+      "split-squat"
+    ],
+    "avoid_if_provocative": [],
+    "clinical_note": "Educational scaffold only; final exercise selection and load progression require clinician/coach review and symptom response.",
+    "status": "seed-ready"
+  },
+  {
+    "injury_id": "gluteal-tendinopathy",
+    "region": "hip",
+    "name_he": "טנדינופתיה גלוטאלית",
+    "muscles": [
+      "gluteus-medius",
+      "gluteus-minimus"
+    ],
+    "rehab": [
+      "side-lying-hip-abduction",
+      "cable-hip-abduction",
+      "clamshell"
+    ],
+    "train_around_recommended": [
+      "glute-bridge",
+      "romanian-deadlift"
+    ],
+    "train_around_modify": [
+      "split-squat"
+    ],
+    "avoid_if_provocative": [],
+    "clinical_note": "Educational scaffold only; final exercise selection and load progression require clinician/coach review and symptom response.",
+    "status": "seed-ready"
+  },
+  {
+    "injury_id": "hamstring-strain",
+    "region": "hamstring",
+    "name_he": "מתיחת המסטרינג",
+    "muscles": [
+      "biceps-femoris-long-head",
+      "semitendinosus",
+      "semimembranosus"
+    ],
+    "rehab": [
+      "hamstring-bridge",
+      "single-leg-rdl",
+      "nordic-hamstring"
+    ],
+    "train_around_recommended": [
+      "glute-bridge"
+    ],
+    "train_around_modify": [
+      "romanian-deadlift",
+      "deadlift"
+    ],
+    "avoid_if_provocative": [],
+    "clinical_note": "Educational scaffold only; final exercise selection and load progression require clinician/coach review and symptom response.",
+    "status": "seed-ready"
+  },
+  {
+    "injury_id": "patellofemoral-pain",
+    "region": "knee",
+    "name_he": "כאב פטלופמורלי",
+    "muscles": [
+      "quadriceps",
+      "gluteus-medius",
+      "gluteus-maximus"
+    ],
+    "rehab": [
+      "step-down",
+      "wall-sit",
+      "split-squat",
+      "cable-hip-abduction"
+    ],
+    "train_around_recommended": [
+      "romanian-deadlift",
+      "glute-bridge"
+    ],
+    "train_around_modify": [
+      "back-squat",
+      "front-squat",
+      "leg-press"
+    ],
+    "avoid_if_provocative": [],
+    "clinical_note": "Educational scaffold only; final exercise selection and load progression require clinician/coach review and symptom response.",
+    "status": "seed-ready"
+  },
+  {
+    "injury_id": "patellar-tendinopathy",
+    "region": "knee",
+    "name_he": "טנדינופתיה פטלרית",
+    "muscles": [
+      "quadriceps"
+    ],
+    "rehab": [
+      "leg-extension-isometric",
+      "spanish-squat",
+      "split-squat"
+    ],
+    "train_around_recommended": [
+      "romanian-deadlift",
+      "glute-bridge"
+    ],
+    "train_around_modify": [
+      "back-squat",
+      "front-squat",
+      "leg-press"
+    ],
+    "avoid_if_provocative": [],
+    "clinical_note": "Educational scaffold only; final exercise selection and load progression require clinician/coach review and symptom response.",
+    "status": "seed-ready"
+  },
+  {
+    "injury_id": "calf-strain",
+    "region": "calf",
+    "name_he": "מתיחת שרירי השוק",
+    "muscles": [
+      "gastrocnemius",
+      "soleus"
+    ],
+    "rehab": [
+      "calf-raise-straight-knee",
+      "calf-raise-bent-knee"
+    ],
+    "train_around_recommended": [
+      "leg-press",
+      "glute-bridge"
+    ],
+    "train_around_modify": [
+      "back-squat"
+    ],
+    "avoid_if_provocative": [],
+    "clinical_note": "Educational scaffold only; final exercise selection and load progression require clinician/coach review and symptom response.",
+    "status": "seed-ready"
+  },
+  {
+    "injury_id": "achilles-tendinopathy",
+    "region": "ankle",
+    "name_he": "טנדינופתיה של גיד אכילס",
+    "muscles": [
+      "gastrocnemius",
+      "soleus"
+    ],
+    "rehab": [
+      "calf-raise-straight-knee",
+      "calf-raise-bent-knee"
+    ],
+    "train_around_recommended": [
+      "leg-press",
+      "romanian-deadlift"
+    ],
+    "train_around_modify": [
+      "back-squat"
+    ],
+    "avoid_if_provocative": [],
+    "clinical_note": "Educational scaffold only; final exercise selection and load progression require clinician/coach review and symptom response.",
+    "status": "seed-ready"
+  },
+  {
+    "injury_id": "lateral-ankle-sprain",
+    "region": "ankle",
+    "name_he": "נקע לטרלי בקרסול",
+    "muscles": [
+      "fibularis-longus",
+      "fibularis-brevis",
+      "tibialis-anterior"
+    ],
+    "rehab": [
+      "ankle-eversion-band",
+      "single-leg-balance",
+      "calf-raise-straight-knee"
+    ],
+    "train_around_recommended": [
+      "glute-bridge"
+    ],
+    "train_around_modify": [
+      "back-squat",
+      "split-squat"
+    ],
+    "avoid_if_provocative": [],
+    "clinical_note": "Educational scaffold only; final exercise selection and load progression require clinician/coach review and symptom response.",
+    "status": "seed-ready"
+  },
+  {
+    "injury_id": "plantar-fasciopathy",
+    "region": "foot",
+    "name_he": "פלנטר פשיאופתיה",
+    "muscles": [
+      "intrinsic-foot",
+      "tibialis-posterior",
+      "flexor-hallucis-longus"
+    ],
+    "rehab": [
+      "short-foot",
+      "toe-yoga",
+      "calf-raise-bent-knee"
+    ],
+    "train_around_recommended": [
+      "leg-press"
+    ],
+    "train_around_modify": [
+      "back-squat"
+    ],
+    "avoid_if_provocative": [],
+    "clinical_note": "Educational scaffold only; final exercise selection and load progression require clinician/coach review and symptom response.",
+    "status": "seed-ready"
+  }
+]

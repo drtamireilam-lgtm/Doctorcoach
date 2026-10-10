@@ -1,0 +1,610 @@
+[
+  {
+    "movement_id": "shoulder-flexion",
+    "region_he": "כתף",
+    "name_en": "Shoulder Flexion",
+    "plane": "Sagittal",
+    "axis": "Mediolateral",
+    "primary_muscles": [
+      "Anterior Deltoid",
+      "Pectoralis Major (clavicular)",
+      "Coracobrachialis",
+      "Biceps Brachii"
+    ],
+    "animation_start_he": "זרוע לצד הגוף",
+    "animation_action_he": "הרמת הזרוע קדימה ומעלה",
+    "animation_style": "neutral skeleton/body + highlighted target muscle(s) + arrow + start/end loop",
+    "status": "animation-ready"
+  },
+  {
+    "movement_id": "shoulder-extension",
+    "region_he": "כתף",
+    "name_en": "Shoulder Extension",
+    "plane": "Sagittal",
+    "axis": "Mediolateral",
+    "primary_muscles": [
+      "Posterior Deltoid",
+      "Latissimus Dorsi",
+      "Teres Major",
+      "Triceps Long Head"
+    ],
+    "animation_start_he": "זרוע לצד הגוף",
+    "animation_action_he": "הנעת הזרוע לאחור",
+    "animation_style": "neutral skeleton/body + highlighted target muscle(s) + arrow + start/end loop",
+    "status": "animation-ready"
+  },
+  {
+    "movement_id": "shoulder-abduction",
+    "region_he": "כתף",
+    "name_en": "Shoulder Abduction",
+    "plane": "Frontal",
+    "axis": "Anteroposterior",
+    "primary_muscles": [
+      "Supraspinatus",
+      "Middle Deltoid"
+    ],
+    "animation_start_he": "זרוע לצד הגוף",
+    "animation_action_he": "הרמת הזרוע הצידה",
+    "animation_style": "neutral skeleton/body + highlighted target muscle(s) + arrow + start/end loop",
+    "status": "animation-ready"
+  },
+  {
+    "movement_id": "shoulder-adduction",
+    "region_he": "כתף",
+    "name_en": "Shoulder Adduction",
+    "plane": "Frontal",
+    "axis": "Anteroposterior",
+    "primary_muscles": [
+      "Pectoralis Major",
+      "Latissimus Dorsi",
+      "Teres Major"
+    ],
+    "animation_start_he": "זרוע מורחקת",
+    "animation_action_he": "החזרת הזרוע אל הגוף",
+    "animation_style": "neutral skeleton/body + highlighted target muscle(s) + arrow + start/end loop",
+    "status": "animation-ready"
+  },
+  {
+    "movement_id": "shoulder-internal-rotation",
+    "region_he": "כתף",
+    "name_en": "Shoulder Internal Rotation",
+    "plane": "Transverse",
+    "axis": "Longitudinal",
+    "primary_muscles": [
+      "Subscapularis",
+      "Pectoralis Major",
+      "Latissimus Dorsi",
+      "Teres Major",
+      "Anterior Deltoid"
+    ],
+    "animation_start_he": "מרפק כפוף 90°",
+    "animation_action_he": "סיבוב הזרוע פנימה",
+    "animation_style": "neutral skeleton/body + highlighted target muscle(s) + arrow + start/end loop",
+    "status": "animation-ready"
+  },
+  {
+    "movement_id": "shoulder-external-rotation",
+    "region_he": "כתף",
+    "name_en": "Shoulder External Rotation",
+    "plane": "Transverse",
+    "axis": "Longitudinal",
+    "primary_muscles": [
+      "Infraspinatus",
+      "Teres Minor",
+      "Posterior Deltoid"
+    ],
+    "animation_start_he": "מרפק כפוף 90°",
+    "animation_action_he": "סיבוב הזרוע החוצה",
+    "animation_style": "neutral skeleton/body + highlighted target muscle(s) + arrow + start/end loop",
+    "status": "animation-ready"
+  },
+  {
+    "movement_id": "scapular-protraction",
+    "region_he": "שכמה",
+    "name_en": "Scapular Protraction",
+    "plane": "Transverse",
+    "axis": "Vertical",
+    "primary_muscles": [
+      "Serratus Anterior",
+      "Pectoralis Minor"
+    ],
+    "animation_start_he": "שכמה ניטרלית",
+    "animation_action_he": "הנעת השכמה קדימה סביב בית החזה",
+    "animation_style": "neutral skeleton/body + highlighted target muscle(s) + arrow + start/end loop",
+    "status": "animation-ready"
+  },
+  {
+    "movement_id": "scapular-retraction",
+    "region_he": "שכמה",
+    "name_en": "Scapular Retraction",
+    "plane": "Transverse",
+    "axis": "Vertical",
+    "primary_muscles": [
+      "Middle Trapezius",
+      "Rhomboids"
+    ],
+    "animation_start_he": "שכמה ניטרלית",
+    "animation_action_he": "קירוב השכמות לעמוד השדרה",
+    "animation_style": "neutral skeleton/body + highlighted target muscle(s) + arrow + start/end loop",
+    "status": "animation-ready"
+  },
+  {
+    "movement_id": "scapular-upward-rotation",
+    "region_he": "שכמה",
+    "name_en": "Scapular Upward Rotation",
+    "plane": "Frontal",
+    "axis": "Anteroposterior",
+    "primary_muscles": [
+      "Serratus Anterior",
+      "Upper Trapezius",
+      "Lower Trapezius"
+    ],
+    "animation_start_he": "זרוע לצד הגוף",
+    "animation_action_he": "רוטציה של השכמה כלפי מעלה בזמן הרמת הזרוע",
+    "animation_style": "neutral skeleton/body + highlighted target muscle(s) + arrow + start/end loop",
+    "status": "animation-ready"
+  },
+  {
+    "movement_id": "scapular-downward-rotation",
+    "region_he": "שכמה",
+    "name_en": "Scapular Downward Rotation",
+    "plane": "Frontal",
+    "axis": "Anteroposterior",
+    "primary_muscles": [
+      "Rhomboids",
+      "Levator Scapulae",
+      "Pectoralis Minor"
+    ],
+    "animation_start_he": "זרוע מורמת",
+    "animation_action_he": "רוטציה של השכמה מטה בזמן הורדת הזרוע",
+    "animation_style": "neutral skeleton/body + highlighted target muscle(s) + arrow + start/end loop",
+    "status": "animation-ready"
+  },
+  {
+    "movement_id": "cervical-flexion",
+    "region_he": "צוואר",
+    "name_en": "Cervical Flexion",
+    "plane": "Sagittal",
+    "axis": "Mediolateral",
+    "primary_muscles": [
+      "Longus Colli",
+      "Longus Capitis",
+      "SCM"
+    ],
+    "animation_start_he": "ראש ניטרלי",
+    "animation_action_he": "קירוב הסנטר לחזה",
+    "animation_style": "neutral skeleton/body + highlighted target muscle(s) + arrow + start/end loop",
+    "status": "animation-ready"
+  },
+  {
+    "movement_id": "cervical-extension",
+    "region_he": "צוואר",
+    "name_en": "Cervical Extension",
+    "plane": "Sagittal",
+    "axis": "Mediolateral",
+    "primary_muscles": [
+      "Splenius Capitis",
+      "Semispinalis Capitis",
+      "Upper Trapezius"
+    ],
+    "animation_start_he": "ראש ניטרלי",
+    "animation_action_he": "הטיית הראש לאחור",
+    "animation_style": "neutral skeleton/body + highlighted target muscle(s) + arrow + start/end loop",
+    "status": "animation-ready"
+  },
+  {
+    "movement_id": "cervical-rotation",
+    "region_he": "צוואר",
+    "name_en": "Cervical Rotation",
+    "plane": "Transverse",
+    "axis": "Vertical",
+    "primary_muscles": [
+      "SCM",
+      "Splenius Capitis",
+      "Suboccipitals"
+    ],
+    "animation_start_he": "ראש ניטרלי",
+    "animation_action_he": "סיבוב הראש ימינה/שמאלה",
+    "animation_style": "neutral skeleton/body + highlighted target muscle(s) + arrow + start/end loop",
+    "status": "animation-ready"
+  },
+  {
+    "movement_id": "cervical-lateral-flexion",
+    "region_he": "צוואר",
+    "name_en": "Cervical Lateral Flexion",
+    "plane": "Frontal",
+    "axis": "Anteroposterior",
+    "primary_muscles": [
+      "Scalenes",
+      "SCM",
+      "Levator Scapulae"
+    ],
+    "animation_start_he": "ראש ניטרלי",
+    "animation_action_he": "הטיית האוזן לכיוון הכתף",
+    "animation_style": "neutral skeleton/body + highlighted target muscle(s) + arrow + start/end loop",
+    "status": "animation-ready"
+  },
+  {
+    "movement_id": "elbow-flexion",
+    "region_he": "מרפק",
+    "name_en": "Elbow Flexion",
+    "plane": "Sagittal",
+    "axis": "Mediolateral",
+    "primary_muscles": [
+      "Brachialis",
+      "Biceps Brachii",
+      "Brachioradialis"
+    ],
+    "animation_start_he": "מרפק ישר",
+    "animation_action_he": "כיפוף המרפק",
+    "animation_style": "neutral skeleton/body + highlighted target muscle(s) + arrow + start/end loop",
+    "status": "animation-ready"
+  },
+  {
+    "movement_id": "elbow-extension",
+    "region_he": "מרפק",
+    "name_en": "Elbow Extension",
+    "plane": "Sagittal",
+    "axis": "Mediolateral",
+    "primary_muscles": [
+      "Triceps Brachii",
+      "Anconeus"
+    ],
+    "animation_start_he": "מרפק כפוף",
+    "animation_action_he": "יישור המרפק",
+    "animation_style": "neutral skeleton/body + highlighted target muscle(s) + arrow + start/end loop",
+    "status": "animation-ready"
+  },
+  {
+    "movement_id": "forearm-pronation",
+    "region_he": "אמה",
+    "name_en": "Forearm Pronation",
+    "plane": "Transverse",
+    "axis": "Longitudinal",
+    "primary_muscles": [
+      "Pronator Teres",
+      "Pronator Quadratus"
+    ],
+    "animation_start_he": "כף יד פונה מעלה/קדימה",
+    "animation_action_he": "סיבוב האמה כך שכף היד פונה מטה/אחורה",
+    "animation_style": "neutral skeleton/body + highlighted target muscle(s) + arrow + start/end loop",
+    "status": "animation-ready"
+  },
+  {
+    "movement_id": "forearm-supination",
+    "region_he": "אמה",
+    "name_en": "Forearm Supination",
+    "plane": "Transverse",
+    "axis": "Longitudinal",
+    "primary_muscles": [
+      "Supinator",
+      "Biceps Brachii"
+    ],
+    "animation_start_he": "כף יד פונה מטה",
+    "animation_action_he": "סיבוב האמה כך שכף היד פונה מעלה",
+    "animation_style": "neutral skeleton/body + highlighted target muscle(s) + arrow + start/end loop",
+    "status": "animation-ready"
+  },
+  {
+    "movement_id": "wrist-flexion",
+    "region_he": "שורש כף יד",
+    "name_en": "Wrist Flexion",
+    "plane": "Sagittal",
+    "axis": "Mediolateral",
+    "primary_muscles": [
+      "FCR",
+      "FCU",
+      "Palmaris Longus"
+    ],
+    "animation_start_he": "שורש כף יד ניטרלי",
+    "animation_action_he": "כיפוף כף היד קדימה",
+    "animation_style": "neutral skeleton/body + highlighted target muscle(s) + arrow + start/end loop",
+    "status": "animation-ready"
+  },
+  {
+    "movement_id": "wrist-extension",
+    "region_he": "שורש כף יד",
+    "name_en": "Wrist Extension",
+    "plane": "Sagittal",
+    "axis": "Mediolateral",
+    "primary_muscles": [
+      "ECRL",
+      "ECRB",
+      "ECU"
+    ],
+    "animation_start_he": "שורש כף יד ניטרלי",
+    "animation_action_he": "יישור כף היד לאחור",
+    "animation_style": "neutral skeleton/body + highlighted target muscle(s) + arrow + start/end loop",
+    "status": "animation-ready"
+  },
+  {
+    "movement_id": "wrist-radial-deviation",
+    "region_he": "שורש כף יד",
+    "name_en": "Radial Deviation",
+    "plane": "Frontal",
+    "axis": "Anteroposterior",
+    "primary_muscles": [
+      "FCR",
+      "ECRL",
+      "ECRB"
+    ],
+    "animation_start_he": "שורש כף יד ניטרלי",
+    "animation_action_he": "הטיית כף היד לכיוון האגודל",
+    "animation_style": "neutral skeleton/body + highlighted target muscle(s) + arrow + start/end loop",
+    "status": "animation-ready"
+  },
+  {
+    "movement_id": "wrist-ulnar-deviation",
+    "region_he": "שורש כף יד",
+    "name_en": "Ulnar Deviation",
+    "plane": "Frontal",
+    "axis": "Anteroposterior",
+    "primary_muscles": [
+      "FCU",
+      "ECU"
+    ],
+    "animation_start_he": "שורש כף יד ניטרלי",
+    "animation_action_he": "הטיית כף היד לכיוון הזרת",
+    "animation_style": "neutral skeleton/body + highlighted target muscle(s) + arrow + start/end loop",
+    "status": "animation-ready"
+  },
+  {
+    "movement_id": "trunk-flexion",
+    "region_he": "גו",
+    "name_en": "Trunk Flexion",
+    "plane": "Sagittal",
+    "axis": "Mediolateral",
+    "primary_muscles": [
+      "Rectus Abdominis",
+      "Obliques"
+    ],
+    "animation_start_he": "גו זקוף",
+    "animation_action_he": "כיפוף הגו קדימה",
+    "animation_style": "neutral skeleton/body + highlighted target muscle(s) + arrow + start/end loop",
+    "status": "animation-ready"
+  },
+  {
+    "movement_id": "trunk-extension",
+    "region_he": "גו",
+    "name_en": "Trunk Extension",
+    "plane": "Sagittal",
+    "axis": "Mediolateral",
+    "primary_muscles": [
+      "Erector Spinae",
+      "Multifidus"
+    ],
+    "animation_start_he": "גו זקוף/כפוף",
+    "animation_action_he": "יישור הגו",
+    "animation_style": "neutral skeleton/body + highlighted target muscle(s) + arrow + start/end loop",
+    "status": "animation-ready"
+  },
+  {
+    "movement_id": "trunk-rotation",
+    "region_he": "גו",
+    "name_en": "Trunk Rotation",
+    "plane": "Transverse",
+    "axis": "Vertical",
+    "primary_muscles": [
+      "External Oblique",
+      "Internal Oblique",
+      "Multifidus"
+    ],
+    "animation_start_he": "אגן יציב",
+    "animation_action_he": "רוטציה של בית החזה/גו",
+    "animation_style": "neutral skeleton/body + highlighted target muscle(s) + arrow + start/end loop",
+    "status": "animation-ready"
+  },
+  {
+    "movement_id": "trunk-lateral-flexion",
+    "region_he": "גו",
+    "name_en": "Trunk Lateral Flexion",
+    "plane": "Frontal",
+    "axis": "Anteroposterior",
+    "primary_muscles": [
+      "Quadratus Lumborum",
+      "Obliques",
+      "Erector Spinae"
+    ],
+    "animation_start_he": "גו זקוף",
+    "animation_action_he": "כפיפה צידית של הגו",
+    "animation_style": "neutral skeleton/body + highlighted target muscle(s) + arrow + start/end loop",
+    "status": "animation-ready"
+  },
+  {
+    "movement_id": "hip-flexion",
+    "region_he": "ירך",
+    "name_en": "Hip Flexion",
+    "plane": "Sagittal",
+    "axis": "Mediolateral",
+    "primary_muscles": [
+      "Iliopsoas",
+      "Rectus Femoris",
+      "Sartorius",
+      "TFL"
+    ],
+    "animation_start_he": "ירך ניטרלית",
+    "animation_action_he": "הרמת הירך קדימה",
+    "animation_style": "neutral skeleton/body + highlighted target muscle(s) + arrow + start/end loop",
+    "status": "animation-ready"
+  },
+  {
+    "movement_id": "hip-extension",
+    "region_he": "ירך",
+    "name_en": "Hip Extension",
+    "plane": "Sagittal",
+    "axis": "Mediolateral",
+    "primary_muscles": [
+      "Gluteus Maximus",
+      "Hamstrings",
+      "Adductor Magnus posterior"
+    ],
+    "animation_start_he": "ירך ניטרלית",
+    "animation_action_he": "הנעת הירך לאחור",
+    "animation_style": "neutral skeleton/body + highlighted target muscle(s) + arrow + start/end loop",
+    "status": "animation-ready"
+  },
+  {
+    "movement_id": "hip-abduction",
+    "region_he": "ירך",
+    "name_en": "Hip Abduction",
+    "plane": "Frontal",
+    "axis": "Anteroposterior",
+    "primary_muscles": [
+      "Gluteus Medius",
+      "Gluteus Minimus",
+      "TFL"
+    ],
+    "animation_start_he": "רגל מתחת לאגן",
+    "animation_action_he": "הרחקת הרגל הצידה",
+    "animation_style": "neutral skeleton/body + highlighted target muscle(s) + arrow + start/end loop",
+    "status": "animation-ready"
+  },
+  {
+    "movement_id": "hip-adduction",
+    "region_he": "ירך",
+    "name_en": "Hip Adduction",
+    "plane": "Frontal",
+    "axis": "Anteroposterior",
+    "primary_muscles": [
+      "Adductor Longus",
+      "Adductor Brevis",
+      "Adductor Magnus",
+      "Gracilis",
+      "Pectineus"
+    ],
+    "animation_start_he": "רגל מורחקת",
+    "animation_action_he": "קירוב הרגל לקו האמצע",
+    "animation_style": "neutral skeleton/body + highlighted target muscle(s) + arrow + start/end loop",
+    "status": "animation-ready"
+  },
+  {
+    "movement_id": "hip-internal-rotation",
+    "region_he": "ירך",
+    "name_en": "Hip Internal Rotation",
+    "plane": "Transverse",
+    "axis": "Longitudinal",
+    "primary_muscles": [
+      "Gluteus Medius anterior",
+      "Gluteus Minimus",
+      "TFL"
+    ],
+    "animation_start_he": "ירך ניטרלית",
+    "animation_action_he": "סיבוב הפמור פנימה",
+    "animation_style": "neutral skeleton/body + highlighted target muscle(s) + arrow + start/end loop",
+    "status": "animation-ready"
+  },
+  {
+    "movement_id": "hip-external-rotation",
+    "region_he": "ירך",
+    "name_en": "Hip External Rotation",
+    "plane": "Transverse",
+    "axis": "Longitudinal",
+    "primary_muscles": [
+      "Gluteus Maximus",
+      "Piriformis",
+      "Obturators",
+      "Gemelli",
+      "Quadratus Femoris"
+    ],
+    "animation_start_he": "ירך ניטרלית",
+    "animation_action_he": "סיבוב הפמור החוצה",
+    "animation_style": "neutral skeleton/body + highlighted target muscle(s) + arrow + start/end loop",
+    "status": "animation-ready"
+  },
+  {
+    "movement_id": "knee-flexion",
+    "region_he": "ברך",
+    "name_en": "Knee Flexion",
+    "plane": "Sagittal",
+    "axis": "Mediolateral",
+    "primary_muscles": [
+      "Hamstrings",
+      "Gastrocnemius",
+      "Sartorius",
+      "Gracilis"
+    ],
+    "animation_start_he": "ברך ישרה",
+    "animation_action_he": "כיפוף הברך",
+    "animation_style": "neutral skeleton/body + highlighted target muscle(s) + arrow + start/end loop",
+    "status": "animation-ready"
+  },
+  {
+    "movement_id": "knee-extension",
+    "region_he": "ברך",
+    "name_en": "Knee Extension",
+    "plane": "Sagittal",
+    "axis": "Mediolateral",
+    "primary_muscles": [
+      "Quadriceps"
+    ],
+    "animation_start_he": "ברך כפופה",
+    "animation_action_he": "יישור הברך",
+    "animation_style": "neutral skeleton/body + highlighted target muscle(s) + arrow + start/end loop",
+    "status": "animation-ready"
+  },
+  {
+    "movement_id": "ankle-dorsiflexion",
+    "region_he": "קרסול",
+    "name_en": "Ankle Dorsiflexion",
+    "plane": "Sagittal",
+    "axis": "Mediolateral",
+    "primary_muscles": [
+      "Tibialis Anterior",
+      "EHL",
+      "EDL"
+    ],
+    "animation_start_he": "כף רגל ניטרלית",
+    "animation_action_he": "הרמת גב כף הרגל לכיוון השוק",
+    "animation_style": "neutral skeleton/body + highlighted target muscle(s) + arrow + start/end loop",
+    "status": "animation-ready"
+  },
+  {
+    "movement_id": "ankle-plantarflexion",
+    "region_he": "קרסול",
+    "name_en": "Ankle Plantarflexion",
+    "plane": "Sagittal",
+    "axis": "Mediolateral",
+    "primary_muscles": [
+      "Gastrocnemius",
+      "Soleus",
+      "Tibialis Posterior",
+      "FHL",
+      "FDL"
+    ],
+    "animation_start_he": "כף רגל ניטרלית",
+    "animation_action_he": "דחיפת כף הרגל מטה",
+    "animation_style": "neutral skeleton/body + highlighted target muscle(s) + arrow + start/end loop",
+    "status": "animation-ready"
+  },
+  {
+    "movement_id": "foot-inversion",
+    "region_he": "כף רגל",
+    "name_en": "Foot Inversion",
+    "plane": "Frontal",
+    "axis": "Anteroposterior",
+    "primary_muscles": [
+      "Tibialis Posterior",
+      "Tibialis Anterior"
+    ],
+    "animation_start_he": "כף רגל ניטרלית",
+    "animation_action_he": "הפניית הסוליה פנימה",
+    "animation_style": "neutral skeleton/body + highlighted target muscle(s) + arrow + start/end loop",
+    "status": "animation-ready"
+  },
+  {
+    "movement_id": "foot-eversion",
+    "region_he": "כף רגל",
+    "name_en": "Foot Eversion",
+    "plane": "Frontal",
+    "axis": "Anteroposterior",
+    "primary_muscles": [
+      "Fibularis Longus",
+      "Fibularis Brevis",
+      "Fibularis Tertius"
+    ],
+    "animation_start_he": "כף רגל ניטרלית",
+    "animation_action_he": "הפניית הסוליה החוצה",
+    "animation_style": "neutral skeleton/body + highlighted target muscle(s) + arrow + start/end loop",
+    "status": "animation-ready"
+  }
+]

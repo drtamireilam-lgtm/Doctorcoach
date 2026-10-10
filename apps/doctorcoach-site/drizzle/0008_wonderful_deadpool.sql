@@ -1,0 +1,1 @@
+ALTER TABLE `care_connections` ADD `scope` text DEFAULT 'care' NOT NULL;

@@ -1,0 +1,1 @@
+ALTER TABLE `program_items` ADD `effort_scale` text DEFAULT 'rpe' NOT NULL;

@@ -1,0 +1,40 @@
+/* Shared appearance controls and the light palette. Dark retains the established brand. */
+.theme-toggle{display:inline-flex;align-items:center;justify-content:center;gap:8px;flex-shrink:0;min-height:44px;padding:8px 12px;border:1px solid var(--line);border-radius:10px;background:var(--raised);color:var(--text);font-size:13px;font-weight:600}
+.theme-toggle:hover{border-color:var(--accent-red)}
+html.light{color-scheme:light;--canvas:#f5f6f8;--card:#fff;--raised:#eceef2;--soft-red:#fff0f1;--red:#cf2434;--accent-red:#ae1b2c;--text:#20212a;--muted:#60616e;--line:#d9dce3;--input:#a1a5b2;--navy:#20212a;--navy2:#fff;--lime:#ae1b2c}
+html.light body{background:var(--canvas)}
+.light :is(.sidebar,.topbar){background:var(--card);border-color:var(--line)}
+.light :is(.brand-type strong,.mobile-menu,.mobile-close,.avatar,.care-field,.plan-edit-form label,.service-field,.library-filter,.care-check,.care-client,.set-line label,.set-line label.set-check,.service-confirm,.set-estimate,.learning-article p){color:var(--text)}
+.light :is(.side-label,.nav-link,.library-mode button,.injury-nav button,.mobile-bottom-nav button,.care-tabs [data-slot=tabs-trigger]){color:var(--muted)}
+.light :is(.nav-link:hover,.quick-paths button:hover,.button.secondary:hover:not(:disabled),.icon-label:hover,.care-client:hover){background:var(--raised);color:var(--text)}
+.light :is(.nav-link.active,.area-navigation button.active,.mobile-bottom-nav button.active,.timer-presets button.selected,.injury-nav button.active,.anatomy-region-list button.selected,.mapping-topics button.selected){background:var(--soft-red);color:var(--accent-red);border-color:#d88e98}
+.light :is(.side-support,.library-mode,.template,.quick-paths button,.quick-paths button:nth-child(2),.progress-steps>div,.care-tabs>[data-slot=tabs-list],.intake-choice,.body-region-grid button,.set-line,.service-calendar-fields,.service-setup,.care-program-edit,.care-appointment-editor){background:var(--card);border-color:var(--line);color:var(--text)}
+.light :is(.avatar,.timer-presets button,.message-bubble,.service-tag,.service-state,.state-draft,.service-unavailable:disabled){background:var(--raised);border-color:var(--line);color:var(--text)}
+.light :is(.resume-banner,.workout-summary,.injury-hero,.warning-box,.note,.bottom-note,.auth-note,.inline-note,.info-band,.save-state,.save-state.saving,.session-notes,.finish-card,.service-booking-note,.service-saved,.active-workout-strip,.care-medical,.care-invite-preview,.care-code,.care-response,.care-pill,.care-success,.load-suggestion,.message-bubble.own,.message-threads button.selected,.set-line.done,.intake-choice.chosen,.rehab-stage-list li[aria-current=step]){background:var(--soft-red);border-color:#e2adb5;color:var(--text)}
+.light :is(.row-number,.count-pill,.set-count,.exercise-kind,.small-add,.set-save,.state-bookable,.state-listed,.service-tag.ready,.care-client-avatar,.detail-visual span,.install-button){background:var(--soft-red);border-color:#d88e98;color:var(--accent-red)}
+.light :is(.dashboard-last,.exercise-art,.exercise-card:nth-child(3n+2) .exercise-art,.exercise-card:nth-child(3n+3) .exercise-art){background:linear-gradient(135deg,#fff0f1,#f7f3f6);border-color:#e2adb5}
+.light .detail-visual{background:var(--soft-red)}
+.light :is(.resume-banner p,.workout-summary small,.workout-summary span,.dashboard-last p,.last-session-number span,.dashboard-tip,.exercise-content small,.exercise-meta span,.search-box input::placeholder,.service-field input::placeholder,.care-field input::placeholder,.care-field textarea::placeholder,.info-band p,.service-booking-note p,.service-setup p,.active-workout-strip span,.care-muted,.care-medical>p,.care-person small,.care-gate p,.care-empty p,.care-dose-list span,.care-dose-list p,.care-note small,.care-stats span,.care-client>p,.care-definition dt,.care-definition>div dt,.nutrition-price-grid p,.load-suggestion p,.team-overview-grid span,.team-overview-grid small,.message-bubble time,.set-estimate p){color:var(--muted)}
+.light :is(.resume-banner .text-button,.auth-note a,.service-preview summary,.library-login,.active-workout-strip>svg,.care-medical>h3 svg,.care-gate>svg,.care-empty>svg,.care-note strong,.care-response strong,.care-client-avatar,.appointment-time,.care-appointment-editor summary,.welcome-number,.safety-notice>svg,.safety-notice a,.set-estimate a,.danger-text,.finish-card>svg,.delete-button:hover,.set-save.saved){color:var(--accent-red)}
+.light .care-response p{color:var(--text)}
+.light :is(.plan-edit-form input,.plan-edit-form select,.plan-edit-form textarea,.service-field input,.service-field textarea,.service-select[data-slot=select-trigger],.library-filter .service-select,.set-line input,.care-field input,.care-field textarea,.care-field .service-select,.care-code input,.dc-checkbox){background:var(--card);border-color:var(--input);color:var(--text)}
+.light .care-field input[type=file]::file-selector-button{background:var(--soft-red);color:var(--accent-red);border-color:#d88e98}
+.light :is(.service-select-options,.notification-popover,.recharts-default-tooltip){background:var(--card)!important;color:var(--text)!important;border-color:var(--line)!important}
+.light .service-select-options [data-slot=select-item][data-highlighted]{background:var(--soft-red);color:var(--accent-red)}
+.light :is(.care-stats>div,.library-mode,.mobile-bottom-nav){background:var(--card);border-color:var(--line)}
+.light :is(.care-person,.care-dose-list>div,.care-note,.care-program-edit,.care-appointment-editor form,.video-card .care-form,.chart-values td,.chart-values th,.notification-row,.set-estimate,.dashboard-tip,.service-setup p.service-setup-footnote){border-color:var(--line)}
+.light :is(.care-error,.service-form-error,.safety-notice){background:#fff0f1;border-color:#ce7c88;color:#871627}
+.light :is(.service-form-error p,.service-form-error small){color:#871627}
+.light .navigation-tour{background:var(--card);color:var(--text);box-shadow:0 15px 60px #24243026}
+.light .toast{background:#871627;color:#fff;border-color:#ae1b2c}
+.light .favorite-button{background:var(--card);color:var(--accent-red);border-color:var(--line)}
+.light :is(.favorite-button[aria-pressed=true],.library-mode button[aria-pressed=true],.care-tabs [data-slot=tabs-trigger][data-state=active],.dc-checkbox[data-state=checked],.body-region-grid button.selected){background:var(--red);color:#fff;border-color:var(--red)}
+.light .message-count{color:#fff}
+.light .dc-slider [data-slot=slider-track],.light .onboard-progress span{background:var(--line)}
+.light .onboard-progress .filled{background:var(--red)}
+.light .onboard-card-dots button[aria-pressed=true]{background:var(--red)}
+.light :is(.exercise-card:hover,.dc-dialog,.install-dialog){box-shadow:0 12px 40px #24243020}
+@media(max-width:760px){.theme-toggle{width:44px;padding:8px}.theme-toggle span{display:none}.topbar-end{gap:6px;flex-shrink:0}.topbar .avatar{margin-right:0}.topbar :is(.avatar,.install-button,.notification-trigger,.mobile-menu){min-width:44px;min-height:44px;flex-shrink:0}.topbar-start{gap:6px}.breadcrumb{overflow:hidden;white-space:nowrap}.breadcrumb strong{overflow:hidden;text-overflow:ellipsis}}
+@media(max-width:600px){.breadcrumb>span,.breadcrumb>strong{display:none}.topbar .offline-status{font-size:0}.topbar .offline-status svg{width:16px;height:16px}}
+@media(max-width:420px){.topbar{padding-inline:12px}.breadcrumb{font-size:0;gap:0}.topbar-end{gap:4px}}
+@media print{.theme-toggle{display:none}}
