@@ -134,6 +134,13 @@
       "when": 1791667106699,
       "tag": "0018_billing_sandbox",
       "breakpoints": true
+    },
+    {
+      "idx": 19,
+      "version": "6",
+      "when": 1791667959213,
+      "tag": "0019_document_lifecycle",
+      "breakpoints": true
     }
   ]
 }
