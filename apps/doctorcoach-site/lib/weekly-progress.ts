@@ -24,8 +24,15 @@ export function weeklyProgress(sessions:TrainingSession[],records:WellnessRecord
   const rd=[...readinessDays.values()];
   return {start,end:shiftDay(end,-1),completed:completed.length,planned:target,adherence:target!==null&&target>0?Math.round(completed.length/target*100):null,sets:sets.length,volume:loaded.length?Math.round(loaded.reduce((n,{r})=>n+r.weight*r.amount,0)*10)/10:null,exercises:[...exercises.values()],pain:average(reportedPain),painCount:reportedPain.length,rom:[...rom.values()].map(r=>({...r,value:Math.round(r.value/r.count*10)/10})),sleep:average(rd.map(r=>r.sleep).filter(numeric)),energy:average(rd.map(r=>r.energy).filter(numeric)),stress:average(rd.map(r=>r.stress).filter(numeric)),readinessDays:rd.length,rehabReports:rehab.length};
  }
+ function stagesAt(end:string){
+  const latest=new Map<string,WellnessRecord>();
+  for(const r of records){if(r.kind!=='return'||r.day>end||israelDay(r.updatedAt)>end)continue;const key=String(r.data.episodeId??'default'),old=latest.get(key);if(!old||r.updatedAt>old.updatedAt||r.updatedAt===old.updatedAt&&r.version>old.version)latest.set(key,r);}
+  return [...latest.values()].map(r=>({episodeId:r.data.episodeId??null,stage:String(r.data.stage),updatedAt:r.updatedAt}));
+ }
  const current=period(week,planned),previous=period(shiftDay(week,-7),previousPlanned);
+ const rehabStages=stagesAt(current.end),previousStages=stagesAt(previous.end);
+ const rehabStageChanges=rehabStages.map(s=>{const old=previousStages.find(p=>p.episodeId===s.episodeId);return {...s,previousStage:old?.stage??null,changed:old?old.stage!==s.stage:null};});
  const exerciseChanges=current.exercises.map(e=>{const old=previous.exercises.find(p=>p.id===e.id);return {...e,weightChange:old?Math.round((e.weight-old.weight)*10)/10:null,e1rmChange:old?.e1rm!=null&&e.e1rm!=null?Math.round((e.e1rm-old.e1rm)*10)/10:null};});
- return {week,current,previous,exerciseChanges,painChange:current.pain!==null&&previous.pain!==null?Math.round((current.pain-previous.pain)*10)/10:null,romChanges:current.rom.map(r=>({...r,change:previous.rom.some(p=>p.key===r.key)?Math.round((r.value-previous.rom.find(p=>p.key===r.key)!.value)*10)/10:null})),rehabStages:records.filter(r=>r.kind==='return'&&r.day<=current.end).map(r=>({episodeId:r.data.episodeId??null,stage:String(r.data.stage),updatedAt:r.updatedAt})),generatedAt:new Date().toISOString()};
+ return {week,current,previous,exerciseChanges,painChange:current.pain!==null&&previous.pain!==null?Math.round((current.pain-previous.pain)*10)/10:null,romChanges:current.rom.map(r=>({...r,change:previous.rom.some(p=>p.key===r.key)?Math.round((r.value-previous.rom.find(p=>p.key===r.key)!.value)*10)/10:null})),rehabStages,rehabStageChanges,generatedAt:new Date().toISOString()};
 }
 export type WeeklyProgress=ReturnType<typeof weeklyProgress>;
