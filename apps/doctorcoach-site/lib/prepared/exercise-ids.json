@@ -1,0 +1,602 @@
+[
+  {
+    "exercise_id": "band-external-rotation",
+    "name_en": "Band External Rotation",
+    "name_he": "רוטציה חיצונית עם גומייה",
+    "region": "shoulder",
+    "category": "rehab",
+    "video_asset": null,
+    "image_asset": null,
+    "status": "id-ready"
+  },
+  {
+    "exercise_id": "side-lying-external-rotation",
+    "name_en": "Side-Lying External Rotation",
+    "name_he": "רוטציה חיצונית בשכיבה על הצד",
+    "region": "shoulder",
+    "category": "rehab",
+    "video_asset": null,
+    "image_asset": null,
+    "status": "id-ready"
+  },
+  {
+    "exercise_id": "scaption",
+    "name_en": "Scaption",
+    "name_he": "הרמת יד במישור הסקפולרי",
+    "region": "shoulder",
+    "category": "rehab",
+    "video_asset": null,
+    "image_asset": null,
+    "status": "id-ready"
+  },
+  {
+    "exercise_id": "serratus-wall-slide",
+    "name_en": "Serratus Wall Slide",
+    "name_he": "Wall Slide לסרטוס",
+    "region": "shoulder",
+    "category": "rehab",
+    "video_asset": null,
+    "image_asset": null,
+    "status": "id-ready"
+  },
+  {
+    "exercise_id": "push-up-plus",
+    "name_en": "Push-Up Plus",
+    "name_he": "שכיבת סמיכה פלוס",
+    "region": "shoulder",
+    "category": "rehab",
+    "video_asset": null,
+    "image_asset": null,
+    "status": "id-ready"
+  },
+  {
+    "exercise_id": "face-pull",
+    "name_en": "Face Pull",
+    "name_he": "פייס פול",
+    "region": "shoulder",
+    "category": "gym/rehab",
+    "video_asset": null,
+    "image_asset": null,
+    "status": "id-ready"
+  },
+  {
+    "exercise_id": "cable-row",
+    "name_en": "Cable Row",
+    "name_he": "חתירה בכבל",
+    "region": "upper_back",
+    "category": "gym/rehab",
+    "video_asset": null,
+    "image_asset": null,
+    "status": "id-ready"
+  },
+  {
+    "exercise_id": "chest-supported-row",
+    "name_en": "Chest-Supported Row",
+    "name_he": "חתירה עם תמיכת חזה",
+    "region": "upper_back",
+    "category": "gym",
+    "video_asset": null,
+    "image_asset": null,
+    "status": "id-ready"
+  },
+  {
+    "exercise_id": "chin-tuck",
+    "name_en": "Chin Tuck",
+    "name_he": "Chin Tuck",
+    "region": "cervical",
+    "category": "rehab",
+    "video_asset": null,
+    "image_asset": null,
+    "status": "id-ready"
+  },
+  {
+    "exercise_id": "deep-neck-flexor-hold",
+    "name_en": "Deep Neck Flexor Hold",
+    "name_he": "החזקה לכופפים העמוקים של הצוואר",
+    "region": "cervical",
+    "category": "rehab",
+    "video_asset": null,
+    "image_asset": null,
+    "status": "id-ready"
+  },
+  {
+    "exercise_id": "cervical-isometric-rotation",
+    "name_en": "Cervical Isometric Rotation",
+    "name_he": "איזומטרי רוטציה צווארית",
+    "region": "cervical",
+    "category": "rehab",
+    "video_asset": null,
+    "image_asset": null,
+    "status": "id-ready"
+  },
+  {
+    "exercise_id": "thoracic-extension-bench",
+    "name_en": "Thoracic Extension on Bench",
+    "name_he": "יישור חזי על ספסל",
+    "region": "thoracic",
+    "category": "mobility",
+    "video_asset": null,
+    "image_asset": null,
+    "status": "id-ready"
+  },
+  {
+    "exercise_id": "wrist-extension-eccentric",
+    "name_en": "Eccentric Wrist Extension",
+    "name_he": "אקצנטרי מיישרי שורש כף היד",
+    "region": "elbow",
+    "category": "rehab",
+    "video_asset": null,
+    "image_asset": null,
+    "status": "id-ready"
+  },
+  {
+    "exercise_id": "wrist-flexion-eccentric",
+    "name_en": "Eccentric Wrist Flexion",
+    "name_he": "אקצנטרי כופפי שורש כף היד",
+    "region": "elbow",
+    "category": "rehab",
+    "video_asset": null,
+    "image_asset": null,
+    "status": "id-ready"
+  },
+  {
+    "exercise_id": "forearm-pronation-band",
+    "name_en": "Band Pronation",
+    "name_he": "פרונציה עם גומייה",
+    "region": "forearm",
+    "category": "rehab",
+    "video_asset": null,
+    "image_asset": null,
+    "status": "id-ready"
+  },
+  {
+    "exercise_id": "forearm-supination-band",
+    "name_en": "Band Supination",
+    "name_he": "סופינציה עם גומייה",
+    "region": "forearm",
+    "category": "rehab",
+    "video_asset": null,
+    "image_asset": null,
+    "status": "id-ready"
+  },
+  {
+    "exercise_id": "grip-isometric",
+    "name_en": "Grip Isometric",
+    "name_he": "אחיזה איזומטרית",
+    "region": "hand",
+    "category": "rehab",
+    "video_asset": null,
+    "image_asset": null,
+    "status": "id-ready"
+  },
+  {
+    "exercise_id": "finger-extension-band",
+    "name_en": "Finger Extension Band",
+    "name_he": "יישור אצבעות עם גומייה",
+    "region": "hand",
+    "category": "rehab",
+    "video_asset": null,
+    "image_asset": null,
+    "status": "id-ready"
+  },
+  {
+    "exercise_id": "dead-bug",
+    "name_en": "Dead Bug",
+    "name_he": "דד באג",
+    "region": "core",
+    "category": "rehab",
+    "video_asset": null,
+    "image_asset": null,
+    "status": "id-ready"
+  },
+  {
+    "exercise_id": "bird-dog",
+    "name_en": "Bird Dog",
+    "name_he": "בירד דוג",
+    "region": "core",
+    "category": "rehab",
+    "video_asset": null,
+    "image_asset": null,
+    "status": "id-ready"
+  },
+  {
+    "exercise_id": "side-plank",
+    "name_en": "Side Plank",
+    "name_he": "פלאנק צידי",
+    "region": "core",
+    "category": "rehab",
+    "video_asset": null,
+    "image_asset": null,
+    "status": "id-ready"
+  },
+  {
+    "exercise_id": "front-plank",
+    "name_en": "Front Plank",
+    "name_he": "פלאנק קדמי",
+    "region": "core",
+    "category": "rehab",
+    "video_asset": null,
+    "image_asset": null,
+    "status": "id-ready"
+  },
+  {
+    "exercise_id": "pallof-press",
+    "name_en": "Pallof Press",
+    "name_he": "פאלוף פרס",
+    "region": "core",
+    "category": "rehab",
+    "video_asset": null,
+    "image_asset": null,
+    "status": "id-ready"
+  },
+  {
+    "exercise_id": "mcgill-curl-up",
+    "name_en": "McGill Curl-Up",
+    "name_he": "מקגיל Curl-Up",
+    "region": "lumbar",
+    "category": "rehab",
+    "video_asset": null,
+    "image_asset": null,
+    "status": "id-ready"
+  },
+  {
+    "exercise_id": "hip-hinge-dowel",
+    "name_en": "Hip Hinge with Dowel",
+    "name_he": "Hip Hinge עם מקל",
+    "region": "lumbar/hip",
+    "category": "rehab",
+    "video_asset": null,
+    "image_asset": null,
+    "status": "id-ready"
+  },
+  {
+    "exercise_id": "roman-chair-ql-lateral-stretch",
+    "name_en": "Roman Chair QL Lateral Stretch",
+    "name_he": "מתיחת QL לטרלית על Roman Chair",
+    "region": "lumbar",
+    "category": "mobility",
+    "video_asset": null,
+    "image_asset": null,
+    "status": "id-ready"
+  },
+  {
+    "exercise_id": "glute-bridge",
+    "name_en": "Glute Bridge",
+    "name_he": "גשר ישבן",
+    "region": "hip",
+    "category": "rehab",
+    "video_asset": null,
+    "image_asset": null,
+    "status": "id-ready"
+  },
+  {
+    "exercise_id": "single-leg-glute-bridge",
+    "name_en": "Single-Leg Glute Bridge",
+    "name_he": "גשר ישבן רגל אחת",
+    "region": "hip",
+    "category": "rehab",
+    "video_asset": null,
+    "image_asset": null,
+    "status": "id-ready"
+  },
+  {
+    "exercise_id": "clamshell",
+    "name_en": "Clamshell",
+    "name_he": "Clamshell",
+    "region": "hip",
+    "category": "rehab",
+    "video_asset": null,
+    "image_asset": null,
+    "status": "id-ready"
+  },
+  {
+    "exercise_id": "side-lying-hip-abduction",
+    "name_en": "Side-Lying Hip Abduction",
+    "name_he": "הרחקת ירך בשכיבה",
+    "region": "hip",
+    "category": "rehab",
+    "video_asset": null,
+    "image_asset": null,
+    "status": "id-ready"
+  },
+  {
+    "exercise_id": "cable-hip-abduction",
+    "name_en": "Cable Hip Abduction",
+    "name_he": "הרחקת ירך בכבל",
+    "region": "hip",
+    "category": "gym/rehab",
+    "video_asset": null,
+    "image_asset": null,
+    "status": "id-ready"
+  },
+  {
+    "exercise_id": "cossack-squat-stretch",
+    "name_en": "Cossack Squat Stretch",
+    "name_he": "מתיחת Cossack למפשעה",
+    "region": "groin",
+    "category": "mobility",
+    "video_asset": null,
+    "image_asset": null,
+    "status": "id-ready"
+  },
+  {
+    "exercise_id": "adductor-squeeze",
+    "name_en": "Adductor Squeeze",
+    "name_he": "לחיצת אדקטורים",
+    "region": "groin",
+    "category": "rehab",
+    "video_asset": null,
+    "image_asset": null,
+    "status": "id-ready"
+  },
+  {
+    "exercise_id": "copenhagen-short-lever",
+    "name_en": "Copenhagen Short Lever",
+    "name_he": "קופנהגן מנוף קצר",
+    "region": "groin",
+    "category": "rehab",
+    "video_asset": null,
+    "image_asset": null,
+    "status": "id-ready"
+  },
+  {
+    "exercise_id": "copenhagen-long-lever",
+    "name_en": "Copenhagen Long Lever",
+    "name_he": "קופנהגן מנוף ארוך",
+    "region": "groin",
+    "category": "rehab",
+    "video_asset": null,
+    "image_asset": null,
+    "status": "id-ready"
+  },
+  {
+    "exercise_id": "split-squat",
+    "name_en": "Split Squat",
+    "name_he": "ספליט סקוואט",
+    "region": "knee/hip",
+    "category": "gym/rehab",
+    "video_asset": null,
+    "image_asset": null,
+    "status": "id-ready"
+  },
+  {
+    "exercise_id": "step-down",
+    "name_en": "Step Down",
+    "name_he": "סטפ דאון",
+    "region": "knee",
+    "category": "rehab",
+    "video_asset": null,
+    "image_asset": null,
+    "status": "id-ready"
+  },
+  {
+    "exercise_id": "wall-sit",
+    "name_en": "Wall Sit",
+    "name_he": "ישיבת קיר",
+    "region": "knee",
+    "category": "rehab",
+    "video_asset": null,
+    "image_asset": null,
+    "status": "id-ready"
+  },
+  {
+    "exercise_id": "leg-extension-isometric",
+    "name_en": "Leg Extension Isometric",
+    "name_he": "איזומטרי פשיטת ברך",
+    "region": "knee",
+    "category": "rehab",
+    "video_asset": null,
+    "image_asset": null,
+    "status": "id-ready"
+  },
+  {
+    "exercise_id": "spanish-squat",
+    "name_en": "Spanish Squat",
+    "name_he": "ספרדיש סקוואט",
+    "region": "knee",
+    "category": "rehab",
+    "video_asset": null,
+    "image_asset": null,
+    "status": "id-ready"
+  },
+  {
+    "exercise_id": "hamstring-bridge",
+    "name_en": "Hamstring Bridge",
+    "name_he": "גשר המסטרינג",
+    "region": "hamstring",
+    "category": "rehab",
+    "video_asset": null,
+    "image_asset": null,
+    "status": "id-ready"
+  },
+  {
+    "exercise_id": "nordic-hamstring",
+    "name_en": "Nordic Hamstring",
+    "name_he": "נורדיק המסטרינג",
+    "region": "hamstring",
+    "category": "rehab",
+    "video_asset": null,
+    "image_asset": null,
+    "status": "id-ready"
+  },
+  {
+    "exercise_id": "single-leg-rdl",
+    "name_en": "Single-Leg RDL",
+    "name_he": "RDL רגל אחת",
+    "region": "hamstring/hip",
+    "category": "gym/rehab",
+    "video_asset": null,
+    "image_asset": null,
+    "status": "id-ready"
+  },
+  {
+    "exercise_id": "calf-raise-straight-knee",
+    "name_en": "Straight-Knee Calf Raise",
+    "name_he": "הרמת עקב ברך ישרה",
+    "region": "calf",
+    "category": "rehab",
+    "video_asset": null,
+    "image_asset": null,
+    "status": "id-ready"
+  },
+  {
+    "exercise_id": "calf-raise-bent-knee",
+    "name_en": "Bent-Knee Calf Raise",
+    "name_he": "הרמת עקב ברך כפופה",
+    "region": "calf",
+    "category": "rehab",
+    "video_asset": null,
+    "image_asset": null,
+    "status": "id-ready"
+  },
+  {
+    "exercise_id": "tibialis-raise",
+    "name_en": "Tibialis Raise",
+    "name_he": "הרמת טיביאליס",
+    "region": "lower_leg",
+    "category": "rehab",
+    "video_asset": null,
+    "image_asset": null,
+    "status": "id-ready"
+  },
+  {
+    "exercise_id": "ankle-inversion-band",
+    "name_en": "Band Ankle Inversion",
+    "name_he": "אינוורסיה עם גומייה",
+    "region": "ankle",
+    "category": "rehab",
+    "video_asset": null,
+    "image_asset": null,
+    "status": "id-ready"
+  },
+  {
+    "exercise_id": "ankle-eversion-band",
+    "name_en": "Band Ankle Eversion",
+    "name_he": "אברסיה עם גומייה",
+    "region": "ankle",
+    "category": "rehab",
+    "video_asset": null,
+    "image_asset": null,
+    "status": "id-ready"
+  },
+  {
+    "exercise_id": "single-leg-balance",
+    "name_en": "Single-Leg Balance",
+    "name_he": "שיווי משקל על רגל אחת",
+    "region": "ankle",
+    "category": "rehab",
+    "video_asset": null,
+    "image_asset": null,
+    "status": "id-ready"
+  },
+  {
+    "exercise_id": "short-foot",
+    "name_en": "Short Foot",
+    "name_he": "Short Foot",
+    "region": "foot",
+    "category": "rehab",
+    "video_asset": null,
+    "image_asset": null,
+    "status": "id-ready"
+  },
+  {
+    "exercise_id": "toe-yoga",
+    "name_en": "Toe Yoga",
+    "name_he": "Toe Yoga",
+    "region": "foot",
+    "category": "rehab",
+    "video_asset": null,
+    "image_asset": null,
+    "status": "id-ready"
+  },
+  {
+    "exercise_id": "bench-press",
+    "name_en": "Bench Press",
+    "name_he": "בנץ' פרס",
+    "region": "chest/shoulder",
+    "category": "gym",
+    "video_asset": null,
+    "image_asset": null,
+    "status": "id-ready"
+  },
+  {
+    "exercise_id": "incline-db-press",
+    "name_en": "Incline Dumbbell Press",
+    "name_he": "לחיצת חזה בשיפוע",
+    "region": "chest/shoulder",
+    "category": "gym",
+    "video_asset": null,
+    "image_asset": null,
+    "status": "id-ready"
+  },
+  {
+    "exercise_id": "lat-pulldown",
+    "name_en": "Lat Pulldown",
+    "name_he": "משיכת פולי עליון",
+    "region": "back",
+    "category": "gym",
+    "video_asset": null,
+    "image_asset": null,
+    "status": "id-ready"
+  },
+  {
+    "exercise_id": "overhead-press",
+    "name_en": "Overhead Press",
+    "name_he": "לחיצה מעל הראש",
+    "region": "shoulder",
+    "category": "gym",
+    "video_asset": null,
+    "image_asset": null,
+    "status": "id-ready"
+  },
+  {
+    "exercise_id": "back-squat",
+    "name_en": "Back Squat",
+    "name_he": "סקוואט אחורי",
+    "region": "lower_body",
+    "category": "gym",
+    "video_asset": null,
+    "image_asset": null,
+    "status": "id-ready"
+  },
+  {
+    "exercise_id": "front-squat",
+    "name_en": "Front Squat",
+    "name_he": "פרונט סקוואט",
+    "region": "lower_body",
+    "category": "gym",
+    "video_asset": null,
+    "image_asset": null,
+    "status": "id-ready"
+  },
+  {
+    "exercise_id": "leg-press",
+    "name_en": "Leg Press",
+    "name_he": "לג פרס",
+    "region": "lower_body",
+    "category": "gym",
+    "video_asset": null,
+    "image_asset": null,
+    "status": "id-ready"
+  },
+  {
+    "exercise_id": "romanian-deadlift",
+    "name_en": "Romanian Deadlift",
+    "name_he": "RDL",
+    "region": "hamstring/hip",
+    "category": "gym",
+    "video_asset": null,
+    "image_asset": null,
+    "status": "id-ready"
+  },
+  {
+    "exercise_id": "deadlift",
+    "name_en": "Deadlift",
+    "name_he": "דדליפט",
+    "region": "lower_body/back",
+    "category": "gym",
+    "video_asset": null,
+    "image_asset": null,
+    "status": "id-ready"
+  }
+]

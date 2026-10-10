@@ -1,0 +1,1 @@
+ALTER TABLE `membership_orders` ADD `catalog_version` integer;

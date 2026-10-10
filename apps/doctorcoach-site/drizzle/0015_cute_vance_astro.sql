@@ -1,0 +1,1 @@
+ALTER TABLE `media_feedback` ADD `author_id` text;
