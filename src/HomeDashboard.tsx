@@ -1,4 +1,5 @@
 import React from 'react';
+import HomeNavigationCards from './HomeNavigationCards';
 import { AthleteProfile, Section } from './domain';
 import { AuthUser } from './platform/auth';
 import './home-dashboard.css';
@@ -142,6 +143,8 @@ export default function HomeDashboard({ redFlags, profile, user, onGo }: HomeDas
         </div>
       </section>
 
+      <HomeNavigationCards onGo={onGo}/>
+
       <section className="today-section">
         <div className="section-heading">
           <div><p className="eyebrow">TODAY</p><h3>Your next actions</h3></div>
@@ -194,3 +197,4 @@ export default function HomeDashboard({ redFlags, profile, user, onGo }: HomeDas
     </div>
   );
 }
+
