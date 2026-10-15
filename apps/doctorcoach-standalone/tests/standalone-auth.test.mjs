@@ -94,3 +94,37 @@ test('temporary provider outage denies private APIs with retryable 503 without d
 test('Supabase redirect responses are rejected without forwarding credentials to another host',async()=>{
  let options;const provider=supabaseProvider('https://auth.example.test','sb_publishable_synthetic',async(url,init)=>{options=init;return new Response(null,{status:302,headers:{Location:'https://attacker.test'}});});await assert.rejects(provider.send('new@example.test'));assert.equal(options.redirect,'manual');
 });
+
+test('account-link preview validates both owners without changing mappings or consuming proof',async t=>{
+ const f=await setup(t),r=await f.login('different-email@example.test'),proof=await f.legacyProof(r.sid);
+ const before=f.sql.prepare('SELECT COUNT(*) n FROM dc_identity_aliases').get().n;
+ const preview=await f.api('/auth/link/inspect',{proof},`${sessionCookie}=${r.sid}`);
+ assert.equal(preview.status,200);assert.deepEqual(await preview.json(),{existingEmail:client.email,signInEmail:'different-email@example.test'});
+ assert.equal(f.sql.prepare('SELECT COUNT(*) n FROM dc_identity_aliases').get().n,before);
+ assert.equal(f.sql.prepare('SELECT COUNT(*) n FROM dc_legacy_link_receipts').get().n,0);
+ const other=await f.login('other@example.test');assert.equal((await f.api('/auth/link/inspect',{proof},`${sessionCookie}=${other.sid}`)).status,403);
+ assert.equal((await f.api('/auth/link',{proof,confirmed:false},`${sessionCookie}=${r.sid}`)).status,400);
+ assert.equal((await f.api('/auth/link',{proof,confirmed:true},`${sessionCookie}=${r.sid}`)).status,200);
+ assert.equal((await f.store.current(r.sid)).user.userId,client.userId);
+ assert.equal((await f.api('/auth/link/inspect',{proof},`${sessionCookie}=${r.sid}`)).status,409);
+});
+test('guided handoff is disabled until bridge configuration exists; enabled handoff uses fragment only',async t=>{
+ const f=await setup(t),r=await f.login('new@example.test'),cookie=`${sessionCookie}=${r.sid}`;
+ const status=await (await f.api('/auth/status',{},cookie)).json();assert.equal(status.linkingReady,false);assert.equal(status.canRegister,true);
+ assert.equal((await (await f.api('/auth/link/start',{},cookie)).json()).handoffUrl,undefined);
+ const gateway=authGateway(f.db,f.provider,{...f.settings,legacyLinkUrl:'https://old.example.test/account/migrate'});
+ const res=await gateway.handle(new Request(origin+'/auth/link/start',{method:'POST',headers:{origin,'Content-Type':'application/json',cookie},body:'{}'}),async()=>new Response());
+ const body=await res.json(),url=new URL(body.handoffUrl);assert.equal(url.origin,'https://old.example.test');assert.equal(url.search,'');assert.equal(new URLSearchParams(url.hash.slice(1)).get('request'),body.proof);
+ for(const legacyLinkUrl of ['http://old.example.test/link','https://evil@old.example.test/link','https://old.example.test/link?identity=foo',origin+'/link'])assert.throws(()=>authGateway(f.db,f.provider,{...f.settings,legacyLinkUrl}));
+});
+test('old-runtime inspection signs nothing until explicit confirmation and authenticates the old owner',async t=>{
+ const f=await setup(t),r=await f.login('new@example.test'),proof=(await (await f.api('/auth/link/start',{},`${sessionCookie}=${r.sid}`)).json()).proof;
+ let oldUser=null;const oldOrigin='https://old.example.test',bridge=legacyLinkBridge({oldOrigin,standaloneOrigin:origin,legacyIssuer,externalPublicKey:f.externalPublic,legacyPrivateKey:f.legacyPrivate,getLegacyUser:async()=>oldUser,now:f.now});
+ const request=body=>new Request(oldOrigin+'/account/migrate',{method:'POST',headers:{origin:oldOrigin,'Content-Type':'application/json'},body:JSON.stringify(body)});
+ assert.equal((await bridge(request({action:'inspect',proof}))).status,401);oldUser=client;
+ const inspection=await bridge(request({action:'inspect',proof}));assert.deepEqual(await inspection.json(),{existingEmail:client.email,signInEmail:'new@example.test'});
+ assert.equal((await bridge(request({proof,confirmed:false}))).status,403);
+ assert.equal((await bridge(new Request(oldOrigin+'/account/migrate'))).status,200);
+ assert.equal((await bridge(new Request('https://attacker.test/account/migrate'))).status,403);
+ f.advance(300001);assert.equal((await bridge(request({action:'inspect',proof}))).status,403);
+});

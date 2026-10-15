@@ -1,12 +1,12 @@
 {
   "sourceCommit": "ce4cba9f3e5c703bf84b801e05491070a00fe947",
-  "candidateHash": "b8eb5cb602f9d4519e98bb9391be66496815c6482c989188522850f24e739361",
-  "verifiedAt": "2026-10-15T04:41:26.396075+00:00",
+  "candidateHash": "99f2570dac95aa84c2831dfb10c53dabfaade2df4ff7b808a0cbe4fa3bc27a27",
+  "verifiedAt": "2026-10-15T04:49:56.336135+00:00",
   "checks": {
     "runtimeHttpTests": true,
     "crossUserIsolation": true,
     "firstWorkoutRpeRir": true,
     "privateFiles": true
   },
-  "scope": "Local workerd and synthetic Auth only. Full suite: 1073 passed; TypeScript and standalone build passed. R2 metadata comparator tested on synthetic exports only; real email, browser QA and production data restoration remain unverified."
+  "scope": "Local workerd and synthetic Auth only. Full suite: 1081 passed; TypeScript and standalone build passed. Guided linking tested with synthetic identities and minimal DOM harness; actual mobile/browser, email delivery, old bridge installation and production restoration remain unverified."
 }

@@ -24,6 +24,7 @@
   "vars": {
     "DC_AUTH_ORIGIN": "https://staging.drtamireilam.com",
     "DC_LEGACY_ISSUER": "sites:appgprj_6ab2e7655fc08191866f30fac2eaefaf",
-    "DC_NEW_ACCOUNTS_ENABLED": "false"
+    "DC_NEW_ACCOUNTS_ENABLED": "false",
+    "DC_LEGACY_BRIDGE_ENABLED": "false"
   }
 }

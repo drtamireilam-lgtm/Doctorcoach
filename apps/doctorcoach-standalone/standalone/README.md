@@ -70,7 +70,8 @@ old principal ID, canonical email, exact new Supabase subject and target origin.
 `/auth/link` verifies that proof and consent, consumes a one-use nonce, and
 adds an alias to the ORIGINAL owner. No clinical rows or object keys are rewritten.
 
-There is NO installed old-side route/UI yet; the candidate bridge is tested in
+There is NO installed old-side route/UI yet. Guided pages for both sides are now
+prepared; see `ACCOUNT-LINKING-UX.md`. The candidate bridge is tested in
 isolation only. Install and review that bridge separately only after the required
 checks pass. Never expose a public endpoint that trusts raw old-user headers.
 Someone unable to sign into the old account needs a separate audited recovery
@@ -104,6 +105,8 @@ Required bindings: `DB` and `BUCKET`, both isolated for staging. Required vars:
 base64), `DC_LINK_PRIVATE_JWK` (Ed25519 private JWK). Pin the OLD bridge's public
 key in `DC_LEGACY_PUBLIC_JWK`; its private key stays only in the old server.
 Pin the standalone linking public key in the old bridge.
+Keep `DC_LEGACY_BRIDGE_ENABLED=false` until the old `/account/migrate` route is
+installed and verified. The page uses no handoff link while disabled.
 
 Wrangler was checked and is NOT authenticated to the owner's Cloudflare account.
 Use secure OAuth login on an authorized computer/session. Never paste account
