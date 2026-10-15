@@ -1,5 +1,7 @@
 # DoctorCoach standalone candidate — NOT deployed
 
+Current workflow: the owner approved starting new tracking without historical import. See [FRESH-START.md](FRESH-START.md) for account separation, bootstrap order and remaining live checks. Historical migration instructions below remain a separate workflow. A separate Staging build was deployed by the owner; this checkout has additional un-deployed changes.
+
 ## Provenance and isolation
 
 This is the full 779-file v171 source, commit

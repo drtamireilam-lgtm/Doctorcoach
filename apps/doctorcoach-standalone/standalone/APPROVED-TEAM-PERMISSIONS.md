@@ -17,4 +17,6 @@ The existing staff-personal-access and multicoach-isolation tests cover these ca
 
 These tests use synthetic identities only. No real account is assigned a role by name. The verified login addresses/principal IDs for Shira, Nadav, and Alon and their intended trainee assignments are still required before account-level setup. Tamir has used two email addresses in Staging; neither is silently added to administrator configuration by this change.
 
-No pilot/production data, consent, role, configuration, or deployment is changed. Full source export and verified restore remain pending. A global clinical consent bypass is not implemented.
+Owner clarification: `dr.tamireilam@gmail.com` is the management/clinician account; `tamir234567@gmail.com` is personal training only. They must remain distinct.
+
+The owner subsequently chose a fresh start without importing history. Follow FRESH-START.md; old source export/restore is not a prerequisite for that separate workflow. No pilot/production data, consent, role, configuration, or deployment is changed. A global clinical consent bypass is not implemented.
