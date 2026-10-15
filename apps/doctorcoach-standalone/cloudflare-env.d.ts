@@ -1,0 +1,25 @@
+declare namespace Cloudflare {
+  interface Env {
+    DC_AUTH_ORIGIN?: string;
+    DC_SUPABASE_URL?: string;
+    DC_SUPABASE_PUBLIC_KEY?: string;
+    DC_SESSION_KEY?: string;
+    DC_LEGACY_ISSUER?: string;
+    DC_LEGACY_PUBLIC_JWK?: string;
+    DC_LINK_PRIVATE_JWK?: string;
+    DC_NEW_ACCOUNTS_ENABLED?: string;
+    DOCTORCOACH_CALENDAR_CLIENT_ID?: string;
+    DOCTORCOACH_CALENDAR_OWNER_EMAIL?: string;
+    DOCTORCOACH_CALENDAR_ENCRYPTION_KEY?: string;
+    DOCTORCOACH_ACCOUNT_DELETION_ENABLED?: string;
+    DOCTORCOACH_PUSH_PUBLIC_KEY?: string;
+    DOCTORCOACH_PUSH_PRIVATE_JWK?: string;
+    DOCTORCOACH_PUSH_SUBJECT?: string;
+    DB?: D1Database;
+    BUCKET?: R2Bucket;
+    DOCTORCOACH_ADMIN_EMAILS?: string;
+    DOCTORCOACH_OPERATIONS_EMAILS?: string;
+    DOCTORCOACH_BILLING_MODE?: string;
+    DOCTORCOACH_CLINICIAN_EMAILS?: string;
+  }
+}

@@ -1,0 +1,2 @@
+import type {PushConfig} from './web-push.ts';
+export function pushConfig(env:{DOCTORCOACH_PUSH_PUBLIC_KEY?:string;DOCTORCOACH_PUSH_PRIVATE_JWK?:string;DOCTORCOACH_PUSH_SUBJECT?:string}):PushConfig|null{return env.DOCTORCOACH_PUSH_PUBLIC_KEY&&env.DOCTORCOACH_PUSH_PRIVATE_JWK&&env.DOCTORCOACH_PUSH_SUBJECT?{publicKey:env.DOCTORCOACH_PUSH_PUBLIC_KEY,privateJwk:env.DOCTORCOACH_PUSH_PRIVATE_JWK,subject:env.DOCTORCOACH_PUSH_SUBJECT}:null;}

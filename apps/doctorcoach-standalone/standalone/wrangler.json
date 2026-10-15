@@ -1,0 +1,29 @@
+{
+  "name": "doctorcoach-standalone-staging",
+  "main": "./worker.ts",
+  "compatibility_date": "2026-10-14",
+  "compatibility_flags": [
+    "nodejs_compat"
+  ],
+  "workers_dev": false,
+  "preview_urls": false,
+  "d1_databases": [
+    {
+      "binding": "DB",
+      "database_name": "doctorcoach-standalone-staging",
+      "database_id": "00000000-0000-4000-8000-000000000000",
+      "migrations_dir": "./migrations"
+    }
+  ],
+  "r2_buckets": [
+    {
+      "binding": "BUCKET",
+      "bucket_name": "doctorcoach-standalone-staging"
+    }
+  ],
+  "vars": {
+    "DC_AUTH_ORIGIN": "https://staging.drtamireilam.com",
+    "DC_LEGACY_ISSUER": "sites:appgprj_6ab2e7655fc08191866f30fac2eaefaf",
+    "DC_NEW_ACCOUNTS_ENABLED": "false"
+  }
+}

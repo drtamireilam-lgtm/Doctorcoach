@@ -1,0 +1,21 @@
+const families:Record<string,string[]>={
+ 'לחיצת חזה':['bench','barbell-bench','incline-db','machine-chest-press','incline-barbell-bench','paused-bench','close-grip-bench'],
+ 'פרפר חזה':['chest-fly','db-fly','cable-fly'],
+ 'חתירה':['chest-row','wide-row','barbell-row','cable-row','single-arm-db-row','t-bar-row'],
+ 'מתח ומשיכה אנכית':['lat-pulldown','pullup','chinup','assisted-pull-up'],
+ 'לחיצת כתפיים':['landmine','overhead-press','seated-db-shoulder-press'],
+ 'הרחקת כתף':['lateral-raise','cable-lateral-raise','rear-delt','reverse-pec-deck'],
+ 'כפיפת מרפק':['hammer-curl','barbell-curl','cable-curl','dumbbell-curl','incline-db-curl','preacher-curl'],
+ 'פשיטת מרפק':['triceps-pushdown','overhead-triceps','cable-overhead-triceps','skull-crusher'],
+ 'סקוואט':['goblet','back-squat','front-squat','paused-squat','hack-squat','smith-squat'],
+ 'סקוואט מפוצל ומכרעים':['split-squat','bulgarian-split-squat','reverse-lunge','walking-lunge'],
+ 'דדליפט וציר ירך':['rdl','deadlift','single-leg-rdl','trap-bar-deadlift','sumo-deadlift'],
+ 'כפיפת ברך':['seated-curl','lying-curl','nordic-hamstring'],
+ 'גשר ופשיטת ירך':['hip-bridge','single-leg-glute-bridge','hip-thrust','cable-kickback'],
+ 'הרחקת ירך':['cable-abduction','side-abduction','hip-abduction-machine','clamshell'],
+ 'קירוב ירך ומקרבים':['adduction','adductor-squeeze','copenhagen-short-lever','copenhagen-long-lever'],
+ 'צוואר':['chin-tuck','deep-neck-flexor-hold','cervical-isometric-rotation'],
+ 'גב תחתון ושליטה בגו':['back-extension','mcgill-curl-up','hip-hinge-dowel','bird-dog','dead-bug'],
+ 'הרמת עקבים':['ecc-calf','standing-calf','seated-calf'],
+};
+export function exerciseFamily(e:{id:string;family?:string}){return e.family||Object.entries(families).find(([,ids])=>ids.includes(e.id))?.[0]||'';}

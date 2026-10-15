@@ -1,0 +1,6 @@
+.privacy-policy-page{max-width:900px;margin:auto;padding:24px 16px 48px;overflow-wrap:anywhere}
+.privacy-policy-page p{line-height:1.8}
+.privacy-policy-page .workspace-heading{flex-wrap:wrap;gap:12px}
+.privacy-links{display:flex;flex-wrap:wrap;justify-content:center;gap:12px 24px;padding:24px 16px 100px;font-size:.9rem}
+.privacy-links a{color:inherit;text-decoration:underline;text-underline-offset:3px}
+.privacy-links a:focus-visible,.privacy-policy-page a:focus-visible{outline:2px solid currentColor;outline-offset:4px}

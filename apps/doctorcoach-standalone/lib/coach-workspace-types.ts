@@ -1,0 +1,12 @@
+import type {WorkspaceActivity} from './workspace-activity.ts';
+import type {CareProgram} from './care.ts';
+import type {TrainingFeed} from './training.ts';
+export const coachPlans=[{id:'pilot',name:'פיילוט',capacity:10},{id:'starter',name:'מאמן מתחיל',capacity:10},{id:'pro',name:'מאמן עצמאי',capacity:25},{id:'growth',name:'פעילות רחבה',capacity:50}] as const;
+export type CoachProfile={name:string;businessName:string;specialties:string;bio:string};
+export type CoachWorkspace={id:string;ownerId:string;ownerEmail:string;profile:CoachProfile;state:'pending'|'active'|'paused';plan:string;capacity:number;licenseUntil:string|null;version:number;activeClients:number};
+export type SharedTraineeProfile={name:string;goal:string;experience:string;equipment:string;days:number};
+export type WorkspaceClient={clientId:string;state:'active'|'archived';profile:SharedTraineeProfile;version:number;joinedAt?:string;activity?:WorkspaceActivity|null;consentActive?:boolean;unreadMessages?:number};
+export type WorkspaceMembership={workspaceId:string;clientId:string;coach:CoachProfile;state:'active'|'archived';version:number;profile:SharedTraineeProfile;unreadMessages?:number};
+export type WorkspaceInvitation={email:string;createdAt:string;expiresAt:string;state:'pending'|'accepted'|'expired'};
+export type WorkspaceOverview={workspace:CoachWorkspace|null;clients:WorkspaceClient[];invitations:WorkspaceInvitation[];invitationsLimited:boolean;memberships:WorkspaceMembership[];canManage:boolean;requests:CoachWorkspace[]};
+export type WorkspaceClientBundle={client:WorkspaceClient;programs:CareProgram[];activeProgramId:string|null;training:TrainingFeed};

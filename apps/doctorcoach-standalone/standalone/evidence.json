@@ -1,0 +1,12 @@
+{
+  "sourceCommit": "ce4cba9f3e5c703bf84b801e05491070a00fe947",
+  "candidateHash": "b095154a0ff9bcbf00d24838c316ce296dd5393f5acd51f164ee1ea9d20fb62a",
+  "verifiedAt": "2026-10-15T04:08:48.080076+00:00",
+  "checks": {
+    "runtimeHttpTests": true,
+    "crossUserIsolation": true,
+    "firstWorkoutRpeRir": true,
+    "privateFiles": true
+  },
+  "scope": "Local workerd and synthetic Auth provider only; not real email or production data verification."
+}

@@ -1,0 +1,13 @@
+'use client';
+import type {StaffActivity,ActivityFilter} from '../lib/staff-activity';
+import {matchesRosterActivity} from '../lib/staff-activity';
+import {staffClientHref} from '../lib/staff-navigation';
+import {careDate} from './care-ui';
+const filters:{id:ActivityFilter;label:string}[]=[{id:'all',label:'כל המתאמנים'},{id:'new',label:'חדשים ב־7 הימים האחרונים'},{id:'noProgram',label:'ללא תוכנית מאמן פעילה'},{id:'unread',label:'הודעות שלא נקראו'},{id:'trained',label:'התאמנו השבוע'},{id:'notStarted',label:'טרם התחילו תוכנית'},{id:'noWorkout',label:'ללא אימון רשום השבוע'},{id:'pending',label:'דיווחים למענה'}];
+export function StaffActivityOverview({clients,filter,onFilter,coordinator=false}:{coordinator?:boolean;clients:{activity?:StaffActivity|null;createdAt?:string;unread?:number}[];filter:ActivityFilter;onFilter:(filter:ActivityFilter)=>void}){
+ return <section className="panel care-form"><h2>{coordinator?'איתור מתאמנים לתיאום ומענה':'ביצוע אימונים ומענה לדיווחים'}</h2>{!coordinator&&<p className="care-muted">השבוע מתחיל ביום ראשון לפי שעון ישראל. הסיכום כולל אימונים שנשמרו באפליקציה בלבד; היעדר רישום אינו מעיד שלא בוצע אימון.</p>}<div className="activity-filters" role="group" aria-label="סינון לפי פעילות">{filters.filter(f=>!coordinator||['all','new','unread'].includes(f.id)).map(f=><button type="button" key={f.id} className={'button '+(filter===f.id?'primary':'secondary')} aria-pressed={filter===f.id} onClick={()=>onFilter(f.id)}><span>{f.label}</span><strong>{clients.filter(c=>matchesRosterActivity(c,f.id)).length}</strong></button>)}</div>{!coordinator&&<small>המספרים מציינים מתאמנים. אימונים פעילים אינם נספרים כאימונים שהושלמו.</small>}</section>;
+}
+export function StaffActivityCard({activity:a,clientId}:{activity?:StaffActivity|null;clientId:string}){
+ if(!a)return <p className="care-muted">נתוני הפעילות אינם זמינים תחת ההסכמות הנוכחיות.</p>;
+ return <div className="staff-activity-card"><div className="care-actions"><span className="care-pill">אימונים שהושלמו השבוע: <strong>{a.completedThisWeek}</strong></span>{a.programStarted===false&&<span className="care-pill">טרם התחילו תוכנית</span>}</div>{a.programTitle?<p><span>תוכנית פעילה:</span> <span data-no-translate>{a.programTitle}</span></p>:<p className="care-muted">אין תוכנית מאמן פעילה</p>}<p className="care-muted">אימון אחרון: {a.lastCompletedAt?careDate(a.lastCompletedAt):'אין אימון שהושלם באפליקציה'}</p>{a.pendingCheckins>0&&<a className="button secondary" href={staffClientHref(clientId,'checkins')}>דיווחים שממתינים למענה: <strong>{a.pendingCheckins}</strong></a>}<a className="text-button" href={staffClientHref(clientId,'progress')}>צפייה בהתקדמות</a></div>;
+}
