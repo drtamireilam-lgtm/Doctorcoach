@@ -26,7 +26,7 @@ Build from the app directory:
 
 ```
 npm run build:standalone
-node standalone/scripts/runtime-smoke.mjs
+node --experimental-strip-types standalone/scripts/runtime-smoke.mjs
 node node_modules/typescript/bin/tsc --noEmit
 node --experimental-strip-types --test --test-concurrency=4 tests/*.test.mjs
 node standalone/scripts/deployment-gate.mjs standalone/evidence.json
