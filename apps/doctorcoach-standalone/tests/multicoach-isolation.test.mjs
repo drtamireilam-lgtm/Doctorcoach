@@ -65,3 +65,35 @@ test('revoking a link removes roster, medical-file and private-video access imme
   await assert.rejects(()=>media.feedback(coach,{id:randomUUID(),assetId:video.id,content:'Post-revocation'}),e=>e.status===403);
   assert.equal((await media.readable(client,video.id)).id,video.id);
 });
+
+test('medical grant and clinician role are both required; admin status alone cannot open a client file',async t=>{
+ const f=platform(t);await f.connect();
+ f.sql.prepare("UPDATE care_connections SET medical_access=1 WHERE client_id=? AND staff_email=?").run(client.userId,coach.email);
+ assert.equal((await f.care.bundle(coach,client.userId)).canViewMedical,false);
+ f.sql.prepare("UPDATE care_connections SET medical_access=0 WHERE client_id=? AND staff_email=?").run(client.userId,doctor.email);
+ const restricted=await f.care.bundle(doctor,client.userId);
+ assert.equal(restricted.canViewMedical,false);assert.equal(Object.hasOwn(restricted.profile,'medical'),false);
+ const {careStore}=await import('../lib/care-store.ts');
+ const admin={userId:'admin-only',email:'admin-only@example.test'};
+ const adminCare=careStore(f.db,{adminEmails:doctor.email+','+admin.email,clinicianEmails:doctor.email});
+ await assert.rejects(adminCare.bundle(admin,client.userId),e=>e.status===403);
+ await assert.rejects(f.care.bundle(doctor,stranger.userId),e=>e.status===403);
+});
+
+test('two consented coaches can share one trainee and revoking one leaves the other and owner intact',async t=>{
+ const f=platform(t);await f.connect();
+ const other={userId:'coach-shared',email:'shared-coach@example.test'};
+ await f.care.saveStaff(doctor,{...other,name:'Shared coach',role:'coach',active:true});
+ const invitation=await f.care.createInvite(other,{emails:[other.email]});
+ const bundle=await f.care.acceptInvite(client,{code:invitation.code,consent:true});
+ assert.equal((await f.care.clients(other))[0].userId,client.userId);
+ const video={id:randomUUID(),kind:'review',exerciseId:'goblet',caption:'Synthetic',mime:'video/mp4',bytes:64};
+ await f.media.initialize(client,video);await f.media.ready(client,video.id);
+ const secondConnection=f.sql.prepare('SELECT id FROM care_connections WHERE client_id=? AND staff_email=?').get(client.userId,other.email);
+ assert.ok(bundle.connections.some(c=>c.id===secondConnection.id));
+ await f.care.revoke(client,{id:secondConnection.id});
+ await assert.rejects(f.media.readable(other,video.id),e=>e.status===403);
+ assert.equal((await f.media.readable(coach,video.id)).id,video.id);
+ assert.equal((await f.media.readable(client,video.id)).id,video.id);
+ assert.equal((await f.care.bundle(client,client.userId)).profile.userId,client.userId);
+});

@@ -1,6 +1,6 @@
 # DoctorCoach — Multi-coach permission audit (2026-10-15)
 
-Scope: source review only, standalone branch. No production data accessed or changed.
+Scope: source review plus executed synthetic regression tests on an isolated development checkout. No production data accessed or changed.
 
 ## Confirmed existing guards
 - `lib/care-store.ts` uses `care_connections` keyed by client and staff email, active flag, and scope to limit roster and client file access.
@@ -23,4 +23,10 @@ Scope: source review only, standalone branch. No production data accessed or cha
 - Add negative authorization tests for each API route, with two independent coach identities and two trainees.
 - Verify old D1/R2 backups and rollback plan; no production migrations or deployment until approved.
 
-This document is an audit plan, **not** a claim that the tests have been executed or that all routes have been reviewed.
+## Execution update — 15 October 2026
+
+- The original 3 multi-coach tests passed before changes.
+- Added 2 regressions: clinician role AND explicit medical grant are required; two consented coaches can share a client and revoking one preserves the other and the owner.
+- All 5 multi-coach tests passed. The complete PR #9 Node suite passed: **1,086 tests, 0 failed, 0 skipped**.
+- Combined PR #7 + #8 + #9 verification is recorded in `docs/verification-2026-10-15.md`.
+- This does not assert every API route was individually audited or that real production/provider/browser validation is complete.
