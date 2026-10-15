@@ -6,9 +6,9 @@ remain unchanged. The standalone candidate is not deployed.
 
 | Check | Actual result |
 |---|---|
-| Full Node test suite after auth integration | 1,066 passed, zero failed |
+| Full Node test suite after release-verification additions | 1,073 passed, zero failed |
 | TypeScript noEmit | Passed |
-| Standalone production build | Exit 0; separate Worker and SSR assets emitted |
+| Standalone production build | Exit 0 via new `npm run build:standalone`; separate Worker and SSR assets emitted |
 | Built Worker in local workerd with real local D1/R2 | Passed, synthetic identity provider |
 | Real `/api/account` via standalone gateway | Correct identity; no staff rights for new user |
 | Spoofed identity headers | Removed, cannot authenticate |
@@ -22,6 +22,8 @@ remain unchanged. The standalone candidate is not deployed.
 | Private video and PDF via actual HTTP APIs | Exact synthetic R2 bytes retrieved; Cache-Control private no-store |
 | Authenticated second-user access | Foreign workout, private PDF and video denied |
 | Snapshot tooling | Passed synthetic table/schema/content/object-byte comparisons; targeted rerun after strengthening schema checks |
+| R2 metadata comparator | Synthetic exports passed; rejects changed owner metadata, cache policy, type, storage class, keys, tampered bytes, duplicate/incomplete inventories and escaping paths |
+| Release evidence binding | Recomputes source hash; different code, future-dated evidence and stale evidence rejected |
 | Actual production D1/R2 backup/restore and metadata comparison | NOT done; no production export available |
 | Browser/mobile interaction tests | NOT done |
 | Real SMTP/email delivery and live Supabase token lifecycle | NOT done |
@@ -36,5 +38,8 @@ and explicitly rejects 3xx responses. Tests ensure credentials are not followed
 to another host. This correction is only in this candidate, not the existing app.
 
 The local runtime tests are not a live staging deployment or real email test.
+The built-workerd HTTP smoke test was repeated successfully after the new
+standalone build entrypoint. Existing live v171 checkout remains clean and at
+`ce4cba9f3e5c703bf84b801e05491070a00fe947`.
 The synthetic snapshots are not an assertion that production data was migrated.
 Use the README go-live blockers before doing any deployment or DNS work.

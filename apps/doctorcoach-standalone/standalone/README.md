@@ -25,7 +25,7 @@ Without that variable the original Sites build path is retained.
 Build from the app directory:
 
 ```
-DC_BUILD_TARGET=standalone node scripts/run-framework.mjs build
+npm run build:standalone
 node standalone/scripts/runtime-smoke.mjs
 node node_modules/typescript/bin/tsc --noEmit
 node --experimental-strip-types --test --test-concurrency=4 tests/*.test.mjs
@@ -140,5 +140,10 @@ passwords, session cookies, refresh tokens or private API keys into chat.
 8. Run desktop/mobile browser tests, complete feature smoke tests, real provider
    OTP delivery and a rollback rehearsal. Only then prepare `app.drtamireilam.com`
    TLS/redirects, final consistent export, controlled cutover and DNS changes.
+
+Read `CLOUDFLARE-SETUP.md` for the exact candidate branch/root path and the
+read-only R2 inventory comparator. The release CLI now binds verification evidence
+to the actual source hash and rejects future-dated evidence. Metadata verification
+tooling is prepared, but an actual production export/restore has not been verified.
 
 No public URL is ready from this work. Do not invite users to the standalone app.
