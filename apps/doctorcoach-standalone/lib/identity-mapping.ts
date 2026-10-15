@@ -44,11 +44,12 @@ export function identityMapping(db:D1Database,options:{legacyIssuer:string;exter
       if(!row||row.principal_id!==identity.subject)throw new IdentityError('Legacy identity collision.',409);
       await active(row.principal_id);return {userId:row.principal_id};
     },
-    async createAccount(identity:VerifiedIdentity){
+    async createAccount(identity:VerifiedIdentity,finalize?:(principalId:string)=>D1PreparedStatement[]){
       requireProof(identity);const at=now(),id='dc:'+crypto.randomUUID();
       await db.batch([
         db.prepare("INSERT INTO dc_identity_principals(id,state,origin_issuer,origin_subject,created_at) SELECT ?,'active',?,?,? WHERE NOT EXISTS(SELECT 1 FROM dc_identity_aliases WHERE issuer=? AND subject=?) ON CONFLICT DO NOTHING").bind(id,identity.issuer,identity.subject,at,identity.issuer,identity.subject),
         db.prepare("INSERT INTO dc_identity_aliases(issuer,subject,principal_id,created_at) SELECT ?,?,?,? WHERE EXISTS(SELECT 1 FROM dc_identity_principals WHERE id=? AND state='active' AND origin_issuer=? AND origin_subject=?) ON CONFLICT DO NOTHING").bind(identity.issuer,identity.subject,id,at,id,identity.issuer,identity.subject),
+        ...(finalize?.(id)??[]),
       ]);
       const row=await lookup(identity);if(!row)throw new IdentityError('Account could not be created.',409);
       await active(row.principal_id);return {userId:row.principal_id};

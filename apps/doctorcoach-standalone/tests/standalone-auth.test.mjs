@@ -147,3 +147,22 @@ test('concurrent submission of the same legacy proof has one winner and one rece
  assert.equal(f.sql.prepare('SELECT COUNT(*) n FROM dc_legacy_link_receipts').get().n,1);
  assert.equal((await f.store.current(r.sid)).user.userId,client.userId);
 });
+
+test('registration storage failure leaves no orphan identity and allows retry',async t=>{
+ const f=await setup(t),r=await f.login('register-retry@example.test');
+ f.sql.exec("CREATE TRIGGER fail_new_details BEFORE INSERT ON dc_identity_details WHEN NEW.legacy=0 BEGIN SELECT RAISE(ABORT,'synthetic storage failure'); END");
+ await assert.rejects(f.store.register(r.sid));
+ assert.equal((await f.store.current(r.sid)).user,null);
+ assert.equal(f.sql.prepare('SELECT COUNT(*) n FROM dc_identity_principals').get().n,0);
+ f.sql.exec('DROP TRIGGER fail_new_details');
+ const user=await f.store.register(r.sid);assert.match(user.userId,/^dc:/);
+ assert.equal((await f.store.current(r.sid)).user.userId,user.userId);
+});
+
+test('concurrent registration returns one complete principal and matching details',async t=>{
+ const f=await setup(t),r=await f.login('register-race@example.test');
+ const users=await Promise.all([f.store.register(r.sid),f.store.register(r.sid)]);
+ assert.equal(users[0].userId,users[1].userId);
+ assert.equal(f.sql.prepare('SELECT COUNT(*) n FROM dc_identity_principals').get().n,1);
+ assert.equal(f.sql.prepare('SELECT COUNT(*) n FROM dc_identity_details').get().n,1);
+});
