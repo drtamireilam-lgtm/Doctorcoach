@@ -45,3 +45,18 @@ test('wrong code and repeated immediate resend show feedback without duplicate s
  await f.event('resend');assert.equal(f.calls.filter(([p])=>p==='/auth/send').length,1);
  await f.event('code-form','submit');assert.match(f.nodes.get('message').textContent,/הקוד שגוי/);assert.ok(!f.calls.some(([p])=>p==='/auth/register'));
 });
+
+test('switch email restores entry and sends the replacement address',async()=>{
+ const f=await ui({responses:{'/auth/send':{sent:true}}});
+ await f.event('email-form','submit');
+ assert.equal(f.nodes.get('code-form').hidden,false);
+ // Exercise restoration even when an earlier account response hid the form.
+ f.nodes.get('email-form').hidden=true;
+ await f.event('switch-email');
+ assert.equal(f.nodes.get('email-form').hidden,false);
+ assert.equal(f.nodes.get('code-form').hidden,true);
+ f.nodes.get('email-form').fields.email.value='replacement@example.test';
+ await f.event('email-form','submit');
+ assert.equal(f.calls.filter(([p])=>p==='/auth/send').at(-1)[1].email,'replacement@example.test');
+ assert.equal(f.nodes.get('code-form').hidden,false);
+});
