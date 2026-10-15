@@ -9,7 +9,7 @@ export async function candidateHash(root) {
   async function visit(dir, prefix = '') {
     for (const entry of await readdir(dir, {withFileTypes: true})) {
       const relative = prefix + entry.name;
-      if (excluded.has(entry.name) || entry.name.startsWith('.env') || entry.name.startsWith('.dev.vars') || relative === 'public/pdf-import-assets' || relative === 'standalone/evidence.json' || entry.name === 'tsconfig.tsbuildinfo') continue;
+      if (excluded.has(entry.name) || entry.name.startsWith('.env') || entry.name.startsWith('.dev.vars') || relative === 'public/pdf-import-assets' || relative === 'standalone/evidence.json' || ['tsconfig.tsbuildinfo', 'next-env.d.ts'].includes(entry.name)) continue;
       if (entry.isSymbolicLink()) throw new Error('Unexpected source symlink');
       if (entry.isDirectory()) await visit(path.join(dir, entry.name), relative + '/');
       else if (entry.isFile()) entries.push([relative, createHash('sha256').update(await readFile(path.join(dir, entry.name))).digest('hex')]);

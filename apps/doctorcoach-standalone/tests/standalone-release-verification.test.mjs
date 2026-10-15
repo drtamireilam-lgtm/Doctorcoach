@@ -58,7 +58,7 @@ test('source fingerprint changes on code edits, ignores evidence and generated o
  const root=await mkdtemp(path.join(tmpdir(),'dc-hash-'));t.after(()=>rm(root,{recursive:true,force:true}));
  await mkdir(path.join(root,'standalone'));await mkdir(path.join(root,'dist'));
  await writeFile(path.join(root,'app.ts'),'original');const before=await candidateHash(root);
- await writeFile(path.join(root,'standalone/evidence.json'),'{}');await writeFile(path.join(root,'dist/output.js'),'generated');
+ await writeFile(path.join(root,'next-env.d.ts'),'generated types');await writeFile(path.join(root,'standalone/evidence.json'),'{}');await writeFile(path.join(root,'dist/output.js'),'generated');
  assert.equal(await candidateHash(root),before);await writeFile(path.join(root,'app.ts'),'changed');assert.notEqual(await candidateHash(root),before);
 });
 test('complete evidence still cannot pass for another candidate or future verification time',()=>{
