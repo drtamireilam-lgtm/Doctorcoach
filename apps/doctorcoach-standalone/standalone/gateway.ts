@@ -33,7 +33,7 @@ export function authGateway(db:D1Database,provider:AuthProvider,settings:AuthSet
     return reply(404,{error:'Not found'});
    }catch(e){const status=e instanceof AuthFailure?e.status:(e as {status?:number}).status??401;return reply(status>=400&&status<=599?status:401,{error:status===429?'Too many attempts. Try later.':status===409?'Existing account needs ownership verification.':status===503?'Sign-in configuration is incomplete.':'Sign-in failed. Check the code or sign in again.'});}
   }
-  let user=null;try{if(sid)user=(await store.current(sid)).user;}catch(e){if((e as {status?:number}).status===503&&url.pathname.startsWith('/api/'))return reply(503,{error:'Sign-in service temporarily unavailable. Try again.'});/* Invalid sessions never fall back to browser headers. */}
+  let user=null;try{if(sid){user=(await store.current(sid)).user;if(!user&&url.pathname.startsWith('/api/'))console.warn('DC_AUTH_DIAG account_unmapped');}}catch(e){if(url.pathname.startsWith('/api/'))console.warn('DC_AUTH_DIAG session_validation_denied');if((e as {status?:number}).status===503&&url.pathname.startsWith('/api/'))return reply(503,{error:'Sign-in service temporarily unavailable. Try again.'});/* Invalid sessions never fall back to browser headers. */}
   // This is the ONLY public Worker entrypoint. All request identity headers are
   // stripped above; the existing 51 APIs consume this server-verified principal.
   if(user){const h=new Headers(req.headers);h.set('oai-authenticated-user-id',user.userId);h.set('oai-authenticated-user-email',user.email);h.set('oai-authenticated-user-full-name',encodeURIComponent(user.displayName));h.set('oai-authenticated-user-full-name-encoding','percent-encoded-utf-8');return next(new Request(req,{headers:h}));}
