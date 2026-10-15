@@ -6,6 +6,7 @@ declare namespace Cloudflare {
     DC_SESSION_KEY?: string;
     DC_LEGACY_ISSUER?: string;
     DC_LEGACY_BRIDGE_ENABLED?: string;
+    DC_LEGACY_ORIGIN?: string;
     DC_LEGACY_PUBLIC_JWK?: string;
     DC_LINK_PRIVATE_JWK?: string;
     DC_NEW_ACCOUNTS_ENABLED?: string;

@@ -46,3 +46,6 @@ next-env.d.ts
 /outputs/
 /work/
 public/pdf-import-assets/
+# Offline migration signing bundles must never enter Git.
+old-runtime-secrets.json
+new-runtime-secrets.json
