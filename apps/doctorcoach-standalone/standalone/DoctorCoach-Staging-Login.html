@@ -5,7 +5,7 @@
 <title>DoctorCoach — בדיקת כניסה</title>
 <style>*{box-sizing:border-box}body{margin:0;background:#f4f5f8;color:#18212e;font:18px system-ui;line-height:1.65}main{max-width:560px;margin:5vh auto;padding:30px;background:white;border-radius:20px;border:1px solid #d9dde5}h1{font-size:28px;margin:8px 0}p{margin:12px 0}.badge{color:#9b2532;font-weight:bold}.hint{color:#505c6d;font-size:15px}label{display:block;margin-top:18px}input,button{font:inherit;width:100%;border-radius:9px;padding:13px;border:1px solid #a0a9b7}input{direction:ltr;text-align:left}button{margin-top:14px;background:#a71f36;color:white;cursor:pointer;min-height:48px}button.secondary{background:white;color:#18212e}button:disabled{opacity:.5;cursor:wait}input:focus-visible,button:focus-visible{outline:3px solid #2a67cc;outline-offset:3px}[hidden]{display:none!important}#status{padding:13px;background:#edf1f7;white-space:pre-line;overflow-wrap:anywhere;min-height:56px}.ok{border-inline-start:4px solid #237a4c}#result{padding:16px;background:#eaf6ed;border-radius:10px;overflow-wrap:anywhere}@media(max-width:600px){main{margin:15px;padding:22px}}</style></head>
 <body><main><div class="badge">סביבת בדיקות בלבד · STAGING</div><h1>DoctorCoach — בדיקת כניסה</h1>
-<p>מבקשים קוד חדש, מקבלים אותו במייל ומזינים כאן.</p>
+<p>מבקשים קוד חדש, מקבלים אותו במייל ומזינים כאן.</p><p class="hint">פתח קובץ זה מתיקיית ההורדות במחשב באמצעות Chrome או Edge. תצוגה מקדימה בתוך ChatGPT עלולה לחסום את החיבור.</p>
 <p class="hint">זהו כלי בדיקת הזדהות בלבד. הוא אינו האפליקציה המלאה ואינו מקשר או משנה חשבונות קיימים. בבקשה הראשונה עשוי להיווצר חשבון בדיקה ב־Staging.</p>
 <section id="signed-out"><form id="send-form"><label for="email">כתובת אימייל לבדיקה</label><input id="email" type="email" autocomplete="email" required maxlength="254" placeholder="name@example.com"><button id="send" type="submit">שליחת קוד למייל</button></form>
 <form id="verify-form" hidden><label for="code">הקוד שהגיע במייל</label><input id="code" inputmode="numeric" autocomplete="one-time-code" pattern="[0-9]{6,8}" minlength="6" maxlength="8" required><button id="verify" type="submit">בדיקת כניסה</button></form></section>
@@ -21,26 +21,38 @@ let session=null,challengeEmail='',busy=false,sentAt=0;
 function say(message,ok=false){el('status').textContent=message;el('status').className=ok?'ok':'';}
 function controls(){for(const id of ['send','verify','refresh','logout'])el(id).disabled=busy||(id==='send'&&Date.now()<sentAt+60000);}
 async function api(path,body,token,method=body===undefined?'GET':'POST'){
- const r=await fetch(PROJECT+path,{method,headers:{apikey:PUBLIC_KEY,...(body===undefined?{}:{'Content-Type':'application/json'}),...(token?{Authorization:'Bearer '+token}:{})},body:body===undefined?undefined:JSON.stringify(body),credentials:'omit',redirect:'error',cache:'no-store',signal:AbortSignal.timeout(15000)});
- const data=await r.json().catch(()=>null);if(!r.ok)throw Object.assign(new Error('request failed'),{status:r.status,path});return data;
+ let r;try{r=await fetch(PROJECT+path,{method,headers:{apikey:PUBLIC_KEY,...(body===undefined?{}:{'Content-Type':'application/json'}),...(token?{Authorization:'Bearer '+token}:{})},body:body===undefined?undefined:JSON.stringify(body),credentials:'omit',redirect:'error',cache:'no-store',signal:typeof AbortSignal!=='undefined'&&typeof AbortSignal.timeout==='function'?AbortSignal.timeout(15000):undefined});}catch(error){throw Object.assign(new Error('Network request failed'),{name:error.name,path,network:true});}
+ const data=await r.json().catch(()=>null);if(!r.ok)throw Object.assign(new Error('request failed'),{status:r.status,path,providerCode:typeof data?.code==='string'&&/^[a-z0-9_]{1,80}$/i.test(data.code)?data.code:''});return data;
 }
 async function checked(tokens){
- if(!tokens||typeof tokens.access_token!=='string'||typeof tokens.refresh_token!=='string')throw new Error('Incomplete session');
+ if(!tokens||typeof tokens.access_token!=='string'||typeof tokens.refresh_token!=='string')throw Object.assign(new Error('Incomplete session'),{reason:'incomplete'});
  const user=await api('/auth/v1/user',undefined,tokens.access_token);
- if(!user?.id||!user.email_confirmed_at||user.is_anonymous||user.email?.toLowerCase()!==challengeEmail)throw new Error('Unverified identity');
+ if(!user?.id||!user.email_confirmed_at||user.is_anonymous||user.email?.toLowerCase()!==challengeEmail)throw Object.assign(new Error('Unverified identity'),{reason:'identity'});
  const active=await api('/rest/v1/rpc/doctorcoach_staging_session_active',{},tokens.access_token);
- if(active!==true)throw new Error('Inactive session');return user;
+ if(active!==true)throw Object.assign(new Error('Inactive session'),{reason:'inactive'});return user;
 }
 function show(user){el('signed-out').hidden=true;el('signed-in').hidden=false;el('result').textContent='הכניסה אומתה בהצלחה ב־Staging.\nאימייל: '+user.email;}
-async function work(fn){if(busy)return;busy=true;controls();try{await fn();}catch(error){say(error.status===429?'הגעת למגבלת ניסיונות. המתן לפני ניסיון נוסף.':error.path==='/auth/v1/verify'?'הקוד שגוי, פג תוקף או כבר נוצל. בקש קוד חדש.':error.status===401||error.status===403?'הגישה לא אושרה. ייתכן שתוקף ההתחברות הסתיים.':error.name==='TimeoutError'?'הבקשה ארכה מדי. בדוק את החיבור ונסה שוב.':'הבדיקה לא הושלמה. בדוק חיבור רשת והגדרות סביבת הבדיקות.');}finally{busy=false;controls();}}
+function errorMessage(error){
+ const stage=error.path?.includes('/rpc/')?'בדיקת תוקף הסשן':error.path?.includes('/token')?'חידוש התחברות':error.path?.includes('/logout')?'יציאה':error.path==='/auth/v1/user'?'אימות המשתמש':error.path==='/auth/v1/verify'?'אימות הקוד':'שליחת הקוד';
+ if(error.network)return stage+': '+(error.name==='TimeoutError'?'השרת לא השיב בזמן.':'הדפדפן לא הצליח להתחבר לשרת. הורד את הקובץ למחשב ופתח אותו ישירות ב־Chrome או Edge, מחוץ לתצוגה המקדימה של ChatGPT.');
+ if(error.reason==='email')return 'כתובת האימייל אינה תקינה. הזן כתובת מלאה.';
+ if(error.reason==='code')return 'הזן את הקוד המספרי החדש שהגיע במייל (6 עד 8 ספרות).';
+ if(error.reason==='inactive')return 'הקוד אומת, אך בדיקת הסשן הפעיל נכשלה. נדרשת בדיקה של הגדרות Staging.';
+ if(error.reason==='identity')return 'הקוד התקבל, אך זהות המשתמש או אישור המייל לא תואמים לבקשה.';
+ if(error.status===429)return stage+': הגעת למגבלת ניסיונות. המתן לפני ניסיון נוסף.';
+ if(error.path==='/auth/v1/verify'&&(error.status===400||error.status===401||error.status===403))return 'הקוד שגוי, פג תוקף או כבר נוצל. בקש קוד חדש.';
+ if(error.status)return stage+' נכשלה: HTTP '+error.status+(error.providerCode?' · '+error.providerCode:'')+'. יש להעביר את ההודעה הזאת לבדיקה, ללא הקוד או הסיסמה.';
+ return stage+': הבדיקה לא הושלמה. ציין אם זה קרה לפני קבלת הקוד או לאחר הזנתו.';
+}
+async function work(fn){if(busy)return;busy=true;controls();try{await fn();}catch(error){say(errorMessage(error));}finally{busy=false;controls();}}
 el('send-form').addEventListener('submit',event=>{event.preventDefault();void work(async()=>{
  const email=el('email').value.trim().toLowerCase();
- if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email))throw new Error('Invalid email');
+ if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email))throw Object.assign(new Error('Invalid email'),{reason:'email'});
  if(Date.now()<sentAt+60000)return;
  await api('/auth/v1/otp',{email,create_user:true});challengeEmail=email;sentAt=Date.now();el('verify-form').hidden=false;el('code').value='';el('code').focus();say('בקשת השליחה התקבלה. בדוק את המייל והזן כאן את הקוד החדש.');
 });});
 el('verify-form').addEventListener('submit',event=>{event.preventDefault();void work(async()=>{
- const code=el('code').value.trim();el('code').value='';if(!/^\d{6,8}$/.test(code)||!challengeEmail)throw new Error('Invalid code');
+ const code=el('code').value.trim();el('code').value='';if(!/^\d{6,8}$/.test(code)||!challengeEmail)throw Object.assign(new Error('Invalid code'),{reason:'code'});
  const tokens=await api('/auth/v1/verify',{email:challengeEmail,token:code,type:'email'});
  try{const user=await checked(tokens);session=tokens;show(user);say('בדיקת כניסה, אימות משתמש ובדיקת סשן פעיל עברו.',true);}catch(error){await api('/auth/v1/logout?scope=local',{},tokens.access_token).catch(()=>{});throw error;}
 });});

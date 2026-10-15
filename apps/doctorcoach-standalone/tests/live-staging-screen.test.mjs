@@ -12,7 +12,7 @@ async function fixture(overrides={}){
   assert.equal(new URL(url).origin,'https://jbfkzkzcznfacsjdawmf.supabase.co');const path=new URL(url).pathname+new URL(url).search;calls.push({path,init});
   let data=path==='/auth/v1/verify'||path.startsWith('/auth/v1/token')?tokens:path==='/auth/v1/user'?user:path.includes('/rpc/')?!revoked:{};
   if(path.startsWith('/auth/v1/logout'))revoked=true;
-  const response=overrides[path]??{status:200,data};return {ok:response.status<400,status:response.status,json:async()=>response.data};
+  const response=overrides[path]??{status:200,data};if(response.network)throw new TypeError('Failed to fetch');return {ok:response.status<400,status:response.status,json:async()=>response.data};
  }};
  new vm.Script(script).runInNewContext(context);
  return {nodes,calls,async event(id,event='click'){nodes.get(id).listeners[event]({preventDefault(){}});for(let i=0;i<8;i++)await new Promise(resolve=>setImmediate(resolve));},async send(){nodes.get('email').value='test@example.test';await this.event('send-form','submit');},async login(){await this.send();nodes.get('code').value='123456';await this.event('verify-form','submit');}};
@@ -38,3 +38,13 @@ test('refresh rotates tokens and logout checks revocation before claiming succes
 test('SMTP rate limits remain visible without pretending email was delivered',async()=>{
  const f=await fixture({'/auth/v1/otp':{status:429,data:{}}});await f.send();assert.match(f.nodes.get('status').textContent,/מגבלת ניסיונות/);assert.ok(!f.calls.some(c=>c.path==='/auth/v1/verify'));
 });
+
+ test('network failures identify the stage and explain local-file opening',async()=>{
+ const f=await fixture({'/auth/v1/otp':{network:true}});await f.send();assert.match(f.nodes.get('status').textContent,/שליחת הקוד/);assert.match(f.nodes.get('status').textContent,/מחוץ לתצוגה המקדימה/);
+ });
+ test('provider delivery failure is distinguished from an incorrect OTP',async()=>{
+ const f=await fixture({'/auth/v1/otp':{status:500,data:{code:'unexpected_failure'}}});await f.send();assert.match(f.nodes.get('status').textContent,/שליחת הקוד נכשלה: HTTP 500/);assert.match(f.nodes.get('status').textContent,/unexpected_failure/);
+ });
+ test('missing session RPC reports a configuration stage instead of a wrong-code message',async()=>{
+ const f=await fixture({'/rest/v1/rpc/doctorcoach_staging_session_active':{status:404,data:{code:'PGRST202'}}});await f.login();assert.match(f.nodes.get('status').textContent,/בדיקת תוקף הסשן נכשלה: HTTP 404/);assert.ok(!f.nodes.get('status').textContent.includes('הקוד שגוי'));
+ });
