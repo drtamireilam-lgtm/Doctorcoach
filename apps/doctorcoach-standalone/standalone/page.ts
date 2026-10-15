@@ -43,7 +43,7 @@ export function authPage({signout,returnTo,english}:{signout:boolean;returnTo:st
  el('email-form')?.addEventListener('submit',e=>{e.preventDefault();email=e.target.elements.namedItem('email').value;void work(send);});
  el('code-form')?.addEventListener('submit',e=>{e.preventDefault();void work(async()=>{const field=e.target.elements.namedItem('code'),r=await call('/auth/verify',{code:field.value});field.value='';await account(r);});});
  el('resend')?.addEventListener('click',()=>{if(Date.now()>=resendAt)void work(send);});
- el('switch-email')?.addEventListener('click',()=>{el('code-form').hidden=true;el('email-form').querySelector('[name=email]').focus();});
+ el('switch-email')?.addEventListener('click',()=>{el('code-form').hidden=true;el('email-form').hidden=false;el('email-form').querySelector('[name=email]').focus();});
  el('new-form')?.addEventListener('submit',e=>{e.preventDefault();if(!e.target.elements.namedItem('confirmed').checked)return;void work(async()=>{try{await account(await call('/auth/register',{confirmed:true}));}catch(error){if(error.status===409){message.textContent=labels.accountNote;el('account-title').focus();}else throw error;}});});
  el('start')?.addEventListener('click',()=>void work(async()=>{const r=await call('/auth/link/start',{});if(!r.handoffUrl)throw Object.assign(new Error(),{status:503});const handoff=new URL(r.handoffUrl);handoff.searchParams.set('lang','${lang}');location.assign(handoff.href);}));
  el('link-form')?.addEventListener('submit',e=>{e.preventDefault();if(!e.target.elements.namedItem('confirmed').checked||!incoming)return;void work(async()=>{await account(await call('/auth/link',{proof:incoming,confirmed:true}));incoming='';});});
