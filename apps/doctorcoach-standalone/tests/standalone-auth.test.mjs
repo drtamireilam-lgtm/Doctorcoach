@@ -128,3 +128,22 @@ test('old-runtime inspection signs nothing until explicit confirmation and authe
  assert.equal((await bridge(new Request('https://attacker.test/account/migrate'))).status,403);
  f.advance(300001);assert.equal((await bridge(request({action:'inspect',proof}))).status,403);
 });
+
+test('link receipt storage failure rolls back the mapping and the same proof can be retried',async t=>{
+ const f=await setup(t),r=await f.login('retry@example.test'),proof=await f.legacyProof(r.sid);
+ f.sql.exec("CREATE TRIGGER fail_legacy_receipt BEFORE INSERT ON dc_legacy_link_receipts BEGIN SELECT RAISE(ABORT,'synthetic storage failure'); END");
+ await assert.rejects(f.store.link(r.sid,proof,true));
+ assert.equal((await f.store.current(r.sid)).user,null,'failed link must not leave a usable identity alias');
+ assert.equal(f.sql.prepare('SELECT COUNT(*) n FROM dc_legacy_link_receipts').get().n,0);
+ f.sql.exec('DROP TRIGGER fail_legacy_receipt');
+ assert.equal((await f.store.link(r.sid,proof,true)).userId,client.userId);
+ await assert.rejects(f.store.link(r.sid,proof,true));
+});
+
+test('concurrent submission of the same legacy proof has one winner and one receipt',async t=>{
+ const f=await setup(t),r=await f.login('parallel@example.test'),proof=await f.legacyProof(r.sid);
+ const results=await Promise.allSettled([f.store.link(r.sid,proof,true),f.store.link(r.sid,proof,true)]);
+ assert.equal(results.filter(x=>x.status==='fulfilled').length,1);
+ assert.equal(f.sql.prepare('SELECT COUNT(*) n FROM dc_legacy_link_receipts').get().n,1);
+ assert.equal((await f.store.current(r.sid)).user.userId,client.userId);
+});

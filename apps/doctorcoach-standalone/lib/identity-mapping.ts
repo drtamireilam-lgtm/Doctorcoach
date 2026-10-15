@@ -63,7 +63,7 @@ export function identityMapping(db:D1Database,options:{legacyIssuer:string;exter
       await db.prepare('INSERT INTO dc_identity_challenges(id,ticket_hash,principal_id,source_subject,target_issuer,target_subject,expires_at,created_at) VALUES(?,?,?,?,?,?,?,?)').bind(id,await hash(ticket),owner.principal_id,legacy.subject,external.issuer,external.subject,expiresAt,at).run();
       return {ticket,expiresAt};
     },
-    async completeLink(ticket:string,legacy:VerifiedIdentity,external:VerifiedIdentity,confirmed:boolean){
+    async completeLink(ticket:string,legacy:VerifiedIdentity,external:VerifiedIdentity,confirmed:boolean,finalize?:(receipt:{challengeId:string;operationId:string;principalId:string})=>D1PreparedStatement[]){
       requireProof(legacy,true,true);requireProof(external,false,true);
       if(confirmed!==true)throw new IdentityError('Explicit linking confirmation required.',400);
       if(typeof ticket!=='string'||!/^[0-9a-f-]{72}$/.test(ticket))throw new IdentityError('Link proof invalid.');
@@ -76,6 +76,7 @@ export function identityMapping(db:D1Database,options:{legacyIssuer:string;exter
         db.prepare(`INSERT INTO dc_identity_aliases(issuer,subject,principal_id,created_at) SELECT ?,?,?,? WHERE ${guard} ON CONFLICT DO NOTHING`).bind(external.issuer,external.subject,row.principal_id,at,row.id,at),
         db.prepare(`INSERT INTO dc_identity_link_receipts(challenge_id,principal_id,operation_id,created_at) SELECT ?,?,?,? WHERE ${guard} AND EXISTS(SELECT 1 FROM dc_identity_aliases WHERE issuer=? AND subject=? AND principal_id=?) ON CONFLICT DO NOTHING`).bind(row.id,row.principal_id,operation,at,row.id,at,external.issuer,external.subject,row.principal_id),
         db.prepare('UPDATE dc_identity_challenges SET consumed_at=? WHERE id=? AND consumed_at IS NULL AND EXISTS(SELECT 1 FROM dc_identity_link_receipts WHERE challenge_id=?)').bind(at,row.id,row.id),
+        ...(finalize?.({challengeId:row.id,operationId:operation,principalId:row.principal_id})??[]),
       ]);
       const receipt=await db.prepare('SELECT principal_id,operation_id FROM dc_identity_link_receipts WHERE challenge_id=?').bind(row.id).first<{principal_id:string;operation_id:string}>();
       if(!receipt||receipt.operation_id!==operation)throw new IdentityError('Identity collision or account state changed.',409);
