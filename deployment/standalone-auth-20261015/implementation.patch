@@ -1,0 +1,635 @@
+diff --git a/cloudflare-env.d.ts b/cloudflare-env.d.ts
+index d4f80b8..c667be0 100644
+--- a/cloudflare-env.d.ts
++++ b/cloudflare-env.d.ts
+@@ -1,5 +1,9 @@
+ declare namespace Cloudflare {
+   interface Env {
++    DOCTORCOACH_APP_ORIGIN?: string;
++    DOCTORCOACH_AUTH_PROJECT_URL?: string;
++    DOCTORCOACH_AUTH_PUBLIC_KEY?: string;
++    DOCTORCOACH_LEGACY_IDENTITY_ISSUER?: string;
+     DOCTORCOACH_CALENDAR_CLIENT_ID?: string;
+     DOCTORCOACH_CALENDAR_OWNER_EMAIL?: string;
+     DOCTORCOACH_CALENDAR_ENCRYPTION_KEY?: string;
+diff --git a/deployment/standalone/README.md b/deployment/standalone/README.md
+new file mode 100644
+index 0000000..57b6146
+--- /dev/null
++++ b/deployment/standalone/README.md
+@@ -0,0 +1,90 @@
++# DoctorCoach independent Worker — staging implementation
++
++Base: Sites version 171, commit `ce4cba9f3e5c703bf84b801e05491070a00fe947`.
++This is executable server code with synthetic integration tests, not a deployed
++independent service. The current Sites app remains on `worker.ts`.
++
++## Build and runtime
++
++Build with `DOCTORCOACH_STANDALONE_BUILD=1` using the normal build command.
++The Vite Worker entrypoint becomes `worker.standalone.ts`; Sites mock sign-in
++and Sites publication metadata are omitted. A normal build retains `worker.ts`
++and the original Sites metadata. Never deploy a standalone artifact through Sites.
++
++The generated Wrangler configuration STILL contains local placeholder storage
++bindings. It is not deployable as a real data environment. An independent
++Cloudflare account and verified actual D1/R2 bindings are required first.
++Netlify alone cannot run the current Worker with D1/R2 bindings.
++
++Required runtime variables (values do not belong in source):
++
++- `DOCTORCOACH_APP_ORIGIN`: exact HTTPS staging origin, without trailing slash.
++- `DOCTORCOACH_AUTH_PROJECT_URL`: pinned Supabase project root URL.
++- `DOCTORCOACH_AUTH_PUBLIC_KEY`: public/publishable key; secret/service-role keys rejected.
++- `DOCTORCOACH_LEGACY_IDENTITY_ISSUER`: the issuer used by the proven legacy mapping.
++- `DB`, `BUCKET`: independently controlled staging D1/R2 bindings.
++
++The existing application still reads its normal admin, clinician, billing, push
++and calendar runtime settings. Do not copy privileged settings into staging
++until their staging recipients and providers are configured.
++
++## Authentication behavior
++
++Existing sign-in links open an email-code form in the standalone Worker.
++Sending a code does not create an Auth account. The provider must have email
++OTP templates configured to include `{{ .Token }}` (default Magic Links alone
++do not supply the code UI). Supabase Auth's rate limits and delivery/SMTP
++configuration must be verified before user testing.
++
++Every access proof is checked by Auth's `/user` endpoint and the existing
++`doctorcoach_staging_session_active` RPC. This is intentionally staging policy:
++24-hour session lifetime and one-hour refresh inactivity. Do not rename it or
++assume it is an approved production session policy.
++
++The verified external identity must resolve through the identity-mapping tables.
++No matching by email, account creation, automatic linking or role assignment
++occurs on login. Unlinked accounts are denied without changing existing data.
++Existing deletion journals and barriers are checked before application access.
++
++Access/refresh cookies are Secure, HttpOnly, SameSite=Strict and host-scoped.
++Refresh is an explicit POST via the login screen; there is no automatic browser
++refresh loop in this implementation. Sign-out requires a same-origin POST and
++revokes the provider session. Provider failure is reported instead of claiming
++revocation succeeded. Refresh-only sessions can also be revoked.
++
++All caller-supplied Sites identity headers are removed. Only the server-derived
++mapped owner and verified Auth email enter the shared application. Session
++cookies and incoming Authorization are not forwarded to application handlers.
++Cross-origin mutations and oversized authentication forms are rejected.
++
++## Storage and account migration — still required
++
++`identity-schema.sql` is tested against synthetic SQLite/D1 fixtures only.
++Apply it once to independent staging after taking a backup, never to the current
++Sites database as an automatic step. It creates no application or medical data.
++
++No supported direct binding/export of the Sites-managed D1/R2 resources into an
++external Cloudflare account has been established. Provision controlled staging,
++establish a supported export/restore or verified bridge, and validate schema,
++row counts, owner IDs, file hashes, deletion journals and restoration before
++moving any user. Do not replace existing data with the empty Supabase tables.
++
++Legacy account linking requires both authenticated identities and explicit
++confirmation using the existing mapping module. A supported proof of recent
++legacy authentication is still needed; do not manufacture a primary-login
++timestamp from the current request time. No real account was linked here.
++
++## Validation performed
++
++- Full test suite: 1,067 passed, 0 failed.
++- TypeScript: passed.
++- Independent production build: passed; standalone gateway present, Sites metadata absent.
++- Original Sites production build: passed; standalone gateway absent, Sites metadata present.
++- Deployed Supabase staging verifier: forged token rejected with HTTP 401.
++- No real OTP sent, no real identity linked, no production rows read or modified.
++- No independent deployment, DNS change or phone/browser end-to-end login test performed.
++
++Next: authenticate hosting administration, provision/identify controlled staging
++storage, validate export/restore and linking proofs, configure email delivery,
++then exercise real login/refresh/logout, cross-user access and the first workout.
++Connect `app.drtamireilam.com` only after these checks pass.
+diff --git a/deployment/standalone/identity-schema.sql b/deployment/standalone/identity-schema.sql
+new file mode 100644
+index 0000000..de2e198
+--- /dev/null
++++ b/deployment/standalone/identity-schema.sql
+@@ -0,0 +1,35 @@
++-- Apply once to the independently controlled STAGING D1 database after backup.
++-- Do not run against the current Sites database. No clinical, email, role,
++-- consent or payment information is copied or modified by this schema.
++CREATE TABLE dc_identity_principals (
++  id TEXT PRIMARY KEY,
++  state TEXT NOT NULL CHECK(state IN ('active','blocked','deleted')),
++  origin_issuer TEXT NOT NULL,
++  origin_subject TEXT NOT NULL,
++  created_at INTEGER NOT NULL,
++  UNIQUE(origin_issuer,origin_subject)
++);
++CREATE TABLE dc_identity_aliases (
++  issuer TEXT NOT NULL,
++  subject TEXT NOT NULL,
++  principal_id TEXT NOT NULL REFERENCES dc_identity_principals(id),
++  created_at INTEGER NOT NULL,
++  PRIMARY KEY(issuer,subject)
++);
++CREATE TABLE dc_identity_challenges (
++  id TEXT PRIMARY KEY,
++  ticket_hash TEXT NOT NULL UNIQUE,
++  principal_id TEXT NOT NULL REFERENCES dc_identity_principals(id),
++  source_subject TEXT NOT NULL,
++  target_issuer TEXT NOT NULL,
++  target_subject TEXT NOT NULL,
++  expires_at INTEGER NOT NULL,
++  consumed_at INTEGER,
++  created_at INTEGER NOT NULL
++);
++CREATE TABLE dc_identity_link_receipts (
++  challenge_id TEXT PRIMARY KEY REFERENCES dc_identity_challenges(id),
++  principal_id TEXT NOT NULL REFERENCES dc_identity_principals(id),
++  operation_id TEXT NOT NULL UNIQUE,
++  created_at INTEGER NOT NULL
++);
+diff --git a/lib/standalone-gateway.ts b/lib/standalone-gateway.ts
+new file mode 100644
+index 0000000..4e07897
+--- /dev/null
++++ b/lib/standalone-gateway.ts
+@@ -0,0 +1,131 @@
++import type { StandaloneSupabase } from './standalone-supabase.ts';
++import type { VerifiedIdentity } from './identity-mapping.ts';
++
++const accessCookie = '__Host-dc_access', refreshCookie = '__Host-dc_refresh';
++type Owner = { userId: string; email: string };
++export type StandaloneGatewayDependencies = {
++  origin: string;
++  auth: StandaloneSupabase;
++  resolve: (identity: VerifiedIdentity) => Promise<{ userId: string }>;
++  accountAvailable: (userId: string) => Promise<boolean>;
++};
++const escape = (s: string) => s.replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]!));
++function safeReturn(value: string | null) {
++  try {
++    if (!value?.startsWith('/') || value.startsWith('//') || /[\\\r\n]/.test(value)) return '/';
++    const url = new URL(value, 'https://return.invalid');
++    if (url.origin !== 'https://return.invalid' || /^\/(auth|signin-with-chatgpt|signout-with-chatgpt|callback)(\/|$)/.test(url.pathname)) return '/';
++    return url.pathname + url.search;
++  } catch { return '/'; }
++}
++function cookie(request: Request, name: string) {
++  const entries = (request.headers.get('cookie') ?? '').split(';').map(v => v.trim()).filter(v => v.startsWith(name + '='));
++  if (entries.length !== 1) return null;
++  const value = entries[0].slice(name.length + 1);
++  return /^[A-Za-z0-9_.-]{1,3800}$/.test(value) ? value : null;
++}
++const cookieValue = (name: string, value: string, age: number) => `${name}=${value}; Path=/; HttpOnly; Secure; SameSite=Strict; Max-Age=${age}`;
++const privateHeaders = () => new Headers({ 'Cache-Control': 'private, no-store', 'X-Content-Type-Options': 'nosniff', 'Referrer-Policy': 'no-referrer', 'Content-Security-Policy': "default-src 'none'; form-action 'self'; base-uri 'none'; frame-ancestors 'none'" });
++function page(message: string, form = '', status = 200) {
++  const headers = privateHeaders(); headers.set('Content-Type', 'text/html; charset=utf-8');
++  return new Response(`<!doctype html><html lang="he" dir="rtl"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>DoctorCoach — כניסה</title><main><h1>DoctorCoach</h1><p>${escape(message)}</p>${form}</main></html>`, { status, headers });
++}
++const hidden = (name: string, value: string) => `<input type="hidden" name="${name}" value="${escape(value)}">`;
++const returnField = (value: string) => hidden('return_to', value);
++function redirect(target: string, session?: {access_token: string; refresh_token: string; expires_in: number}, clear = false) {
++  const headers = privateHeaders(); headers.set('Location', target);
++  if (session) {
++    headers.append('Set-Cookie', cookieValue(accessCookie, session.access_token, Math.min(session.expires_in, 3600)));
++    headers.append('Set-Cookie', cookieValue(refreshCookie, session.refresh_token, 86400));
++  } else if (clear) {
++    headers.append('Set-Cookie', cookieValue(accessCookie, '', 0)); headers.append('Set-Cookie', cookieValue(refreshCookie, '', 0));
++  }
++  return new Response(null, { status: 303, headers });
++}
++async function formBody(request: Request): Promise<URLSearchParams | null> {
++  if (request.headers.get('Content-Type')?.split(';')[0] !== 'application/x-www-form-urlencoded') return null;
++  const reader = request.body?.getReader(); if (!reader) return null;
++  const chunks: Uint8Array[] = []; let size = 0;
++  try {
++    while (true) { const {done,value} = await reader.read(); if(done) break; size += value.length; if(size > 2048) { await reader.cancel(); return null; } chunks.push(value); }
++    const bytes = new Uint8Array(size); let offset = 0; for (const chunk of chunks) { bytes.set(chunk,offset); offset += chunk.length; }
++    const form = new URLSearchParams(new TextDecoder('utf-8',{fatal:true}).decode(bytes));
++    if ([...form.keys()].some(k => form.getAll(k).length !== 1)) return null;
++    return form;
++  } catch { return null; }
++}
++/** Standalone Worker boundary only. Sites dispatch authentication stays unchanged. */
++export function standaloneGateway(deps: StandaloneGatewayDependencies) {
++  const origin = new URL(deps.origin);
++  if(origin.protocol !== 'https:' || origin.origin !== deps.origin) throw Error('An exact HTTPS application origin is required.');
++  async function owner(token: string): Promise<Owner | null> {
++    try {
++      const verified = await deps.auth.verify(token); if (!verified) return null;
++      const mapped = await deps.resolve(verified.identity);
++      if (!mapped || typeof mapped.userId !== 'string' || !mapped.userId || mapped.userId.trim() !== mapped.userId || mapped.userId.length > 255 ||
++          await deps.accountAvailable(mapped.userId) !== true || verified.identity.expiresAt <= Date.now()) return null;
++      return { userId: mapped.userId, email: verified.email };
++    } catch { return null; }
++  }
++  return async (request: Request, next: (request: Request) => Promise<Response>): Promise<Response> => {
++    const url = new URL(request.url);
++    if (url.origin !== deps.origin) return page('כתובת היישום אינה מאושרת.', '', 400);
++    const authPath = url.pathname.startsWith('/auth/email/') || ['/signin-with-chatgpt','/signout-with-chatgpt','/callback'].includes(url.pathname);
++    if (authPath) {
++      if (url.pathname === '/signin-with-chatgpt' && request.method === 'GET') {
++        const target = safeReturn(url.searchParams.get('return_to'));
++        return page('כניסה באמצעות קוד לאימייל. נדרש חשבון שקושר מראש.', `<form method="post" action="/auth/email/send">${returnField(target)}<label>אימייל <input name="email" type="email" autocomplete="email" maxlength="320" required></label><button>שליחת קוד</button></form><form method="post" action="/auth/email/refresh">${returnField(target)}<button>חידוש כניסה קיימת</button></form>`);
++      }
++      if (url.pathname === '/signout-with-chatgpt' && request.method === 'GET') return page('לסיים את ההתחברות במכשיר הזה?', '<form method="post" action="/auth/email/logout"><button>התנתקות</button></form>');
++      if (request.method !== 'POST') return page('הפעולה אינה זמינה.', '', 405);
++      if(request.headers.get('Origin') !== deps.origin || request.headers.get('Sec-Fetch-Site') === 'cross-site') return page('הבקשה אינה מאושרת.', '', 403);
++      const form = await formBody(request); if(!form) return page('הבקשה אינה תקינה.', '', 400);
++      const target = safeReturn(form.get('return_to'));
++      if (url.pathname === '/auth/email/logout') {
++        const token = cookie(request, accessCookie);
++        const refresh = cookie(request, refreshCookie);
++        let revoked = token ? await deps.auth.signOut(token) : false;
++        if (!revoked && refresh) {
++          const session = await deps.auth.refresh(refresh);
++          revoked = session ? await deps.auth.signOut(session.access_token) : false;
++        }
++        if ((token || refresh) && !revoked) {
++          return page('לא ניתן לאמת התנתקות מהשרת כרגע. נסו שוב.', '<form method="post" action="/auth/email/logout"><button>ניסיון התנתקות נוסף</button></form>', 503);
++        }
++        return redirect('/', undefined, true);
++      }
++      if (url.pathname === '/auth/email/refresh') {
++        const refresh = cookie(request, refreshCookie), session = refresh ? await deps.auth.refresh(refresh) : null;
++        return session && await owner(session.access_token) ? redirect(target, session) : page('הכניסה פגה או שהחשבון טרם קושר. התחברו מחדש.', '', 401);
++      }
++      const email = form.get('email') ?? '';
++      if (email.length > 320 || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) return page('יש להזין כתובת אימייל תקינה.', '', 400);
++      if (url.pathname === '/auth/email/send') {
++        if (!await deps.auth.sendCode(email)) return page('לא ניתן לשלוח קוד כרגע. נסו שוב בהמשך.', '', 503);
++        return page('אם קיים חשבון מתאים, נשלח קוד לאימייל. הזינו אותו כאן.', `<form method="post" action="/auth/email/verify">${returnField(target)}${hidden('email',email)}<label>קוד כניסה <input name="code" inputmode="numeric" autocomplete="one-time-code" pattern="[0-9]{6,10}" minlength="6" maxlength="10" required></label><button>כניסה</button></form>`);
++      }
++      if (url.pathname === '/auth/email/verify') {
++        const code = form.get('code') ?? ''; if (!/^[0-9]{6,10}$/.test(code)) return page('הקוד אינו תקין.', '', 400);
++        const session = await deps.auth.verifyCode(email, code);
++        if (!session) return page('הקוד שגוי או שפג תוקפו. בקשו קוד חדש.', '', 401);
++        if (!await owner(session.access_token)) { await deps.auth.signOut(session.access_token); return page('החשבון טרם קושר או אינו זמין. הנתונים הקיימים לא שונו.', '', 403); }
++        return redirect(target, session);
++      }
++      return page('הפעולה אינה זמינה.', '', 404);
++    }
++    // Remove ALL platform identity fields before passing to the shared app.
++    const headers = new Headers(request.headers);
++    for (const name of [...headers.keys()]) if(name.startsWith('oai-authenticated-user-')) headers.delete(name);
++    headers.delete('authorization');
++    // Session cookies belong to this boundary, not application handlers.
++    const applicationCookies = (headers.get('cookie') ?? '').split(';').filter(v => ![accessCookie,refreshCookie].some(name => v.trim().startsWith(name+'='))).join(';');
++    headers.delete('cookie'); if(applicationCookies.trim()) headers.set('cookie',applicationCookies);
++    const token = cookie(request, accessCookie), user = token ? await owner(token) : null;
++    if(user) { headers.set('oai-authenticated-user-id',user.userId); headers.set('oai-authenticated-user-email',user.email); }
++    if (!['GET','HEAD','OPTIONS'].includes(request.method) && request.headers.get('Origin') !== deps.origin) return page('הבקשה אינה מאושרת.', '', 403);
++    const response = await next(new Request(request, { headers }));
++    const secured = new Response(response.body,response);
++    if(user) { secured.headers.set('Cache-Control','private, no-store'); secured.headers.append('Vary','Cookie'); }
++    return secured;
++  };
++}
+diff --git a/lib/standalone-request-identity.ts b/lib/standalone-request-identity.ts
+new file mode 100644
+index 0000000..b58d845
+--- /dev/null
++++ b/lib/standalone-request-identity.ts
+@@ -0,0 +1,32 @@
++import { verifyIdentity, type IdentityVerifier, type VerifiedIdentity } from './identity-mapping.ts';
++
++/** Server-only adapter. Never imports the Sites header reader and never creates
++ * accounts or links identities while reading an authenticated request. All
++ * dependencies must be constructed by the server, not taken from request data.
++ */
++export function standaloneRequestIdentity(deps: {
++  issuer: string;
++  verifier: IdentityVerifier;
++  resolve: (identity: VerifiedIdentity) => Promise<{ userId: string }>;
++  accountAvailable: (userId: string) => Promise<boolean>;
++  now?: () => number;
++}) {
++  const issuer = new URL(deps.issuer);
++  if (issuer.protocol !== 'https:' || issuer.username || issuer.password || issuer.search || issuer.hash || issuer.href !== deps.issuer) {
++    throw new Error('Pinned HTTPS identity issuer required.');
++  }
++  const now = deps.now ?? Date.now;
++  return async (request: Request): Promise<{ userId: string } | null> => {
++    const match = request.headers.get('authorization')?.match(/^Bearer ([A-Za-z0-9_.-]{1,16000})$/);
++    if (!match) return null;
++    try {
++      const identity = await verifyIdentity(match[1], deps.verifier, [deps.issuer], now());
++      const mapped = await deps.resolve(identity);
++      if (!mapped || typeof mapped.userId !== 'string' || !mapped.userId ||
++          mapped.userId !== mapped.userId.trim() || mapped.userId.length > 255) return null;
++      // This callback must include the existing deletion journal/barrier checks.
++      if (await deps.accountAvailable(mapped.userId) !== true || identity.expiresAt <= now()) return null;
++      return { userId: mapped.userId };
++    } catch { return null; }
++  };
++}
+diff --git a/lib/standalone-supabase.ts b/lib/standalone-supabase.ts
+new file mode 100644
+index 0000000..477aa75
+--- /dev/null
++++ b/lib/standalone-supabase.ts
+@@ -0,0 +1,59 @@
++import { supabaseGetUserTransport, supabaseIdentityVerifier } from './supabase-identity.ts';
++import { verifyIdentity, type VerifiedIdentity } from './identity-mapping.ts';
++
++type VerifiedUser = { identity: VerifiedIdentity; email: string };
++type Session = { access_token: string; refresh_token: string; expires_in: number };
++export function standaloneSupabase(projectUrl: string, publicKey: string, request: typeof fetch = fetch) {
++  const getUser = supabaseGetUserTransport(projectUrl, publicKey, request);
++  const issuer = new URL('/auth/v1', projectUrl).href;
++  async function call(path: string, body: object, token?: string) {
++    return request(new URL(path, projectUrl), {
++      method: 'POST', headers: { apikey: publicKey, 'Content-Type': 'application/json', ...(token ? { Authorization: `Bearer ${token}` } : {}) },
++      body: JSON.stringify(body), redirect: 'error', cache: 'no-store', signal: AbortSignal.timeout(8000),
++    });
++  }
++  async function exchange(path: string, body: object): Promise<Session | null> {
++    try {
++      const response = await call(path, body);
++      if (!response.ok) return null;
++      const value = await response.json() as Partial<Session>;
++      if (typeof value.access_token !== 'string' || !/^[A-Za-z0-9_.-]{1,3800}$/.test(value.access_token) ||
++          typeof value.refresh_token !== 'string' || !/^[A-Za-z0-9_.-]{1,1000}$/.test(value.refresh_token) ||
++          !Number.isSafeInteger(value.expires_in) || value.expires_in! <= 0) return null;
++      return value as Session;
++    } catch { return null; }
++  }
++  return {
++    issuer,
++    async verify(token: string): Promise<VerifiedUser | null> {
++      let email: string | undefined;
++      const verifier = supabaseIdentityVerifier({ issuer,
++        getUser: async proof => {
++          const result = await getUser(proof);
++          const user = result.data.user as (NonNullable<typeof result.data.user> & { email?: unknown }) | null;
++          if (typeof user?.email === 'string' && user.email.length <= 320 && /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(user.email)) email = user.email;
++          return result;
++        },
++        checkSession: async () => {
++          const response = await call('/rest/v1/rpc/doctorcoach_staging_session_active', {}, token);
++          return response.ok && await response.json() === true;
++        },
++      });
++      try {
++        const identity = await verifyIdentity(token, verifier, [issuer]);
++        return email ? { identity, email } : null;
++      } catch { return null; }
++    },
++    async sendCode(email: string): Promise<boolean> {
++      try { return (await call('/auth/v1/otp', { email, create_user: false })).ok; }
++      catch { return false; }
++    },
++    verifyCode: (email: string, token: string) => exchange('/auth/v1/verify', { email, token, type: 'email' }),
++    refresh: (refresh_token: string) => exchange('/auth/v1/token?grant_type=refresh_token', { refresh_token }),
++    async signOut(token: string): Promise<boolean> {
++      try { return (await call('/auth/v1/logout?scope=local', {}, token)).ok; }
++      catch { return false; }
++    },
++  };
++}
++export type StandaloneSupabase = ReturnType<typeof standaloneSupabase>;
+diff --git a/tests/standalone-gateway.test.mjs b/tests/standalone-gateway.test.mjs
+new file mode 100644
+index 0000000..6fe49c9
+--- /dev/null
++++ b/tests/standalone-gateway.test.mjs
+@@ -0,0 +1,93 @@
++import test from 'node:test';
++import assert from 'node:assert/strict';
++import { readFile } from 'node:fs/promises';
++import { standaloneGateway } from '../lib/standalone-gateway.ts';
++import { verifyIdentity, identityMapping } from '../lib/identity-mapping.ts';
++import { platform, client } from './platform-db.mjs';
++const origin='https://app.example.test';
++const issuer='https://auth.example.test/auth/v1';
++const identity={issuer,subject:'external-owner',authenticatedAt:Date.now()-1000,expiresAt:Date.now()+600000};
++const session={access_token:'access.proof.signature',refresh_token:'refresh-proof',expires_in:3600};
++function fixture(overrides={}) {
++ const calls=[];
++ const auth={issuer,verify:async proof=>proof===session.access_token?{identity,email:'verified@example.test'}:null,sendCode:async()=>true,verifyCode:async()=>session,refresh:async()=>session,signOut:async()=>true,...overrides.auth};
++ const gateway=standaloneGateway({origin,auth,resolve:async()=>({userId:'original-owner'}),accountAvailable:async()=>true,...overrides,auth});
++ const next=async req=>{calls.push(req);return new Response('application');};
++ const invoke=(path,options={})=>gateway(new Request(origin+path,options),next);
++ const post=(path,values={},extra={})=>invoke(path,{method:'POST',body:new URLSearchParams(values),headers:{Origin:origin,'Content-Type':'application/x-www-form-urlencoded',...extra}});
++ return {auth,calls,invoke,post};
++}
++test('login form uses same-origin forms, no tokens or external script and safe return paths',async()=>{
++ const f=fixture();
++ const r=await f.invoke('/signin-with-chatgpt?return_to=https://evil.test');
++ const html=await r.text();assert.equal(r.status,200);assert.match(html,/name="return_to" value="\/"/);assert.ok(!html.includes(session.access_token));
++ assert.match(r.headers.get('content-security-policy'),/frame-ancestors 'none'/);assert.match(r.headers.get('cache-control'),/no-store/);
++ for(const target of ['//evil.test','/\\evil.test','/auth/email/verify','/signin-with-chatgpt']) {
++  const result=await f.invoke('/signin-with-chatgpt?return_to='+encodeURIComponent(target));assert.match(await result.text(),/name="return_to" value="\/"/);
++ }
++});
++test('successful OTP login validates owner before setting secure session cookies',async()=>{
++ const f=fixture();
++ assert.equal((await f.post('/auth/email/send',{email:'user@example.test'})).status,200);
++ const r=await f.post('/auth/email/verify',{email:'user@example.test',code:'123456',return_to:'/program?day=2'});
++ assert.equal(r.status,303);assert.equal(r.headers.get('location'),'/program?day=2');
++ const cookies=r.headers.getSetCookie();assert.equal(cookies.length,2);for(const c of cookies) {assert.match(c,/HttpOnly/);assert.match(c,/Secure/);assert.match(c,/SameSite=Strict/);assert.ok(!c.includes('Domain='));}
++ assert.equal(await r.text(),'');
++});
++test('wrong OTP, unlinked account, revoked session and blocked account cannot establish access',async()=>{
++ for(const overrides of [{auth:{verifyCode:async()=>null}},{resolve:async()=>{throw Error('unlinked');}},{auth:{verify:async()=>null}},{accountAvailable:async()=>false}]) {
++  const f=fixture(overrides),r=await f.post('/auth/email/verify',{email:'user@example.test',code:'123456'});
++  assert.ok([401,403].includes(r.status));assert.equal(r.headers.getSetCookie().length,0);assert.equal(f.calls.length,0);
++ }
++});
++test('all caller platform identity fields and session tokens are stripped at the server boundary',async()=>{
++ const f=fixture();await f.invoke('/api/program',{headers:{'oai-authenticated-user-id':'victim','oai-authenticated-user-email':'admin@example.test','oai-authenticated-user-full-name':'Admin',Authorization:'Bearer attacker',cookie:'__Host-dc_access='+session.access_token+'; __Host-dc_refresh=secret; preference=light'}});
++ const headers=f.calls[0].headers;assert.equal(headers.get('oai-authenticated-user-id'),'original-owner');assert.equal(headers.get('oai-authenticated-user-email'),'verified@example.test');assert.equal(headers.get('oai-authenticated-user-full-name'),null);assert.equal(headers.get('authorization'),null);assert.equal(headers.get('cookie').trim(),'preference=light');
++ const r=await f.invoke('/program',{headers:{cookie:'__Host-dc_access='+session.access_token}});assert.match(r.headers.get('cache-control'),/private, no-store/);
++});
++test('forged or duplicate cookies never fall back to caller identity',async()=>{
++ for(const cookie of ['', '__Host-dc_access=forged','__Host-dc_access='+session.access_token+'; __Host-dc_access=other']) {
++  const f=fixture();await f.invoke('/api/program',{headers:{cookie,'oai-authenticated-user-id':'victim'}});assert.equal(f.calls[0].headers.get('oai-authenticated-user-id'),null);
++ }
++});
++test('cross-origin, missing-origin, unsupported content and oversized bodies are rejected before provider calls',async()=>{
++ let calls=0;
++ const f=fixture({auth:{sendCode:async()=>{calls++;return true;}}});
++ for(const headers of [{Origin:'https://evil.test'},{Origin:''},{'Sec-Fetch-Site':'cross-site'},{'Content-Type':'application/json'}]) assert.ok((await f.post('/auth/email/send',{email:'user@example.test'},headers)).status>=400);
++ assert.equal((await f.post('/auth/email/send',{email:'x'.repeat(3000)})).status,400);
++ assert.equal((await f.invoke('/api/program',{method:'POST',body:'{}'})).status,403);
++ assert.equal(calls,0);
++});
++test('GET signout is only a confirmation; POST revokes and clears both cookies',async()=>{
++ let revocations=0;
++ const f=fixture({auth:{signOut:async()=>{revocations++;return true;}}});
++ assert.equal((await f.invoke('/signout-with-chatgpt')).status,200);assert.equal(revocations,0);
++ const r=await f.post('/auth/email/logout',{}, {cookie:'__Host-dc_access='+session.access_token});assert.equal(r.status,303);assert.equal(revocations,1);assert.ok(r.headers.getSetCookie().every(v=>v.includes('Max-Age=0')));
++});
++test('refresh rotates cookies only after account and session verification',async()=>{
++ const f=fixture();const r=await f.post('/auth/email/refresh',{return_to:'/program'},{cookie:'__Host-dc_refresh=refresh-proof'});assert.equal(r.status,303);assert.equal(r.headers.getSetCookie().length,2);
++ const blocked=fixture({accountAvailable:async()=>false});const denied=await blocked.post('/auth/email/refresh',{}, {cookie:'__Host-dc_refresh=refresh-proof'});assert.equal(denied.status,401);assert.equal(denied.headers.getSetCookie().length,0);
++});
++test('logout revokes a refresh-only session and reports provider failure without pretending success',async()=>{
++ let refreshed=0,revoked=0;
++ const f=fixture({auth:{refresh:async()=>{refreshed++;return session;},signOut:async()=>{revoked++;return true;}}});
++ assert.equal((await f.post('/auth/email/logout',{}, {cookie:'__Host-dc_refresh=refresh-proof'})).status,303);assert.equal(refreshed,1);assert.equal(revoked,1);
++ const failed=fixture({auth:{signOut:async()=>false,refresh:async()=>null}});
++ const result=await failed.post('/auth/email/logout',{}, {cookie:'__Host-dc_access='+session.access_token});assert.equal(result.status,503);assert.equal(result.headers.getSetCookie().length,0);
++});
++test('independent origin is pinned and cannot be selected by a client header',async()=>{
++ const f=fixture();await f.invoke('/program',{headers:{Host:'evil.test'}});assert.equal(f.calls.length,1);
++ const handler=standaloneGateway({origin,auth:f.auth,resolve:async()=>({userId:'owner'}),accountAvailable:async()=>true});
++ assert.equal((await handler(new Request('https://evil.test/program'),async()=>{throw Error('must not run');})).status,400);
++});
++test('gateway resolves the proven legacy owner through actual mapping tables, preserving program ownership',async t=>{
++ const f=platform(t);f.sql.exec(await readFile(new URL('../deployment/standalone/identity-schema.sql',import.meta.url),'utf8'));
++ const store=identityMapping(f.db,{legacyIssuer:'sites:fixture',externalIssuers:[issuer]});
++ const proof=async claims=>verifyIdentity('synthetic',async()=>claims,[issuer,'sites:fixture']);
++ const legacy=await proof({...identity,issuer:'sites:fixture',subject:client.userId});const external=await proof(identity);
++ await store.registerLegacy(legacy);const link=await store.beginLink(legacy,external);await store.completeLink(link.ticket,legacy,external,true);
++ const gateway=fixture({auth:{verify:async()=>({identity:external,email:client.email})},resolve:value=>store.resolve(value)});
++ await gateway.invoke('/program',{headers:{cookie:'__Host-dc_access='+session.access_token}});
++ assert.equal(gateway.calls[0].headers.get('oai-authenticated-user-id'),client.userId);
++ assert.equal(f.sql.prepare('select count(*) n from dc_identity_principals').get().n,1);
++});
+diff --git a/tests/standalone-request-identity.test.mjs b/tests/standalone-request-identity.test.mjs
+new file mode 100644
+index 0000000..4f034dc
+--- /dev/null
++++ b/tests/standalone-request-identity.test.mjs
+@@ -0,0 +1,29 @@
++import test from 'node:test';
++import assert from 'node:assert/strict';
++import { standaloneRequestIdentity } from '../lib/standalone-request-identity.ts';
++const issuer='https://identity.example.test/auth/v1';
++const at=1800000000000;
++const claims={issuer,subject:'external-user',authenticatedAt:at-1000,expiresAt:at+60000};
++const request=(headers={})=>new Request('https://app.example.test/private',{headers});
++const defaults={issuer,verifier:async()=>claims,resolve:async()=>({userId:'legacy-owner'}),accountAvailable:async()=>true,now:()=>at};
++test('spoofed Sites headers, cookies and body identities cannot authenticate',async()=>{
++ let calls=0;
++ const authenticate=standaloneRequestIdentity({...defaults,verifier:async()=>{calls++;return claims;}});
++ assert.equal(await authenticate(request({'oai-authenticated-user-id':'victim','oai-authenticated-user-email':'victim@example.test',cookie:'userId=victim'})),null);
++ assert.equal(calls,0);
++});
++test('returns only the mapped owner and verifies the exact supplied token',async()=>{
++ let proof;
++ const authenticate=standaloneRequestIdentity({...defaults,verifier:async token=>{proof=token;return claims;},resolve:async identity=>{assert.equal(identity.subject,'external-user');return {userId:'legacy-owner'};}});
++ assert.deepEqual(await authenticate(request({authorization:'Bearer exact.proof.signature','oai-authenticated-user-id':'victim'})),{userId:'legacy-owner'});
++ assert.equal(proof,'exact.proof.signature');
++});
++test('invalid proofs, unlinked accounts, deletion barriers and provider outages deny access',async()=>{
++ const cases=[{verifier:async()=>null},{verifier:async()=>({...claims,issuer:'https://other.test'})},{resolve:async()=>{throw Error('Unlinked');}},{accountAvailable:async()=>false},{accountAvailable:async()=>{throw Error('Storage unavailable');}},{resolve:async()=>({userId:' '})}];
++ for(const overrides of cases) assert.equal(await standaloneRequestIdentity({...defaults,...overrides})(request({authorization:'Bearer proof'})),null);
++});
++test('proof expiring during owner lookup denies access',async()=>{
++ let time=at;
++ const authenticate=standaloneRequestIdentity({...defaults,now:()=>time,resolve:async()=>{time=claims.expiresAt;return {userId:'legacy-owner'};}});
++ assert.equal(await authenticate(request({authorization:'Bearer proof'})),null);
++});
+diff --git a/tests/standalone-supabase.test.mjs b/tests/standalone-supabase.test.mjs
+new file mode 100644
+index 0000000..e44538a
+--- /dev/null
++++ b/tests/standalone-supabase.test.mjs
+@@ -0,0 +1,36 @@
++import test from 'node:test';
++import assert from 'node:assert/strict';
++import { standaloneSupabase } from '../lib/standalone-supabase.ts';
++const project='https://auth.example.test',key='sb_publishable_test';
++const sub='123e4567-e89b-12d3-a456-426614174000',sid='223e4567-e89b-12d3-a456-426614174000';
++function proof() {const now=Math.floor(Date.now()/1000);return [{alg:'ES256'},{iss:project+'/auth/v1',aud:'authenticated',sub,session_id:sid,role:'authenticated',is_anonymous:false,iat:now,exp:now+600,amr:[{method:'otp',timestamp:now}]}].map(v=>Buffer.from(JSON.stringify(v)).toString('base64url')).concat('signature').join('.');}
++test('OTP transport does not silently create accounts and uses exact pinned endpoints',async()=>{
++ const calls=[];const auth=standaloneSupabase(project,key,async(url,options)=>{calls.push({url:String(url),options});return Response.json({access_token:proof(),refresh_token:'refresh',expires_in:3600});});
++ assert.equal(await auth.sendCode('user@example.test'),true);
++ assert.deepEqual(JSON.parse(calls[0].options.body),{email:'user@example.test',create_user:false});
++ assert.ok(await auth.verifyCode('user@example.test','123456'));assert.equal(calls[1].url,project+'/auth/v1/verify');assert.equal(JSON.parse(calls[1].options.body).type,'email');
++ assert.ok(await auth.refresh('refresh'));assert.equal(calls[2].url,project+'/auth/v1/token?grant_type=refresh_token');
++ assert.equal(await auth.signOut('access'),true);assert.equal(calls[3].url,project+'/auth/v1/logout?scope=local');assert.equal(calls[3].options.headers.Authorization,'Bearer access');
++ for(const call of calls) {assert.equal(call.options.cache,'no-store');assert.equal(call.options.redirect,'error');assert.equal(call.options.headers.apikey,key);}
++});
++test('verified Auth email is used; user-editable metadata cannot grant identity',async()=>{
++ const token=proof(),calls=[];
++ const auth=standaloneSupabase(project,key,async(url,options)=>{calls.push({url:String(url),options});return Response.json(calls.length===1?{id:sub,is_anonymous:false,email_confirmed_at:'2026-01-01',email:'verified@example.test',user_metadata:{email:'admin@example.test',role:'admin'}}:true);});
++ const verified=await auth.verify(token);assert.equal(verified.email,'verified@example.test');assert.equal(verified.identity.subject,sub);assert.equal('role' in verified,false);
++ assert.equal(calls[1].url,project+'/rest/v1/rpc/doctorcoach_staging_session_active');assert.equal(calls[1].options.body,'{}');assert.equal(calls[1].options.headers.Authorization,'Bearer '+token);
++});
++test('revocation RPC false, outages and missing verified email deny authentication',async()=>{
++ for(const mode of ['revoked','outage','no-email']) {
++  let calls=0;const auth=standaloneSupabase(project,key,async()=>{calls++;if(mode==='outage')throw Error('private outage');return Response.json(calls===1?{id:sub,is_anonymous:false,email_confirmed_at:'2026-01-01',...(mode==='no-email'?{}:{email:'verified@example.test'})}:false);});
++  assert.equal(await auth.verify(proof()),null);
++ }
++});
++test('bad token responses and transport errors cannot set browser sessions',async()=>{
++ for(const response of [{access_token:'x\r\ny',refresh_token:'r',expires_in:3600},{access_token:'a'.repeat(4000),refresh_token:'r',expires_in:3600},{access_token:proof(),refresh_token:'r',expires_in:0},{access_token:proof(),refresh_token:'r',expires_in:'3600'}]) {
++  const auth=standaloneSupabase(project,key,async()=>Response.json(response));assert.equal(await auth.verifyCode('user@example.test','123456'),null);
++ }
++ const failed=standaloneSupabase(project,key,async()=>{throw Error('offline');});assert.equal(await failed.sendCode('user@example.test'),false);assert.equal(await failed.refresh('r'),null);assert.equal(await failed.signOut('a'),false);
++});
++test('secret API keys and non-HTTPS projects are rejected during configuration',()=>{
++ assert.throws(()=>standaloneSupabase('http://auth.example.test',key));assert.throws(()=>standaloneSupabase(project,'sb_secret_forbidden'));
++});
+diff --git a/vite.config.ts b/vite.config.ts
+index 9fcc46f..a51b851 100644
+--- a/vite.config.ts
++++ b/vite.config.ts
+@@ -12,9 +12,12 @@ const { d1, r2 } = hostingConfig;
+ // macOS Seatbelt blocks FSEvents, so Codex previews need polling for HMR.
+ const isCodexSeatbeltSandbox = process.env.CODEX_SANDBOX === "seatbelt";
+ const managedLinux = readExecutionProfile() === "managed-linux";
++// Standalone artifacts deliberately omit Sites metadata so they cannot be
++// mistaken for an ordinary publication of the existing hosted app.
++const standalone = process.env.DOCTORCOACH_STANDALONE_BUILD === "1";
+ 
+ const localBindingConfig = {
+-  main: "./worker.ts",
++  main: standalone ? "./worker.standalone.ts" : "./worker.ts",
+   compatibility_flags: ["nodejs_compat"],
+   d1_databases: d1
+     ? [
+@@ -57,7 +60,7 @@ export default defineConfig(async () => {
+     },
+     plugins: [
+       vinext(),
+-      sites({ mockAuth: !managedLinux }),
++      ...(!standalone ? [sites({ mockAuth: !managedLinux })] : []),
+       cloudflare({
+         viteEnvironment: { name: "rsc", childEnvironments: ["ssr"] },
+         inspectorPort: false,
+diff --git a/worker.standalone.ts b/worker.standalone.ts
+new file mode 100644
+index 0000000..0138b5e
+--- /dev/null
++++ b/worker.standalone.ts
+@@ -0,0 +1,35 @@
++import app from './worker';
++import { standaloneGateway } from './lib/standalone-gateway';
++import { standaloneSupabase } from './lib/standalone-supabase';
++import { identityMapping } from './lib/identity-mapping';
++import { deletionJournal, restoreDeletionBarrier } from './lib/deletion-journal';
++import { deletionStatus } from './lib/account-deletion';
++
++/** Dedicated entrypoint for an independently hosted Worker. Never deploy this
++ * entrypoint through Sites: Sites continues to use worker.ts and its dispatch.
++ * Missing configuration/storage denies requests instead of trusting headers.
++ */
++export default {
++  async fetch(request: Request, env: Cloudflare.Env, ctx: ExecutionContext) {
++    try {
++      if (!env.DB || !env.BUCKET || !env.DOCTORCOACH_APP_ORIGIN || !env.DOCTORCOACH_AUTH_PROJECT_URL ||
++          !env.DOCTORCOACH_AUTH_PUBLIC_KEY || !env.DOCTORCOACH_LEGACY_IDENTITY_ISSUER) throw Error('Standalone configuration missing');
++      const db = env.DB, bucket = env.BUCKET;
++      const auth = standaloneSupabase(env.DOCTORCOACH_AUTH_PROJECT_URL,env.DOCTORCOACH_AUTH_PUBLIC_KEY);
++      const mapping = identityMapping(db, { legacyIssuer: env.DOCTORCOACH_LEGACY_IDENTITY_ISSUER, externalIssuers: [auth.issuer] });
++      const gateway = standaloneGateway({ origin: env.DOCTORCOACH_APP_ORIGIN, auth,
++        resolve: identity => mapping.resolve(identity),
++        accountAvailable: async userId => {
++          const receipt = await deletionJournal(bucket).read(userId);
++          if(receipt) { await restoreDeletionBarrier(db,receipt); return false; }
++          return !await deletionStatus(db,userId);
++        },
++      });
++      return await gateway(request, req => app.fetch(req,env,ctx));
++    } catch {
++      return new Response('DoctorCoach: סביבת הכניסה העצמאית אינה זמינה כרגע.', {
++        status:503,headers:{'Content-Type':'text/plain; charset=utf-8','Cache-Control':'no-store'},
++      });
++    }
++  },
++};
