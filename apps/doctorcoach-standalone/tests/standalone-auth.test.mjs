@@ -54,7 +54,7 @@ test('dual verified bridge proof binds the exact external subject and canonical 
  const other=await f.login('other@example.test');await assert.rejects(f.store.link(other.sid,await f.legacyProof(r.sid),true));assert.equal((await f.store.current(other.sid)).user,null);
 });
 test('signed bridge rejects forgery, expired proof, wrong issuer/audience and switching an existing account',async t=>{
- const f=await setup(t),r=await f.login('new@example.test');for(const changes of [{iss:'evil'},{aud:'https://evil.test'},{exp:f.now()-1},{iat:f.now()+60000}])await assert.rejects(f.store.link(r.sid,await f.legacyProof(r.sid,'client',client.email,changes),true));await assert.rejects(f.store.link(r.sid,(await f.legacyProof(r.sid))+'x',true));const user=await f.store.register(r.sid);await assert.rejects(f.store.link(r.sid,await f.legacyProof(r.sid),true));assert.equal((await f.store.current(r.sid)).user.userId,user.userId);
+ const f=await setup(t),r=await f.login('new@example.test');for(const changes of [{iss:'evil'},{aud:'https://evil.test'},{exp:f.now()-1},{iat:f.now()+60000}])await assert.rejects(f.store.link(r.sid,await f.legacyProof(r.sid,'client',client.email,changes),true));await assert.rejects(f.store.link(r.sid,(await f.legacyProof(r.sid))+'x',true));const user=await f.store.register(r.sid);await assert.rejects(f.store.link(r.sid,await f.legacyProof(r.sid),true));assert.equal(f.sql.prepare('SELECT COUNT(*) n FROM dc_legacy_link_receipts').get().n,0,'failed linking must not consume legacy proof');assert.equal((await f.store.current(r.sid)).user.userId,user.userId);
 });
 test('the legacy bridge requires old-runtime login plus a fresh signed external proof and explicit confirmation',async t=>{
  const f=await setup(t),r=await f.login('new@example.test');const current=await f.store.current(r.sid),start=await f.api('/auth/link/start',{},`${sessionCookie}=${r.sid}`),requestProof=(await start.json()).proof;let oldUser=null;const oldOrigin='https://old.example.test';const bridge=legacyLinkBridge({oldOrigin,standaloneOrigin:origin,legacyIssuer,externalPublicKey:f.externalPublic,legacyPrivateKey:f.legacyPrivate,getLegacyUser:async()=>oldUser,now:f.now});const request=()=>new Request(oldOrigin+'/link',{method:'POST',headers:{origin:oldOrigin},body:JSON.stringify({proof:requestProof,confirmed:true})});assert.equal((await bridge(request())).status,401);oldUser=client;const result=await bridge(request());assert.equal(result.status,200);assert.equal((await f.store.link(r.sid,(await result.json()).proof,true)).userId,client.userId);assert.notEqual(current.subject,client.userId);
@@ -127,4 +127,42 @@ test('old-runtime inspection signs nothing until explicit confirmation and authe
  assert.equal((await bridge(new Request(oldOrigin+'/account/migrate'))).status,200);
  assert.equal((await bridge(new Request('https://attacker.test/account/migrate'))).status,403);
  f.advance(300001);assert.equal((await bridge(request({action:'inspect',proof}))).status,403);
+});
+
+test('link receipt storage failure rolls back the mapping and the same proof can be retried',async t=>{
+ const f=await setup(t),r=await f.login('retry@example.test'),proof=await f.legacyProof(r.sid);
+ f.sql.exec("CREATE TRIGGER fail_legacy_receipt BEFORE INSERT ON dc_legacy_link_receipts BEGIN SELECT RAISE(ABORT,'synthetic storage failure'); END");
+ await assert.rejects(f.store.link(r.sid,proof,true));
+ assert.equal((await f.store.current(r.sid)).user,null,'failed link must not leave a usable identity alias');
+ assert.equal(f.sql.prepare('SELECT COUNT(*) n FROM dc_legacy_link_receipts').get().n,0);
+ f.sql.exec('DROP TRIGGER fail_legacy_receipt');
+ assert.equal((await f.store.link(r.sid,proof,true)).userId,client.userId);
+ await assert.rejects(f.store.link(r.sid,proof,true));
+});
+
+test('concurrent submission of the same legacy proof has one winner and one receipt',async t=>{
+ const f=await setup(t),r=await f.login('parallel@example.test'),proof=await f.legacyProof(r.sid);
+ const results=await Promise.allSettled([f.store.link(r.sid,proof,true),f.store.link(r.sid,proof,true)]);
+ assert.equal(results.filter(x=>x.status==='fulfilled').length,1);
+ assert.equal(f.sql.prepare('SELECT COUNT(*) n FROM dc_legacy_link_receipts').get().n,1);
+ assert.equal((await f.store.current(r.sid)).user.userId,client.userId);
+});
+
+test('registration storage failure leaves no orphan identity and allows retry',async t=>{
+ const f=await setup(t),r=await f.login('register-retry@example.test');
+ f.sql.exec("CREATE TRIGGER fail_new_details BEFORE INSERT ON dc_identity_details WHEN NEW.legacy=0 BEGIN SELECT RAISE(ABORT,'synthetic storage failure'); END");
+ await assert.rejects(f.store.register(r.sid));
+ assert.equal((await f.store.current(r.sid)).user,null);
+ assert.equal(f.sql.prepare('SELECT COUNT(*) n FROM dc_identity_principals').get().n,0);
+ f.sql.exec('DROP TRIGGER fail_new_details');
+ const user=await f.store.register(r.sid);assert.match(user.userId,/^dc:/);
+ assert.equal((await f.store.current(r.sid)).user.userId,user.userId);
+});
+
+test('concurrent registration returns one complete principal and matching details',async t=>{
+ const f=await setup(t),r=await f.login('register-race@example.test');
+ const users=await Promise.all([f.store.register(r.sid),f.store.register(r.sid)]);
+ assert.equal(users[0].userId,users[1].userId);
+ assert.equal(f.sql.prepare('SELECT COUNT(*) n FROM dc_identity_principals').get().n,1);
+ assert.equal(f.sql.prepare('SELECT COUNT(*) n FROM dc_identity_details').get().n,1);
 });
