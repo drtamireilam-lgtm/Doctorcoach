@@ -2,38 +2,52 @@
 const $=id=>document.getElementById(id);
 const video=$('video'),canvas=$('overlay'),ctx=canvas.getContext('2d');
 let token='',rules=null,source=null,url='',track=null,report=null,selection=null,drag=null,busy=false;
+let anchorTime=0,anchorFrame=null,segments=[],correctionFrame=null,correctionTime=null,visibleTime=0,reviewPlayback=false;
 const ready=Promise.all([fetch('/session').then(r=>r.json()),fetch('/rules').then(r=>r.json())]).then(([s,r])=>{token=s.token;rules=r;renderCommands();});
 async function api(route,body,headers={}){await ready;const r=await fetch(route,{method:'POST',headers:{'X-Lab-Token':token,...headers},body});const out=await r.json();if(!r.ok)throw Error(out.error||'Analysis failed');return out;}
 function status(text){$('track-status').textContent=text;}
-function invalidate(){track=null;report=null;$('reviewed').checked=false;$('reviewed').disabled=true;$('analyze').disabled=true;$('download').disabled=true;$('results').textContent='';}
-function busyState(value){busy=value;for(const id of ['source','consent','x','y','w','h','reviewed','metres','pixels','pixel-error','plane'])$(id).disabled=value; $('reviewed').disabled=value||!track?.samples.length;$('track').disabled=value||!source;$('analyze').disabled=value||!track;}
+function invalidate(){track=null;report=null;$('metres').value='';$('pixels').value='';$('plane').checked=false;$('reviewed').checked=false;$('reviewed').disabled=true;$('analyze').disabled=true;$('download').disabled=true;$('results').textContent='';}
+function busyState(value){busy=value;for(const id of ['source','consent','x','y','w','h','reviewed','metres','pixels','pixel-error','plane','selection-mode','point-size','back-frame','next-frame','zoom'])$(id).disabled=value; $('reviewed').disabled=value||!track?.samples.length;$('track').disabled=value||!source;$('analyze').disabled=value||!track;$('play-track').disabled=value||!track?.samples.length;$('correct').disabled=value||correctionFrame===null;$('download-labels').disabled=value||!segments.length;}
 function readBox(){return ['x','y','w','h'].map(id=>Number($(id).value));}
 function draw(){
  if(!video.videoWidth)return;
  canvas.width=video.videoWidth;canvas.height=video.videoHeight;
  ctx.clearRect(0,0,canvas.width,canvas.height);
  let box=selection;
+ if(reviewPlayback&&track?.failure_time!==null&&track?.failure_time!==undefined&&video.currentTime>=track.failure_time){video.pause();reviewPlayback=false;video.currentTime=track.failure_time;status('המעקב נעצר. לחצו על תיקון וסמנו שוב את אותו חלק של המוט.');}
  if(track?.samples.length){let index=0;for(let i=0;i<track.samples.length;i++){if(track.samples[i].t<=video.currentTime)index=i;else break;}box=track.boxes[index];
- if(video.currentTime>track.samples[track.samples.length-1].t+.15){ctx.fillStyle='#ff596a';ctx.font='22px sans-serif';ctx.fillText('TRACK NOT AVAILABLE',12,30);return;}}
- if(box){ctx.strokeStyle=track?'#65dbba':'#ffda80';ctx.lineWidth=Math.max(2,canvas.width/400);ctx.strokeRect(box.x,box.y,box.w,box.h);}
+ if(video.currentTime<track.samples[0].t-.001||video.currentTime>track.samples[track.samples.length-1].t+.05||(track.failure_time!==null&&video.currentTime>=track.failure_time-.001)){ctx.fillStyle='#ff596a';ctx.font='22px sans-serif';ctx.fillText('TRACK NOT AVAILABLE',12,30);return;}}
+ if(box){ctx.strokeStyle=track?'#65dbba':'#ffda80';ctx.lineWidth=Math.max(2,canvas.width/400);ctx.strokeRect(box.x,box.y,box.w,box.h);const cx=box.x+box.w/2,cy=box.y+box.h/2;ctx.beginPath();ctx.arc(cx,cy,6,0,Math.PI*2);ctx.moveTo(cx-12,cy);ctx.lineTo(cx+12,cy);ctx.moveTo(cx,cy-12);ctx.lineTo(cx,cy+12);ctx.stroke();}
 }
 // Place overlay over the actual letterboxed image; native playback controls remain outside.
 function layout(){if(!video.videoWidth)return;const stage=video.parentElement;stage.style.aspectRatio=`${video.videoWidth}/${video.videoHeight}`;canvas.style.height='100%';draw();}
 function coord(e){const r=video.getBoundingClientRect();return {x:Math.max(0,Math.min(video.videoWidth-1,(e.clientX-r.left)/r.width*video.videoWidth)),y:Math.max(0,Math.min(video.videoHeight-1,(e.clientY-r.top)/r.height*video.videoHeight))};}
-canvas.addEventListener('pointerdown',e=>{if(busy||!source||!video.videoWidth)return;video.pause();if(video.currentTime>.05){video.currentTime=0;status('בחרו ROI בפריים הראשון בלבד. חזרנו לתחילת הסרטון.');return;}invalidate();drag=coord(e);canvas.setPointerCapture(e.pointerId);});
-canvas.addEventListener('pointermove',e=>{if(!drag)return;const p=coord(e);selection={x:Math.round(Math.min(p.x,drag.x)),y:Math.round(Math.min(p.y,drag.y)),w:Math.round(Math.abs(p.x-drag.x)),h:Math.round(Math.abs(p.y-drag.y))};['x','y','w','h'].forEach(id=>$(id).value=selection[id]);draw();});
+function setSelection(box){selection=box;['x','y','w','h'].forEach(id=>$(id).value=box[id]);draw();}
+function markPoint(p){const n=Math.max(16,Math.min(160,Number($('point-size').value)||40,video.videoWidth,video.videoHeight));const w=Math.round(n),h=w;setSelection({x:Math.max(0,Math.min(video.videoWidth-w,Math.round(p.x-w/2))),y:Math.max(0,Math.min(video.videoHeight-h,Math.round(p.y-h/2))),w,h});}
+function anchor(){anchorTime=visibleTime&&Math.abs(visibleTime-video.currentTime)<.05?visibleTime:video.currentTime;anchorFrame=correctionFrame!==null&&Math.abs(anchorTime-correctionTime)<.025?correctionFrame:null;$('anchor-status').textContent=`נקודת התחלה: ${anchorTime.toFixed(3)} שנ׳ · גררו את הסמן לדיוק ואז לחצו על מעקב.`;}
+canvas.addEventListener('pointerdown',e=>{if(busy||!source||!video.videoWidth||video.seeking)return;e.preventDefault();video.pause();reviewPlayback=false;invalidate();anchor();drag=coord(e);canvas.setPointerCapture(e.pointerId);if($('selection-mode').value==='point')markPoint(drag);});
+canvas.addEventListener('pointermove',e=>{if(!drag)return;const p=coord(e);if($('selection-mode').value==='point')markPoint(p);else setSelection({x:Math.round(Math.min(p.x,drag.x)),y:Math.round(Math.min(p.y,drag.y)),w:Math.max(8,Math.round(Math.abs(p.x-drag.x))),h:Math.max(8,Math.round(Math.abs(p.y-drag.y)))});});
+canvas.addEventListener('keydown',e=>{const delta={ArrowLeft:[-1,0],ArrowRight:[1,0],ArrowUp:[0,-1],ArrowDown:[0,1]}[e.key];if(!delta||busy||!selection)return;e.preventDefault();video.pause();invalidate();anchor();setSelection({...selection,x:Math.max(0,Math.min(video.videoWidth-selection.w,selection.x+delta[0])),y:Math.max(0,Math.min(video.videoHeight-selection.h,selection.y+delta[1]))});});
 const endDrag=()=>{drag=null;};canvas.addEventListener('pointerup',endDrag);canvas.addEventListener('pointercancel',endDrag);
-for(const id of ['x','y','w','h'])$(id).addEventListener('input',()=>{invalidate();const [x,y,w,h]=readBox();selection={x,y,w,h};draw();});
-$('source').addEventListener('change',()=>{if(busy)return;source=$('source').files[0]||null;if(url)URL.revokeObjectURL(url);invalidate();selection=null;if(source){url=URL.createObjectURL(source);video.src=url;}busyState(false);status('');});
+$('zoom').addEventListener('change',()=>{video.parentElement.style.width=`${Number($('zoom').value)*100}%`;layout();});
+for(const [id,step] of [['back-frame',-1],['next-frame',1]])$(id).addEventListener('click',()=>{video.pause();reviewPlayback=false;video.currentTime=Math.max(0,Math.min(video.duration,video.currentTime+step/30));$('anchor-status').textContent='הזזה בקירוב של 1/30 שנייה; סמנו את המוט בפריים המוצג.';});
+$('play-track').addEventListener('click',()=>{if(!track?.samples.length)return;video.currentTime=track.samples[0].t;reviewPlayback=true;video.play().catch(e=>status(e.message));});
+$('correct').addEventListener('click',()=>{if(correctionFrame===null)return;video.pause();reviewPlayback=false;video.currentTime=correctionTime;invalidate();selection=null;anchorFrame=correctionFrame;anchorTime=correctionTime;status('סמנו שוב את אותו קצה מוט בפריים העצירה, ואז לחצו על מעקב.');draw();busyState(false);});
+function saveJSON(value,name){const u=URL.createObjectURL(new Blob([JSON.stringify(value,null,2)],{type:'application/json'}));const a=document.createElement('a');a.href=u;a.download=name;a.click();setTimeout(()=>URL.revokeObjectURL(u),1000);}
+$('download-labels').addEventListener('click',()=>{if(segments.length)saveJSON({schema:'dc-vbt-manual-segments-1',validated:false,segments,warning:'Independent candidate segments; no interpolation or velocity across manual restarts.'},'DoctorCoach-VBT-markings.json');});
+for(const id of ['x','y','w','h'])$(id).addEventListener('input',()=>{invalidate();anchor();const [x,y,w,h]=readBox();selection={x,y,w,h};draw();});
+$('source').addEventListener('change',()=>{if(busy)return;source=$('source').files[0]||null;if(url)URL.revokeObjectURL(url);invalidate();selection=null;segments=[];anchorTime=0;anchorFrame=null;correctionFrame=null;correctionTime=null;reviewPlayback=false;visibleTime=0;$('anchor-status').textContent='בחרו נקודה על המוט.';video.parentElement.style.width='100%';$('zoom').value='1';if(source){url=URL.createObjectURL(source);video.src=url;}busyState(false);status('');});
 video.addEventListener('loadedmetadata',layout);video.addEventListener('timeupdate',draw);video.addEventListener('seeked',draw);window.addEventListener('resize',layout);
-if(video.requestVideoFrameCallback){const tick=()=>{draw();video.requestVideoFrameCallback(tick);};video.requestVideoFrameCallback(tick);}
+if(video.requestVideoFrameCallback){const tick=(_,metadata)=>{visibleTime=metadata.mediaTime;draw();video.requestVideoFrameCallback(tick);};video.requestVideoFrameCallback(tick);}
 $('track').addEventListener('click',async()=>{
  if(!source||busy)return;if(!$('consent').checked){status('נדרש אישור שימוש בסרטון.');return;}
  if(source.size>30*1024*1024||!Number.isFinite(video.duration)||video.duration>60){status('בחרו סרטון עד 30 MiB ועד 60 שניות.');return;}
- invalidate();busyState(true);status('מכינים מסלול מקומי…');
- try{const roi=readBox();track=await api('/api/track',source,{'X-ROI':JSON.stringify(roi),'X-Consent':'confirmed','Content-Type':'application/octet-stream'});
+ if(!selection){status('סמנו קודם נקודה על המוט.');return;}
+ video.pause();invalidate();reviewPlayback=false;busyState(true);status('מכינים מסלול מקומי…');
+ try{const roi=readBox();track=await api('/api/track',source,{'X-ROI':JSON.stringify(roi),'X-Start-Frame':String(anchorFrame??0),'X-Start-Time':String(anchorFrame===null?anchorTime:0),'X-Consent':'confirmed','Content-Type':'application/octet-stream'});
  status(`מצב: ${track.status} · ${track.samples.length} נקודות · מצלמה: ${track.camera_stable?'יציבה לפי סף ניסיוני':'לא אומתה'}`);
- $('reviewed').disabled=!track.samples.length;video.currentTime=0;draw();}
+ correctionFrame=track.failure_frame;correctionTime=track.failure_time;segments.push({source_sha256:track.source_sha256,start_frame:track.start_frame,anchor_time:anchorTime,roi:track.roi,status:track.status,failure_frame:track.failure_frame,failure_time:track.failure_time,samples:track.samples,manual_anchor:true});
+ $('reviewed').disabled=!track.samples.length;video.currentTime=track.samples[0]?.t??anchorTime;draw();}
  catch(e){status(e.message);}finally{busyState(false);}
 });
 for(const id of ['reviewed','metres','pixels','pixel-error','plane'])$(id).addEventListener('change',()=>{report=null;$('download').disabled=true;$('results').textContent='הקלט השתנה; יש להריץ ניתוח מחדש.';});

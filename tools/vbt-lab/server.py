@@ -55,16 +55,18 @@ class Handler(BaseHTTPRequestHandler):
             if route=='/api/track':
                 if self.headers.get('X-Consent')!='confirmed':return self.reply(400,{'error':'Confirm rights to use this test video'})
                 box=json.loads(self.headers.get('X-ROI','null'))
+                start_frame=int(self.headers.get('X-Start-Frame','0'))
+                start_time=float(self.headers.get('X-Start-Time','0'))
                 if not isinstance(box,list) or len(box)!=4 or any(type(x)is not int for x in box):return self.reply(400,{'error':'Choose an ROI'})
                 with tempfile.TemporaryDirectory(prefix='dc-vbt-private-') as tmp:
-                    file=Path(tmp)/'input.video';file.write_bytes(body);track=track_video(file,Box(*box))
+                    file=Path(tmp)/'input.video';file.write_bytes(body);track=track_video(file,Box(*box),start_frame=start_frame,start_time=start_time)
                 track['source_sha256']=hashlib.sha256(body).hexdigest();track['roi']=box
                 job=secrets.token_urlsafe(16)
                 # A new track invalidates the former overlay attestation/calibration.
                 self.server.jobs.clear();self.server.jobs[job]=track
                 return self.reply(200,{'job':job,'samples':[asdict(s) for s in track['samples']],
                     'boxes':[asdict(b) for b in track['boxes']],'status':track['status'],
-                    'camera_stable':track['camera_stable'],'identity_verified':False,'source_sha256':track['source_sha256'],'roi':box})
+                    'camera_stable':track['camera_stable'],'identity_verified':False,'source_sha256':track['source_sha256'],'roi':box,'start_frame':track['start_frame'],'failure_frame':track['failure_frame'],'failure_time':track['failure_time']})
             if route=='/api/judge':
                 if size>32768:return self.reply(413,{'error':'Checklist too large'})
                 o=json.loads(body)
@@ -91,7 +93,7 @@ class Handler(BaseHTTPRequestHandler):
                     cal=Calibration.from_reference(float(raw['metres']),float(raw['pixels']),float(raw.get('error',2)),
                         same_plane=raw.get('same_plane') is True,fixed_camera=raw.get('fixed_camera') is True,reference='manual lab reference')
                 out=analyze(track['samples'],track_status=track['status'],camera_stable=track['camera_stable'],identity_reviewed=options.get('reviewed') is True,calibration=cal)
-                out['provenance']={'source_sha256':track['source_sha256'],'roi':track['roi'],'algorithm':'roi-template-v1'}
+                out['provenance']={'source_sha256':track['source_sha256'],'roi':track['roi'],'algorithm':'roi-template-v1','start_frame':track['start_frame'],'manual_restart':track['start_frame']>0}
                 return self.reply(200,out)
             return self.reply(404,{'error':'Not found'})
         except (ValueError,KeyError,TypeError,OverflowError):return self.reply(400,{'error':'Invalid input or unreadable/unsupported source; no measurement accepted'})

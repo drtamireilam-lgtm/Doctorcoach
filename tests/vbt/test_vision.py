@@ -84,3 +84,33 @@ def test_featureless_background_cannot_confirm_camera_stability():
     _,_,patch=fixture();image=np.full((240,320,3),30,np.uint8);image[100:124,100:124]=patch
     t=RoiTracker(image,Box(100,100,24,24));t.update(image,0)
     assert not t.camera_stable
+
+
+def test_manual_restart_uses_exact_frame_and_original_timestamps(tmp_path):
+    frame,_,_=fixture();file=tmp_path/'restart.avi'
+    writer=cv2.VideoWriter(str(file),cv2.VideoWriter_fourcc(*'MJPG'),30,(320,240))
+    for i in range(24):writer.write(frame(y=160-i*2))
+    writer.release()
+    track=track_video(file,Box(140,140,24,24),start_frame=10)
+    assert track['start_frame']==10
+    assert len(track['samples'])==14
+    assert track['samples'][0].t==pytest.approx(10/30,abs=.001)
+    assert track['samples'][0].y==pytest.approx(152,abs=1)
+    assert track['failure_frame'] is None
+    timed=track_video(file,Box(140,140,24,24),start_time=10/30)
+    assert timed['start_frame']==10
+    for bad in [-1,1800,1.2,True]:
+        with pytest.raises(ValueError):track_video(file,Box(140,140,24,24),start_frame=bad)
+    for bad in [-1,float('nan'),61]:
+        with pytest.raises(ValueError):track_video(file,Box(140,140,24,24),start_time=bad)
+
+
+def test_lost_track_reports_exact_correction_frame(tmp_path):
+    frame,background,_=fixture();file=tmp_path/'lost.avi'
+    writer=cv2.VideoWriter(str(file),cv2.VideoWriter_fourcc(*'MJPG'),30,(320,240))
+    for i in range(15):writer.write(frame(y=160-i*2) if i<8 else background)
+    writer.release()
+    track=track_video(file,Box(140,160,24,24))
+    assert len(track['samples'])==8
+    assert track['failure_frame']==8
+    assert track['failure_time']==pytest.approx(8/30,abs=.001)

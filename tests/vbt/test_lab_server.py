@@ -55,6 +55,15 @@ def test_server_full_upload_track_and_measurement_suppression(lab,tmp_path):
     with request(lab,'/api/analyze',json.dumps({'job':track['job'],'reviewed':True,'calibration':{'metres':.45,'pixels':150,'error':1,'same_plane':True,'fixed_camera':True}}).encode()) as r:out=json.load(r)
     assert out['repetitions'][0]['measurement']['mean_mps']==pytest.approx(.18,abs=.01)
     assert out['validated'] is False
+    # Restart is a distinct job bound to the same source, never a stitched report.
+    with request(lab,'/api/track',file.read_bytes(),extra={'X-ROI':'[100,80,24,24]','X-Consent':'confirmed','X-Start-Frame':'10'}) as r:resumed=json.load(r)
+    assert resumed['start_frame']==10 and len(resumed['samples'])==10
+    assert resumed['source_sha256']==track['source_sha256']
+    with pytest.raises(urllib.error.HTTPError) as e:request(lab,'/api/analyze',json.dumps({'job':track['job'],'reviewed':True}).encode())
+    assert e.value.code==409
+    with request(lab,'/api/analyze',json.dumps({'job':resumed['job'],'reviewed':False}).encode()) as r:out=json.load(r)
+    assert out['provenance']['manual_restart'] is True
+    assert all(rep['measurement']['mean_mps'] is None for rep in out['repetitions'])
 
 
 def test_effort_endpoint_requires_personal_evidence(lab):

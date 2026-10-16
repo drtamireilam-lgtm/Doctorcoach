@@ -78,19 +78,29 @@ class RoiTracker:
         return bool(self.camera_motion) and all(v is not None and v<=2 for v in self.camera_motion)
 
 
-def track_video(filename,box,*,max_frames=1800):
+def track_video(filename,box,*,max_frames=1800,start_frame=0,start_time=0):
+    if type(start_frame) is not int or not 0<=start_frame<1800:
+        raise ValueError("Invalid start frame")
+    if not math.isfinite(start_time) or not 0<=start_time<=60:raise ValueError("Invalid start time")
     cap=cv2.VideoCapture(str(filename))
     try:
+        # Decode sequentially: do not trust codec keyframe seeking for correction anchors.
+        for _ in range(start_frame):
+            if not cap.read()[0]:raise ValueError("Start frame outside video")
         ok,frame=cap.read()
+        while ok and float(cap.get(cv2.CAP_PROP_POS_MSEC))/1000 < start_time-0.0001:
+            ok,frame=cap.read();start_frame+=1
+            if start_frame>=1800:raise ValueError("Start frame outside limit")
         if not ok:raise ValueError('Cannot decode video')
         if frame.shape[0]*frame.shape[1]>3840*2160:raise ValueError('Video resolution exceeds research limit')
-        tracker=RoiTracker(frame,box);samples=[];boxes=[];status='CANDIDATE_ONLY';index=0
+        tracker=RoiTracker(frame,box);samples=[];boxes=[];status='CANDIDATE_ONLY';index=start_frame;failure_time=None;failure_frame=None
         while ok:
             if index>=max_frames:status='FRAME_LIMIT';break
             t=float(cap.get(cv2.CAP_PROP_POS_MSEC))/1000
             sample,status=tracker.update(frame,t)
-            if sample is None:break
+            if sample is None:
+                failure_time=t;failure_frame=index;break
             samples.append(sample);boxes.append(tracker.box)
             ok,frame=cap.read();index+=1
-        return {'samples':samples,'boxes':boxes,'status':status,'camera_stable':tracker.camera_stable,'identity_verified':False}
+        return {'samples':samples,'boxes':boxes,'status':status,'camera_stable':tracker.camera_stable,'identity_verified':False,'start_frame':start_frame,'failure_frame':failure_frame,'failure_time':failure_time}
     finally:cap.release()

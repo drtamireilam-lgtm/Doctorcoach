@@ -7,7 +7,7 @@ Date: 2026-10-17. Scope: the isolated `feature/vbt-engine` reference/lab impleme
 | Check | Actual result | What it establishes |
 |---|---|---|
 | Original engine baseline | 14 passed | Existing mathematical/quality gates work on their fixtures |
-| Python research suite | 55 passed, 0 failed | Numeric edge cases, track loss/ambiguity, camera drift, timestamps, segmentation, personal-calibration scope and held-out failure, checklist chronology, cue ordering/freshness/opt-in, local HTTP access and synthetic upload pipeline |
+| Python research suite | 57 passed, 0 failed | Numeric edge cases, track loss/ambiguity, camera drift, timestamps, segmentation, personal-calibration scope and held-out failure, checklist chronology, cue ordering/freshness/opt-in, local HTTP access and synthetic upload pipeline |
 | Encoded-video benchmark | 36 passed, 0 failed | Generated textured patch on generated background at 24/30/60 FPS; clean localization/velocity and rejection of occlusion, duplicate object and camera movement |
 | Chromium desktop workflow | Passed | Synthetic WebM upload/decode, ROI tracking, withheld measurement, manual scale/review, report download, training mode, explicit speech dispatch (mocked), unknown checklist, personal-calibration input, source reset and 390/1280px widths |
 | JavaScript syntax and Python compilation | Passed | Parse/compile checks, not device behavior |
@@ -36,3 +36,7 @@ Chromium uses generated WebM because this Linux headless build did not decode th
 7. **Product and privacy:** actual Windows/macOS/iOS/Android acceptance tests, accessibility testing, isolated consent/retention rules, packaging, threat assessment for untrusted media and explicit product approval before any application integration. No production or pilot deployment is authorized by this research branch.
 
 No release-ready flag is set by these synthetic tests. All new reports retain `validated: false`.
+
+## Interactive annotation follow-up
+
+Python suite now has 57 passing tests. New checks cover exact frame restart, original timestamps, time-based start, invalid start values, failure-frame reporting, separate HTTP jobs and reset measurement gates. Chromium integration additionally exercises centre click, loss-paused replay, correction at the failed frame, restarted tracking, two-segment annotation export, zoom, touch emulation and keyboard adjustment. Desktop and 390px emulation passed; Safari/physical touch devices remain untested. Sequential decoding avoids codec keyframe-seek offsets; browser transport ±1/30 is explicitly approximate. Restarted segments are not a complete validated repetition and must not be stitched through lost intervals.
