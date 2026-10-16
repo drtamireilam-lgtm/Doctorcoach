@@ -5,7 +5,7 @@ export function trimRange(duration:number,start:number,end:number){
  return {start,end};
 }
 /** Runs locally only. Never returns the original on failure and never uses a network upload. */
-export async function trimVideoFile(file:File,range:{start:number;end:number},options:{signal:AbortSignal;keepAudio:boolean;onProgress:(n:number)=>void},load:()=>Promise<typeof import('mediabunny')>=()=>import('mediabunny')){
+export async function trimVideoFile(file:File,range:{start:number;end:number},options:{signal:AbortSignal;keepAudio:boolean;onProgress:(n:number)=>void;brand?:{qr:boolean}},load:()=>Promise<typeof import('mediabunny')>=()=>import('mediabunny')){
  if(file.size>MAX_TRIM_SOURCE)throw new Error('לחיתוך במכשיר בחרו סרטון עד 200 MB.');
  options.signal.throwIfAborted();
  const {Input,Output,BlobSource,ALL_FORMATS,Mp4OutputFormat,BufferTarget,Conversion}=await load();
@@ -17,7 +17,8 @@ export async function trimVideoFile(file:File,range:{start:number;end:number},op
   if(!await input.getPrimaryVideoTrack())throw new Error('לא נמצא ערוץ וידאו בקובץ.');
   options.signal.throwIfAborted();
   const target=new BufferTarget();const output=new Output({format:new Mp4OutputFormat(),target});
-  conversion=await Conversion.init({input,output,tracks:'primary',trim,copy:false,tags:{},video:{codec:'avc',forceTranscode:true},audio:options.keepAudio?{codec:'aac',forceTranscode:true}:{discard:true}});
+  const branding=options.brand?await (await import('./video-branding.ts')).createVideoBranding(options.brand.qr):undefined;
+  conversion=await Conversion.init({input,output,tracks:'primary',trim,copy:false,tags:{},video:{codec:'avc',forceTranscode:true,...(branding?{process:branding,allowTransformationMetadata:false}:{})},audio:options.keepAudio?{codec:'aac',forceTranscode:true}:{discard:true}});
   options.signal.throwIfAborted();
   if(!conversion.isValid||conversion.discardedTracks.some(t=>t.reason!=='discarded_by_user'))throw new Error('הדפדפן אינו תומך בחיתוך הקידוד הזה. נסו דפדפן מעודכן; המקור לא הועלה. אפשר לבחור חיתוך ללא קול במפורש.');
   options.signal.addEventListener('abort',cancel,{once:true});
