@@ -165,7 +165,8 @@ export function trainingStore(db: D1Database,config:ProgramAuthorConfig={}) {
         if(payload.autoNextLoad===true&&payload.done===true){
          const item=items.find(i=>i.exerciseId===payload.exerciseId)!;const index=Number(payload.setIndex);
          const suggestion=nextSetLoad(item,index,{...session,items},typeof payload.step==='number'?payload.step:2.5);
-         if(suggestion.weight!==null)items=items.map(i=>i!==item?i:{...i,results:i.results.map((r,j)=>j===index+1?{...r,weight:suggestion.weight!,actualRpe:null}:r)});
+         const weight=payload.loadMode==='calculated'?suggestion.calculatedWeight:suggestion.weight;
+         if(weight!==null&&weight>0&&weight<=1000&&item.results[index+1]?.actualRpe==null&&(item.results[index+1]?.painDuring??0)===0)items=items.map(i=>i!==item?i:{...i,results:i.results.map((r,j)=>j===index+1?{...r,weight,actualRpe:null}:r)});
         }
       }
       else if(payload.action==='effortScale'){

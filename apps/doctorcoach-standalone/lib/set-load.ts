@@ -3,6 +3,14 @@ import type {SessionExercise,SetResult,TrainingSession} from './training.ts';
 import {duringPain} from './workout-context.ts';
 import {workoutSection} from './workout-sections.ts';
 export const loadSteps=[0.25,0.5,1,1.25,2.5,5];
+/** Recalculate the unperformed set from its saved predecessor, never from its own target as actual effort. */
+export function automaticSetDraft(item:SessionExercise,index:number,session:Pick<TrainingSession,'before'|'after'>&Partial<Pick<TrainingSession,'items'>>,draft:SetResult&{targetRpe:number|null},enabled=true){
+ if(!enabled||index<1||draft.done||draft.actualRpe!=null||(draft.painDuring??0)>0)return draft;
+ const adjusted={...item,targetRpes:Array.from({length:item.results.length},(_,n)=>n===index?draft.targetRpe:targetRpeForSet(item,n)),results:item.results.map((r,n)=>n===index?draft:r)};
+ const items=(session.items??[item]).map(i=>i.exerciseId===item.exerciseId?adjusted:i);
+ const weight=nextSetLoad(adjusted,index-1,{...session,items}).calculatedWeight;
+ return weight!==null&&weight>0&&weight<=1000?{...draft,weight}:draft;
+}
 const effort=(n:unknown):n is number=>typeof n==='number'&&Number.isFinite(n)&&n>=6&&n<=10&&Number.isInteger(n*2);
 const factor=(reps:number,rpe:number)=>{const effective=reps+10-rpe;return effective===1?1:1+effective/30;};
 /** RIR-adjusted Epley heuristic, not a validated individual 1RM measurement. */
