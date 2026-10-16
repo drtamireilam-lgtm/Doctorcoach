@@ -78,6 +78,7 @@ export const trainingSessions = sqliteTable('training_sessions', {
   after: integer('pain_after'),
   readinessJson: text('readiness_json'),
   followupJson: text('followup_json'),
+  finishFeedbackJson: text('finish_feedback_json'),
   plannedSets: integer('planned_sets').notNull(),
   completedSets: integer('completed_sets').notNull().default(0),
   version: integer('version').notNull().default(1),
