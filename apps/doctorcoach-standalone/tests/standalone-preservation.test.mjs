@@ -1,8 +1,8 @@
 import test from 'node:test';import assert from 'node:assert/strict';import {mkdtemp,writeFile,mkdir,rm} from 'node:fs/promises';import {tmpdir} from 'node:os';import path from 'node:path';import {DatabaseSync} from 'node:sqlite';
 import {snapshot,compareSnapshots} from '../standalone/scripts/snapshot.mjs';import {deploymentGate} from '../standalone/scripts/deployment-gate.mjs';
 test('snapshot preserves exact 64-bit integers and distinguishes SQLite value types',async t=>{
- const dir=await mkdtemp(path.join(tmpdir(),'dc-integer-'));t.after(()=>rm(dir,{recursive:true,force:true}));
- const file=path.join(dir,'numbers.sqlite'),db=new DatabaseSync(file);t.after(()=>db.close());
+ const dir=await mkdtemp(path.join(tmpdir(),'dc-integer-'));
+ const file=path.join(dir,'numbers.sqlite'),db=new DatabaseSync(file);t.after(async()=>{db.close();await rm(dir,{recursive:true,force:true});});
  db.exec('CREATE TABLE original(value);INSERT INTO original VALUES(9223372036854775807)');
  const large=await snapshot(file);db.exec('UPDATE original SET value=9223372036854775806');
  const different=await snapshot(file);assert.throws(()=>compareSnapshots(large,different));

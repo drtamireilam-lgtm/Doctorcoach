@@ -22,14 +22,14 @@ test('actual SQLite backup and restore preserve application rows and private byt
  session=await f.training.patch(client.userId,{id:session.id,version:session.version,action:'finish',after:0});assert.equal(session.status,'completed');assert.equal(session.items[0].results[0].actualRpe,7);
  // Identity schema is additive; existing owner IDs are never rewritten.
  f.sql.exec(await readFile(new URL('../standalone/migrations/0001_identity.sql',import.meta.url),'utf8'));
- const dir=await mkdtemp(path.join(tmpdir(),'dc-link-restore-'));t.after(()=>rm(dir,{recursive:true,force:true}));
+ const dir=await mkdtemp(path.join(tmpdir(),'dc-link-restore-'));let restored; t.after(async()=>{restored?.close();await rm(dir,{recursive:true,force:true});});
  const sourceFile=path.join(dir,'backup.sqlite'),restoredFile=path.join(dir,'restored.sqlite');
  const oldObjects=path.join(dir,'source-files'),newObjects=path.join(dir,'restored-files');await mkdir(oldObjects);await mkdir(newObjects);
  const bytes=Buffer.from('SYNTHETIC PRIVATE VIDEO\x00\xff');await writeFile(path.join(oldObjects,'synthetic-video'),bytes);await copyFile(path.join(oldObjects,'synthetic-video'),path.join(newObjects,'synthetic-video'));
  await backup(f.sql,sourceFile);
  const saved=new DatabaseSync(sourceFile,{readOnly:true});try{await backup(saved,restoredFile);}finally{saved.close();}
  const before=await snapshot(sourceFile,oldObjects);assert.equal(compareSnapshots(before,await snapshot(restoredFile,newObjects)),true);
- const restored=new DatabaseSync(restoredFile);t.after(()=>restored.close());
+ restored=new DatabaseSync(restoredFile);
  const now=Date.now(),legacyIssuer='sites:synthetic-restore',externalIssuer='https://synthetic.example.test/auth/v1';
  const proof=async(issuer,subject)=>verifyIdentity('synthetic-proof',async()=>({issuer,subject,authenticatedAt:now,expiresAt:now+300000}),[issuer],now);
  const legacy=await proof(legacyIssuer,client.userId),external=await proof(externalIssuer,'new-synthetic-subject');
