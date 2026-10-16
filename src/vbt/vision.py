@@ -33,7 +33,7 @@ class RoiTracker:
         self.template=gray[box.y:box.y+box.h,box.x:box.x+box.w].copy()
         if self.template.std()<8:raise ValueError('ROI has insufficient texture')
         self.shape=frame.shape;self.failed=False
-        self.previous=gray;self.camera_motion=[];self.camera_offset=np.zeros(2);self.last_time=None
+        self.previous=gray;self.flow_confirmed_frames=0;self.camera_motion=[];self.camera_offset=np.zeros(2);self.last_time=None
 
     def update(self,frame,t):
         if self.failed:return None,'TRACK_LOST'
@@ -45,12 +45,32 @@ class RoiTracker:
         x1,y1=min(gray.shape[1],b.x+b.w+r),min(gray.shape[0],b.y+b.h+r)
         response=cv2.matchTemplate(gray[y0:y1,x0:x1],self.template,cv2.TM_CCOEFF_NORMED)
         _,score,_,loc=cv2.minMaxLoc(response)
-        if not math.isfinite(score) or score<self.min_score:self.failed=True;return None,'OCCLUDED_OR_CHANGED'
+        if not math.isfinite(score) or score<.65:self.failed=True;return None,'OCCLUDED_OR_CHANGED'
         alternatives=response.copy();lx,ly=loc;exclusion=max(3,min(b.w,b.h)//3)
         alternatives[max(0,ly-exclusion):ly+exclusion+1,max(0,lx-exclusion):lx+exclusion+1]=-1
         margin=score-float(alternatives.max())
         if margin<self.min_margin:self.failed=True;return None,'AMBIGUOUS_OBJECT'
         new=Box(x0+lx,y0+ly,b.w,b.h)
+        if score<self.min_score:
+            # Keep the ORIGINAL template: never adapt it into a rack/background patch.
+            # A lower appearance match is a candidate only with independent short-term
+            # bidirectional feature-flow consensus in the previous object ROI.
+            mask=np.zeros_like(gray);mask[b.y:b.y+b.h,b.x:b.x+b.w]=255
+            points=cv2.goodFeaturesToTrack(self.previous,60,.02,3,mask=mask)
+            agreed=False
+            if points is not None and len(points)>=8:
+                nxt,ok,_=cv2.calcOpticalFlowPyrLK(self.previous,gray,points,None)
+                if nxt is not None:
+                    back,back_ok,_=cv2.calcOpticalFlowPyrLK(gray,self.previous,nxt,None)
+                    if back is not None:
+                        valid=(ok.ravel()==1)&(back_ok.ravel()==1)&(np.linalg.norm(back-points,axis=2).ravel()<.75)
+                        if valid.sum()>=8 and valid.mean()>=.7:
+                            shifts=(nxt-points)[valid,0];offset=np.median(shifts,axis=0)
+                            consensus=np.linalg.norm(shifts-offset,axis=1)<1.5
+                            spread=np.ptp(points[valid,0][consensus],axis=0) if consensus.sum()>=8 else np.zeros(2)
+                            agreed=bool(consensus.mean()>=.8 and min(spread)>=8 and np.linalg.norm(offset-[new.x-b.x,new.y-b.y])<=2.5)
+            if not agreed:self.failed=True;return None,'APPEARANCE_FLOW_DISAGREEMENT'
+            self.flow_confirmed_frames+=1
         # Estimate camera motion using background features outside both old/new ROIs.
         mask=np.full(gray.shape,255,np.uint8)
         for box in (b,new):
@@ -102,5 +122,5 @@ def track_video(filename,box,*,max_frames=1800,start_frame=0,start_time=0):
                 failure_time=t;failure_frame=index;break
             samples.append(sample);boxes.append(tracker.box)
             ok,frame=cap.read();index+=1
-        return {'samples':samples,'boxes':boxes,'status':status,'camera_stable':tracker.camera_stable,'identity_verified':False,'start_frame':start_frame,'failure_frame':failure_frame,'failure_time':failure_time}
+        return {'samples':samples,'boxes':boxes,'status':status,'camera_stable':tracker.camera_stable,'identity_verified':False,'start_frame':start_frame,'failure_frame':failure_frame,'failure_time':failure_time,'flow_confirmed_frames':tracker.flow_confirmed_frames}
     finally:cap.release()

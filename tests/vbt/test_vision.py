@@ -114,3 +114,32 @@ def test_lost_track_reports_exact_correction_frame(tmp_path):
     assert len(track['samples'])==8
     assert track['failure_frame']==8
     assert track['failure_time']==pytest.approx(8/30,abs=.001)
+
+
+def rotated_fixture():
+    rng=np.random.default_rng(25)
+    background=rng.integers(10,60,(240,320,3),dtype=np.uint8)
+    patch=rng.integers(80,240,(40,40,3),dtype=np.uint8)
+    first=background.copy();first[140:180,140:180]=patch
+    second=background.copy()
+    second[138:178,140:180]=cv2.warpAffine(patch,cv2.getRotationMatrix2D((20,20),2,1),(40,40),borderMode=cv2.BORDER_REFLECT)
+    return first,second
+
+
+def test_small_rotation_requires_flow_and_retains_raw_uncertainty():
+    first,second=rotated_fixture();tracker=RoiTracker(first,Box(140,140,40,40))
+    tracker.update(first,0);sample,status=tracker.update(second,1/30)
+    assert status=='CANDIDATE_ONLY' and tracker.flow_confirmed_frames==1
+    assert sample.y==pytest.approx(158,abs=1)
+    assert .65<=sample.score<.8 # Flow support must not inflate visual confidence.
+    cal=Calibration.from_reference(.45,150,1,same_plane=True,fixed_camera=True,reference='synthetic')
+    from vbt.motion import Sample
+    points=[Sample(i/30,160,160-i*2,sample.score) for i in range(10)]
+    assert velocity(points,cal,camera_stable=True,identity_reviewed=True)['mean_mps'] is None
+
+
+def test_weak_template_without_flow_consensus_stops(monkeypatch):
+    first,second=rotated_fixture();tracker=RoiTracker(first,Box(140,140,40,40));tracker.update(first,0)
+    monkeypatch.setattr(cv2,'goodFeaturesToTrack',lambda *a,**k:None)
+    assert tracker.update(second,1/30)[1]=='APPEARANCE_FLOW_DISAGREEMENT'
+    assert tracker.update(first,2/30)[1]=='TRACK_LOST'

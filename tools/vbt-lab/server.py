@@ -66,7 +66,7 @@ class Handler(BaseHTTPRequestHandler):
                 self.server.jobs.clear();self.server.jobs[job]=track
                 return self.reply(200,{'job':job,'samples':[asdict(s) for s in track['samples']],
                     'boxes':[asdict(b) for b in track['boxes']],'status':track['status'],
-                    'camera_stable':track['camera_stable'],'identity_verified':False,'source_sha256':track['source_sha256'],'roi':box,'start_frame':track['start_frame'],'failure_frame':track['failure_frame'],'failure_time':track['failure_time']})
+                    'camera_stable':track['camera_stable'],'identity_verified':False,'source_sha256':track['source_sha256'],'roi':box,'flow_confirmed_frames':track['flow_confirmed_frames'],'start_frame':track['start_frame'],'failure_frame':track['failure_frame'],'failure_time':track['failure_time']})
             if route=='/api/judge':
                 if size>32768:return self.reply(413,{'error':'Checklist too large'})
                 o=json.loads(body)
@@ -92,8 +92,8 @@ class Handler(BaseHTTPRequestHandler):
                 if raw is not None:
                     cal=Calibration.from_reference(float(raw['metres']),float(raw['pixels']),float(raw.get('error',2)),
                         same_plane=raw.get('same_plane') is True,fixed_camera=raw.get('fixed_camera') is True,reference='manual lab reference')
-                out=analyze(track['samples'],track_status=track['status'],camera_stable=track['camera_stable'],identity_reviewed=options.get('reviewed') is True,calibration=cal)
-                out['provenance']={'source_sha256':track['source_sha256'],'roi':track['roi'],'algorithm':'roi-template-v1','start_frame':track['start_frame'],'manual_restart':track['start_frame']>0}
+                out=analyze(track['samples'],track_status=('FLOW_ASSISTED_REVIEW_ONLY' if track.get('flow_confirmed_frames',0) else track['status']),camera_stable=track['camera_stable'],identity_reviewed=options.get('reviewed') is True,calibration=cal)
+                out['provenance']={'source_sha256':track['source_sha256'],'roi':track['roi'],'algorithm':'roi-template-flow-v2','start_frame':track['start_frame'],'manual_restart':track['start_frame']>0}
                 return self.reply(200,out)
             return self.reply(404,{'error':'Not found'})
         except (ValueError,KeyError,TypeError,OverflowError):return self.reply(400,{'error':'Invalid input or unreadable/unsupported source; no measurement accepted'})

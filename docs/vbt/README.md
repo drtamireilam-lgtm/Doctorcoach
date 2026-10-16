@@ -48,3 +48,7 @@ node --check tools/vbt-lab/lab.js
 Optional desktop browser integration: install `playwright==1.56.0`, run `python -m playwright install chromium`, ensure `ffmpeg` is available, then `python tools/vbt-lab/browser_check.py`. This generates private synthetic clips and runs a local server, without external test data.
 
 See [IMPLEMENTATION.md](IMPLEMENTATION.md), [VALIDATION.md](VALIDATION.md), [PROGRESS.md](PROGRESS.md). Work remains research-only until separate real-world validation and review.
+
+## Guarded appearance / feature-flow tracking
+
+The tracker keeps the original ROI template. Appearance scores below 0.85 but at least 0.65 are accepted as **overlay candidates only** when forward/backward optical flow within the old ROI agrees with the template displacement: >=8 points, >=70% valid, >=80% displacement consensus, spatial spread >=8px, forward/backward error <0.75px and displacement agreement <=2.5px. Ambiguity, camera motion and the absolute appearance floor still stop the track; the template is never adapted into the background. Raw confidence is not inflated. Any flow-assisted segment suppresses all metric velocity output in the CLI and HTTP analysis, even after manual review/scale. This improves annotation continuity, not validated metrology.

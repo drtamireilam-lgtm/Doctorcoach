@@ -55,6 +55,10 @@ def test_server_full_upload_track_and_measurement_suppression(lab,tmp_path):
     with request(lab,'/api/analyze',json.dumps({'job':track['job'],'reviewed':True,'calibration':{'metres':.45,'pixels':150,'error':1,'same_plane':True,'fixed_camera':True}}).encode()) as r:out=json.load(r)
     assert out['repetitions'][0]['measurement']['mean_mps']==pytest.approx(.18,abs=.01)
     assert out['validated'] is False
+    lab.jobs[track['job']]['flow_confirmed_frames']=1
+    with request(lab,'/api/analyze',json.dumps({'job':track['job'],'reviewed':True,'calibration':{'metres':.45,'pixels':150,'error':1,'same_plane':True,'fixed_camera':True}}).encode()) as r:assisted=json.load(r)
+    assert assisted['track_status']=='FLOW_ASSISTED_REVIEW_ONLY'
+    assert all(rep['measurement']['mean_mps'] is None for rep in assisted['repetitions'])
     # Restart is a distinct job bound to the same source, never a stitched report.
     with request(lab,'/api/track',file.read_bytes(),extra={'X-ROI':'[100,80,24,24]','X-Consent':'confirmed','X-Start-Frame':'10'}) as r:resumed=json.load(r)
     assert resumed['start_frame']==10 and len(resumed['samples'])==10

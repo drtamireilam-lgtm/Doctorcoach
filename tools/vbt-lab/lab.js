@@ -45,8 +45,8 @@ $('track').addEventListener('click',async()=>{
  if(!selection){status('סמנו קודם נקודה על המוט.');return;}
  video.pause();invalidate();reviewPlayback=false;busyState(true);status('מכינים מסלול מקומי…');
  try{const roi=readBox();track=await api('/api/track',source,{'X-ROI':JSON.stringify(roi),'X-Start-Frame':String(anchorFrame??0),'X-Start-Time':String(anchorFrame===null?anchorTime:0),'X-Consent':'confirmed','Content-Type':'application/octet-stream'});
- status(`מצב: ${track.status} · ${track.samples.length} נקודות · מצלמה: ${track.camera_stable?'יציבה לפי סף ניסיוני':'לא אומתה'}`);
- correctionFrame=track.failure_frame;correctionTime=track.failure_time;segments.push({source_sha256:track.source_sha256,start_frame:track.start_frame,anchor_time:anchorTime,roi:track.roi,status:track.status,failure_frame:track.failure_frame,failure_time:track.failure_time,samples:track.samples,manual_anchor:true});
+ status(`מצב: ${track.status} · ${track.samples.length} נקודות · תמיכת תנועה בהתאמה חלשה: ${track.flow_confirmed_frames??0} פריימים · מצלמה: ${track.camera_stable?'יציבה לפי סף ניסיוני':'לא אומתה'}`);
+ correctionFrame=track.failure_frame;correctionTime=track.failure_time;segments.push({source_sha256:track.source_sha256,start_frame:track.start_frame,anchor_time:anchorTime,roi:track.roi,status:track.status,failure_frame:track.failure_frame,failure_time:track.failure_time,samples:track.samples,manual_anchor:true,algorithm:'roi-template-flow-v2',flow_confirmed_frames:track.flow_confirmed_frames??0});
  $('reviewed').disabled=!track.samples.length;video.currentTime=track.samples[0]?.t??anchorTime;draw();}
  catch(e){status(e.message);}finally{busyState(false);}
 });
@@ -58,6 +58,7 @@ $('analyze').addEventListener('click',async()=>{
  $('results').replaceChildren();
  const title=document.createElement('p');title.textContent=`${report.repetitions.length} קטעים קונצנטריים מועמדים — לא ספירת חזרות מאומתת`;$('results').append(title);
  for(const [i,rep] of report.repetitions.entries()){const p=document.createElement('p');p.className='result';const m=rep.measurement;p.textContent=`קטע ${i+1}: ${rep.start_s.toFixed(2)}–${rep.end_s.toFixed(2)} שנ׳ · ${m.status}`+(m.mean_mps===null?' · מהירות מוסתרת':` · ${m.mean_mps.toFixed(3)} m/s · טווח הנחות ${m.bounds_mps.map(v=>v.toFixed(3)).join('–')}`);$('results').append(p);}
+ if(report.track_status==='FLOW_ASSISTED_REVIEW_ONLY'){const p=document.createElement('p');p.textContent='מסלול עם תמיכת תנועה מיועד לצפייה ולתיוג בלבד; מהירות מוסתרת עד לאימות נפרד.';$('results').append(p);}
  $('download').disabled=false;}
  catch(e){$('results').textContent=e.message;}finally{busyState(false);}
 });
