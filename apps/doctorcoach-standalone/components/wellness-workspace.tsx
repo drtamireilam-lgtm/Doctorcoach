@@ -1,4 +1,5 @@
 'use client';
+import {NutritionServiceCatalog} from './nutrition-services';
 import {Localize} from "../components/language-provider";
 import {rehabMeasurementKey,rehabMeasurementLabel,filterRehabMeasurements} from '../lib/rehab-measurements';
 import {RehabHistory} from './rehab-history';
@@ -39,7 +40,7 @@ export function TrackingChart({rows,metric,title,unit}:{rows:WellnessRecord[];me
  const data=trackingPoints(rows,metric);
  return <Localize>{<section className="panel wellness-chart"><h2>{title}</h2><p className="care-muted">{unit} · עד 60 מדידות אחרונות</p>{!data.length?<div className="care-empty">הגרף יתחיל במדידה הראשונה שלך.</div>:<><div dir="ltr" role="img" aria-label={title}><ResponsiveContainer width="100%" height={230}><LineChart data={data} margin={{left:0,right:20,top:15,bottom:5}}><CartesianGrid stroke="#37373f" strokeDasharray="3 4"/><XAxis dataKey="date" tick={{fill:'#aaaab4',fontSize:12}} tickFormatter={s=>String(s).slice(5)}/><YAxis domain={trackingDomain(metric)} tick={{fill:'#aaaab4',fontSize:12}}/><Tooltip formatter={v=>[v,unit]}/><Line type="linear" dataKey="value" stroke="#ff5866" strokeWidth={2.5} dot={{r:4}} isAnimationActive={false}/></LineChart></ResponsiveContainer></div><details className="chart-values"><summary>הצגת המדידות בטבלה</summary><table><thead><tr><th>תאריך</th><th>{unit}</th></tr></thead><tbody>{data.map((d,i)=><tr key={i}><td>{d.date}</td><td>{String(d.value)}</td></tr>)}</tbody></table></details></>}</section>}</Localize>;
 }
-export function NutritionPricing(){return <Localize>{<section className="nutrition-pricing"><div className="section-heading"><div><span className="eyebrow">ליווי תזונתי אישי</span><h2>מסלולי תזונה</h2></div></div><div className="nutrition-price-grid">{[[1,'חודש'],[3,'3 חודשים'],[6,'6 חודשים'],[12,'שנה']].map(([n,l])=><article className="panel" key={n}><span className="eyebrow">ליווי אישי</span><h3>{l}</h3><p>המחיר ייקבע בהמשך</p><a className="text-button" href={`https://wa.me/972546753959?text=${encodeURIComponent('שלום, אשמח לפרטים על מסלול תזונה של '+n+' חודשים ב־DoctorCoach')}`} target="_blank" rel="noopener noreferrer">בירור פרטים</a></article>)}</div></section>}</Localize>;}
+export function NutritionPricing(){return <NutritionServiceCatalog/>;}
 export function WellnessWorkspace({mode='nutrition',clientId,initialTab='rehab',initialEpisodeId}:{mode?:'nutrition'|'recovery';clientId?:string;initialTab?:'rehab'|'readiness'|'return';initialEpisodeId?:string}){
  const resource=useCareResource<WellnessBundle>('/api/wellness'+(clientId?'?client='+encodeURIComponent(clientId):'')),b=resource.data;
  const [nutritionTab,setNutritionTab]=useState('plan');
