@@ -1,0 +1,4 @@
+# Research tools only; not dependencies of the active DoctorCoach application.
+numpy==2.3.5
+opencv-python-headless==4.11.0.86
+pytest==8.4.2

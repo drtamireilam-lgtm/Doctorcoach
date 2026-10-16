@@ -1,0 +1,747 @@
+{
+  "dataset": "generated textured patch; lift names denote scenarios, not human pose",
+  "human_videos": 0,
+  "validated_on_athletes": false,
+  "cases": [
+    {
+      "lift_scenario": "bench",
+      "fps": 24,
+      "condition": "clean",
+      "track_status": "CANDIDATE_ONLY",
+      "camera_stable": true,
+      "expected_mps": 0.18,
+      "measured_mps": [
+        0.18156521739130438
+      ],
+      "annotation_metrics": {
+        "annotated_frames": 24,
+        "matched_timestamps": 24,
+        "within_tolerance": 24,
+        "coverage": 1.0,
+        "identity_position_agreement": 1.0,
+        "mean_error_px": 0.0,
+        "max_error_px": 0.0,
+        "validated": false
+      },
+      "passed": true
+    },
+    {
+      "lift_scenario": "bench",
+      "fps": 24,
+      "condition": "occlusion",
+      "track_status": "OCCLUDED_OR_CHANGED",
+      "camera_stable": true,
+      "expected_mps": null,
+      "measured_mps": [],
+      "annotation_metrics": {
+        "annotated_frames": 24,
+        "matched_timestamps": 12,
+        "within_tolerance": 12,
+        "coverage": 0.5,
+        "identity_position_agreement": 0.5,
+        "mean_error_px": 0.0,
+        "max_error_px": 0.0,
+        "validated": false
+      },
+      "passed": true
+    },
+    {
+      "lift_scenario": "bench",
+      "fps": 24,
+      "condition": "distractor",
+      "track_status": "AMBIGUOUS_OBJECT",
+      "camera_stable": true,
+      "expected_mps": null,
+      "measured_mps": [],
+      "annotation_metrics": {
+        "annotated_frames": 24,
+        "matched_timestamps": 12,
+        "within_tolerance": 12,
+        "coverage": 0.5,
+        "identity_position_agreement": 0.5,
+        "mean_error_px": 0.0,
+        "max_error_px": 0.0,
+        "validated": false
+      },
+      "passed": true
+    },
+    {
+      "lift_scenario": "bench",
+      "fps": 24,
+      "condition": "slow_camera_pan",
+      "track_status": "CAMERA_MOVEMENT",
+      "camera_stable": false,
+      "expected_mps": null,
+      "measured_mps": [],
+      "annotation_metrics": {
+        "annotated_frames": 24,
+        "matched_timestamps": 4,
+        "within_tolerance": 4,
+        "coverage": 0.16666666666666666,
+        "identity_position_agreement": 0.16666666666666666,
+        "mean_error_px": 0.0,
+        "max_error_px": 0.0,
+        "validated": false
+      },
+      "passed": true
+    },
+    {
+      "lift_scenario": "bench",
+      "fps": 30,
+      "condition": "clean",
+      "track_status": "CANDIDATE_ONLY",
+      "camera_stable": true,
+      "expected_mps": 0.18,
+      "measured_mps": [
+        0.18000000000000002
+      ],
+      "annotation_metrics": {
+        "annotated_frames": 30,
+        "matched_timestamps": 30,
+        "within_tolerance": 30,
+        "coverage": 1.0,
+        "identity_position_agreement": 1.0,
+        "mean_error_px": 0.0,
+        "max_error_px": 0.0,
+        "validated": false
+      },
+      "passed": true
+    },
+    {
+      "lift_scenario": "bench",
+      "fps": 30,
+      "condition": "occlusion",
+      "track_status": "OCCLUDED_OR_CHANGED",
+      "camera_stable": true,
+      "expected_mps": null,
+      "measured_mps": [],
+      "annotation_metrics": {
+        "annotated_frames": 30,
+        "matched_timestamps": 15,
+        "within_tolerance": 15,
+        "coverage": 0.5,
+        "identity_position_agreement": 0.5,
+        "mean_error_px": 0.0,
+        "max_error_px": 0.0,
+        "validated": false
+      },
+      "passed": true
+    },
+    {
+      "lift_scenario": "bench",
+      "fps": 30,
+      "condition": "distractor",
+      "track_status": "AMBIGUOUS_OBJECT",
+      "camera_stable": true,
+      "expected_mps": null,
+      "measured_mps": [],
+      "annotation_metrics": {
+        "annotated_frames": 30,
+        "matched_timestamps": 15,
+        "within_tolerance": 15,
+        "coverage": 0.5,
+        "identity_position_agreement": 0.5,
+        "mean_error_px": 0.0,
+        "max_error_px": 0.0,
+        "validated": false
+      },
+      "passed": true
+    },
+    {
+      "lift_scenario": "bench",
+      "fps": 30,
+      "condition": "slow_camera_pan",
+      "track_status": "CAMERA_MOVEMENT",
+      "camera_stable": false,
+      "expected_mps": null,
+      "measured_mps": [],
+      "annotation_metrics": {
+        "annotated_frames": 30,
+        "matched_timestamps": 4,
+        "within_tolerance": 4,
+        "coverage": 0.13333333333333333,
+        "identity_position_agreement": 0.13333333333333333,
+        "mean_error_px": 0.0,
+        "max_error_px": 0.0,
+        "validated": false
+      },
+      "passed": true
+    },
+    {
+      "lift_scenario": "bench",
+      "fps": 60,
+      "condition": "clean",
+      "track_status": "CANDIDATE_ONLY",
+      "camera_stable": true,
+      "expected_mps": 0.18,
+      "measured_mps": [
+        0.18
+      ],
+      "annotation_metrics": {
+        "annotated_frames": 60,
+        "matched_timestamps": 60,
+        "within_tolerance": 60,
+        "coverage": 1.0,
+        "identity_position_agreement": 1.0,
+        "mean_error_px": 0.0,
+        "max_error_px": 0.0,
+        "validated": false
+      },
+      "passed": true
+    },
+    {
+      "lift_scenario": "bench",
+      "fps": 60,
+      "condition": "occlusion",
+      "track_status": "OCCLUDED_OR_CHANGED",
+      "camera_stable": true,
+      "expected_mps": null,
+      "measured_mps": [],
+      "annotation_metrics": {
+        "annotated_frames": 60,
+        "matched_timestamps": 30,
+        "within_tolerance": 30,
+        "coverage": 0.5,
+        "identity_position_agreement": 0.5,
+        "mean_error_px": 0.0,
+        "max_error_px": 0.0,
+        "validated": false
+      },
+      "passed": true
+    },
+    {
+      "lift_scenario": "bench",
+      "fps": 60,
+      "condition": "distractor",
+      "track_status": "AMBIGUOUS_OBJECT",
+      "camera_stable": true,
+      "expected_mps": null,
+      "measured_mps": [],
+      "annotation_metrics": {
+        "annotated_frames": 60,
+        "matched_timestamps": 30,
+        "within_tolerance": 30,
+        "coverage": 0.5,
+        "identity_position_agreement": 0.5,
+        "mean_error_px": 0.0,
+        "max_error_px": 0.0,
+        "validated": false
+      },
+      "passed": true
+    },
+    {
+      "lift_scenario": "bench",
+      "fps": 60,
+      "condition": "slow_camera_pan",
+      "track_status": "CAMERA_MOVEMENT",
+      "camera_stable": false,
+      "expected_mps": null,
+      "measured_mps": [],
+      "annotation_metrics": {
+        "annotated_frames": 60,
+        "matched_timestamps": 4,
+        "within_tolerance": 4,
+        "coverage": 0.06666666666666667,
+        "identity_position_agreement": 0.06666666666666667,
+        "mean_error_px": 0.0,
+        "max_error_px": 0.0,
+        "validated": false
+      },
+      "passed": true
+    },
+    {
+      "lift_scenario": "squat",
+      "fps": 24,
+      "condition": "clean",
+      "track_status": "CANDIDATE_ONLY",
+      "camera_stable": true,
+      "expected_mps": 0.18,
+      "measured_mps": [
+        0.18156521739130438
+      ],
+      "annotation_metrics": {
+        "annotated_frames": 24,
+        "matched_timestamps": 24,
+        "within_tolerance": 24,
+        "coverage": 1.0,
+        "identity_position_agreement": 1.0,
+        "mean_error_px": 0.0,
+        "max_error_px": 0.0,
+        "validated": false
+      },
+      "passed": true
+    },
+    {
+      "lift_scenario": "squat",
+      "fps": 24,
+      "condition": "occlusion",
+      "track_status": "OCCLUDED_OR_CHANGED",
+      "camera_stable": true,
+      "expected_mps": null,
+      "measured_mps": [],
+      "annotation_metrics": {
+        "annotated_frames": 24,
+        "matched_timestamps": 12,
+        "within_tolerance": 12,
+        "coverage": 0.5,
+        "identity_position_agreement": 0.5,
+        "mean_error_px": 0.0,
+        "max_error_px": 0.0,
+        "validated": false
+      },
+      "passed": true
+    },
+    {
+      "lift_scenario": "squat",
+      "fps": 24,
+      "condition": "distractor",
+      "track_status": "AMBIGUOUS_OBJECT",
+      "camera_stable": true,
+      "expected_mps": null,
+      "measured_mps": [],
+      "annotation_metrics": {
+        "annotated_frames": 24,
+        "matched_timestamps": 12,
+        "within_tolerance": 12,
+        "coverage": 0.5,
+        "identity_position_agreement": 0.5,
+        "mean_error_px": 0.0,
+        "max_error_px": 0.0,
+        "validated": false
+      },
+      "passed": true
+    },
+    {
+      "lift_scenario": "squat",
+      "fps": 24,
+      "condition": "slow_camera_pan",
+      "track_status": "CAMERA_MOVEMENT",
+      "camera_stable": false,
+      "expected_mps": null,
+      "measured_mps": [],
+      "annotation_metrics": {
+        "annotated_frames": 24,
+        "matched_timestamps": 4,
+        "within_tolerance": 4,
+        "coverage": 0.16666666666666666,
+        "identity_position_agreement": 0.16666666666666666,
+        "mean_error_px": 0.0,
+        "max_error_px": 0.0,
+        "validated": false
+      },
+      "passed": true
+    },
+    {
+      "lift_scenario": "squat",
+      "fps": 30,
+      "condition": "clean",
+      "track_status": "CANDIDATE_ONLY",
+      "camera_stable": true,
+      "expected_mps": 0.18,
+      "measured_mps": [
+        0.18000000000000002
+      ],
+      "annotation_metrics": {
+        "annotated_frames": 30,
+        "matched_timestamps": 30,
+        "within_tolerance": 30,
+        "coverage": 1.0,
+        "identity_position_agreement": 1.0,
+        "mean_error_px": 0.0,
+        "max_error_px": 0.0,
+        "validated": false
+      },
+      "passed": true
+    },
+    {
+      "lift_scenario": "squat",
+      "fps": 30,
+      "condition": "occlusion",
+      "track_status": "OCCLUDED_OR_CHANGED",
+      "camera_stable": true,
+      "expected_mps": null,
+      "measured_mps": [],
+      "annotation_metrics": {
+        "annotated_frames": 30,
+        "matched_timestamps": 15,
+        "within_tolerance": 15,
+        "coverage": 0.5,
+        "identity_position_agreement": 0.5,
+        "mean_error_px": 0.0,
+        "max_error_px": 0.0,
+        "validated": false
+      },
+      "passed": true
+    },
+    {
+      "lift_scenario": "squat",
+      "fps": 30,
+      "condition": "distractor",
+      "track_status": "AMBIGUOUS_OBJECT",
+      "camera_stable": true,
+      "expected_mps": null,
+      "measured_mps": [],
+      "annotation_metrics": {
+        "annotated_frames": 30,
+        "matched_timestamps": 15,
+        "within_tolerance": 15,
+        "coverage": 0.5,
+        "identity_position_agreement": 0.5,
+        "mean_error_px": 0.0,
+        "max_error_px": 0.0,
+        "validated": false
+      },
+      "passed": true
+    },
+    {
+      "lift_scenario": "squat",
+      "fps": 30,
+      "condition": "slow_camera_pan",
+      "track_status": "CAMERA_MOVEMENT",
+      "camera_stable": false,
+      "expected_mps": null,
+      "measured_mps": [],
+      "annotation_metrics": {
+        "annotated_frames": 30,
+        "matched_timestamps": 4,
+        "within_tolerance": 4,
+        "coverage": 0.13333333333333333,
+        "identity_position_agreement": 0.13333333333333333,
+        "mean_error_px": 0.0,
+        "max_error_px": 0.0,
+        "validated": false
+      },
+      "passed": true
+    },
+    {
+      "lift_scenario": "squat",
+      "fps": 60,
+      "condition": "clean",
+      "track_status": "CANDIDATE_ONLY",
+      "camera_stable": true,
+      "expected_mps": 0.18,
+      "measured_mps": [
+        0.18
+      ],
+      "annotation_metrics": {
+        "annotated_frames": 60,
+        "matched_timestamps": 60,
+        "within_tolerance": 60,
+        "coverage": 1.0,
+        "identity_position_agreement": 1.0,
+        "mean_error_px": 0.0,
+        "max_error_px": 0.0,
+        "validated": false
+      },
+      "passed": true
+    },
+    {
+      "lift_scenario": "squat",
+      "fps": 60,
+      "condition": "occlusion",
+      "track_status": "OCCLUDED_OR_CHANGED",
+      "camera_stable": true,
+      "expected_mps": null,
+      "measured_mps": [],
+      "annotation_metrics": {
+        "annotated_frames": 60,
+        "matched_timestamps": 30,
+        "within_tolerance": 30,
+        "coverage": 0.5,
+        "identity_position_agreement": 0.5,
+        "mean_error_px": 0.0,
+        "max_error_px": 0.0,
+        "validated": false
+      },
+      "passed": true
+    },
+    {
+      "lift_scenario": "squat",
+      "fps": 60,
+      "condition": "distractor",
+      "track_status": "AMBIGUOUS_OBJECT",
+      "camera_stable": true,
+      "expected_mps": null,
+      "measured_mps": [],
+      "annotation_metrics": {
+        "annotated_frames": 60,
+        "matched_timestamps": 30,
+        "within_tolerance": 30,
+        "coverage": 0.5,
+        "identity_position_agreement": 0.5,
+        "mean_error_px": 0.0,
+        "max_error_px": 0.0,
+        "validated": false
+      },
+      "passed": true
+    },
+    {
+      "lift_scenario": "squat",
+      "fps": 60,
+      "condition": "slow_camera_pan",
+      "track_status": "CAMERA_MOVEMENT",
+      "camera_stable": false,
+      "expected_mps": null,
+      "measured_mps": [],
+      "annotation_metrics": {
+        "annotated_frames": 60,
+        "matched_timestamps": 4,
+        "within_tolerance": 4,
+        "coverage": 0.06666666666666667,
+        "identity_position_agreement": 0.06666666666666667,
+        "mean_error_px": 0.0,
+        "max_error_px": 0.0,
+        "validated": false
+      },
+      "passed": true
+    },
+    {
+      "lift_scenario": "deadlift",
+      "fps": 24,
+      "condition": "clean",
+      "track_status": "CANDIDATE_ONLY",
+      "camera_stable": true,
+      "expected_mps": 0.18,
+      "measured_mps": [
+        0.18156521739130438
+      ],
+      "annotation_metrics": {
+        "annotated_frames": 24,
+        "matched_timestamps": 24,
+        "within_tolerance": 24,
+        "coverage": 1.0,
+        "identity_position_agreement": 1.0,
+        "mean_error_px": 0.0,
+        "max_error_px": 0.0,
+        "validated": false
+      },
+      "passed": true
+    },
+    {
+      "lift_scenario": "deadlift",
+      "fps": 24,
+      "condition": "occlusion",
+      "track_status": "OCCLUDED_OR_CHANGED",
+      "camera_stable": true,
+      "expected_mps": null,
+      "measured_mps": [],
+      "annotation_metrics": {
+        "annotated_frames": 24,
+        "matched_timestamps": 12,
+        "within_tolerance": 12,
+        "coverage": 0.5,
+        "identity_position_agreement": 0.5,
+        "mean_error_px": 0.0,
+        "max_error_px": 0.0,
+        "validated": false
+      },
+      "passed": true
+    },
+    {
+      "lift_scenario": "deadlift",
+      "fps": 24,
+      "condition": "distractor",
+      "track_status": "AMBIGUOUS_OBJECT",
+      "camera_stable": true,
+      "expected_mps": null,
+      "measured_mps": [],
+      "annotation_metrics": {
+        "annotated_frames": 24,
+        "matched_timestamps": 12,
+        "within_tolerance": 12,
+        "coverage": 0.5,
+        "identity_position_agreement": 0.5,
+        "mean_error_px": 0.0,
+        "max_error_px": 0.0,
+        "validated": false
+      },
+      "passed": true
+    },
+    {
+      "lift_scenario": "deadlift",
+      "fps": 24,
+      "condition": "slow_camera_pan",
+      "track_status": "CAMERA_MOVEMENT",
+      "camera_stable": false,
+      "expected_mps": null,
+      "measured_mps": [],
+      "annotation_metrics": {
+        "annotated_frames": 24,
+        "matched_timestamps": 4,
+        "within_tolerance": 4,
+        "coverage": 0.16666666666666666,
+        "identity_position_agreement": 0.16666666666666666,
+        "mean_error_px": 0.0,
+        "max_error_px": 0.0,
+        "validated": false
+      },
+      "passed": true
+    },
+    {
+      "lift_scenario": "deadlift",
+      "fps": 30,
+      "condition": "clean",
+      "track_status": "CANDIDATE_ONLY",
+      "camera_stable": true,
+      "expected_mps": 0.18,
+      "measured_mps": [
+        0.18000000000000002
+      ],
+      "annotation_metrics": {
+        "annotated_frames": 30,
+        "matched_timestamps": 30,
+        "within_tolerance": 30,
+        "coverage": 1.0,
+        "identity_position_agreement": 1.0,
+        "mean_error_px": 0.0,
+        "max_error_px": 0.0,
+        "validated": false
+      },
+      "passed": true
+    },
+    {
+      "lift_scenario": "deadlift",
+      "fps": 30,
+      "condition": "occlusion",
+      "track_status": "OCCLUDED_OR_CHANGED",
+      "camera_stable": true,
+      "expected_mps": null,
+      "measured_mps": [],
+      "annotation_metrics": {
+        "annotated_frames": 30,
+        "matched_timestamps": 15,
+        "within_tolerance": 15,
+        "coverage": 0.5,
+        "identity_position_agreement": 0.5,
+        "mean_error_px": 0.0,
+        "max_error_px": 0.0,
+        "validated": false
+      },
+      "passed": true
+    },
+    {
+      "lift_scenario": "deadlift",
+      "fps": 30,
+      "condition": "distractor",
+      "track_status": "AMBIGUOUS_OBJECT",
+      "camera_stable": true,
+      "expected_mps": null,
+      "measured_mps": [],
+      "annotation_metrics": {
+        "annotated_frames": 30,
+        "matched_timestamps": 15,
+        "within_tolerance": 15,
+        "coverage": 0.5,
+        "identity_position_agreement": 0.5,
+        "mean_error_px": 0.0,
+        "max_error_px": 0.0,
+        "validated": false
+      },
+      "passed": true
+    },
+    {
+      "lift_scenario": "deadlift",
+      "fps": 30,
+      "condition": "slow_camera_pan",
+      "track_status": "CAMERA_MOVEMENT",
+      "camera_stable": false,
+      "expected_mps": null,
+      "measured_mps": [],
+      "annotation_metrics": {
+        "annotated_frames": 30,
+        "matched_timestamps": 4,
+        "within_tolerance": 4,
+        "coverage": 0.13333333333333333,
+        "identity_position_agreement": 0.13333333333333333,
+        "mean_error_px": 0.0,
+        "max_error_px": 0.0,
+        "validated": false
+      },
+      "passed": true
+    },
+    {
+      "lift_scenario": "deadlift",
+      "fps": 60,
+      "condition": "clean",
+      "track_status": "CANDIDATE_ONLY",
+      "camera_stable": true,
+      "expected_mps": 0.18,
+      "measured_mps": [
+        0.18
+      ],
+      "annotation_metrics": {
+        "annotated_frames": 60,
+        "matched_timestamps": 60,
+        "within_tolerance": 60,
+        "coverage": 1.0,
+        "identity_position_agreement": 1.0,
+        "mean_error_px": 0.0,
+        "max_error_px": 0.0,
+        "validated": false
+      },
+      "passed": true
+    },
+    {
+      "lift_scenario": "deadlift",
+      "fps": 60,
+      "condition": "occlusion",
+      "track_status": "OCCLUDED_OR_CHANGED",
+      "camera_stable": true,
+      "expected_mps": null,
+      "measured_mps": [],
+      "annotation_metrics": {
+        "annotated_frames": 60,
+        "matched_timestamps": 30,
+        "within_tolerance": 30,
+        "coverage": 0.5,
+        "identity_position_agreement": 0.5,
+        "mean_error_px": 0.0,
+        "max_error_px": 0.0,
+        "validated": false
+      },
+      "passed": true
+    },
+    {
+      "lift_scenario": "deadlift",
+      "fps": 60,
+      "condition": "distractor",
+      "track_status": "AMBIGUOUS_OBJECT",
+      "camera_stable": true,
+      "expected_mps": null,
+      "measured_mps": [],
+      "annotation_metrics": {
+        "annotated_frames": 60,
+        "matched_timestamps": 30,
+        "within_tolerance": 30,
+        "coverage": 0.5,
+        "identity_position_agreement": 0.5,
+        "mean_error_px": 0.0,
+        "max_error_px": 0.0,
+        "validated": false
+      },
+      "passed": true
+    },
+    {
+      "lift_scenario": "deadlift",
+      "fps": 60,
+      "condition": "slow_camera_pan",
+      "track_status": "CAMERA_MOVEMENT",
+      "camera_stable": false,
+      "expected_mps": null,
+      "measured_mps": [],
+      "annotation_metrics": {
+        "annotated_frames": 60,
+        "matched_timestamps": 4,
+        "within_tolerance": 4,
+        "coverage": 0.06666666666666667,
+        "identity_position_agreement": 0.06666666666666667,
+        "mean_error_px": 0.0,
+        "max_error_px": 0.0,
+        "validated": false
+      },
+      "passed": true
+    }
+  ],
+  "passed": 36,
+  "failed": 0
+}

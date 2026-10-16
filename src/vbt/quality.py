@@ -26,14 +26,14 @@ def evaluate_track(points: Sequence[Point], *, total_frames: int, fps: float,
     """Evaluate a single monotonic concentric interval, not full rep segmentation."""
     def reject(reason, coverage=0., med=None, maxstep=None):
         return TrackReport(reason, coverage, med, maxstep, None)
-    if total_frames < 2 or not isfinite(fps) or fps <= 0:
+    if type(total_frames) is not int or total_frames < 2 or not isfinite(fps) or fps <= 0 or not isfinite(min_coverage) or not 0 < min_coverage <= 1 or not isfinite(max_step_px) or max_step_px <= 0:
         return reject('REJECT_INVALID_VIDEO')
     if len(points) < 2:
         return reject('REJECT_INSUFFICIENT_POINTS')
     if any(not (isfinite(p.x) and isfinite(p.y)) for p in points):
         return reject('REJECT_NONFINITE_COORDINATE')
     frames = [p.frame for p in points]
-    if frames[0] < 0 or frames[-1] >= total_frames or any(b <= a for a,b in zip(frames,frames[1:])):
+    if any(type(f) is not int for f in frames) or frames[0] < 0 or frames[-1] >= total_frames or any(b <= a for a,b in zip(frames,frames[1:])):
         return reject('REJECT_INVALID_FRAME_SEQUENCE')
     coverage = len(points) / total_frames
     if not all(p.verified_bar for p in points):
@@ -51,5 +51,9 @@ def evaluate_track(points: Sequence[Point], *, total_frames: int, fps: float,
     signed_px = (points[0].y-points[-1].y) if movement == 'up' else (points[-1].y-points[0].y)
     if signed_px <= 0:
         return reject('REJECT_NO_CONCENTRIC_DISPLACEMENT', coverage, med, maximum)
+    if any((b.y-a.y if movement=='up' else a.y-b.y)>1 for a,b in zip(points,points[1:])):
+        return reject('REJECT_REVERSAL', coverage, med, maximum)
+    if max(b-a for a,b in zip(frames,frames[1:])) > max(2, fps*.15):
+        return reject('REJECT_TEMPORAL_GAP', coverage, med, maximum)
     duration = (frames[-1]-frames[0])/fps
     return TrackReport('OK_PRELIMINARY', coverage, med, maximum, signed_px*metres_per_pixel/duration)

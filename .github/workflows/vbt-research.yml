@@ -1,0 +1,29 @@
+name: Isolated VBT research
+on:
+  push:
+    branches: [feature/vbt-engine]
+    paths: ['src/vbt/**', 'tests/vbt/**', 'tools/vbt-lab/**', 'requirements-vbt.txt', '.github/workflows/vbt-research.yml']
+  pull_request:
+    paths: ['src/vbt/**', 'tests/vbt/**', 'tools/vbt-lab/**', 'requirements-vbt.txt', '.github/workflows/vbt-research.yml']
+permissions:
+  contents: read
+jobs:
+  reference-engine:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+          cache: pip
+          cache-dependency-path: requirements-vbt.txt
+      - run: python -m pip install -r requirements-vbt.txt
+      - run: PYTHONPATH=src python -m pytest -q tests/vbt
+      - run: python tools/vbt-lab/benchmark.py /tmp/vbt-synthetic.json
+      - run: python -m compileall -q src/vbt tools/vbt-lab
+      - run: node --check tools/vbt-lab/lab.js
+      - run: python -m pip install playwright==1.56.0
+      - run: python -m playwright install --with-deps chromium
+      - run: sudo apt-get update && sudo apt-get install -y ffmpeg
+      - run: python tools/vbt-lab/browser_check.py

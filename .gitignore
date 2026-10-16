@@ -4,3 +4,15 @@ dist
 .env
 .env.*
 .DS_Store
+
+# Private VBT research inputs and generated outputs
+__pycache__/
+.pytest_cache/
+.venv-vbt/
+vbt-private/
+*.mp4
+*.MP4
+*.mov
+*.MOV
+*.avi
+*.npz

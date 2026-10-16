@@ -1,7 +1,49 @@
-# DoctorCoach VBT research module
+# DoctorCoach VBT / IPF practice research
 
-Work in `feature/vbt-engine` only; no production deployment.
+Branch: `feature/vbt-engine`. This module and its local lab are **not imported by the active application**. There is no deployment, live billing, cloud upload or access to DoctorCoach accounts/databases. No private videos or credentials belong in Git.
 
-Legacy research prototypes v11–v21 were consolidated locally into a package and backed up in ChatGPT Library as `DoctorCoach_VBT_consolidated.zip`. This branch is a staging area for migrating and reviewing the package, not a deployed implementation.
+## Run in an isolated Python environment
 
-Do not infer bar velocity from unverified tracking. Videos must remain in private storage, not GitHub.
+Python 3.12 recommended. From the repository root on Windows PowerShell:
+
+```powershell
+py -3 -m venv .venv-vbt
+.\.venv-vbt\Scripts\python.exe -m pip install -r requirements-vbt.txt
+$env:PYTHONPATH = "src"
+.\.venv-vbt\Scripts\python.exe -m pytest -q tests/vbt
+.\.venv-vbt\Scripts\python.exe tools/vbt-lab/server.py
+```
+
+Open `http://127.0.0.1:8765` on **that same computer**. This is a local research UI, not the staging or production application. Do not expose the server to a public network. Stop with Ctrl+C. The HTTP server has no persistent user accounts; use a trusted local computer. Any person with access to that computer/browser can access its research session.
+
+On Linux/macOS use `python -m venv .venv-vbt` and `.venv-vbt/bin/python` instead. FFmpeg and Playwright are needed only for the optional Chromium browser check, not the lab server.
+
+## Workflow
+
+1. Choose a consented video, maximum 30 MiB and 60 seconds in the UI. The private upload goes only to the local Python server, into a temporary directory deleted after tracking. Browser original stays on the device. Local process interruption can leave operating-system temporary files; use an encrypted device for sensitive sources.
+2. Draw a textured plate/bar-end ROI at the **first frame** or enter pixel coordinates. Review the candidate rectangle while playing the source. Geometry and texture cannot prove that a rack wheel is a barbell.
+3. Attest the complete overlay only if it tracks the real bar throughout. Define a measured same-plane scale and confirm a fixed camera. The system also requires observable stable background features. Failed/ambiguous tracks hide all velocities, including earlier candidate segments.
+4. Analyze upward motion bouts. These are candidate concentrics, not validated full repetitions. Metric is mean vertical concentric displacement/time, not mean propulsive velocity, peak velocity, or three-dimensional bar-path speed. The reported bounds cover declared reference/endpoint/timing assumptions only, **not all sources of error**.
+5. Optional manual IPF evidence checklist and user-clicked spoken-command rehearsal. Plain training mode suppresses judging and cues. Camera trajectories do not establish body/joint criteria. All checklist passes remain non-official, and missing evidence remains indeterminate.
+6. Optional personal effort-calibration JSON: at least nine independently reviewed last-rep observations, three per session, across at least three sessions and a RIR span of two. Scope is one pseudonymous athlete, lift and exact protocol/load. Leave-one-session-out errors and monotonicity must pass. No extrapolation. Self-reported labels remain self-report, not demonstrated true RIR. No generic speed-to-RPE table is used.
+
+## CLI
+
+```bash
+PYTHONPATH=src python -m vbt vbt-private/source.mp4 --roi 100 100 40 40 --output vbt-private/new-report.json
+```
+
+Default output suppresses m/s. `--reviewed-overlay`, known reference options and `--same-plane-fixed-camera` are explicit operator attestations, not independent verification. Use the lab to inspect the track first. Existing reports are never overwritten. CLI reports include samples for private annotation comparison.
+
+## Validation tools
+
+```bash
+PYTHONPATH=src python -m pytest -q tests/vbt
+python tools/vbt-lab/benchmark.py /tmp/new-synthetic-report.json
+python -m compileall -q src/vbt tools/vbt-lab
+node --check tools/vbt-lab/lab.js
+```
+
+Optional desktop browser integration: install `playwright==1.56.0`, run `python -m playwright install chromium`, ensure `ffmpeg` is available, then `python tools/vbt-lab/browser_check.py`. This generates private synthetic clips and runs a local server, without external test data.
+
+See [IMPLEMENTATION.md](IMPLEMENTATION.md), [VALIDATION.md](VALIDATION.md), [PROGRESS.md](PROGRESS.md). Work remains research-only until separate real-world validation and review.
