@@ -21,10 +21,10 @@ def main():
     if args.reference_metres is not None and args.reference_pixels is not None:
         cal=Calibration.from_reference(args.reference_metres,args.reference_pixels,args.reference_pixel_error,
             same_plane=args.same_plane_fixed_camera,fixed_camera=args.same_plane_fixed_camera,reference='operator reference')
-    out=analyze(track['samples'],track_status=('FLOW_ASSISTED_REVIEW_ONLY' if track.get('flow_confirmed_frames',0) else track['status']),camera_stable=track['camera_stable'],identity_reviewed=args.reviewed_overlay,calibration=cal)
+    out=analyze(track['samples'],track_status=('FLOW_ASSISTED_REVIEW_ONLY' if track.get('flow_confirmed_frames',0) and track['status']=='CANDIDATE_ONLY' else track['status']),camera_stable=track['camera_stable'],identity_reviewed=args.reviewed_overlay,calibration=cal)
     out['samples']=[asdict(s) for s in track['samples']]
     with args.video.open('rb') as source_file:source_hash=hashlib.file_digest(source_file,'sha256').hexdigest()
-    out['provenance']={'source_sha256':source_hash,'roi':args.roi,'algorithm':'roi-template-flow-v2'}
+    out['provenance']={'source_sha256':source_hash,'roi':args.roi,'algorithm':'roi-reference-flow-v3'}
     args.output.parent.mkdir(parents=True,exist_ok=True)
     with args.output.open('x',encoding='utf8') as f:json.dump(out,f,allow_nan=False,indent=2)
     print('Research report written. Not a validated measurement or judge.')

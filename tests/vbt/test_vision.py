@@ -116,13 +116,13 @@ def test_lost_track_reports_exact_correction_frame(tmp_path):
     assert track['failure_time']==pytest.approx(8/30,abs=.001)
 
 
-def rotated_fixture():
+def rotated_fixture(angle=2):
     rng=np.random.default_rng(25)
     background=rng.integers(10,60,(240,320,3),dtype=np.uint8)
     patch=rng.integers(80,240,(40,40,3),dtype=np.uint8)
     first=background.copy();first[140:180,140:180]=patch
     second=background.copy()
-    second[138:178,140:180]=cv2.warpAffine(patch,cv2.getRotationMatrix2D((20,20),2,1),(40,40),borderMode=cv2.BORDER_REFLECT)
+    second[138:178,140:180]=cv2.warpAffine(patch,cv2.getRotationMatrix2D((20,20),angle,1),(40,40),borderMode=cv2.BORDER_REFLECT)
     return first,second
 
 
@@ -143,3 +143,44 @@ def test_weak_template_without_flow_consensus_stops(monkeypatch):
     monkeypatch.setattr(cv2,'goodFeaturesToTrack',lambda *a,**k:None)
     assert tracker.update(second,1/30)[1]=='APPEARANCE_FLOW_DISAGREEMENT'
     assert tracker.update(first,2/30)[1]=='TRACK_LOST'
+
+
+def test_fixed_reference_flow_handles_small_rotation_without_reseeding():
+    from vbt.vision import ReferenceFlow
+    first,second=rotated_fixture(angle=1.5);gray=lambda f:cv2.cvtColor(f,cv2.COLOR_BGR2GRAY)
+    flow=ReferenceFlow(gray(first),Box(140,140,40,40))
+    initial=flow.initial_count
+    _,aliased=rotated_fixture(angle=2)
+    assert ReferenceFlow(gray(first),Box(140,140,40,40)).advance(gray(aliased)) is None
+    result=flow.advance(gray(second))
+    assert result is not None
+    box,score=result
+    assert box.y==pytest.approx(138,abs=1) and score>=.8
+    assert 8<=len(flow.points)<=initial
+    blank=np.zeros_like(gray(first))
+    assert flow.advance(blank) is None
+    assert flow.advance(gray(second)) is None # No silent reacquisition.
+
+
+def test_reference_flow_does_not_follow_a_distant_copy():
+    from vbt.vision import ReferenceFlow
+    first,_=rotated_fixture();gray=cv2.cvtColor(first,cv2.COLOR_BGR2GRAY)
+    flow=ReferenceFlow(gray,Box(140,140,40,40))
+    replaced=gray.copy();replaced[140:180,140:180]=20
+    replaced[30:70,30:70]=gray[140:180,140:180]
+    assert flow.advance(replaced) is None
+
+
+def test_explicit_end_is_not_a_bridge_over_failure(tmp_path):
+    frame,background,_=fixture();file=tmp_path/'bounded.avi'
+    writer=cv2.VideoWriter(str(file),cv2.VideoWriter_fourcc(*'MJPG'),30,(320,240))
+    for i in range(15):writer.write(frame(y=160-i*2) if i<8 else background)
+    writer.release()
+    before=track_video(file,Box(140,160,24,24),end_time=.2)
+    assert before['status']=='CANDIDATE_ONLY' and len(before['samples'])==7
+    assert before['end_time']==.2
+    after=track_video(file,Box(140,160,24,24),end_time=.4)
+    assert after['failure_frame']==8 # Bound may never bypass an earlier stop.
+    for end in [0,-1,float('nan'),61]:
+        with pytest.raises(ValueError):track_video(file,Box(140,160,24,24),end_time=end)
+    with pytest.raises(ValueError):track_video(file,Box(140,140,24,24),start_frame=10,end_time=.2)

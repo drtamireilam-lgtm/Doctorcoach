@@ -57,16 +57,18 @@ class Handler(BaseHTTPRequestHandler):
                 box=json.loads(self.headers.get('X-ROI','null'))
                 start_frame=int(self.headers.get('X-Start-Frame','0'))
                 start_time=float(self.headers.get('X-Start-Time','0'))
+                end_raw=self.headers.get('X-End-Time','')
+                end_time=float(end_raw) if end_raw else None
                 if not isinstance(box,list) or len(box)!=4 or any(type(x)is not int for x in box):return self.reply(400,{'error':'Choose an ROI'})
                 with tempfile.TemporaryDirectory(prefix='dc-vbt-private-') as tmp:
-                    file=Path(tmp)/'input.video';file.write_bytes(body);track=track_video(file,Box(*box),start_frame=start_frame,start_time=start_time)
+                    file=Path(tmp)/'input.video';file.write_bytes(body);track=track_video(file,Box(*box),start_frame=start_frame,start_time=start_time,end_time=end_time)
                 track['source_sha256']=hashlib.sha256(body).hexdigest();track['roi']=box
                 job=secrets.token_urlsafe(16)
                 # A new track invalidates the former overlay attestation/calibration.
                 self.server.jobs.clear();self.server.jobs[job]=track
                 return self.reply(200,{'job':job,'samples':[asdict(s) for s in track['samples']],
                     'boxes':[asdict(b) for b in track['boxes']],'status':track['status'],
-                    'camera_stable':track['camera_stable'],'identity_verified':False,'source_sha256':track['source_sha256'],'roi':box,'flow_confirmed_frames':track['flow_confirmed_frames'],'start_frame':track['start_frame'],'failure_frame':track['failure_frame'],'failure_time':track['failure_time']})
+                    'camera_stable':track['camera_stable'],'identity_verified':False,'source_sha256':track['source_sha256'],'roi':box,'end_time':track['end_time'],'flow_confirmed_frames':track['flow_confirmed_frames'],'start_frame':track['start_frame'],'failure_frame':track['failure_frame'],'failure_time':track['failure_time']})
             if route=='/api/judge':
                 if size>32768:return self.reply(413,{'error':'Checklist too large'})
                 o=json.loads(body)
@@ -92,8 +94,8 @@ class Handler(BaseHTTPRequestHandler):
                 if raw is not None:
                     cal=Calibration.from_reference(float(raw['metres']),float(raw['pixels']),float(raw.get('error',2)),
                         same_plane=raw.get('same_plane') is True,fixed_camera=raw.get('fixed_camera') is True,reference='manual lab reference')
-                out=analyze(track['samples'],track_status=('FLOW_ASSISTED_REVIEW_ONLY' if track.get('flow_confirmed_frames',0) else track['status']),camera_stable=track['camera_stable'],identity_reviewed=options.get('reviewed') is True,calibration=cal)
-                out['provenance']={'source_sha256':track['source_sha256'],'roi':track['roi'],'algorithm':'roi-template-flow-v2','start_frame':track['start_frame'],'manual_restart':track['start_frame']>0}
+                out=analyze(track['samples'],track_status=('FLOW_ASSISTED_REVIEW_ONLY' if track.get('flow_confirmed_frames',0) and track['status']=='CANDIDATE_ONLY' else track['status']),camera_stable=track['camera_stable'],identity_reviewed=options.get('reviewed') is True,calibration=cal)
+                out['provenance']={'source_sha256':track['source_sha256'],'roi':track['roi'],'algorithm':'roi-reference-flow-v3','start_frame':track['start_frame'],'manual_restart':track['start_frame']>0,'end_time':track['end_time']}
                 return self.reply(200,out)
             return self.reply(404,{'error':'Not found'})
         except (ValueError,KeyError,TypeError,OverflowError):return self.reply(400,{'error':'Invalid input or unreadable/unsupported source; no measurement accepted'})

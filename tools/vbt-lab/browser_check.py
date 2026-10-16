@@ -1,7 +1,7 @@
 """Optional Chromium integration checks, synthetic inputs only.
 Install playwright separately; this is not an iPhone/Safari or speaker test.
 """
-import importlib.util,json,subprocess,tempfile,threading
+import importlib.util,json,re,subprocess,tempfile,threading
 from pathlib import Path
 import cv2,numpy as np
 from playwright.sync_api import sync_playwright,expect
@@ -51,7 +51,7 @@ def main():
             page.mouse.move(rect['x']+rect['width']*112/240,rect['y']+rect['height']*112/160);page.mouse.down()
             page.mouse.move(rect['x']+rect['width']*114/240,rect['y']+rect['height']*112/160,steps=4);page.mouse.up()
             expect(page.locator('#x')).to_have_value('102');point(112,112)
-            page.locator('#track').click();expect(page.locator('#track-status')).to_contain_text('OCCLUDED_OR_CHANGED',timeout=20000)
+            page.locator('#track').click();expect(page.locator('#track-status')).to_contain_text(re.compile('OCCLUDED_OR_CHANGED|AMBIGUOUS_OBJECT'),timeout=20000)
             page.locator('#play-track').click();expect(page.locator('#track-status')).to_contain_text('המעקב נעצר',timeout=10000)
             expect(page.locator('video')).to_have_js_property('paused',True)
             page.locator('#correct').click();expect(page.locator('video')).to_have_js_property('currentTime',.267)
@@ -64,6 +64,15 @@ def main():
             assert not marks['validated']
             page.locator('#zoom').select_option('2');assert page.locator('.stage').bounding_box()['width']>page.locator('.stage-scroll').bounding_box()['width']*1.8
             page.locator('#zoom').select_option('1')
+            # Explicit source-time bound ends a new segment without joining old tracks.
+            page.locator('#end-time').fill('.5');page.locator('#track').click()
+            expect(page.locator('#track-status')).to_contain_text('CANDIDATE_ONLY',timeout=20000)
+            with page.expect_download() as event:page.locator('#download-labels').click()
+            event.value.save_as(root/'bounded.json');bounded=json.loads((root/'bounded.json').read_text())['segments'][-1]
+            assert bounded['end_time']==.5 and bounded['samples'][-1]['t']<=.5001
+            page.locator('#play-track').click();expect(page.locator('#track-status')).to_contain_text('הקטע שנבחר הסתיים',timeout=10000)
+            page.locator('#clear-end').click();expect(page.locator('#end-time')).to_have_value('')
+
             # Selecting another source must remove the old measurement and its attestation.
             other=root/'another-source.webm';other.write_bytes(mp4.read_bytes());page.locator('#source').set_input_files(str(other));expect(page.locator('#reviewed')).not_to_be_checked();expect(page.locator('#analyze')).to_be_disabled()
             page.set_viewport_size({'width':390,'height':844})

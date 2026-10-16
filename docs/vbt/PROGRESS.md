@@ -19,3 +19,7 @@ Verified 59 Python tests, 36 synthetic benchmark cases and Chromium pointer/rest
 ## Guarded flow follow-up
 
 Diagnosed user-exported stops as loss of original-template similarity, not the camera gate. Added feature-flow corroboration for bounded weak appearance; retained original template, ambiguity/camera gates and raw confidence. CLI/server suppress velocity for every flow-assisted segment. Local development clip showed a longer first candidate track, not a full-clip success or validated measurement. Full tracking and independent annotation remain next priorities. No private export/video is in Git.
+
+## Second user export: fixed reference features and explicit end bound
+
+Added fixed-identity feature corroboration with RANSAC similarity and original-patch warp checks, without reseeding/adapting object identity. Added image-edge marker guidance and an optional source-time end bound to exclude post-lift footage intentionally; bounds are recorded and never bridge a failure. 62 Python tests, 36 synthetic cases and Chromium flow passed. Locally reproduced the exact new private anchor and extended its candidate track from ~6.86s to ~8.26s, still not full-video success. This development source is not held out; assisted tracks remain non-metric and unvalidated. No active app/deployment changes.
