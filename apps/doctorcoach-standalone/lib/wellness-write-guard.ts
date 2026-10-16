@@ -1,3 +1,4 @@
+import {nutritionCredentialGuard} from './nutrition-authority.ts';
 import {isStaff,type StaffIdentity} from './staff.ts';
 import type {CareConfig} from './care-store.ts';
 import type {WellnessKind} from './wellness.ts';
@@ -10,14 +11,14 @@ export function requireWellnessWriteAccess(a:Access,kind:WellnessKind){
 }
 export function wellnessWriteGuard(user:StaffIdentity,clientId:string,kind:WellnessKind,config:CareConfig){
  if(user.userId===clientId)return {sql:'1=1',args:[] as (string|number)[]};
- const nutrition=['plan','weeklyReview'].includes(kind),role=nutrition?'dietitian':'clinician';
+ const nutrition=['plan','weeklyReview'].includes(kind),role=nutrition?'dietitian':'clinician',credential=nutrition?nutritionCredentialGuard(user.email):{sql:'1=1',args:[]};
  if(config.exclusiveMedical&&!nutrition&&!isStaff(user,config.clinicianEmails))return {sql:'0=1',args:[] as (string|number)[]};
  return {
   sql:`EXISTS(SELECT 1 FROM care_connections c LEFT JOIN care_staff s ON s.email=c.staff_email
    WHERE c.client_id=? AND c.staff_email=? AND c.active=1 AND c.scope='care'
-    AND c.${nutrition?'nutrition_access':'medical_access'}<>0
+    AND c.${nutrition?'nutrition_access':'medical_access'}<>0 AND (${credential.sql})
     AND ((s.active=1 AND s.role=?) OR (s.email IS NULL AND ?=1 AND ?='clinician')))`,
   // Configured clinician fallback applies only when no explicit staff row exists.
-  args:[clientId,user.email.toLowerCase(),role,isStaff(user,config.clinicianEmails)?1:0,role],
+  args:[clientId,user.email.toLowerCase(),...credential.args,role,isStaff(user,config.clinicianEmails)?1:0,role],
  };
 }

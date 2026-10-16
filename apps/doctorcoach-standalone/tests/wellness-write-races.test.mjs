@@ -1,3 +1,4 @@
+import {verifySyntheticDietitian} from './platform-db.mjs';
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import {randomUUID} from 'node:crypto';
@@ -11,7 +12,7 @@ async function fixture(t,kind){
  const f=platform(t);await f.connect();
  const w=wellnessStore(f.db,config),user=['plan','weeklyReview'].includes(kind)?coach:doctor;
  if(user===coach){
- await f.care.saveStaff(doctor,{email:coach.email,name:'דיאטן לבדיקה',role:'dietitian',active:true});
+ await f.care.saveStaff(doctor,{email:coach.email,name:'דיאטן לבדיקה',role:'dietitian',active:true});verifySyntheticDietitian(f,coach.email);
  const invite=await f.care.createInvite(doctor,{emails:[doctor.email,coach.email]});await f.care.acceptInvite(client,{code:invite.code,consent:true});
  }
  if(kind==='weeklyReview')await w.save(client,client.userId,{id:randomUUID(),kind:'weekly',day:currentWeek(),version:0,data:{success:'דיווח שבועי',difficulty:'',question:''}});

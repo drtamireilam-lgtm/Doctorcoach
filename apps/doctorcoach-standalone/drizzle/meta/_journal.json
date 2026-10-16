@@ -323,6 +323,13 @@
       "when": 1792159737011,
       "tag": "0047_staff_workout_reviews",
       "breakpoints": true
+    },
+    {
+      "idx": 46,
+      "version": "6",
+      "when": 1792160933584,
+      "tag": "0048_nutrition_credentials",
+      "breakpoints": true
     }
   ]
 }

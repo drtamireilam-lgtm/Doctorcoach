@@ -1,3 +1,4 @@
+import {verifySyntheticDietitian} from './platform-db.mjs';
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import {randomUUID} from 'node:crypto';
@@ -11,7 +12,7 @@ const config={adminEmails:doctor.email,clinicianEmails:doctor.email};
 const record=(kind,data,other={})=>({kind,data,id:randomUUID(),day:todayIsrael(),version:0,...other});
 const daily={weight:80,waist:90,hip:null,adherence:8,dayType:'training',note:'private nutrition detail'};
 const assessment={goal:'מטרה לבדיקה',routine:'private assessment',preferences:'',allergies:'private allergy',history:'',shareTeam:false};
-async function fixture(t){const f=platform(t);await f.connect();await f.care.saveStaff(doctor,{...dietitian,name:'דיאטן בדיקה',role:'dietitian',active:true});const invitation=await f.care.createInvite(doctor,{emails:[doctor.email,dietitian.email]});await f.care.acceptInvite(client,{code:invitation.code,consent:true});return {...f,wellness:wellnessStore(f.db,config),community:communityStore(f.db,doctor.email)};}
+async function fixture(t){const f=platform(t);await f.connect();await f.care.saveStaff(doctor,{...dietitian,name:'דיאטן בדיקה',role:'dietitian',active:true});verifySyntheticDietitian(f,dietitian.email);const invitation=await f.care.createInvite(doctor,{emails:[doctor.email,dietitian.email]});await f.care.acceptInvite(client,{code:invitation.code,consent:true});return {...f,wellness:wellnessStore(f.db,config),community:communityStore(f.db,doctor.email)};}
 test('nutrition is private to trainee and explicitly consented dietitian; shared summary is minimal and revocable',async t=>{
  const f=await fixture(t),p=record('assessment',assessment);await f.wellness.save(client,client.userId,p);await f.wellness.save(client,client.userId,record('daily',daily));
  for(const viewer of [coach,doctor]){const b=await f.wellness.bundle(viewer,client.userId);assert.equal(b.summary,null);assert.equal(b.records.length,0);assert.equal(b.canNutrition,false);}

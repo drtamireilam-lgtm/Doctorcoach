@@ -1,3 +1,4 @@
+import {nutritionTextGuard,requireNutritionText} from './nutrition-authority.ts';
 import {isVideoMime,quickTimeHeader} from './video-format.ts';
 import {availableCustomExercises} from './custom-exercises.ts';
 import {customId} from './custom-exercise-types.ts';
@@ -96,7 +97,8 @@ export function mediaStore(db:D1Database,config:CareConfig={}){
    if(access.self||!access.staff)throw new TrainingError('משוב נכתב על ידי הצוות המטפל.',403);
    await requireHealthConsent(db,row.owner_id);
    const id=validId(p.id),content=textField(p.content,'משוב',2000,2);
-   const permission=combineCareGuards(careConnectionGuard({clientId:row.owner_id,email:access.staff.email,role:access.staff.role},config),healthConsentGuard(row.owner_id),
+   await requireNutritionText(db,user,row.owner_id,content,config);
+   const permission=combineCareGuards(careConnectionGuard({clientId:row.owner_id,email:access.staff.email,role:access.staff.role},config),healthConsentGuard(row.owner_id),nutritionTextGuard(user,row.owner_id,content,config),
     {sql:"COALESCE((SELECT accepted<>0 AND revision=? FROM user_consents WHERE user_id=? AND consent_id='media' ORDER BY created_at DESC,rowid DESC LIMIT 1),0)",args:[CONSENT_REVISION,row.owner_id]});
    const guard=combineCareGuards(permission,{sql:"EXISTS(SELECT 1 FROM media_assets WHERE id=? AND owner_id=? AND kind='review' AND status='ready')",args:[row.id,row.owner_id]});
    const saved=await db.prepare(`INSERT INTO media_feedback(id,asset_id,author_id,author_name,content,created_at) SELECT ?,?,?,?,?,? WHERE ${guard.sql} ON CONFLICT(id) DO NOTHING RETURNING id`)
