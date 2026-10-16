@@ -3,12 +3,30 @@ import assert from 'node:assert/strict';
 import {randomUUID} from 'node:crypto';
 import {platform,doctor,coach,client,stranger} from './platform-db.mjs';
 import {staffActivity} from '../lib/staff-activity-store.ts';
-import {israelMidnight,matchesActivity} from '../lib/staff-activity.ts';
+import {israelMidnight,matchesActivity,activityTotals} from '../lib/staff-activity.ts';
 import {dashboardStore} from '../lib/dashboard-store.ts';
 import {CONSENT_REVISION} from '../lib/intake.ts';
 const config={adminEmails:doctor.email,clinicianEmails:doctor.email};
 function session(f,{owner='client',status='completed',at='2026-10-10T21:00:00.000Z',finished=at,program=null}={}){f.sql.prepare('INSERT INTO training_sessions(id,owner_id,status,items_json,started_at,finished_at,pain_before,planned_sets,completed_sets,program_id) VALUES(?,?,?,\'[]\',?,?,0,1,1,?)').run(randomUUID(),owner,status,at,status==='completed'?finished:null,program);}
 function program(f,id='program-current'){f.sql.prepare("INSERT INTO care_programs(id,client_id,author_name,author_email,title,items_json,created_at,applied_at) VALUES(?,'client','Coach',?,'Current plan','[]','2026-10-01','2026-10-01')").run(id,coach.email);f.sql.prepare("UPDATE training_access SET mode='coached',program_id=? WHERE user_id='client'").run(id);return id;}
+test('personal workout is visible to team only after explicit sharing; weekly and all-time totals exclude other owners and unfinished workouts',async t=>{
+ const f=platform(t);await f.connect();
+ session(f,{at:'2026-10-01T10:00:00.000Z'});
+ session(f,{at:'2026-10-12T10:00:00.000Z'});
+ session(f,{status:'active'});session(f,{status:'cancelled'});
+ session(f,{owner:stranger.userId});session(f,{at:'2099-01-01T00:00:00.000Z'});
+ const summary=await staffActivity(f.db,client.userId,config,new Date('2026-10-14T12:00:00Z'));
+ assert.equal(summary.completedThisWeek,1);assert.equal(summary.completedTotal,2);
+ const first=await dashboardStore(f.db,config).get(coach);
+ assert.equal(first.clients.length,1);
+ assert.equal(first.clients[0].activity.completedTotal,2);
+ f.sql.prepare('UPDATE care_connections SET active=0 WHERE staff_email=?').run(coach.email);
+ const unshared=await dashboardStore(f.db,config).get(coach);
+ assert.equal(unshared.clients.length,0);
+ assert.equal(f.sql.prepare("SELECT COUNT(*) n FROM training_sessions WHERE owner_id='client' AND status='completed'").get().n,3);
+ assert.deepEqual(activityTotals([{activity:summary},{activity:null},{}]),{completedThisWeek:1,completedTotal:2,availableClients:1});
+ assert.deepEqual(activityTotals([]),{completedThisWeek:0,completedTotal:0,availableClients:0});
+});
 test('Israel midnight uses summer/winter offsets, including transition week',()=>{assert.equal(israelMidnight('2026-10-11'),'2026-10-10T21:00:00.000Z');assert.equal(israelMidnight('2026-11-01'),'2026-10-31T22:00:00.000Z');assert.equal(israelMidnight('2026-03-22'),'2026-03-21T22:00:00.000Z');assert.equal(israelMidnight('2026-03-29'),'2026-03-28T21:00:00.000Z');});
 test('counts completed workouts by finish time in Israel week, excluding active, cancelled, future and other owners',async t=>{const f=platform(t);await f.connect();session(f);session(f,{at:'2026-10-10T20:59:59.999Z'});session(f,{at:'2026-10-09T10:00:00.000Z',finished:'2026-10-11T10:00:00.000Z'});session(f,{status:'active'});session(f,{status:'cancelled'});session(f,{at:'2026-10-15T10:00:00.000Z'});session(f,{owner:stranger.userId});const a=await staffActivity(f.db,client.userId,config,new Date('2026-10-14T12:00:00Z'));assert.equal(a.week,'2026-10-11');assert.equal(a.completedThisWeek,2);assert.equal(a.lastCompletedAt,'2026-10-11T10:00:00.000Z');assert.equal(a.programStarted,null);});
 test('current program start is distinct from old/cancelled workouts; pending reports count unreviewed only',async t=>{const f=platform(t);await f.connect();const id=program(f);session(f,{program:'old'});session(f,{program:id,status:'cancelled'});f.sql.prepare("INSERT INTO care_checkins(id,client_id,week,sessions,pain,function_score,effort,content,created_at,reviewed_at) VALUES(?,'client',?,0,0,5,5,'Report',?,?)").run(randomUUID(),'2026-10-11','2026-10-12',null);f.sql.prepare("INSERT INTO care_checkins(id,client_id,week,sessions,pain,function_score,effort,content,created_at,reviewed_at) VALUES(?,'client',?,0,0,5,5,'Report',?,?)").run(randomUUID(),'2026-10-04','2026-10-05','2026-10-06');let a=await staffActivity(f.db,client.userId,config,new Date('2026-10-14T12:00:00Z'));assert.equal(a.programStarted,false);assert.equal(a.pendingCheckins,1);assert.equal(a.programTitle,'Current plan');session(f,{program:id,status:'active'});a=await staffActivity(f.db,client.userId,config,new Date('2026-10-14T12:00:00Z'));assert.equal(a.programStarted,true);assert.equal(a.completedThisWeek,1);f.sql.prepare('UPDATE care_connections SET active=0 WHERE staff_email=?').run(coach.email);a=await staffActivity(f.db,client.userId,config);assert.equal(a.programTitle,null);assert.equal(a.programStarted,null);});
