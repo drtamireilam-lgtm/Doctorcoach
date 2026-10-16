@@ -23,3 +23,9 @@ Diagnosed user-exported stops as loss of original-template similarity, not the c
 ## Second user export: fixed reference features and explicit end bound
 
 Added fixed-identity feature corroboration with RANSAC similarity and original-patch warp checks, without reseeding/adapting object identity. Added image-edge marker guidance and an optional source-time end bound to exclude post-lift footage intentionally; bounds are recorded and never bridge a failure. 62 Python tests, 36 synthetic cases and Chromium flow passed. Locally reproduced the exact new private anchor and extended its candidate track from ~6.86s to ~8.26s, still not full-video success. This development source is not held out; assisted tracks remain non-metric and unvalidated. No active app/deployment changes.
+
+## User visual review and deadlift anchor sensitivity
+
+The user confirmed that the bar overlay stayed on the target in the selected eight-second bench segment. Its export had 241 samples, an explicit end bound and no reported failure; the mid-source playback stop was the requested bound, not track loss. This is subjective overlay review, not independent metric validation.
+
+A subsequent private deadlift export (end bound five seconds) failed at source time ~3.93s. Local inspection found original feature support and appearance deteriorating for the chosen protruding-tip patch. In the same released v3 code, a hub/junction patch completed the five-second interval with 151 candidate samples and no failure. Four overlay frames were spot-checked on the visible junction. No entire-track ground-truth annotation or velocity validation was performed, and user review of this alternative anchor is pending. The tracker remains sensitive to the selected image region; automatic target/ROI selection remains unresolved. No algorithm change or deployment is included in this follow-up, and private media/exports remain outside Git.
