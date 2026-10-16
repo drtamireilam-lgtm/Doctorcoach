@@ -7,7 +7,7 @@ type RequestRow={id:string;user_id:string;requester_email:string|null;kind:strin
 type Job={user_id:string;request_id:string;state:string;started_at:string;completed_at:string|null};
 // Exact ownership predicates only. Shared catalogs and staff records are excluded.
 export const deletionScopes=[
- ['care_tasks','client_id'],['workspace_client_events','client_id'],['workspace_messages','client_id'],['workspace_chat_reads','client_id'],['workspace_programs','client_id'],['workspace_drafts','client_id'],['workspace_clients','client_id'],['coach_program_templates','owner_id'],['import_exercise_mappings','owner_id'],['google_calendar_connection','owner_id'],['google_calendar_states','user_id'],
+ ['staff_workout_reviews','client_id'],['staff_workout_reviews','staff_id'],['care_tasks','client_id'],['workspace_client_events','client_id'],['workspace_messages','client_id'],['workspace_chat_reads','client_id'],['workspace_programs','client_id'],['workspace_drafts','client_id'],['workspace_clients','client_id'],['coach_program_templates','owner_id'],['import_exercise_mappings','owner_id'],['google_calendar_connection','owner_id'],['google_calendar_states','user_id'],
  ['pilot_redemptions','user_id'],['program_items','owner_id'],['workout_logs','owner_id'],['exercise_favorites','owner_id'],
  ['training_sessions','owner_id'],['care_profiles','user_id'],['care_connections','client_id'],
  ['care_notes','client_id'],['care_programs','client_id'],['care_checkins','client_id'],

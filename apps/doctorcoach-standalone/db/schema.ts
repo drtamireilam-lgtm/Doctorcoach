@@ -279,3 +279,5 @@ export const careTasks=sqliteTable('care_tasks',{id:text('id').primaryKey(),clie
 export const careTaskEvents=sqliteTable('care_task_events',{id:text('id').primaryKey(),taskId:text('task_id').notNull(),actorEmail:text('actor_email').notNull(),action:text('action').notNull(),snapshotJson:text('snapshot_json').notNull(),createdAt:text('created_at').notNull()},t=>[index('care_task_history').on(t.taskId,t.createdAt)]);
 
 export const progressLayouts=sqliteTable('progress_layouts',{userId:text('user_id').primaryKey(),orderJson:text('order_json').notNull(),version:integer('version').notNull().default(1),updatedAt:text('updated_at').notNull()});
+
+export const staffWorkoutReviews=sqliteTable('staff_workout_reviews',{staffId:text('staff_id').notNull(),staffRole:text('staff_role').notNull(),clientId:text('client_id').notNull(),sessionId:text('session_id').notNull(),sessionVersion:integer('session_version').notNull(),reviewedAt:text('reviewed_at').notNull()},t=>[primaryKey({columns:[t.staffId,t.staffRole,t.sessionId]}),index('staff_workout_reviews_client').on(t.clientId)]);
