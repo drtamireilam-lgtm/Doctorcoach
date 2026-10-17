@@ -1,6 +1,7 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import { createRoot } from 'react-dom/client';
 import './styles.css';
+import ThemePicker from './ThemePicker';
 import './integrated-care.css';
 import TrainingIntegrated from './TrainingIntegrated';
 import IntegratedCareWorkspace from './IntegratedCareWorkspace';
@@ -117,4 +118,4 @@ function RuntimeEntry() {
   </section></main>;
 }
 
-createRoot(document.getElementById('root')!).render(<React.StrictMode><RuntimeEntry /></React.StrictMode>);
+createRoot(document.getElementById('root')!).render(<React.StrictMode><RuntimeEntry /><ThemePicker /></React.StrictMode>);
