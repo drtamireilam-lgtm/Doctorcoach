@@ -11,7 +11,7 @@ try {
   // Use the supported compiler API rather than an unexported CLI subpath.
   // The separate build step performs full project type checking.
   for (const name of ['auth', 'backend', 'runtime-policy', 'account', 'domain']) {
-    const fileName = `src/platform/${name}.ts`;
+    const fileName = name === 'domain' ? 'src/domain.ts' : `src/platform/${name}.ts`;
     const compiled = ts.transpileModule(readFileSync(fileName, 'utf8'), {
       fileName,
       compilerOptions: { target: ts.ScriptTarget.ES2020, module: ts.ModuleKind.CommonJS },
