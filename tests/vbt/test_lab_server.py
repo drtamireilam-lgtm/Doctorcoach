@@ -73,3 +73,31 @@ def test_server_full_upload_track_and_measurement_suppression(lab,tmp_path):
 def test_effort_endpoint_requires_personal_evidence(lab):
     with request(lab,'/api/effort',json.dumps({'athlete':'synthetic','lift':'bench','protocol':'paused','observations':[]}).encode()) as r:out=json.load(r)
     assert out['calibration']['model'] is None
+
+
+def test_suggestion_requires_new_full_track_and_cannot_unlock_velocity(lab,tmp_path):
+    rng=np.random.default_rng(4);bg=rng.integers(10,60,(160,240,3),np.uint8);patch=rng.integers(80,230,(24,24,3),np.uint8)
+    file=tmp_path/'assisted.avi';writer=cv2.VideoWriter(str(file),cv2.VideoWriter_fourcc(*'MJPG'),30,(240,160))
+    for i in range(25):
+        frame=bg.copy();frame[100-i*2:124-i*2,100:124]=patch;writer.write(frame)
+    writer.release();body=file.read_bytes()
+    with request(lab,'/api/suggest',body,extra={'X-ROI':'[92,92,40,40]','X-Consent':'confirmed'}) as r:out=json.load(r)
+    assert out['status']=='CANDIDATES_FOR_REVIEW' and not out['identity_verified']
+    assert not lab.jobs and len(out['source_sha256'])==64
+    box=out['candidates'][0]['roi']
+    with request(lab,'/api/track',body,extra={'X-ROI':json.dumps(box),'X-Consent':'confirmed','X-Selection-Method':'assisted-review'}) as r:track=json.load(r)
+    assert track['selection_method']=='assisted-review'
+    with request(lab,'/api/analyze',json.dumps({'job':track['job'],'reviewed':True,'calibration':{'metres':.45,'pixels':150,'same_plane':True,'fixed_camera':True}}).encode()) as r:report=json.load(r)
+    assert report['track_status']=='ASSISTED_SELECTION_REVIEW_ONLY'
+    assert report['provenance']['selection_method']=='assisted-review'
+    assert report['repetitions'] and all(rep['measurement']['mean_mps'] is None for rep in report['repetitions'])
+    with request(lab,'/api/suggest',body,extra={'X-ROI':'[92,92,40,40]','X-Consent':'confirmed'}) as r:json.load(r)
+    with pytest.raises(urllib.error.HTTPError) as e:request(lab,'/api/analyze',json.dumps({'job':track['job']}).encode())
+    assert e.value.code==409
+
+
+def test_completed_response_does_not_leave_next_request_busy(lab):
+    body=json.dumps({'lift':'bench','mode':'training','reviewed':False,'criteria':{},'commands':[],'events':{}}).encode()
+    for _ in range(30):
+        with request(lab,'/api/judge',body) as r:
+            assert json.load(r)['status']=='NOT_JUDGED_TRAINING'

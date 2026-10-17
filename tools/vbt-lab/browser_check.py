@@ -29,6 +29,17 @@ def main():
             expect(page.locator('#results')).to_contain_text('0.180 m/s')
             with page.expect_download() as event:page.locator('#download').click()
             event.value.save_as(root/'report.json');report=json.loads((root/'report.json').read_text());assert not report['validated'];assert report['provenance']['source_sha256']
+            # Assistance proposes a region but requires selection and a new full-rate run.
+            page.locator('#suggest').click();expect(page.locator('#suggestions button').first).to_be_visible(timeout=30000)
+            expect(page.locator('#reviewed')).not_to_be_checked();expect(page.locator('#download')).to_be_disabled()
+            page.locator('#suggestions button').first.click();expect(page.locator('#anchor-status')).to_contain_text('הצעה 1')
+            page.locator('#track').click();expect(page.locator('#track-status')).to_contain_text('CANDIDATE_ONLY',timeout=20000)
+            page.locator('#reviewed').check();page.locator('#metres').fill('.45');page.locator('#pixels').fill('150');page.locator('#plane').check();page.locator('#analyze').click()
+            expect(page.locator('#results')).to_contain_text('לצפייה ולתיוג בלבד');expect(page.locator('#results')).to_contain_text('מהירות מוסתרת')
+            with page.expect_download() as event:page.locator('#download').click()
+            event.value.save_as(root/'assisted.json');assisted=json.loads((root/'assisted.json').read_text())
+            assert assisted['provenance']['selection_method']=='assisted-review'
+            assert all(rep['measurement']['mean_mps'] is None for rep in assisted['repetitions'])
             page.locator('#checklist').click();expect(page.locator('#judgment')).to_contain_text('ללא שיפוט')
             page.locator('#mode').select_option('competition_practice');page.locator('#commands button').first.click();assert page.evaluate('testSpoken.length')==0
             page.locator('#voice').check();page.locator('#commands button').first.click();assert page.evaluate('testSpoken')==['Start']

@@ -8,6 +8,7 @@ from urllib.parse import urlsplit
 ROOT=Path(__file__).resolve().parents[2]
 sys.path.insert(0,str(ROOT/'src'))
 from vbt.vision import Box,track_video
+from vbt.selection import suggest_regions
 from vbt.motion import Calibration
 from vbt.pipeline import analyze
 from vbt.judge import Attempt,CRITERIA,COMMANDS,EVENTS,RULE_VERSION,review_attempt
@@ -26,6 +27,10 @@ class Handler(BaseHTTPRequestHandler):
     def log_message(self,*args):pass # No source names or private payloads in logs.
     def reply(self,status,body,mime='application/json'):
         data=body if isinstance(body,bytes) else json.dumps(body,allow_nan=False).encode()
+        # Finish the job before the response becomes observable to a client.
+        # Otherwise an immediate next click/request can race finally and get 409.
+        if getattr(self,'_job_lock_held',False):
+            self._job_lock_held=False;self.server.lock.release()
         self.send_response(status)
         for k,v in {'Content-Type':mime,'Content-Length':str(len(data)),'Cache-Control':'no-store','X-Content-Type-Options':'nosniff','Referrer-Policy':'no-referrer','Content-Security-Policy':"default-src 'self'; script-src 'self'; style-src 'self'; media-src 'self' blob:; img-src 'self' blob:; connect-src 'self'; frame-ancestors 'none'; base-uri 'none'"}.items():self.send_header(k,v)
         self.end_headers();self.wfile.write(data)
@@ -44,6 +49,7 @@ class Handler(BaseHTTPRequestHandler):
         if not self.allowed() or self.headers.get('Origin')!=self.server.origin or not secrets.compare_digest(self.headers.get('X-Lab-Token',''),self.server.token):
             return self.reply(403,{'error':'Local lab session required'})
         if not self.server.lock.acquire(blocking=False):return self.reply(409,{'error':'Another job is running'})
+        self._job_lock_held=True
         try:
             try:size=int(self.headers.get('Content-Length','0'))
             except ValueError:return self.reply(400,{'error':'Invalid length'})
@@ -52,7 +58,7 @@ class Handler(BaseHTTPRequestHandler):
             body=self.rfile.read(size)
             if len(body)!=size:return self.reply(400,{'error':'Incomplete input'})
             route=urlsplit(self.path).path
-            if route=='/api/track':
+            if route in ('/api/track','/api/suggest'):
                 if self.headers.get('X-Consent')!='confirmed':return self.reply(400,{'error':'Confirm rights to use this test video'})
                 box=json.loads(self.headers.get('X-ROI','null'))
                 start_frame=int(self.headers.get('X-Start-Frame','0'))
@@ -61,14 +67,23 @@ class Handler(BaseHTTPRequestHandler):
                 end_time=float(end_raw) if end_raw else None
                 if not isinstance(box,list) or len(box)!=4 or any(type(x)is not int for x in box):return self.reply(400,{'error':'Choose an ROI'})
                 with tempfile.TemporaryDirectory(prefix='dc-vbt-private-') as tmp:
-                    file=Path(tmp)/'input.video';file.write_bytes(body);track=track_video(file,Box(*box),start_frame=start_frame,start_time=start_time,end_time=end_time)
+                    file=Path(tmp)/'input.video';file.write_bytes(body)
+                    if route=='/api/suggest':
+                        self.server.jobs.clear()
+                        result=suggest_regions(file,Box(*box),start_frame=start_frame,start_time=start_time,end_time=end_time)
+                        result['source_sha256']=hashlib.sha256(body).hexdigest()
+                        return self.reply(200,result)
+                    method=self.headers.get('X-Selection-Method','manual')
+                    if method not in ('manual','assisted-review'):return self.reply(400,{'error':'Invalid selection method'})
+                    track=track_video(file,Box(*box),start_frame=start_frame,start_time=start_time,end_time=end_time)
+                    track['selection_method']=method
                 track['source_sha256']=hashlib.sha256(body).hexdigest();track['roi']=box
                 job=secrets.token_urlsafe(16)
                 # A new track invalidates the former overlay attestation/calibration.
                 self.server.jobs.clear();self.server.jobs[job]=track
                 return self.reply(200,{'job':job,'samples':[asdict(s) for s in track['samples']],
                     'boxes':[asdict(b) for b in track['boxes']],'status':track['status'],
-                    'camera_stable':track['camera_stable'],'identity_verified':False,'source_sha256':track['source_sha256'],'roi':box,'end_time':track['end_time'],'flow_confirmed_frames':track['flow_confirmed_frames'],'start_frame':track['start_frame'],'failure_frame':track['failure_frame'],'failure_time':track['failure_time']})
+                    'camera_stable':track['camera_stable'],'identity_verified':False,'source_sha256':track['source_sha256'],'roi':box,'selection_method':method,'end_time':track['end_time'],'flow_confirmed_frames':track['flow_confirmed_frames'],'start_frame':track['start_frame'],'failure_frame':track['failure_frame'],'failure_time':track['failure_time']})
             if route=='/api/judge':
                 if size>32768:return self.reply(413,{'error':'Checklist too large'})
                 o=json.loads(body)
@@ -94,13 +109,15 @@ class Handler(BaseHTTPRequestHandler):
                 if raw is not None:
                     cal=Calibration.from_reference(float(raw['metres']),float(raw['pixels']),float(raw.get('error',2)),
                         same_plane=raw.get('same_plane') is True,fixed_camera=raw.get('fixed_camera') is True,reference='manual lab reference')
-                out=analyze(track['samples'],track_status=('FLOW_ASSISTED_REVIEW_ONLY' if track.get('flow_confirmed_frames',0) and track['status']=='CANDIDATE_ONLY' else track['status']),camera_stable=track['camera_stable'],identity_reviewed=options.get('reviewed') is True,calibration=cal)
-                out['provenance']={'source_sha256':track['source_sha256'],'roi':track['roi'],'algorithm':'roi-reference-flow-v3','start_frame':track['start_frame'],'manual_restart':track['start_frame']>0,'end_time':track['end_time']}
+                out=analyze(track['samples'],track_status=('FLOW_ASSISTED_REVIEW_ONLY' if track.get('flow_confirmed_frames',0) and track['status']=='CANDIDATE_ONLY' else ('ASSISTED_SELECTION_REVIEW_ONLY' if track.get('selection_method')=='assisted-review' and track['status']=='CANDIDATE_ONLY' else track['status'])),camera_stable=track['camera_stable'],identity_reviewed=options.get('reviewed') is True,calibration=cal)
+                out['provenance']={'source_sha256':track['source_sha256'],'roi':track['roi'],'algorithm':'roi-reference-flow-v3','start_frame':track['start_frame'],'manual_restart':track['start_frame']>0,'end_time':track['end_time'],'selection_method':track.get('selection_method','manual')}
                 return self.reply(200,out)
             return self.reply(404,{'error':'Not found'})
         except (ValueError,KeyError,TypeError,OverflowError):return self.reply(400,{'error':'Invalid input or unreadable/unsupported source; no measurement accepted'})
         except Exception:return self.reply(422,{'error':'Analysis failed; no measurement accepted'})
-        finally:self.server.lock.release()
+        finally:
+            if self._job_lock_held:
+                self._job_lock_held=False;self.server.lock.release()
 
 def main():
     p=argparse.ArgumentParser();p.add_argument('--port',type=int,default=8765);args=p.parse_args()
