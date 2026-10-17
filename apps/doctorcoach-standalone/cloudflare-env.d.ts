@@ -1,5 +1,6 @@
 declare namespace Cloudflare {
   interface Env {
+    DC_DEPLOYMENT_ENV?: string;
     DC_AUTH_ORIGIN?: string;
     DC_SUPABASE_URL?: string;
     DC_SUPABASE_PUBLIC_KEY?: string;

@@ -15,7 +15,7 @@ export const deletionScopes=[
  ['return_plan_revisions','client_id'],['trainee_feedback','owner_id'],['success_stories','owner_id'],
  ['user_intakes','user_id'],['user_consents','user_id'],['medical_reviews','client_id'],
  ['team_messages','client_id'],['message_reads','user_id'],['account_requests','user_id'],
- ['audit_events','subject_id'],['training_access','user_id'],['staff_personal_access','user_id'],['self_program_splits','owner_id'],['workout_preferences','user_id'],['progress_layouts','user_id'],['coach_program_drafts','client_id'],
+ ['audit_events','subject_id'],['training_access','user_id'],['staff_personal_access','user_id'],['self_program_splits','owner_id'],['workout_preferences','user_id'],['progress_layouts','user_id'],['appearance_preferences','user_id'],['coach_program_drafts','client_id'],
  ['membership_orders','user_id'],['weekly_goals','client_id'],['notification_preferences','user_id'],
  ['notification_dismissals','user_id'],['passport_details','client_id'],['private_documents','client_id'],
  ['thread_states','client_id'],['billing_sandbox_orders','user_id'],['push_devices','user_id'],

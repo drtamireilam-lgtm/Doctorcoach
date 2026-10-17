@@ -1,0 +1,21 @@
+// Read-only release preflight. Never creates resources or deploys.
+import {readFileSync} from 'node:fs';
+import assert from 'node:assert/strict';
+const file=process.argv[2]??'dist/server/wrangler.json';
+const c=JSON.parse(readFileSync(file,'utf8'));
+assert.equal(c.name,'doctorcoach-isolated-staging');
+assert.equal(c.vars?.DC_DEPLOYMENT_ENV,'isolated-staging');
+assert.equal(c.vars?.DC_SUPABASE_URL,'https://jbfkzkzcznfacsjdawmf.supabase.co');
+assert.equal(c.vars?.DC_AUTH_ORIGIN,'https://staging.drtamireilam.com');
+assert.equal(c.vars?.DC_LEGACY_BRIDGE_ENABLED,'false');
+assert.equal(c.vars?.DC_LEGACY_ISSUER,'doctorcoach:isolated-staging');
+assert.equal(c.vars?.DOCTORCOACH_BILLING_MODE,'manual');
+assert.equal(c.d1_databases?.length,1);assert.equal(c.r2_buckets?.length,1);
+assert.equal(c.d1_databases[0].binding,'DB');assert.equal(c.r2_buckets[0].binding,'BUCKET');
+assert.equal(c.d1_databases[0].database_name,'doctorcoach-isolated-staging');
+assert.equal(c.r2_buckets[0].bucket_name,'doctorcoach-isolated-staging');
+assert.match(c.d1_databases[0].database_id,/^[a-f0-9-]{36}$/);
+assert.notEqual(c.d1_databases[0].database_id,'00000000-0000-4000-8000-000000000000','STOP: dedicated remote D1 has not been created/verified');
+assert.ok(!c.services?.length&&!c.kv_namespaces?.length&&!c.hyperdrive?.length,'Unexpected shared bindings');
+assert.ok(!c.env||!Object.keys(c.env).length,'Nested deployment environments require review');
+console.log('Static isolated configuration passed. Remote resource ownership, empty stores, secrets, costs, domain and owner approval still require verification.');

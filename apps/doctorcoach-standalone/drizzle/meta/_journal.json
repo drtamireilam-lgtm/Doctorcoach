@@ -330,6 +330,13 @@
       "when": 1792160933584,
       "tag": "0048_nutrition_credentials",
       "breakpoints": true
+    },
+    {
+      "idx": 47,
+      "version": "6",
+      "when": 1792229739083,
+      "tag": "0049_appearance_preferences",
+      "breakpoints": true
     }
   ]
 }

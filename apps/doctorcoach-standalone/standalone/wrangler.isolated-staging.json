@@ -1,0 +1,33 @@
+{
+  "name": "doctorcoach-isolated-staging",
+  "main": "./worker.ts",
+  "compatibility_date": "2026-10-14",
+  "compatibility_flags": [
+    "nodejs_compat"
+  ],
+  "workers_dev": false,
+  "preview_urls": false,
+  "d1_databases": [
+    {
+      "binding": "DB",
+      "database_name": "doctorcoach-isolated-staging",
+      "database_id": "0e7a9467-5758-4d6f-b52a-ee4385a2d37d",
+      "migrations_dir": "./migrations"
+    }
+  ],
+  "r2_buckets": [
+    {
+      "binding": "BUCKET",
+      "bucket_name": "doctorcoach-isolated-staging"
+    }
+  ],
+  "vars": {
+    "DC_DEPLOYMENT_ENV": "isolated-staging",
+    "DC_AUTH_ORIGIN": "https://staging.drtamireilam.com",
+    "DC_SUPABASE_URL": "https://jbfkzkzcznfacsjdawmf.supabase.co",
+    "DC_LEGACY_ISSUER": "doctorcoach:isolated-staging",
+    "DC_NEW_ACCOUNTS_ENABLED": "true",
+    "DC_LEGACY_BRIDGE_ENABLED": "false",
+    "DOCTORCOACH_BILLING_MODE": "manual"
+  }
+}

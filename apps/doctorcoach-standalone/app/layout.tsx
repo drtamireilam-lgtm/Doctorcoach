@@ -8,6 +8,7 @@ import './appearance.css';
 import './language.css';
 import './sprint.css';
 import './privacy-policy.css';
+import './palettes.css';
 import {PrivacyLinks} from '../components/privacy-links';
 import {LanguageProvider} from '../components/language-provider';
 import { ThemeProvider } from '../components/theme-provider';

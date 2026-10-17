@@ -283,3 +283,5 @@ export const progressLayouts=sqliteTable('progress_layouts',{userId:text('user_i
 export const staffWorkoutReviews=sqliteTable('staff_workout_reviews',{staffId:text('staff_id').notNull(),staffRole:text('staff_role').notNull(),clientId:text('client_id').notNull(),sessionId:text('session_id').notNull(),sessionVersion:integer('session_version').notNull(),reviewedAt:text('reviewed_at').notNull()},t=>[primaryKey({columns:[t.staffId,t.staffRole,t.sessionId]}),index('staff_workout_reviews_client').on(t.clientId)]);
 
 export const nutritionCredentials=sqliteTable('nutrition_credentials',{email:text('email').primaryKey(),qualification:text('qualification').notNull(),reference:text('reference').notNull(),issuer:text('issuer').notNull(),active:integer('active').notNull(),verifiedBy:text('verified_by').notNull(),verifiedAt:text('verified_at').notNull(),version:integer('version').notNull().default(1)});
+
+export const appearancePreferences=sqliteTable('appearance_preferences',{userId:text('user_id').primaryKey(),mode:text('mode').notNull(),palette:text('palette').notNull(),version:integer('version').notNull().default(1),updatedAt:text('updated_at').notNull()});
