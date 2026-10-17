@@ -22,7 +22,11 @@ def main():
             errors=[];page.on('pageerror',lambda e:errors.append(str(e)))
             page.add_init_script("window.testSpoken=[];speechSynthesis.speak=u=>window.testSpoken.push(u.text);")
             page.goto(server.origin);page.locator('#source').set_input_files(str(mp4));expect(page.locator('video')).to_have_js_property('videoWidth',240)
+            # An apparent no-op must show the missing prerequisite beside the clicked button.
+            page.locator('#suggest').click();expect(page.locator('#suggest-status')).to_contain_text('סמנו קודם נקודה')
             for key,value in [('x','100'),('y','100'),('w','24'),('h','24')]:page.locator('#'+key).fill(value)
+            page.locator('#suggest').click();expect(page.locator('#suggest-status')).to_contain_text('תיבת האישור')
+            expect(page.locator('#suggest-status')).to_be_in_viewport()
             page.locator('#consent').check();page.locator('#track').click();expect(page.locator('#track-status')).to_contain_text('CANDIDATE_ONLY',timeout=20000)
             page.locator('#analyze').click();expect(page.locator('#results')).to_contain_text('מהירות מוסתרת')
             page.locator('#reviewed').check();page.locator('#metres').fill('.45');page.locator('#pixels').fill('150');page.locator('#plane').check();page.locator('#analyze').click()

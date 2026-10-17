@@ -6,6 +6,7 @@ let anchorTime=0,anchorFrame=null,segments=[],correctionFrame=null,correctionTim
 const ready=Promise.all([fetch('/session').then(r=>r.json()),fetch('/rules').then(r=>r.json())]).then(([s,r])=>{token=s.token;rules=r;renderCommands();});
 async function api(route,body,headers={}){await ready;const r=await fetch(route,{method:'POST',headers:{'X-Lab-Token':token,...headers},body});const out=await r.json();if(!r.ok)throw Error(out.error||'Analysis failed');return out;}
 function status(text){$('track-status').textContent=text;}
+function suggestionStatus(text){status(text);$('suggest-status').textContent=text;}
 function invalidate(){track=null;report=null;$('metres').value='';$('pixels').value='';$('plane').checked=false;$('reviewed').checked=false;$('reviewed').disabled=true;$('analyze').disabled=true;$('download').disabled=true;$('results').textContent='';}
 function busyState(value){busy=value;for(const id of ['source','consent','x','y','w','h','reviewed','metres','pixels','pixel-error','plane','selection-mode','point-size','back-frame','next-frame','zoom','end-time','set-end','clear-end'])$(id).disabled=value; $('reviewed').disabled=value||!track?.samples.length;$('track').disabled=value||!source;$('suggest').disabled=value||!source;for(const b of $('suggestions').querySelectorAll('button'))b.disabled=value;$('analyze').disabled=value||!track;$('play-track').disabled=value||!track?.samples.length;$('correct').disabled=value||correctionFrame===null;$('download-labels').disabled=value||!segments.length;}
 function readBox(){return ['x','y','w','h'].map(id=>Number($(id).value));}
@@ -40,19 +41,21 @@ $('correct').addEventListener('click',()=>{if(correctionFrame===null)return;vide
 function saveJSON(value,name){const u=URL.createObjectURL(new Blob([JSON.stringify(value,null,2)],{type:'application/json'}));const a=document.createElement('a');a.href=u;a.download=name;a.click();setTimeout(()=>URL.revokeObjectURL(u),1000);}
 $('download-labels').addEventListener('click',()=>{if(segments.length)saveJSON({schema:'dc-vbt-manual-segments-1',validated:false,segments,warning:'Independent candidate segments; no interpolation or velocity across manual restarts.'},'DoctorCoach-VBT-markings.json');});
 for(const id of ['x','y','w','h'])$(id).addEventListener('input',()=>{invalidate();selectionMethod='manual';anchor();$('suggestions').replaceChildren();const [x,y,w,h]=readBox();selection={x,y,w,h};draw();});
-$('source').addEventListener('change',()=>{if(busy)return;source=$('source').files[0]||null;if(url)URL.revokeObjectURL(url);invalidate();selection=null;segments=[];anchorTime=0;anchorFrame=null;correctionFrame=null;correctionTime=null;reviewPlayback=false;visibleTime=0;selectionMethod='manual';$('suggestions').replaceChildren();$('end-time').value='';$('edge-warning').textContent='';$('anchor-status').textContent='בחרו נקודה על המוט.';video.parentElement.style.width='100%';$('zoom').value='1';if(source){url=URL.createObjectURL(source);video.src=url;}busyState(false);status('');});
+$('source').addEventListener('change',()=>{if(busy)return;source=$('source').files[0]||null;if(url)URL.revokeObjectURL(url);invalidate();selection=null;segments=[];anchorTime=0;anchorFrame=null;correctionFrame=null;correctionTime=null;reviewPlayback=false;visibleTime=0;selectionMethod='manual';$('suggestions').replaceChildren();$('suggest-status').textContent='';$('end-time').value='';$('edge-warning').textContent='';$('anchor-status').textContent='בחרו נקודה על המוט.';video.parentElement.style.width='100%';$('zoom').value='1';if(source){url=URL.createObjectURL(source);video.src=url;}busyState(false);status('');});
 video.addEventListener('loadedmetadata',layout);video.addEventListener('timeupdate',draw);video.addEventListener('seeked',draw);window.addEventListener('resize',layout);
 if(video.requestVideoFrameCallback){const tick=(_,metadata)=>{visibleTime=metadata.mediaTime;draw();video.requestVideoFrameCallback(tick);};video.requestVideoFrameCallback(tick);}
 $('suggest').addEventListener('click',async()=>{
- if(!source||busy||!selection)return;
- if(!$('consent').checked){status('נדרש אישור שימוש בסרטון.');return;}
- if(source.size>30*1024*1024||!Number.isFinite(video.duration)||video.duration>60){status('בחרו סרטון עד 30 MiB ועד 60 שניות.');return;}
- video.pause();reviewPlayback=false;invalidate();$('suggestions').replaceChildren();busyState(true);status('בודקים אזורים סמוכים בתצוגה מקדימה…');
+ if(busy){suggestionStatus('הבדיקה עדיין פועלת. המתינו לסיום.');return;}
+ if(!source){suggestionStatus('בחרו קודם סרטון לבדיקה.');return;}
+ if(!selection){suggestionStatus('סמנו קודם נקודה על המוט בסרטון, ואז לחצו שוב על העזרה.');return;}
+ if(!$('consent').checked){suggestionStatus('לפני החיפוש יש לסמן בראש העמוד את תיבת האישור לשימוש בסרטון.');return;}
+ if(source.size>30*1024*1024||!Number.isFinite(video.duration)||video.duration>60){suggestionStatus('בחרו סרטון עד 30 MiB ועד 60 שניות.');return;}
+ video.pause();reviewPlayback=false;invalidate();$('suggestions').replaceChildren();busyState(true);suggestionStatus('בודקים אזורים סמוכים בתצוגה מקדימה…');
  try{const out=await api('/api/suggest',source,{'X-ROI':JSON.stringify(readBox()),'X-Start-Frame':String(anchorFrame??0),'X-Start-Time':String(anchorFrame===null?anchorTime:0),'X-End-Time':$('end-time').value,'X-Consent':'confirmed','Content-Type':'application/octet-stream'});
   const p=document.createElement('p');p.textContent=out.candidates.length?`נמצאו הצעות לבדיקה בקטע ${out.preview_start_s.toFixed(2)}–${out.preview_end_s.toFixed(2)} שנ׳. אלה אינן הוכחה שזהו מוט; בחרו ובדקו על התמונה.`:'לא נמצא אזור עם תנועה ומעקב יציב מספיק בתצוגה המקדימה. אפשר לבחור ידנית; לא ננחש מיקום.';if(out.search_truncated)p.textContent+=' החיפוש קוצר כדי להגביל את זמן העיבוד; אפשר להמשיך בסימון ידני.';$('suggestions').append(p);
-  out.candidates.forEach((c,i)=>{const b=document.createElement('button');b.type='button';b.textContent=`הצעה ${i+1} · ${Math.round(c.preview_coverage*100)}% מהקטע שנבדק · ${c.roi[2]}×${c.roi[3]}`;b.addEventListener('click',()=>{if(busy)return;invalidate();const [x,y,w,h]=c.roi;setSelection({x,y,w,h});selectionMethod='assisted-review';video.currentTime=out.preview_start_s;anchorFrame=out.start_frame;anchorTime=out.preview_start_s;$('anchor-status').textContent=`הצעה ${i+1} נבחרה. בדקו שהיא על המוט ואז הריצו מעקב. המהירות תישאר מוסתרת.`;status('ההצעה נבחרה לבדיקה, לא אושרה אוטומטית.');});$('suggestions').append(b);});
-  status(out.candidates.length?'בחרו הצעה כדי לראות את האזור על הסרטון.':'אין הצעה מספקת.');
- }catch(e){status(e.message);}finally{busyState(false);}
+  out.candidates.forEach((c,i)=>{const b=document.createElement('button');b.type='button';b.textContent=`הצעה ${i+1} · ${Math.round(c.preview_coverage*100)}% מהקטע שנבדק · ${c.roi[2]}×${c.roi[3]}`;b.addEventListener('click',()=>{if(busy)return;invalidate();const [x,y,w,h]=c.roi;setSelection({x,y,w,h});selectionMethod='assisted-review';video.currentTime=out.preview_start_s;anchorFrame=out.start_frame;anchorTime=out.preview_start_s;$('anchor-status').textContent=`הצעה ${i+1} נבחרה. בדקו שהיא על המוט ואז הריצו מעקב. המהירות תישאר מוסתרת.`;suggestionStatus('ההצעה נבחרה לבדיקה, לא אושרה אוטומטית.');});$('suggestions').append(b);});
+  suggestionStatus(out.candidates.length?'בחרו הצעה כדי לראות את האזור על הסרטון.':'אין הצעה מספקת.');
+ }catch(e){suggestionStatus(e.message);}finally{busyState(false);}
 });
 $('track').addEventListener('click',async()=>{
  if(!source||busy)return;if(!$('consent').checked){status('נדרש אישור שימוש בסרטון.');return;}
