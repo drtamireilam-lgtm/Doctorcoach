@@ -56,3 +56,23 @@
 :root[data-dc-mode="light"] .video-review-row{background:#f7f9fc;border-color:#dbe1eb;color:#172033}
 :root[data-dc-mode="light"] .video-review-row textarea{background:#fff;color:#172033;border-color:#cbd5e1}
 @media(prefers-reduced-motion:reduce){.dc-theme-widget *, .dc-theme-widget *::before, .dc-theme-widget *::after{transition:none!important}}
+
+/* Accent-only overrides: clinical alerts retain their semantic red and green colors. */
+:root[data-dc-accent] .check-card input,:root[data-dc-accent] .form-grid input[type="range"]{accent-color:var(--dc-accent)}
+:root[data-dc-accent] .timeline b{background:var(--dc-accent)}
+:root[data-dc-accent] .region-button:hover,:root[data-dc-accent] .region-button.selected,
+:root[data-dc-accent] .filter-chip.active,:root[data-dc-accent] .phase-pill.active{border-color:var(--dc-accent);background:var(--dc-accent-tint)}
+:root[data-dc-accent] .add-button{border-color:var(--dc-accent);background:var(--dc-accent-tint)}
+:root[data-dc-accent] .mini-bars span{background:linear-gradient(var(--dc-accent-bright),var(--dc-accent))}
+:root[data-dc-accent] .brand-mark{box-shadow:0 10px 30px var(--dc-accent-tint)}
+:root[data-dc-mode="light"] .filter-chip.active,:root[data-dc-mode="light"] .region-button.selected,
+:root[data-dc-mode="light"] .phase-pill.active{color:#172033}
+:root[data-dc-mode="light"] .filter-chip,:root[data-dc-mode="light"] .region-button,
+:root[data-dc-mode="light"] .add-button{color:#172033}
+:root[data-dc-mode="light"] .sidebar-footer,:root[data-dc-mode="light"] .role-box small,
+:root[data-dc-mode="light"] .role-box span{color:#475569}
+:root[data-dc-mode="light"] .video-review-row strong,:root[data-dc-mode="light"] .timeline-event strong{color:#172033}
+:root[data-dc-mode="light"] .video-review-row span,:root[data-dc-mode="light"] .video-review-row small{color:#526079}
+:root[data-dc-mode="light"] .step-line{background:#e2e8f0}
+:root[data-dc-mode="light"] .modal-backdrop{background:rgba(15,23,42,.55)}
+:root[data-dc-mode="light"] .dc-theme-toggle{color:#fff}
