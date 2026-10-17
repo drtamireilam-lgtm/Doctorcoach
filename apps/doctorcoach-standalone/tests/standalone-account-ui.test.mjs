@@ -5,8 +5,8 @@ import {authPage} from '../standalone/page.ts';
 import {legacyLinkPage} from '../standalone/legacy-link-page.ts';
 const script=html=>html.match(/<script nonce="[^"]+">([\s\S]*?)<\/script>/)[1];
 const flush=async()=>{for(let n=0;n<4;n++)await new Promise(resolve=>setImmediate(resolve));};
-async function ui({incoming='',responses={}}={}){
- const response=authPage({signout:false,returnTo:'/#program',english:false}),html=await response.text(),nodes=new Map(),calls=[],redirects=[];
+async function ui({incoming='',responses={},isolatedStaging=false}={}){
+ const response=authPage({signout:false,returnTo:'/#program',english:false,isolatedStaging}),html=await response.text(),nodes=new Map(),calls=[],redirects=[];
  for(const m of html.matchAll(/id="([^"]+)"/g))nodes.set(m[1],{hidden: new RegExp('id="'+m[1]+'" hidden').test(html),disabled:false,value:'',textContent:'',listeners:{},addEventListener(event,fn){this.listeners[event]=fn;},focus(){this.focused=true;}});
  for(const id of ['email-form','code-form','new-form','link-form']){const node=nodes.get(id),fields={email:{value:'new@example.test',focus(){}},code:{value:'123456',focus(){}},confirmed:{checked:false}};node.fields=fields;node.elements={namedItem:name=>fields[name]};node.querySelector=selector=>selector.includes('code')?fields.code:selector.includes('email')?fields.email:{disabled:false};}
  const location={hash:incoming?'#legacy_proof='+encodeURIComponent(incoming):'',pathname:'/auth/signin',search:'',assign:url=>redirects.push(url)};
@@ -59,4 +59,19 @@ test('switch email restores entry and sends the replacement address',async()=>{
  await f.event('email-form','submit');
  assert.equal(f.calls.filter(([p])=>p==='/auth/send').at(-1)[1].email,'replacement@example.test');
  assert.equal(f.nodes.get('code-form').hidden,false);
+});
+
+test('isolated staging offers a separate test account without legacy links or proof requests',async()=>{
+ for(const english of [false,true]){
+  const html=await authPage({signout:false,returnTo:'/',english,isolatedStaging:true}).text();
+  assert.ok(!html.includes('https://doctorcoach.dr-tamireilam.chatgpt.site/'));
+  assert.ok(!html.includes('id="start"'));assert.match(html,/<details open>/);
+  new vm.Script(script(html));
+ }
+ const f=await ui({isolatedStaging:true,incoming:'old-proof',responses:{'/auth/status':{linked:false,canRegister:true,linkingReady:false},'/auth/register':{linked:true}}});
+ assert.equal(f.nodes.get('account').hidden,false);assert.equal(f.nodes.get('new-form').hidden,false);
+ assert.ok(!f.calls.some(([p])=>p.startsWith('/auth/link')));
+ await f.event('new-form','submit');assert.ok(!f.calls.some(([p])=>p==='/auth/register'));
+ f.nodes.get('new-form').fields.confirmed.checked=true;await f.event('new-form','submit');
+ assert.deepEqual(f.redirects,['/#program']);
 });
