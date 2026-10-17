@@ -6,7 +6,7 @@ const c=JSON.parse(readFileSync(file,'utf8'));
 assert.equal(c.name,'doctorcoach-isolated-staging');
 assert.equal(c.vars?.DC_DEPLOYMENT_ENV,'isolated-staging');
 assert.equal(c.vars?.DC_SUPABASE_URL,'https://jbfkzkzcznfacsjdawmf.supabase.co');
-assert.equal(c.vars?.DC_AUTH_ORIGIN,'https://staging.drtamireilam.com');
+assert.equal(c.vars?.DC_AUTH_ORIGIN,'https://doctorcoach-isolated-staging.dr-tamireilam.workers.dev');
 assert.equal(c.vars?.DC_LEGACY_BRIDGE_ENABLED,'false');
 assert.equal(c.vars?.DC_LEGACY_ISSUER,'doctorcoach:isolated-staging');
 assert.equal(c.vars?.DOCTORCOACH_BILLING_MODE,'manual');

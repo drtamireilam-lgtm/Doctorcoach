@@ -66,3 +66,6 @@ Owner screenshot on 17 October 2026 shows `doctorcoach-isolated-staging`, UUID `
 ## Owner-created R2 checkpoint
 
 Owner screenshot at 13:59 on 17 October 2026 shows `doctorcoach-isolated-staging`, Standard storage, Public Access Disabled, bucket size 0 B and zero Class A/B operations. Resource is separate from existing test bucket; do not copy its contents. Worker bindings, schema initialization, secret installation and deployment remain pending.
+
+## HTTPS fallback checkpoint
+Owner dashboard reports no matching Cloudflare zone for staging.drtamireilam.com. Do not onboard the existing domain or change its nameservers. Use only https://doctorcoach-isolated-staging.dr-tamireilam.workers.dev for this isolated target; runtime origin and static preflight are pinned to that exact HTTPS origin. Preview URLs stay disabled. Cloudflare TypeScript and full-app build passed in the owner-provided log; deploy command remains exit 1. Owner confirmed saving both required secrets. D1/R2 bindings match the isolated resources in screenshots; schema initialization and live tests remain pending.

@@ -5,7 +5,7 @@
   "compatibility_flags": [
     "nodejs_compat"
   ],
-  "workers_dev": false,
+  "workers_dev": true,
   "preview_urls": false,
   "d1_databases": [
     {
@@ -23,7 +23,7 @@
   ],
   "vars": {
     "DC_DEPLOYMENT_ENV": "isolated-staging",
-    "DC_AUTH_ORIGIN": "https://staging.drtamireilam.com",
+    "DC_AUTH_ORIGIN": "https://doctorcoach-isolated-staging.dr-tamireilam.workers.dev",
     "DC_SUPABASE_URL": "https://jbfkzkzcznfacsjdawmf.supabase.co",
     "DC_LEGACY_ISSUER": "doctorcoach:isolated-staging",
     "DC_NEW_ACCOUNTS_ENABLED": "true",
