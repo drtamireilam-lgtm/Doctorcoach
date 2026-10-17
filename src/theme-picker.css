@@ -38,3 +38,21 @@
 :root[data-dc-mode="light"] .dc-theme-panel select{background:#f4f6fa;color:#172033;border-color:#cbd5e1}
 :root[data-dc-mode="light"] .dc-theme-panel small{color:#475569}
 :root[data-dc-mode="light"] .dc-theme-swatch.selected{background:#eef2f7}
+
+/* Shared accent treatments across training, progress and care modules. */
+:root[data-dc-accent] .progress-svg{color:var(--dc-accent-bright)}
+:root[data-dc-accent] .range-row input,:root[data-dc-accent] .queue-item input{accent-color:var(--dc-accent)}
+:root[data-dc-mode="light"] .brand span,:root[data-dc-mode="light"] .sidebar-footer,:root[data-dc-mode="light"] .topbar p{color:#526079}
+:root[data-dc-mode="light"] .card p,:root[data-dc-mode="light"] .card small,:root[data-dc-mode="light"] .card li,:root[data-dc-mode="light"] .hero-card p,:root[data-dc-mode="light"] .module-card>p{color:#475569}
+:root[data-dc-mode="light"] .nav-item small,:root[data-dc-mode="light"] .mini-card span{color:#526079}
+:root[data-dc-mode="light"] .role-box,:root[data-dc-mode="light"] .mini-card{background:#f7f9fc;border-color:#dbe1eb;color:#172033}
+:root[data-dc-mode="light"] .role-box select,:root[data-dc-mode="light"] .card select,:root[data-dc-mode="light"] .stacked-label input,:root[data-dc-mode="light"] .card textarea,:root[data-dc-mode="light"] .card input,:root[data-dc-mode="light"] .module-card select{background:#fff;color:#172033;border-color:#cbd5e1}
+:root[data-dc-mode="light"] .modal-card{background:#fff;color:#172033;border-color:#dbe1eb}
+:root[data-dc-mode="light"] .modal-card p{color:#475569}
+:root[data-dc-mode="light"] .choice.selected{color:#172033}
+:root[data-dc-mode="light"] .ghost-button{color:#475569}
+:root[data-dc-mode="light"] .timeline-event,:root[data-dc-mode="light"] .queue-item{background:#f7f9fc;border-color:#dbe1eb;color:#172033}
+:root[data-dc-mode="light"] .timeline-event span,:root[data-dc-mode="light"] .queue-item small{color:#526079}
+:root[data-dc-mode="light"] .video-review-row{background:#f7f9fc;border-color:#dbe1eb;color:#172033}
+:root[data-dc-mode="light"] .video-review-row textarea{background:#fff;color:#172033;border-color:#cbd5e1}
+@media(prefers-reduced-motion:reduce){.dc-theme-widget *, .dc-theme-widget *::before, .dc-theme-widget *::after{transition:none!important}}
