@@ -14,6 +14,7 @@ export type TrainingSession = {
   startedAt: string; finishedAt: string | null; before: number; after: number | null;
   plannedSets: number; completedSets: number; version: number;
   readiness?:ReadinessSnapshot|null; followup?:WorkoutFollowup|null;
+  finishFeedback?:{effort:number|null;note:string}|null;
 };
 export type TrainingStats = { total: number; week: number; sets: number };
 export type TrainingFeed = { active: TrainingSession | null; history: TrainingSession[]; stats: TrainingStats };

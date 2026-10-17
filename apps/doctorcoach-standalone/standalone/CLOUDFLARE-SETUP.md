@@ -33,7 +33,7 @@ From the app directory, with the pinned dependencies already installed:
 
 ```
 npm run build:standalone
-node standalone/scripts/runtime-smoke.mjs
+node --experimental-strip-types standalone/scripts/runtime-smoke.mjs
 npm run verify:standalone-release
 ```
 

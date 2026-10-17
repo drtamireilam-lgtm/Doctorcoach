@@ -1,11 +1,13 @@
 declare namespace Cloudflare {
   interface Env {
+    DC_DEPLOYMENT_ENV?: string;
     DC_AUTH_ORIGIN?: string;
     DC_SUPABASE_URL?: string;
     DC_SUPABASE_PUBLIC_KEY?: string;
     DC_SESSION_KEY?: string;
     DC_LEGACY_ISSUER?: string;
     DC_LEGACY_BRIDGE_ENABLED?: string;
+    DC_LEGACY_ORIGIN?: string;
     DC_LEGACY_PUBLIC_JWK?: string;
     DC_LINK_PRIVATE_JWK?: string;
     DC_NEW_ACCOUNTS_ENABLED?: string;
@@ -19,6 +21,7 @@ declare namespace Cloudflare {
     DB?: D1Database;
     BUCKET?: R2Bucket;
     DOCTORCOACH_ADMIN_EMAILS?: string;
+    DOCTORCOACH_LIOR_EMAIL?: string;
     DOCTORCOACH_OPERATIONS_EMAILS?: string;
     DOCTORCOACH_BILLING_MODE?: string;
     DOCTORCOACH_CLINICIAN_EMAILS?: string;

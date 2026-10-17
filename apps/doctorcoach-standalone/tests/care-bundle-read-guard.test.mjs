@@ -1,9 +1,10 @@
+import {verifySyntheticDietitian} from './platform-db.mjs';
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import {randomUUID} from 'node:crypto';
 import {platform,doctor,coach,client} from './platform-db.mjs';
 const diet={userId:'diet',email:'diet@example.test'};
-async function fixture(t){const f=platform(t);await f.connect();await f.care.saveStaff(doctor,{...diet,name:'Dietitian',role:'dietitian',active:true});const invite=await f.care.createInvite(doctor,{emails:[doctor.email,diet.email]});await f.care.acceptInvite(client,{code:invite.code,consent:true});await f.care.addNote(doctor,client.userId,{id:randomUUID(),kind:'medical',content:'private medical note',shared:false});await f.care.addNote(diet,client.userId,{id:randomUUID(),kind:'nutrition',content:'private nutrition note',shared:false});await f.care.addNote(coach,client.userId,{id:randomUUID(),kind:'training',content:'shared training note',shared:true});return f;}
+async function fixture(t){const f=platform(t);await f.connect();await f.care.saveStaff(doctor,{...diet,name:'Dietitian',role:'dietitian',active:true});verifySyntheticDietitian(f,diet.email);const invite=await f.care.createInvite(doctor,{emails:[doctor.email,diet.email]});await f.care.acceptInvite(client,{code:invite.code,consent:true});await f.care.addNote(doctor,client.userId,{id:randomUUID(),kind:'medical',content:'private medical note',shared:false});await f.care.addNote(diet,client.userId,{id:randomUUID(),kind:'nutrition',content:'private nutrition note',shared:false});await f.care.addNote(coach,client.userId,{id:randomUUID(),kind:'training',content:'shared training note',shared:true});return f;}
 function race(f,change){const prepare=f.db.prepare.bind(f.db);let fired=false;f.db.prepare=q=>{const s=prepare(q);if(!q.startsWith('SELECT id,author_name AS authorName,kind,content'))return s;return {bind(...args){const b=s.bind(...args);return {...b,async all(){const result=await b.all();if(!fired){fired=true;change();}return result;}};}};};}
 for(const viewer of [doctor,coach,diet])for(const [name,change] of [
  ['connection revoked',(f,u)=>f.sql.prepare('UPDATE care_connections SET active=0 WHERE staff_email=?').run(u.email)],

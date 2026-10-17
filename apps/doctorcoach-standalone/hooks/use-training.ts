@@ -104,7 +104,7 @@ export function useTraining() {
     return result.session;
   });
   const followup=async(session:TrainingSession,pain:number)=>mutate(async()=>{const result=await request<{session:TrainingSession}>('/api/training','PATCH',{action:'followup',id:session.id,version:session.version,pain});syncSession(result.session);setNotice('הדיווח ליום שאחרי נשמר באימון.');return result.session;});
- const saveSplit=async(value:ProgramSplit)=>mutate(async()=>{const result=await request<{split:ProgramSplit}>('/api/program','POST',{...value,action:'split'});setSplit(result.split);setSelectedPlanDay('1');setNotice('חלוקת האימונים נשמרה. כעת בחרו תרגילים לכל אימון.');return true;});
+ const saveSplit=async(value:ProgramSplit)=>{let failure:Error|undefined;const saved=await mutate(async()=>{const result=await request<{split:ProgramSplit}>('/api/program','POST',{...value,action:'split'});setSplit(result.split);setSelectedPlanDay('1');setNotice('חלוקת האימונים נשמרה. כעת בחרו תרגילים לכל אימון.');return true;},error=>{failure=error;});if(failure)throw failure;return saved;};
   return {split,saveSplit,selectedPlanDay,setSelectedPlanDay,workoutPreference,saveWorkoutPreference,access,plan,legacy,favorites,feed,auth,notice,startError,busy:busy||refreshing,notify,refresh,savePlan,add,remove,useTemplate,toggleFavorite,start,patch,followup};
 }
 export type TrainingController = ReturnType<typeof useTraining>;

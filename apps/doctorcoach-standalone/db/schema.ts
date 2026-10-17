@@ -78,6 +78,7 @@ export const trainingSessions = sqliteTable('training_sessions', {
   after: integer('pain_after'),
   readinessJson: text('readiness_json'),
   followupJson: text('followup_json'),
+  finishFeedbackJson: text('finish_feedback_json'),
   plannedSets: integer('planned_sets').notNull(),
   completedSets: integer('completed_sets').notNull().default(0),
   version: integer('version').notNull().default(1),
@@ -276,3 +277,11 @@ export const coachMonthlyCharges=sqliteTable('coach_monthly_charges',{id:text('i
 
 export const careTasks=sqliteTable('care_tasks',{id:text('id').primaryKey(),clientId:text('client_id').notNull(),channel:text('channel').notNull(),title:text('title').notNull(),details:text('details').notNull().default(''),assigneeEmail:text('assignee_email').notNull(),dueDay:text('due_day'),state:text('state').notNull().default('open'),creatorId:text('creator_id').notNull(),creatorEmail:text('creator_email').notNull(),updatedBy:text('updated_by').notNull(),version:integer('version').notNull().default(1),createdAt:text('created_at').notNull(),updatedAt:text('updated_at').notNull()},t=>[index('care_task_client_state').on(t.clientId,t.state),index('care_task_assignee_due').on(t.assigneeEmail,t.dueDay)]);
 export const careTaskEvents=sqliteTable('care_task_events',{id:text('id').primaryKey(),taskId:text('task_id').notNull(),actorEmail:text('actor_email').notNull(),action:text('action').notNull(),snapshotJson:text('snapshot_json').notNull(),createdAt:text('created_at').notNull()},t=>[index('care_task_history').on(t.taskId,t.createdAt)]);
+
+export const progressLayouts=sqliteTable('progress_layouts',{userId:text('user_id').primaryKey(),orderJson:text('order_json').notNull(),version:integer('version').notNull().default(1),updatedAt:text('updated_at').notNull()});
+
+export const staffWorkoutReviews=sqliteTable('staff_workout_reviews',{staffId:text('staff_id').notNull(),staffRole:text('staff_role').notNull(),clientId:text('client_id').notNull(),sessionId:text('session_id').notNull(),sessionVersion:integer('session_version').notNull(),reviewedAt:text('reviewed_at').notNull()},t=>[primaryKey({columns:[t.staffId,t.staffRole,t.sessionId]}),index('staff_workout_reviews_client').on(t.clientId)]);
+
+export const nutritionCredentials=sqliteTable('nutrition_credentials',{email:text('email').primaryKey(),qualification:text('qualification').notNull(),reference:text('reference').notNull(),issuer:text('issuer').notNull(),active:integer('active').notNull(),verifiedBy:text('verified_by').notNull(),verifiedAt:text('verified_at').notNull(),version:integer('version').notNull().default(1)});
+
+export const appearancePreferences=sqliteTable('appearance_preferences',{userId:text('user_id').primaryKey(),mode:text('mode').notNull(),palette:text('palette').notNull(),version:integer('version').notNull().default(1),updatedAt:text('updated_at').notNull()});

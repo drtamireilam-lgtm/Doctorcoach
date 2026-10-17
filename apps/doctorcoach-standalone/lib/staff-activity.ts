@@ -1,5 +1,6 @@
 import {matchesClientAttention,type ClientAttention} from './client-attention.ts';
-export type StaffActivity={week:string;completedThisWeek:number;lastCompletedAt:string|null;programTitle:string|null;programStarted:boolean|null;pendingCheckins:number};
+export type StaffActivity={week:string;completedThisWeek:number;completedTotal:number;lastCompletedAt:string|null;programTitle:string|null;programStarted:boolean|null;pendingCheckins:number};
+export function activityTotals(clients:{activity?:StaffActivity|null}[]){return clients.reduce((total,{activity})=>{if(activity){total.completedThisWeek+=activity.completedThisWeek;total.completedTotal+=activity.completedTotal;total.availableClients++;}return total;},{completedThisWeek:0,completedTotal:0,availableClients:0});}
 // Convert local midnight independently at each boundary; winter/summer offsets differ.
 export function israelMidnight(day:string):string{
  const target=Date.parse(day+'T00:00:00Z');let at=target;

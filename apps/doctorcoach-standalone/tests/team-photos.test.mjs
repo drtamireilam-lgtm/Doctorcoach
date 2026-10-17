@@ -6,14 +6,14 @@ import {teamPhotoStore,readTeamPhotoBody,MAX_TEAM_PHOTO_BYTES} from '../lib/team
 import {platform,doctor,coach,client} from './platform-db.mjs';
 const png=new Uint8Array([137,80,78,71,13,10,26,10,0,0,0,0]);
 function fixture(t){const f=platform(t),objects=new Map();const bucket={async put(key,bytes){objects.set(key,bytes.slice());},async delete(key){objects.delete(key);}};return {...f,objects,bucket,photos:teamPhotoStore(f.db,doctor.email)};}
-test('only Tamir and Nadav are presented; Lior profile and Instagram remain stored for future restoration',()=>{
- assert.deepEqual(visibleTeamProfiles.map(p=>p.id),['tamir','nadav']);
- const lior=teamProfiles.find(p=>p.id==='lior');assert.equal(lior.visible,false);assert.equal(lior.instagram,'liorzelikson');assert.ok(lior.bio&&lior.nameEn);
+test('Lior is restored alongside Tamir and Nadav with his retained professional profile',()=>{
+ assert.deepEqual(visibleTeamProfiles.map(p=>p.id),['tamir','nadav','lior']);
+ const lior=teamProfiles.find(p=>p.id==='lior');assert.equal(lior.visible,true);assert.equal(lior.instagram,'liorzelikson');assert.ok(lior.bio&&lior.nameEn);
 });
 test('portraits are independent, bounded to known public members, and publication is administrator-only',async t=>{
  const f=fixture(t);await f.connect();
  for(const user of [null,coach,client])await assert.rejects(()=>f.photos.upload(user,f.bucket,'tamir',0,'image/png',png,true),e=>[401,403].includes(e.status));
- await assert.rejects(()=>f.photos.upload(doctor,f.bucket,'lior',0,'image/png',png,true),e=>e.status===404);
+ await assert.rejects(()=>f.photos.upload(doctor,f.bucket,'unknown',0,'image/png',png,true),e=>e.status===404);
  await assert.rejects(()=>f.photos.upload(doctor,f.bucket,'tamir',0,'image/png',png,false));assert.equal(f.objects.size,0);
  const tamir=await f.photos.upload(doctor,f.bucket,'tamir',0,'image/png',png,true);const nadav=await f.photos.upload(doctor,f.bucket,'nadav',0,'image/png',png,true);
  assert.equal(tamir.version,1);assert.equal(nadav.version,1);assert.equal((await f.photos.list()).filter(p=>p.url).length,2);
@@ -40,7 +40,7 @@ test('image stream checks MIME, exact size, signature and five-MiB bound before 
  for(const size of ['0','7','NaN',String(MAX_TEAM_PHOTO_BYTES+1)])await assert.rejects(readTeamPhotoBody(req(png,'image/png',size)));
  await assert.rejects(readTeamPhotoBody(req(png,'image/png','8')));
 });
-test('public-facing static copy excludes Lior while upload UI requires confirmation and strips original metadata',async()=>{
- for(const path of ['../components/site-areas.tsx','../components/instagram-links.tsx','../components/wellness-workspace.tsx','../app/page.tsx','../lib/messaging.ts','../lib/prepared/welcome-cards.json'])assert.ok(!/ליאור|Lior|liorzelikson/.test(await readFile(new URL(path,import.meta.url),'utf8')),path);
+test('public portrait upload UI still requires confirmation and strips original metadata',async()=>{
+
  const admin=await readFile(new URL('../components/team-photo-admin.tsx',import.meta.url),'utf8');assert.ok(admin.includes('canvas.toBlob'));assert.ok(admin.includes('!confirmed'));assert.ok(admin.includes("'X-Confirm-Public':'true'"));
 });

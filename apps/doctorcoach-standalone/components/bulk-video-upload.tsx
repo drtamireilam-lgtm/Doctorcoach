@@ -1,4 +1,5 @@
 'use client';
+import {videoFileMime,videoAccept} from '../lib/video-format';
 import {Localize} from "../components/language-provider";
 import {useEffect,useRef,useState} from 'react';
 import {exercises} from '../lib/content';
@@ -8,7 +9,7 @@ import type {VideoAsset} from '../lib/media-store';
 import {CareSelect} from './care-ui';
 type Row={id:string;file:File;exerciseId:string;replaceId:string;confirmed:boolean;state:'waiting'|'uploading'|'done'|'failed';progress:number;error:string};
 function sendVideo(url:string,file:File,progress:(n:number)=>void,replacement=false):Promise<void>{return new Promise((resolve,reject)=>{
- const xhr=new XMLHttpRequest();xhr.open('PUT',url);xhr.timeout=180000;xhr.setRequestHeader('Content-Type',file.type);
+ const xhr=new XMLHttpRequest();xhr.open('PUT',url);xhr.timeout=180000;xhr.setRequestHeader('Content-Type',videoFileMime(file));
  if(replacement){xhr.setRequestHeader('X-Replacement-Confirmed','true');xhr.setRequestHeader('X-Video-Bytes',String(file.size));}
  xhr.upload.onprogress=e=>{if(e.lengthComputable)progress(Math.round(e.loaded/e.total*100));};
  xhr.onerror=()=>reject(new Error('תקלה בחיבור. אפשר לנסות שוב.'));xhr.ontimeout=()=>reject(new Error('ההעלאה ארכה זמן רב. נסו שוב.'));
@@ -24,12 +25,12 @@ export function BulkVideoUpload({videos,reload}:{videos:VideoAsset[];reload:()=>
  async function upload(){if(lock.current)return;const queue=rows.filter(row=>row.state!=='done'&&!problem(row));if(!queue.length)return;lock.current=true;setBusy(true);setMessage('');
   try{await runVideoQueue(queue,async row=>{patch(row.id,{state:'uploading',progress:0,error:''});try{
    if(row.replaceId)await sendVideo('/api/media/'+row.replaceId+'/replacement',row.file,n=>patch(row.id,{progress:n}),true);
-   else{const init=await careRequest<{id:string;status:string}>('/api/media',{action:'initialize',id:row.id,kind:'demo',exerciseId:row.exerciseId,caption:exercises.find(e=>e.id===row.exerciseId)!.name,mime:row.file.type,bytes:row.file.size});if(init.status!=='ready')await sendVideo('/api/media/'+init.id,row.file,n=>patch(row.id,{progress:n}));}
+   else{const init=await careRequest<{id:string;status:string}>('/api/media',{action:'initialize',id:row.id,kind:'demo',exerciseId:row.exerciseId,caption:exercises.find(e=>e.id===row.exerciseId)!.name,mime:videoFileMime(row.file),bytes:row.file.size});if(init.status!=='ready')await sendVideo('/api/media/'+init.id,row.file,n=>patch(row.id,{progress:n}));}
    patch(row.id,{state:'done',progress:100});
   }catch(error){patch(row.id,{state:'failed',error:error instanceof Error?error.message:'ההעלאה נכשלה.'});throw error;}});setMessage('התור הסתיים. קבצים חדשים נשמרו כטיוטות; יש לבדוק ולפרסם בנפרד.');reload();}finally{lock.current=false;setBusy(false);}
  }
  return <Localize>{<section className="panel care-form"><h2>מנהל העלאת סרטוני תרגילים</h2><p>בחרו מספר קבצי MP4 או WebM, עד 25 MB לכל קובץ. שני קבצים מועלים במקביל. שם הקובץ צריך להיות מזהה התרגיל, למשל <bdi>rdl.mp4</bdi> או <bdi>barbell-bench-demo.mp4</bdi>. בדקו את שם התרגיל לפני ההעלאה.</p>
- <label className="care-field">בחירת סרטונים<input type="file" multiple accept="video/mp4,video/webm" disabled={busy} onChange={e=>{const files=Array.from(e.target.files??[]);if(files.length+rows.length>50){setMessage('אפשר להעלות עד 50 קבצים בכל תור.');e.target.value='';return;}setRows(previous=>[...previous,...files.map(file=>({id:crypto.randomUUID(),file,exerciseId:exerciseIdFromFilename(file.name,ids),replaceId:'',confirmed:false,state:'waiting' as const,progress:0,error:''}))]);e.target.value='';}}/></label>
+ <label className="care-field">בחירת סרטונים<input type="file" multiple accept={videoAccept} disabled={busy} onChange={e=>{const files=Array.from(e.target.files??[]);if(files.length+rows.length>50){setMessage('אפשר להעלות עד 50 קבצים בכל תור.');e.target.value='';return;}setRows(previous=>[...previous,...files.map(file=>({id:crypto.randomUUID(),file,exerciseId:exerciseIdFromFilename(file.name,ids),replaceId:'',confirmed:false,state:'waiting' as const,progress:0,error:''}))]);e.target.value='';}}/></label>
  <p className="care-muted">סרטון קיים אינו מוחלף אוטומטית. אפשר להעלות טיוטה נוספת או לבחור במפורש סרטון להחלפה. החלפה שומרת את מצב הפרסום הקיים.</p>
  <div className="care-stack">{rows.map(row=>{const exercise=exercises.find(e=>e.id===row.exerciseId);const existing=videos.filter(v=>v.kind==='demo'&&v.exerciseId===row.exerciseId);const issue=problem(row);return <article className="review-exercise care-form" key={row.id}><strong><bdi>{row.file.name}</bdi> · {(row.file.size/1024/1024).toFixed(1)} MB</strong>
  <CareSelect label="שיוך לתרגיל" value={row.exerciseId} disabled={busy||row.state!=='waiting'} onChange={exerciseId=>patch(row.id,{exerciseId,replaceId:'',confirmed:false})} options={[{value:'',label:'לא נמצא שיוך — בחרו ידנית'},...exercises.map(e=>({value:e.id,label:e.name+' · '+e.id}))]}/>

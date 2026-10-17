@@ -1,3 +1,4 @@
+import {nutritionTextGuard,requireNutritionText,nutritionCredentialGuard,requireNutritionCredential} from './nutrition-authority.ts';
 import {careConnectionGuard,combineCareGuards,staffRoleGuard} from './care-write-guard.ts';
 import {availableCustomExercises} from './custom-exercises.ts';
 import {healthConsentGuard,requireHealthConsent} from './consent-server.ts';
@@ -125,11 +126,13 @@ async function previewInvite(user:StaffIdentity,payload:unknown){const p=inputRe
       const p=inputRecord(payload);
       if(!['medical','training','nutrition'].includes(String(p.kind))||typeof p.shared!=='boolean')throw new TrainingError('פרטי ההערה אינם תקינים.');
       if(p.kind==='medical'&&!a.medical)throw new TrainingError('כתיבת הערה רפואית זמינה לרופא בלבד.',403);
+      if(p.kind==='nutrition')await requireNutritionCredential(db,user.email);
       if(p.kind==='nutrition'&&!a.nutrition)throw new TrainingError('הערות תזונה זמינות לדיאטן המשויך בלבד.',403);
       await requireHealthConsent(db,clientId);
       const mention=p.mentionEmail?validEmail(p.mentionEmail):'',id=validId(p.id),content=textField(p.content,'הערה',4000,2);
+      await requireNutritionText(db,user,clientId,p.content,config);
       const options={clientId,...(p.kind==='medical'?{role:'clinician',grant:'medical_access' as const}:p.kind==='nutrition'?{role:'dietitian',grant:'nutrition_access' as const}:{})};
-      const guard=combineCareGuards(careConnectionGuard({...options,email:a.staff.email},config),healthConsentGuard(clientId),...(mention?[careConnectionGuard({...options,email:mention},config)]:[]));
+      const guard=combineCareGuards(careConnectionGuard({...options,email:a.staff.email},config),healthConsentGuard(clientId),nutritionTextGuard(user,clientId,content,config),...(p.kind==='nutrition'?[nutritionCredentialGuard(user.email)]:[]),...(mention?[careConnectionGuard({...options,email:mention},config)]:[]));
       const saved=await db.prepare(`INSERT INTO care_notes(id,client_id,author_id,author_name,kind,content,shared,mention_email,created_at) SELECT ?,?,?,?,?,?,?,?,? WHERE ${guard.sql} ON CONFLICT(id) DO NOTHING RETURNING id`).bind(id,clientId,user.userId,a.staff.name,p.kind,content,p.shared?1:0,mention,now(),...guard.args).first();
       if(!saved){
         const allowed=await db.prepare(`SELECT CASE WHEN ${guard.sql} THEN 1 ELSE 0 END AS allowed`).bind(...guard.args).first<{allowed:number}>();
@@ -142,6 +145,7 @@ async function previewInvite(user:StaffIdentity,payload:unknown){const p=inputRe
       const a=await authorize(user,clientId);
       if(a.self||!a.staff||!a.program)throw new TrainingError('שיוך תוכנית זמין למאמן המשויך או לרופא המנהל בלבד.',403);
       await requireTrainingAllowed(db,clientId);
+      await requireNutritionText(db,user,clientId,payload,config);
       const p=inputRecord(payload),id=validId(p.id),title=textField(p.title,'שם תוכנית',100,3);
       const items=JSON.stringify(parseAssignedItems(p.items,await availableCustomExercises(db,user.userId,clientId))),email=a.staff.email;
       const revisionOf=p.revisionOf===undefined?null:validId(p.revisionOf);
@@ -156,7 +160,7 @@ async function previewInvite(user:StaffIdentity,payload:unknown){const p=inputRe
       if(revisionOf&&(await trainingAccess(db,clientId,config)).programId!==revisionOf)throw new TrainingError('התוכנית הפעילה השתנתה מאז תחילת העריכה. רעננו וטענו את הגרסה העדכנית.',409);
       const at=now();
       // Recheck scope and safety inside the atomic batch, not only before it.
-      const program=programGuard(clientId,email);
+      const program=combineCareGuards(programGuard(clientId,email),nutritionTextGuard(user,clientId,payload,config));
       const gate=`${program.sql}
         AND NOT EXISTS(SELECT 1 FROM training_sessions WHERE owner_id=? AND status='active')
         AND NOT EXISTS(SELECT 1 FROM medical_reviews WHERE client_id=? AND state IN ('pending','in_review'))
@@ -202,7 +206,8 @@ async function previewInvite(user:StaffIdentity,payload:unknown){const p=inputRe
       if(a.self||!a.staff)throw new TrainingError('מענה זמין לצוות המטפל.',403);
       await requireHealthConsent(db,clientId);
       const p=inputRecord(payload),id=validId(p.id),response=textField(p.response,'משוב',2000,2);
-      const guard=combineCareGuards(careConnectionGuard({clientId,email:a.staff.email,role:a.staff.role},config),healthConsentGuard(clientId));
+      await requireNutritionText(db,user,clientId,response,config);
+      const guard=combineCareGuards(careConnectionGuard({clientId,email:a.staff.email,role:a.staff.role},config),healthConsentGuard(clientId),nutritionTextGuard(user,clientId,response,config));
       const row=await db.prepare(`UPDATE care_checkins SET response=?,reviewer=?,reviewed_at=? WHERE id=? AND client_id=? AND reviewed_at IS NULL AND ${guard.sql} RETURNING id`).bind(response,a.staff.name,now(),id,clientId,...guard.args).first();
       if(!row){
         const allowed=await db.prepare(`SELECT CASE WHEN ${guard.sql} THEN 1 ELSE 0 END AS allowed`).bind(...guard.args).first<{allowed:number}>();

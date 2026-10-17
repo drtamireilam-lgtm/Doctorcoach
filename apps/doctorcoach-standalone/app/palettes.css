@@ -1,0 +1,52 @@
+/* Personal action colors. Medical/status colors retain their own rules. */
+html[data-palette="red"]{--red:#cf2434;--accent-red:#ff8991;--soft-red:#321b22;--lime:#ff8991;--palette-button:#cf2434;--palette-soft:#321b22;--palette-ink:#ff8991}
+html.light[data-palette="red"]{--accent-red:#ae1b2c;--soft-red:#fff0f1;--lime:#ae1b2c;--palette-soft:#fff0f1;--palette-ink:#ae1b2c}
+html[data-palette="blue"]{--red:#1d4ed8;--accent-red:#93b4ff;--soft-red:#182747;--lime:#93b4ff;--palette-button:#1d4ed8;--palette-soft:#182747;--palette-ink:#93b4ff}
+html.light[data-palette="blue"]{--accent-red:#1d4ed8;--soft-red:#edf3ff;--lime:#1d4ed8;--palette-soft:#edf3ff;--palette-ink:#1d4ed8}
+html[data-palette="pink"]{--red:#be185d;--accent-red:#ff9dcb;--soft-red:#361d2c;--lime:#ff9dcb;--palette-button:#be185d;--palette-soft:#361d2c;--palette-ink:#ff9dcb}
+html.light[data-palette="pink"]{--accent-red:#be185d;--soft-red:#fff0f7;--lime:#be185d;--palette-soft:#fff0f7;--palette-ink:#be185d}
+html[data-palette="green"]{--red:#147d43;--accent-red:#80dbac;--soft-red:#182e25;--lime:#80dbac;--palette-button:#147d43;--palette-soft:#182e25;--palette-ink:#80dbac}
+html.light[data-palette="green"]{--accent-red:#146c3b;--soft-red:#edf9f1;--lime:#146c3b;--palette-soft:#edf9f1;--palette-ink:#146c3b}
+html[data-palette="purple"]{--red:#7e22ce;--accent-red:#d2a7ff;--soft-red:#2b2040;--lime:#d2a7ff;--palette-button:#7e22ce;--palette-soft:#2b2040;--palette-ink:#d2a7ff}
+html.light[data-palette="purple"]{--accent-red:#7e22ce;--soft-red:#f6efff;--lime:#7e22ce;--palette-soft:#f6efff;--palette-ink:#7e22ce}
+html[data-palette="orange"]{--red:#b54708;--accent-red:#ffb77c;--soft-red:#36251b;--lime:#ffb77c;--palette-button:#b54708;--palette-soft:#36251b;--palette-ink:#ffb77c}
+html.light[data-palette="orange"]{--accent-red:#a33e08;--soft-red:#fff3e8;--lime:#a33e08;--palette-soft:#fff3e8;--palette-ink:#a33e08}
+html[data-palette="teal"]{--red:#0f766e;--accent-red:#74dbd0;--soft-red:#17302f;--lime:#74dbd0;--palette-button:#0f766e;--palette-soft:#17302f;--palette-ink:#74dbd0}
+html.light[data-palette="teal"]{--accent-red:#0f766e;--soft-red:#eaf9f7;--lime:#0f766e;--palette-soft:#eaf9f7;--palette-ink:#0f766e}
+html[data-palette] ::selection{background:var(--red);color:#fff}
+html[data-palette] :is(.nav-link.active,.area-navigation button.active,.mobile-bottom-nav button.active,.injury-nav button.active,.timer-presets button.selected,.anatomy-region-list button.selected,.mapping-topics button.selected){background:var(--soft-red);color:var(--accent-red);border-color:var(--accent-red)}
+html[data-palette] :is(.row-number,.count-pill,.set-count,.small-add,.set-save,.install-button,.care-client-avatar){background:var(--soft-red);color:var(--accent-red);border-color:var(--accent-red)}
+html[data-palette] :is(.button.primary,.button.lime,.dashboard-last .button,.resume-icon){background:var(--red);color:#fff;border-color:var(--red)}
+html[data-palette] :is(.button.primary:hover:not(:disabled),.button.lime:hover:not(:disabled),.dashboard-last .button:hover){background:var(--red);border-color:var(--red);box-shadow:0 0 0 2px var(--accent-red)}
+html[data-palette] :is(.dashboard-last,.exercise-art,.exercise-card:nth-child(3n+2) .exercise-art,.exercise-card:nth-child(3n+3) .exercise-art){background:linear-gradient(135deg,var(--soft-red),var(--card));border-color:var(--line)}
+html[data-palette] :is(.resume-banner,.workout-summary,.message-bubble.own,.intake-choice.chosen){background:var(--soft-red);border-color:var(--accent-red);color:var(--text)}
+html[data-palette] :is(.resume-banner p,.workout-summary small,.workout-summary span,.dashboard-last p,.last-session-number span,.dashboard-tip){color:var(--muted)}
+html[data-palette] :is(.resume-banner .text-button,.small-add,.exercise-symbol){color:var(--accent-red)}
+html[data-palette] :is(.trainee-start,.next-workout-set){border-inline-start-color:var(--red)}
+html[data-palette] .set-line.next-pending-set{border-color:var(--red)}
+html[data-palette] .trainee-start-steps li[data-complete=true] .trainee-step-number{background:var(--red);border-color:var(--red);color:#fff}
+html[data-palette] :is(.exercise-disclosure-toggle,.navigation-hub-grid>button):focus-visible{outline-color:var(--accent-red)}
+html[data-palette] .navigation-hub-grid>button:hover{border-color:var(--accent-red)}
+.appearance-picker{display:grid;gap:18px;max-width:760px;min-width:0}
+.appearance-picker fieldset{border:0;padding:0;margin:0;min-width:0}
+.appearance-picker legend{font-weight:700;margin-bottom:12px}
+.appearance-modes,.appearance-colors{display:flex;flex-wrap:wrap;gap:10px}
+.appearance-modes button,.appearance-colors button{display:flex;align-items:center;justify-content:center;gap:10px;min-height:48px;padding:10px 16px;background:var(--card);color:var(--text);border:2px solid var(--line);border-radius:12px}
+.appearance-colors button{flex:1 1 140px;justify-content:flex-start}
+.appearance-picker button[aria-pressed=true]{border-color:var(--accent-red);background:var(--soft-red)}
+.appearance-swatch{width:30px;height:30px;flex:none;border-radius:50%;display:grid;place-items:center;color:white}
+.appearance-preview{background:var(--card);border:1px solid var(--line);border-inline-start:4px solid var(--red);padding:20px;border-radius:14px}
+.appearance-preview p{color:var(--muted);line-height:1.7}
+.appearance-preview-actions{display:flex;gap:12px;flex-wrap:wrap}
+.appearance-preview-actions span{padding:12px 18px;border-radius:10px;font-weight:700}
+.appearance-preview-primary{background:var(--red);color:white}
+.appearance-preview-secondary{background:var(--soft-red);color:var(--accent-red);border:1px solid var(--accent-red)}
+.appearance-picker [role=status]{margin:0;line-height:1.7;overflow-wrap:anywhere}
+@media(max-width:420px){.appearance-colors button{flex-basis:calc(50% - 10px);padding-inline:12px}.appearance-picker .care-actions{flex-direction:column;align-items:stretch}.appearance-preview-actions span{flex:1;text-align:center}}
+@media print{.appearance-picker{display:none}}
+
+.appearance-current{margin:0;line-height:1.7;color:var(--text)}
+.appearance-presets{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+.appearance-presets button{min-height:48px;padding:12px;white-space:normal;overflow-wrap:anywhere;background:var(--card);color:var(--text);border:2px solid var(--line);border-radius:12px;font:inherit;cursor:pointer}
+.appearance-picker button:focus-visible{outline:3px solid var(--accent-red);outline-offset:3px}
+@media(min-width:600px){.appearance-presets{grid-template-columns:repeat(3,minmax(0,1fr))}}

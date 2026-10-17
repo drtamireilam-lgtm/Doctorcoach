@@ -52,11 +52,18 @@ try{
  const json=async(url,body,method)=>{const r=await request(url,body,{},method),value=await r.json();assert.equal(r.status,200,url+': '+JSON.stringify(value));return value;};
  assert.equal((await request('/auth/signin')).status,200);
  assert.equal((await (await request('/api/account',undefined,{'oai-authenticated-user-id':'doctor','oai-authenticated-user-email':'doctor@example.test'})).json()).signedIn,false);
+ assert.equal((await request('/api/preferences/appearance')).status,401);
  await json('/auth/send',{email:'first@example.test'});
  assert.equal((await request('/auth/verify',{code:'999999'})).status,401);
  assert.equal((await json('/auth/verify',{code:'123456'})).linked,false);
  await json('/auth/register',{confirmed:true});
  const firstCookies=cookies,account=await json('/api/account');
+ assert.deepEqual(await json('/api/preferences/appearance'),{appearance:null,version:0});
+ const appearanceResponse=await request('/api/preferences/appearance',{appearance:{mode:'light',palette:'pink'},version:0,userId:'forged-other'});
+ assert.equal(appearanceResponse.status,200);assert.match(appearanceResponse.headers.get('cache-control'),/no-store/);
+ assert.deepEqual((await json('/api/preferences/appearance')).appearance,{mode:'light',palette:'pink'});
+ assert.equal((await request('/api/preferences/appearance',{appearance:{mode:'dark',palette:'blue'},version:0})).status,409);
+ assert.equal((await request('/api/preferences/appearance',{appearance:{mode:'dark',palette:'green'},version:1},{origin:'https://foreign.example.test'})).status,403);
  assert.equal(account.signedIn,true);assert.equal(account.canManageServices,false);assert.equal(account.careRole,null);assert.ok(refreshCount>=1);
  const owner=(await db.prepare('SELECT principal_id FROM dc_identity_aliases WHERE subject=?').bind(identities.get('first@example.test').subject).first()).principal_id;
  const at=new Date().toISOString(),revision='2026-09-28.1';
@@ -83,6 +90,7 @@ try{
  download=await request('/api/documents/'+document);assert.equal(download.status,200);assert.deepEqual(new Uint8Array(await download.arrayBuffer()),pdf);
  cookies='';await json('/auth/send',{email:'second@example.test'});await json('/auth/verify',{code:'123456'});await json('/auth/register',{confirmed:true});
  assert.equal((await json('/api/training')).stats.total,0);
+ assert.deepEqual(await json('/api/preferences/appearance?userId=forged-other'),{appearance:null,version:0});
  assert.ok([403,404].includes((await request('/api/media/'+video)).status));
  assert.ok([403,404].includes((await request('/api/documents/'+document)).status));
  assert.ok([403,404].includes((await request('/api/training',{action:'finish',id:session.id,version:session.version,after:0},{},'PATCH')).status));
@@ -158,7 +166,7 @@ try{
  await db.exec('DROP TRIGGER runtime_fail_link;');
  await json('/auth/link',{proof:retryProof,confirmed:true});assert.equal((await json('/auth/status',{})).linked,true);
  console.log('PASS: actual local D1 registration/link storage failures roll back external identities and permit safe retries.');
- cookies=firstCookies;await json('/auth/refresh',{});const beforeLogout=cookies;await json('/auth/logout',{});cookies=beforeLogout;
+ cookies=firstCookies;assert.deepEqual((await json('/api/preferences/appearance')).appearance,{mode:'light',palette:'pink'});await json('/auth/refresh',{});const beforeLogout=cookies;await json('/auth/logout',{});cookies=beforeLogout;
  assert.equal((await request('/auth/status',{})).status,401);assert.equal((await json('/api/account')).signedIn,false);
  console.log('PASS: built workerd HTTP sign-in, wrong OTP, registration, provider token refresh, spoofed headers, first workout, RIR, next-set load, history, private PDF/video bytes, authenticated cross-user isolation and logout replay. Provider is SYNTHETIC, not real email delivery.');
 }finally{await mf.dispose();}

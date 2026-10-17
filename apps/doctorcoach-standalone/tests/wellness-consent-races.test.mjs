@@ -1,3 +1,4 @@
+import {verifySyntheticDietitian} from './platform-db.mjs';
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import {randomUUID} from 'node:crypto';
@@ -16,7 +17,7 @@ function payload(kind){
 async function fixture(t,kind){
  const f=platform(t);await f.connect();const w=wellnessStore(f.db,config);
  const user=['return','episode'].includes(kind)?doctor:['plan','weeklyReview'].includes(kind)?coach:client;
- if(user===coach){await f.care.saveStaff(doctor,{email:coach.email,name:'דיאטן לבדיקה',role:'dietitian',active:true});const invitation=await f.care.createInvite(doctor,{emails:[doctor.email,coach.email]});await f.care.acceptInvite(client,{code:invitation.code,consent:true});}
+ if(user===coach){await f.care.saveStaff(doctor,{email:coach.email,name:'דיאטן לבדיקה',role:'dietitian',active:true});verifySyntheticDietitian(f,coach.email);const invitation=await f.care.createInvite(doctor,{emails:[doctor.email,coach.email]});await f.care.acceptInvite(client,{code:invitation.code,consent:true});}
  if(kind==='weeklyReview')await w.save(client,client.userId,payload('weekly'));
  return {...f,w,user};
 }

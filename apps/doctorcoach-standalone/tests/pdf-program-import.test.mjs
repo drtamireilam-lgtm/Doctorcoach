@@ -2,6 +2,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import {createRequire} from 'node:module';
 import {dirname} from 'node:path';
+import {pathToFileURL} from 'node:url';
 import {pdfPageTable,tableText,editedPdfTable} from '../lib/pdf-program-table.ts';
 import {detectImportColumns,extractImportRows,finalizeImport} from '../lib/program-import.ts';
 import {readProgramPdf} from '../lib/pdf-program-reader.ts';
@@ -25,8 +26,8 @@ function pdfFixture(lines){
 }
 test('real PDF reader extracts a local text table and rejects image-only and oversized input',async()=>{
  const require=createRequire(import.meta.url),pdfRequire=createRequire(require.resolve('pdfjs-dist/package.json'));const canvas=pdfRequire('@napi-rs/canvas');globalThis.DOMMatrix=canvas.DOMMatrix;globalThis.Path2D=canvas.Path2D;globalThis.ImageData=canvas.ImageData;
- const worker=require.resolve('pdfjs-dist/legacy/build/pdf.worker.mjs');
- const assets=dirname(require.resolve('pdfjs-dist/package.json'))+'/';
+ const worker=pathToFileURL(require.resolve('pdfjs-dist/legacy/build/pdf.worker.mjs')).href;
+ const assets=pathToFileURL(dirname(require.resolve('pdfjs-dist/package.json'))+'/').href;
  const sheets=await readProgramPdf(pdfFixture([['Exercise',20,700],['Sets',240,700],['Reps',310,700],['RPE',390,700],['Leg Press',20,680],['3',240,680],['6-8',310,680],['8',390,680]]),worker,assets);
  const d=detectImportColumns(sheets[0]);assert.equal(d.score,8);const item=finalizeImport(extractImportRows(sheets[0],d.header,d.mapping))[0];assert.equal(item.repsMax,8);assert.equal(item.targetRpe,8);
  await assert.rejects(readProgramPdf(pdfFixture([]),worker),/לא נמצא טקסט/);await assert.rejects(readProgramPdf(new Uint8Array(5*1024*1024+1),worker));await assert.rejects(readProgramPdf(new TextEncoder().encode('bad'),worker));

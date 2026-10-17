@@ -1,3 +1,4 @@
+import {finishFeedback} from './workout-finish.ts';
 import {selfTrainingGuard} from './staff-personal-access.ts';
 import {selfDayId} from './program-split.ts';
 import {programSplitStore} from './program-split-store.ts';
@@ -18,11 +19,12 @@ import { exercises, templates } from './content.ts';
 import { completion, defaultPrescription, isRecord, isScore, parsePlanItem, TrainingError, updateSet, parseRpe, targetRpeForSet } from './training.ts';
 import type { PlanItem, SessionExercise, TrainingFeed, TrainingSession } from './training.ts';
 
-type Row = { readiness_json:string|null; followup_json:string|null; plan_mode:'legacy'|'self'|'coached'; program_id:string|null; id: string; status: TrainingSession['status']; items_json: string; started_at: string; finished_at: string | null; pain_before: number; pain_after: number | null; planned_sets: number; completed_sets: number; version: number };
+type Row = { finish_feedback_json:string|null; readiness_json:string|null; followup_json:string|null; plan_mode:'legacy'|'self'|'coached'; program_id:string|null; id: string; status: TrainingSession['status']; items_json: string; started_at: string; finished_at: string | null; pain_before: number; pain_after: number | null; planned_sets: number; completed_sets: number; version: number };
 const selectPlan = 'SELECT day_id AS dayId,exercise_id AS exerciseId, sets, reps, unit, weight, notes, target_rpe AS targetRpe, effort_scale AS effortScale, target_rpes_json AS targetRpesJson, workout_section AS workoutSection,tempo_json AS tempoJson,reps_max AS repsMax,weight_unspecified AS weightUnspecified,custom_exercise_json AS customExerciseJson FROM program_items WHERE owner_id = ? ORDER BY id';
 const byId = new Map(exercises.map(exercise => [exercise.id, exercise]));
-const toSession = (row: Row): TrainingSession => ({ readiness:row.readiness_json?JSON.parse(row.readiness_json):null,followup:row.followup_json?JSON.parse(row.followup_json):null,id: row.id, planMode:row.plan_mode,programId:row.program_id, status: row.status, items: JSON.parse(row.items_json) as SessionExercise[], startedAt: row.started_at, finishedAt: row.finished_at, before: row.pain_before, after: row.pain_after, plannedSets: row.planned_sets, completedSets: row.completed_sets, version: row.version });
+export const trainingSessionFromRow = (row: Row): TrainingSession => ({ finishFeedback:row.finish_feedback_json?JSON.parse(row.finish_feedback_json):null,readiness:row.readiness_json?JSON.parse(row.readiness_json):null,followup:row.followup_json?JSON.parse(row.followup_json):null,id: row.id, planMode:row.plan_mode,programId:row.program_id, status: row.status, items: JSON.parse(row.items_json) as SessionExercise[], startedAt: row.started_at, finishedAt: row.finished_at, before: row.pain_before, after: row.pain_after, plannedSets: row.planned_sets, completedSets: row.completed_sets, version: row.version });
 
+const toSession=trainingSessionFromRow;
 export function trainingStore(db: D1Database,config:ProgramAuthorConfig={}) {
   async function getPlan(owner: string): Promise<PlanItem[]> {
     const prescribed=await allowedPlan(db,owner,config);if(prescribed!==null)return prescribed;
@@ -165,7 +167,8 @@ export function trainingStore(db: D1Database,config:ProgramAuthorConfig={}) {
         if(payload.autoNextLoad===true&&payload.done===true){
          const item=items.find(i=>i.exerciseId===payload.exerciseId)!;const index=Number(payload.setIndex);
          const suggestion=nextSetLoad(item,index,{...session,items},typeof payload.step==='number'?payload.step:2.5);
-         if(suggestion.weight!==null)items=items.map(i=>i!==item?i:{...i,results:i.results.map((r,j)=>j===index+1?{...r,weight:suggestion.weight!,actualRpe:null}:r)});
+         const weight=payload.loadMode==='calculated'?suggestion.calculatedWeight:suggestion.weight;
+         if(weight!==null&&weight>0&&weight<=1000&&item.results[index+1]?.actualRpe==null&&(item.results[index+1]?.painDuring??0)===0)items=items.map(i=>i!==item?i:{...i,results:i.results.map((r,j)=>j===index+1?{...r,weight,actualRpe:null}:r)});
         }
       }
       else if(payload.action==='effortScale'){
@@ -187,13 +190,14 @@ export function trainingStore(db: D1Database,config:ProgramAuthorConfig={}) {
       } else if (payload.action === 'finish') {
         if (!isScore(payload.after)) throw new TrainingError('דרגת הכאב צריכה להיות בין 0 ל־10.');
         if (!completion(items)) throw new TrainingError('סמנו לפחות סט אחד שבוצע לפני שמירת האימון.');
+        finishFeedback(payload.feedback);
         status = 'completed'; after = payload.after; finishedAt = new Date().toISOString();
       } else if (payload.action === 'cancel') { status = 'cancelled'; finishedAt = new Date().toISOString(); }
       else throw new TrainingError('פעולה לא מוכרת.');
       // Closing a workout remains possible after revocation; further training edits do not.
       const guard=['finish','cancel'].includes(String(payload.action))?null:combineCareGuards(trainingWriteGuard(owner,session,config),healthConsentGuard(owner));
-      const row = await db.prepare(`UPDATE training_sessions SET items_json = ?, status = ?, pain_after = ?, finished_at = ?, completed_sets = ?, version = version + 1 WHERE id = ? AND owner_id = ? AND version = ? AND status = 'active' ${guard?`AND ${guard.sql}`:''} RETURNING *`)
-        .bind(JSON.stringify(items), status, after, finishedAt, completion(items), session.id, owner, session.version,...(guard?.args??[])).first<Row>();
+      const row = await db.prepare(`UPDATE training_sessions SET items_json = ?, status = ?, pain_after = ?, finished_at = ?, completed_sets = ?, finish_feedback_json = ?, version = version + 1 WHERE id = ? AND owner_id = ? AND version = ? AND status = 'active' ${guard?`AND ${guard.sql}`:''} RETURNING *`)
+        .bind(JSON.stringify(items), status, after, finishedAt, completion(items), payload.action==='finish'?JSON.stringify(finishFeedback(payload.feedback)):session.finishFeedback?JSON.stringify(session.finishFeedback):null, session.id, owner, session.version,...(guard?.args??[])).first<Row>();
       if (!row){
         const current=await getSession(owner,session.id);
         if(guard&&current?.status==='active'&&current.version===session.version)throw new TrainingError('ההרשאות, התוכנית או מצב המוכנות השתנו. השינוי לא נשמר; אפשר לסיים או לבטל את האימון.',403,current);

@@ -27,7 +27,7 @@ function PhotoEditor({photo,onSaved}:{photo:TeamPhoto;onSaved:()=>Promise<void>}
  return <Localize><form className="panel care-form team-photo-editor" onSubmit={async event=>{
   event.preventDefault();if(!file||!confirmed)return;
   await action.run(async()=>{const blob=await preparePhoto(file);const response=await fetch('/api/team-photos/'+(member.id as PhotoMember),{method:'PUT',headers:{'Content-Type':blob.type,'X-File-Size':String(blob.size),'X-Photo-Version':String(photo.version),'X-Confirm-Public':'true'},body:blob});const result=await response.json().catch(()=>null) as {error?:string}|null;if(!response.ok||!result)throw new Error(result?.error??'לא ניתן להעלות את התמונה כרגע.');setFile(null);setConfirmed(false);setInputKey(k=>k+1);await onSaved();},'תמונת הפרופיל פורסמה באתר.');
- }}><h3>{name}</h3>{preview?<img className="team-portrait" src={preview} alt={name}/>:<TeamPortrait photo={photo} name={name} initials={member.id==='tamir'?'TE':'NR'}/>}
+ }}><h3>{name}</h3>{preview?<img className="team-portrait" src={preview} alt={name}/>:<TeamPortrait photo={photo} name={name} initials={member.id==='tamir'?'TE':member.id==='nadav'?'NR':'LZ'}/>}
  <label className="care-field">תמונת פורטפוליו — JPEG או PNG עד 5MB<input key={inputKey} type="file" accept="image/jpeg,image/png" disabled={action.busy} required onChange={event=>{setFile(event.target.files?.[0]??null);setConfirmed(false);}}/></label>
  <p className="care-muted">תצוגה מקדימה בלבד עד הפרסום. התמונה תופיע בכרטיס הצוות באתר. אין להעלות מסמך רפואי או מידע פרטי.</p>
  <label className="care-check"><input type="checkbox" checked={confirmed} disabled={action.busy} onChange={event=>setConfirmed(event.target.checked)}/>אני מאשר/ת פרסום התמונה בכרטיס הצוות באתר ויש לי זכות להשתמש בה.</label>

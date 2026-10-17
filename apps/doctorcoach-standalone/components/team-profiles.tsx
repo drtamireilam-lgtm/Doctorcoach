@@ -11,7 +11,7 @@ export function TeamPortrait({photo,name,initials}:{photo?:TeamPhoto;name:string
 export function TeamProfiles(){
  const photos=useCareResource<{photos:TeamPhoto[]}>('/api/team-photos'),english=useLanguage().language==='en';
  return <section className="team-grid" aria-label={english?'Our team':'הצוות שלנו'}>{visibleTeamProfiles.map(member=><article className="team-card" key={member.id}>
-  <TeamPortrait photo={photos.data?.photos.find(photo=>photo.memberId===member.id)} name={english?member.nameEn:member.name} initials={member.id==='tamir'?'TE':'NR'}/>
-  <span>{english?member.titleEn:member.title}</span><h2>{english?member.nameEn:member.name}</h2><p>{english?member.bioEn:member.bio}</p>
+  <TeamPortrait photo={photos.data?.photos.find(photo=>photo.memberId===member.id)} name={english?member.nameEn:member.name} initials={member.id==='tamir'?'TE':member.id==='nadav'?'NR':'LZ'}/>
+  <span>{english?member.titleEn:member.title}</span><h2>{english?member.nameEn:member.name}</h2><p>{english?member.bioEn:member.bio}</p>{member.id==='lior'&&<a className="button secondary" href="#consult">{english?'Nutrition consultations':'לפגישת תזונה או ייעוץ'}</a>}
  </article>)}</section>;
 }

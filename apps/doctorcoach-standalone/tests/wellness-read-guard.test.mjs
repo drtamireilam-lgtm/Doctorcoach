@@ -1,3 +1,4 @@
+import {verifySyntheticDietitian} from './platform-db.mjs';
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import {platform,doctor,coach,client} from './platform-db.mjs';
@@ -6,7 +7,7 @@ const diet={userId:'diet',email:'diet@example.test'};
 async function fixture(t){
  const f=platform(t);await f.connect();
  await f.care.saveStaff(doctor,{...diet,name:'Dietitian',role:'dietitian',active:true});
- const invite=await f.care.createInvite(doctor,{emails:[doctor.email,diet.email]});await f.care.acceptInvite(client,{code:invite.code,consent:true});
+ verifySyntheticDietitian(f,diet.email);const invite=await f.care.createInvite(doctor,{emails:[doctor.email,diet.email]});await f.care.acceptInvite(client,{code:invite.code,consent:true});
  for(const [kind,data] of [['assessment',{shareTeam:true}],['daily',{weight:80,adherence:4}],['rehab',{pain:2}]])f.sql.prepare('INSERT INTO wellness_records(id,client_id,kind,slot,day,content_json,author_name,updated_at) VALUES(?,?,?,?,?,?,?,?)').run(kind,client.userId,kind,'current','2026-10-09',JSON.stringify(data),'Test','2026-10-09');
  return {...f,wellness:wellnessStore(f.db,{clinicianEmails:doctor.email})};
 }

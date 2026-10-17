@@ -302,6 +302,41 @@
       "when": 1792000701050,
       "tag": "0044_team_followup_tasks",
       "breakpoints": true
+    },
+    {
+      "idx": 43,
+      "version": "6",
+      "when": 1792158104336,
+      "tag": "0045_workout_finish_feedback",
+      "breakpoints": true
+    },
+    {
+      "idx": 44,
+      "version": "6",
+      "when": 1792159181710,
+      "tag": "0046_progress_layouts",
+      "breakpoints": true
+    },
+    {
+      "idx": 45,
+      "version": "6",
+      "when": 1792159737011,
+      "tag": "0047_staff_workout_reviews",
+      "breakpoints": true
+    },
+    {
+      "idx": 46,
+      "version": "6",
+      "when": 1792160933584,
+      "tag": "0048_nutrition_credentials",
+      "breakpoints": true
+    },
+    {
+      "idx": 47,
+      "version": "6",
+      "when": 1792229739083,
+      "tag": "0049_appearance_preferences",
+      "breakpoints": true
     }
   ]
 }
