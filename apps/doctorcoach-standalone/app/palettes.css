@@ -44,3 +44,9 @@ html[data-palette] .navigation-hub-grid>button:hover{border-color:var(--accent-r
 .appearance-picker [role=status]{margin:0;line-height:1.7;overflow-wrap:anywhere}
 @media(max-width:420px){.appearance-colors button{flex-basis:calc(50% - 10px);padding-inline:12px}.appearance-picker .care-actions{flex-direction:column;align-items:stretch}.appearance-preview-actions span{flex:1;text-align:center}}
 @media print{.appearance-picker{display:none}}
+
+.appearance-current{margin:0;line-height:1.7;color:var(--text)}
+.appearance-presets{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+.appearance-presets button{min-height:48px;padding:12px;white-space:normal;overflow-wrap:anywhere;background:var(--card);color:var(--text);border:2px solid var(--line);border-radius:12px;font:inherit;cursor:pointer}
+.appearance-picker button:focus-visible{outline:3px solid var(--accent-red);outline-offset:3px}
+@media(min-width:600px){.appearance-presets{grid-template-columns:repeat(3,minmax(0,1fr))}}

@@ -28,7 +28,7 @@ function AppearanceProvider({children}:{children:ReactNode}){
  useEffect(()=>{
   try{const stored=localStorage.getItem(PALETTE_STORAGE_KEY);if(isPalette(stored))apply(stored);}catch{}
   const controller=new AbortController();void load(controller.signal);
-  const sync=(event:StorageEvent)=>{if(event.key===PALETTE_STORAGE_KEY){const next=isPalette(event.newValue)?event.newValue:'red';setPalette(next);document.documentElement.dataset.palette=next;}};
+  const sync=(event:StorageEvent)=>{if(event.key===PALETTE_STORAGE_KEY){const next=isPalette(event.newValue)?event.newValue:'red';setPalette(next);document.documentElement.dataset.palette=next;setMessage(null);}};
   window.addEventListener('storage',sync);return()=>{controller.abort();window.removeEventListener('storage',sync);};
  },[]);
  useEffect(()=>{setMessage(null);document.querySelector('meta[name="theme-color"]')?.setAttribute('content',theme==='light'?'#f5f6f8':'#0c0c10');},[theme]);
@@ -55,7 +55,17 @@ export function ThemeToggle(){
 export function AppearancePicker(){
  const context=useContext(PaletteContext),{theme,setTheme}=useTheme(),english=useLanguage().language==='en',t=(he:string,en:string)=>english?en:he;
  if(!context)return null;const {palette,choose,busy,signedIn,message,save,load}=context;
+ const selected=palettes.find(p=>p.id===palette)!;
  return <div className="appearance-picker" data-no-translate>
+  <p className="appearance-current">{t('העיצוב שלך:','Your appearance:')} <strong>{english?selected.en:selected.he} · {theme==='light'?t('רקע בהיר','Light background'):t('רקע כהה','Dark background')}</strong></p>
+  <fieldset disabled={busy}><legend>{t('בחירה מהירה','Quick choices')}</legend><div className="appearance-presets">{([
+   {palette:'blue',mode:'light',he:'כחול ולבן',en:'Blue & white'},
+   {palette:'pink',mode:'light',he:'ורוד ולבן',en:'Pink & white'},
+   {palette:'green',mode:'light',he:'ירוק ולבן',en:'Green & white'},
+   {palette:'blue',mode:'dark',he:'כחול כהה',en:'Dark blue'},
+   {palette:'purple',mode:'dark',he:'סגול כהה',en:'Dark purple'},
+   {palette:'red',mode:'dark',he:'אדום ושחור',en:'Red & black'},
+  ] as const).map(p=><button type="button" key={p.palette+p.mode} aria-pressed={palette===p.palette&&theme===p.mode} onClick={()=>{choose(p.palette);setTheme(p.mode);}}>{english?p.en:p.he}</button>)}</div></fieldset>
   <fieldset disabled={busy}><legend>{t('רקע','Background')}</legend><div className="appearance-modes">{(['light','dark'] as const).map(mode=><button type="button" key={mode} aria-pressed={theme===mode} onClick={()=>setTheme(mode)}>{mode==='light'?<Sun size={18} aria-hidden="true"/>:<Moon size={18} aria-hidden="true"/>}{mode==='light'?t('בהיר','Light'):t('כהה','Dark')}</button>)}</div></fieldset>
   <fieldset disabled={busy}><legend>{t('הצבע שלך','Your color')}</legend><div className="appearance-colors">{palettes.map(p=><button type="button" key={p.id} aria-pressed={palette===p.id} onClick={()=>choose(p.id)}><span className="appearance-swatch" style={{background:p.button}} aria-hidden="true">{palette===p.id&&<Check size={20}/>}</span><span>{english?p.en:p.he}</span></button>)}</div></fieldset>
   <section className="appearance-preview" aria-label={t('תצוגה מקדימה','Preview')}><strong>{t('כך ייראה העיצוב שלך','Your appearance preview')}</strong><p>{t('התוכנית שלי · האימון הבא מחכה לך','My program · Your next workout is ready')}</p><div className="appearance-preview-actions"><span className="appearance-preview-primary">{t('התחלת אימון','Start workout')}</span><span className="appearance-preview-secondary">{t('התקדמות','Progress')}</span></div></section>

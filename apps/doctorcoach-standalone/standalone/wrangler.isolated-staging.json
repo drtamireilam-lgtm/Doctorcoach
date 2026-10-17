@@ -29,5 +29,6 @@
     "DC_NEW_ACCOUNTS_ENABLED": "true",
     "DC_LEGACY_BRIDGE_ENABLED": "false",
     "DOCTORCOACH_BILLING_MODE": "manual"
-  }
+  },
+  "keep_vars": true
 }
