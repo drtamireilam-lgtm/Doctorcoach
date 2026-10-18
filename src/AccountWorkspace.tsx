@@ -14,6 +14,7 @@ export default function AccountWorkspace({ url, publishableKey }: { url: string;
   const [mode, setMode] = useState<'RPE' | 'RIR'>('RPE');
   const [busy, setBusy] = useState(false);
   const [showTeam, setShowTeam] = useState(false);
+  const [acceptingInvite, setAcceptingInvite] = useState(false);
   const [error, setError] = useState('');
   const [message, setMessage] = useState('');
   const generation = useRef(0);
@@ -55,6 +56,17 @@ export default function AccountWorkspace({ url, publishableKey }: { url: string;
       if (current()) { applyProfile(saved); setMessage('הפרופיל נשמר בחשבון.'); }
     });
   }
+  async function acceptInvitation() {
+    if (!userId || acceptingInvite) return;
+    setAcceptingInvite(true); setError(''); setMessage('');
+    try {
+      const { data, error: rpcError } = await client.rpc('dc_accept_team_invitation');
+      if (rpcError) throw rpcError;
+      setMessage(`ההזמנה התקבלה. התפקיד שלך: ${String(data)}.`);
+    } catch {
+      setError('לא נמצאה הזמנה תקפה עבור כתובת האימייל המאומתת, או שקבלת ההזמנה נכשלה.');
+    } finally { setAcceptingInvite(false); }
+  }
   if (userId && showTeam) return <div dir="rtl"><nav className="topbar"><button className="outline-button" onClick={() => setShowTeam(false)}>חזרה לחשבון שלי</button></nav><TeamManagementWorkspace client={client}/></div>;
   return <main className="main-panel" dir="rtl"><section className="hero-card">
     <p className="eyebrow">DOCTORCOACH · ACCOUNT</p><h1>החשבון שלי</h1>
@@ -63,6 +75,7 @@ export default function AccountWorkspace({ url, publishableKey }: { url: string;
     {error && <p className="alert" role="alert">{error}</p>}
     {message && <p role="status">{message}</p>}
     {userId && <button className="outline-button" onClick={() => setShowTeam(true)}>ניהול צוות (LAB)</button>}
+    {userId && <button className="outline-button" disabled={acceptingInvite} onClick={() => void acceptInvitation()}>{acceptingInvite ? 'מקבל הזמנה…' : 'קבלת הזמנה לצוות'}</button>
     {!userId ? <form onSubmit={login} className="form-grid">
       <label>דוא״ל<input type="email" dir="ltr" autoComplete="username" required value={email} onChange={e=>setEmail(e.target.value)} disabled={busy}/></label>
       <label>סיסמה<input type="password" dir="ltr" autoComplete="current-password" required value={password} onChange={e=>setPassword(e.target.value)} disabled={busy}/></label>
