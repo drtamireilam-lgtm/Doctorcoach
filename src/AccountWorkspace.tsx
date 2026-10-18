@@ -1,6 +1,7 @@
 import TeamManagementWorkspace from './TeamManagementWorkspace';
 import CloudWorkoutSession from './CloudWorkoutSession';
 import CloudProgressDashboard from './CloudProgressDashboard';
+import CoachPlanFilters, { filterCoachPlans } from './CoachPlanFilters';
 import { exerciseLibrary } from './exercise-library';
 import { loadCloudTrainingPlan, type EditorExercise } from './platform/cloud-training';
 import { useEffect, useRef, useState, type FormEvent } from 'react';
@@ -24,6 +25,8 @@ export default function AccountWorkspace({ url, publishableKey }: { url: string;
   const [cloudPlans, setCloudPlans] = useState<Array<{ id: string; title: string; version: number; status: string; athlete_id: string; coach_id: string | null }>>([]);
   const [plansBusy, setPlansBusy] = useState(false);
   const [plansLoaded, setPlansLoaded] = useState(false);
+  const [coachSearch, setCoachSearch] = useState('');
+  const [coachAthlete, setCoachAthlete] = useState('all');
   const [cloningPlanId, setCloningPlanId] = useState<string | null>(null);
   async function cloneCloudPlan(planId: string) {
     if (!userId || cloningPlanId || !cloudPlans.some(plan => plan.id === planId && plan.coach_id === userId) || !window.confirm('ליצור טיוטה חדשה על בסיס תוכנית זו? התוכנית המקורית תישאר ללא שינוי.')) return;
@@ -170,7 +173,8 @@ export default function AccountWorkspace({ url, publishableKey }: { url: string;
         {plansBusy ? 'טוען תוכניות…' : 'טעינת תוכניות מהשרת'}
       </button>
       {plansLoaded && cloudPlans.length === 0 && <p>אין תוכניות זמינות בחשבון.</p>}
-      {cloudPlans.map(plan => <article key={plan.id}>
+      {userId && <CoachPlanFilters plans={cloudPlans} coachId={userId} search={coachSearch} athleteId={coachAthlete} onSearch={setCoachSearch} onAthlete={setCoachAthlete} />}
+      {cloudPlans.filter(plan => plan.coach_id !== userId || (userId && filterCoachPlans(cloudPlans, userId, coachSearch, coachAthlete).some(match => match.id === plan.id))).map(plan => <article key={plan.id}>
         <strong>{plan.title}</strong> · גרסה {plan.version} · {plan.status} · {plan.coach_id ? 'תוכנית מאמן' : 'תוכנית עצמאית'}
         <button type="button" className="outline-button" disabled={exercisesBusy}
           onClick={() => void loadCloudExercises(plan.id)}>הצגת תרגילים</button>
