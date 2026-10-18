@@ -177,7 +177,7 @@ export default function AccountWorkspace({ url, publishableKey }: { url: string;
       </button>
       {plansLoaded && cloudPlans.length === 0 && <p>אין תוכניות זמינות בחשבון.</p>}
       {userId && <CoachPlanFilters plans={cloudPlans} coachId={userId} search={coachSearch} athleteId={coachAthlete} onSearch={setCoachSearch} onAthlete={setCoachAthlete} />}
-      {userId && <CoachActivitySummary client={client} plans={cloudPlans} coachId={userId} />}
+      {userId && <CoachActivitySummary key={userId} client={client} plans={cloudPlans} coachId={userId} />}
       {cloudPlans.filter(plan => plan.coach_id !== userId || (userId && filterCoachPlans(cloudPlans, userId, coachSearch, coachAthlete).some(match => match.id === plan.id))).map(plan => <article key={plan.id}>
         <strong>{plan.title}</strong> · גרסה {plan.version} · {plan.status} · {plan.coach_id ? 'תוכנית מאמן' : 'תוכנית עצמאית'}
         <button type="button" className="outline-button" disabled={exercisesBusy}
