@@ -21,6 +21,20 @@ export default function TeamManagementWorkspace({ client }: { client: SupabaseCl
   const [invitationId, setInvitationId] = useState('');
   const [members, setMembers] = useState<MemberRow[]>([]);
   const [membersError, setMembersError] = useState('');
+  const [coachId, setCoachId] = useState('');
+  const [athleteId, setAthleteId] = useState('');
+  async function requestAssignment(event: FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+    if (pending || !hasTeamAccess(membership, 'manage_team')) return;
+    setPending(true); setMessage('');
+    const { error: assignError } = await client.rpc('dc_request_coach_assignment', {
+      p_coach_id: coachId.trim(), p_athlete_id: athleteId.trim(),
+    });
+    setPending(false);
+    setMessage(assignError ? 'לא ניתן לשלוח בקשת שיוך. ודא שהמזהים תקינים ושהמאמן פעיל.' :
+      'בקשת השיוך נוצרה. המתאמן צריך לאשר אותה בחשבונו לפני הפעלת הקשר.');
+    if (!assignError) setAthleteId('');
+  }
   async function refreshMembers() {
     const { data, error: fetchError } = await client.rpc('dc_list_team_members');
     if (fetchError) { setMembersError('לא ניתן לטעון את רשימת הצוות.'); return; }
@@ -109,7 +123,25 @@ export default function TeamManagementWorkspace({ client }: { client: SupabaseCl
                 </span>}
               </div>)}
             </div>
-            <p>השלב הבא: שליחת אימייל, קבלת הזמנה בממשק ושיוך מתאמנים.</p>
+            <h2>שיוך מתאמן למאמן</h2>
+            <p>השיוך נשלח לאישור המתאמן. בשלב זה נדרש מזהה המשתמש של המתאמן (UUID), ולא כתובת אימייל.</p>
+            <form onSubmit={requestAssignment}>
+              <label htmlFor="assign-coach">בחירת מאמן פעיל</label>
+              <select id="assign-coach" required value={coachId} onChange={e => setCoachId(e.target.value)}>
+                <option value="">בחר מאמן</option>
+                {members.filter(member => member.status === 'active' &&
+                  (member.role === 'coach' || member.role === 'head_coach'))
+                  .map(member => <option key={member.user_id} value={member.user_id}>{member.email}</option>)}
+              </select>
+              <label htmlFor="assign-athlete">מזהה מתאמן</label>
+              <input id="assign-athlete" required type="text" dir="ltr" value={athleteId}
+                pattern="[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}"
+                placeholder="UUID" onChange={e => setAthleteId(e.target.value)} />
+              <button className="primary-button" type="submit" disabled={pending || !coachId}>
+                {pending ? 'שולח בקשה…' : 'שליחת בקשת שיוך'}
+              </button>
+            </form>
+            <p>בהמשך נוסיף חיפוש מתאמנים ידידותי והרשאות גישה לנתונים.</p>
           </>}
     </section>
   </main>;
