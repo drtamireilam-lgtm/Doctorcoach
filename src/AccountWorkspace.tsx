@@ -1,3 +1,4 @@
+import CoachPlansWorkspace from './CoachPlansWorkspace';
 import TeamManagementWorkspace from './TeamManagementWorkspace';
 import { useEffect, useRef, useState, type FormEvent } from 'react';
 import { AccountService, createAccountClient, type AccountProfile } from './platform/account';
@@ -14,6 +15,7 @@ export default function AccountWorkspace({ url, publishableKey }: { url: string;
   const [mode, setMode] = useState<'RPE' | 'RIR'>('RPE');
   const [busy, setBusy] = useState(false);
   const [showTeam, setShowTeam] = useState(false);
+  const [showCoachPlans, setShowCoachPlans] = useState(false);
   const [acceptingInvite, setAcceptingInvite] = useState(false);
   const [pendingCoaches, setPendingCoaches] = useState<string[]>([]);
   const [coachBusy, setCoachBusy] = useState(false);
@@ -38,7 +40,7 @@ export default function AccountWorkspace({ url, publishableKey }: { url: string;
   const [message, setMessage] = useState('');
   const generation = useRef(0);
 
-  const clearProfile = () => { setShowTeam(false); setProfile(null); setLoaded(false); setName(''); setMode('RPE'); setMessage(''); };
+  const clearProfile = () => { setShowCoachPlans(false); setShowTeam(false); setProfile(null); setLoaded(false); setName(''); setMode('RPE'); setMessage(''); };
   useEffect(() => {
     client.auth.startAutoRefresh();
     const { data } = client.auth.onAuthStateChange((event) => {
@@ -86,6 +88,7 @@ export default function AccountWorkspace({ url, publishableKey }: { url: string;
       setError('לא נמצאה הזמנה תקפה עבור כתובת האימייל המאומתת, או שקבלת ההזמנה נכשלה.');
     } finally { setAcceptingInvite(false); }
   }
+  if (userId && showCoachPlans) return <div dir="rtl"><nav className="topbar"><button className="outline-button" onClick={() => setShowCoachPlans(false)}>חזרה לחשבון שלי</button></nav><CoachPlansWorkspace client={client}/></div>;
   if (userId && showTeam) return <div dir="rtl"><nav className="topbar"><button className="outline-button" onClick={() => setShowTeam(false)}>חזרה לחשבון שלי</button></nav><TeamManagementWorkspace client={client}/></div>;
   return <main className="main-panel" dir="rtl"><section className="hero-card">
     <p className="eyebrow">DOCTORCOACH · ACCOUNT</p><h1>החשבון שלי</h1>
@@ -94,6 +97,7 @@ export default function AccountWorkspace({ url, publishableKey }: { url: string;
     {error && <p className="alert" role="alert">{error}</p>}
     {message && <p role="status">{message}</p>}
     {userId && <button className="outline-button" onClick={() => setShowTeam(true)}>ניהול צוות (LAB)</button>}
+    {userId && <button className="outline-button" onClick={() => setShowCoachPlans(true)}>תוכניות אימון (LAB)</button>}
     {userId && <button className="outline-button" disabled={acceptingInvite} onClick={() => void acceptInvitation()}>{acceptingInvite ? 'מקבל הזמנה…' : 'קבלת הזמנה לצוות'}</button>}
     {userId && <section aria-label="בקשות שיוך למאמן">
       <h2>בקשות שיוך למאמנים</h2>
