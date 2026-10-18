@@ -7,17 +7,23 @@
     "dev": "vite",
     "build": "tsc --noEmit && vite build",
     "test": "node scripts/test-foundation.mjs && node tests/profile-rls.test.mjs",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "anatomy:dev": "vite --open /anatomy-lab.html",
+    "anatomy:build": "tsc --noEmit && vite build --config anatomy.vite.config.ts",
+    "anatomy:test": "node tests/anatomy.test.mjs"
   },
   "dependencies": {
+    "@react-three/fiber": "^9.8.2",
     "@supabase/supabase-js": "2.117.2",
     "react": "latest",
-    "react-dom": "latest"
+    "react-dom": "latest",
+    "three": "^0.186.1"
   },
   "devDependencies": {
     "@electric-sql/pglite": "0.5.8",
     "@types/react": "latest",
     "@types/react-dom": "latest",
+    "@types/three": "^0.186.0",
     "@vitejs/plugin-react": "latest",
     "typescript": "5.9.3",
     "vite": "latest"
