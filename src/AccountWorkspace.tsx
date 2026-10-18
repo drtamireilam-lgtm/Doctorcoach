@@ -2,6 +2,7 @@ import TeamManagementWorkspace from './TeamManagementWorkspace';
 import CloudWorkoutSession from './CloudWorkoutSession';
 import CloudProgressDashboard from './CloudProgressDashboard';
 import CoachPlanFilters, { filterCoachPlans } from './CoachPlanFilters';
+import CoachActivitySummary from './CoachActivitySummary';
 import { exerciseLibrary } from './exercise-library';
 import { loadCloudTrainingPlan, type EditorExercise } from './platform/cloud-training';
 import { useEffect, useRef, useState, type FormEvent } from 'react';
@@ -174,6 +175,7 @@ export default function AccountWorkspace({ url, publishableKey }: { url: string;
       </button>
       {plansLoaded && cloudPlans.length === 0 && <p>אין תוכניות זמינות בחשבון.</p>}
       {userId && <CoachPlanFilters plans={cloudPlans} coachId={userId} search={coachSearch} athleteId={coachAthlete} onSearch={setCoachSearch} onAthlete={setCoachAthlete} />}
+      {userId && <CoachActivitySummary client={client} plans={cloudPlans} coachId={userId} />}
       {cloudPlans.filter(plan => plan.coach_id !== userId || (userId && filterCoachPlans(cloudPlans, userId, coachSearch, coachAthlete).some(match => match.id === plan.id))).map(plan => <article key={plan.id}>
         <strong>{plan.title}</strong> · גרסה {plan.version} · {plan.status} · {plan.coach_id ? 'תוכנית מאמן' : 'תוכנית עצמאית'}
         <button type="button" className="outline-button" disabled={exercisesBusy}
