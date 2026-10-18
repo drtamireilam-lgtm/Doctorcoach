@@ -38,6 +38,7 @@ export default function AccountWorkspace({ url, publishableKey }: { url: string;
   const [selectedCloudPlan, setSelectedCloudPlan] = useState<string | null>(null);
   const [cloudExercises, setCloudExercises] = useState<CloudExercise[]>([]);
   const [exercisesBusy, setExercisesBusy] = useState(false);
+  const [exerciseSearch, setExerciseSearch] = useState('');
   async function loadCloudExercises(planId: string) {
     if (!userId || exercisesBusy) return;
     setExercisesBusy(true); setError('');
@@ -138,7 +139,7 @@ export default function AccountWorkspace({ url, publishableKey }: { url: string;
     {message && <p role="status">{message}</p>}
     {userId && <button className="outline-button" onClick={() => setShowTeam(true)}>ניהול צוות (LAB)</button>}
     {userId && <button className="outline-button" disabled={acceptingInvite} onClick={() => void acceptInvitation()}>{acceptingInvite ? 'מקבל הזמנה…' : 'קבלת הזמנה לצוות'}</button>}
-    {userId && <details><summary>ספריית התרגילים הקיימת (קריאה בלבד)</summary><ul>{exerciseLibrary.map(exercise => <li key={exercise.id}>{exercise.name} · {exercise.region} · {exercise.equipment}</li>)}</ul></details>}
+    {userId && <details><summary>ספריית התרגילים הקיימת (קריאה בלבד)</summary><label>חיפוש תרגיל<input value={exerciseSearch} onChange={event => setExerciseSearch(event.target.value)} /></label><ul>{exerciseLibrary.filter(exercise => [exercise.name, exercise.region, exercise.pattern, exercise.equipment].some(value => value.toLowerCase().includes(exerciseSearch.trim().toLowerCase()))).map(exercise => <li key={exercise.id}>{exercise.name} · {exercise.region} · {exercise.equipment}</li>)}</ul></details>}
     {userId && <section aria-label="בקשות שיוך למאמן">
       <h2>בקשות שיוך למאמנים</h2>
       <button type="button" className="outline-button" onClick={() => void loadPendingCoaches()}>בדיקת בקשות ממתינות</button>
