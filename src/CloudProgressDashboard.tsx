@@ -24,6 +24,7 @@ export default function CloudProgressDashboard({ client, planId, exercises }: {
   const [sessions, setSessions] = useState<Session[]>([]);
   const [sets, setSets] = useState<SetRow[]>([]);
   const [exerciseId, setExerciseId] = useState('');
+  const [period, setPeriod] = useState<'30' | '90' | 'all'>('90');
   async function refresh() {
     if (loading) return;
     setLoading(true); setError('');
@@ -42,11 +43,15 @@ export default function CloudProgressDashboard({ client, planId, exercises }: {
     } catch { setError('לא ניתן לטעון נתוני התקדמות מהענן.'); }
     finally { setLoading(false); }
   }
-  const finished = sessions.filter(session => session.completed_at !== null);
+  const cutoff = period === 'all' ? 0 : Date.now() - Number(period) * 24 * 60 * 60 * 1000;
+  const visibleSessions = sessions.filter(session => new Date(session.started_at).getTime() >= cutoff);
+  const visibleIds = new Set(visibleSessions.map(session => session.id));
+  const visibleSets = sets.filter(set => visibleIds.has(set.session_id));
+  const finished = visibleSessions.filter(session => session.completed_at !== null);
   const selected = exercises.find(exercise => exercise.cloudId === exerciseId);
-  const bySession = new Map(sessions.map(session => [session.id, session]));
+  const bySession = new Map(visibleSessions.map(session => [session.id, session]));
   const points: Point[] = Array.from(
-    sets.filter(set => set.exercise_id === exerciseId && bySession.has(set.session_id))
+    visibleSets.filter(set => set.exercise_id === exerciseId && bySession.has(set.session_id))
       .reduce((map, set) => {
         const date = bySession.get(set.session_id)!.started_at;
         const key = set.session_id;
@@ -56,14 +61,37 @@ export default function CloudProgressDashboard({ client, planId, exercises }: {
         return map;
       }, new Map<string, Point>()).values()
   ).sort((a, b) => a.date.localeCompare(b.date));
-  const totalVolume = sets.reduce((sum, set) => sum + set.load_kg * set.reps, 0);
+  const totalVolume = visibleSets.reduce((sum, set) => sum + set.load_kg * set.reps, 0);
+  const weekly = new Map<string, { date: string; volume: number; workouts: Set<string> }>();
+  for (const session of visibleSessions) {
+    const date = new Date(session.started_at);
+    const monday = new Date(Date.UTC(date.getUTCFullYear(), date.getUTCMonth(), date.getUTCDate()));
+    monday.setUTCDate(monday.getUTCDate() - (monday.getUTCDay() + 6) % 7);
+    const key = monday.toISOString().slice(0, 10);
+    if (!weekly.has(key)) weekly.set(key, { date: key, volume: 0, workouts: new Set() });
+    if (session.completed_at) weekly.get(key)!.workouts.add(session.id);
+  }
+  for (const set of visibleSets) {
+    const session = bySession.get(set.session_id);
+    if (!session) continue;
+    const date = new Date(session.started_at);
+    const monday = new Date(Date.UTC(date.getUTCFullYear(), date.getUTCMonth(), date.getUTCDate()));
+    monday.setUTCDate(monday.getUTCDate() - (monday.getUTCDay() + 6) % 7);
+    const key = monday.toISOString().slice(0, 10);
+    const week = weekly.get(key);
+    if (week) week.volume += set.load_kg * set.reps;
+  }
+  const weeklyRows = [...weekly.values()].sort((a, b) => a.date.localeCompare(b.date));
   return <section aria-label="התקדמות באימונים">
     <h4>התקדמות באימונים</h4>
     <button type="button" disabled={loading} onClick={() => void refresh()}>{loading ? 'טוען…' : 'רענון נתוני התקדמות'}</button>
     {error && <p role="alert">{error}</p>}
     {loaded && <>
-      <p>אימונים שהושלמו: {finished.length} · סטים שנרשמו: {sets.length} · נפח אימון מצטבר: {totalVolume.toFixed(1)} ק״ג × חזרות</p>
+      <label>טווח זמן <select value={period} onChange={event => setPeriod(event.target.value as '30' | '90' | 'all')}><option value="30">30 ימים</option><option value="90">90 ימים</option><option value="all">כל הנתונים שנטענו</option></select></label>
+      <p>אימונים שהושלמו: {finished.length} · סטים שנרשמו: {visibleSets.length} · נפח אימון מצטבר: {totalVolume.toFixed(1)} ק״ג × חזרות</p>
       <p>הנתונים מבוססים על עד 100 אימונים אחרונים ועד 1,000 סטים בתוכנית זו. אם יש יותר רשומות, הסיכום חלקי.</p>
+      <h5>נפח אימון שבועי</h5>
+      {weeklyRows.length > 0 ? <><Trend values={weeklyRows.map(row => row.volume)} label="מגמת נפח אימון שבועי" /><ol>{weeklyRows.map(row => <li key={row.date}>שבוע {row.date} · {row.volume.toFixed(1)} ק״ג × חזרות · {row.workouts.size} אימונים שהושלמו</li>)}</ol></> : <p>אין אימונים בטווח הזמן שנבחר.</p>}
       <label>תרגיל למעקב <select value={exerciseId} onChange={event => setExerciseId(event.target.value)}>
         <option value="">בחר תרגיל</option>
         {exercises.map(exercise => <option key={exercise.cloudId} value={exercise.cloudId}>{exercise.name} · {exercise.day}</option>)}
