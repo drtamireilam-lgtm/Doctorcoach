@@ -20,6 +20,22 @@ export default function AccountWorkspace({ url, publishableKey }: { url: string;
   const [cloudPlans, setCloudPlans] = useState<Array<{ id: string; title: string; version: number; status: string; athlete_id: string }>>([]);
   const [plansBusy, setPlansBusy] = useState(false);
   const [plansLoaded, setPlansLoaded] = useState(false);
+  type CloudExercise = { id: string; exercise_key: string; day_label: string; sort_order: number; sets: number; target_reps: number; target_load: number | null; effort_mode: string; target_effort: number };
+  const [selectedCloudPlan, setSelectedCloudPlan] = useState<string | null>(null);
+  const [cloudExercises, setCloudExercises] = useState<CloudExercise[]>([]);
+  const [exercisesBusy, setExercisesBusy] = useState(false);
+  async function loadCloudExercises(planId: string) {
+    if (!userId || exercisesBusy) return;
+    setExercisesBusy(true); setError('');
+    setSelectedCloudPlan(null); setCloudExercises([]);
+    const { data, error: queryError } = await client.from('dc_training_exercises')
+      .select('id,exercise_key,day_label,sort_order,sets,target_reps,target_load,effort_mode,target_effort')
+      .eq('plan_id', planId).order('day_label').order('sort_order');
+    setExercisesBusy(false);
+    if (queryError) { setError('לא ניתן לטעון את תרגילי התוכנית.'); return; }
+    setSelectedCloudPlan(planId);
+    setCloudExercises((data ?? []) as CloudExercise[]);
+  }
   async function loadCloudPlans() {
     if (!userId || plansBusy) return;
     setPlansBusy(true); setError('');
@@ -29,6 +45,7 @@ export default function AccountWorkspace({ url, publishableKey }: { url: string;
     if (queryError) { setError('לא ניתן לטעון תוכניות אימון מהשרת.'); return; }
     setCloudPlans((data ?? []) as Array<{ id: string; title: string; version: number; status: string; athlete_id: string }>);
     setPlansLoaded(true);
+    setSelectedCloudPlan(null); setCloudExercises([]);
   }
   async function loadPendingCoaches() {
     if (!userId) return;
@@ -50,7 +67,7 @@ export default function AccountWorkspace({ url, publishableKey }: { url: string;
   const [message, setMessage] = useState('');
   const generation = useRef(0);
 
-  const clearProfile = () => { setShowTeam(false); setPendingCoaches([]); setCloudPlans([]); setPlansLoaded(false); setProfile(null); setLoaded(false); setName(''); setMode('RPE'); setMessage(''); };
+  const clearProfile = () => { setShowTeam(false); setPendingCoaches([]); setCloudPlans([]); setPlansLoaded(false); setSelectedCloudPlan(null); setCloudExercises([]); setProfile(null); setLoaded(false); setName(''); setMode('RPE'); setMessage(''); };
   useEffect(() => {
     client.auth.startAutoRefresh();
     const { data } = client.auth.onAuthStateChange((event) => {
@@ -125,6 +142,16 @@ export default function AccountWorkspace({ url, publishableKey }: { url: string;
       {plansLoaded && cloudPlans.length === 0 && <p>אין תוכניות זמינות בחשבון.</p>}
       {cloudPlans.map(plan => <article key={plan.id}>
         <strong>{plan.title}</strong> · גרסה {plan.version} · {plan.status}
+        <button type="button" className="outline-button" disabled={exercisesBusy}
+          onClick={() => void loadCloudExercises(plan.id)}>הצגת תרגילים</button>
+        {selectedCloudPlan === plan.id && <div>
+          {cloudExercises.length === 0 ? <p>אין תרגילים בתוכנית זו.</p> :
+            <ul>{cloudExercises.map(exercise => <li key={exercise.id}>
+              {exercise.day_label} · {exercise.exercise_key} · {exercise.sets} סטים × {exercise.target_reps} חזרות
+              {exercise.target_load !== null ? ` · ${exercise.target_load} ק״ג` : ''}
+              { ` · ${exercise.effort_mode} ${exercise.target_effort}` }
+            </li>)}</ul>}
+        </div>}
       </article>)}
     </section>}
     {!userId ? <form onSubmit={login} className="form-grid">
