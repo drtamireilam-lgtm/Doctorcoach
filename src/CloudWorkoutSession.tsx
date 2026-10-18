@@ -21,6 +21,7 @@ export default function CloudWorkoutSession({ client, planId, exercises }: {
   const [lastSavedEstimate, setLastSavedEstimate] = useState<number | null>(null);
   const [history, setHistory] = useState<Array<{ id: string; day_label: string; started_at: string; completed_at: string | null }>>([]);
   const [historyBusy, setHistoryBusy] = useState(false);
+  const [resumeBusy, setResumeBusy] = useState(false);
   const [expandedSession, setExpandedSession] = useState<string | null>(null);
   const [historicalSets, setHistoricalSets] = useState<Array<{ id: string; exercise_id: string; set_number: number; load_kg: number; reps: number; effort: number; effort_mode: string; pain: number | null }>>([]);
   const days = [...new Set(exercises.map(exercise => exercise.day))];
@@ -46,6 +47,21 @@ export default function CloudWorkoutSession({ client, planId, exercises }: {
     setHistoryBusy(false);
     if (error) { setNotice('לא ניתן לטעון סטים מהאימון.'); return; }
     setHistoricalSets(data ?? []); setExpandedSession(id);
+  }
+  async function resumeSession() {
+    if (busy || resumeBusy || sessionId) return;
+    setResumeBusy(true); setNotice('');
+    const { data, error } = await client.from('dc_workout_sessions')
+      .select('id,day_label,started_at').eq('plan_id', planId)
+      .is('completed_at', null).order('started_at', { ascending: false }).limit(1);
+    setResumeBusy(false);
+    if (error) { setNotice('לא ניתן לבדוק אימונים פתוחים.'); return; }
+    const existing = data?.[0];
+    if (!existing) { setNotice('לא נמצא אימון פתוח לתוכנית זו.'); return; }
+    if (!days.includes(existing.day_label)) { setNotice('יום האימון אינו קיים עוד בתוכנית.'); return; }
+    setDay(existing.day_label); setSessionId(existing.id); setSelectedId('');
+    setSetNumber(1); setLastSavedEstimate(null); setCompleted(false);
+    setNotice('האימון הקודם שוחזר מהענן. סטים שכבר נשמרו לא נמחקו.');
   }
   async function start() {
     if (!day || busy) return;
@@ -88,7 +104,8 @@ export default function CloudWorkoutSession({ client, planId, exercises }: {
     <label>יום אימון <select value={day} disabled={Boolean(sessionId) || busy} onChange={event => setDay(event.target.value)}>
       <option value="">בחר יום</option>{days.map(value => <option key={value} value={value}>{value}</option>)}
     </select></label>
-    {!sessionId && <button type="button" disabled={!day || busy} onClick={() => void start()}>התחלת אימון</button>}
+    {!sessionId && <><button type="button" disabled={!day || busy || resumeBusy} onClick={() => void start()}>התחלת אימון</button>
+      <button type="button" disabled={busy || resumeBusy} onClick={() => void resumeSession()}>{resumeBusy ? 'בודק אימונים…' : 'חידוש אימון שלא הסתיים'}</button></>}
     {sessionId && !completed && <>
       <form onSubmit={event => void saveSet(event)}>
         <label>תרגיל <select value={selectedId} required onChange={event => { setSelectedId(event.target.value); setSetNumber(1); setLastSavedEstimate(null); }}>
