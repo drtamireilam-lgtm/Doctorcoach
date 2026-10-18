@@ -1,3 +1,4 @@
+import TeamManagementWorkspace from './TeamManagementWorkspace';
 import { useEffect, useRef, useState, type FormEvent } from 'react';
 import { AccountService, createAccountClient, type AccountProfile } from './platform/account';
 
@@ -12,11 +13,12 @@ export default function AccountWorkspace({ url, publishableKey }: { url: string;
   const [name, setName] = useState('');
   const [mode, setMode] = useState<'RPE' | 'RIR'>('RPE');
   const [busy, setBusy] = useState(false);
+  const [showTeam, setShowTeam] = useState(false);
   const [error, setError] = useState('');
   const [message, setMessage] = useState('');
   const generation = useRef(0);
 
-  const clearProfile = () => { setProfile(null); setLoaded(false); setName(''); setMode('RPE'); setMessage(''); };
+  const clearProfile = () => { setShowTeam(false); setProfile(null); setLoaded(false); setName(''); setMode('RPE'); setMessage(''); };
   useEffect(() => {
     client.auth.startAutoRefresh();
     const { data } = client.auth.onAuthStateChange((event) => {
@@ -53,12 +55,14 @@ export default function AccountWorkspace({ url, publishableKey }: { url: string;
       if (current()) { applyProfile(saved); setMessage('הפרופיל נשמר בחשבון.'); }
     });
   }
+  if (userId && showTeam) return <div dir="rtl"><nav className="topbar"><button className="outline-button" onClick={() => setShowTeam(false)}>חזרה לחשבון שלי</button></nav><TeamManagementWorkspace client={client}/></div>;
   return <main className="main-panel" dir="rtl"><section className="hero-card">
     <p className="eyebrow">DOCTORCOACH · ACCOUNT</p><h1>החשבון שלי</h1>
     <p>בשלב זה ניתן להתחבר ולשמור שם וסולם מאמץ בלבד. האימונים והמידע הרפואי עדיין אינם מחוברים לשירות זה.</p>
     <p>ההתחברות נשמרת בזיכרון הלשונית בלבד. לאחר רענון יש להתחבר שוב.</p>
     {error && <p className="alert" role="alert">{error}</p>}
     {message && <p role="status">{message}</p>}
+    {userId && <button className="outline-button" onClick={() => setShowTeam(true)}>ניהול צוות (LAB)</button>}
     {!userId ? <form onSubmit={login} className="form-grid">
       <label>דוא״ל<input type="email" dir="ltr" autoComplete="username" required value={email} onChange={e=>setEmail(e.target.value)} disabled={busy}/></label>
       <label>סיסמה<input type="password" dir="ltr" autoComplete="current-password" required value={password} onChange={e=>setPassword(e.target.value)} disabled={busy}/></label>
