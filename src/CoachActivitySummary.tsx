@@ -13,11 +13,13 @@ export default function CoachActivitySummary({ client, plans, coachId }: { clien
   async function refresh() {
     if (busy || !owned.length) return;
     setBusy(true); setError('');
-    const result = await client.from('dc_workout_sessions').select('id,athlete_id,started_at,completed_at')
-      .in('plan_id', owned.map(plan => plan.id)).order('started_at', { ascending: false }).limit(500);
-    setBusy(false);
-    if (result.error) { setError('לא ניתן לטעון פעילות אימונים.'); return; }
-    setRows((result.data ?? []) as Session[]); setLoaded(true);
+    try {
+      const result = await client.from('dc_workout_sessions').select('id,athlete_id,started_at,completed_at')
+        .in('plan_id', owned.map(plan => plan.id)).order('started_at', { ascending: false }).limit(500);
+      if (result.error) throw result.error;
+      setRows((result.data ?? []) as Session[]); setLoaded(true);
+    } catch { setError('לא ניתן לטעון פעילות אימונים.'); }
+    finally { setBusy(false); }
   }
   if (!owned.length) return null;
   return <section aria-label="פעילות מתאמני המאמן">
