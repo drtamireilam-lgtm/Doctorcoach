@@ -36,6 +36,7 @@ export default function CloudWorkoutSession({ client, planId, exercises }: {
     setHistoryBusy(false);
     if (error) { setNotice('לא ניתן לטעון היסטוריית אימונים.'); return; }
     setHistory(data ?? []);
+    setExpandedSession(null); setHistoricalSets([]);
   }
   async function showSessionSets(id: string) {
     if (historyBusy) return;
@@ -84,10 +85,13 @@ export default function CloudWorkoutSession({ client, planId, exercises }: {
     if (error) { setNotice('לא ניתן לבדוק סטים קיימים.'); return; }
     const next = (data?.[0]?.set_number ?? 0) + 1;
     setSetNumber(next);
+    const planned = dayExercises.find(exercise => exercise.cloudId === exerciseId);
+    if (planned && next > planned.sets) setNotice('כל הסטים המתוכננים לתרגיל זה כבר נרשמו.');
   }
   async function saveSet(event: React.FormEvent) {
     event.preventDefault();
     if (!sessionId || !selected || busy) return;
+    if (setNumber > selected.sets) { setNotice('כל הסטים המתוכננים לתרגיל זה כבר נרשמו.'); return; }
     setBusy(true); setNotice('');
     try {
       await logCloudWorkoutSet(client, {
@@ -128,7 +132,7 @@ export default function CloudWorkoutSession({ client, planId, exercises }: {
         <label>חזרות <input type="number" min="0" max="100" required value={reps} onChange={event => setReps(Number(event.target.value))}/></label>
         <label>{selected?.effortMode === 'RIR' ? 'RIR' : 'RPE'} <input type="number" min="0" max="10" step="0.5" required value={effort} onChange={event => setEffort(Number(event.target.value))}/></label>
         <label>כאב 0–10 <input type="number" min="0" max="10" value={pain} onChange={event => setPain(Number(event.target.value))}/></label>
-        <button type="submit" disabled={!selected || busy}>שמירת סט</button>
+        <button type="submit" disabled={!selected || busy || setNumber > (selected?.sets ?? 0)}>שמירת סט</button>
       </form>
       {lastSavedEstimate !== null && <p role="status">משקל מוערך לסט הבא: {lastSavedEstimate.toFixed(2)} ק״ג (הערכה בלבד, ללא עיגול לפלטות).</p>}
       <button type="button" disabled={busy} onClick={() => void finish()}>סיום אימון</button>
