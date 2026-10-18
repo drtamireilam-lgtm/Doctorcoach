@@ -38,7 +38,8 @@ export default function CloudProgressDashboard({ client, planId, exercises }: {
       if (!rows.length) { setSessions([]); setSets([]); setTruncated(false); setLoaded(true); return; }
       const setResult = await client.from('dc_workout_sets')
         .select('session_id,exercise_id,load_kg,reps,effort,effort_mode')
-        .in('session_id', rows.map(row => row.id)).limit(1000);
+        .in('session_id', rows.map(row => row.id))
+        .order('logged_at', { ascending: false }).limit(1000);
       if (setResult.error) throw setResult.error;
       setTruncated(rows.length === 100 || (setResult.data ?? []).length === 1000);
       setSessions(rows); setSets((setResult.data ?? []) as SetRow[]); setLoaded(true);
