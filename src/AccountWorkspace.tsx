@@ -102,7 +102,7 @@ export default function AccountWorkspace({ url, publishableKey }: { url: string;
   const [message, setMessage] = useState('');
   const generation = useRef(0);
 
-  const clearProfile = () => { setShowTeam(false); setPendingCoaches([]); setCloudPlans([]); setCloningPlanId(null); setPlansLoaded(false); setSelectedCloudPlan(null); setCloudExercises([]); setProfile(null); setLoaded(false); setName(''); setMode('RPE'); setMessage(''); };
+  const clearProfile = () => { setShowTeam(false); setPendingCoaches([]); setCloudPlans([]); setCloningPlanId(null); setPlansLoaded(false); setCoachSearch(''); setCoachAthlete('all'); setSelectedCloudPlan(null); setCloudExercises([]); setEditorPlanId(null); setEditorExercises([]); setProfile(null); setLoaded(false); setName(''); setMode('RPE'); setMessage(''); };
   useEffect(() => {
     client.auth.startAutoRefresh();
     const { data } = client.auth.onAuthStateChange((event) => {
