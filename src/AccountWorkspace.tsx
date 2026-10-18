@@ -15,6 +15,25 @@ export default function AccountWorkspace({ url, publishableKey }: { url: string;
   const [busy, setBusy] = useState(false);
   const [showTeam, setShowTeam] = useState(false);
   const [acceptingInvite, setAcceptingInvite] = useState(false);
+  const [pendingCoaches, setPendingCoaches] = useState<string[]>([]);
+  const [coachBusy, setCoachBusy] = useState(false);
+  async function loadPendingCoaches() {
+    if (!userId) return;
+    const { data, error: queryError } = await client.from('dc_coach_athletes')
+      .select('coach_id').eq('athlete_id', userId).eq('status', 'pending');
+    if (queryError) { setError('לא ניתן לטעון בקשות שיוך.'); return; }
+    setPendingCoaches((data ?? []).map(row => row.coach_id));
+  }
+  async function respondToCoach(coachId: string, accept: boolean) {
+    if (coachBusy || !userId) return;
+    setCoachBusy(true); setError(''); setMessage('');
+    const { error: rpcError } = await client.rpc('dc_respond_coach_assignment', {
+      p_coach_id: coachId, p_accept: accept,
+    });
+    setCoachBusy(false);
+    if (rpcError) setError('לא ניתן לעדכן את בקשת השיוך.');
+    else { setMessage(accept ? 'אישרת את השיוך למאמן.' : 'דחית את בקשת השיוך.'); void loadPendingCoaches(); }
+  }
   const [error, setError] = useState('');
   const [message, setMessage] = useState('');
   const generation = useRef(0);
@@ -75,7 +94,16 @@ export default function AccountWorkspace({ url, publishableKey }: { url: string;
     {error && <p className="alert" role="alert">{error}</p>}
     {message && <p role="status">{message}</p>}
     {userId && <button className="outline-button" onClick={() => setShowTeam(true)}>ניהול צוות (LAB)</button>}
-    {userId && <button className="outline-button" disabled={acceptingInvite} onClick={() => void acceptInvitation()}>{acceptingInvite ? 'מקבל הזמנה…' : 'קבלת הזמנה לצוות'}</button>
+    {userId && <button className="outline-button" disabled={acceptingInvite} onClick={() => void acceptInvitation()}>{acceptingInvite ? 'מקבל הזמנה…' : 'קבלת הזמנה לצוות'}</button>}
+    {userId && <section aria-label="בקשות שיוך למאמן">
+      <h2>בקשות שיוך למאמנים</h2>
+      <button type="button" className="outline-button" onClick={() => void loadPendingCoaches()}>בדיקת בקשות ממתינות</button>
+      {pendingCoaches.map(coachId => <div key={coachId}>
+        <p>מאמן מזהה: {coachId}</p>
+        <button type="button" disabled={coachBusy} onClick={() => void respondToCoach(coachId, true)}>אישור שיוך</button>
+        <button type="button" disabled={coachBusy} onClick={() => void respondToCoach(coachId, false)}>דחיית שיוך</button>
+      </div>)}
+    </section>}
     {!userId ? <form onSubmit={login} className="form-grid">
       <label>דוא״ל<input type="email" dir="ltr" autoComplete="username" required value={email} onChange={e=>setEmail(e.target.value)} disabled={busy}/></label>
       <label>סיסמה<input type="password" dir="ltr" autoComplete="current-password" required value={password} onChange={e=>setPassword(e.target.value)} disabled={busy}/></label>
