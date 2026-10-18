@@ -1,5 +1,6 @@
 import TeamManagementWorkspace from './TeamManagementWorkspace';
 import { exerciseLibrary } from './exercise-library';
+import { loadCloudTrainingPlan, type EditorExercise } from './platform/cloud-training';
 import { useEffect, useRef, useState, type FormEvent } from 'react';
 import { AccountService, createAccountClient, type AccountProfile } from './platform/account';
 
@@ -39,6 +40,17 @@ export default function AccountWorkspace({ url, publishableKey }: { url: string;
   const [cloudExercises, setCloudExercises] = useState<CloudExercise[]>([]);
   const [exercisesBusy, setExercisesBusy] = useState(false);
   const [exerciseSearch, setExerciseSearch] = useState('');
+  const [editorPlanId, setEditorPlanId] = useState<string | null>(null);
+  const [editorExercises, setEditorExercises] = useState<EditorExercise[]>([]);
+  async function openCloudPlan(planId: string) {
+    if (!userId || exercisesBusy) return;
+    setExercisesBusy(true); setError(''); setEditorPlanId(null); setEditorExercises([]);
+    try {
+      const result = await loadCloudTrainingPlan(client, planId);
+      setEditorPlanId(result.plan.id); setEditorExercises(result.exercises);
+    } catch { setError('לא ניתן לפתוח תוכנית אימון זו.'); }
+    finally { setExercisesBusy(false); }
+  }
   async function loadCloudExercises(planId: string) {
     if (!userId || exercisesBusy) return;
     setExercisesBusy(true); setError('');
@@ -160,10 +172,12 @@ export default function AccountWorkspace({ url, publishableKey }: { url: string;
         <strong>{plan.title}</strong> · גרסה {plan.version} · {plan.status} · {plan.coach_id ? 'תוכנית מאמן' : 'תוכנית עצמאית'}
         <button type="button" className="outline-button" disabled={exercisesBusy}
           onClick={() => void loadCloudExercises(plan.id)}>הצגת תרגילים</button>
+        <button type="button" className="outline-button" disabled={exercisesBusy} onClick={() => void openCloudPlan(plan.id)}>פתיחת תוכנית אימון</button>
         {plan.coach_id === userId && <button type="button" className="outline-button" disabled={cloningPlanId !== null}
           onClick={() => void cloneCloudPlan(plan.id)}>
           {cloningPlanId === plan.id ? 'יוצר גרסה…' : 'יצירת גרסת טיוטה'}
         </button>}
+        {editorPlanId === plan.id && <div><p>תוכנית ענן · קריאה בלבד</p><ul>{editorExercises.map(exercise => <li key={exercise.cloudId}>{exercise.day} · {exercise.name} · {exercise.sets} × {exercise.reps} · {exercise.load} ק״ג · {exercise.effortMode} {exercise.targetEffort}</li>)}</ul></div>}
         {selectedCloudPlan === plan.id && <div>
           {cloudExercises.length === 0 ? <p>אין תרגילים בתוכנית זו.</p> :
             <ul>{cloudExercises.map(exercise => <li key={exercise.id}>
