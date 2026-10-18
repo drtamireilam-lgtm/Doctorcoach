@@ -17,9 +17,21 @@ export default function CloudWorkoutSession({ client, planId, exercises }: {
   const [busy, setBusy] = useState(false);
   const [notice, setNotice] = useState('');
   const [completed, setCompleted] = useState(false);
+  const [history, setHistory] = useState<Array<{ id: string; day_label: string; started_at: string; completed_at: string | null }>>([]);
+  const [historyBusy, setHistoryBusy] = useState(false);
   const days = [...new Set(exercises.map(exercise => exercise.day))];
   const dayExercises = exercises.filter(exercise => exercise.day === day);
   const selected = dayExercises.find(exercise => exercise.cloudId === selectedId);
+  async function loadHistory() {
+    if (historyBusy) return;
+    setHistoryBusy(true);
+    const { data, error } = await client.from('dc_workout_sessions')
+      .select('id,day_label,started_at,completed_at').eq('plan_id', planId)
+      .order('started_at', { ascending: false }).limit(20);
+    setHistoryBusy(false);
+    if (error) { setNotice('לא ניתן לטעון היסטוריית אימונים.'); return; }
+    setHistory(data ?? []);
+  }
   async function start() {
     if (!day || busy) return;
     setBusy(true); setNotice('');
@@ -74,6 +86,9 @@ export default function CloudWorkoutSession({ client, planId, exercises }: {
       </form>
       <button type="button" disabled={busy} onClick={() => void finish()}>סיום אימון</button>
     </>}
+    <div><button type="button" disabled={historyBusy} onClick={() => void loadHistory()}>{historyBusy ? 'טוען…' : 'היסטוריית אימונים'}</button>
+      {history.length > 0 && <ul>{history.map(item => <li key={item.id}>{item.day_label} · {new Date(item.started_at).toLocaleString('he-IL')} · {item.completed_at ? 'הושלם' : 'לא הושלם'}</li>)}</ul>}
+    </div>
     {notice && <p role="status">{notice}</p>}
   </section>;
 }
