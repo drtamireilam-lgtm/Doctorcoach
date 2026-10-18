@@ -1,5 +1,6 @@
 import TeamManagementWorkspace from './TeamManagementWorkspace';
 import CloudWorkoutSession from './CloudWorkoutSession';
+import CloudProgressDashboard from './CloudProgressDashboard';
 import { exerciseLibrary } from './exercise-library';
 import { loadCloudTrainingPlan, type EditorExercise } from './platform/cloud-training';
 import { useEffect, useRef, useState, type FormEvent } from 'react';
@@ -178,7 +179,7 @@ export default function AccountWorkspace({ url, publishableKey }: { url: string;
           onClick={() => void cloneCloudPlan(plan.id)}>
           {cloningPlanId === plan.id ? 'יוצר גרסה…' : 'יצירת גרסת טיוטה'}
         </button>}
-        {editorPlanId === plan.id && <div><p>תוכנית ענן · קריאה בלבד</p><ul>{editorExercises.map(exercise => <li key={exercise.cloudId}>{exercise.day} · {exercise.name} · {exercise.sets} × {exercise.reps} · {exercise.load} ק״ג · {exercise.effortMode} {exercise.targetEffort}</li>)}</ul>{plan.athlete_id === userId && plan.status === 'active' && <CloudWorkoutSession key={plan.id} client={client} planId={plan.id} exercises={editorExercises}/>}</div>}
+        {editorPlanId === plan.id && <div><p>תוכנית ענן · קריאה בלבד</p><ul>{editorExercises.map(exercise => <li key={exercise.cloudId}>{exercise.day} · {exercise.name} · {exercise.sets} × {exercise.reps} · {exercise.load} ק״ג · {exercise.effortMode} {exercise.targetEffort}</li>)}</ul>{plan.athlete_id === userId && plan.status === 'active' && <CloudWorkoutSession key={plan.id} client={client} planId={plan.id} exercises={editorExercises}/><CloudProgressDashboard key={`progress-${plan.id}`} client={client} planId={plan.id} exercises={editorExercises}/>}</div>}
         {selectedCloudPlan === plan.id && <div>
           {cloudExercises.length === 0 ? <p>אין תרגילים בתוכנית זו.</p> :
             <ul>{cloudExercises.map(exercise => <li key={exercise.id}>
