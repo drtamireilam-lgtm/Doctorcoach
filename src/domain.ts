@@ -55,6 +55,15 @@ export function estimateE1RM(set: ExerciseSet, mode: EffortMode): number {
   return Math.round((set.load * (1 + effectiveReps / 30)) * 10) / 10;
 }
 
+/** Continuous estimate: no rounding to available plates. Athlete chooses actual load. */
+export function nextSetLoadEstimate(load: number, actualEffort: number, targetEffort: number, mode: EffortMode): number | null {
+  if (![load, actualEffort, targetEffort].every(Number.isFinite) || load <= 0 ||
+      actualEffort < 0 || actualEffort > 10 || targetEffort < 0 || targetEffort > 10) return null;
+  const delta = mode === 'RPE' ? targetEffort - actualEffort : actualEffort - targetEffort;
+  // Heuristic, not a measured strength prediction; preserve decimal precision.
+  return Math.max(0, load * (1 + delta * 0.025));
+}
+
 export function suggestedNextLoad(set: ExerciseSet, targetEffort: number, mode: EffortMode): string {
   if (!set.load) return 'Enter load';
   const delta = mode === 'RPE' ? targetEffort - set.effort : set.effort - targetEffort;
