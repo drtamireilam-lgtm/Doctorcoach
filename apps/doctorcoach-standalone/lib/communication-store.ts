@@ -1,3 +1,4 @@
+import {nutritionTextGuard,requireNutritionText} from './nutrition-authority.ts';
 import {messagingStore} from './messaging-store.ts';
 import {privateDocumentStore} from './private-document-store.ts';
 import {careStore,type CareConfig} from './care-store.ts';
@@ -35,7 +36,8 @@ export function communicationStore(db:D1Database,config:CareConfig={}){
   const access=await messages.authorize(user,clientId,channel);if(!access.available)throw new TrainingError('אין צוות מורשה בערוץ זה.',403);
   const documentId=p.documentId?validId(p.documentId):null,videoId=p.videoId?validId(p.videoId):null,sessionId=p.sessionId?validId(p.sessionId):null,exerciseId=p.exerciseId?textField(p.exerciseId,'תרגיל',100,1):null;
   if(exerciseId&&!exercises.some(e=>e.id===exerciseId))throw new TrainingError('תרגיל לא מוכר.');
-  const guards=[channelGuard(user,clientId,channel,true)];
+  await requireNutritionText(db,user,clientId,content,config);
+  const guards=[channelGuard(user,clientId,channel,true),nutritionTextGuard(user,clientId,content,config)];
   if(documentId||videoId)guards.push({sql:"COALESCE((SELECT accepted<>0 AND revision=? FROM user_consents WHERE user_id=? AND consent_id='media' ORDER BY created_at DESC,rowid DESC LIMIT 1),0)",args:[CONSENT_REVISION,clientId]});
   if(documentId){const row=await files.readable(user,documentId);if(row.client_id!==clientId||row.purpose!=='message'||row.channel!==channel||row.uploader_id!==user.userId)throw new TrainingError('הקובץ אינו שייך להודעה זו.',403);guards.push({sql:"EXISTS(SELECT 1 FROM private_documents WHERE id=? AND client_id=? AND purpose='message' AND channel=? AND uploader_id=? AND status='ready')",args:[documentId,clientId,channel,user.userId]});}
   if(videoId)guards.push({sql:"EXISTS(SELECT 1 FROM media_assets WHERE id=? AND owner_id=? AND kind='review' AND status='ready')",args:[videoId,clientId]});

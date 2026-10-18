@@ -1,3 +1,4 @@
+import {verifySyntheticDietitian} from './platform-db.mjs';
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import {randomUUID} from 'node:crypto';
@@ -12,7 +13,7 @@ import {currentWeek} from '../lib/care.ts';
 const diet={userId:'diet',email:'diet@example.test'},coord={userId:'coord',email:'coord@example.test'};
 const config={adminEmails:doctor.email,clinicianEmails:doctor.email};
 const record=(kind,data)=>({id:randomUUID(),kind,version:0,day:todayIsrael(),data});
-async function fresh(t){const f=platform(t);for(const [u,role] of [[coach,'coach'],[diet,'dietitian'],[coord,'coordinator']])await f.care.saveStaff(doctor,{...u,name:u.userId+' synthetic',role,active:true});const onboard=onboardingStore(f.db,config);await onboard.save(client,{version:0,complete:true,consentRevision:CONSENT_REVISION,consents:Object.fromEntries(consents.map(c=>[c.id,c.required])),teamEmails:[doctor.email,coach.email,diet.email,coord.email],teamGrants:[{email:doctor.email,role:'clinician'},{email:coach.email,role:'coach'},{email:diet.email,role:'dietitian'},{email:coord.email,role:'coordinator'}],answers:{name:'Synthetic trainee',phone:'0500000000',current_injury:'no',red_flags:['none'],age:35,medical_history:['אין מחלות רקע משמעותיות'],training_frequency:'3–4',training_style:['Powerlifting'],specific_goals:['העלאת כוח']}});return {...f,onboard,w:wellnessStore(f.db,config)};}
+async function fresh(t){const f=platform(t);for(const [u,role] of [[coach,'coach'],[diet,'dietitian'],[coord,'coordinator']])await f.care.saveStaff(doctor,{...u,name:u.userId+' synthetic',role,active:true});verifySyntheticDietitian(f,diet.email);const onboard=onboardingStore(f.db,config);await onboard.save(client,{version:0,complete:true,consentRevision:CONSENT_REVISION,consents:Object.fromEntries(consents.map(c=>[c.id,c.required])),teamEmails:[doctor.email,coach.email,diet.email,coord.email],teamGrants:[{email:doctor.email,role:'clinician'},{email:coach.email,role:'coach'},{email:diet.email,role:'dietitian'},{email:coord.email,role:'coordinator'}],answers:{name:'Synthetic trainee',phone:'0500000000',current_injury:'no',red_flags:['none'],age:35,medical_history:['אין מחלות רקע משמעותיות'],training_frequency:'3–4',training_style:['Powerlifting'],specific_goals:['העלאת כוח']}});return {...f,onboard,w:wellnessStore(f.db,config)};}
 test('nutrition journey spans private assessment, dietitian plan/review, sharing and revocation without clinical leakage',async t=>{
  const f=await fresh(t),assessment=record('assessment',{goal:'Synthetic goal',routine:'Private nutrition routine',allergies:'Private allergies',shareTeam:false});
  await f.w.save(client,client.userId,assessment);

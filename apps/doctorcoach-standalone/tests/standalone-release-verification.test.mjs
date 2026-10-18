@@ -51,8 +51,10 @@ test('R2 requires explicit complete inventory, metadata and unique keys',async t
 test('R2 export paths cannot read outside object root through traversal or symlinks',async t=>{
  const f=await fixture(t);await writeFile(path.join(f.root,'outside'),Buffer.from([0,255,42,1]));
  await f.save({blobFile:'../outside'});await assert.rejects(r2Snapshot(f.manifest,f.objects),/preservation/);
- await symlink(path.join(f.root,'outside'),path.join(f.objects,'escape'));
- await f.save({blobFile:'escape'});await assert.rejects(r2Snapshot(f.manifest,f.objects),/preservation/);
+ await mkdir(path.join(f.root,'outside-dir'));
+ await writeFile(path.join(f.root,'outside-dir','blob'),Buffer.from([0,255,42,1]));
+ await symlink(path.join(f.root,'outside-dir'),path.join(f.objects,'escape'),process.platform==='win32'?'junction':'dir');
+ await f.save({blobFile:'escape/blob'});await assert.rejects(r2Snapshot(f.manifest,f.objects),/preservation/);
 });
 test('source fingerprint changes on code edits, ignores evidence and generated output',async t=>{
  const root=await mkdtemp(path.join(tmpdir(),'dc-hash-'));t.after(()=>rm(root,{recursive:true,force:true}));

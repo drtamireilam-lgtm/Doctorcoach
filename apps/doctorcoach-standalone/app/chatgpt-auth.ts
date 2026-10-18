@@ -24,12 +24,15 @@ export async function getChatGPTUser(options:{allowDeleted?:boolean}={}): Promis
   const requestHeaders = await headers();
   const userId = requestHeaders.get(USER_ID_HEADER);
   const email = requestHeaders.get(USER_EMAIL_HEADER);
-  if (!userId || !email) return null;
+  if (!userId || !email) {
+    if (requestHeaders.get('cookie')?.includes('__Host-dc_session=')) console.warn('DC_AUTH_DIAG identity_headers_missing');
+    return null;
+  }
   // R2 journal survives a D1 rollback. Storage failure denies private access.
   try {
     const receipt=await deletionJournal(env.BUCKET??null).read(userId);
     if(receipt){await restoreDeletionBarrier(getRawDb(),receipt);if(!options.allowDeleted)return null;}
-  } catch {return null;}
+  } catch {console.warn('DC_AUTH_DIAG deletion_storage_denied');return null;}
   if(!options.allowDeleted&&await deletionStatus(getRawDb(),userId))return null;
 
   const encodedFullName = requestHeaders.get(USER_FULL_NAME_HEADER);

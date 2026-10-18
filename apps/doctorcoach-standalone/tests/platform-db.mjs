@@ -50,3 +50,6 @@ export function platform(t) {
   }
   return {sql, db, care, connect, media:mediaStore(db,config), appointments:appointmentsStore(db,doctor.email),services:servicesStore(db,doctor.email),training:trainingStore(db)};
 }
+
+// Explicit synthetic qualification evidence for tests that exercise licensed nutrition care.
+export function verifySyntheticDietitian(f,email){f.sql.prepare("INSERT INTO nutrition_credentials(email,qualification,reference,issuer,active,verified_by,verified_at,version) VALUES(?,'clinical_dietitian','SYNTHETIC-LICENSE','Synthetic test issuer',1,'doctor','2026-01-01',1) ON CONFLICT(email) DO UPDATE SET active=1").run(email);}

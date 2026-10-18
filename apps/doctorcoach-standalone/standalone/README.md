@@ -1,5 +1,7 @@
 # DoctorCoach standalone candidate — NOT deployed
 
+Current workflow: the owner approved starting new tracking without historical import. See [FRESH-START.md](FRESH-START.md) for account separation, bootstrap order and remaining live checks. Historical migration instructions below remain a separate workflow. A separate Staging build was deployed by the owner; this checkout has additional un-deployed changes.
+
 ## Provenance and isolation
 
 This is the full 779-file v171 source, commit
@@ -26,7 +28,7 @@ Build from the app directory:
 
 ```
 npm run build:standalone
-node standalone/scripts/runtime-smoke.mjs
+node --experimental-strip-types standalone/scripts/runtime-smoke.mjs
 node node_modules/typescript/bin/tsc --noEmit
 node --experimental-strip-types --test --test-concurrency=4 tests/*.test.mjs
 node standalone/scripts/deployment-gate.mjs standalone/evidence.json

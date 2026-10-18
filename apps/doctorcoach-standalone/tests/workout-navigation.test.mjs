@@ -27,3 +27,28 @@ test('cancelled hash or browser-back change keeps exact previous route for resto
  assert.equal(nav.accept('#plan',()=>false),false);assert.equal(nav.current(),'#workout?context=original');
  assert.equal(nav.accept(nav.current(),()=>assert.fail('restoration event')),true);
 });
+
+import {workoutNavigationTargets,workoutSetAnchor,revealWorkoutTarget} from '../lib/workout-navigation.ts';
+test('next set follows visible warmup/main/stretch order and advances only on saved done values',()=>{
+ const main={exerciseId:'main',workoutSection:'main',results:[{done:true},{done:false}]};
+ const warm={exerciseId:'warm',workoutSection:'warmup',results:[{done:false}]};
+ const stretch={exerciseId:'stretch',workoutSection:'stretch',results:[{done:false}]};
+ const session={items:[main,stretch,warm]};const before=JSON.stringify(session);
+ assert.equal(workoutNavigationTargets(session).pending.item,warm);assert.equal(JSON.stringify(session),before);
+ warm.results[0].done=true;assert.equal(workoutNavigationTargets(session).pending.item,main);assert.equal(workoutNavigationTargets(session).pending.index,1);
+ main.results[1].done=true;assert.equal(workoutNavigationTargets(session).pending.item,stretch);
+ stretch.results[0].done=true;assert.equal(workoutNavigationTargets(session).pending,null);
+});
+test('set anchors separate sessions, workout days and set positions',()=>{
+ const item={exerciseId:'a:b',dayId:'1'};const anchor=workoutSetAnchor('session',item,0);
+ assert.notEqual(anchor,workoutSetAnchor('session',{...item,dayId:'2'},0));assert.notEqual(anchor,workoutSetAnchor('other',item,0));assert.notEqual(anchor,workoutSetAnchor('session',item,1));
+});
+test('explicit set navigation opens a collapsed exercise then focuses and scrolls without altering fields',()=>{
+ const calls=[];let queued;const target={isConnected:true,closest:()=>({querySelector:()=>({getAttribute:()=> 'false',click:()=>calls.push('open')})}),focus:()=>calls.push('focus'),scrollIntoView:()=>calls.push('scroll')};
+ assert.equal(revealWorkoutTarget('target',{getElementById:()=>target},fn=>{queued=fn;}),true);assert.deepEqual(calls,['open']);queued();assert.deepEqual(calls,['open','focus','scroll']);
+ assert.equal(revealWorkoutTarget('missing',{getElementById:()=>null},()=>{throw Error('unexpected');}),false);
+});
+test('navigation leaves open disclosures open and ignores a removed target',()=>{
+ let clicks=0,queued;const target={isConnected:false,closest:()=>({querySelector:()=>({getAttribute:()=> 'true',click:()=>clicks++})}),focus:()=>{throw Error('removed');}};
+ revealWorkoutTarget('target',{getElementById:()=>target},fn=>{queued=fn;});queued();assert.equal(clicks,0);
+});

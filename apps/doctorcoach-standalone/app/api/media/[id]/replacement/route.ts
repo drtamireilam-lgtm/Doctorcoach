@@ -1,3 +1,4 @@
+import {isVideoMime} from '../../../../../lib/video-format';
 import {env} from 'cloudflare:workers';
 import {getChatGPTUser} from '../../../../chatgpt-auth';
 import {getRawDb} from '../../../../../db/raw';
@@ -13,7 +14,7 @@ export async function PUT(request:Request,context:{params:Promise<{id:string}>})
  if(request.headers.get('Sec-Fetch-Site')==='cross-site'||request.headers.get('X-Replacement-Confirmed')!=='true')throw new TrainingError('יש לאשר החלפה וזכויות לפרסום.',403);
  const store=mediaStore(getRawDb(),careConfig()),row=await store.replacementTarget(user,validId((await context.params).id));
  const mime=request.headers.get('Content-Type')??'',size=Number(request.headers.get('X-Video-Bytes'));
- if(!['video/mp4','video/webm'].includes(mime)||!Number.isInteger(size)||size<32||size>MAX_VIDEO_BYTES)throw new TrainingError('בחרו קובץ MP4 או WebM עד 25 MB.');
+ if(!isVideoMime(mime)||!Number.isInteger(size)||size<32||size>MAX_VIDEO_BYTES)throw new TrainingError('בחרו קובץ MP4, MOV או WebM עד 25 MB.');
  const bytes=await readVideoBody(request,size,mime);if(!env.BUCKET)throw new TrainingError('אחסון הסרטונים אינו זמין.',503);
  await commitVideoUpload(env.BUCKET,row.id,mime,bytes,key=>store.replace(user,row,key,mime,size));
  // The database points at the new object before retiring the old object.

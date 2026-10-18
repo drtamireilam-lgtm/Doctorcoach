@@ -7,7 +7,7 @@ type RequestRow={id:string;user_id:string;requester_email:string|null;kind:strin
 type Job={user_id:string;request_id:string;state:string;started_at:string;completed_at:string|null};
 // Exact ownership predicates only. Shared catalogs and staff records are excluded.
 export const deletionScopes=[
- ['care_tasks','client_id'],['workspace_client_events','client_id'],['workspace_messages','client_id'],['workspace_chat_reads','client_id'],['workspace_programs','client_id'],['workspace_drafts','client_id'],['workspace_clients','client_id'],['coach_program_templates','owner_id'],['import_exercise_mappings','owner_id'],['google_calendar_connection','owner_id'],['google_calendar_states','user_id'],
+ ['staff_workout_reviews','client_id'],['staff_workout_reviews','staff_id'],['care_tasks','client_id'],['workspace_client_events','client_id'],['workspace_messages','client_id'],['workspace_chat_reads','client_id'],['workspace_programs','client_id'],['workspace_drafts','client_id'],['workspace_clients','client_id'],['coach_program_templates','owner_id'],['import_exercise_mappings','owner_id'],['google_calendar_connection','owner_id'],['google_calendar_states','user_id'],
  ['pilot_redemptions','user_id'],['program_items','owner_id'],['workout_logs','owner_id'],['exercise_favorites','owner_id'],
  ['training_sessions','owner_id'],['care_profiles','user_id'],['care_connections','client_id'],
  ['care_notes','client_id'],['care_programs','client_id'],['care_checkins','client_id'],
@@ -15,7 +15,7 @@ export const deletionScopes=[
  ['return_plan_revisions','client_id'],['trainee_feedback','owner_id'],['success_stories','owner_id'],
  ['user_intakes','user_id'],['user_consents','user_id'],['medical_reviews','client_id'],
  ['team_messages','client_id'],['message_reads','user_id'],['account_requests','user_id'],
- ['audit_events','subject_id'],['training_access','user_id'],['staff_personal_access','user_id'],['self_program_splits','owner_id'],['workout_preferences','user_id'],['coach_program_drafts','client_id'],
+ ['audit_events','subject_id'],['training_access','user_id'],['staff_personal_access','user_id'],['self_program_splits','owner_id'],['workout_preferences','user_id'],['progress_layouts','user_id'],['appearance_preferences','user_id'],['coach_program_drafts','client_id'],
  ['membership_orders','user_id'],['weekly_goals','client_id'],['notification_preferences','user_id'],
  ['notification_dismissals','user_id'],['passport_details','client_id'],['private_documents','client_id'],
  ['thread_states','client_id'],['billing_sandbox_orders','user_id'],['push_devices','user_id'],

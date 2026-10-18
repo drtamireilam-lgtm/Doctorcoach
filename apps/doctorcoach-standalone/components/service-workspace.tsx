@@ -1,4 +1,5 @@
 'use client';
+import {nutritionRevenuePreview} from '../lib/nutrition-commercial';
 import {Localize} from "../components/language-provider";
 import { useCallback, useEffect, useId, useRef, useState } from 'react';
 import { ArrowLeft, CalendarDays, Check, Clock3, ExternalLink, Link2, LoaderCircle, MapPin, Pencil, Plus, ShieldCheck, Video, X } from 'lucide-react';
@@ -12,7 +13,7 @@ import type { ConsultationService, PublicService, ServiceFormat, ServiceProvider
 import { ServiceRequestError, serviceRequest, useServiceCatalog } from '../hooks/use-services';
 import type { StaffAccess } from '../hooks/use-services';
 
-function ServiceCard({ service, preview = false, onRequest }: { service:PublicService; preview?:boolean; onRequest?:(id:string)=>void }) {
+export function ServiceCard({ service, preview = false, onRequest }: { service:PublicService; preview?:boolean; onRequest?:(id:string)=>void }) {
   const Icon = service.format === 'video' ? Video : MapPin;
   const ready = service.status === 'bookable';
   return <Localize>{<article className={`service-card ${ready ? 'booking-ready' : ''}`}>
@@ -38,7 +39,7 @@ export function ConsultationWorkspace({ canManage, openAdmin }: { canManage:bool
   return <Localize>{<div className="consultation-workspace">
     <div className="workspace-heading"><div><span className="eyebrow">נפגשים ומתקדמים</span><h1>ייעוץ וליווי</h1><p>מפגש אישי עם ד״ר תמיר עילם או נדב רון, לפי השירות שבחרתם.</p></div>{canManage && <button className="button secondary" onClick={openAdmin}><Pencil size={17}/>ניהול השירותים</button>}</div>
     {catalog.state === 'loading' ? <div className="panel service-feedback" role="status"><LoaderCircle className="spin" size={24}/>טוענים את השירותים…</div> : catalog.state === 'error' ? <div className="panel service-feedback" role="alert"><p>{catalog.error}</p><button className="button secondary" onClick={catalog.reload}>ניסיון נוסף</button></div> : !catalog.services.length ? <div className="panel service-feedback"><CalendarDays size={30}/><h2>השירותים מתעדכנים</h2><p>אין כרגע מפגשים מוצגים להזמנה. אפשר לחזור לכאן בהמשך.</p></div> : <>
-      <div className="service-catalog">{catalog.services.map(service => <ServiceCard key={service.id} service={service} onRequest={requestAppointment}/>)}</div>
+      <div className="service-catalog">{catalog.services.filter(service=>service.provider!=='lior').map(service => <ServiceCard key={service.id} service={service} onRequest={requestAppointment}/>)}</div>
       <div className="service-booking-note"><CalendarDays size={24}/><div><h2>{hasBookings ? 'בחירת מועד או בקשת תיאום' : 'בקשת תור דרך האפליקציה'}</h2><p>{hasBookings ? 'אפשר לבחור מועד ביומן החיצוני או לשלוח בקשה לצוות בטופס כאן.' : 'לחצו על בקשת תור בשירות הרצוי, מלאו שם וימים ושעות מועדפים ושלחו. הצוות יאשר את המועד ברשימת התורים שלכם.'}</p></div></div>
     </>}
     <section aria-label="מסלולי ליווי עם נדב" className="care-stack"><h2>ליווי אימונים עם נדב רון</h2><p>תוכנית אימונים אישית וליווי לאורך התקופה שנבחרה. המחיר הוא לכל התקופה.</p><div className="service-catalog">{coachingPackages.map(p=><article className="service-card" key={p.months}><span className="service-provider">נדב רון · מאמן כושר</span><h3>{p.months===12?'ליווי לשנה':`ליווי ל־${p.months} חודשים`}</h3><div className="service-price"><span>מחיר לכל התקופה</span><strong>{servicePrice(p.priceAgorot)}</strong></div>{p.priceAgorot<p.regularPriceAgorot&&<p>במקום <del>{servicePrice(p.regularPriceAgorot)}</del> · חיסכון של {servicePrice(p.regularPriceAgorot-p.priceAgorot)}</p>}<a className="button secondary wide" href={`https://wa.me/972546753959?text=${encodeURIComponent(`שלום, אשמח לתאם ליווי עם נדב רון ל־${p.months} חודשים במחיר ${p.priceAgorot/100} ₪.`)}`} target="_blank" rel="noopener noreferrer">לתיאום ליווי</a></article>)}</div></section>
@@ -53,7 +54,7 @@ function StaffGate({ access, retry }: { access:StaffAccess; retry:()=>void }) {
   </div>}</Localize>;
 }
 
-export function ServiceEditor({ service, onClose, onSaved }: { service:ConsultationService; onClose:()=>void; onSaved:(service:ConsultationService)=>void }) {
+export function ServiceEditor({ service, onClose, onSaved, endpoint='/api/admin/services',providerLocked=false }: { service:ConsultationService; onClose:()=>void; onSaved:(service:ConsultationService)=>void;endpoint?:string;providerLocked?:boolean }) {
   const prefix = useId();
   const [base, setBase] = useState(service);
   const [draft, setDraft] = useState(service);
@@ -81,7 +82,7 @@ export function ServiceEditor({ service, onClose, onSaved }: { service:Consultat
     try { payload = parseService({ ...draft, priceAgorot:Math.round(Number(price) * 100), durationMinutes:Number(duration) }); }
     catch (failure) { setError((failure as Error).message); return; }
     lock.current = true; setBusy(true);
-    try { const result = await serviceRequest<{service:ConsultationService}>('/api/admin/services', payload); onSaved(result.service); }
+    try { const result = await serviceRequest<{service:ConsultationService}>(endpoint, payload); onSaved(result.service); }
     catch (failure) { setError((failure as Error).message); if (failure instanceof ServiceRequestError && failure.current) setConflict(failure.current); }
     finally { lock.current = false; setBusy(false); }
   }
@@ -94,7 +95,7 @@ export function ServiceEditor({ service, onClose, onSaved }: { service:Consultat
         <fieldset disabled={busy}>
           <label className="service-field" htmlFor={`${prefix}-title`}>שם השירות<input id={`${prefix}-title`} required minLength={3} maxLength={100} value={draft.title} onChange={event=>change({title:event.target.value})} placeholder="לדוגמה: מפגש ליווי אישי"/></label>
           <div className="service-form-grid">
-            <div className="service-field"><label htmlFor={`${prefix}-provider`}>נותן השירות</label><Select dir="rtl" value={draft.provider} disabled={busy} onValueChange={value=>change({provider:value as ServiceProvider},true)}><SelectTrigger className="service-select" id={`${prefix}-provider`}><SelectValue/></SelectTrigger><SelectContent className="service-select-options">{Object.entries(providerNames).map(([value,label])=><SelectItem key={value} value={value}>{label}</SelectItem>)}</SelectContent></Select></div>
+            <div className="service-field"><label htmlFor={`${prefix}-provider`}>נותן השירות</label><Select dir="rtl" value={draft.provider} disabled={busy||providerLocked} onValueChange={value=>change({provider:value as ServiceProvider},true)}><SelectTrigger className="service-select" id={`${prefix}-provider`}><SelectValue/></SelectTrigger><SelectContent className="service-select-options">{Object.entries(providerNames).map(([value,label])=><SelectItem key={value} value={value}>{label}</SelectItem>)}</SelectContent></Select></div>
             <div className="service-field"><label htmlFor={`${prefix}-format`}>אופן המפגש</label><Select dir="rtl" value={draft.format} disabled={busy} onValueChange={value=>change({format:value as ServiceFormat},true)}><SelectTrigger className="service-select" id={`${prefix}-format`}><SelectValue/></SelectTrigger><SelectContent className="service-select-options">{Object.entries(formatNames).map(([value,label])=><SelectItem key={value} value={value}>{label}</SelectItem>)}</SelectContent></Select></div>
             <label className="service-field" htmlFor={`${prefix}-duration`}>משך בדקות<input id={`${prefix}-duration`} required type="number" inputMode="numeric" min={5} max={180} step={1} value={duration} onChange={event=>{setDuration(event.target.value);change({},true);}}/></label>
             <label className="service-field" htmlFor={`${prefix}-price`}>מחיר בשקלים<input id={`${prefix}-price`} required type="number" inputMode="decimal" min={0} max={10000} step="0.01" value={price} onChange={event=>{setPrice(event.target.value);change({},true);}}/></label>
@@ -108,7 +109,7 @@ export function ServiceEditor({ service, onClose, onSaved }: { service:Consultat
           <div className="service-calendar-fields"><h3>תשלום ותנאי הזמנה</h3><label className="service-field">קישור תשלום מאובטח בשקלים<input type="url" dir="ltr" maxLength={1500} value={draft.paymentUrl} onChange={event=>change({paymentUrl:event.target.value},true)} placeholder="https://..."/><small>קישור מספק הסליקה שלכם. יש לוודא שהסכום בשקלים תואם למחיר השירות ולאסוף תשלום רק לאחר אישור המועד.</small></label><label className="service-field">הוראות תשלום וביטול<textarea rows={3} maxLength={1200} value={draft.paymentInstructions} onChange={event=>change({paymentInstructions:event.target.value})}/></label><p className="care-muted">אישור תשלום מתבצע בצוות לאחר בדיקה אצל ספק הסליקה. הזנת קישור אינה מחברת סנכרון תשלומים אוטומטי.</p></div>
           <div className="service-field"><label htmlFor={`${prefix}-status`}>מצב תצוגה</label><Select dir="rtl" value={draft.status} disabled={busy} onValueChange={value=>change({status:value as ServiceStatus})}><SelectTrigger className="service-select" id={`${prefix}-status`}><SelectValue/></SelectTrigger><SelectContent className="service-select-options">{Object.entries(statusNames).map(([value,label])=><SelectItem key={value} value={value}>{label}</SelectItem>)}</SelectContent></Select><small>{draft.status === 'draft' ? 'רק הצוות יראה את השירות.' : draft.status === 'listed' ? 'השירות יוצג לקהל ללא כפתור הזמנה פעיל.' : 'הזמנות ייפתחו עם קישור תקין ואישור המחיר.'}</small></div>
         </fieldset>
-        <details className="service-preview"><summary>תצוגה מקדימה של כרטיס השירות</summary><ServiceCard service={publicService(preview)} preview/></details>
+        {draft.provider==='lior'&&<NutritionRevenuePreview priceAgorot={preview.priceAgorot}/>}<details className="service-preview"><summary>תצוגה מקדימה של כרטיס השירות</summary><ServiceCard service={publicService(preview)} preview/></details>
         {error && <div className="service-form-error" role="alert"><p>{error}</p>{conflict && <><small>טעינת הגרסה השמורה תחליף את הערכים בטופס.</small><button type="button" className="button secondary" onClick={()=>{setBase(conflict);setDraft(conflict);setPrice(String(conflict.priceAgorot/100));setDuration(String(conflict.durationMinutes));setError('');setConflict(null);}}>טעינת הגרסה השמורה</button></>}</div>}
         <div className="service-editor-actions"><button type="submit" className="button primary" disabled={busy||(!dirty&&!!service.title)}>{busy ? <LoaderCircle className="spin" size={18}/> : <Check size={18}/>} {draft.status==='draft'?'שמירת טיוטה':draft.status==='listed'?'שמירה ועדכון עמוד הייעוץ':'שמירה ופתיחת הזמנות'}</button><button type="button" className="button secondary" disabled={busy} onClick={close}>ביטול</button></div>
       </form>
@@ -145,4 +146,10 @@ export function ServiceAdminWorkspace({ access, retryAccess, viewCatalog }: { ac
     <section className="service-setup"><div className="service-setup-title"><CalendarDays size={25}/><div><h2>מוכנים לחבר את היומן?</h2><p>שלושה צעדים לכל שירות שרוצים לפתוח להזמנות.</p></div></div><ol><li><b>1</b><div><strong>הכינו אירוע ב־Calendly</strong><p>קבעו בו זמינות, משך, מיקום או קישור למפגש. אם רוצים גבייה בזמן ההזמנה, מגדירים אותה בחשבון Calendly.</p></div></li><li><b>2</b><div><strong>הדביקו ובדקו את הקישור</strong><p>פתחו עריכת שירות, הוסיפו את קישור האירוע ובדקו את המחיר ואת פרטי המפגש.</p></div></li><li><b>3</b><div><strong>פתחו להזמנות</strong><p>אשרו את המחיר, בחרו ״פתוח להזמנות״ ושמרו. כפתור ההזמנה יופיע בעמוד הייעוץ.</p></div></li></ol><p className="service-setup-footnote">תורים, אישורי תשלום וביטולים מנוהלים ביומן החיצוני. בשלב זה הם אינם מסתנכרנים חזרה ל־DoctorCoach.</p></section>
     {editing && <ServiceEditor service={editing} onClose={()=>setEditing(null)} onSaved={saved}/>}
   </div>}</Localize>;
+}
+
+export function NutritionRevenuePreview({priceAgorot}:{priceAgorot:number}){
+ if(!Number.isSafeInteger(priceAgorot)||priceAgorot<0||priceAgorot>1000000)return null;
+ const split=nutritionRevenuePreview(priceAgorot);
+ return <div className="note"><strong>טיוטת חלוקה מסחרית: 80% לליאור / 20% לאפליקציה</strong><p>מתוך {servicePrice(split.grossAgorot)}: לליאור {servicePrice(split.providerAgorot)}, לאפליקציה {servicePrice(split.platformAgorot)}.</p><small>תצוגת חישוב בלבד. אינה מפעילה חיוב, העברה או חוב. חלוקת חלק האפליקציה בין תמיר ונדב טרם הוגדרה; תנאי ביטול, החזר, מסים ועמלות טרם נקבעו.</small></div>;
 }

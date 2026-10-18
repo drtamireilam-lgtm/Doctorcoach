@@ -10,6 +10,7 @@ import {legacyLinkBridge} from '../standalone/legacy-bridge.ts';
 import {supabaseProvider} from '../standalone/provider.ts';
 import {defaultPrescription} from '../lib/training.ts';
 import {nextSetLoad,setEstimated1RM} from '../lib/set-load.ts';
+import {isStaff} from '../lib/staff.ts';
 const schema=await readFile(new URL('../standalone/migrations/0001_identity.sql',import.meta.url),'utf8');
 const origin='https://staging.example.test',issuer='https://auth.example.test/auth/v1',legacyIssuer='sites:synthetic-old';
 async function setup(t){const f=platform(t);f.sql.exec(schema);let time=Date.now(),seq=0,refreshes=0;const tokens=new Map(),codes=new Map(),revoked=new Set();
@@ -24,6 +25,22 @@ async function setup(t){const f=platform(t);f.sql.exec(schema);let time=Date.now
  const api=async(path,body={},cookie='',extras={})=>gateway.handle(new Request(origin+path,{method:'POST',headers:{origin,'Content-Type':'application/json',cookie,...extras},body:JSON.stringify(body)}),async req=>Response.json({user:req.headers.get('oai-authenticated-user-id'),email:req.headers.get('oai-authenticated-user-email')}));
  return {...f,store,provider,gateway,settings,login,legacyProof,api,legacyPrivate,externalPublic,now:()=>time,advance:n=>{time+=n;},refreshes:()=>refreshes,revoked};
 }
+test('fresh start registers distinct owner and personal accounts before reserving the owner; no legacy identity or data is imported',async t=>{
+ const f=await setup(t);
+ const ownerEmail='fresh-owner@example.test',personalEmail='fresh-personal@example.test';
+ const ownerLogin=await f.login(ownerEmail),owner=await f.store.register(ownerLogin.sid);
+ const personalLogin=await f.login(personalEmail),personal=await f.store.register(personalLogin.sid);
+ assert.notEqual(owner.userId,personal.userId);
+ f.settings.reservedEmails.push(ownerEmail);
+ assert.equal((await f.store.register(ownerLogin.sid)).userId,owner.userId);
+ assert.equal(isStaff(owner,ownerEmail),true);
+ assert.equal(isStaff(personal,ownerEmail),false);
+ assert.equal((await f.store.current(personalLogin.sid)).user.userId,personal.userId);
+ assert.equal(f.sql.prepare('SELECT COUNT(*) n FROM dc_identity_details WHERE legacy=1').get().n,0);
+ assert.equal(f.sql.prepare('SELECT COUNT(*) n FROM dc_legacy_link_receipts').get().n,0);
+ assert.equal(f.sql.prepare('SELECT COUNT(*) n FROM care_profiles').get().n,0);
+ assert.equal(f.sql.prepare('SELECT COUNT(*) n FROM training_sessions').get().n,0);
+});
 test('wrong, expired and replayed OTP cannot create an application session; retry with correct code succeeds',async t=>{
  const f=await setup(t),c=await f.store.send('new@example.test','ip');await assert.rejects(f.store.verify(c.challenge,'999999'));const r=await f.store.verify(c.challenge,'123456');assert.equal(r.user,null);await assert.rejects(f.store.verify(c.challenge,'123456'));assert.equal(f.sql.prepare('SELECT COUNT(*) n FROM dc_auth_sessions').get().n,1);
  const next=await f.store.send('later@example.test','ip2');f.advance(600001);await assert.rejects(f.store.verify(next.challenge,'123456'));

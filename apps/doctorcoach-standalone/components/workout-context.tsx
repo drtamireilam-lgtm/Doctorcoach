@@ -12,6 +12,7 @@ export function WorkoutContext({session}:{session:TrainingSession}){
   {ready?<><p>מוכנות מ־{ready.day}, כפי שנשמרה בתחילת האימון: שינה {ready.data.sleep} שעות · אנרגיה {ready.data.energy}/10 · עומס מורגש {ready.data.stress}/10</p>{ready.data.note&&<p className="session-notes">{ready.data.note}</p>}</>:<p className="care-muted">לא נשמר דיווח מוכנות עם תחילת האימון הזה.</p>}
   <p>כאב לפני: {session.before}/10 · במהלך הסטים: {duringPain(session.items)===null?'לא דווח':duringPain(session.items)+'/10 (הגבוה שדווח)'} · בסיום: {session.after===null?'לא דווח':session.after+'/10'}</p>
   <p>ביום שאחרי: {session.followup?`${session.followup.pain}/10 · מתייחס ל־${session.followup.day}`:'לא דווח'}</p>
+  {session.finishFeedback?.effort!=null&&<p>מאמץ כללי בסיום: {session.finishFeedback.effort}/10</p>}{session.finishFeedback?.note&&<p className="session-notes" data-no-translate>הערה בסיום: {session.finishFeedback.note}</p>}
   <small className="care-muted">דיווח עצמי לעיון הצוות. אינו אישור רפואי או שינוי אוטומטי בתוכנית.</small>
  </section>}</Localize>;
 }

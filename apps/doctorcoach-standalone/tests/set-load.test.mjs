@@ -1,7 +1,34 @@
 import test from 'node:test';import assert from 'node:assert/strict';import {randomUUID} from 'node:crypto';
-import {setEstimated1RM,nextSetLoad,previewNextSetLoad} from '../lib/set-load.ts';import {platform,client} from './platform-db.mjs';import {defaultPrescription} from '../lib/training.ts';
+import {setEstimated1RM,nextSetLoad,previewNextSetLoad,automaticSetDraft} from '../lib/set-load.ts';import {platform,client} from './platform-db.mjs';import {defaultPrescription} from '../lib/training.ts';
 const item=(rpe=8)=>({...defaultPrescription('goblet'),name:'בדיקה',sets:2,reps:5,weight:100,targetRpe:8,results:[{done:true,amount:5,weight:100,actualRpe:rpe},{done:false,amount:5,weight:100,actualRpe:null}]});
 const session={before:0,after:null};
+test('editing next reps or target updates the actual weight field from the previous completed set without equipment rounding',()=>{
+ const i=item(6);i.results[0]={done:true,amount:8,weight:20,actualRpe:6};i.results[1]={done:false,amount:10,weight:20,actualRpe:null};
+ const before=JSON.stringify(i),draft={...i.results[1],targetRpe:8};
+ assert.equal(automaticSetDraft(i,1,session,draft).weight,20);
+ assert.equal(automaticSetDraft(i,1,session,{...draft,amount:8}).weight,21);
+ assert.equal(automaticSetDraft(i,1,session,{...draft,amount:8,targetRpe:9}).weight,21.5);
+ i.results[0].actualRpe=9;
+ assert.equal(automaticSetDraft(i,1,session,{...draft,amount:8}).weight,19.5);
+ i.results[0].actualRpe=6;assert.equal(JSON.stringify(i),before);
+});
+test('automatic draft preserves manual/recorded execution, pain gates and disabled mode',()=>{
+ const i=item(6),draft={...i.results[1],targetRpe:8,weight:77};
+ for(const override of [{done:true},{actualRpe:8},{painDuring:1}])assert.equal(automaticSetDraft(i,1,session,{...draft,...override}).weight,77);
+ assert.equal(automaticSetDraft(i,1,session,draft,false).weight,77);
+ assert.equal(automaticSetDraft(i,1,{before:1,after:null},draft).weight,77);
+ i.results[0].done=false;assert.equal(automaticSetDraft(i,1,session,draft).weight,77);
+});
+test('calculated automatic mode persists fractional next weight and never alters later sets or the saved plan',async t=>{
+ const f=platform(t);await f.connect();await f.training.savePlan(client.userId,{...defaultPrescription('goblet'),sets:3,reps:5,weight:100,targetRpe:8});
+ const start=await f.training.start(client.userId,{requestId:randomUUID(),before:0});
+ const saved=await f.training.patch(client.userId,{id:start.id,version:start.version,action:'set',exerciseId:'goblet',setIndex:0,done:true,amount:5,weight:100,actualRpe:6,autoNextLoad:true,loadMode:'calculated',step:2.5});
+ assert.equal(saved.items[0].results[1].weight,105.4);
+ assert.equal(saved.items[0].results[1].done,false);
+ assert.equal(saved.items[0].results[2].weight,100);
+ assert.equal((await f.training.feed(client.userId)).active.items[0].results[1].weight,105.4);
+ assert.equal((await f.training.getPlan(client.userId))[0].weight,100);
+});
 test('target 8 and actual 6 previews the fractional next load immediately without saving or changing a set',()=>{
  const i=item();i.results[0]={done:false,amount:5,weight:100,actualRpe:null};
  const before=JSON.stringify(i),draft={...i.results[0],actualRpe:6,targetRpe:8};

@@ -1,4 +1,4 @@
-export type ServiceProvider = 'tamir' | 'nadav';
+export type ServiceProvider = 'tamir' | 'nadav' | 'lior';
 export type ServiceFormat = 'video' | 'clinic';
 export type ServiceStatus = 'draft' | 'listed' | 'bookable';
 export type ConsultationService = {
@@ -19,7 +19,7 @@ export type ConsultationService = {
 };
 export type PublicService = Omit<ConsultationService, 'version' | 'updatedAt'>;
 
-export const providerNames: Record<ServiceProvider, string> = { tamir: 'ד״ר תמיר עילם', nadav: 'נדב רון' };
+export const providerNames: Record<ServiceProvider, string> = { tamir: 'ד״ר תמיר עילם', nadav: 'נדב רון', lior:'ליאור זליקסון · דיאטן קליני' };
 export const formatNames: Record<ServiceFormat, string> = { video: 'מפגש מקוון', clinic: 'מפגש פרונטלי' };
 export const statusNames: Record<ServiceStatus, string> = { draft: 'טיוטה', listed: 'מוצג ללא הזמנה', bookable: 'פתוח להזמנות' };
 
@@ -72,7 +72,7 @@ export function parseService(input: unknown): ConsultationService {
   if (!Number.isSafeInteger(value.version) || Number(value.version) < 0) throw new ServiceError('יש לטעון שוב את השירות לפני שמירה.');
   if (typeof value.title !== 'string' || value.title.trim().length < 3 || value.title.trim().length > 100) throw new ServiceError('שם השירות צריך להכיל 3–100 תווים.');
   if (typeof value.description !== 'string' || value.description.trim().length < 5 || value.description.trim().length > 1200) throw new ServiceError('תיאור השירות צריך להכיל 5–1,200 תווים.');
-  if (value.provider !== 'tamir' && value.provider !== 'nadav') throw new ServiceError('בחרו נותן שירות.');
+  if (value.provider !== 'tamir' && value.provider !== 'nadav' && value.provider !== 'lior') throw new ServiceError('בחרו נותן שירות.');
   if (value.format !== 'video' && value.format !== 'clinic') throw new ServiceError('בחרו אופן מפגש.');
   if (!Number.isInteger(value.durationMinutes) || Number(value.durationMinutes) < 5 || Number(value.durationMinutes) > 180) throw new ServiceError('משך המפגש צריך להיות 5–180 דקות.');
   if (!Number.isInteger(value.priceAgorot) || Number(value.priceAgorot) < 0 || Number(value.priceAgorot) > 1000000) throw new ServiceError('המחיר צריך להיות בין 0 ל־10,000 ₪, עד שתי ספרות אחרי הנקודה.');
