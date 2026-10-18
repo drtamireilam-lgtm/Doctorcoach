@@ -20,6 +20,19 @@ export default function AccountWorkspace({ url, publishableKey }: { url: string;
   const [cloudPlans, setCloudPlans] = useState<Array<{ id: string; title: string; version: number; status: string; athlete_id: string }>>([]);
   const [plansBusy, setPlansBusy] = useState(false);
   const [plansLoaded, setPlansLoaded] = useState(false);
+  const [cloningPlanId, setCloningPlanId] = useState<string | null>(null);
+  async function cloneCloudPlan(planId: string) {
+    if (!userId || cloningPlanId || !window.confirm('ליצור טיוטה חדשה על בסיס תוכנית זו? התוכנית המקורית תישאר ללא שינוי.')) return;
+    setCloningPlanId(planId); setError(''); setMessage('');
+    try {
+      const { error: rpcError } = await client.rpc('dc_clone_training_plan', { p_source_plan_id: planId });
+      if (rpcError) throw rpcError;
+      setMessage('נוצרה גרסת טיוטה חדשה בשרת. התוכנית המקורית לא שונתה.');
+      await loadCloudPlans();
+    } catch {
+      setError('יצירת הגרסה נכשלה. רק מאמן משויך ופעיל רשאי לשכפל תוכנית שלו.');
+    } finally { setCloningPlanId(null); }
+  }
   type CloudExercise = { id: string; exercise_key: string; day_label: string; sort_order: number; sets: number; target_reps: number; target_load: number | null; effort_mode: string; target_effort: number };
   const [selectedCloudPlan, setSelectedCloudPlan] = useState<string | null>(null);
   const [cloudExercises, setCloudExercises] = useState<CloudExercise[]>([]);
@@ -67,7 +80,7 @@ export default function AccountWorkspace({ url, publishableKey }: { url: string;
   const [message, setMessage] = useState('');
   const generation = useRef(0);
 
-  const clearProfile = () => { setShowTeam(false); setPendingCoaches([]); setCloudPlans([]); setPlansLoaded(false); setSelectedCloudPlan(null); setCloudExercises([]); setProfile(null); setLoaded(false); setName(''); setMode('RPE'); setMessage(''); };
+  const clearProfile = () => { setShowTeam(false); setPendingCoaches([]); setCloudPlans([]); setCloningPlanId(null); setPlansLoaded(false); setSelectedCloudPlan(null); setCloudExercises([]); setProfile(null); setLoaded(false); setName(''); setMode('RPE'); setMessage(''); };
   useEffect(() => {
     client.auth.startAutoRefresh();
     const { data } = client.auth.onAuthStateChange((event) => {
@@ -144,6 +157,10 @@ export default function AccountWorkspace({ url, publishableKey }: { url: string;
         <strong>{plan.title}</strong> · גרסה {plan.version} · {plan.status}
         <button type="button" className="outline-button" disabled={exercisesBusy}
           onClick={() => void loadCloudExercises(plan.id)}>הצגת תרגילים</button>
+        <button type="button" className="outline-button" disabled={cloningPlanId !== null}
+          onClick={() => void cloneCloudPlan(plan.id)}>
+          {cloningPlanId === plan.id ? 'יוצר גרסה…' : 'יצירת גרסת טיוטה'}
+        </button>
         {selectedCloudPlan === plan.id && <div>
           {cloudExercises.length === 0 ? <p>אין תרגילים בתוכנית זו.</p> :
             <ul>{cloudExercises.map(exercise => <li key={exercise.id}>
