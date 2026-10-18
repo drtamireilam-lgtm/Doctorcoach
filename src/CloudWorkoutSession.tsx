@@ -21,6 +21,8 @@ export default function CloudWorkoutSession({ client, planId, exercises }: {
   const [lastSavedEstimate, setLastSavedEstimate] = useState<number | null>(null);
   const [history, setHistory] = useState<Array<{ id: string; day_label: string; started_at: string; completed_at: string | null }>>([]);
   const [historyBusy, setHistoryBusy] = useState(false);
+  const [expandedSession, setExpandedSession] = useState<string | null>(null);
+  const [historicalSets, setHistoricalSets] = useState<Array<{ id: string; exercise_id: string; set_number: number; load_kg: number; reps: number; effort: number; effort_mode: string; pain: number | null }>>([]);
   const days = [...new Set(exercises.map(exercise => exercise.day))];
   const dayExercises = exercises.filter(exercise => exercise.day === day);
   const selected = dayExercises.find(exercise => exercise.cloudId === selectedId);
@@ -33,6 +35,17 @@ export default function CloudWorkoutSession({ client, planId, exercises }: {
     setHistoryBusy(false);
     if (error) { setNotice('לא ניתן לטעון היסטוריית אימונים.'); return; }
     setHistory(data ?? []);
+  }
+  async function showSessionSets(id: string) {
+    if (historyBusy) return;
+    if (expandedSession === id) { setExpandedSession(null); setHistoricalSets([]); return; }
+    setHistoryBusy(true); setNotice(''); setExpandedSession(null); setHistoricalSets([]);
+    const { data, error } = await client.from('dc_workout_sets')
+      .select('id,exercise_id,set_number,load_kg,reps,effort,effort_mode,pain')
+      .eq('session_id', id).order('logged_at', { ascending: true }).limit(200);
+    setHistoryBusy(false);
+    if (error) { setNotice('לא ניתן לטעון סטים מהאימון.'); return; }
+    setHistoricalSets(data ?? []); setExpandedSession(id);
   }
   async function start() {
     if (!day || busy) return;
@@ -92,7 +105,7 @@ export default function CloudWorkoutSession({ client, planId, exercises }: {
       <button type="button" disabled={busy} onClick={() => void finish()}>סיום אימון</button>
     </>}
     <div><button type="button" disabled={historyBusy} onClick={() => void loadHistory()}>{historyBusy ? 'טוען…' : 'היסטוריית אימונים'}</button>
-      {history.length > 0 && <ul>{history.map(item => <li key={item.id}>{item.day_label} · {new Date(item.started_at).toLocaleString('he-IL')} · {item.completed_at ? 'הושלם' : 'לא הושלם'}</li>)}</ul>}
+      {history.length > 0 && <ul>{history.map(item => <li key={item.id}>{item.day_label} · {new Date(item.started_at).toLocaleString('he-IL')} · {item.completed_at ? 'הושלם' : 'לא הושלם'} <button type="button" disabled={historyBusy} onClick={() => void showSessionSets(item.id)}>{expandedSession === item.id ? 'סגירה' : 'הצגת סטים'}</button>{expandedSession === item.id && <ul>{historicalSets.map(set => <li key={set.id}>{exercises.find(exercise => exercise.cloudId === set.exercise_id)?.name ?? 'תרגיל'} · סט {set.set_number} · {set.load_kg} ק״ג × {set.reps} · {set.effort_mode} {set.effort}{set.pain !== null ? ` · כאב ${set.pain}` : ''}</li>)}{historicalSets.length === 0 && <li>לא נשמרו סטים באימון זה.</li>}</ul>}</li>)}</ul>}
     </div>
     {notice && <p role="status">{notice}</p>}
   </section>;
