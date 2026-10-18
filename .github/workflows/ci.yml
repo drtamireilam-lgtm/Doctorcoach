@@ -2,7 +2,7 @@ name: DoctorCoach CI
 
 on:
   push:
-    branches: [main]
+    branches: [main, feature/lab-team-management]
   pull_request:
     branches: [main]
 
