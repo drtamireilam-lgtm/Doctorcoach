@@ -1,6 +1,7 @@
 name: DoctorCoach CI
 
 on:
+  workflow_dispatch:
   push:
     branches: [main, feature/lab-team-management]
   pull_request:
