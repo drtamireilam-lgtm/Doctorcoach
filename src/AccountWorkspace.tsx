@@ -17,6 +17,19 @@ export default function AccountWorkspace({ url, publishableKey }: { url: string;
   const [acceptingInvite, setAcceptingInvite] = useState(false);
   const [pendingCoaches, setPendingCoaches] = useState<Array<{ coach_id: string; coach_email: string }>>([]);
   const [coachBusy, setCoachBusy] = useState(false);
+  const [cloudPlans, setCloudPlans] = useState<Array<{ id: string; title: string; version: number; status: string; athlete_id: string }>>([]);
+  const [plansBusy, setPlansBusy] = useState(false);
+  const [plansLoaded, setPlansLoaded] = useState(false);
+  async function loadCloudPlans() {
+    if (!userId || plansBusy) return;
+    setPlansBusy(true); setError('');
+    const { data, error: queryError } = await client.from('dc_training_plans')
+      .select('id,title,version,status,athlete_id').order('created_at', { ascending: false }).limit(100);
+    setPlansBusy(false);
+    if (queryError) { setError('לא ניתן לטעון תוכניות אימון מהשרת.'); return; }
+    setCloudPlans((data ?? []) as Array<{ id: string; title: string; version: number; status: string; athlete_id: string }>);
+    setPlansLoaded(true);
+  }
   async function loadPendingCoaches() {
     if (!userId) return;
     const { data, error: queryError } = await client.rpc('dc_list_my_pending_coach_assignments');
@@ -37,7 +50,7 @@ export default function AccountWorkspace({ url, publishableKey }: { url: string;
   const [message, setMessage] = useState('');
   const generation = useRef(0);
 
-  const clearProfile = () => { setShowTeam(false); setPendingCoaches([]); setProfile(null); setLoaded(false); setName(''); setMode('RPE'); setMessage(''); };
+  const clearProfile = () => { setShowTeam(false); setPendingCoaches([]); setCloudPlans([]); setPlansLoaded(false); setProfile(null); setLoaded(false); setName(''); setMode('RPE'); setMessage(''); };
   useEffect(() => {
     client.auth.startAutoRefresh();
     const { data } = client.auth.onAuthStateChange((event) => {
@@ -102,6 +115,17 @@ export default function AccountWorkspace({ url, publishableKey }: { url: string;
         <button type="button" disabled={coachBusy} onClick={() => void respondToCoach(coachId, true)}>אישור שיוך</button>
         <button type="button" disabled={coachBusy} onClick={() => void respondToCoach(coachId, false)}>דחיית שיוך</button>
       </div>)}
+    </section>}
+    {userId && <section aria-label="תוכניות אימון בענן">
+      <h2>תוכניות אימון בענן (LAB)</h2>
+      <p>תצוגה לקריאה בלבד. עורך האימונים הקיים אינו מסונכרן עדיין עם הרשימה הזו.</p>
+      <button type="button" className="outline-button" disabled={plansBusy} onClick={() => void loadCloudPlans()}>
+        {plansBusy ? 'טוען תוכניות…' : 'טעינת תוכניות מהשרת'}
+      </button>
+      {plansLoaded && cloudPlans.length === 0 && <p>אין תוכניות זמינות בחשבון.</p>}
+      {cloudPlans.map(plan => <article key={plan.id}>
+        <strong>{plan.title}</strong> · גרסה {plan.version} · {plan.status}
+      </article>)}
     </section>}
     {!userId ? <form onSubmit={login} className="form-grid">
       <label>דוא״ל<input type="email" dir="ltr" autoComplete="username" required value={email} onChange={e=>setEmail(e.target.value)} disabled={busy}/></label>
