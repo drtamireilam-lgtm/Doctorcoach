@@ -15,14 +15,13 @@ export default function AccountWorkspace({ url, publishableKey }: { url: string;
   const [busy, setBusy] = useState(false);
   const [showTeam, setShowTeam] = useState(false);
   const [acceptingInvite, setAcceptingInvite] = useState(false);
-  const [pendingCoaches, setPendingCoaches] = useState<string[]>([]);
+  const [pendingCoaches, setPendingCoaches] = useState<Array<{ coach_id: string; coach_email: string }>>([]);
   const [coachBusy, setCoachBusy] = useState(false);
   async function loadPendingCoaches() {
     if (!userId) return;
-    const { data, error: queryError } = await client.from('dc_coach_athletes')
-      .select('coach_id').eq('athlete_id', userId).eq('status', 'pending');
+    const { data, error: queryError } = await client.rpc('dc_list_my_pending_coach_assignments');
     if (queryError) { setError('לא ניתן לטעון בקשות שיוך.'); return; }
-    setPendingCoaches((data ?? []).map(row => row.coach_id));
+    setPendingCoaches((data ?? []) as Array<{ coach_id: string; coach_email: string }>);
   }
   async function respondToCoach(coachId: string, accept: boolean) {
     if (coachBusy || !userId) return;
@@ -38,7 +37,7 @@ export default function AccountWorkspace({ url, publishableKey }: { url: string;
   const [message, setMessage] = useState('');
   const generation = useRef(0);
 
-  const clearProfile = () => { setShowTeam(false); setProfile(null); setLoaded(false); setName(''); setMode('RPE'); setMessage(''); };
+  const clearProfile = () => { setShowTeam(false); setPendingCoaches([]); setProfile(null); setLoaded(false); setName(''); setMode('RPE'); setMessage(''); };
   useEffect(() => {
     client.auth.startAutoRefresh();
     const { data } = client.auth.onAuthStateChange((event) => {
@@ -98,8 +97,8 @@ export default function AccountWorkspace({ url, publishableKey }: { url: string;
     {userId && <section aria-label="בקשות שיוך למאמן">
       <h2>בקשות שיוך למאמנים</h2>
       <button type="button" className="outline-button" onClick={() => void loadPendingCoaches()}>בדיקת בקשות ממתינות</button>
-      {pendingCoaches.map(coachId => <div key={coachId}>
-        <p>מאמן מזהה: {coachId}</p>
+      {pendingCoaches.map(({ coach_id: coachId, coach_email: coachEmail }) => <div key={coachId}>
+        <p>בקשת שיוך מאת: {coachEmail}</p>
         <button type="button" disabled={coachBusy} onClick={() => void respondToCoach(coachId, true)}>אישור שיוך</button>
         <button type="button" disabled={coachBusy} onClick={() => void respondToCoach(coachId, false)}>דחיית שיוך</button>
       </div>)}
