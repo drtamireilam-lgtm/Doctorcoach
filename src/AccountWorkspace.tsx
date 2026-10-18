@@ -1,4 +1,5 @@
 import TeamManagementWorkspace from './TeamManagementWorkspace';
+import { exerciseLibrary } from './exercise-library';
 import { useEffect, useRef, useState, type FormEvent } from 'react';
 import { AccountService, createAccountClient, type AccountProfile } from './platform/account';
 
@@ -137,6 +138,7 @@ export default function AccountWorkspace({ url, publishableKey }: { url: string;
     {message && <p role="status">{message}</p>}
     {userId && <button className="outline-button" onClick={() => setShowTeam(true)}>ניהול צוות (LAB)</button>}
     {userId && <button className="outline-button" disabled={acceptingInvite} onClick={() => void acceptInvitation()}>{acceptingInvite ? 'מקבל הזמנה…' : 'קבלת הזמנה לצוות'}</button>}
+    {userId && <details><summary>ספריית התרגילים הקיימת (קריאה בלבד)</summary><ul>{exerciseLibrary.map(exercise => <li key={exercise.id}>{exercise.name} · {exercise.region} · {exercise.equipment}</li>)}</ul></details>}
     {userId && <section aria-label="בקשות שיוך למאמן">
       <h2>בקשות שיוך למאמנים</h2>
       <button type="button" className="outline-button" onClick={() => void loadPendingCoaches()}>בדיקת בקשות ממתינות</button>
