@@ -284,4 +284,4 @@ export const staffWorkoutReviews=sqliteTable('staff_workout_reviews',{staffId:te
 
 export const nutritionCredentials=sqliteTable('nutrition_credentials',{email:text('email').primaryKey(),qualification:text('qualification').notNull(),reference:text('reference').notNull(),issuer:text('issuer').notNull(),active:integer('active').notNull(),verifiedBy:text('verified_by').notNull(),verifiedAt:text('verified_at').notNull(),version:integer('version').notNull().default(1)});
 
-export const appearancePreferences=sqliteTable('appearance_preferences',{userId:text('user_id').primaryKey(),mode:text('mode').notNull(),palette:text('palette').notNull(),version:integer('version').notNull().default(1),updatedAt:text('updated_at').notNull()});
+export const appearancePreferences=sqliteTable('appearance_preferences',{customJson:text('custom_json'),userId:text('user_id').primaryKey(),mode:text('mode').notNull(),palette:text('palette').notNull(),version:integer('version').notNull().default(1),updatedAt:text('updated_at').notNull()});

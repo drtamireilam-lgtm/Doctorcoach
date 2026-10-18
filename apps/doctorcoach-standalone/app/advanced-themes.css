@@ -1,0 +1,49 @@
+/* Advanced colors reuse the existing theme tokens. All values come from validated #RRGGBB inputs. */
+html[data-custom-theme] :is(.panel,.exercise-card,.team-card,.service-card,.history-session,.training-metrics>div,.side-support,.stats-row>div,.quick-paths button,.care-card,.modal-card,.notification-popover,.service-select-options,.appearance-preview,.dc-dialog,.install-dialog){--text:var(--dc-card-text);--muted:var(--dc-card-muted);--accent-red:var(--dc-card-accent);--line:var(--dc-card-line);color:var(--dc-card-text);background:var(--card);border-color:var(--dc-card-line)}
+html[data-custom-theme] :is(input:not([type=checkbox]):not([type=radio]):not([type=range]):not([type=color]),textarea,select,.service-select-trigger,.search-box){color:var(--dc-card-text);background:var(--card);border-color:var(--dc-card-line)}
+html[data-custom-theme] :is(input,textarea)::placeholder{color:var(--dc-card-muted);opacity:1}
+html[data-custom-theme] :is(.sidebar,.topbar,.mobile-bottom-nav){--text:var(--dc-nav-text);--muted:var(--dc-nav-muted);--accent-red:var(--dc-nav-accent);color:var(--dc-nav-text);background:var(--dc-nav);border-color:var(--dc-nav-muted)}
+html[data-custom-theme] :is(.sidebar .brand-type strong,.sidebar .nav-link,.sidebar .side-label,.topbar .breadcrumb,.topbar .breadcrumb strong,.topbar .topbar-note,.topbar .mobile-menu,.sidebar .mobile-close,.mobile-bottom-nav button){color:var(--dc-nav-text)}
+html[data-custom-theme] :is(.nav-link.active,.nav-link:hover,.mobile-bottom-nav button.active){color:var(--dc-nav-text);background:var(--dc-nav);box-shadow:inset -3px 0 0 var(--dc-nav-accent);border-color:var(--dc-nav-accent)}
+html[data-custom-theme] :is(.button.primary,.button.lime,.dashboard-last .button,.appearance-preview-primary){background:var(--dc-button);border-color:var(--dc-button);color:var(--dc-button-text);box-shadow:none}
+html[data-custom-theme] :is(.button.primary,.button.lime):hover:not(:disabled){background:var(--dc-button);border-color:var(--dc-button);filter:none;box-shadow:inset 0 0 0 2px var(--dc-button-text)}
+html[data-custom-theme] :is(.button.secondary,.icon-only,.icon-label,.theme-toggle){background:var(--card);color:var(--dc-card-text);border-color:var(--dc-card-line)}
+html[data-custom-theme] :is(.resume-icon,.nav-link em,.library-mode button[aria-pressed=true],.favorite-button[aria-pressed=true],.body-region-grid button.selected,.trainee-start-steps li[data-complete=true] .trainee-step-number){background:var(--red);border-color:var(--red);color:var(--dc-primary-text)}
+html[data-custom-theme] :is(.hero,.dashboard-last,.resume-banner,.workout-summary,.active-workout-strip){background:var(--canvas);color:var(--text);border-color:var(--line)}
+html[data-custom-theme] :is(.dashboard-last p,.hero p,.resume-banner p,.workout-summary small,.workout-summary span,.active-workout-strip span){color:var(--muted)}
+html[data-custom-theme] :is(.care-error,.service-form-error,.intake-error-summary){--text:#ffdddd;--muted:#ffdddd;background:#481b23;color:#ffdddd;border-color:#e38c9a}
+html[data-custom-theme] :is(.warning-box,.safety-notice){--text:#ffe3ab;--muted:#ffe3ab;background:#3f2b09;color:#ffe3ab;border-color:#e1b65a}
+html[data-custom-theme] .care-success{--text:#c6f7da;--muted:#c6f7da;background:#113b29;color:#c6f7da;border-color:#7ecba1}
+html[data-custom-theme] :is(.care-error,.service-form-error,.intake-error-summary,.warning-box,.safety-notice,.care-success) :is(h2,h3,h4,p,strong,small,span,li,label){color:inherit}
+.advanced-appearance fieldset{min-width:0;border:1px solid var(--line);border-radius:12px;padding:16px;margin:0}
+.advanced-appearance legend{padding-inline:8px;font-weight:700}
+.advanced-swatch-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px 20px;margin-block:12px}
+.advanced-swatch-family{display:grid;gap:7px}.advanced-swatch-family>div{display:flex;gap:7px;flex-wrap:wrap}
+.advanced-swatch-family button{min-width:44px;min-height:44px;border:2px solid var(--line);border-radius:8px;display:grid;place-items:center}
+.advanced-swatch-family button[aria-pressed=true]{outline:3px solid var(--text);outline-offset:2px}
+.advanced-color-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}
+.advanced-color-field{display:grid;gap:7px;margin-block:10px;min-width:0}.advanced-color-field>div{display:flex;gap:10px;align-items:center;min-width:0}
+.advanced-color-field input[type=color]{width:56px;min-width:56px;min-height:46px;padding:3px;border:1px solid var(--line);border-radius:8px;background:var(--card);cursor:pointer}
+.advanced-color-field input[type=text]{width:100%;min-width:0;min-height:46px;padding:10px;border:1px solid var(--line);border-radius:8px}
+.advanced-color-field input[aria-invalid=true]{outline:2px solid #d6374a}
+.advanced-live-preview nav{background:var(--dc-nav);color:var(--dc-nav-text);padding:14px;border-radius:8px;margin-block:12px}
+.advanced-live-preview .preview-accent{color:var(--dc-card-accent)}
+.advanced-theme-actions{flex-wrap:wrap}.advanced-theme-actions button{min-height:44px}
+.advanced-appearance :focus-visible{outline:3px solid var(--accent-red);outline-offset:3px}
+@media(max-width:600px){.advanced-swatch-grid,.advanced-color-grid{grid-template-columns:1fr}.advanced-theme-actions{display:grid;grid-template-columns:1fr 1fr}.advanced-theme-actions button{width:100%;white-space:normal}.advanced-appearance fieldset{padding:12px}}
+@media(prefers-reduced-motion:reduce){.advanced-appearance *{transition:none!important;scroll-behavior:auto!important}}
+@media print{.advanced-appearance{display:none!important}html[data-custom-theme]{--canvas:#ffffff!important;--card:#ffffff!important;--raised:#ffffff!important;--text:#111111!important;--muted:#444444!important;--dc-card-text:#111111!important;--dc-card-muted:#444444!important;--dc-nav:#ffffff!important;--dc-nav-text:#111111!important}}
+
+/* Rebind inherited utility tokens to the local surface, including nested component primitives. */
+html[data-custom-theme]{--background:var(--canvas);--foreground:var(--text);--card-foreground:var(--dc-card-text);--popover-foreground:var(--dc-card-text);--secondary-foreground:var(--dc-card-text);--accent-foreground:var(--text);--muted-foreground:var(--muted);--primary-foreground:var(--dc-primary-text);--ring:var(--accent-red)}
+html[data-custom-theme] :is(.panel,.exercise-card,.team-card,.service-card,.history-session,.training-metrics>div,.side-support,.stats-row>div,.quick-paths button,.care-card,.modal-card,.notification-popover,.service-select-options,.appearance-preview,.dc-dialog,.install-dialog,.navigation-tour){--text:var(--dc-card-text);--muted:var(--dc-card-muted);--foreground:var(--dc-card-text);--muted-foreground:var(--dc-card-muted);--card-foreground:var(--dc-card-text);--accent-foreground:var(--dc-card-text);--border:var(--dc-card-line);--ring:var(--dc-card-accent)}
+html[data-custom-theme] :is(.hero,.dashboard-last,.resume-banner,.workout-summary,.active-workout-strip){--text:var(--dc-canvas-text);--muted:var(--dc-canvas-muted);--accent-red:var(--dc-canvas-accent);--foreground:var(--dc-canvas-text);--muted-foreground:var(--dc-canvas-muted);color:var(--dc-canvas-text);background:var(--canvas)}
+html[data-custom-theme] :is(.sidebar,.topbar,.mobile-bottom-nav){--foreground:var(--dc-nav-text);--muted-foreground:var(--dc-nav-muted);--ring:var(--dc-nav-accent)}
+html[data-custom-theme] .topbar .avatar{background:var(--card);color:var(--dc-card-text);border-color:var(--dc-card-line)}
+html[data-custom-theme] .navigation-tour{background:var(--card);color:var(--dc-card-text);border-color:var(--dc-card-line)}
+
+@media print{html[data-custom-theme]{--dc-canvas-text:#111111!important;--dc-canvas-muted:#444444!important;--dc-canvas-accent:#111111!important;--dc-card-accent:#111111!important;--dc-nav-muted:#444444!important;--dc-nav-accent:#111111!important}}
+/* Status surfaces keep their own text tokens even when they are also generic panels. */
+html[data-custom-theme] :is(.care-error,.service-form-error,.intake-error-summary){--text:#ffdddd;--muted:#ffdddd;--foreground:#ffdddd;--card-foreground:#ffdddd;--muted-foreground:#ffdddd;--accent-foreground:#ffdddd}
+html[data-custom-theme] :is(.warning-box,.safety-notice){--text:#ffe3ab;--muted:#ffe3ab;--foreground:#ffe3ab;--card-foreground:#ffe3ab;--muted-foreground:#ffe3ab;--accent-foreground:#ffe3ab}
+html[data-custom-theme] .care-success{--text:#c6f7da;--muted:#c6f7da;--foreground:#c6f7da;--card-foreground:#c6f7da;--muted-foreground:#c6f7da;--accent-foreground:#c6f7da}

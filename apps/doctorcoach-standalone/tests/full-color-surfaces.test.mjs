@@ -20,7 +20,7 @@ test('all nine palettes have full backgrounds in both modes and readable token p
 test('palette expansion preserves existing owner preferences, versions and deletion guards',()=>{
  const sql=new DatabaseSync(':memory:');try{
   const dir=new URL('../drizzle/',import.meta.url);
-  for(const file of readdirSync(dir).filter(f=>/^\d+.*\.sql$/.test(f)&&!f.startsWith('0050')).sort())sql.exec(readFileSync(new URL(file,dir),'utf8'));
+  for(const file of readdirSync(dir).filter(f=>/^\d+.*\.sql$/.test(f)&&parseInt(f,10)<50).sort())sql.exec(readFileSync(new URL(file,dir),'utf8'));
   const before={user_id:'old-owner',mode:'light',palette:'purple',version:7,updated_at:'2026-10-17'};
   sql.prepare('INSERT INTO appearance_preferences(user_id,mode,palette,version,updated_at) VALUES(?,?,?,?,?)').run(...Object.values(before));
   sql.exec('BEGIN');sql.exec(readFileSync(new URL('0050_full_color_palettes.sql',dir),'utf8'));sql.exec('COMMIT');

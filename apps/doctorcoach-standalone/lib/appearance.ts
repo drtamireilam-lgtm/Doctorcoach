@@ -10,12 +10,12 @@ export const palettes=[
  {id:'neutral',he:'קלאסי',en:'Classic',button:'#475569',light:'#334155',dark:'#d2dcea',softLight:'#edf1f6',softDark:'#252b35'},
 ] as const;
 export type Palette=typeof palettes[number]['id'];
-export type Appearance={mode:'light'|'dark';palette:Palette};
+export type Appearance={mode:'light'|'dark';palette:Palette;custom?:CustomColors};
 export const defaultAppearance:Appearance={mode:'dark',palette:'red'};
 export function isPalette(value:unknown):value is Palette{return palettes.some(p=>p.id===value);}
 export function isAppearance(value:unknown):value is Appearance{
  if(!value||typeof value!=='object')return false;const v=value as Record<string,unknown>;
- return (v.mode==='light'||v.mode==='dark')&&isPalette(v.palette);
+ return (v.mode==='light'||v.mode==='dark')&&isPalette(v.palette)&&(v.custom===undefined||isCustomColors(v.custom));
 }
 export const PALETTE_STORAGE_KEY='doctorcoach-palette';
 export function parseAppearanceResponse(value:unknown):{appearance:Appearance|null;version:number}{
@@ -23,4 +23,22 @@ export function parseAppearanceResponse(value:unknown):{appearance:Appearance|nu
  const v=value as Record<string,unknown>;
  if(!Number.isSafeInteger(v.version)||Number(v.version)<0||(v.appearance!==null&&!isAppearance(v.appearance)))throw new Error('Invalid appearance response');
  return {appearance:v.appearance as Appearance|null,version:Number(v.version)};
+}
+
+export const customColorKeys=['background','primary','secondary','button','navigation','accent'] as const;
+export type CustomColorKey=typeof customColorKeys[number];
+export type CustomColors=Record<CustomColorKey,string>;
+export function isHexColor(value:unknown):value is string{return typeof value==='string'&&/^#[0-9a-fA-F]{6}$/.test(value);}
+export function isCustomColors(value:unknown):value is CustomColors{
+ if(!value||typeof value!=='object'||Array.isArray(value))return false;
+ const keys=Object.keys(value);return keys.length===6&&keys.every(k=>(customColorKeys as readonly string[]).includes(k))&&customColorKeys.every(k=>isHexColor((value as Record<string,unknown>)[k]));
+}
+/** Return only supported fields; never persist user/role or arbitrary CSS properties. */
+export function canonicalAppearance(value:Appearance):Appearance{
+ return {mode:value.mode,palette:value.palette,...value.custom?{custom:Object.fromEntries(customColorKeys.map(k=>[k,value.custom![k].toLowerCase()])) as CustomColors}:{}};
+}
+export function parseOwnedAppearanceResponse(value:unknown):{appearance:Appearance|null;version:number;ownerId:string}{
+ const data=parseAppearanceResponse(value),ownerId=(value as Record<string,unknown>).ownerId;
+ if(typeof ownerId!=='string'||!ownerId||ownerId.length>512)throw new Error('Missing authenticated appearance owner');
+ return {...data,ownerId};
 }
