@@ -17,12 +17,12 @@ export default function AccountWorkspace({ url, publishableKey }: { url: string;
   const [acceptingInvite, setAcceptingInvite] = useState(false);
   const [pendingCoaches, setPendingCoaches] = useState<Array<{ coach_id: string; coach_email: string }>>([]);
   const [coachBusy, setCoachBusy] = useState(false);
-  const [cloudPlans, setCloudPlans] = useState<Array<{ id: string; title: string; version: number; status: string; athlete_id: string }>>([]);
+  const [cloudPlans, setCloudPlans] = useState<Array<{ id: string; title: string; version: number; status: string; athlete_id: string; coach_id: string | null }>>([]);
   const [plansBusy, setPlansBusy] = useState(false);
   const [plansLoaded, setPlansLoaded] = useState(false);
   const [cloningPlanId, setCloningPlanId] = useState<string | null>(null);
   async function cloneCloudPlan(planId: string) {
-    if (!userId || cloningPlanId || !window.confirm('ליצור טיוטה חדשה על בסיס תוכנית זו? התוכנית המקורית תישאר ללא שינוי.')) return;
+    if (!userId || cloningPlanId || !cloudPlans.some(plan => plan.id === planId && plan.coach_id === userId) || !window.confirm('ליצור טיוטה חדשה על בסיס תוכנית זו? התוכנית המקורית תישאר ללא שינוי.')) return;
     setCloningPlanId(planId); setError(''); setMessage('');
     try {
       const { error: rpcError } = await client.rpc('dc_clone_training_plan', { p_source_plan_id: planId });
@@ -53,10 +53,10 @@ export default function AccountWorkspace({ url, publishableKey }: { url: string;
     if (!userId || plansBusy) return;
     setPlansBusy(true); setError('');
     const { data, error: queryError } = await client.from('dc_training_plans')
-      .select('id,title,version,status,athlete_id').order('created_at', { ascending: false }).limit(100);
+      .select('id,title,version,status,athlete_id,coach_id').order('created_at', { ascending: false }).limit(100);
     setPlansBusy(false);
     if (queryError) { setError('לא ניתן לטעון תוכניות אימון מהשרת.'); return; }
-    setCloudPlans((data ?? []) as Array<{ id: string; title: string; version: number; status: string; athlete_id: string }>);
+    setCloudPlans((data ?? []) as Array<{ id: string; title: string; version: number; status: string; athlete_id: string; coach_id: string | null }>);
     setPlansLoaded(true);
     setSelectedCloudPlan(null); setCloudExercises([]);
   }
@@ -154,13 +154,13 @@ export default function AccountWorkspace({ url, publishableKey }: { url: string;
       </button>
       {plansLoaded && cloudPlans.length === 0 && <p>אין תוכניות זמינות בחשבון.</p>}
       {cloudPlans.map(plan => <article key={plan.id}>
-        <strong>{plan.title}</strong> · גרסה {plan.version} · {plan.status}
+        <strong>{plan.title}</strong> · גרסה {plan.version} · {plan.status} · {plan.coach_id ? 'תוכנית מאמן' : 'תוכנית עצמאית'}
         <button type="button" className="outline-button" disabled={exercisesBusy}
           onClick={() => void loadCloudExercises(plan.id)}>הצגת תרגילים</button>
-        <button type="button" className="outline-button" disabled={cloningPlanId !== null}
+        {plan.coach_id === userId && <button type="button" className="outline-button" disabled={cloningPlanId !== null}
           onClick={() => void cloneCloudPlan(plan.id)}>
           {cloningPlanId === plan.id ? 'יוצר גרסה…' : 'יצירת גרסת טיוטה'}
-        </button>
+        </button>}
         {selectedCloudPlan === plan.id && <div>
           {cloudExercises.length === 0 ? <p>אין תרגילים בתוכנית זו.</p> :
             <ul>{cloudExercises.map(exercise => <li key={exercise.id}>
