@@ -26,7 +26,7 @@ export default function CoachActivitySummary({ client, plans, coachId }: { clien
     <h3>פעילות המתאמנים</h3>
     <button type="button" disabled={busy} onClick={() => void refresh()}>{busy ? 'טוען…' : 'טעינת סיכום פעילות'}</button>
     {error && <p role="alert">{error}</p>}
-    {loaded && <><p>הסיכום מוגבל ל־500 רשומות האימון האחרונות בתוכניות המשויכות.</p>
+    {loaded && <><p>הסיכום מוגבל ל־500 רשומות האימון האחרונות בתוכניות המשויכות.{rows.length === 500 ? ' הגעת למגבלה, ולכן ייתכן שחסרים אימונים ישנים.' : ''}</p>
       <ul>{athletes.map(id => {
         const athleteRows = rows.filter(row => row.athlete_id === id);
         const finished = athleteRows.filter(row => row.completed_at !== null);
