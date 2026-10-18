@@ -23,6 +23,24 @@ export default function TeamManagementWorkspace({ client }: { client: SupabaseCl
   const [membersError, setMembersError] = useState('');
   const [coachId, setCoachId] = useState('');
   const [athleteId, setAthleteId] = useState('');
+  const [athleteEmail, setAthleteEmail] = useState('');
+  const [lookupBusy, setLookupBusy] = useState(false);
+  async function findAthlete() {
+    if (lookupBusy || !hasTeamAccess(membership, 'manage_team')) return;
+    setLookupBusy(true);
+    setAthleteId('');
+    setMessage('');
+    const { data, error: lookupError } = await client.rpc('dc_find_athlete_for_assignment', {
+      p_email: athleteEmail.trim().toLowerCase(),
+    });
+    setLookupBusy(false);
+    if (lookupError || !Array.isArray(data) || data.length !== 1) {
+      setMessage('לא נמצא חשבון מתאמן מאומת בכתובת זו.');
+      return;
+    }
+    setAthleteId(data[0].user_id);
+    setMessage('נמצא חשבון מתאמן. ניתן לשלוח בקשת שיוך.');
+  }
   async function requestAssignment(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
     if (pending || !hasTeamAccess(membership, 'manage_team')) return;
@@ -33,7 +51,7 @@ export default function TeamManagementWorkspace({ client }: { client: SupabaseCl
     setPending(false);
     setMessage(assignError ? 'לא ניתן לשלוח בקשת שיוך. ודא שהמזהים תקינים ושהמאמן פעיל.' :
       'בקשת השיוך נוצרה. המתאמן צריך לאשר אותה בחשבונו לפני הפעלת הקשר.');
-    if (!assignError) setAthleteId('');
+    if (!assignError) { setAthleteId(''); setAthleteEmail(''); }
   }
   async function refreshMembers() {
     const { data, error: fetchError } = await client.rpc('dc_list_team_members');
@@ -124,7 +142,13 @@ export default function TeamManagementWorkspace({ client }: { client: SupabaseCl
               </div>)}
             </div>
             <h2>שיוך מתאמן למאמן</h2>
-            <p>השיוך נשלח לאישור המתאמן. בשלב זה נדרש מזהה המשתמש של המתאמן (UUID), ולא כתובת אימייל.</p>
+            <p>חיפוש מתאמן באמצעות כתובת אימייל מלאה. נדרש אישור המתאמן לשיוך.</p>
+            <label htmlFor="athlete-email">אימייל המתאמן</label>
+            <input id="athlete-email" type="email" value={athleteEmail} onChange={e => {
+              setAthleteEmail(e.target.value); setAthleteId('');
+            }} />
+            <button type="button" className="outline-button" disabled={lookupBusy || !athleteEmail}
+              onClick={() => void findAthlete()}>{lookupBusy ? 'מחפש…' : 'חיפוש מתאמן'}</button>
             <form onSubmit={requestAssignment}>
               <label htmlFor="assign-coach">בחירת מאמן פעיל</label>
               <select id="assign-coach" required value={coachId} onChange={e => setCoachId(e.target.value)}>
@@ -133,15 +157,12 @@ export default function TeamManagementWorkspace({ client }: { client: SupabaseCl
                   (member.role === 'coach' || member.role === 'head_coach'))
                   .map(member => <option key={member.user_id} value={member.user_id}>{member.email}</option>)}
               </select>
-              <label htmlFor="assign-athlete">מזהה מתאמן</label>
-              <input id="assign-athlete" required type="text" dir="ltr" value={athleteId}
-                pattern="[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}"
-                placeholder="UUID" onChange={e => setAthleteId(e.target.value)} />
-              <button className="primary-button" type="submit" disabled={pending || !coachId}>
+              {athleteId && <p role="status">המתאמן זוהה בהצלחה.</p>}
+              <button className="primary-button" type="submit" disabled={pending || !coachId || !athleteId}>
                 {pending ? 'שולח בקשה…' : 'שליחת בקשת שיוך'}
               </button>
             </form>
-            <p>בהמשך נוסיף חיפוש מתאמנים ידידותי והרשאות גישה לנתונים.</p>
+            <p>הגישה לנתוני המתאמן תוגדר בנפרד ותדרוש בדיקות הרשאה.</p>
           </>}
     </section>
   </main>;
