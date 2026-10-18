@@ -72,13 +72,15 @@ export default function AccountWorkspace({ url, publishableKey }: { url: string;
   async function loadCloudPlans() {
     if (!userId || plansBusy) return;
     setPlansBusy(true); setError('');
-    const { data, error: queryError } = await client.from('dc_training_plans')
-      .select('id,title,version,status,athlete_id,coach_id').order('created_at', { ascending: false }).limit(100);
-    setPlansBusy(false);
-    if (queryError) { setError('לא ניתן לטעון תוכניות אימון מהשרת.'); return; }
-    setCloudPlans((data ?? []) as Array<{ id: string; title: string; version: number; status: string; athlete_id: string; coach_id: string | null }>);
-    setPlansLoaded(true);
-    setSelectedCloudPlan(null); setCloudExercises([]);
+    try {
+      const { data, error: queryError } = await client.from('dc_training_plans')
+        .select('id,title,version,status,athlete_id,coach_id').order('created_at', { ascending: false }).limit(100);
+      if (queryError) throw queryError;
+      setCloudPlans((data ?? []) as Array<{ id: string; title: string; version: number; status: string; athlete_id: string; coach_id: string | null }>);
+      setPlansLoaded(true);
+      setSelectedCloudPlan(null); setCloudExercises([]);
+    } catch { setError('לא ניתן לטעון תוכניות אימון מהשרת.'); }
+    finally { setPlansBusy(false); }
   }
   async function loadPendingCoaches() {
     if (!userId) return;
