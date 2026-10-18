@@ -146,7 +146,7 @@ export default function AccountWorkspace({ url, publishableKey }: { url: string;
   if (userId && showTeam) return <div dir="rtl"><nav className="topbar"><button className="outline-button" onClick={() => setShowTeam(false)}>חזרה לחשבון שלי</button></nav><TeamManagementWorkspace client={client}/></div>;
   return <main className="main-panel" dir="rtl"><section className="hero-card">
     <p className="eyebrow">DOCTORCOACH · ACCOUNT</p><h1>החשבון שלי</h1>
-    <p>בשלב זה ניתן להתחבר ולשמור שם וסולם מאמץ בלבד. האימונים והמידע הרפואי עדיין אינם מחוברים לשירות זה.</p>
+    <p>באזור החשבון אפשר לצפות בתוכניות אימון בענן, לבצע אימון ולשמור סטים והיסטוריה. המידע הרפואי עדיין אינו מחובר למערכת האימונים בענן.</p>
     <p>ההתחברות נשמרת בזיכרון הלשונית בלבד. לאחר רענון יש להתחבר שוב.</p>
     {error && <p className="alert" role="alert">{error}</p>}
     {message && <p role="status">{message}</p>}
@@ -164,7 +164,7 @@ export default function AccountWorkspace({ url, publishableKey }: { url: string;
     </section>}
     {userId && <section aria-label="תוכניות אימון בענן">
       <h2>תוכניות אימון בענן (LAB)</h2>
-      <p>תצוגה לקריאה בלבד. עורך האימונים הקיים אינו מסונכרן עדיין עם הרשימה הזו.</p>
+      <p>התוכניות מוצגות לקריאה בלבד; מתאמן עם תוכנית פעילה יכול לבצע אימון ולשמור את הסטים בענן. עורך התוכניות המקומי עדיין אינו מסונכרן.</p>
       <button type="button" className="outline-button" disabled={plansBusy} onClick={() => void loadCloudPlans()}>
         {plansBusy ? 'טוען תוכניות…' : 'טעינת תוכניות מהשרת'}
       </button>
