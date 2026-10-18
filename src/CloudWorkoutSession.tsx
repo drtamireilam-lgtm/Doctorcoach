@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { nextSetLoadEstimate } from './domain';
 import type { SupabaseClient } from '@supabase/supabase-js';
 import type { EditorExercise } from './platform/cloud-training';
 import { startCloudWorkout, logCloudWorkoutSet, finishCloudWorkout } from './platform/cloud-workouts';
@@ -17,6 +18,7 @@ export default function CloudWorkoutSession({ client, planId, exercises }: {
   const [busy, setBusy] = useState(false);
   const [notice, setNotice] = useState('');
   const [completed, setCompleted] = useState(false);
+  const [lastSavedEstimate, setLastSavedEstimate] = useState<number | null>(null);
   const [history, setHistory] = useState<Array<{ id: string; day_label: string; started_at: string; completed_at: string | null }>>([]);
   const [historyBusy, setHistoryBusy] = useState(false);
   const days = [...new Set(exercises.map(exercise => exercise.day))];
@@ -51,6 +53,8 @@ export default function CloudWorkoutSession({ client, planId, exercises }: {
         sessionId, exerciseId: selected.cloudId, setNumber, loadKg: load,
         reps, effort, effortMode: selected.effortMode === 'RIR' ? 'RIR' : 'RPE', pain,
       });
+      const estimate = nextSetLoadEstimate(load, effort, selected.targetEffort, selected.effortMode === 'RIR' ? 'RIR' : 'RPE');
+      setLastSavedEstimate(estimate);
       setSetNumber(number => number + 1);
       setNotice('הסט נשמר בענן.');
     } catch (error) { setNotice(error instanceof Error ? error.message : 'שגיאה'); }
@@ -74,7 +78,7 @@ export default function CloudWorkoutSession({ client, planId, exercises }: {
     {!sessionId && <button type="button" disabled={!day || busy} onClick={() => void start()}>התחלת אימון</button>}
     {sessionId && !completed && <>
       <form onSubmit={event => void saveSet(event)}>
-        <label>תרגיל <select value={selectedId} required onChange={event => { setSelectedId(event.target.value); setSetNumber(1); }}>
+        <label>תרגיל <select value={selectedId} required onChange={event => { setSelectedId(event.target.value); setSetNumber(1); setLastSavedEstimate(null); }}>
           <option value="">בחר תרגיל</option>{dayExercises.map(exercise => <option key={exercise.cloudId} value={exercise.cloudId}>{exercise.name}</option>)}
         </select></label>
         <label>סט <input type="number" min="1" max="30" required value={setNumber} onChange={event => setSetNumber(Number(event.target.value))}/></label>
@@ -84,6 +88,7 @@ export default function CloudWorkoutSession({ client, planId, exercises }: {
         <label>כאב 0–10 <input type="number" min="0" max="10" value={pain} onChange={event => setPain(Number(event.target.value))}/></label>
         <button type="submit" disabled={!selected || busy}>שמירת סט</button>
       </form>
+      {lastSavedEstimate !== null && <p role="status">משקל מוערך לסט הבא: {lastSavedEstimate.toFixed(2)} ק״ג (הערכה בלבד, ללא עיגול לפלטות).</p>}
       <button type="button" disabled={busy} onClick={() => void finish()}>סיום אימון</button>
     </>}
     <div><button type="button" disabled={historyBusy} onClick={() => void loadHistory()}>{historyBusy ? 'טוען…' : 'היסטוריית אימונים'}</button>
