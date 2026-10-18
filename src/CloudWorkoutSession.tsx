@@ -73,6 +73,18 @@ export default function CloudWorkoutSession({ client, planId, exercises }: {
     } catch (error) { setNotice(error instanceof Error ? error.message : 'שגיאה'); }
     finally { setBusy(false); }
   }
+  async function selectExercise(exerciseId: string) {
+    setSelectedId(exerciseId); setLastSavedEstimate(null); setSetNumber(1);
+    if (!sessionId || !exerciseId) return;
+    setBusy(true); setNotice('');
+    const { data, error } = await client.from('dc_workout_sets')
+      .select('set_number').eq('session_id', sessionId).eq('exercise_id', exerciseId)
+      .order('set_number', { ascending: false }).limit(1);
+    setBusy(false);
+    if (error) { setNotice('לא ניתן לבדוק סטים קיימים.'); return; }
+    const next = (data?.[0]?.set_number ?? 0) + 1;
+    setSetNumber(next);
+  }
   async function saveSet(event: React.FormEvent) {
     event.preventDefault();
     if (!sessionId || !selected || busy) return;
@@ -108,7 +120,7 @@ export default function CloudWorkoutSession({ client, planId, exercises }: {
       <button type="button" disabled={busy || resumeBusy} onClick={() => void resumeSession()}>{resumeBusy ? 'בודק אימונים…' : 'חידוש אימון שלא הסתיים'}</button></>}
     {sessionId && !completed && <>
       <form onSubmit={event => void saveSet(event)}>
-        <label>תרגיל <select value={selectedId} required onChange={event => { setSelectedId(event.target.value); setSetNumber(1); setLastSavedEstimate(null); }}>
+        <label>תרגיל <select value={selectedId} required disabled={busy} onChange={event => void selectExercise(event.target.value)}>
           <option value="">בחר תרגיל</option>{dayExercises.map(exercise => <option key={exercise.cloudId} value={exercise.cloudId}>{exercise.name}</option>)}
         </select></label>
         <label>סט <input type="number" min="1" max="30" required value={setNumber} onChange={event => setSetNumber(Number(event.target.value))}/></label>
