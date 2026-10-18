@@ -5,8 +5,8 @@ import {palettes,isAppearance} from '../lib/appearance.ts';
 import {appearanceStore} from '../lib/appearance-store.ts';
 const luminance=hex=>{const rgb=hex.replace('#','').match(/../g).map(n=>parseInt(n,16)/255).map(v=>v<=.04045?v/12.92:((v+.055)/1.055)**2.4);return rgb[0]*.2126+rgb[1]*.7152+rgb[2]*.0722;};
 const contrast=(a,b)=>{const x=luminance(a),y=luminance(b);return (Math.max(x,y)+.05)/(Math.min(x,y)+.05);};
-test('all fourteen appearances meet normal-text contrast for buttons, accents and preview surfaces',()=>{
- assert.equal(palettes.length,7);
+test('all eighteen appearances meet normal-text contrast for buttons, accents and preview surfaces',()=>{
+ assert.equal(palettes.length,9);
  for(const p of palettes){assert.ok(contrast('#ffffff',p.button)>=4.5,p.id+' button');for(const [accent,surface,canvas] of [[p.light,p.softLight,'#ffffff'],[p.dark,p.softDark,'#19191f']]){assert.ok(contrast(accent,surface)>=4.5,p.id+' accent/soft');assert.ok(contrast(accent,canvas)>=4.5,p.id+' accent/card');}}
 });
 test('appearance is persistent per owner with optimistic concurrency and validated values',async t=>{

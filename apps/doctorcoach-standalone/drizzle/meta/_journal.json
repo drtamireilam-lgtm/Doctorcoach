@@ -337,6 +337,13 @@
       "when": 1792229739083,
       "tag": "0049_appearance_preferences",
       "breakpoints": true
+    },
+    {
+      "idx": 48,
+      "version": "6",
+      "when": 1792346400000,
+      "tag": "0050_full_color_palettes",
+      "breakpoints": true
     }
   ]
 }

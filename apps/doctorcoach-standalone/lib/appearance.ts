@@ -6,6 +6,8 @@ export const palettes=[
  {id:'purple',he:'סגול',en:'Purple',button:'#7e22ce',light:'#7e22ce',dark:'#d2a7ff',softLight:'#f6efff',softDark:'#2b2040'},
  {id:'orange',he:'כתום',en:'Orange',button:'#b54708',light:'#a33e08',dark:'#ffb77c',softLight:'#fff3e8',softDark:'#36251b'},
  {id:'teal',he:'טורקיז',en:'Teal',button:'#0f766e',light:'#0f766e',dark:'#74dbd0',softLight:'#eaf9f7',softDark:'#17302f'},
+ {id:'yellow',he:'צהוב',en:'Yellow',button:'#664700',light:'#664700',dark:'#ffe59b',softLight:'#fff2bd',softDark:'#3a2a10'},
+ {id:'neutral',he:'קלאסי',en:'Classic',button:'#475569',light:'#334155',dark:'#d2dcea',softLight:'#edf1f6',softDark:'#252b35'},
 ] as const;
 export type Palette=typeof palettes[number]['id'];
 export type Appearance={mode:'light'|'dark';palette:Palette};
