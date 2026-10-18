@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { nextSetLoadEstimate } from './domain';
+import { estimateE1RM, nextSetLoadEstimate } from './domain';
 import type { SupabaseClient } from '@supabase/supabase-js';
 import type { EditorExercise } from './platform/cloud-training';
 import { startCloudWorkout, logCloudWorkoutSet, finishCloudWorkout } from './platform/cloud-workouts';
@@ -19,6 +19,7 @@ export default function CloudWorkoutSession({ client, planId, exercises }: {
   const [notice, setNotice] = useState('');
   const [completed, setCompleted] = useState(false);
   const [lastSavedEstimate, setLastSavedEstimate] = useState<number | null>(null);
+  const [lastSavedE1RM, setLastSavedE1RM] = useState<number | null>(null);
   const [history, setHistory] = useState<Array<{ id: string; day_label: string; started_at: string; completed_at: string | null }>>([]);
   const [historyBusy, setHistoryBusy] = useState(false);
   const [resumeBusy, setResumeBusy] = useState(false);
@@ -61,7 +62,7 @@ export default function CloudWorkoutSession({ client, planId, exercises }: {
     if (!existing) { setNotice('לא נמצא אימון פתוח לתוכנית זו.'); return; }
     if (!days.includes(existing.day_label)) { setNotice('יום האימון אינו קיים עוד בתוכנית.'); return; }
     setDay(existing.day_label); setSessionId(existing.id); setSelectedId('');
-    setSetNumber(1); setLastSavedEstimate(null); setCompleted(false);
+    setSetNumber(1); setLastSavedEstimate(null); setLastSavedE1RM(null); setCompleted(false);
     setNotice('האימון הקודם שוחזר מהענן. סטים שכבר נשמרו לא נמחקו.');
   }
   async function start() {
@@ -75,7 +76,7 @@ export default function CloudWorkoutSession({ client, planId, exercises }: {
     finally { setBusy(false); }
   }
   async function selectExercise(exerciseId: string) {
-    setSelectedId(exerciseId); setLastSavedEstimate(null); setSetNumber(1);
+    setSelectedId(exerciseId); setLastSavedEstimate(null); setLastSavedE1RM(null); setSetNumber(1);
     if (!sessionId || !exerciseId) return;
     setBusy(true); setNotice('');
     const { data, error } = await client.from('dc_workout_sets')
@@ -100,6 +101,7 @@ export default function CloudWorkoutSession({ client, planId, exercises }: {
       });
       const estimate = nextSetLoadEstimate(load, effort, selected.targetEffort, selected.effortMode === 'RIR' ? 'RIR' : 'RPE');
       setLastSavedEstimate(estimate);
+      setLastSavedE1RM(estimateE1RM({ load, reps, effort }, selected.effortMode === 'RIR' ? 'RIR' : 'RPE'));
       setSetNumber(number => number + 1);
       setNotice('הסט נשמר בענן.');
     } catch (error) { setNotice(error instanceof Error ? error.message : 'שגיאה'); }
@@ -134,11 +136,12 @@ export default function CloudWorkoutSession({ client, planId, exercises }: {
         <label>כאב 0–10 <input type="number" min="0" max="10" value={pain} onChange={event => setPain(Number(event.target.value))}/></label>
         <button type="submit" disabled={!selected || busy || setNumber > (selected?.sets ?? 0)}>שמירת סט</button>
       </form>
+      {lastSavedE1RM !== null && <p role="status">e1RM משוער לסט האחרון: {lastSavedE1RM.toFixed(1)} ק״ג (הערכה בלבד).</p>}
       {lastSavedEstimate !== null && <p role="status">משקל מוערך לסט הבא: {lastSavedEstimate.toFixed(2)} ק״ג (הערכה בלבד, ללא עיגול לפלטות).</p>}
       <button type="button" disabled={busy} onClick={() => void finish()}>סיום אימון</button>
     </>}
     <div><button type="button" disabled={historyBusy} onClick={() => void loadHistory()}>{historyBusy ? 'טוען…' : 'היסטוריית אימונים'}</button>
-      {history.length > 0 && <ul>{history.map(item => <li key={item.id}>{item.day_label} · {new Date(item.started_at).toLocaleString('he-IL')} · {item.completed_at ? 'הושלם' : 'לא הושלם'} <button type="button" disabled={historyBusy} onClick={() => void showSessionSets(item.id)}>{expandedSession === item.id ? 'סגירה' : 'הצגת סטים'}</button>{expandedSession === item.id && <ul>{historicalSets.map(set => <li key={set.id}>{exercises.find(exercise => exercise.cloudId === set.exercise_id)?.name ?? 'תרגיל'} · סט {set.set_number} · {set.load_kg} ק״ג × {set.reps} · {set.effort_mode} {set.effort}{set.pain !== null ? ` · כאב ${set.pain}` : ''}</li>)}{historicalSets.length === 0 && <li>לא נשמרו סטים באימון זה.</li>}</ul>}</li>)}</ul>}
+      {history.length > 0 && <ul>{history.map(item => <li key={item.id}>{item.day_label} · {new Date(item.started_at).toLocaleString('he-IL')} · {item.completed_at ? 'הושלם' : 'לא הושלם'} <button type="button" disabled={historyBusy} onClick={() => void showSessionSets(item.id)}>{expandedSession === item.id ? 'סגירה' : 'הצגת סטים'}</button>{expandedSession === item.id && <ul>{historicalSets.map(set => <li key={set.id}>{exercises.find(exercise => exercise.cloudId === set.exercise_id)?.name ?? 'תרגיל'} · סט {set.set_number} · {set.load_kg} ק״ג × {set.reps} · {set.effort_mode} {set.effort} · e1RM {estimateE1RM({ load: set.load_kg, reps: set.reps, effort: set.effort }, set.effort_mode === 'RIR' ? 'RIR' : 'RPE').toFixed(1)} ק״ג{set.pain !== null ? ` · כאב ${set.pain}` : ''}</li>)}{historicalSets.length === 0 && <li>לא נשמרו סטים באימון זה.</li>}</ul>}</li>)}</ul>}
     </div>
     {notice && <p role="status">{notice}</p>}
   </section>;
