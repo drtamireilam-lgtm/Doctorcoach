@@ -21,6 +21,7 @@ export default function CloudProgressDashboard({ client, planId, exercises }: {
   const [loading, setLoading] = useState(false);
   const [loaded, setLoaded] = useState(false);
   const [error, setError] = useState('');
+  const [truncated, setTruncated] = useState(false);
   const [sessions, setSessions] = useState<Session[]>([]);
   const [sets, setSets] = useState<SetRow[]>([]);
   const [exerciseId, setExerciseId] = useState('');
@@ -34,11 +35,12 @@ export default function CloudProgressDashboard({ client, planId, exercises }: {
         .order('started_at', { ascending: false }).limit(100);
       if (sessionResult.error) throw sessionResult.error;
       const rows = (sessionResult.data ?? []) as Session[];
-      if (!rows.length) { setSessions([]); setSets([]); setLoaded(true); return; }
+      if (!rows.length) { setSessions([]); setSets([]); setTruncated(false); setLoaded(true); return; }
       const setResult = await client.from('dc_workout_sets')
         .select('session_id,exercise_id,load_kg,reps,effort,effort_mode')
         .in('session_id', rows.map(row => row.id)).limit(1000);
       if (setResult.error) throw setResult.error;
+      setTruncated(rows.length === 100 || (setResult.data ?? []).length === 1000);
       setSessions(rows); setSets((setResult.data ?? []) as SetRow[]); setLoaded(true);
     } catch { setError('לא ניתן לטעון נתוני התקדמות מהענן.'); }
     finally { setLoading(false); }
@@ -89,7 +91,7 @@ export default function CloudProgressDashboard({ client, planId, exercises }: {
     {loaded && <>
       <label>טווח זמן <select value={period} onChange={event => setPeriod(event.target.value as '30' | '90' | 'all')}><option value="30">30 ימים</option><option value="90">90 ימים</option><option value="all">כל הנתונים שנטענו</option></select></label>
       <p>אימונים שהושלמו: {finished.length} · סטים שנרשמו: {visibleSets.length} · נפח אימון מצטבר: {totalVolume.toFixed(1)} ק״ג × חזרות</p>
-      <p>הנתונים מבוססים על עד 100 אימונים אחרונים ועד 1,000 סטים בתוכנית זו. אם יש יותר רשומות, הסיכום חלקי.</p>
+      <p>הנתונים מבוססים על עד 100 אימונים אחרונים ועד 1,000 סטים בתוכנית זו.{truncated ? ' הגעת למגבלת הטעינה: ייתכן שהסיכום חלקי.' : ''}</p>
       <h5>נפח אימון שבועי</h5>
       {weeklyRows.length > 0 ? <><Trend values={weeklyRows.map(row => row.volume)} label="מגמת נפח אימון שבועי" /><ol>{weeklyRows.map(row => <li key={row.date}>שבוע {row.date} · {row.volume.toFixed(1)} ק״ג × חזרות · {row.workouts.size} אימונים שהושלמו</li>)}</ol></> : <p>אין אימונים בטווח הזמן שנבחר.</p>}
       <label>תרגיל למעקב <select value={exerciseId} onChange={event => setExerciseId(event.target.value)}>
