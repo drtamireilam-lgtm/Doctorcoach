@@ -166,7 +166,7 @@ export default function AccountWorkspace({ url, publishableKey }: { url: string;
         {selectedCloudPlan === plan.id && <div>
           {cloudExercises.length === 0 ? <p>אין תרגילים בתוכנית זו.</p> :
             <ul>{cloudExercises.map(exercise => <li key={exercise.id}>
-              {exercise.day_label} · {exercise.exercise_key} · {exercise.sets} סטים × {exercise.target_reps} חזרות
+              {exercise.day_label} · {exerciseLibrary.find(item => item.id === exercise.exercise_key)?.name || exercise.exercise_key} · {exercise.sets} סטים × {exercise.target_reps} חזרות
               {exercise.target_load !== null ? ` · ${exercise.target_load} ק״ג` : ''}
               { ` · ${exercise.effort_mode} ${exercise.target_effort}` }
             </li>)}</ul>}
