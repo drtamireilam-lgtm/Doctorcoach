@@ -2,7 +2,7 @@ name: DoctorCoach CI
 
 on:
   push:
-    branches: [main, "stabilize/**"]
+    branches: [main, "stabilize/**", "fix/appearance-toggle-persistence-*"]
   pull_request:
     branches: [main]
 
