@@ -1,0 +1,1829 @@
+[
+  {
+    "slug": "pectoralis-major",
+    "location": {
+      "he": "חלקו הקדמי של בית החזה",
+      "en": "Anterior chest"
+    },
+    "origin": {
+      "he": "החלק המדיאלי של עצם הבריח, עצם החזה וסחוסי הצלעות העליונות",
+      "en": "Medial clavicle, sternum and upper costal cartilages"
+    },
+    "insertion": {
+      "he": "השפה הלטרלית של החריץ הבין־גבשושי בעצם הזרוע",
+      "en": "Lateral lip of intertubercular sulcus"
+    },
+    "action": {
+      "he": "קירוב וסיבוב פנימי; הסיבים הבריחיים מסייעים בכפיפה",
+      "en": "Adduction, medial rotation; clavicular fibers assist flexion"
+    },
+    "training": {
+      "he": "מסייע לדחיפה ולקירוב הזרוע",
+      "en": "Helps push and bring the arm toward the body"
+    },
+    "joints": {
+      "he": "כתף",
+      "en": "Shoulder"
+    },
+    "source": "https://medicine.uams.edu/neuroscience/education/medical-school-courses/human-structure-module/anatomy-tables/muscle-tables/muscles-of-the-upper-limb/",
+    "region": "chest",
+    "view": "front",
+    "links": [
+      {
+        "id": "barbell-bench",
+        "role": "primary"
+      },
+      {
+        "id": "incline-db",
+        "role": "primary"
+      },
+      {
+        "id": "chest-fly",
+        "role": "primary"
+      },
+      {
+        "id": "db-fly",
+        "role": "primary"
+      },
+      {
+        "id": "bench",
+        "role": "primary"
+      },
+      {
+        "id": "paused-bench",
+        "role": "primary"
+      }
+    ]
+  },
+  {
+    "slug": "pectoralis-minor",
+    "location": {
+      "he": "בעומק החלק הקדמי של בית החזה",
+      "en": "Deep anterior chest"
+    },
+    "origin": {
+      "he": "צלעות 3–5",
+      "en": "Ribs 3–5"
+    },
+    "insertion": {
+      "he": "זיז הקורקואיד של השכמה",
+      "en": "Coracoid process"
+    },
+    "action": {
+      "he": "הנעת השכמה לפנים וכלפי מטה",
+      "en": "Scapular protraction and depression"
+    },
+    "training": {
+      "he": "מניע ומייצב את השכמה",
+      "en": "Moves and stabilizes the shoulder blade"
+    },
+    "joints": {
+      "he": "חגורת הכתפיים",
+      "en": "Shoulder girdle"
+    },
+    "source": "https://medicine.uams.edu/neuroscience/education/medical-school-courses/human-structure-module/anatomy-tables/muscle-tables/muscles-of-the-upper-limb/",
+    "region": "chest",
+    "view": "front",
+    "links": []
+  },
+  {
+    "slug": "trapezius",
+    "location": {
+      "he": "הצוואר האחורי והגב העליון",
+      "en": "Posterior neck and upper back"
+    },
+    "origin": {
+      "he": "עצם העורף, רצועת העורף והזיזים הקוציים C7–T12",
+      "en": "Occiput, nuchal ligament, C7–T12 spinous processes"
+    },
+    "insertion": {
+      "he": "החלק הלטרלי של עצם הבריח, האקרומיון וקוץ השכמה",
+      "en": "Lateral clavicle, acromion, scapular spine"
+    },
+    "action": {
+      "he": "הרמה, קירוב, הורדה וסיבוב השכמה מעלה, בהתאם לאזור השריר",
+      "en": "Elevation, retraction, depression and upward rotation by region"
+    },
+    "training": {
+      "he": "מסייע בשליטה בשכמות",
+      "en": "Helps control shoulder-blade movement"
+    },
+    "joints": {
+      "he": "חגורת הכתפיים",
+      "en": "Shoulder girdle"
+    },
+    "source": "https://medicine.uams.edu/neuroscience/education/medical-school-courses/human-structure-module/anatomy-tables/muscle-tables/muscles-of-the-upper-limb/",
+    "region": "upper_back_scapula",
+    "view": "back",
+    "links": [
+      {
+        "id": "wide-row",
+        "role": "primary"
+      },
+      {
+        "id": "shrug",
+        "role": "primary"
+      },
+      {
+        "id": "lateral-raise",
+        "role": "secondary"
+      },
+      {
+        "id": "overhead-press",
+        "role": "secondary"
+      }
+    ]
+  },
+  {
+    "slug": "latissimus-dorsi",
+    "location": {
+      "he": "הצד האחורי־צדי של הגו",
+      "en": "Posterolateral trunk"
+    },
+    "origin": {
+      "he": "עמוד השדרה החזי התחתון, הפציה התורקולומברית, רכס הכסל והצלעות התחתונות",
+      "en": "Lower thoracic spine, thoracolumbar fascia, iliac crest and lower ribs"
+    },
+    "insertion": {
+      "he": "רצפת החריץ הבין־גבשושי בעצם הזרוע",
+      "en": "Floor of intertubercular sulcus"
+    },
+    "action": {
+      "he": "פשיטה, קירוב וסיבוב פנימי של הזרוע",
+      "en": "Extension, adduction and medial rotation"
+    },
+    "training": {
+      "he": "מסייע במשיכות ובהורדת הזרוע",
+      "en": "Helps pull and lower the arm"
+    },
+    "joints": {
+      "he": "כתף",
+      "en": "Shoulder"
+    },
+    "source": "https://medicine.uams.edu/neuroscience/education/medical-school-courses/human-structure-module/anatomy-tables/muscle-tables/muscles-of-the-upper-limb/",
+    "region": "upper_back_scapula",
+    "view": "back",
+    "links": [
+      {
+        "id": "lat-pulldown",
+        "role": "primary"
+      },
+      {
+        "id": "pullup",
+        "role": "primary"
+      },
+      {
+        "id": "chinup",
+        "role": "primary"
+      },
+      {
+        "id": "barbell-row",
+        "role": "primary"
+      },
+      {
+        "id": "cable-row",
+        "role": "primary"
+      }
+    ]
+  },
+  {
+    "slug": "rhomboid-major",
+    "location": {
+      "he": "בעומק הגב העליון",
+      "en": "Deep upper back"
+    },
+    "origin": {
+      "he": "הזיזים הקוציים T2–T5",
+      "en": "T2–T5 spinous processes"
+    },
+    "insertion": {
+      "he": "הגבול המדיאלי של השכמה, מתחת לקוץ השכמה",
+      "en": "Medial scapular border below spine"
+    },
+    "action": {
+      "he": "קירוב השכמה וסיבובה מטה",
+      "en": "Scapular retraction and downward rotation"
+    },
+    "training": {
+      "he": "מקרב את השכמה לעמוד השדרה",
+      "en": "Brings the shoulder blade toward the spine"
+    },
+    "joints": {
+      "he": "חגורת הכתפיים",
+      "en": "Shoulder girdle"
+    },
+    "source": "https://medicine.uams.edu/neuroscience/education/medical-school-courses/human-structure-module/anatomy-tables/muscle-tables/muscles-of-the-upper-limb/",
+    "region": "upper_back_scapula",
+    "view": "back",
+    "links": [
+      {
+        "id": "wide-row",
+        "role": "primary"
+      },
+      {
+        "id": "rear-delt",
+        "role": "secondary"
+      },
+      {
+        "id": "cable-row",
+        "role": "secondary"
+      }
+    ]
+  },
+  {
+    "slug": "rhomboid-minor",
+    "location": {
+      "he": "בעומק הגב העליון",
+      "en": "Deep upper back"
+    },
+    "origin": {
+      "he": "רצועת העורף והזיזים הקוציים C7–T1",
+      "en": "Nuchal ligament and C7–T1 spinous processes"
+    },
+    "insertion": {
+      "he": "הקצה המדיאלי של קוץ השכמה",
+      "en": "Medial end of scapular spine"
+    },
+    "action": {
+      "he": "קירוב השכמה וסיבובה מטה",
+      "en": "Scapular retraction and downward rotation"
+    },
+    "training": {
+      "he": "מסייע בייצוב השכמה",
+      "en": "Helps stabilize the shoulder blade"
+    },
+    "joints": {
+      "he": "חגורת הכתפיים",
+      "en": "Shoulder girdle"
+    },
+    "source": "https://medicine.uams.edu/neuroscience/education/medical-school-courses/human-structure-module/anatomy-tables/muscle-tables/muscles-of-the-upper-limb/",
+    "region": "upper_back_scapula",
+    "view": "back",
+    "links": [
+      {
+        "id": "wide-row",
+        "role": "primary"
+      },
+      {
+        "id": "rear-delt",
+        "role": "secondary"
+      },
+      {
+        "id": "cable-row",
+        "role": "secondary"
+      }
+    ]
+  },
+  {
+    "slug": "biceps-brachii",
+    "location": {
+      "he": "החלק הקדמי של הזרוע",
+      "en": "Anterior arm"
+    },
+    "origin": {
+      "he": "הראש הארוך: הגבשושית העל־גלנואידלית; הראש הקצר: זיז הקורקואיד",
+      "en": "Long head: supraglenoid tubercle; short head: coracoid"
+    },
+    "insertion": {
+      "he": "גבשושית עצם החישור והאפונאורוזה הביציפיטלית",
+      "en": "Radial tuberosity and bicipital aponeurosis"
+    },
+    "action": {
+      "he": "כפיפת מרפק וסופינציה של האמה; סיוע בכפיפת הכתף",
+      "en": "Elbow flexion and forearm supination; assists shoulder flexion"
+    },
+    "training": {
+      "he": "מכופף את המרפק ומסובב את כף היד כלפי מעלה",
+      "en": "Bends the elbow and turns the palm upward"
+    },
+    "joints": {
+      "he": "מרפק והאמה",
+      "en": "Elbow and forearm"
+    },
+    "source": "https://medicine.uams.edu/neuroscience/education/medical-school-courses/human-structure-module/anatomy-tables/muscle-tables/muscles-of-the-upper-limb/",
+    "region": "elbow",
+    "view": "front",
+    "links": [
+      {
+        "id": "barbell-curl",
+        "role": "primary"
+      },
+      {
+        "id": "dumbbell-curl",
+        "role": "primary"
+      },
+      {
+        "id": "lat-pulldown",
+        "role": "secondary"
+      },
+      {
+        "id": "chinup",
+        "role": "secondary"
+      },
+      {
+        "id": "cable-row",
+        "role": "secondary"
+      }
+    ]
+  },
+  {
+    "slug": "triceps-brachii",
+    "location": {
+      "he": "החלק האחורי של הזרוע",
+      "en": "Posterior arm"
+    },
+    "origin": {
+      "he": "הראש הארוך: הגבשושית התת־גלנואידלית; יתר הראשים: המשטח האחורי של עצם הזרוע",
+      "en": "Long head: infraglenoid tubercle; other heads: posterior humerus"
+    },
+    "insertion": {
+      "he": "האולקרנון של עצם הגומד",
+      "en": "Olecranon"
+    },
+    "action": {
+      "he": "יישור המרפק; הראש הארוך מסייע בפשיטה ובקירוב בכתף",
+      "en": "Elbow extension; long head assists shoulder extension and adduction"
+    },
+    "training": {
+      "he": "מיישר את המרפק",
+      "en": "Straightens the elbow"
+    },
+    "joints": {
+      "he": "מרפק וכתף",
+      "en": "Elbow and shoulder"
+    },
+    "source": "https://medicine.uams.edu/neuroscience/education/medical-school-courses/human-structure-module/anatomy-tables/muscle-tables/muscles-of-the-upper-limb/",
+    "region": "elbow",
+    "view": "front",
+    "links": [
+      {
+        "id": "triceps-pushdown",
+        "role": "primary"
+      },
+      {
+        "id": "overhead-triceps",
+        "role": "primary"
+      },
+      {
+        "id": "barbell-bench",
+        "role": "secondary"
+      },
+      {
+        "id": "overhead-press",
+        "role": "secondary"
+      }
+    ]
+  },
+  {
+    "slug": "supraspinatus",
+    "location": {
+      "he": "החלק העליון של השכמה",
+      "en": "Superior scapula"
+    },
+    "origin": {
+      "he": "הגומה העל־קוצית",
+      "en": "Supraspinous fossa"
+    },
+    "insertion": {
+      "he": "הפאה העליונה של הגבשושית הגדולה בעצם הזרוע",
+      "en": "Superior facet of greater tubercle"
+    },
+    "action": {
+      "he": "סיוע בהרחקה ובייצוב ראש עצם הזרוע",
+      "en": "Assists abduction and humeral head stabilization"
+    },
+    "training": {
+      "he": "מסייע בהרחקה ובייצוב הכתף",
+      "en": "Helps raise the arm and stabilize the shoulder"
+    },
+    "joints": {
+      "he": "כתף",
+      "en": "Shoulder"
+    },
+    "source": "https://medicine.uams.edu/neuroscience/education/medical-school-courses/human-structure-module/anatomy-tables/muscle-tables/muscles-of-the-upper-limb/",
+    "region": "shoulder",
+    "view": "back",
+    "links": []
+  },
+  {
+    "slug": "infraspinatus",
+    "location": {
+      "he": "החלק האחורי של השכמה",
+      "en": "Posterior scapula"
+    },
+    "origin": {
+      "he": "הגומה התת־קוצית",
+      "en": "Infraspinous fossa"
+    },
+    "insertion": {
+      "he": "הפאה האמצעית של הגבשושית הגדולה בעצם הזרוע",
+      "en": "Middle facet of greater tubercle"
+    },
+    "action": {
+      "he": "סיבוב חיצוני וייצוב",
+      "en": "External rotation and stabilization"
+    },
+    "training": {
+      "he": "מסובב את הזרוע החוצה",
+      "en": "Turns the arm outward"
+    },
+    "joints": {
+      "he": "כתף",
+      "en": "Shoulder"
+    },
+    "source": "https://medicine.uams.edu/neuroscience/education/medical-school-courses/human-structure-module/anatomy-tables/muscle-tables/muscles-of-the-upper-limb/",
+    "region": "shoulder",
+    "view": "back",
+    "links": [
+      {
+        "id": "band-er",
+        "role": "primary"
+      }
+    ]
+  },
+  {
+    "slug": "teres-minor",
+    "location": {
+      "he": "הצד האחורי־צדי של השכמה",
+      "en": "Posterolateral scapula"
+    },
+    "origin": {
+      "he": "הגבול הלטרלי של השכמה",
+      "en": "Lateral scapular border"
+    },
+    "insertion": {
+      "he": "הפאה התחתונה של הגבשושית הגדולה בעצם הזרוע",
+      "en": "Inferior facet of greater tubercle"
+    },
+    "action": {
+      "he": "סיבוב חיצוני וייצוב",
+      "en": "External rotation and stabilization"
+    },
+    "training": {
+      "he": "מסייע בסיבוב החוצה ובייצוב",
+      "en": "Helps turn the arm outward and stabilize the shoulder"
+    },
+    "joints": {
+      "he": "כתף",
+      "en": "Shoulder"
+    },
+    "source": "https://medicine.uams.edu/neuroscience/education/medical-school-courses/human-structure-module/anatomy-tables/muscle-tables/muscles-of-the-upper-limb/",
+    "region": "shoulder",
+    "view": "back",
+    "links": [
+      {
+        "id": "band-er",
+        "role": "primary"
+      }
+    ]
+  },
+  {
+    "slug": "subscapularis",
+    "location": {
+      "he": "המשטח הקדמי של השכמה",
+      "en": "Anterior surface of scapula"
+    },
+    "origin": {
+      "he": "הגומה התת־שכמתית",
+      "en": "Subscapular fossa"
+    },
+    "insertion": {
+      "he": "הגבשושית הקטנה בעצם הזרוע",
+      "en": "Lesser tubercle"
+    },
+    "action": {
+      "he": "סיבוב פנימי וייצוב",
+      "en": "Medial rotation and stabilization"
+    },
+    "training": {
+      "he": "מסובב את הזרוע פנימה ומייצב",
+      "en": "Turns the arm inward and helps stabilize the shoulder"
+    },
+    "joints": {
+      "he": "כתף",
+      "en": "Shoulder"
+    },
+    "source": "https://medicine.uams.edu/neuroscience/education/medical-school-courses/human-structure-module/anatomy-tables/muscle-tables/muscles-of-the-upper-limb/",
+    "region": "shoulder",
+    "view": "front",
+    "links": []
+  },
+  {
+    "slug": "deltoid",
+    "region": "shoulder",
+    "view": "front",
+    "location": {
+      "he": "מעטפת הכתף",
+      "en": "Shoulder contour"
+    },
+    "origin": {
+      "he": "עצם הבריח, אקרומיון וקוץ השכמה",
+      "en": "Clavicle, acromion and scapular spine"
+    },
+    "insertion": {
+      "he": "גבשושית הדלתא בזרוע",
+      "en": "Deltoid tuberosity"
+    },
+    "action": {
+      "he": "הרחקה; סיבים קדמיים מסייעים בכפיפה ואחוריים ביישור",
+      "en": "Abduction; anterior fibers assist flexion and posterior fibers extension"
+    },
+    "joints": {
+      "he": "כתף",
+      "en": "Shoulder"
+    },
+    "training": {
+      "he": "משתתף בהרחקות ובלחיצות כתפיים",
+      "en": "Contributes to lateral raises and overhead presses"
+    },
+    "source": "https://medicine.uams.edu/neuroscience/education/medical-school-courses/human-structure-module/anatomy-tables/muscle-tables/muscles-of-the-upper-limb/",
+    "links": [
+      {
+        "id": "overhead-press",
+        "role": "primary"
+      },
+      {
+        "id": "lateral-raise",
+        "role": "primary"
+      },
+      {
+        "id": "rear-delt",
+        "role": "primary"
+      },
+      {
+        "id": "barbell-bench",
+        "role": "secondary"
+      },
+      {
+        "id": "incline-db",
+        "role": "secondary"
+      }
+    ]
+  },
+  {
+    "slug": "serratus-anterior",
+    "region": "chest",
+    "view": "front",
+    "location": {
+      "he": "דופן בית החזה הצדית",
+      "en": "Lateral chest wall"
+    },
+    "origin": {
+      "he": "צלעות עליונות, בדרך כלל 1–8 או 9",
+      "en": "Upper ribs, usually 1–8 or 9"
+    },
+    "insertion": {
+      "he": "הצד הקדמי של הגבול המדיאלי בשכמה",
+      "en": "Costal surface of the medial scapular border"
+    },
+    "action": {
+      "he": "פרוטרקציה ורוטציה מעלה של השכמה",
+      "en": "Scapular protraction and upward rotation"
+    },
+    "joints": {
+      "he": "חגורת הכתפיים",
+      "en": "Shoulder girdle"
+    },
+    "training": {
+      "he": "מסייע בשליטת השכמה בתנועות דחיפה והרמה",
+      "en": "Helps control the scapula during pushing and arm elevation"
+    },
+    "source": "https://medicine.uams.edu/neuroscience/education/medical-school-courses/human-structure-module/anatomy-tables/muscle-tables/muscles-of-the-upper-limb/",
+    "links": [
+      {
+        "id": "wall-slide",
+        "role": "primary"
+      }
+    ]
+  },
+  {
+    "slug": "brachialis",
+    "region": "elbow",
+    "view": "front",
+    "location": {
+      "he": "קדמת הזרוע, עמוק לדו־ראשי",
+      "en": "Anterior arm, deep to biceps"
+    },
+    "origin": {
+      "he": "המחצית המרוחקת הקדמית של עצם הזרוע",
+      "en": "Distal anterior humerus"
+    },
+    "insertion": {
+      "he": "גבשושית האולנה וזיז הקורונואיד",
+      "en": "Ulnar tuberosity and coronoid process"
+    },
+    "action": {
+      "he": "כפיפת מרפק",
+      "en": "Elbow flexion"
+    },
+    "joints": {
+      "he": "מרפק",
+      "en": "Elbow"
+    },
+    "training": {
+      "he": "משתתף בכפיפות מרפק בכל מנחי האמה",
+      "en": "Contributes to elbow curls across forearm positions"
+    },
+    "source": "https://medicine.uams.edu/neuroscience/education/medical-school-courses/human-structure-module/anatomy-tables/muscle-tables/muscles-of-the-upper-limb/",
+    "links": [
+      {
+        "id": "hammer-curl",
+        "role": "primary"
+      },
+      {
+        "id": "lat-pulldown",
+        "role": "secondary"
+      }
+    ]
+  },
+  {
+    "slug": "brachioradialis",
+    "region": "forearm",
+    "view": "front",
+    "location": {
+      "he": "הצד החיצוני של האמה",
+      "en": "Lateral forearm"
+    },
+    "origin": {
+      "he": "הרכס העל־קונדילרי הלטרלי בזרוע",
+      "en": "Lateral supracondylar ridge"
+    },
+    "insertion": {
+      "he": "האזור המרוחק של הרדיוס ליד הזיז הסטילואידי",
+      "en": "Distal radius near its styloid"
+    },
+    "action": {
+      "he": "כפיפת מרפק, במיוחד באמה ניטרלית",
+      "en": "Elbow flexion, especially with a neutral forearm"
+    },
+    "joints": {
+      "he": "מרפק",
+      "en": "Elbow"
+    },
+    "training": {
+      "he": "משתתף בכפיפת פטיש",
+      "en": "Contributes to hammer curls"
+    },
+    "source": "https://medicine.uams.edu/neuroscience/education/medical-school-courses/human-structure-module/anatomy-tables/muscle-tables/muscles-of-the-upper-limb/",
+    "links": [
+      {
+        "id": "hammer-curl",
+        "role": "primary"
+      }
+    ]
+  },
+  {
+    "slug": "flexor-carpi-radialis",
+    "region": "forearm",
+    "view": "front",
+    "location": {
+      "he": "הצד הקדמי של האמה",
+      "en": "Anterior forearm"
+    },
+    "origin": {
+      "he": "אפיקונדיל מדיאלי של עצם הזרוע",
+      "en": "Medial humeral epicondyle"
+    },
+    "insertion": {
+      "he": "בסיסי עצמות המסרק השנייה והשלישית",
+      "en": "Bases of the second and third metacarpals"
+    },
+    "action": {
+      "he": "כפיפה וסטייה רדיאלית של שורש כף היד",
+      "en": "Wrist flexion and radial deviation"
+    },
+    "joints": {
+      "he": "שורש כף היד",
+      "en": "Wrist"
+    },
+    "training": {
+      "he": "משתתף בכפיפות כף יד ובשליטת אחיזה",
+      "en": "Contributes to wrist curls and grip control"
+    },
+    "source": "https://medicine.uams.edu/neuroscience/education/medical-school-courses/human-structure-module/anatomy-tables/muscle-tables/muscles-of-the-upper-limb/",
+    "links": [
+      {
+        "id": "wrist-curl",
+        "role": "primary"
+      }
+    ]
+  },
+  {
+    "slug": "extensor-carpi-radialis-brevis",
+    "region": "forearm",
+    "view": "back",
+    "location": {
+      "he": "הצד האחורי של האמה",
+      "en": "Posterior forearm"
+    },
+    "origin": {
+      "he": "הגיד המיישר המשותף באזור האפיקונדיל הלטרלי",
+      "en": "Common extensor origin at the lateral epicondyle"
+    },
+    "insertion": {
+      "he": "בסיס עצם המסרק השלישית",
+      "en": "Base of the third metacarpal"
+    },
+    "action": {
+      "he": "יישור וסטייה רדיאלית של שורש כף היד",
+      "en": "Wrist extension and radial deviation"
+    },
+    "joints": {
+      "he": "שורש כף היד",
+      "en": "Wrist"
+    },
+    "training": {
+      "he": "משתתף ביישור כף יד ובייצובה באחיזה",
+      "en": "Contributes to wrist extension and wrist control during gripping"
+    },
+    "source": "https://medicine.uams.edu/neuroscience/education/medical-school-courses/human-structure-module/anatomy-tables/muscle-tables/muscles-of-the-upper-limb/",
+    "links": [
+      {
+        "id": "wrist-ext",
+        "role": "primary"
+      }
+    ]
+  },
+  {
+    "slug": "rectus-femoris",
+    "region": "thigh",
+    "view": "front",
+    "location": {
+      "he": "קדמת הירך",
+      "en": "Anterior thigh"
+    },
+    "origin": {
+      "he": "זיז הכסל הקדמי התחתון והאזור שמעל האצטבולום",
+      "en": "Anterior inferior iliac spine and supra-acetabular region"
+    },
+    "insertion": {
+      "he": "פיקה ומשם לגבשושית הטיביה דרך רצועת הפיקה",
+      "en": "Patella, then tibial tuberosity through the patellar ligament"
+    },
+    "action": {
+      "he": "יישור ברך וכפיפת ירך",
+      "en": "Knee extension and hip flexion"
+    },
+    "joints": {
+      "he": "ברך וירך",
+      "en": "Knee and hip"
+    },
+    "training": {
+      "he": "משתתף בפשיטת ברכיים ובסקוואט",
+      "en": "Contributes to knee extensions and squats"
+    },
+    "source": "https://medicine.uams.edu/neuroscience/education/medical-school-courses/human-structure-module/anatomy-tables/muscle-tables/muscles-of-the-lower-limb/",
+    "links": [
+      {
+        "id": "leg-extension",
+        "role": "primary"
+      },
+      {
+        "id": "goblet",
+        "role": "primary"
+      },
+      {
+        "id": "back-squat",
+        "role": "primary"
+      },
+      {
+        "id": "leg-press",
+        "role": "primary"
+      },
+      {
+        "id": "split-squat",
+        "role": "primary"
+      },
+      {
+        "id": "paused-squat",
+        "role": "primary"
+      }
+    ]
+  },
+  {
+    "slug": "vastus-lateralis",
+    "region": "thigh",
+    "view": "front",
+    "location": {
+      "he": "הצד החיצוני של קדמת הירך",
+      "en": "Lateral anterior thigh"
+    },
+    "origin": {
+      "he": "אזור הטרוכנטר הגדול והשפה הלטרלית של הקו המחוספס",
+      "en": "Greater trochanter region and lateral linea aspera"
+    },
+    "insertion": {
+      "he": "פיקה ומשם לגבשושית הטיביה",
+      "en": "Patella, then tibial tuberosity"
+    },
+    "action": {
+      "he": "יישור ברך",
+      "en": "Knee extension"
+    },
+    "joints": {
+      "he": "ברך",
+      "en": "Knee"
+    },
+    "training": {
+      "he": "משתתף בפשיטת ברכיים, סקוואט ולחיצת רגליים",
+      "en": "Contributes to knee extensions, squats and leg presses"
+    },
+    "source": "https://medicine.uams.edu/neuroscience/education/medical-school-courses/human-structure-module/anatomy-tables/muscle-tables/muscles-of-the-lower-limb/",
+    "links": [
+      {
+        "id": "leg-extension",
+        "role": "primary"
+      },
+      {
+        "id": "goblet",
+        "role": "primary"
+      },
+      {
+        "id": "back-squat",
+        "role": "primary"
+      },
+      {
+        "id": "leg-press",
+        "role": "primary"
+      },
+      {
+        "id": "split-squat",
+        "role": "primary"
+      },
+      {
+        "id": "paused-squat",
+        "role": "primary"
+      }
+    ]
+  },
+  {
+    "slug": "vastus-medialis",
+    "region": "thigh",
+    "view": "front",
+    "location": {
+      "he": "הצד המדיאלי של קדמת הירך",
+      "en": "Medial anterior thigh"
+    },
+    "origin": {
+      "he": "הקו הבין־טרוכנטרי והשפה המדיאלית של הקו המחוספס",
+      "en": "Intertrochanteric line and medial linea aspera"
+    },
+    "insertion": {
+      "he": "פיקה ומשם לגבשושית הטיביה",
+      "en": "Patella, then tibial tuberosity"
+    },
+    "action": {
+      "he": "יישור ברך ותרומה לשליטה בפיקה",
+      "en": "Knee extension and patellar control"
+    },
+    "joints": {
+      "he": "ברך",
+      "en": "Knee"
+    },
+    "training": {
+      "he": "פועל כחלק מהארבע־ראשי, ללא בידוד מובטח",
+      "en": "Works within the quadriceps; isolation is not guaranteed"
+    },
+    "source": "https://medicine.uams.edu/neuroscience/education/medical-school-courses/human-structure-module/anatomy-tables/muscle-tables/muscles-of-the-lower-limb/",
+    "links": [
+      {
+        "id": "leg-extension",
+        "role": "primary"
+      },
+      {
+        "id": "goblet",
+        "role": "primary"
+      },
+      {
+        "id": "back-squat",
+        "role": "primary"
+      },
+      {
+        "id": "leg-press",
+        "role": "primary"
+      },
+      {
+        "id": "split-squat",
+        "role": "primary"
+      },
+      {
+        "id": "paused-squat",
+        "role": "primary"
+      }
+    ]
+  },
+  {
+    "slug": "vastus-intermedius",
+    "region": "thigh",
+    "view": "front",
+    "location": {
+      "he": "עמוק לישר הירכי",
+      "en": "Deep to rectus femoris"
+    },
+    "origin": {
+      "he": "המשטחים הקדמי והלטרלי של גוף הפמור",
+      "en": "Anterior and lateral femoral shaft"
+    },
+    "insertion": {
+      "he": "פיקה ומשם לגבשושית הטיביה",
+      "en": "Patella, then tibial tuberosity"
+    },
+    "action": {
+      "he": "יישור ברך",
+      "en": "Knee extension"
+    },
+    "joints": {
+      "he": "ברך",
+      "en": "Knee"
+    },
+    "training": {
+      "he": "משתתף בתרגילים של פשיטת ברך",
+      "en": "Contributes to knee-extension exercises"
+    },
+    "source": "https://medicine.uams.edu/neuroscience/education/medical-school-courses/human-structure-module/anatomy-tables/muscle-tables/muscles-of-the-lower-limb/",
+    "links": [
+      {
+        "id": "leg-extension",
+        "role": "primary"
+      },
+      {
+        "id": "goblet",
+        "role": "primary"
+      },
+      {
+        "id": "back-squat",
+        "role": "primary"
+      },
+      {
+        "id": "leg-press",
+        "role": "primary"
+      },
+      {
+        "id": "split-squat",
+        "role": "primary"
+      },
+      {
+        "id": "paused-squat",
+        "role": "primary"
+      }
+    ]
+  },
+  {
+    "slug": "biceps-femoris-long-head",
+    "region": "thigh",
+    "view": "back",
+    "location": {
+      "he": "הירך האחורית הצדית",
+      "en": "Posterolateral thigh"
+    },
+    "origin": {
+      "he": "גבשושית השת",
+      "en": "Ischial tuberosity"
+    },
+    "insertion": {
+      "he": "ראש הפיבולה",
+      "en": "Fibular head"
+    },
+    "action": {
+      "he": "יישור ירך, כפיפת ברך וסיבוב חיצוני של שוק כפופה",
+      "en": "Hip extension, knee flexion and lateral rotation of the flexed leg"
+    },
+    "joints": {
+      "he": "ירך וברך",
+      "en": "Hip and knee"
+    },
+    "training": {
+      "he": "משתתף בציר ירך ובכפיפות ברכיים",
+      "en": "Contributes to hip hinges and leg curls"
+    },
+    "source": "https://medicine.uams.edu/neuroscience/education/medical-school-courses/human-structure-module/anatomy-tables/muscle-tables/muscles-of-the-lower-limb/",
+    "links": [
+      {
+        "id": "seated-curl",
+        "role": "primary"
+      },
+      {
+        "id": "lying-curl",
+        "role": "primary"
+      },
+      {
+        "id": "rdl",
+        "role": "primary"
+      },
+      {
+        "id": "hip-bridge",
+        "role": "secondary"
+      },
+      {
+        "id": "deadlift",
+        "role": "secondary"
+      }
+    ]
+  },
+  {
+    "slug": "biceps-femoris-short-head",
+    "region": "thigh",
+    "view": "back",
+    "location": {
+      "he": "הירך האחורית הצדית, ראש קצר",
+      "en": "Posterolateral thigh, short head"
+    },
+    "origin": {
+      "he": "הקו המחוספס והרכס העל־קונדילרי הלטרלי בפמור",
+      "en": "Linea aspera and lateral supracondylar line"
+    },
+    "insertion": {
+      "he": "ראש הפיבולה",
+      "en": "Fibular head"
+    },
+    "action": {
+      "he": "כפיפת ברך וסיבוב חיצוני של שוק כפופה",
+      "en": "Knee flexion and lateral rotation of the flexed leg"
+    },
+    "joints": {
+      "he": "ברך; אינו חוצה את מפרק הירך",
+      "en": "Knee; does not cross the hip"
+    },
+    "training": {
+      "he": "משתתף בכפיפות ברכיים, ללא פעולת יישור ירך ישירה",
+      "en": "Contributes to leg curls without directly extending the hip"
+    },
+    "source": "https://medicine.uams.edu/neuroscience/education/medical-school-courses/human-structure-module/anatomy-tables/muscle-tables/muscles-of-the-lower-limb/",
+    "links": [
+      {
+        "id": "seated-curl",
+        "role": "primary"
+      },
+      {
+        "id": "lying-curl",
+        "role": "primary"
+      }
+    ]
+  },
+  {
+    "slug": "semitendinosus",
+    "region": "thigh",
+    "view": "back",
+    "location": {
+      "he": "הירך האחורית המדיאלית",
+      "en": "Posteromedial thigh"
+    },
+    "origin": {
+      "he": "גבשושית השת",
+      "en": "Ischial tuberosity"
+    },
+    "insertion": {
+      "he": "טיביה מדיאלית עליונה, דרך רגל האווז",
+      "en": "Proximal medial tibia through the pes anserinus"
+    },
+    "action": {
+      "he": "יישור ירך, כפיפת ברך וסיבוב פנימי של שוק כפופה",
+      "en": "Hip extension, knee flexion and medial rotation of the flexed leg"
+    },
+    "joints": {
+      "he": "ירך וברך",
+      "en": "Hip and knee"
+    },
+    "training": {
+      "he": "משתתף בציר ירך ובכפיפות ברכיים",
+      "en": "Contributes to hip hinges and leg curls"
+    },
+    "source": "https://medicine.uams.edu/neuroscience/education/medical-school-courses/human-structure-module/anatomy-tables/muscle-tables/muscles-of-the-lower-limb/",
+    "links": [
+      {
+        "id": "seated-curl",
+        "role": "primary"
+      },
+      {
+        "id": "lying-curl",
+        "role": "primary"
+      },
+      {
+        "id": "rdl",
+        "role": "primary"
+      },
+      {
+        "id": "hip-bridge",
+        "role": "secondary"
+      },
+      {
+        "id": "deadlift",
+        "role": "secondary"
+      }
+    ]
+  },
+  {
+    "slug": "semimembranosus",
+    "region": "thigh",
+    "view": "back",
+    "location": {
+      "he": "הירך האחורית המדיאלית",
+      "en": "Posteromedial thigh"
+    },
+    "origin": {
+      "he": "גבשושית השת",
+      "en": "Ischial tuberosity"
+    },
+    "insertion": {
+      "he": "הצד האחורי של הקונדיל המדיאלי בטיביה",
+      "en": "Posterior medial tibial condyle"
+    },
+    "action": {
+      "he": "יישור ירך, כפיפת ברך וסיבוב פנימי של שוק כפופה",
+      "en": "Hip extension, knee flexion and medial rotation of the flexed leg"
+    },
+    "joints": {
+      "he": "ירך וברך",
+      "en": "Hip and knee"
+    },
+    "training": {
+      "he": "משתתף בציר ירך ובכפיפות ברכיים",
+      "en": "Contributes to hip hinges and leg curls"
+    },
+    "source": "https://medicine.uams.edu/neuroscience/education/medical-school-courses/human-structure-module/anatomy-tables/muscle-tables/muscles-of-the-lower-limb/",
+    "links": [
+      {
+        "id": "seated-curl",
+        "role": "primary"
+      },
+      {
+        "id": "lying-curl",
+        "role": "primary"
+      },
+      {
+        "id": "rdl",
+        "role": "primary"
+      },
+      {
+        "id": "hip-bridge",
+        "role": "secondary"
+      },
+      {
+        "id": "deadlift",
+        "role": "secondary"
+      }
+    ]
+  },
+  {
+    "slug": "gluteus-maximus",
+    "region": "hip_glute",
+    "view": "back",
+    "location": {
+      "he": "הישבן השטחי",
+      "en": "Superficial buttock"
+    },
+    "origin": {
+      "he": "הכסל האחורי, עצם העצה והרצועה הסקרוטוברלית",
+      "en": "Posterior ilium, sacrum and sacrotuberous ligament"
+    },
+    "insertion": {
+      "he": "הרצועה האיליוטיביאלית וגבשושית העכוז בפמור",
+      "en": "Iliotibial tract and gluteal tuberosity"
+    },
+    "action": {
+      "he": "יישור ירך וסיבוב חיצוני",
+      "en": "Hip extension and lateral rotation"
+    },
+    "joints": {
+      "he": "ירך",
+      "en": "Hip"
+    },
+    "training": {
+      "he": "משתתף בהיפ טראסט, סקוואט וציר ירך",
+      "en": "Contributes to hip thrusts, squats and hip hinges"
+    },
+    "source": "https://medicine.uams.edu/neuroscience/education/medical-school-courses/human-structure-module/anatomy-tables/muscle-tables/muscles-of-the-lower-limb/",
+    "links": [
+      {
+        "id": "hip-thrust",
+        "role": "primary"
+      },
+      {
+        "id": "hip-bridge",
+        "role": "primary"
+      },
+      {
+        "id": "cable-kickback",
+        "role": "primary"
+      },
+      {
+        "id": "goblet",
+        "role": "secondary"
+      },
+      {
+        "id": "back-squat",
+        "role": "secondary"
+      },
+      {
+        "id": "rdl",
+        "role": "secondary"
+      },
+      {
+        "id": "deadlift",
+        "role": "secondary"
+      }
+    ]
+  },
+  {
+    "slug": "gluteus-medius",
+    "region": "hip_glute",
+    "view": "back",
+    "location": {
+      "he": "צד האגן, עמוק חלקית לעכוז הגדול",
+      "en": "Lateral pelvis, partly deep to gluteus maximus"
+    },
+    "origin": {
+      "he": "הכסל בין הקווים הגלוטאליים הקדמי והאחורי",
+      "en": "Ilium between anterior and posterior gluteal lines"
+    },
+    "insertion": {
+      "he": "הטרוכנטר הגדול",
+      "en": "Greater trochanter"
+    },
+    "action": {
+      "he": "הרחקת ירך וייצוב האגן; פעולה סיבובית תלויה בסיבים",
+      "en": "Hip abduction and pelvic control; rotational contribution varies by fibers"
+    },
+    "joints": {
+      "he": "ירך",
+      "en": "Hip"
+    },
+    "training": {
+      "he": "משתתף בהרחקות ירך ובשליטת האגן בעמידה חד־רגלית",
+      "en": "Contributes to hip abduction and single-leg pelvic control"
+    },
+    "source": "https://medicine.uams.edu/neuroscience/education/medical-school-courses/human-structure-module/anatomy-tables/muscle-tables/muscles-of-the-lower-limb/",
+    "links": [
+      {
+        "id": "hip-abduction-machine",
+        "role": "primary"
+      },
+      {
+        "id": "side-plank",
+        "role": "secondary"
+      }
+    ]
+  },
+  {
+    "slug": "gluteus-minimus",
+    "region": "hip_glute",
+    "view": "back",
+    "location": {
+      "he": "עמוק לעכוז האמצעי",
+      "en": "Deep to gluteus medius"
+    },
+    "origin": {
+      "he": "הכסל בין הקווים הגלוטאליים הקדמי והתחתון",
+      "en": "Ilium between anterior and inferior gluteal lines"
+    },
+    "insertion": {
+      "he": "החלק הקדמי של הטרוכנטר הגדול",
+      "en": "Anterior greater trochanter"
+    },
+    "action": {
+      "he": "הרחקה וסיבוב פנימי של הירך",
+      "en": "Hip abduction and medial rotation"
+    },
+    "joints": {
+      "he": "ירך",
+      "en": "Hip"
+    },
+    "training": {
+      "he": "משתתף בשליטת האגן ובעבודת מרחיקי הירך",
+      "en": "Contributes to pelvic control and hip-abductor work"
+    },
+    "source": "https://medicine.uams.edu/neuroscience/education/medical-school-courses/human-structure-module/anatomy-tables/muscle-tables/muscles-of-the-lower-limb/",
+    "links": [
+      {
+        "id": "hip-abduction-machine",
+        "role": "primary"
+      }
+    ]
+  },
+  {
+    "slug": "adductor-longus",
+    "region": "groin",
+    "view": "front",
+    "location": {
+      "he": "הירך המדיאלית",
+      "en": "Medial thigh"
+    },
+    "origin": {
+      "he": "גוף עצם החיק",
+      "en": "Body of the pubis"
+    },
+    "insertion": {
+      "he": "השליש האמצעי של הקו המחוספס בפמור",
+      "en": "Middle linea aspera"
+    },
+    "action": {
+      "he": "קירוב ירך; מסייע בכפיפה",
+      "en": "Hip adduction; assists flexion"
+    },
+    "joints": {
+      "he": "ירך",
+      "en": "Hip"
+    },
+    "training": {
+      "he": "משתתף בתרגילי קירוב ירכיים",
+      "en": "Contributes to hip-adduction exercises"
+    },
+    "source": "https://medicine.uams.edu/neuroscience/education/medical-school-courses/human-structure-module/anatomy-tables/muscle-tables/muscles-of-the-lower-limb/",
+    "links": [
+      {
+        "id": "adduction",
+        "role": "primary"
+      },
+      {
+        "id": "adductor-squeeze",
+        "role": "primary"
+      },
+      {
+        "id": "copenhagen-short-lever",
+        "role": "primary"
+      }
+    ]
+  },
+  {
+    "slug": "adductor-magnus",
+    "region": "groin",
+    "view": "back",
+    "location": {
+      "he": "הירך המדיאלית העמוקה",
+      "en": "Deep medial thigh"
+    },
+    "origin": {
+      "he": "ענפי החיק והשת וגבשושית השת",
+      "en": "Ischiopubic rami and ischial tuberosity"
+    },
+    "insertion": {
+      "he": "הקו המחוספס וגבשושית המקרבים",
+      "en": "Linea aspera and adductor tubercle"
+    },
+    "action": {
+      "he": "קירוב; החלק ההמסטרינגי מיישר ירך",
+      "en": "Adduction; hamstring portion extends the hip"
+    },
+    "joints": {
+      "he": "ירך",
+      "en": "Hip"
+    },
+    "training": {
+      "he": "משתתף בקירוב ירך ובתנועות סקוואט",
+      "en": "Contributes to hip adduction and squatting"
+    },
+    "source": "https://medicine.uams.edu/neuroscience/education/medical-school-courses/human-structure-module/anatomy-tables/muscle-tables/muscles-of-the-lower-limb/",
+    "links": [
+      {
+        "id": "adduction",
+        "role": "primary"
+      },
+      {
+        "id": "back-squat",
+        "role": "secondary"
+      }
+    ]
+  },
+  {
+    "slug": "gastrocnemius",
+    "region": "lower_leg",
+    "view": "back",
+    "location": {
+      "he": "השוק האחורית השטחית",
+      "en": "Superficial posterior calf"
+    },
+    "origin": {
+      "he": "הפמור מעל הקונדילים המדיאלי והלטרלי",
+      "en": "Femur above its medial and lateral condyles"
+    },
+    "insertion": {
+      "he": "עצם העקב דרך גיד אכילס",
+      "en": "Calcaneus through the Achilles tendon"
+    },
+    "action": {
+      "he": "כפיפה כפית של הקרסול וסיוע בכפיפת ברך",
+      "en": "Ankle plantarflexion and assistance with knee flexion"
+    },
+    "joints": {
+      "he": "קרסול וברך",
+      "en": "Ankle and knee"
+    },
+    "training": {
+      "he": "משתתף בהרמות עקבים, במיוחד בברך ישרה",
+      "en": "Contributes to calf raises, especially with a straight knee"
+    },
+    "source": "https://medicine.uams.edu/neuroscience/education/medical-school-courses/human-structure-module/anatomy-tables/muscle-tables/muscles-of-the-lower-limb/",
+    "links": [
+      {
+        "id": "standing-calf",
+        "role": "primary"
+      },
+      {
+        "id": "ecc-calf",
+        "role": "primary"
+      },
+      {
+        "id": "seated-calf",
+        "role": "secondary"
+      }
+    ]
+  },
+  {
+    "slug": "soleus",
+    "region": "lower_leg",
+    "view": "back",
+    "location": {
+      "he": "עמוק לתאומים",
+      "en": "Deep to gastrocnemius"
+    },
+    "origin": {
+      "he": "הפיבולה העליונה וקו הסולאוס בטיביה",
+      "en": "Proximal fibula and tibial soleal line"
+    },
+    "insertion": {
+      "he": "עצם העקב דרך גיד אכילס",
+      "en": "Calcaneus through the Achilles tendon"
+    },
+    "action": {
+      "he": "כפיפה כפית של הקרסול",
+      "en": "Ankle plantarflexion"
+    },
+    "joints": {
+      "he": "קרסול; אינו חוצה את הברך",
+      "en": "Ankle; does not cross the knee"
+    },
+    "training": {
+      "he": "משתתף בהרמות עקבים גם כשהברך כפופה",
+      "en": "Contributes to calf raises with the knee bent as well"
+    },
+    "source": "https://medicine.uams.edu/neuroscience/education/medical-school-courses/human-structure-module/anatomy-tables/muscle-tables/muscles-of-the-lower-limb/",
+    "links": [
+      {
+        "id": "seated-calf",
+        "role": "primary"
+      },
+      {
+        "id": "standing-calf",
+        "role": "primary"
+      }
+    ]
+  },
+  {
+    "slug": "tibialis-anterior",
+    "region": "lower_leg",
+    "view": "front",
+    "location": {
+      "he": "קדמת השוק",
+      "en": "Anterior leg"
+    },
+    "origin": {
+      "he": "טיביה לטרלית עליונה והקרום הבין־גרמי",
+      "en": "Proximal lateral tibia and interosseous membrane"
+    },
+    "insertion": {
+      "he": "הקוניפורם המדיאלי ובסיס המסרק הראשון",
+      "en": "Medial cuneiform and first metatarsal base"
+    },
+    "action": {
+      "he": "כפיפה גבית ואינוורסיה",
+      "en": "Dorsiflexion and inversion"
+    },
+    "joints": {
+      "he": "קרסול ומפרקי כף הרגל",
+      "en": "Ankle and foot joints"
+    },
+    "training": {
+      "he": "משתתף בהרמת קדמת כף הרגל",
+      "en": "Contributes to lifting the forefoot"
+    },
+    "source": "https://medicine.uams.edu/neuroscience/education/medical-school-courses/human-structure-module/anatomy-tables/muscle-tables/muscles-of-the-lower-limb/",
+    "links": []
+  },
+  {
+    "slug": "sternocleidomastoid",
+    "region": "cervical_neck",
+    "view": "front",
+    "location": {
+      "he": "קדמת הצוואר בצדדים",
+      "en": "Anterolateral neck"
+    },
+    "origin": {
+      "he": "עצם החזה והבריח המדיאלי",
+      "en": "Sternum and medial clavicle"
+    },
+    "insertion": {
+      "he": "זיז המסטואיד והקו העורפי העליון",
+      "en": "Mastoid process and superior nuchal line"
+    },
+    "action": {
+      "he": "כפיפה צידית לאותו צד וסיבוב לצד הנגדי; פעולה דו־צדדית מורכבת",
+      "en": "Ipsilateral side-bending and contralateral rotation; bilateral action varies with head position"
+    },
+    "joints": {
+      "he": "ראש וצוואר",
+      "en": "Head and cervical spine"
+    },
+    "training": {
+      "he": "מסייע בתנועות ראש וצוואר; תרגול יותאם בידי הצוות",
+      "en": "Contributes to head and neck movement; training is individualized by the team"
+    },
+    "source": "https://openstax.org/books/anatomy-and-physiology-2e/pages/11-3-axial-muscles-of-the-head-neck-and-back",
+    "links": []
+  },
+  {
+    "slug": "erector-spinae",
+    "region": "lower_back_spine",
+    "view": "back",
+    "location": {
+      "he": "משני צדי עמוד השדרה",
+      "en": "Either side of the spine"
+    },
+    "origin": {
+      "he": "אזור העצה והכסל ומוצאים משתנים לפי השריר",
+      "en": "Sacral and iliac region; origins vary by component"
+    },
+    "insertion": {
+      "he": "צלעות וזיזי חוליות בהתאם למרכיב",
+      "en": "Ribs and vertebral processes according to component"
+    },
+    "action": {
+      "he": "יישור וכפיפה צידית של עמוד השדרה",
+      "en": "Spinal extension and lateral flexion"
+    },
+    "joints": {
+      "he": "עמוד השדרה",
+      "en": "Spine"
+    },
+    "training": {
+      "he": "קבוצת שרירים התורמת לשליטת הגו בציר ירך",
+      "en": "A muscle group contributing to trunk control during hip hinges"
+    },
+    "source": "https://openstax.org/books/anatomy-and-physiology-2e/pages/11-3-axial-muscles-of-the-head-neck-and-back",
+    "links": [
+      {
+        "id": "rdl",
+        "role": "stabilizer"
+      },
+      {
+        "id": "deadlift",
+        "role": "stabilizer"
+      },
+      {
+        "id": "bird-dog",
+        "role": "stabilizer"
+      }
+    ]
+  },
+  {
+    "slug": "multifidus",
+    "region": "lower_back_spine",
+    "view": "back",
+    "location": {
+      "he": "שרירים עמוקים לאורך עמוד השדרה",
+      "en": "Deep muscles along the spine"
+    },
+    "origin": {
+      "he": "עצה וזיזי חוליות, בהתאם לאזור",
+      "en": "Sacrum and vertebral processes, varying by region"
+    },
+    "insertion": {
+      "he": "זיזים קוציים בדרך כלל 2–4 חוליות מעל המוצא",
+      "en": "Spinous processes usually 2–4 levels above origin"
+    },
+    "action": {
+      "he": "ייצוב מקטעי, יישור וסיבוב לצד הנגדי",
+      "en": "Segmental control, extension and contralateral rotation"
+    },
+    "joints": {
+      "he": "עמוד השדרה",
+      "en": "Spine"
+    },
+    "training": {
+      "he": "משתתף בשליטת גו; אין הבטחה לבידוד בתרגיל",
+      "en": "Contributes to trunk control; exercise isolation is not guaranteed"
+    },
+    "source": "https://openstax.org/books/anatomy-and-physiology-2e/pages/11-3-axial-muscles-of-the-head-neck-and-back",
+    "links": [
+      {
+        "id": "bird-dog",
+        "role": "stabilizer"
+      },
+      {
+        "id": "dead-bug",
+        "role": "stabilizer"
+      },
+      {
+        "id": "plank",
+        "role": "stabilizer"
+      }
+    ]
+  },
+  {
+    "slug": "rectus-abdominis",
+    "region": "core_abdomen",
+    "view": "front",
+    "location": {
+      "he": "קדמת דופן הבטן",
+      "en": "Anterior abdominal wall"
+    },
+    "origin": {
+      "he": "רכס החיק ומאחה החיק",
+      "en": "Pubic crest and symphysis"
+    },
+    "insertion": {
+      "he": "זיז החרב וסחוסי צלעות 5–7",
+      "en": "Xiphoid process and costal cartilages 5–7"
+    },
+    "action": {
+      "he": "כפיפת גו וסיוע בבקרת האגן",
+      "en": "Trunk flexion and pelvic control"
+    },
+    "joints": {
+      "he": "עמוד השדרה והאגן",
+      "en": "Spine and pelvis"
+    },
+    "training": {
+      "he": "משתתף בכפיפות בטן ובשליטת הגו",
+      "en": "Contributes to crunches and trunk control"
+    },
+    "source": "https://openstax.org/books/anatomy-and-physiology-2e/pages/11-4-axial-muscles-of-the-abdominal-wall-and-thorax",
+    "links": [
+      {
+        "id": "crunch",
+        "role": "primary"
+      },
+      {
+        "id": "hanging-knee",
+        "role": "secondary"
+      }
+    ]
+  },
+  {
+    "slug": "external-oblique",
+    "region": "core_abdomen",
+    "view": "front",
+    "location": {
+      "he": "דופן הבטן הצדית השטחית",
+      "en": "Superficial lateral abdominal wall"
+    },
+    "origin": {
+      "he": "צלעות 5–12",
+      "en": "Ribs 5–12"
+    },
+    "insertion": {
+      "he": "הקו הלבן, רכס הכסל ועצם החיק",
+      "en": "Linea alba, iliac crest and pubis"
+    },
+    "action": {
+      "he": "כפיפה, כפיפה צידית וסיבוב לצד הנגדי",
+      "en": "Flexion, side-bending and contralateral rotation"
+    },
+    "joints": {
+      "he": "עמוד השדרה והאגן",
+      "en": "Spine and pelvis"
+    },
+    "training": {
+      "he": "משתתף בסיבוב ובבקרת סיבוב של הגו",
+      "en": "Contributes to trunk rotation and resistance to rotation"
+    },
+    "source": "https://openstax.org/books/anatomy-and-physiology-2e/pages/11-4-axial-muscles-of-the-abdominal-wall-and-thorax",
+    "links": [
+      {
+        "id": "woodchop",
+        "role": "primary"
+      },
+      {
+        "id": "side-plank",
+        "role": "primary"
+      },
+      {
+        "id": "crunch",
+        "role": "secondary"
+      }
+    ]
+  },
+  {
+    "slug": "internal-oblique",
+    "region": "core_abdomen",
+    "view": "front",
+    "location": {
+      "he": "דופן הבטן, עמוק לאלכסוני החיצוני",
+      "en": "Abdominal wall, deep to external oblique"
+    },
+    "origin": {
+      "he": "פאשיה תורקולומברית, רכס הכסל והרצועה המפשעתית",
+      "en": "Thoracolumbar fascia, iliac crest and inguinal ligament"
+    },
+    "insertion": {
+      "he": "צלעות תחתונות, הקו הלבן ועצם החיק",
+      "en": "Lower ribs, linea alba and pubis"
+    },
+    "action": {
+      "he": "כפיפה, כפיפה צידית וסיבוב לאותו צד",
+      "en": "Flexion, side-bending and ipsilateral rotation"
+    },
+    "joints": {
+      "he": "עמוד השדרה והאגן",
+      "en": "Spine and pelvis"
+    },
+    "training": {
+      "he": "משתתף בשליטת גו לצד שרירי בטן נוספים",
+      "en": "Contributes to trunk control with the other abdominal muscles"
+    },
+    "source": "https://openstax.org/books/anatomy-and-physiology-2e/pages/11-4-axial-muscles-of-the-abdominal-wall-and-thorax",
+    "links": [
+      {
+        "id": "woodchop",
+        "role": "primary"
+      },
+      {
+        "id": "side-plank",
+        "role": "primary"
+      },
+      {
+        "id": "crunch",
+        "role": "secondary"
+      }
+    ]
+  },
+  {
+    "slug": "transversus-abdominis",
+    "region": "core_abdomen",
+    "view": "front",
+    "location": {
+      "he": "השכבה העמוקה של דופן הבטן",
+      "en": "Deep abdominal wall"
+    },
+    "origin": {
+      "he": "סחוסי צלעות תחתונות, פאשיה תורקולומברית, כסל ורצועה מפשעתית",
+      "en": "Lower costal cartilages, thoracolumbar fascia, ilium and inguinal ligament"
+    },
+    "insertion": {
+      "he": "הקו הלבן ואזור החיק",
+      "en": "Linea alba and pubic region"
+    },
+    "action": {
+      "he": "דחיסת תוכן הבטן ותרומה לבקרת לחץ",
+      "en": "Abdominal compression and pressure control"
+    },
+    "joints": {
+      "he": "דופן הבטן והגו",
+      "en": "Abdominal wall and trunk"
+    },
+    "training": {
+      "he": "משתתף בתיאום נשימה ובשליטת גו",
+      "en": "Contributes to coordinated breathing and trunk control"
+    },
+    "source": "https://openstax.org/books/anatomy-and-physiology-2e/pages/11-4-axial-muscles-of-the-abdominal-wall-and-thorax",
+    "links": [
+      {
+        "id": "bird-dog",
+        "role": "stabilizer"
+      },
+      {
+        "id": "dead-bug",
+        "role": "stabilizer"
+      },
+      {
+        "id": "plank",
+        "role": "stabilizer"
+      }
+    ]
+  },
+  {
+    "slug": "quadratus-lumborum",
+    "region": "lower_back_spine",
+    "view": "back",
+    "location": {
+      "he": "דופן הבטן האחורית",
+      "en": "Posterior abdominal wall"
+    },
+    "origin": {
+      "he": "רכס הכסל והרצועה האיליולומברית",
+      "en": "Iliac crest and iliolumbar ligament"
+    },
+    "insertion": {
+      "he": "צלע 12 וזיזים רוחביים L1–L4",
+      "en": "Rib 12 and transverse processes L1–L4"
+    },
+    "action": {
+      "he": "כפיפה צידית וייצוב צלע 12",
+      "en": "Lateral flexion and stabilization of rib 12"
+    },
+    "joints": {
+      "he": "עמוד שדרה מותני והאגן",
+      "en": "Lumbar spine and pelvis"
+    },
+    "training": {
+      "he": "משתתף בשליטה צידית של הגו",
+      "en": "Contributes to lateral trunk control"
+    },
+    "source": "https://openstax.org/books/anatomy-and-physiology-2e/pages/11-4-axial-muscles-of-the-abdominal-wall-and-thorax",
+    "links": [
+      {
+        "id": "side-plank",
+        "role": "secondary"
+      }
+    ]
+  }
+]
