@@ -6,8 +6,10 @@ const normalize = (text: string) => text.trim().replace(/\s+/g, ' ');
 const dictionary = new Map(hebrew.map((text, index) => [normalize(text), english[index]]));
 // New privacy labels are kept explicit instead of partially translating consent text.
 for(const [he,en] of [
+ ["חזרה לבית", "Back to Home"],
+ ["חזרה להגדרות", "Back to settings"],
  ["כאן נמצאים האימון הבא שלך, סיכום התקדמות והודעות מהצוות. בטלפון: בית, התוכנית שלי, התיק שלי ועוד. מידע על הצוות וסיפורי ההתקדמות זמינים במסך ההיכרות הציבורי.", "Your next workout, progress summary and team messages are here. On mobile: Home, My program, My file and More. Team information and progress stories remain in the public introduction."],
- ["בחרו נושא בתיק: פרטים ושאלונים, פציעות, מסמכים, שיקום, התקדמות, הצוות או דיווחים. כל נושא נפתח בנפרד; כפתור החזרה מחזיר לרשימת הנושאים. מנוי ופרטיות נמצאים בהגדרות וחשבון דרך עוד.", "Choose a file topic: details and questionnaires, injuries, documents, rehabilitation, progress, team or check-ins. Each topic opens separately. Back returns to the topic list. Membership and privacy are in Settings through More."],
+ ["בחרו נושא בתיק: פרטים ושאלונים, פציעות, מסמכים, שיקום, התקדמות, הצוות או דיווחים. כל נושא נפתח בנפרד; כפתור החזרה מחזיר לרשימת הנושאים. מנוי ופרטיות נמצאים בהגדרות וחשבון דרך הכפתור הקבוע בראש המסך.", "Choose a file topic: details and questionnaires, injuries, documents, rehabilitation, progress, team or check-ins. Each topic opens separately. Back returns to the topic list. Membership and privacy are in Settings through the persistent button at the top of the screen."],
  ["נכנסים מתוך התיק שלי או מקיצור ההתקדמות בבית. אימונים, ביצועים ו־e1RM, ובאותו אזור גם תזונה ומדידות ודיווחי כאב וטווח תנועה. בחרו את הנושא בשורת הניווט העליונה.", "Open progress from My file or the Home shortcut. Review workouts, performance and e1RM, plus nutrition, measurements, pain and range of motion. Choose a topic in the navigation above."],
  ["נכנסים דרך עוד. חיפוש תרגילים, דגשי ביצוע וסרטוני הדרכה. הוספה עצמאית לתוכנית תלויה במסלול ובהרשאה שלך.", "Open the library through More. Search exercises, technique guidance and demonstration videos. Adding exercises independently depends on your membership and permissions."],
  ["נכנסים דרך עוד. בחרו אזור במפת הגוף, פתחו שריר ולמדו על התפקוד והתנועה. אפשר להשתמש גם בכפתורי האזורים שמתחת למפה.", "Open anatomy through More. Select a body region and a muscle to learn about function and movement. Region buttons below the map are also available."],
@@ -443,7 +445,7 @@ for(const [he,en] of [
  ['התרגילים האישיים שלי', 'My custom exercises'],
  ['בחירת אזור באמצעות מפת הגוף', 'Choose a region on the body map'],
  ['כאן נמצאים קיצורי הדרך לאזורים המרכזיים. בטלפון: בית, התוכנית שלי, התיק שלי ועוד. הצוות וסיפורי ההתקדמות נמצאים בעוד.', 'Main destinations are available here. On your phone: Home, My program, My file and More. Find the team and progress stories under More.'],
- ['בחרו נושא בתיק: פרטים ושאלונים, פציעות, מסמכים, הצוות או דיווחים. כל נושא נפתח בנפרד; כפתור החזרה מחזיר לרשימת הנושאים. מנוי ופרטיות נמצאים בהגדרות וחשבון דרך עוד.', 'Choose a file topic: profile, injuries, documents, team or check-ins. Each opens separately; Back returns to the topic list. Membership and privacy are under Settings & account in More.'],
+ ['בחרו נושא בתיק: פרטים ושאלונים, פציעות, מסמכים, הצוות או דיווחים. כל נושא נפתח בנפרד; כפתור החזרה מחזיר לרשימת הנושאים. מנוי ופרטיות נמצאים בהגדרות וחשבון דרך הכפתור הקבוע בראש המסך.', 'Choose a file topic: profile, injuries, documents, team or check-ins. Each opens separately; Back returns to the topic list. Membership and privacy are under Settings & account in More.'],
  ['הודעות לצוות, תורים, משוב וקישורי האינסטגרם מרוכזים כאן. בטלפון כפתור ״עוד״ פותח את התפריט המלא.', 'Team messages, appointments, feedback and Instagram links are here. On your phone, More opens the full destination list.'],
  ['עוד', 'More'],
  ['אזורים נוספים', 'More destinations'],

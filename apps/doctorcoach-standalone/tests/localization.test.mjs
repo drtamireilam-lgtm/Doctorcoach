@@ -7,6 +7,13 @@ const {stretchTranslations}=await import('data:text/javascript;base64,'+Buffer.f
 const source=fs.readFileSync(new URL('../lib/localization.ts',import.meta.url),'utf8').replace("import hebrew from './locales/he.json';",`const hebrew=${fs.readFileSync(new URL('../lib/locales/he.json',import.meta.url),'utf8')};`).replace("import english from './locales/en.json';",`const english=${fs.readFileSync(new URL('../lib/locales/en.json',import.meta.url),'utf8')};`);
 const code=ts.transpileModule(source.replace("import {stretchTranslations} from './stretch-exercises';",`const stretchTranslations=${JSON.stringify(stretchTranslations)};`),{compilerOptions:{module:ts.ModuleKind.ESNext,target:ts.ScriptTarget.ES2022}}).outputText;
 const {translateText}=await import('data:text/javascript;base64,'+Buffer.from(code).toString('base64'));
+
+test('account return links translate in English and preserve Hebrew',()=>{
+ for(const [he,en] of [['חזרה לבית','Back to Home'],['חזרה להגדרות','Back to settings']]){
+  assert.equal(translateText(he,'en'),en);
+  assert.equal(translateText(he,'he'),he);
+ }
+});
 test('all catalog entries have English translations',()=>{
  const he=JSON.parse(fs.readFileSync(new URL('../lib/locales/he.json',import.meta.url))),en=JSON.parse(fs.readFileSync(new URL('../lib/locales/en.json',import.meta.url)));
  assert.equal(he.length,en.length);

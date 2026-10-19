@@ -1,9 +1,13 @@
 'use client';
 import {Localize,useLanguage} from "../components/language-provider";
 import {ArrowRight,HelpCircle,ArrowLeft,Home,UserRound,ClipboardList,History,Menu,BookOpen,Accessibility,MessagesSquare,Settings2,Users,CalendarDays,HeartPulse,Film} from 'lucide-react';
-import {areaFor,areaLinks,mobileTabFor,traineeAreas} from '../lib/mobile-navigation';
+import {areaFor,areaLinks,mobileTabFor,traineeAreas,isAccountSection} from '../lib/mobile-navigation';
 import {TeamProfiles} from './team-profiles';
 type Go=(section:string)=>void;
+export function AccountShortcut({section,go}:{section:string;go:Go}){
+ const english=useLanguage().language==='en',label=english?'Settings & account':'הגדרות וחשבון';
+ return <button type="button" className="account-shortcut" aria-label={label} title={label} aria-current={isAccountSection(section)?'page':undefined} onClick={()=>go('settings')}><Settings2 size={20} aria-hidden="true"/><span>{label}</span></button>;
+}
 export function HomeIntroduction({go,completed,returning}:{go:Go;completed:boolean;returning:boolean}){
  if(returning)return null;
  return <SiteIntroduction go={go} completed={completed}/>;
@@ -11,6 +15,7 @@ export function HomeIntroduction({go,completed,returning}:{go:Go;completed:boole
 export function AreaNavigation({section,go}:{section:string;go:Go}){
  const area=areaFor(section),links=area&&areaLinks[area];
  if(section==='more'||section==='home')return null;
+ if(isAccountSection(section))return <Localize><button className="back-link" onClick={()=>go(section==='settings'?'home':'settings')}><ArrowLeft size={18}/>{section==='settings'?'חזרה לבית':'חזרה להגדרות'}</button></Localize>;
  if(!area)return <Localize><button className="back-link" onClick={()=>go('home')}><ArrowLeft size={18}/>חזרה לבית</button></Localize>;
  if(area==='more')return <Localize><button className="back-link" onClick={()=>go('more')}><ArrowLeft size={18}/>חזרה לעוד</button></Localize>;
  if(area&&section!==area)return <Localize><nav className="context-navigation" aria-label="חזרה לאזור הראשי"><button className="back-link" onClick={()=>go(area)}><ArrowLeft size={18}/>חזרה ל{traineeAreas.find(a=>a.id===area)?.label}</button></nav></Localize>;
@@ -30,7 +35,6 @@ export function MoreArea({go,staffLinks=[],signedIn=false}:{go:Go;staffLinks?:{i
  ['library','ספריית התרגילים','Exercise library','תרגילים, מתיחות והדגמות','Exercises, stretches and demos',BookOpen],
  ['learn','אנטומיה ולמידה','Anatomy & learning','הגוף, השרירים והתנועה','Body, muscles and movement',Accessibility],
  ['contact','יצירת קשר','Contact','הודעות, תורים ומשוב','Messages, appointments and feedback',MessagesSquare],
- ['settings','הגדרות','Settings','מנוי, שפה, פרטיות והתראות','Membership, language, privacy and notifications',Settings2],
  ['feedback','עזרה ותמיכה','Help & support','שאלות, דיווח על בעיה ומשוב','Questions, report an issue and feedback',HelpCircle],
  ] as const;
  return <section className="navigation-hub" dir={english?'ltr':'rtl'}><div className="workspace-heading"><div><h1>{english?'More':'עוד'}</h1><p>{english?'Choose where you want to go.':'כל האזורים במקום ברור אחד.'}</p></div></div><nav className="compact-menu" aria-label={english?'More destinations':'אזורים נוספים'}>{entries.map(([id,he,en,dh,de,Icon])=><button key={id} onClick={()=>go(id)}><Icon size={26} aria-hidden="true"/><span><strong>{english?en:he}</strong><small>{english?de:dh}</small></span>{english?<ArrowRight size={18} aria-hidden="true"/>:<ArrowLeft size={18} aria-hidden="true"/>}</button>)}</nav>{staffLinks.length>0&&<section><h2>{english?'Team workspace':'סביבת הצוות'}</h2><nav className="compact-menu" aria-label={english?'Authorized staff tools':'כלי צוות מורשים'}>{staffLinks.map(link=><button key={link.id} onClick={()=>go(link.id)}><Users size={24}/><span><strong>{english?({team:'Manage trainees',dashboard:'Team dashboard',admin:'Manage services'}[link.id]??link.label):link.label}</strong></span><ArrowLeft size={18}/></button>)}</nav></section>}</section>;

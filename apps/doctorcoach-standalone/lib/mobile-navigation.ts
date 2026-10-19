@@ -21,7 +21,8 @@ const parents:Record<string,TraineeArea>={
  contact:'contact',messages:'contact',feedback:'contact',appointments:'contact',consult:'contact',
 };
 export function areaFor(section:string):TraineeArea|undefined{return parents[section];}
-export function mobileTabFor(section:string){const area=areaFor(section);if(area==='history')return 'care';return section!=='more'&&area&&['home','care','plan'].includes(area)?area:'menu';}
+export function isAccountSection(section:string){return ['settings','membership','privacy'].includes(section);}
+export function mobileTabFor(section:string){const area=areaFor(section);if(isAccountSection(section)||!area)return undefined;if(area==='history')return 'care';return section!=='more'&&['home','care','plan'].includes(area)?area:'menu';}
 export const areaLinks:Partial<Record<TraineeArea,{id:string;label:string}[]>>={
  home:[{id:'home',label:'בית'},{id:'pro',label:'הצוות'},{id:'stories',label:'סיפורי התקדמות'}],
  care:[{id:'care',label:'התיק שלי'},{id:'onboarding',label:'שאלונים והערכה'},{id:'injuries',label:'פציעות והתאמות'},{id:'history',label:'התקדמות'}],

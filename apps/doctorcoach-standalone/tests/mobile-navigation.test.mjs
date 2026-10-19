@@ -15,7 +15,7 @@ test('legacy links retain their parent area and phone selection',()=>{
  const groups={home:['home','stories','pro'],more:['more','settings','membership','privacy'],care:['care','onboarding','injuries'],plan:['plan','workout','readiness'],history:['history','nutrition','recovery'],library:['library','videos'],learn:['learn'],contact:['contact','messages','feedback','appointments','consult']};
  for(const [area,sections] of Object.entries(groups))for(const section of sections){
   assert.equal(areaFor(section),area,section);
-  assert.equal(mobileTabFor(section),area==='history'?'care':section!=='more'&&['home','care','plan'].includes(area)?area:'menu',section);
+  assert.equal(mobileTabFor(section),['settings','membership','privacy'].includes(section)?undefined:area==='history'?'care':section!=='more'&&['home','care','plan'].includes(area)?area:'menu',section);
  }
 });
 test('secondary navigation links stay within their parent area',()=>{

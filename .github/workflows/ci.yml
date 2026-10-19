@@ -2,7 +2,7 @@ name: DoctorCoach CI
 
 on:
   push:
-    branches: [main, "stabilize/**", "fix/appearance-toggle-persistence-*"]
+    branches: [main, "stabilize/**", "fix/appearance-toggle-persistence-*", "feature/ui-ux-liad-followup-20261019"]
   pull_request:
     branches: [main]
 

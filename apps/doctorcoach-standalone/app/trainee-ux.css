@@ -13,7 +13,11 @@
 .home-activity-summary{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px;margin-block:20px}
 .home-activity-summary>.panel{min-width:0}
 .settings-signout{align-self:flex-start}
+.account-shortcut{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:44px;min-width:44px;padding:10px;border:1px solid var(--line);border-radius:10px;background:var(--card);color:var(--text);font:inherit;cursor:pointer}
+.account-shortcut:hover,.account-shortcut[aria-current=page]{background:var(--dc-hover,var(--soft-red));border-color:var(--dc-focus,var(--red))}
+.account-shortcut:focus-visible{outline:3px solid var(--dc-focus,var(--red));outline-offset:3px}
 @media(max-width:760px){
+ .account-shortcut>span{display:none}
  .compact-menu>button{min-height:60px;padding:14px;gap:12px}
  .compact-menu small{font-size:14px}
  .home-activity-summary{grid-template-columns:1fr}
