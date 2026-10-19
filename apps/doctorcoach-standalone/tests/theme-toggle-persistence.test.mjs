@@ -49,3 +49,28 @@ test('premium gradient stops preserve readable button and surface text',()=>{
   assert.ok(contrast(tokens['--dc-card-text'],mix(c.secondary,c.background,.28))>=4.5,preset.name);
  }
 });
+
+test('metallic references use near-black surfaces and upgrade existing saved selections without writes',()=>{
+ const oldGold={mode:'dark',palette:'yellow',custom:{background:'#14110b',primary:'#d9b65f',secondary:'#252015',button:'#d9b65f',navigation:'#14110b',accent:'#f2d691'}};
+ const oldSilver={mode:'dark',palette:'neutral',custom:{background:'#10141b',primary:'#b8c5d8',secondary:'#202731',button:'#b8c5d8',navigation:'#10141b',accent:'#e1e8f4'}};
+ for(const [old,id] of [[oldGold,'gold'],[oldSilver,'silver']]){
+  const snapshot=structuredClone(old),preset=themePresets.find(p=>p.id===id);
+  assert.deepEqual(colorsFor(old),colorsFor(preset.appearance));assert.deepEqual(old,snapshot);
+  const calls=[],node=render({current:old,busy:false,signedIn:true,message:null,edit:a=>calls.push(a),save:a=>calls.push(a)},'AppearancePicker');
+  assert.equal(node.props.children[2].props.children.find(b=>b.props['aria-pressed']).props.children[1],preset.name);
+  assert.equal(calls.length,0);
+  // Exact matching does not replace an independently edited saved theme.
+  const custom={...old,custom:{...old.custom,accent:'#abcdef'}};
+  assert.equal(colorsFor(custom).accent,'#abcdef');
+ }
+ assert.equal(colorsFor(themePresets.find(p=>p.id==='gold').appearance).background,'#08090d');
+ assert.equal(colorsFor(themePresets.find(p=>p.id==='silver').appearance).secondary,'#20252d');
+});
+test('swatches show actual black and white and every rendered gradient stop is readable',()=>{
+ assert.equal(themeTokens(themePresets.find(p=>p.id==='dark').appearance)['--dc-swatch'],'#090c12');
+ assert.equal(themeTokens(themePresets.find(p=>p.id==='light').appearance)['--dc-swatch'],'#ffffff');
+ for(const p of themePresets){const t=themeTokens(p.appearance);assert.ok(contrast(t['--dc-card-line'],colorsFor(p.appearance).secondary)>=3,p.name+' control border');
+  for(const color of t['--dc-button-gradient'].match(/#[0-9a-f]{6}/g))assert.ok(contrast(t['--dc-button-text'],color)>=4.5,`${p.name}: ${color}`);
+  for(const color of t['--dc-surface-gradient'].match(/#[0-9a-f]{6}/g))assert.ok(contrast(t['--dc-card-text'],color)>=4.5,`${p.name}: ${color}`);
+ }
+});
