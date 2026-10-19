@@ -1,63 +1,18 @@
-import React, { Component, useEffect, useRef, useState } from 'react';
+import React, { Component, Suspense, lazy, useEffect, useState } from 'react';
 import { createRoot } from 'react-dom/client';
-import { Canvas, useFrame, useThree } from '@react-three/fiber';
-import { Group, Vector3 } from 'three';
-import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
-import { abductionAngle, muscles, relatedExercises, type Muscle } from './data';
-import { muscleFromHash, nextZoomDistance, isSelectionClick } from './interaction';
+import { muscles, relatedExercises } from './data';
+import { muscleFromHash } from './interaction';
 import './style.css';
+import {labels,languageDirection,readLanguage,muscleText,exerciseLabel,type Language} from './i18n';
 
-function Controls({view, zoom}: {view: number; zoom: number}) {
- const {camera, gl, invalidate} = useThree();
- const controls = useRef<OrbitControls | null>(null);
- const previousZoom = useRef(zoom);
- useEffect(() => {
-   const c = new OrbitControls(camera, gl.domElement);
-   c.target.set(0, .2, 0); c.enablePan = false; c.minDistance = 3; c.maxDistance = 10;
-   const redraw = () => invalidate();
-   c.addEventListener('change', redraw); controls.current = c; c.update();
-   return () => { c.removeEventListener('change', redraw); c.dispose(); controls.current = null; };
- }, [camera, gl, invalidate]);
- useEffect(() => {
-   const target = new Vector3(0, .2, 0);
-   const distance = camera.position.distanceTo(target);
-   camera.position.copy(target).add(new Vector3(0, .3, view % 2 === 0 ? 5.8 : -5.8).setLength(distance));
-   controls.current?.update(); invalidate();
- }, [view, camera, invalidate]);
- useEffect(() => {
-   const direction = zoom - previousZoom.current;
-   previousZoom.current = zoom;
-   if (!direction) return;
-   const target = new Vector3(0, .2, 0);
-   const distance = nextZoomDistance(camera.position.distanceTo(target), direction);
-   camera.position.sub(target).setLength(distance).add(target);
-   controls.current?.update(); invalidate();
- }, [zoom, camera, invalidate]);
- return null;
-}
-function Part({m,side,selected,onSelect,active}: {m:Muscle; side:number; selected:string; onSelect:(id:string)=>void; active:boolean}) {
- const [x,y,z]=m.position; const arm=['biceps-brachii','triceps-brachii'].includes(m.id);
- return <mesh name={`${m.id}-${side===1?'left':'right'}`} position={[side*x,y-(arm ? .95 : 0),z]} scale={m.scale as [number,number,number]} onClick={e=>{e.stopPropagation();if(isSelectionClick(e.delta))onSelect(m.id);}}>
- <sphereGeometry args={[1,24,16]}/><meshStandardMaterial color={selected===m.id?'#ffd166':active?'#fb7185':m.layer==='deep'?'#8f79ca':'#ba404f'} roughness={.6} metalness={.05}/></mesh>;
-}
-function Body({selected,onSelect,layers,playing,reset}: {selected:string; onSelect:(id:string)=>void; layers:Record<string,boolean>; playing:boolean; reset:number}) {
- const left=useRef<Group>(null),right=useRef<Group>(null),elapsed=useRef(0); const {invalidate}=useThree();
- useEffect(()=>{elapsed.current=0; if(left.current)left.current.rotation.z=0;if(right.current)right.current.rotation.z=0;invalidate();},[reset,invalidate]);
- useFrame((_,dt)=>{if(!playing)return; elapsed.current+=Math.min(dt,.05); const a=abductionAngle(elapsed.current); if(left.current)left.current.rotation.z=a; if(right.current)right.current.rotation.z=-a; invalidate();});
- useEffect(()=>{invalidate();},[playing,invalidate]);
- const shown=muscles.filter(m=>layers[m.layer]); const moving=(m:Muscle)=>['biceps-brachii','triceps-brachii'].includes(m.id);
- return <group>
- {layers.frame && <group><mesh position={[0,.1,-.03]} scale={[.83,1.05,.26]}><sphereGeometry args={[1,24,16]}/><meshStandardMaterial color="#45566a" transparent opacity={.35}/></mesh><mesh position={[0,1.53,0]} scale={[.28,.35,.26]}><sphereGeometry args={[1,24,16]}/><meshStandardMaterial color="#a7b4bc"/></mesh><mesh position={[0,1.12,0]} scale={[.15,.22,.15]}><sphereGeometry/><meshStandardMaterial color="#a7b4bc"/></mesh></group>}
- {[-1,1].map(side=><React.Fragment key={side}>
- {shown.filter(m=>!moving(m)).map(m=><Part key={m.id} m={m} side={side} selected={selected} onSelect={onSelect} active={playing&&['deltoid-middle','supraspinatus','trapezius'].includes(m.id)}/>)}
- <group ref={side===1?left:right} position={[side*1.07,.95,0]}>
- {layers.frame&&<><mesh position={[side*.1,-.62,0]} scale={[.11,.65,.11]}><sphereGeometry/><meshStandardMaterial color="#acbbc6"/></mesh><mesh position={[side*.12,-1.55,0]} scale={[.1,.45,.1]}><sphereGeometry/><meshStandardMaterial color="#acbbc6"/></mesh></>}
- {shown.filter(moving).map(m=><group key={m.id} position={[-side*1.07,0,0]}><Part m={m} side={side} selected={selected} onSelect={onSelect} active={false}/></group>)}
- </group></React.Fragment>)}
- </group>;
-}
-class ViewerBoundary extends Component<{children:React.ReactNode},{error:boolean}>{state={error:false};static getDerivedStateFromError(){return {error:true};}render(){return this.state.error?<p role="alert">תצוגת WebGL אינה זמינה. אפשר לבחור שרירים ברשימה ולקרוא את המידע.</p>:this.props.children;}}
+const AnatomyViewer=lazy(()=>import('./viewer'));
+class ViewerBoundary extends Component<{children:React.ReactNode;failure:string},{error:boolean}>{state={error:false};static getDerivedStateFromError(){return {error:true};}render(){return this.state.error?<p role="alert">{this.props.failure}</p>:this.props.children;}}
 function App(){
+ const [language,setLanguage]=useState<Language>(()=>{try{return readLanguage(localStorage);}catch{return 'he';}});
+ const t=labels[language];
+ const [webglFailed,setWebglFailed]=useState(false);
+ useEffect(()=>{document.documentElement.lang=language;document.documentElement.dir=languageDirection(language);try{localStorage.setItem('dc-anatomy-language',language);}catch{}},[language]);
+ const focus=(id:string)=>{const el=document.getElementById(id);el?.focus({preventScroll:true});el?.scrollIntoView({block:'start'});};
  const [selected,setSelected]=useState(()=>muscleFromHash(location.hash, muscles.map(m=>m.id)));
  const [layers,setLayers]=useState<Record<string,boolean>>({superficial:true,deep:false,frame:true}); const [view,setView]=useState(0),[zoom,setZoom]=useState(0),[playing,setPlaying]=useState(false),[reset,setReset]=useState(0);
  useEffect(()=>{const f=()=>setSelected(muscleFromHash(location.hash,muscles.map(m=>m.id)));addEventListener('hashchange',f);addEventListener('popstate',f);return()=>{removeEventListener('hashchange',f);removeEventListener('popstate',f);};},[]);
@@ -65,12 +20,13 @@ function App(){
  const select=(id:string)=>{setSelected(id);if(location.hash!==`#${id}`)history.pushState(null,'',`#${id}`);const m=muscles.find(x=>x.id===id);if(m)setLayers(l=>({...l,[m.layer]:true}));};
  const muscle=muscles.find(m=>m.id===selected);
  useEffect(()=>{const q=matchMedia('(prefers-reduced-motion: reduce)');const f=()=>{if(q.matches)setPlaying(false);};q.addEventListener('change',f);return()=>q.removeEventListener('change',f);},[]);
- return <main><header><span>DOCTOR<span className="red">COACH</span> / LAB</span><span>אנטומיה בתלת־ממד · אבטיפוס פנימי</span></header><h1>לחקור. לבחור. להבין תנועה.</h1><p className="warning" role="note">מודל סכמטי מקורי — לא מאומת להוראה רפואית. צורות, חיבורים ותנועה אינם שחזור אנטומי או ביומכני מדויק.</p>
- <button className="skip-link" onClick={()=>document.getElementById('muscle-list')?.focus()}>דלג לרשימת השרירים</button><div className="layout"><section className="viewer" aria-label="מודל אנטומיה"><div className="toolbar"><button onClick={()=>setView(v=>v%2===0?v+2:v+1)}>מבט קדמי</button><button onClick={()=>setView(v=>v%2===1?v+2:v+1)}>מבט אחורי</button><button aria-label="הגדלה" onClick={()=>setZoom(z=>z+1)}>＋</button><button aria-label="הקטנה" onClick={()=>setZoom(z=>z-1)}>−</button></div>
- <div className="canvas" role="group" aria-label="תצוגה תלת־ממדית; חלופה נגישה ברשימת השרירים"><ViewerBoundary><Canvas frameloop="demand" dpr={[1,1.5]} camera={{position:[0,.5,5.8],fov:43}} fallback={<p>WebGL אינו זמין; השתמשו ברשימת השרירים.</p>}><color attach="background" args={['#101923']}/><ambientLight intensity={1.5}/><directionalLight position={[3,5,5]} intensity={3}/><directionalLight position={[-3,2,-4]} intensity={2}/><Controls view={view} zoom={zoom}/><Body selected={selected} onSelect={select} layers={layers} playing={playing} reset={reset}/></Canvas></ViewerBoundary></div>
- <p>גרירה לסיבוב 360° · גלילה / צביטה להגדלה · לחיצה לבחירה</p><fieldset><legend>שכבות</legend>{[['superficial','שטחית'],['deep','עמוקה'],['frame','מסגרת גוף']].map(([key,label])=><label key={key}><input type="checkbox" checked={layers[key]} onChange={e=>setLayers(l=>({...l,[key]:e.target.checked}))}/>{label}</label>)}</fieldset>
- <div className="animation"><strong>הרחקת כתף · הדגמה סכמטית 0–90°</strong><button aria-pressed={playing} onClick={()=>setPlaying(p=>!p)}>{playing?'עצירה':'הפעלה / המשך'}</button><button onClick={()=>{setPlaying(false);setReset(r=>r+1);}}>איפוס</button><p>הדגשת דלתא אמצעית, על־קוצי וטרפז היא סימון תפקיד בלבד. אין מדידת פעילות. תנועת שכמה, עצם הבריח, serratus anterior והתארכות השרירים טרם מודלו.</p></div></section>
- <aside><nav id="muscle-list" tabIndex={-1} aria-label="בחירת שריר"><h2>פלג גוף עליון</h2><button className="details-link" onClick={()=>document.getElementById('muscle-information')?.focus()}>לפרטי השריר שנבחר</button><div className="muscles">{muscles.map(m=><button key={m.id} aria-pressed={selected===m.id} onClick={()=>select(m.id)}>{m.he}<small lang="en">{m.en}</small></button>)}</div></nav></aside>
- <article id="muscle-information" tabIndex={-1} aria-live="polite" aria-atomic="true">{muscle?<><span className="red">DRAFT / מידע לבדיקה מקצועית</span><h2>{muscle.he}</h2><h3 lang="en">{muscle.en}</h3><p>{muscle.simple}</p><dl>{(['location','origin','insertion','innervation','actions'] as const).map(k=><React.Fragment key={k}><dt>{k==='location'?'מיקום אנטומי':k}</dt><dd dir="ltr">{muscle[k]}</dd></React.Fragment>)}</dl><h3>למאמנים</h3><p dir="ltr">{muscle.professional}</p><h3>קשרים לתרגילים — טיוטה</h3>{relatedExercises(muscle.id).map(l=><p key={l.exerciseId}>{l.exercise.name} · {l.role}</p>)}{!relatedExercises(muscle.id).length&&<p>טרם הוגדרו קשרים לשריר זה.</p>}<p className="muted">בחירת השריר מודגשת בזהב כאשר השכבה שלו מוצגת. ניתן להסתיר שכבות שמכסות אותו. מזהה: {muscle.id}. מידע תמציתי; אימות רפואי מתועד עדיין ממתין.</p></>:<p>בחרו שריר מהרשימה.</p>}</article></div></main>;
+ const content=muscle?muscleText(muscle,language):null;
+ return <main><header><span>DOCTOR<span className="red">COACH</span> / LAB</span><span>{t.subtitle}</span><fieldset className="language-toggle"><legend>{t.language}</legend>{(['he','en'] as const).map(value=><button key={value} lang={value} aria-pressed={language===value} onClick={()=>setLanguage(value)}>{value==='he'?'עברית':'English'}</button>)}</fieldset></header><h1>{t.title}</h1><p className="warning" role="note">{t.warning}</p>
+ <button className="skip-link" onClick={()=>focus('muscle-list')}>{t.skip}</button><div className="layout"><section id="anatomy-viewer" tabIndex={-1} className="viewer" aria-label={t.viewer}><div className="toolbar"><button onClick={()=>setView(v=>v%2===0?v+2:v+1)}>{t.front}</button><button onClick={()=>setView(v=>v%2===1?v+2:v+1)}>{t.back}</button><button aria-label={t.zoomIn} onClick={()=>setZoom(z=>z+1)}>＋</button><button aria-label={t.zoomOut} onClick={()=>setZoom(z=>z-1)}>−</button></div>
+ <div className="canvas" role="group" aria-label={t.canvas}>{webglFailed?<p role="alert">{t.failure}</p>:<ViewerBoundary failure={t.failure}><Suspense fallback={<p role="status">{language==='he'?'טוען מודל…':'Loading model…'}</p>}><AnatomyViewer view={view} zoom={zoom} selected={selected} onSelect={select} layers={layers} playing={playing&&!webglFailed} reset={reset} onFailure={()=>setWebglFailed(true)} failure={t.failure}/></Suspense></ViewerBoundary>}</div>
+ <div className="selected-muscle"><strong>{content?.name}</strong><button onClick={()=>focus('muscle-information')}>{t.details}</button></div><p>{t.gestures}</p><fieldset><legend>{t.layers}</legend>{(['superficial','deep','frame'] as const).map(key=><label key={key}><input type="checkbox" checked={layers[key]} onChange={e=>setLayers(l=>({...l,[key]:e.target.checked}))}/>{t[key]}</label>)}</fieldset>
+ <div className="animation"><strong>{t.animation}</strong><button disabled={webglFailed} aria-pressed={playing&&!webglFailed} onClick={()=>setPlaying(p=>!p)}>{playing?t.pause:t.play}</button><button onClick={()=>{setPlaying(false);setReset(r=>r+1);}}>{t.reset}</button><p>{t.motionNote}</p></div></section>
+ <aside><nav id="muscle-list" tabIndex={-1} aria-label={t.choose}><h2>{t.upper}</h2><button className="details-link" onClick={()=>focus('muscle-information')}>{t.details}</button><div className="muscles">{muscles.map(m=><button key={m.id} aria-pressed={selected===m.id} onClick={()=>select(m.id)}>{language==='he'?m.he:m.en}<small lang={language==='he'?'en':'he'}>{language==='he'?m.en:m.he}</small></button>)}</div></nav></aside>
+ <article id="muscle-information" tabIndex={-1} aria-live="polite" aria-atomic="true">{muscle&&content?<><span className="red">{t.draft}</span><h2>{content.name}</h2><h3 lang={language==='he'?'en':'he'}>{content.otherName}</h3><p>{content.simple}</p><dl>{(['location','origin','insertion','innervation','actions'] as const).map(k=><React.Fragment key={k}><dt>{t[k]}</dt><dd>{content[k]}</dd></React.Fragment>)}</dl><h3>{t.professional}</h3><p>{content.professional}</p><h3>{t.exercises}</h3>{relatedExercises(muscle.id).map(l=><p key={l.exerciseId}>{exerciseLabel(l.exercise,language)} · {t[l.role]}</p>)}{!relatedExercises(muscle.id).length&&<p>{t.none}</p>}<p className="muted">{t.selection}</p><button onClick={()=>focus('anatomy-viewer')}>{t.return}</button><details><summary>{t.sources}</summary><a href="https://medicine.uams.edu/neuroscience/education/medical-school-courses/human-structure-module/anatomy-tables/muscle-tables/muscles-of-the-upper-limb/" target="_blank" rel="noopener noreferrer">UAMS — Upper limb anatomy tables</a></details></>:<p>{t.select}</p>}</article></div></main>;
 }
 createRoot(document.getElementById('anatomy-root')!).render(<App/>);

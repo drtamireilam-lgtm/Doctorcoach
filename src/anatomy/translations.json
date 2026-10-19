@@ -1,0 +1,137 @@
+{
+  "pectoralis-major": {
+    "location": "חלקו הקדמי של בית החזה",
+    "origin": "החלק המדיאלי של עצם הבריח, עצם החזה וסחוסי הצלעות העליונות",
+    "insertion": "השפה הלטרלית של החריץ הבין־גבשושי בעצם הזרוע",
+    "innervation": "העצבים הפקטורליים הלטרלי והמדיאלי",
+    "actions": "קירוב וסיבוב פנימי; הסיבים הבריחיים מסייעים בכפיפה",
+    "professional": "יש להבחין בין פעולת הסיבים הבריחיים לפעולת הסיבים הסטרנוקוסטליים",
+    "simpleEn": "Helps push and bring the arm toward the body"
+  },
+  "pectoralis-minor": {
+    "location": "בעומק החלק הקדמי של בית החזה",
+    "origin": "צלעות 3–5",
+    "insertion": "זיז הקורקואיד של השכמה",
+    "innervation": "העצב הפקטורלי המדיאלי",
+    "actions": "הנעת השכמה לפנים וכלפי מטה",
+    "professional": "פועל על השכמה ולא ישירות על עצם הזרוע",
+    "simpleEn": "Moves and stabilizes the shoulder blade"
+  },
+  "deltoid-anterior": {
+    "location": "החלק הקדמי של הכתף",
+    "origin": "החלק הלטרלי של עצם הבריח",
+    "insertion": "גבשושית הדלתא בעצם הזרוע",
+    "innervation": "העצב האקסילרי",
+    "actions": "כפיפה וסיבוב פנימי של הכתף",
+    "professional": "מנח הזרוע משפיע על התרומה לתנועות לחיצה",
+    "simpleEn": "Helps raise the arm forward"
+  },
+  "deltoid-middle": {
+    "location": "הצד הלטרלי של הכתף",
+    "origin": "האקרומיון",
+    "insertion": "גבשושית הדלתא בעצם הזרוע",
+    "innervation": "העצב האקסילרי",
+    "actions": "הרחקת הכתף",
+    "professional": "גם העל־קוצי והשרירים המסובבים את השכמה מעלה משתתפים בתנועה",
+    "simpleEn": "Helps raise the arm to the side"
+  },
+  "deltoid-posterior": {
+    "location": "החלק האחורי של הכתף",
+    "origin": "קוץ השכמה",
+    "insertion": "גבשושית הדלתא בעצם הזרוע",
+    "innervation": "העצב האקסילרי",
+    "actions": "פשיטה והרחקה אופקית",
+    "professional": "יש להבחין בין הרחקה אופקית בכתף לקירוב השכמה לעמוד השדרה",
+    "simpleEn": "Helps move the arm backward"
+  },
+  "trapezius": {
+    "location": "הצוואר האחורי והגב העליון",
+    "origin": "עצם העורף, רצועת העורף והזיזים הקוציים C7–T12",
+    "insertion": "החלק הלטרלי של עצם הבריח, האקרומיון וקוץ השכמה",
+    "innervation": "העצב הנוסף לתנועה; C3–C4 לתחושת מנח",
+    "actions": "הרמה, קירוב, הורדה וסיבוב השכמה מעלה, בהתאם לאזור השריר",
+    "professional": "האזורים העליון והתחתון מסייעים בסיבוב מעלה יחד עם המסור הקדמי",
+    "simpleEn": "Helps control shoulder-blade movement"
+  },
+  "latissimus-dorsi": {
+    "location": "הצד האחורי־צדי של הגו",
+    "origin": "עמוד השדרה החזי התחתון, הפציה התורקולומברית, רכס הכסל והצלעות התחתונות",
+    "insertion": "רצפת החריץ הבין־גבשושי בעצם הזרוע",
+    "innervation": "העצב התורקודורסלי",
+    "actions": "פשיטה, קירוב וסיבוב פנימי של הזרוע",
+    "professional": "פעולה על עצם הזרוע שונה מתפקידם של מייצבי השכמה",
+    "simpleEn": "Helps pull and lower the arm"
+  },
+  "rhomboid-major": {
+    "location": "בעומק הגב העליון",
+    "origin": "הזיזים הקוציים T2–T5",
+    "insertion": "הגבול המדיאלי של השכמה, מתחת לקוץ השכמה",
+    "innervation": "העצב הסקפולרי הגבי",
+    "actions": "קירוב השכמה וסיבובה מטה",
+    "professional": "נמצא בעומק שריר הטרפז",
+    "simpleEn": "Brings the shoulder blade toward the spine"
+  },
+  "rhomboid-minor": {
+    "location": "בעומק הגב העליון",
+    "origin": "רצועת העורף והזיזים הקוציים C7–T1",
+    "insertion": "הקצה המדיאלי של קוץ השכמה",
+    "innervation": "העצב הסקפולרי הגבי",
+    "actions": "קירוב השכמה וסיבובה מטה",
+    "professional": "אזור האחיזה נבדל מזה של המעוין הגדול",
+    "simpleEn": "Helps stabilize the shoulder blade"
+  },
+  "biceps-brachii": {
+    "location": "החלק הקדמי של הזרוע",
+    "origin": "הראש הארוך: הגבשושית העל־גלנואידלית; הראש הקצר: זיז הקורקואיד",
+    "insertion": "גבשושית עצם החישור והאפונאורוזה הביציפיטלית",
+    "innervation": "העצב המוסקולוקוטנאוס",
+    "actions": "כפיפת מרפק וסופינציה של האמה; סיוע בכפיפת הכתף",
+    "professional": "התרומה לסופינציה משתנה עם מנח האמה",
+    "simpleEn": "Bends the elbow and turns the palm upward"
+  },
+  "triceps-brachii": {
+    "location": "החלק האחורי של הזרוע",
+    "origin": "הראש הארוך: הגבשושית התת־גלנואידלית; יתר הראשים: המשטח האחורי של עצם הזרוע",
+    "insertion": "האולקרנון של עצם הגומד",
+    "innervation": "העצב הרדיאלי",
+    "actions": "יישור המרפק; הראש הארוך מסייע בפשיטה ובקירוב בכתף",
+    "professional": "רק הראש הארוך חוצה גם את מפרק הכתף",
+    "simpleEn": "Straightens the elbow"
+  },
+  "supraspinatus": {
+    "location": "החלק העליון של השכמה",
+    "origin": "הגומה העל־קוצית",
+    "insertion": "הפאה העליונה של הגבשושית הגדולה בעצם הזרוע",
+    "innervation": "העצב העל־שכמתי",
+    "actions": "סיוע בהרחקה ובייצוב ראש עצם הזרוע",
+    "professional": "אינו פועל לבדו בתחילת ההרחקה",
+    "simpleEn": "Helps raise the arm and stabilize the shoulder"
+  },
+  "infraspinatus": {
+    "location": "החלק האחורי של השכמה",
+    "origin": "הגומה התת־קוצית",
+    "insertion": "הפאה האמצעית של הגבשושית הגדולה בעצם הזרוע",
+    "innervation": "העצב העל־שכמתי",
+    "actions": "סיבוב חיצוני וייצוב",
+    "professional": "תיאום הכוחות של השרוול המסובב אינו מיוצג במודל הסכמטי",
+    "simpleEn": "Turns the arm outward"
+  },
+  "teres-minor": {
+    "location": "הצד האחורי־צדי של השכמה",
+    "origin": "הגבול הלטרלי של השכמה",
+    "insertion": "הפאה התחתונה של הגבשושית הגדולה בעצם הזרוע",
+    "innervation": "העצב האקסילרי",
+    "actions": "סיבוב חיצוני וייצוב",
+    "professional": "יש להבחין בינו לבין העגול הגדול",
+    "simpleEn": "Helps turn the arm outward and stabilize the shoulder"
+  },
+  "subscapularis": {
+    "location": "המשטח הקדמי של השכמה",
+    "origin": "הגומה התת־שכמתית",
+    "insertion": "הגבשושית הקטנה בעצם הזרוע",
+    "innervation": "העצבים התת־שכמתיים העליון והתחתון",
+    "actions": "סיבוב פנימי וייצוב",
+    "professional": "הייצוג סכמטי; המשטח הקדמי של השכמה אינו ממודל באופן נאמן",
+    "simpleEn": "Turns the arm inward and helps stabilize the shoulder"
+  }
+}

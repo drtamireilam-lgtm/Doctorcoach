@@ -3,3 +3,9 @@
 .skip-link{display:inline-block;color:#ffd166;padding:8px 0;min-height:44px}.canvas canvas{display:block}article{overflow-wrap:anywhere}small{unicode-bidi:plaintext}
 
 .skip-link{background:transparent;border:0;margin-bottom:10px}.details-link{margin-bottom:12px}#muscle-information:focus-visible,#muscle-list:focus-visible{outline:3px solid #ffd166;outline-offset:3px}
+/* Logical alignment supports both scripts without mirrored orbit controls. */
+.muscles button{text-align:start}.language-toggle{border:0;padding:0;margin:0;gap:6px}.language-toggle legend{font-size:13px}header{flex-wrap:wrap;align-items:center}.language-toggle button{min-width:72px}article button{margin-block:12px}.viewer:focus-visible{outline:3px solid #ffd166;outline-offset:3px}article a{color:#b8dcff;overflow-wrap:anywhere}article details{margin-top:16px}.canvas{overflow:hidden}.canvas>p{padding:20px;line-height:1.6}.viewer{scroll-margin-top:12px}dd{unicode-bidi:plaintext}
+@media(max-width:650px){.canvas{height:clamp(260px,52dvh,410px)}header{gap:10px}.language-toggle{width:100%}.muscles{grid-template-columns:repeat(2,minmax(0,1fr))}.muscles button{min-width:0;overflow-wrap:anywhere}.layout>*,.toolbar{min-width:0}button{max-width:100%}}
+@media(prefers-reduced-motion:reduce){*{scroll-behavior:auto!important}}
+
+.selected-muscle{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;margin-top:12px}
