@@ -2,7 +2,7 @@ name: DoctorCoach CI
 
 on:
   push:
-    branches: [main]
+    branches: [main, "stabilize/**"]
   pull_request:
     branches: [main]
 
@@ -30,3 +30,27 @@ jobs:
 
       - name: Typecheck and build
         run: npm run build
+
+  standalone:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    defaults:
+      run:
+        working-directory: apps/doctorcoach-standalone
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+      - name: Install pinned package manager
+        run: npm install --global pnpm@11.25.0
+      - name: Install locked standalone dependencies
+        run: pnpm install --frozen-lockfile
+      - name: Standalone regression tests
+        run: npm test
+      - name: Standalone TypeScript
+        run: npm run typecheck
+      - name: Build standalone without deployment
+        run: npm run build:standalone
+      - name: Synthetic Worker authentication and authorization checks
+        run: node --experimental-strip-types standalone/scripts/runtime-smoke.mjs

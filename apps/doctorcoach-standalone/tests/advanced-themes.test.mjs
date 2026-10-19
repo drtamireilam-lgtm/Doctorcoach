@@ -26,7 +26,8 @@ test('text and accent contrast adapt to extreme independent surface choices',()=
   for(const [fg,bg] of [['--text',background],['--muted',background],['--accent-red',background],['--dc-card-text',secondary],['--dc-card-muted',secondary],['--dc-card-accent',secondary],['--dc-nav-text',secondary],['--dc-nav-accent',secondary],['--dc-button-text',background]])assert.ok(contrast(t[fg],bg)>=4.5,`${fg} on ${bg}: ${contrast(t[fg],bg)}`);
  }
  for(const p of themePresets){const t=themeTokens(p.appearance),c=colorsFor(p.appearance);assert.ok(contrast(t['--text'],c.background)>=4.5);}
- assert.equal(themePresets.length,6);assert.equal(swatchFamilies.length,10);assert.ok(swatchFamilies.every(f=>f.slice(2).every(isHexColor)));
+ assert.equal(themePresets.length,8);
+ for(const name of ['Dark','Light','Blue','Purple','Wine Red','Yellow','Forest Green'])assert.ok(themePresets.some(p=>p.name===name),name);assert.equal(swatchFamilies.length,10);assert.ok(swatchFamilies.every(f=>f.slice(2).every(isHexColor)));
  for(const mode of ['dark','light'])for(const c of colors){const t=themeTokens({mode,palette:'blue',custom:fromPrimary(c,mode)});assert.ok(contrast(t['--dc-button-text'],c)>=4.5);}
 });
 test('instant preview and Cancel restore saved state; Reset remains unsaved until Apply succeeds',()=>{
@@ -85,4 +86,16 @@ test('light/dark changes update surfaces while retaining primary, button and acc
  assert.equal(next.mode,'light');assert.notEqual(next.custom.background,custom.background);
  for(const key of ['primary','button','accent'])assert.equal(next.custom[key],custom[key]);
  assert.deepEqual(appearanceWithMode({mode:'dark',palette:'blue'},'light'),{mode:'light',palette:'blue'});
+});
+
+test('every required preset persists independently with readable surface and control tokens',async t=>{
+ const f=platform(t),store=appearanceStore(f.db);
+ for(const preset of themePresets){
+  const owner=`preset-${preset.id}`;
+  await store.save(owner,{appearance:preset.appearance,version:0,expectedOwnerId:owner});
+  const saved=await appearanceStore(f.db).get(owner);
+  assert.deepEqual(saved.appearance,canonicalAppearance(preset.appearance));
+  const c=colorsFor(saved.appearance),v=themeTokens(saved.appearance);
+  for(const [fg,bg] of [['--text',c.background],['--dc-card-text',c.secondary],['--dc-nav-text',c.navigation],['--dc-button-text',c.button]])assert.ok(contrast(v[fg],bg)>=4.5,`${preset.name}: ${fg}`);
+ }
 });

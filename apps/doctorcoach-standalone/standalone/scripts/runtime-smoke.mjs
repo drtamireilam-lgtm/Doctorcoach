@@ -58,14 +58,17 @@ try{
  assert.equal((await json('/auth/verify',{code:'123456'})).linked,false);
  await json('/auth/register',{confirmed:true});
  const firstCookies=cookies,account=await json('/api/account');
- assert.deepEqual(await json('/api/preferences/appearance'),{appearance:null,version:0});
- const appearanceResponse=await request('/api/preferences/appearance',{appearance:{mode:'light',palette:'pink'},version:0,userId:'forged-other'});
+ const initialAppearance=await json('/api/preferences/appearance');
+ assert.equal(initialAppearance.appearance,null);assert.equal(initialAppearance.version,0);assert.match(initialAppearance.ownerId,/^dc:/);
+ assert.equal((await request('/api/preferences/appearance',{appearance:{mode:'dark',palette:'blue'},version:0,expectedOwnerId:'forged-other'})).status,409);
+ const appearanceResponse=await request('/api/preferences/appearance',{appearance:{mode:'light',palette:'pink'},version:0,expectedOwnerId:initialAppearance.ownerId,userId:'forged-other'});
  assert.equal(appearanceResponse.status,200);assert.match(appearanceResponse.headers.get('cache-control'),/no-store/);
  assert.deepEqual((await json('/api/preferences/appearance')).appearance,{mode:'light',palette:'pink'});
  assert.equal((await request('/api/preferences/appearance',{appearance:{mode:'dark',palette:'blue'},version:0})).status,409);
  assert.equal((await request('/api/preferences/appearance',{appearance:{mode:'dark',palette:'green'},version:1},{origin:'https://foreign.example.test'})).status,403);
  assert.equal(account.signedIn,true);assert.equal(account.canManageServices,false);assert.equal(account.careRole,null);assert.ok(refreshCount>=1);
  const owner=(await db.prepare('SELECT principal_id FROM dc_identity_aliases WHERE subject=?').bind(identities.get('first@example.test').subject).first()).principal_id;
+ assert.equal(initialAppearance.ownerId,owner);
  const at=new Date().toISOString(),revision='2026-09-28.1';
  for(const id of ['terms','privacy','health','team','media'])await db.prepare('INSERT INTO user_consents(id,user_id,consent_id,revision,accepted,created_at) VALUES(?,?,?,?,1,?)').bind(randomUUID(),owner,id,revision,at).run();
  await db.prepare("INSERT INTO user_intakes(user_id,answers_json,completed,created_at,updated_at) VALUES(?,'{}',1,?,?)").bind(owner,at,at).run();
@@ -90,7 +93,8 @@ try{
  download=await request('/api/documents/'+document);assert.equal(download.status,200);assert.deepEqual(new Uint8Array(await download.arrayBuffer()),pdf);
  cookies='';await json('/auth/send',{email:'second@example.test'});await json('/auth/verify',{code:'123456'});await json('/auth/register',{confirmed:true});
  assert.equal((await json('/api/training')).stats.total,0);
- assert.deepEqual(await json('/api/preferences/appearance?userId=forged-other'),{appearance:null,version:0});
+ const secondAppearance=await json('/api/preferences/appearance?userId=forged-other');
+ assert.equal(secondAppearance.appearance,null);assert.equal(secondAppearance.version,0);assert.notEqual(secondAppearance.ownerId,initialAppearance.ownerId);
  assert.ok([403,404].includes((await request('/api/media/'+video)).status));
  assert.ok([403,404].includes((await request('/api/documents/'+document)).status));
  assert.ok([403,404].includes((await request('/api/training',{action:'finish',id:session.id,version:session.version,after:0},{},'PATCH')).status));
@@ -98,6 +102,7 @@ try{
  // Verify the real built routes with independently signed legacy ownership and
  // two separate coach/client pairs. All rows and signing keys are ephemeral.
  const secondOwner=(await db.prepare('SELECT principal_id FROM dc_identity_aliases WHERE subject=?').bind(identities.get('second@example.test').subject).first()).principal_id;
+ assert.equal(secondAppearance.ownerId,secondOwner);
  const secondCookies=cookies;
  for(const id of [owner,secondOwner]){
   await db.prepare("INSERT INTO care_profiles(user_id,name,goal,experience,equipment,days,medical_json,updated_at) VALUES(?,'Synthetic trainee','Strength','Beginner','Weights',3,?,?)").bind(id,JSON.stringify({medicalHistory:'SYNTHETIC MEDICAL SECRET'}),at).run();
