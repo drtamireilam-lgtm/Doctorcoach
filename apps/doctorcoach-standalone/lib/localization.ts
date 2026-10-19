@@ -6,6 +6,25 @@ const normalize = (text: string) => text.trim().replace(/\s+/g, ' ');
 const dictionary = new Map(hebrew.map((text, index) => [normalize(text), english[index]]));
 // New privacy labels are kept explicit instead of partially translating consent text.
 for(const [he,en] of [
+ ["כאן נמצאים האימון הבא שלך, סיכום התקדמות והודעות מהצוות. בטלפון: בית, התוכנית שלי, התיק שלי ועוד. מידע על הצוות וסיפורי ההתקדמות זמינים במסך ההיכרות הציבורי.", "Your next workout, progress summary and team messages are here. On mobile: Home, My program, My file and More. Team information and progress stories remain in the public introduction."],
+ ["בחרו נושא בתיק: פרטים ושאלונים, פציעות, מסמכים, שיקום, התקדמות, הצוות או דיווחים. כל נושא נפתח בנפרד; כפתור החזרה מחזיר לרשימת הנושאים. מנוי ופרטיות נמצאים בהגדרות וחשבון דרך עוד.", "Choose a file topic: details and questionnaires, injuries, documents, rehabilitation, progress, team or check-ins. Each topic opens separately. Back returns to the topic list. Membership and privacy are in Settings through More."],
+ ["נכנסים מתוך התיק שלי או מקיצור ההתקדמות בבית. אימונים, ביצועים ו־e1RM, ובאותו אזור גם תזונה ומדידות ודיווחי כאב וטווח תנועה. בחרו את הנושא בשורת הניווט העליונה.", "Open progress from My file or the Home shortcut. Review workouts, performance and e1RM, plus nutrition, measurements, pain and range of motion. Choose a topic in the navigation above."],
+ ["נכנסים דרך עוד. חיפוש תרגילים, דגשי ביצוע וסרטוני הדרכה. הוספה עצמאית לתוכנית תלויה במסלול ובהרשאה שלך.", "Open the library through More. Search exercises, technique guidance and demonstration videos. Adding exercises independently depends on your membership and permissions."],
+ ["נכנסים דרך עוד. בחרו אזור במפת הגוף, פתחו שריר ולמדו על התפקוד והתנועה. אפשר להשתמש גם בכפתורי האזורים שמתחת למפה.", "Open anatomy through More. Select a body region and a muscle to learn about function and movement. Region buttons below the map are also available."],
+ ["לפני ההרשמה מכירים את הצוות ודרך העבודה. אחרי הכניסה מופיעים האימון הבא, התקדמות והודעות. הניווט הראשי: בית, התוכנית שלי, התיק שלי ועוד.", "Before registration, meet the team and learn how the service works. After sign-in, see your next workout, progress and messages. Main navigation: Home, My program, My file and More."],
+ ["הפרטים האישיים, השאלונים, הפציעות, המסמכים, השיקום וההתקדמות מרוכזים כאן. שפה, צבעים, פרטיות, מנוי והתראות נמצאים בהגדרות דרך עוד.", "Personal details, questionnaires, injuries, documents, rehabilitation and progress are here. Language, colors, privacy, membership and notifications are in Settings through More."],
+ ["יצירת קשר נמצאת בתפריט עוד. כאן מרוכזים הודעות לצוות, תורים, ייעוץ ותיאום וקישורי האינסטגרם.", "Contact is in More. Find team messages, appointments, consultation requests and Instagram links here."],
+
+ ["הניווט שלך", "Your navigation"],
+ ["חזרה לעוד", "Back to More"],
+ ["טוענים את החשבון שלך…", "Loading your account…"],
+ ["לא ניתן לטעון את החשבון כרגע.", "Your account could not be loaded."],
+ ["שיקום וכאב", "Rehabilitation & pain"],
+ ["אימונים, ביצועים ומשקלים לאורך זמן", "Workouts, performance and weights over time"],
+ ["תוכניות שיקום, כאב וטווחי תנועה", "Rehabilitation plans, pain and range of motion"],
+ ["נתוני תזונה ומשקל גוף", "Nutrition data and body weight"],
+ ["מדריך קצר לבית, לתוכנית, לתיק ולתפריט עוד", "A short guide to Home, My program, My file and More"],
+
  ["פתיחת תיק המתאמן","Open client file"],
  ["משימה רפואית", "Medical task"],
  ["משימת אימון", "Training task"],
