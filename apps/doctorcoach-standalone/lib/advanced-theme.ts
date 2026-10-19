@@ -23,13 +23,15 @@ export function appearanceWithMode(a:Appearance,mode:Appearance['mode']):Appeara
  const regenerated=fromPrimary(a.custom.primary,mode);
  return {...a,mode,custom:{...a.custom,background:regenerated.background,secondary:regenerated.secondary,navigation:regenerated.navigation}};
 }
-export const themePresets:{id:string;name:string;appearance:Appearance}[]=[
- {id:'classic',name:'DoctorCoach Classic — Red & Black',appearance:{mode:'dark',palette:'red',custom:{background:'#0c0c10',primary:'#cf2434',secondary:'#19191f',button:'#cf2434',navigation:'#08080b',accent:'#ff8991'}}},
- {id:'professional',name:'Professional — Dark Blue',appearance:{mode:'dark',palette:'blue'}},
- {id:'modern',name:'Modern — Purple',appearance:{mode:'dark',palette:'purple'}},
- {id:'sport',name:'Sport — Green',appearance:{mode:'dark',palette:'green'}},
- {id:'dark',name:'Dark — Black',appearance:{mode:'dark',palette:'neutral'}},
- {id:'light',name:'Light — White',appearance:{mode:'light',palette:'neutral'}},
+export const themePresets:{id:string;name:string;he:string;appearance:Appearance}[]=[
+ {id:'classic',name:'DoctorCoach Classic — Red & Black',he:'DoctorCoach קלאסי — אדום ושחור',appearance:{mode:'dark',palette:'red',custom:{background:'#0c0c10',primary:'#cf2434',secondary:'#19191f',button:'#cf2434',navigation:'#08080b',accent:'#ff8991'}}},
+ {id:'dark',name:'Dark',he:'כהה',appearance:{mode:'dark',palette:'neutral'}},
+ {id:'light',name:'Light',he:'בהיר',appearance:{mode:'light',palette:'neutral'}},
+ {id:'professional',name:'Blue',he:'כחול',appearance:{mode:'dark',palette:'blue'}},
+ {id:'modern',name:'Purple',he:'סגול',appearance:{mode:'dark',palette:'purple'}},
+ {id:'wine',name:'Wine Red',he:'אדום יין',appearance:{mode:'dark',palette:'red',custom:{background:'#35101f',primary:'#9f254f',secondary:'#4b1c30',button:'#9f254f',navigation:'#280c17',accent:'#ffb1ce'}}},
+ {id:'yellow',name:'Yellow',he:'צהוב',appearance:{mode:'dark',palette:'yellow'}},
+ {id:'sport',name:'Forest Green',he:'ירוק יער',appearance:{mode:'dark',palette:'green'}},
 ];
 export const resetAppearance=themePresets[0].appearance;
 export function themeTokens(a:Appearance):Record<string,string>{

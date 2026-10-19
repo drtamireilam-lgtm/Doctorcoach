@@ -47,3 +47,7 @@ html[data-custom-theme] .navigation-tour{background:var(--card);color:var(--dc-c
 html[data-custom-theme] :is(.care-error,.service-form-error,.intake-error-summary){--text:#ffdddd;--muted:#ffdddd;--foreground:#ffdddd;--card-foreground:#ffdddd;--muted-foreground:#ffdddd;--accent-foreground:#ffdddd}
 html[data-custom-theme] :is(.warning-box,.safety-notice){--text:#ffe3ab;--muted:#ffe3ab;--foreground:#ffe3ab;--card-foreground:#ffe3ab;--muted-foreground:#ffe3ab;--accent-foreground:#ffe3ab}
 html[data-custom-theme] .care-success{--text:#c6f7da;--muted:#c6f7da;--foreground:#c6f7da;--card-foreground:#c6f7da;--muted-foreground:#c6f7da;--accent-foreground:#c6f7da}
+
+.appearance-presets button{min-height:68px;white-space:normal;display:flex;align-items:center;gap:12px;text-align:start}
+.preset-surfaces{display:flex;flex-shrink:0;gap:3px}.preset-surfaces i{width:18px;height:28px;border:1px solid currentColor;border-radius:5px}
+.appearance-presets button[aria-pressed=true]{outline:3px solid var(--accent-red);outline-offset:3px}
