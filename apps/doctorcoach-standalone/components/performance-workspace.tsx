@@ -12,7 +12,7 @@ export function PerformancePanel({history}:{history:TrainingSession[]}){
  const [method,setMethod]=useState<EstimateMethod>('effort');
  const points=performancePoints(history,selected,method).map(point=>({...point,date:formatDate(point.at)}));
  const hasChart=points.some(point=>point.e1rm!==null||point.weight!==null);
- const latest=history.find(s=>s.items.some(i=>i.exerciseId===selected)),item=latest?.items.find(i=>i.exerciseId===selected),suggestion=item&&latest?nextLoad(item,latest):null;
+ const latest=history.find(s=>s.items.some(i=>i.exerciseId===selected)),matches=latest?.items.filter(i=>i.exerciseId===selected)??[],item=matches.length===1?matches[0]:null,suggestion=item&&latest?nextLoad(item,latest):null;
  const completed=history.reduce((n,s)=>n+s.completedSets,0),planned=history.reduce((n,s)=>n+s.plannedSets,0),adherence=planned?Math.round(completed/planned*100):null;
  const {best,last,isPr}=performanceSummary(points);
 

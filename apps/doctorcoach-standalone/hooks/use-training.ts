@@ -83,10 +83,9 @@ export function useTraining() {
     setNotice('פרטי התרגיל נשמרו.'); return saved.item;
   });
   const add = async (id: string) => {
-    if (plan.some(x => x.exerciseId === id&&workoutDayId(x)===selectedPlanDay)) { setNotice('התרגיל כבר בתוכנית.'); return; }
-    await savePlan({...customId(id)?{exerciseId:id}:defaultPrescription(id),dayId:selectedPlanDay});
+    await savePlan({...customId(id)?{exerciseId:id}:defaultPrescription(id),dayId:selectedPlanDay,occurrenceId:crypto.randomUUID()});
   };
-  const remove = async (exerciseId: string,dayId='1') => mutate(async () => { await request('/api/program','DELETE',{exerciseId,dayId}); setPlan(old=>old.filter(x=>x.exerciseId!==exerciseId||workoutDayId(x)!==dayId)); setNotice('התרגיל הוסר מהתוכנית.'); return true; });
+  const remove = async (exerciseId: string,dayId='1',occurrenceId?:string) => mutate(async () => { await request('/api/program','DELETE',{exerciseId,dayId,occurrenceId}); setPlan(old=>old.filter(x=>occurrenceId?x.occurrenceId!==occurrenceId:x.exerciseId!==exerciseId||workoutDayId(x)!==dayId)); setNotice('התרגיל הוסר מהתוכנית.'); return true; });
   const useTemplate = async (templateId: string) => mutate(async () => { const saved = await request<{items:PlanItem[];access:TrainingAccess}>('/api/program','POST',{templateId,dayId:selectedPlanDay}); setPlan(saved.items); setNotice('התרגילים נוספו. ההתאמות הקיימות נשמרו.'); return true; });
   const toggleFavorite = async (exerciseId: string) => mutate(async () => {
     const favorite = !favorites.includes(exerciseId);

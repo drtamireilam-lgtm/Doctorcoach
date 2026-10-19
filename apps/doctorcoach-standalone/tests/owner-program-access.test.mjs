@@ -14,7 +14,7 @@ async function fixture(t){const f=platform(t);await f.connect();return {...f,car
 test('configured physician-owner can draft, assign and run a client program without changing roles',async t=>{
  const f=await fixture(t);const bundle=await f.care.bundle(doctor,client.userId);assert.equal(bundle.viewerRole,'clinician');assert.equal(bundle.canManagePrograms,true);assert.equal(bundle.canManageTeamAssignments,true);
  const p=program(),drafts=coachDraftStore(f.db,f.care);await drafts.save(doctor,client.userId,{action:'save',version:0,requestId:p.id,title:p.title,items:p.items,revisionOf:null});
- assert.deepEqual((await drafts.get(doctor,client.userId)).draft.items,p.items.map(i=>({...i,effortScale:'rpe',workoutSection:'main',weightUnspecified:false})));
+ assert.deepEqual((await drafts.get(doctor,client.userId)).draft.items,p.items.map(i=>({...i,occurrenceId:`1:${i.exerciseId}`,effortScale:'rpe',workoutSection:'main',weightUnspecified:false})));
  await f.care.assign(doctor,client.userId,p);assert.equal((await trainingAccess(f.db,client.userId,config)).canStart,true);
  const trainee=(await f.training.getPlan(client.userId))[0];assert.equal(trainee.repsMax,8);
  let s=await f.training.start(client.userId,{requestId:randomUUID(),before:0});

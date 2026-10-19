@@ -4,7 +4,7 @@ import {defaultWorkoutSection,workoutSection,type WorkoutSection} from './workou
 import {duringPain} from './workout-context.ts';
 export type Unit = 'reps' | 'seconds' | 'minutes';
 export type ExerciseTempo={eccentric:number;bottom:number;concentric:number;top:number};
-export type PlanItem = { exerciseId: string; customExercise?:CustomExercise;sets: number; reps: number; repsMax?:number|null; unit: Unit; weight: number; weightUnspecified?:boolean; notes: string; tempo?:ExerciseTempo|null; targetRpe?: number|null; targetRpes?:(number|null)[]; effortScale?:EffortScale; approvedSubstitutions?:string[]; dayId?:string; workoutSection?:WorkoutSection };
+export type PlanItem = { exerciseId: string; occurrenceId?:string; customExercise?:CustomExercise;sets: number; reps: number; repsMax?:number|null; unit: Unit; weight: number; weightUnspecified?:boolean; notes: string; tempo?:ExerciseTempo|null; targetRpe?: number|null; targetRpes?:(number|null)[]; effortScale?:EffortScale; approvedSubstitutions?:string[]; dayId?:string; workoutSection?:WorkoutSection };
 export type SetResult = { done: boolean; amount: number; weight: number; actualRpe?: number|null; painDuring?:number|null };
 export type ReadinessSnapshot={id:string;day:string;version:number;capturedAt:string;data:{sleep:number;energy:number;stress:number;note:string}};
 export type WorkoutFollowup={day:string;pain:number;recordedAt:string};
@@ -79,7 +79,9 @@ export function parsePlanItem(value: unknown, fallback?: PlanItem): PlanItem {
    if(!Array.isArray(rawTargets)||rawTargets.length>20||(value.targetRpes!==undefined&&rawTargets.length!==sets))throw new TrainingError('יש להגדיר יעד מאמץ לכל סט בתרגיל.');
    targetRpes=Array.from({length:sets},(_,i)=>i<rawTargets.length?parseRpe(rawTargets[i]):targetRpe);
   }
-  return { exerciseId: value.exerciseId,...(defaults.customExercise?{customExercise:defaults.customExercise}:{}),sets, reps, unit: unit as Unit, weight, notes: notes.trim(), targetRpe, effortScale,workoutSection:workoutSection as WorkoutSection,...(targetRpes?{targetRpes}:{}),...(tempo===undefined?{}:{tempo}),...(repsMax===undefined?{}:{repsMax:repsMax as number|null}),...(weightUnspecified===undefined?{}:{weightUnspecified:weightUnspecified as boolean}) };
+  const occurrenceId=value.occurrenceId??defaults.occurrenceId;
+  if(occurrenceId!==undefined&&(typeof occurrenceId!=='string'||!/^[a-zA-Z0-9:_-]{1,160}$/.test(occurrenceId)))throw new TrainingError('מזהה הופעת התרגיל אינו תקין.');
+  return { exerciseId: value.exerciseId,...(occurrenceId===undefined?{}:{occurrenceId}),...(defaults.customExercise?{customExercise:defaults.customExercise}:{}),sets, reps, unit: unit as Unit, weight, notes: notes.trim(), targetRpe, effortScale,workoutSection:workoutSection as WorkoutSection,...(targetRpes?{targetRpes}:{}),...(tempo===undefined?{}:{tempo}),...(repsMax===undefined?{}:{repsMax:repsMax as number|null}),...(weightUnspecified===undefined?{}:{weightUnspecified:weightUnspecified as boolean}) };
 }
 
 export const repetitionLabel=(item:Pick<PlanItem,'reps'|'repsMax'>)=>item.repsMax!=null&&item.repsMax!==item.reps?`${item.reps}–${item.repsMax}`:String(item.reps);
@@ -90,7 +92,8 @@ export function completion(items: SessionExercise[]) {
 
 /** Patch exactly one saved set, never accept arbitrary snapshots from the browser. */
 export function updateSet(items: SessionExercise[], value: Record<string, unknown>): SessionExercise[] {
-  const index = items.findIndex(item => item.exerciseId === value.exerciseId);
+  const selected=resolveSessionExercise(items,value);
+  const index = items.indexOf(selected);
   if (index < 0 || !Number.isInteger(value.setIndex) || Number(value.setIndex) < 0 || Number(value.setIndex) >= items[index].results.length) throw new TrainingError('הסט לא נמצא באימון.');
   if (typeof value.done !== 'boolean') throw new TrainingError('יש לציין אם הסט בוצע.');
   const amount = value.amount; const weight = value.weight;
@@ -137,3 +140,16 @@ export function nextLoad(item:SessionExercise,session:TrainingSession):{weight:n
 export function targetRpeForSet(item:Pick<PlanItem,'targetRpe'|'targetRpes'>,index:number):number|null{return item.targetRpes&&index<item.targetRpes.length?item.targetRpes[index]:item.targetRpe??null;}
 
 export function resizedSetTargets(item:PlanItem,sets:number):(number|null)[]|undefined{return item.targetRpes?Array.from({length:Math.max(0,Math.min(20,sets))},(_,i)=>targetRpeForSet(item,i)):undefined;}
+
+/** Stable occurrence identity; old stored plans/sessions keep their original exercise links. */
+export const exerciseOccurrenceKey=(item:PlanItem)=>item.occurrenceId??`${item.dayId??'1'}:${item.exerciseId}`;
+export function withOccurrenceIds<T extends PlanItem>(items:T[]):T[]{
+ const used=new Set(items.flatMap(i=>i.occurrenceId?[i.occurrenceId]:[]));
+ return items.map(item=>{if(item.occurrenceId)return item;const base=`${item.dayId??'1'}:${item.exerciseId}`;let id=base,n=1;while(used.has(id))id=`${base}:${++n}`;used.add(id);return {...item,occurrenceId:id};});
+}
+/** Legacy exercise-only requests remain valid only when they address exactly one occurrence. */
+export function resolveSessionExercise<T extends PlanItem>(items:T[],value:Record<string,unknown>):T{
+ const found=items.filter(item=>value.occurrenceId!==undefined?exerciseOccurrenceKey(item)===value.occurrenceId&&item.exerciseId===value.exerciseId:item.exerciseId===value.exerciseId);
+ if(found.length!==1)throw new TrainingError('יש לבחור הופעת תרגיל אחת מהאימון.');
+ return found[0];
+}

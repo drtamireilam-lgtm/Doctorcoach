@@ -1,4 +1,4 @@
-import {targetRpeForSet} from './training.ts';
+import {exerciseOccurrenceKey,targetRpeForSet} from './training.ts';
 import type {SessionExercise,SetResult,TrainingSession} from './training.ts';
 import {duringPain} from './workout-context.ts';
 import {workoutSection} from './workout-sections.ts';
@@ -7,7 +7,7 @@ export const loadSteps=[0.25,0.5,1,1.25,2.5,5];
 export function automaticSetDraft(item:SessionExercise,index:number,session:Pick<TrainingSession,'before'|'after'>&Partial<Pick<TrainingSession,'items'>>,draft:SetResult&{targetRpe:number|null},enabled=true){
  if(!enabled||index<1||draft.done||draft.actualRpe!=null||(draft.painDuring??0)>0)return draft;
  const adjusted={...item,targetRpes:Array.from({length:item.results.length},(_,n)=>n===index?draft.targetRpe:targetRpeForSet(item,n)),results:item.results.map((r,n)=>n===index?draft:r)};
- const items=(session.items??[item]).map(i=>i.exerciseId===item.exerciseId?adjusted:i);
+ const items=(session.items??[item]).map(i=>exerciseOccurrenceKey(i)===exerciseOccurrenceKey(item)?adjusted:i);
  const weight=nextSetLoad(adjusted,index-1,{...session,items}).calculatedWeight;
  return weight!==null&&weight>0&&weight<=1000?{...draft,weight}:draft;
 }
@@ -23,7 +23,7 @@ export function previewNextSetLoad(item:SessionExercise,index:number,session:Pic
  const preview:SessionExercise={...item,results:item.results.map((result,n)=>n===index?{...draft,done:true}:result)};
  // Match the existing first-target behavior of independent sessions.
  if(!item.targetRpes&&item.targetRpe==null&&draft.targetRpe!=null)preview.targetRpe=draft.targetRpe;
- const items=(session.items??[item]).map(existing=>existing.exerciseId===item.exerciseId?preview:existing);
+ const items=(session.items??[item]).map(existing=>exerciseOccurrenceKey(existing)===exerciseOccurrenceKey(item)?preview:existing);
  return nextSetLoad(preview,index,{...session,items},step);
 }
 export function nextSetLoad(item:SessionExercise,index:number,session:Pick<TrainingSession,'before'|'after'>&Partial<Pick<TrainingSession,'items'>>,step=2.5):{weight:number|null;calculatedWeight:number|null;relativePercent:number|null;text:string;estimate:number|null}{

@@ -16,13 +16,13 @@ import {trainingWriteGuard} from './training-write-guard.ts';
 import {nextSetLoad} from './set-load.ts';
 import {requireTrainingAllowed} from './safety-store.ts';
 import { exercises, templates } from './content.ts';
-import { completion, defaultPrescription, isRecord, isScore, parsePlanItem, TrainingError, updateSet, parseRpe, targetRpeForSet } from './training.ts';
+import { completion, resolveSessionExercise,withOccurrenceIds, defaultPrescription, isRecord, isScore, parsePlanItem, TrainingError, updateSet, parseRpe, targetRpeForSet } from './training.ts';
 import type { PlanItem, SessionExercise, TrainingFeed, TrainingSession } from './training.ts';
 
 type Row = { finish_feedback_json:string|null; readiness_json:string|null; followup_json:string|null; plan_mode:'legacy'|'self'|'coached'; program_id:string|null; id: string; status: TrainingSession['status']; items_json: string; started_at: string; finished_at: string | null; pain_before: number; pain_after: number | null; planned_sets: number; completed_sets: number; version: number };
-const selectPlan = 'SELECT day_id AS dayId,exercise_id AS exerciseId, sets, reps, unit, weight, notes, target_rpe AS targetRpe, effort_scale AS effortScale, target_rpes_json AS targetRpesJson, workout_section AS workoutSection,tempo_json AS tempoJson,reps_max AS repsMax,weight_unspecified AS weightUnspecified,custom_exercise_json AS customExerciseJson FROM program_items WHERE owner_id = ? ORDER BY id';
+const selectPlan = `SELECT COALESCE(occurrence_id,day_id||':'||exercise_id) AS occurrenceId,day_id AS dayId,exercise_id AS exerciseId, sets, reps, unit, weight, notes, target_rpe AS targetRpe, effort_scale AS effortScale, target_rpes_json AS targetRpesJson, workout_section AS workoutSection,tempo_json AS tempoJson,reps_max AS repsMax,weight_unspecified AS weightUnspecified,custom_exercise_json AS customExerciseJson FROM program_items WHERE owner_id = ? ORDER BY id`;
 const byId = new Map(exercises.map(exercise => [exercise.id, exercise]));
-export const trainingSessionFromRow = (row: Row): TrainingSession => ({ finishFeedback:row.finish_feedback_json?JSON.parse(row.finish_feedback_json):null,readiness:row.readiness_json?JSON.parse(row.readiness_json):null,followup:row.followup_json?JSON.parse(row.followup_json):null,id: row.id, planMode:row.plan_mode,programId:row.program_id, status: row.status, items: JSON.parse(row.items_json) as SessionExercise[], startedAt: row.started_at, finishedAt: row.finished_at, before: row.pain_before, after: row.pain_after, plannedSets: row.planned_sets, completedSets: row.completed_sets, version: row.version });
+export const trainingSessionFromRow = (row: Row): TrainingSession => ({ finishFeedback:row.finish_feedback_json?JSON.parse(row.finish_feedback_json):null,readiness:row.readiness_json?JSON.parse(row.readiness_json):null,followup:row.followup_json?JSON.parse(row.followup_json):null,id: row.id, planMode:row.plan_mode,programId:row.program_id, status: row.status, items: withOccurrenceIds(JSON.parse(row.items_json) as SessionExercise[]), startedAt: row.started_at, finishedAt: row.finished_at, before: row.pain_before, after: row.pain_after, plannedSets: row.planned_sets, completedSets: row.completed_sets, version: row.version });
 
 const toSession=trainingSessionFromRow;
 export function trainingStore(db: D1Database,config:ProgramAuthorConfig={}) {
@@ -45,20 +45,28 @@ export function trainingStore(db: D1Database,config:ProgramAuthorConfig={}) {
       await requireHealthConsent(db,owner);
       if (!isRecord(payload) || typeof payload.exerciseId !== 'string') throw new TrainingError('תרגיל לא מוכר.');
       const custom=(await availableCustomExercises(db,owner)).find(e=>e.id===payload.exerciseId);if(!byId.has(payload.exerciseId)&&!custom)throw new TrainingError('תרגיל לא מוכר.');
-      const ownerItems=await getPlan(owner),matching=ownerItems.filter(i=>i.exerciseId===payload.exerciseId);if(payload.dayId===undefined&&matching.length>1)throw new TrainingError('בחרו את האימון של התרגיל לפני עריכה.');const dayId=selfDayId(payload.dayId??matching[0]?.dayId);const split=await programSplitStore(db).get(owner);if(split&&!split.days.some(d=>d.id===dayId))throw new TrainingError('יום האימון אינו קיים בחלוקה שנבחרה.');
-      const old = ownerItems.find(item => item.exerciseId === payload.exerciseId&&(item.dayId??'1')===dayId);
-      const parsed = parsePlanItem(payload, custom?{...(old??customPrescription(custom)),customExercise:custom}:old);const item={...parsed,...(dayId!=='1'?{dayId}:{})};
+      const ownerItems=await getPlan(owner),matching=ownerItems.filter(i=>i.exerciseId===payload.exerciseId&&(payload.dayId===undefined||(i.dayId??'1')===payload.dayId));
+      if(payload.occurrenceId===undefined&&matching.length>1)throw new TrainingError('בחרו הופעת תרגיל לפני עריכה.');
+      const old=payload.occurrenceId===undefined?matching[0]:ownerItems.find(i=>i.occurrenceId===payload.occurrenceId);
+      if(old&&old.exerciseId!==payload.exerciseId)throw new TrainingError('מזהה ההופעה שייך לתרגיל אחר.');
+      const dayId=selfDayId(payload.dayId??old?.dayId);const split=await programSplitStore(db).get(owner);if(split&&!split.days.some(d=>d.id===dayId))throw new TrainingError('יום האימון אינו קיים בחלוקה שנבחרה.');
+      const parsed=parsePlanItem(payload,custom?{...(old??customPrescription(custom)),customExercise:custom}:old);
+      const item={...parsed,occurrenceId:parsed.occurrenceId??`${dayId}:${parsed.exerciseId}`,...(dayId!=='1'?{dayId}:{})};
       const guard=combineCareGuards(planGuard(owner),{sql:"(EXISTS(SELECT 1 FROM self_program_splits l,json_each(l.payload_json,'$.days') d WHERE l.owner_id=? AND json_extract(d.value,'$.id')=?) OR (? IN ('1','2','3','4','5','6','7') AND NOT EXISTS(SELECT 1 FROM self_program_splits WHERE owner_id=?)))",args:[owner,dayId,dayId,owner]});
-      const saved=await db.prepare(`INSERT INTO program_items (owner_id, exercise_id, sets, reps, unit, weight, notes, target_rpe, effort_scale, target_rpes_json,workout_section,tempo_json,reps_max,weight_unspecified,custom_exercise_json,day_id) SELECT ?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,? WHERE ${guard.sql} ON CONFLICT(owner_id, exercise_id,day_id) DO UPDATE SET sets = excluded.sets, reps = excluded.reps, unit = excluded.unit, weight = excluded.weight, notes = excluded.notes, target_rpe = excluded.target_rpe, effort_scale = excluded.effort_scale,target_rpes_json=excluded.target_rpes_json,workout_section=excluded.workout_section,tempo_json=excluded.tempo_json,reps_max=excluded.reps_max,weight_unspecified=excluded.weight_unspecified,custom_exercise_json=excluded.custom_exercise_json RETURNING exercise_id`)
-        .bind(owner, item.exerciseId, item.sets, item.reps, item.unit, item.weight, item.notes, item.targetRpe??null,item.effortScale??'rpe',item.targetRpes?JSON.stringify(item.targetRpes):null,item.workoutSection??'main',item.tempo?JSON.stringify(item.tempo):null,item.repsMax??null,item.weightUnspecified?1:0,item.customExercise?JSON.stringify(item.customExercise):null,dayId,...guard.args).first();
-      if(!saved)await requirePlanGuard(guard,owner);
+      const saved=await db.prepare(`INSERT INTO program_items (owner_id, exercise_id, sets, reps, unit, weight, notes, target_rpe, effort_scale, target_rpes_json,workout_section,tempo_json,reps_max,weight_unspecified,custom_exercise_json,day_id,occurrence_id) SELECT ?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,? WHERE ${guard.sql} ON CONFLICT DO UPDATE SET day_id=excluded.day_id,occurrence_id=excluded.occurrence_id,sets = excluded.sets, reps = excluded.reps, unit = excluded.unit, weight = excluded.weight, notes = excluded.notes, target_rpe = excluded.target_rpe, effort_scale = excluded.effort_scale,target_rpes_json=excluded.target_rpes_json,workout_section=excluded.workout_section,tempo_json=excluded.tempo_json,reps_max=excluded.reps_max,weight_unspecified=excluded.weight_unspecified,custom_exercise_json=excluded.custom_exercise_json WHERE program_items.exercise_id=excluded.exercise_id RETURNING exercise_id`)
+        .bind(owner, item.exerciseId, item.sets, item.reps, item.unit, item.weight, item.notes, item.targetRpe??null,item.effortScale??'rpe',item.targetRpes?JSON.stringify(item.targetRpes):null,item.workoutSection??'main',item.tempo?JSON.stringify(item.tempo):null,item.repsMax??null,item.weightUnspecified?1:0,item.customExercise?JSON.stringify(item.customExercise):null,dayId,item.occurrenceId,...guard.args).first();
+      if(!saved){await requirePlanGuard(guard,owner);throw new TrainingError('מזהה הופעת התרגיל השתנה. רעננו לפני שמירה.',409);}
       return item;
     },
     async removePlan(owner: string, payload: unknown) {
       await requireSelfAccess(db,owner,config);
       if (!isRecord(payload) || typeof payload.exerciseId !== 'string' || !byId.has(payload.exerciseId)&&!customId(payload.exerciseId)) throw new TrainingError('תרגיל לא מוכר.');
-      const matching=(await getPlan(owner)).filter(i=>i.exerciseId===payload.exerciseId);if(payload.dayId===undefined&&matching.length>1)throw new TrainingError('בחרו את האימון של התרגיל לפני הסרה.');const dayId=selfDayId(payload.dayId??matching[0]?.dayId);const guard=removeGuard(owner);
-      const removed=await db.prepare(`DELETE FROM program_items WHERE owner_id = ? AND exercise_id = ? AND day_id=? AND ${guard.sql} RETURNING exercise_id`).bind(owner,payload.exerciseId,dayId,...guard.args).first();
+      const ownerItems=await getPlan(owner),matching=ownerItems.filter(i=>i.exerciseId===payload.exerciseId&&(payload.dayId===undefined||(i.dayId??'1')===payload.dayId));
+      if(payload.occurrenceId===undefined&&matching.length>1)throw new TrainingError('בחרו הופעת תרגיל לפני הסרה.');
+      const selected=payload.occurrenceId===undefined?matching[0]:ownerItems.find(i=>i.occurrenceId===payload.occurrenceId&&i.exerciseId===payload.exerciseId);
+      if(!selected){await requirePlanGuard(removeGuard(owner));return;}
+      const guard=removeGuard(owner);
+      const removed=await db.prepare(`DELETE FROM program_items WHERE owner_id=? AND COALESCE(occurrence_id,day_id||':'||exercise_id)=? AND ${guard.sql} RETURNING exercise_id`).bind(owner,selected.occurrenceId,...guard.args).first();
       if(!removed)await requirePlanGuard(guard);
     },
     async addTemplate(owner: string, payload: unknown) {
@@ -71,7 +79,7 @@ export function trainingStore(db: D1Database,config:ProgramAuthorConfig={}) {
       const dayId=selfDayId(payload.dayId),split=await programSplitStore(db).get(owner);if(split&&!split.days.some(d=>d.id===dayId))throw new TrainingError('יום האימון אינו קיים בחלוקה שנבחרה.');const guard=combineCareGuards(planGuard(owner),{sql:"(EXISTS(SELECT 1 FROM self_program_splits l,json_each(l.payload_json,'$.days') d WHERE l.owner_id=? AND json_extract(d.value,'$.id')=?) OR (? IN ('1','2','3','4','5','6','7') AND NOT EXISTS(SELECT 1 FROM self_program_splits WHERE owner_id=?)))",args:[owner,dayId,dayId,owner]});
       await db.batch(template.ids.map(id => {
         const item = defaultPrescription(id);
-        return db.prepare(`INSERT INTO program_items (owner_id, exercise_id, sets, reps, unit, weight, notes,day_id) SELECT ?,?,?,?,?,0,?,? WHERE ${guard.sql} ON CONFLICT(owner_id, exercise_id,day_id) DO NOTHING`)
+        return db.prepare(`INSERT INTO program_items (owner_id, exercise_id, sets, reps, unit, weight, notes,day_id) SELECT ?,?,?,?,?,0,?,? WHERE ${guard.sql} ON CONFLICT DO NOTHING`)
           .bind(owner, id, item.sets, item.reps, item.unit, '',dayId,...guard.args);
       }));
       await requirePlanGuard(guard,owner);
@@ -99,7 +107,7 @@ export function trainingStore(db: D1Database,config:ProgramAuthorConfig={}) {
       const prescribed=access.mode==='coached'?await assignedPlan(db,owner,access.programId,config):null;
       if(access.mode==='coached'&&!prescribed)throw new TrainingError('התוכנית או ההרשאות השתנו. רעננו לפני פתיחת האימון.',409);
       const fullPlan:PlanItem[] = prescribed?JSON.parse(prescribed.items_json):(await db.prepare(selectPlan).bind(owner).all<Omit<PlanItem,'weightUnspecified'>&{targetRpesJson:string|null;tempoJson:string|null;weightUnspecified:number;customExerciseJson:string|null;dayId:string}>()).results.map(({targetRpesJson,tempoJson,weightUnspecified,repsMax,customExerciseJson,dayId,...item})=>({...item,...(dayId!=='1'?{dayId}:{}),...(customExerciseJson?{customExercise:JSON.parse(customExerciseJson)}:{}),...(repsMax==null?{}:{repsMax}),...(weightUnspecified?{weightUnspecified:true}:{}),...(targetRpesJson?{targetRpes:JSON.parse(targetRpesJson)}:{}),...(tempoJson?{tempo:JSON.parse(tempoJson)}:{})}));
-      const plan = selectWorkoutDay(fullPlan,payload.dayId);
+      const plan = selectWorkoutDay(withOccurrenceIds(fullPlan),payload.dayId);
       if(plan.some(item=>!byId.has(item.exerciseId)&&item.customExercise?.id!==item.exerciseId))throw new TrainingError('תרגיל בתוכנית אינו זמין. פנו למאמן לעדכון התוכנית לפני פתיחת האימון.',409);
       const items = plan.filter(item => byId.has(item.exerciseId)||item.customExercise?.id===item.exerciseId).map(item => ({ ...item, name: item.customExercise?.name??byId.get(item.exerciseId)!.name, results: Array.from({ length: item.sets }, () => ({ done: false, amount: item.reps, weight: item.weight })) }));
       if (!items.length) throw new TrainingError('יש להוסיף תרגילים לתוכנית לפני התחלת אימון.');
@@ -155,7 +163,7 @@ export function trainingStore(db: D1Database,config:ProgramAuthorConfig={}) {
       let items = session.items; let status: TrainingSession['status'] = session.status; let after = session.after; let finishedAt = session.finishedAt;
       if (payload.action === 'set') {
         if(payload.targetRpe!==undefined){
-         const item=items.find(i=>i.exerciseId===payload.exerciseId),index=Number(payload.setIndex),target=parseRpe(payload.targetRpe);
+         const item=resolveSessionExercise(items,payload),index=Number(payload.setIndex),target=parseRpe(payload.targetRpe);
          if(!item||!Number.isInteger(payload.setIndex)||index<0||index>=item.results.length)throw new TrainingError('הסט לא נמצא באימון.');
          if(target!==targetRpeForSet(item,index)){
           if(session.planMode==='coached')throw new TrainingError('יעד המאמץ נקבע על ידי המאמן.',403);
@@ -165,25 +173,25 @@ export function trainingStore(db: D1Database,config:ProgramAuthorConfig={}) {
         }
         items = updateSet(items, payload);
         if(payload.autoNextLoad===true&&payload.done===true){
-         const item=items.find(i=>i.exerciseId===payload.exerciseId)!;const index=Number(payload.setIndex);
+         const item=resolveSessionExercise(items,payload)!;const index=Number(payload.setIndex);
          const suggestion=nextSetLoad(item,index,{...session,items},typeof payload.step==='number'?payload.step:2.5);
          const weight=payload.loadMode==='calculated'?suggestion.calculatedWeight:suggestion.weight;
          if(weight!==null&&weight>0&&weight<=1000&&item.results[index+1]?.actualRpe==null&&(item.results[index+1]?.painDuring??0)===0)items=items.map(i=>i!==item?i:{...i,results:i.results.map((r,j)=>j===index+1?{...r,weight,actualRpe:null}:r)});
         }
       }
       else if(payload.action==='effortScale'){
-        if(!['rpe','rir'].includes(String(payload.effortScale))||!items.some(i=>i.exerciseId===payload.exerciseId))throw new TrainingError('שיטת מאמץ לא תקינה.');
-        items=items.map(i=>i.exerciseId===payload.exerciseId?{...i,effortScale:payload.effortScale as 'rpe'|'rir'}:i);
+        if(!['rpe','rir'].includes(String(payload.effortScale))||!resolveSessionExercise(items,payload))throw new TrainingError('שיטת מאמץ לא תקינה.');
+        const selected=resolveSessionExercise(items,payload);items=items.map(i=>i===selected?{...i,effortScale:payload.effortScale as 'rpe'|'rir'}:i);
       } else if(payload.action==='nextLoad'){
-        const item=items.find(i=>i.exerciseId===payload.exerciseId);const index=Number(payload.setIndex);if(!item||!Number.isInteger(payload.setIndex)||index<0||index>=item.results.length||typeof payload.step!=='number')throw new TrainingError('פרטי התאמת המשקל אינם תקינים.');
+        const item=resolveSessionExercise(items,payload);const index=Number(payload.setIndex);if(!item||!Number.isInteger(payload.setIndex)||index<0||index>=item.results.length||typeof payload.step!=='number')throw new TrainingError('פרטי התאמת המשקל אינם תקינים.');
         const suggestion=nextSetLoad(item,index,session,payload.step);if(suggestion.weight===null)throw new TrainingError(suggestion.text);
         items=items.map(i=>i!==item?i:{...i,results:i.results.map((r,j)=>j===index+1?{...r,weight:suggestion.weight!,actualRpe:null}:r)});
       } else if (payload.action === 'swap') {
-        const current=items.find(i=>i.exerciseId===payload.exerciseId),replacement=byId.get(String(payload.replacementId))??(await availableCustomExercises(db,owner,session.planMode==='coached'?owner:undefined)).find(e=>e.id===payload.replacementId);
+        const current=resolveSessionExercise(items,payload),replacement=byId.get(String(payload.replacementId))??(await availableCustomExercises(db,owner,session.planMode==='coached'?owner:undefined)).find(e=>e.id===payload.replacementId);
         if(session.planMode==='coached'){
           if(!current||!replacement||!current.approvedSubstitutions?.includes(replacement.id))throw new TrainingError('אפשר לבחור רק חלופה שהמאמן אישר בתוכנית.',403);
         }else await requireSelfAccess(db,owner,config);
-        if(!current||!replacement||items.some(i=>i.exerciseId===replacement.id)||current.results.some(r=>r.done)||payload.confirmed!==true)throw new TrainingError('החלפה אפשרית לפני ביצוע סטים, לתרגיל שאינו כבר באימון, ולאחר אישור בחירת החלופה.');
+        if(!current||!replacement||current.results.some(r=>r.done)||payload.confirmed!==true)throw new TrainingError('החלפה אפשרית לפני ביצוע סטים, ולאחר אישור בחירת החלופה.');
         const defaults=customId(replacement.id)?customPrescription(replacement as import('./custom-exercise-types.ts').CustomExercise):defaultPrescription(replacement.id),unit=session.planMode==='coached'?current.unit:defaults.unit,reps=unit===current.unit?current.reps:defaults.reps;
         const approvedSubstitutions=session.planMode==='coached'?[...current.approvedSubstitutions!.filter(id=>id!==replacement.id),current.exerciseId]:undefined;
         items=items.map(i=>i!==current?i:{...current,customExercise:defaults.customExercise,approvedSubstitutions,exerciseId:replacement.id,name:replacement.name,unit,reps,repsMax:unit==='reps'?current.repsMax:null,tempo:unit==='reps'?current.tempo:null,weight:0,swappedFrom:current.swappedFrom??current.name,notes:current.swappedFrom?current.notes:`הוחלף מ־${current.name}. ${current.notes}`,results:Array.from({length:current.sets},()=>({done:false,amount:reps,weight:0,actualRpe:null}))});
