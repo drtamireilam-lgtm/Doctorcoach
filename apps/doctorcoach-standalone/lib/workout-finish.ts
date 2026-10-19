@@ -20,7 +20,7 @@ export function workoutFinishSummary(session:TrainingSession,history:TrainingSes
  const completed=session.items.filter(i=>i.results.some(s=>s.done));
  const previous=[...history].filter(s=>s.id!==session.id&&s.status==='completed'&&s.planMode===session.planMode&&s.programId===session.programId&&s.finishedAt&&s.finishedAt<=session.startedAt).sort((a,b)=>b.finishedAt!.localeCompare(a.finishedAt!));
  const comparisons=completed.filter(item=>workoutSection(item)==='main').map(item=>{
-  const match=previous.map(s=>({session:s,item:s.items.find(i=>i.exerciseId===item.exerciseId&&i.unit===item.unit&&workoutDayId(i)===workoutDayId(item)&&workoutSection(i)==='main'&&i.results.some(r=>r.done))})).find(m=>m.item);
+  const match=previous.map(s=>({session:s,item:s.items.find(i=>i.exerciseId===item.exerciseId&&(i.occurrenceId??`${i.dayId??'1'}:${i.exerciseId}`)===(item.occurrenceId??`${item.dayId??'1'}:${item.exerciseId}`)&&i.unit===item.unit&&workoutDayId(i)===workoutDayId(item)&&workoutSection(i)==='main'&&i.results.some(r=>r.done))})).find(m=>m.item);
   const current=metrics(item),prior=match?.item?metrics(match.item):null;
   return {name:item.name,current,prior,previousAt:match?.session.finishedAt??null};
  });

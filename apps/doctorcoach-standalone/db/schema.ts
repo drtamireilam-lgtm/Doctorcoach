@@ -30,6 +30,7 @@ export const programItems = sqliteTable('program_items', {
   id: integer('id').primaryKey({ autoIncrement: true }),
   ownerId: text('owner_id').notNull(),
   exerciseId: text('exercise_id').notNull(),
+  occurrenceId:text('occurrence_id'),
   dayId:text('day_id').notNull().default('1'),
   workoutSection:text('workout_section').notNull().default('main'),
   sets: integer('sets').notNull().default(2),
@@ -44,7 +45,7 @@ export const programItems = sqliteTable('program_items', {
   weightUnspecified:integer('weight_unspecified').notNull().default(0),
   customExerciseJson:text('custom_exercise_json'),
   createdAt: text('created_at').notNull().default(sql`CURRENT_TIMESTAMP`),
-}, t => [uniqueIndex('program_owner_exercise_day').on(t.ownerId,t.exerciseId,t.dayId)]);
+}, t => [uniqueIndex('program_owner_occurrence').on(t.ownerId,sql`COALESCE(${t.occurrenceId},${t.dayId}||':'||${t.exerciseId})`)]);
 
 export const workoutLogs = sqliteTable('workout_logs', {
   id: integer('id').primaryKey({ autoIncrement: true }),
@@ -139,7 +140,7 @@ export const careCheckins = sqliteTable('care_checkins', {
 },t=>[uniqueIndex('care_checkin_week').on(t.clientId,t.week)]);
 export const mediaAssets = sqliteTable('media_assets', {
   id:text('id').primaryKey(), ownerId:text('owner_id').notNull(), kind:text('kind').notNull(), exerciseId:text('exercise_id').notNull(),
-  caption:text('caption').notNull(), sessionId:text('session_id'), setIndex:integer('set_index'), mime:text('mime').notNull(), bytes:integer('bytes').notNull(), objectKey:text('object_key').notNull(),
+  caption:text('caption').notNull(), occurrenceId:text('occurrence_id'), sessionId:text('session_id'), setIndex:integer('set_index'), mime:text('mime').notNull(), bytes:integer('bytes').notNull(), objectKey:text('object_key').notNull(),
   status:text('status').notNull(), published:integer('published').notNull().default(0), createdAt:text('created_at').notNull(),
 },t=>[index('media_owner_kind').on(t.ownerId,t.kind),index('media_demo_status').on(t.kind,t.status,t.published)]);
 export const mediaFeedback = sqliteTable('media_feedback', {

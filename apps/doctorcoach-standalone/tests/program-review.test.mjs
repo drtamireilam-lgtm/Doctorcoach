@@ -23,7 +23,7 @@ test('review validates hidden days, legacy duplicates, and empty drafts before p
  assert.throws(()=>prepareProgramReview('שם',[]));
  assert.throws(()=>prepareProgramReview('תוכנית',[]));
  assert.throws(()=>prepareProgramReview('תוכנית',[defaultPrescription('goblet'),{...defaultPrescription('walk'),dayId:'2',reps:999}]));
- assert.throws(()=>prepareProgramReview('תוכנית',[defaultPrescription('goblet'),{...defaultPrescription('goblet'),dayId:'1'}]));
+ assert.equal(new Set(prepareProgramReview('תוכנית',[defaultPrescription('goblet'),{...defaultPrescription('goblet'),dayId:'1'}]).items.map(i=>i.occurrenceId)).size,2);
  assert.throws(()=>prepareProgramReview('תוכנית',[{...defaultPrescription('goblet'),dayId:'2',approvedSubstitutions:['walk']}]));
  assert.equal(programReviewDays(prepareProgramReview('תוכנית',[defaultPrescription('goblet')]).items)[0].id,'1');
 });

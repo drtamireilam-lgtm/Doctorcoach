@@ -30,7 +30,7 @@ export function ExerciseCard({ exercise:e, controller, onDetails,hasDemo }: Libr
     <div className="exercise-art"><div className="exercise-symbol" aria-hidden="true">{e.symbol}</div><span className="exercise-kind">{e.kind}</span><FavoriteButton exercise={e} controller={controller}/></div>
     <div className="exercise-content"><div className="exercise-meta">{e.group} <span>•</span> {e.level}</div><h3>{e.name}</h3><small lang="en" dir="ltr">{e.en}</small><p>{e.desc}</p>
       {hasDemo&&<span className="care-pill">כולל סרטון הדגמה</span>}
-      <div className="card-bottom"><button className="text-button" onClick={()=>onDetails(e.id)}>{hasDemo?'לפרטים ולהדגמה':'לפרטים'} <ArrowLeft size={16}/></button>{controller.access?.canBuild?<button className="small-add" disabled={controller.busy || inPlan} onClick={()=>controller.add(e.id)}>{inPlan ? <><Check size={15}/> בתוכנית</> : <><Plus size={15}/> הוספה</>}</button>:inPlan?<span className="care-pill"><Check size={15}/> בתוכנית שלי</span>:null}</div>
+      <div className="card-bottom"><button className="text-button" onClick={()=>onDetails(e.id)}>{hasDemo?'לפרטים ולהדגמה':'לפרטים'} <ArrowLeft size={16}/></button>{controller.access?.canBuild?<button className="small-add" disabled={controller.busy} onClick={()=>controller.add(e.id)}>{inPlan ? <><Plus size={15}/> הוספה נוספת</> : <><Plus size={15}/> הוספה</>}</button>:inPlan?<span className="care-pill"><Check size={15}/> בתוכנית שלי</span>:null}</div>
     </div>
   </article>}</Localize>;
 }

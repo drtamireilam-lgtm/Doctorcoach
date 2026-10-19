@@ -15,7 +15,7 @@ test('legacy day one copies to an empty destination; invalid or oversized copies
  const legacy=item();delete legacy.dayId;assert.equal(copyWorkoutDay([legacy],'1','4').items[1].dayId,'4');
  for(const [source,target] of [['1','1'],['1','8'],['2','3']])assert.throws(()=>copyWorkoutDay([legacy],source,target));
  const full=Array.from({length:30},(_,n)=>({...item(),exerciseId:'exercise-'+n}));assert.throws(()=>copyWorkoutDay(full,'1','2'));assert.equal(full.length,30);
- assert.throws(()=>copyWorkoutDay([item(),item()],'1','2'));
+ assert.equal(new Set(copyWorkoutDay([item(),item()],'1','2').items.filter(i=>i.dayId==='2').map(i=>i.occurrenceId)).size,2);
 });
 test('program copy contains only editable program data and retains the intended active revision',()=>{
  const program={id:'source',title:'Old plan',authorName:'A person',clientId:'private identity',items:[item()],createdAt:'2026-01-01',appliedAt:null};

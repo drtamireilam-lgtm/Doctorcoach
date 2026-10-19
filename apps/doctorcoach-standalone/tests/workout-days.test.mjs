@@ -10,12 +10,12 @@ const program=()=>({id:randomUUID(),title:'תוכנית ימי אימון',items
 async function fixture(t){const f=platform(t);await f.connect();const p=program();await f.care.assign(coach,client.userId,p);return {...f,p};}
 const start=(f,dayId)=>f.training.start(client.userId,{requestId:randomUUID(),before:0,...(dayId===undefined?{}:{dayId})});
 
-test('day validation allows repeated exercises only in different stable slots',()=>{
+test('day validation allows independent repeated exercise occurrences within and across days',()=>{
  const parsed=parseAssignedItems(program().items);
  assert.deepEqual(assignedDays(parsed),['1','2']);assert.equal(new Set(parsed.map(planItemKey)).size,3);
  for(const dayId of ['',0,1,'0','8','01',{},null])assert.throws(()=>parseAssignedItems([item(dayId)]));
- assert.throws(()=>parseAssignedItems([item('1'),item('1')]));
- assert.throws(()=>parseAssignedItems([defaultPrescription('goblet'),item('1')]));
+ assert.equal(new Set(parseAssignedItems([item('1'),item('1')]).map(planItemKey)).size,2);
+ assert.equal(new Set(parseAssignedItems([defaultPrescription('goblet'),item('1')]).map(planItemKey)).size,2);
  assert.equal(selectWorkoutDay([defaultPrescription('goblet')],undefined).length,1);
  assert.throws(()=>selectWorkoutDay(parsed,undefined));
 });

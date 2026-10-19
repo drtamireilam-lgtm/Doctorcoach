@@ -1,4 +1,4 @@
-import { defaultPrescription, isRecord, parsePlanItem, TrainingError } from './training.ts';
+import { defaultPrescription, isRecord, parsePlanItem, withOccurrenceIds, TrainingError } from './training.ts';
 import { exercises } from './content.ts';
 import type { PlanItem, TrainingFeed } from './training.ts';
 export type CareRole = 'clinician'|'coach'|'dietitian'|'coordinator';
@@ -23,18 +23,19 @@ export function parseProfile(input:unknown){const p=inputRecord(input);const m=i
 export function parseAssignedItems(value:unknown,customs:import('./custom-exercise-types.ts').CustomExercise[]=[]):PlanItem[]{
  if(!Array.isArray(value)||value.length<1||value.length>30)throw new TrainingError('התוכנית צריכה לכלול 1–30 תרגילים.');
  const ids=new Set<string>();
- return value.map(v=>{
+ const result=value.map(v=>{
   const custom=isRecord(v)?customs.find(e=>e.id===v.exerciseId):undefined;
   const item=parsePlanItem(v,custom?{...defaultPrescription(custom.id),unit:custom.unit,workoutSection:custom.kind==='מתיחה'?'stretch':'main',customExercise:custom}:undefined);
   const dayId=isRecord(v)?v.dayId:undefined;
   if(dayId!==undefined&&(typeof dayId!=='string'||!/^[1-7]$/.test(dayId)))throw new TrainingError('בחרו יום אימון בין 1 ל־7.');
-  const key=`${dayId??'1'}:${item.exerciseId}`;
-  if(!exercises.some(e=>e.id===item.exerciseId)&&!custom||ids.has(key))throw new TrainingError('יש לבחור תרגילים מוכרים, ללא כפילויות באותו יום אימון.');
-  ids.add(key);
+  const key=item.occurrenceId;
+  if(!exercises.some(e=>e.id===item.exerciseId)&&!custom)throw new TrainingError('יש לבחור תרגיל מוכר מהספרייה.');
+  if(key!==undefined){if(ids.has(key))throw new TrainingError('מזהה הופעת תרגיל כפול בתוכנית.');ids.add(key);}
   const alternatives=isRecord(v)?v.approvedSubstitutions:undefined;
   if(alternatives!==undefined&&(!Array.isArray(alternatives)||alternatives.length>10||new Set(alternatives).size!==alternatives.length||alternatives.some(id=>typeof id!=='string'||id===item.exerciseId||!exercises.some(e=>e.id===id)||defaultPrescription(id).unit!==item.unit)))throw new TrainingError('בחרו עד 10 חלופות מוכרות ושונות, באותה יחידת מידה וללא כפילויות.');
   return {...item,...(typeof dayId==='string'?{dayId}:{}),...(Array.isArray(alternatives)&&alternatives.length?{approvedSubstitutions:alternatives as string[]}: {})};
  });
+ return withOccurrenceIds(result);
 }
 export function currentWeek(now=new Date()):string{const day=new Intl.DateTimeFormat('en-CA',{timeZone:'Asia/Jerusalem',year:'numeric',month:'2-digit',day:'2-digit'}).format(now);const date=new Date(day+'T00:00:00Z');date.setUTCDate(date.getUTCDate()-date.getUTCDay());return date.toISOString().slice(0,10);}
 export async function inviteHash(code:unknown):Promise<string>{const normalized=textField(code,'קוד הזמנה',80,12).replace(/[\s-]/g,'').toUpperCase();const hash=await crypto.subtle.digest('SHA-256',new TextEncoder().encode(normalized));return [...new Uint8Array(hash)].map(x=>x.toString(16).padStart(2,'0')).join('');}
