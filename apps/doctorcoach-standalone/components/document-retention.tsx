@@ -1,0 +1,15 @@
+'use client';
+import {useState} from 'react';
+import {Localize} from './language-provider';
+import {CareConfirm,CareFeedback,CareGate} from './care-ui';
+import {careRequest,useCareAction,useCareResource} from '../hooks/use-care';
+type Entry={id:string;version:number;status?:string;filename?:string;clientId?:string;deleteStatus:string;requestedAt?:string|null};
+const labels={archive:'העברה לארכיון',restore:'שחזור מסמך',request_delete:'בקשת מחיקה',withdraw_delete:'ביטול בקשת מחיקה',review:'סימון בקשה כנבדקה'};
+type Action=keyof typeof labels;
+export function DocumentRetention({onChanged,manage=false,expanded=false}:{onChanged?:()=>void;manage?:boolean;expanded?:boolean}){
+ const r=useCareResource<{documents?:Entry[];requests?:Entry[]}>('/api/documents/lifecycle'+(manage?'?manage=1':'')),a=useCareAction(),[pending,setPending]=useState<{entry:Entry;action:Action}|null>(null);
+ if(manage&&(r.status===401||r.status===403))return null;
+ const entries=manage?r.data?.requests:r.data?.documents;
+ async function confirm(){if(!pending)return;if(await a.run(()=>careRequest('/api/documents/lifecycle',{id:pending.entry.id,version:pending.entry.version,action:pending.action,confirmed:true}),'מצב המסמך עודכן.')){setPending(null);await r.reload();onChanged?.();}}
+ return <Localize><details className="panel care-form" open={expanded||undefined}><summary>{manage?'בקשות מחיקת מסמכים — ניהול':'ניהול שמירה ומחיקה של מסמכים'}</summary><p>העברה לארכיון מסתירה את המסמך ומונעת הורדה. ניתן לשחזר אותו. בקשת מחיקה מועברת לבדיקה ואינה מוחקת את הקובץ לצמיתות.</p>{manage&&<p>מוצגים מזהים וסטטוס בלבד. בדיקת בקשה אינה מעניקה גישה לתוכן הרפואי ואינה מבצעת מחיקה.</p>}{!r.data?<CareGate {...r}/>:<>{r.error&&<p role="alert">{r.error}</p>}{!entries?.length&&<p>אין מסמכים להצגה.</p>}{entries?.map(entry=><article className="document-row" key={entry.id}><strong data-no-translate>{manage?entry.clientId+' · '+entry.id:entry.filename}</strong><small>{entry.deleteStatus==='requested'?'בקשת מחיקה ממתינה לבדיקה':entry.deleteStatus==='reviewed'?'בקשת המחיקה נבדקה; הקובץ עדיין שמור':entry.status==='archived'?'המסמך בארכיון':'המסמך זמין בתיק'}</small><div className="dialog-actions">{(manage?(entry.deleteStatus==='requested'?['review']:[]):entry.deleteStatus!=='none'?['withdraw_delete']:entry.status==='ready'?['archive','request_delete']:['restore','request_delete']).map(value=>{const action=value as Action;return <button className="button secondary" key={action} disabled={a.busy||r.loading} onClick={()=>setPending({entry,action})}>{labels[action]}</button>;})}</div></article>)}</>}<CareFeedback {...a}/><CareConfirm open={!!pending} onClose={()=>setPending(null)} onConfirm={()=>{void confirm();}} busy={a.busy} title={pending?labels[pending.action]:''} description={pending?.action==='restore'?'המסמך יחזור לתיק ויהיה זמין לבעל התיק ולרופא מורשה בהתאם להסכמות הקיימות.':pending?.action==='withdraw_delete'?'הבקשה תבוטל. המסמך יישאר בארכיון עד לשחזור מפורש.':'הקובץ יישאר באחסון הפרטי. הפעולה תתועד; לא תתבצע מחיקה לצמיתות.'}/></details></Localize>;
+}

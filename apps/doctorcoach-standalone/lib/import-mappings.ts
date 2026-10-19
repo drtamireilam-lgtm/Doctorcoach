@@ -1,0 +1,23 @@
+import {workspaceOwnerGuard} from './coach-workspace-guard.ts';
+import {inputRecord,textField,integerField} from './care.ts';
+import {TrainingError} from './training.ts';
+import {canAuthorPrograms,type ProgramAuthorConfig} from './program-author.ts';
+import {isStaff,type StaffIdentity} from './staff.ts';
+import {normalizeExerciseName} from './exercise-search.ts';
+import {exercises} from './content.ts';
+import {availableCustomExercises} from './custom-exercises.ts';
+import type {ImportMapping} from './import-mapping-types.ts';
+export function importMappingsStore(db:D1Database,config:ProgramAuthorConfig&{operationsEmails?:string}={}){
+ function clinicGuard(user:StaffIdentity){const email=user.email.toLowerCase(),owner=isStaff(user,config.ownerProgramEmails);return {sql:`(EXISTS(SELECT 1 FROM care_staff WHERE email=? AND active=1 AND (role='coach'${owner?" OR role='clinician'":''}))${owner?' OR NOT EXISTS(SELECT 1 FROM care_staff WHERE email=?)':''})`,args:[email,...owner?[email]:[]]};}
+ function guard(user:StaffIdentity){const c=clinicGuard(user),w=workspaceOwnerGuard(user.userId);return {sql:`(${c.sql} OR (${w.sql} AND NOT EXISTS(SELECT 1 FROM care_staff WHERE email=?)))`,args:[...c.args,...w.args,user.email.toLowerCase()]};}
+ async function authorize(user:StaffIdentity){const row=await db.prepare('SELECT role,active FROM care_staff WHERE email=?').bind(user.email.toLowerCase()).first<{role:string;active:number}>();const role=row?(row.active?row.role:''):isStaff(user,config.ownerProgramEmails)?'clinician':'';const external=!row?await db.prepare("SELECT id FROM coach_workspaces WHERE owner_id=? AND state='active' AND license_until>?").bind(user.userId,new Date().toISOString()).first():null;if(isStaff(user,config.operationsEmails)||!external&&!canAuthorPrograms(user,role,config))throw new TrainingError('התאמות יבוא זמינות למאמן פעיל או לרופא המנהל.',403);}
+ return {
+ async list(user:StaffIdentity):Promise<ImportMapping[]>{await authorize(user);const g=guard(user),available=new Set([...exercises,...await availableCustomExercises(db,user.userId)].map(e=>e.id));const rows=await db.prepare(`SELECT source,exercise_id AS exerciseId,version FROM import_exercise_mappings WHERE owner_id=? AND ${g.sql} ORDER BY updated_at DESC LIMIT 250`).bind(user.userId,...g.args).all<ImportMapping>();await authorize(user);return rows.results.filter(r=>available.has(r.exerciseId));},
+ async write(user:StaffIdentity,payload:unknown){await authorize(user);const p=inputRecord(payload),source=textField(p.source,'שם התרגיל במקור',100,1),key=normalizeExerciseName(source),version=integerField(p.version,'גרסה',0,1000000),g=guard(user);if(!key)throw new TrainingError('יש להזין שם תרגיל.');
+ if(p.action==='delete'){const deleted=await db.prepare(`DELETE FROM import_exercise_mappings WHERE owner_id=? AND source_key=? AND version=? AND ${g.sql} RETURNING source`).bind(user.userId,key,version,...g.args).first();if(!deleted)throw new TrainingError('ההתאמה או ההרשאה השתנו. רעננו ונסו שוב.',409);return;}
+ if(p.action!=='save')throw new TrainingError('פעולה לא מוכרת.');const exerciseId=textField(p.exerciseId,'תרגיל',80,1),builtin=exercises.some(e=>e.id===exerciseId);if(!builtin&&!(await availableCustomExercises(db,user.userId)).some(e=>e.id===exerciseId))throw new TrainingError('התרגיל אינו זמין בספרייה האישית שלכם.',403);
+ const valid=`(?=1 OR EXISTS(SELECT 1 FROM custom_exercises WHERE id=? AND (owner_id=? OR state='published')))`;
+ const at=new Date().toISOString();const result=version===0?await db.prepare(`INSERT INTO import_exercise_mappings(owner_id,source_key,source,exercise_id,version,updated_at) SELECT ?,?,?,?,1,? WHERE ${g.sql} AND ${valid} AND (SELECT COUNT(*) FROM import_exercise_mappings WHERE owner_id=?)<250 ON CONFLICT(owner_id,source_key) DO NOTHING RETURNING version`).bind(user.userId,key,source,exerciseId,at,...g.args,builtin?1:0,exerciseId,user.userId,user.userId).first():await db.prepare(`UPDATE import_exercise_mappings SET source=?,exercise_id=?,version=version+1,updated_at=? WHERE owner_id=? AND source_key=? AND version=? AND ${g.sql} AND ${valid} RETURNING version`).bind(source,exerciseId,at,user.userId,key,version,...g.args,builtin?1:0,exerciseId,user.userId).first();
+ if(!result)throw new TrainingError('ההתאמה או ההרשאה השתנו, או שהגעתם ל־250 התאמות. רעננו ונסו שוב.',409);
+ }};
+}

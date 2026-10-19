@@ -1,0 +1,11 @@
+# Team communication follow-up
+
+Extends the existing private channel conversations, search, read receipts, files, contextual workout/video links and handling status rather than duplicating them.
+
+Thread lists display Open/Handled. A handling request uses the latest message actually displayed in the conversation; a concurrently arriving message causes a 409 instead of being silently marked handled. Older clients without a message checkpoint fall back to their saved read cursor, never the newest unseen message. Foreign-channel checkpoints are rejected. New messages reopen the thread. Handling refreshes both the conversation and thread list. Sending locks draft fields and attachment selectors; editing a failed draft rotates the message attempt ID while an unchanged retry remains idempotent.
+
+Trainees can upload a review video from the conversation using the existing private uploader, with its same consent and video-access rules. Successful upload selects the video and exercise in the draft; sending the message remains a separate action. Existing session selection is cleared rather than creating a mismatched association. Staff continue to link existing trainee videos. Sending is disabled while a file/video upload editor is open. PDF/image attachments retain exact-channel owner checks.
+
+Unread-message notification IDs now use the highest currently authorized unread message sequence, rechecked after additional reads. A new message with the same unread count has a different delivery fingerprint. Push delivery leases, scan timestamps and manual-test throttling are separated by additive migration 0021; successful delivery releases its lease so another message can trigger immediately without losing events during a one-minute cooldown. Native time-only scheduling remains unavailable as documented previously.
+
+Three new tests cover stale handling checkpoints and sidebar reopening, foreign-channel handling checkpoints, and two consecutive message-driven push sends at the same unread count without another poll between them. The existing permission, attachment, search and push suites remain. All 692 tests and TypeScript passed. Provider receipt on a real phone, video upload from a phone and visual/mobile acceptance remain unverified because the supported managed browser plugin is unavailable.

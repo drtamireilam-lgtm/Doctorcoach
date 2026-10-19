@@ -1,0 +1,27 @@
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import {platform,client,doctor,coach,stranger} from './platform-db.mjs';
+import {privateDocumentStore} from '../lib/private-document-store.ts';
+import {passportStore} from '../lib/passport-store.ts';
+import {readDocumentBody} from '../lib/private-documents.ts';
+const payload=(purpose='medical',channel='')=>({id:crypto.randomUUID(),clientId:client.userId,purpose,channel,category:'blood',filename:'tests.pdf',mime:'application/pdf',bytes:16});
+async function fixture(t){const f=platform(t);await f.connect();return {...f,documents:privateDocumentStore(f.db,{clinicianEmails:doctor.email}),passport:passportStore(f.db,{clinicianEmails:doctor.email})};}
+test('medical documents are private to the owner and explicitly authorized doctor',async t=>{const f=await fixture(t),p=payload();await f.documents.initialize(client,p);await f.documents.ready(client,p.id,'key');assert.equal((await f.documents.list(client,client.userId)).length,1);assert.equal((await f.documents.list(doctor,client.userId)).length,1);await assert.rejects(f.documents.list(coach,client.userId),e=>e.status===403);await assert.rejects(f.documents.readable(stranger,p.id),e=>e.status===403);f.sql.exec('UPDATE care_connections SET medical_access=0');await assert.rejects(f.documents.readable(doctor,p.id),e=>e.status===403);assert.equal((await f.documents.readable(client,p.id)).id,p.id);});
+test('admin status alone does not grant medical access',async t=>{const f=await fixture(t);await assert.rejects(privateDocumentStore(f.db,{adminEmails:stranger.email}).list(stranger,client.userId),e=>e.status===403);});
+test('passport edits are owner scoped, versioned and leave questionnaire data centralized',async t=>{const f=await fixture(t);await f.passport.save(client,{version:0,clientId:stranger.userId,details:{allergies:'Penicillin'}});assert.equal((await f.passport.get(client,client.userId)).details.allergies,'Penicillin');assert.equal(f.sql.prepare('SELECT COUNT(*) AS n FROM passport_details WHERE client_id=?').get(stranger.userId).n,0);await assert.rejects(f.passport.save(client,{version:0,details:{allergies:'Changed'}}),e=>e.status===409);await assert.rejects(f.passport.get(coach,client.userId),e=>e.status===403);assert.ok(f.sql.prepare("SELECT COUNT(*) AS n FROM audit_events WHERE action='passport.read'").get().n>0);});
+test('consent withdrawn at upload finalization prevents a document becoming readable',async t=>{const f=await fixture(t),p=payload();await f.documents.initialize(client,p);f.sql.exec("UPDATE user_consents SET accepted=0 WHERE consent_id='health'");await assert.rejects(f.documents.ready(client,p.id,'key'),e=>e.status===403);assert.equal((await f.documents.get(p.id)).status,'uploading');});
+test('clinician upload permission revoked before commit fails closed',async t=>{const f=await fixture(t),p=payload();await f.documents.initialize(doctor,p);f.sql.exec("UPDATE care_connections SET active=0 WHERE staff_email='doctor@example.test'");await assert.rejects(f.documents.ready(doctor,p.id,'key'),e=>e.status===403);});
+test('message attachments retain the exact channel rather than inheriting medical-file access',async t=>{const f=await fixture(t),p=payload('message','training');await f.documents.initialize(client,p);await f.documents.ready(client,p.id,'key');assert.equal((await f.documents.readable(coach,p.id)).id,p.id);await assert.rejects(f.documents.readable(doctor,p.id),e=>e.status===403);});
+test('file signature, exact byte count and maximum size are validated',async()=>{const pdf=new TextEncoder().encode('%PDF-1.7\nhello');assert.deepEqual(await readDocumentBody(new Request('https://example.test',{method:'PUT',body:pdf}),pdf.length,'application/pdf'),pdf);await assert.rejects(readDocumentBody(new Request('https://example.test',{method:'PUT',body:pdf}),pdf.length,'image/png'));await assert.rejects(readDocumentBody(new Request('https://example.test',{method:'PUT',body:pdf}),pdf.length-1,'application/pdf'));await assert.rejects(readDocumentBody(new Request('https://example.test',{method:'PUT',body:pdf}),11*1024*1024,'application/pdf'));});
+test('a final read check denies a captured download after access is withdrawn',async t=>{const f=await fixture(t),p=payload();await f.documents.initialize(client,p);await f.documents.ready(client,p.id,'key');const row=await f.documents.readable(doctor,p.id);f.sql.exec("UPDATE care_connections SET medical_access=0 WHERE staff_email='doctor@example.test'");await assert.rejects(f.documents.confirmReadable(doctor,row),e=>e.status===403);});
+
+test('invalid declared document sizes fail before reading the body',async()=>{
+ for(const expected of [0,-1,7,8.5,NaN,Infinity]){
+  let reads=0;
+  const body=new ReadableStream({pull(controller){reads++;controller.enqueue(new Uint8Array(8));}},{highWaterMark:0});
+  const request=new Request('https://example.test',{method:'PUT',body,duplex:'half'});
+  await assert.rejects(readDocumentBody(request,expected,'application/pdf'));
+  assert.equal(reads,0);
+  await body.cancel();
+ }
+});

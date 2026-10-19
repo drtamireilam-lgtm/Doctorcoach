@@ -1,0 +1,1 @@
+ALTER TABLE `care_invites` ADD `target_client_id` text;

@@ -1,0 +1,14 @@
+export type Appointment={id:string;clientId:string;clientName:string;serviceId:string;title:string;provider:string;duration:number;priceAgorot:number;preference:string;state:string;startsAt:string|null;endsAt:string|null;meetingUrl:string;staffNote:string;paymentState:string;paymentReference:string;version:number;createdAt:string;updatedAt:string;feedbackMessage?:string;feedbackRequestedAt?:string|null;feedbackResponse?:string;feedbackRespondedAt?:string|null;calendarStatus?:string;bookingUrl?:string;paymentUrl?:string;paymentInstructions?:string};
+export const appointmentStates:Record<string,string>={requested:'ממתין לתיאום',scheduled:'נקבע',cancel_requested:'בקשת ביטול נשלחה',cancelled:'בוטל',completed:'בוצע',followup:'נדרש מעקב'};
+export const paymentStates:Record<string,string>={unpaid:'טרם אושר תשלום',reported:'התשלום דווח — בבדיקת הצוות',confirmed:'התשלום אומת על ידי הצוות',refund_pending:'ממתין לטיפול בהחזר',refunded:'ההחזר אומת על ידי הצוות'};
+export function appointmentDate(value:string):string{return new Intl.DateTimeFormat('he-IL',{timeZone:'Asia/Jerusalem',dateStyle:'medium',timeStyle:'short'}).format(new Date(value));}
+// Resolve a wall-clock time in Israel without relying on the browser's time zone.
+// Reject skipped/repeated clock-change times so that no appointment is shifted silently.
+export function israelAppointmentTime(value:string):string{
+ if(!/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}$/.test(value))throw new Error('יש לבחור תאריך ושעה תקינים.');
+ const formatter=new Intl.DateTimeFormat('sv-SE',{timeZone:'Asia/Jerusalem',year:'numeric',month:'2-digit',day:'2-digit',hour:'2-digit',minute:'2-digit',hourCycle:'h23'});
+ const matches=['+02:00','+03:00'].map(offset=>new Date(value+':00'+offset)).filter(d=>Number.isFinite(d.getTime())&&formatter.format(d).replace(' ','T')===value);
+ if(matches.length!==1)throw new Error('השעה שנבחרה נמצאת במעבר שעון קיץ/חורף. בחרו שעה אחרת.');
+ return matches[0].toISOString();
+}
+export function calendarEvent(appointment:Appointment):string{if(!appointment.startsAt||!appointment.endsAt||appointment.state!=='scheduled')throw new Error('ניתן לייצא רק מפגש שמועדו אושר.');const stamp=(s:string)=>new Date(s).toISOString().replace(/[-:]/g,'').replace(/\.\d{3}/,'');return ['BEGIN:VCALENDAR','VERSION:2.0','PRODID:-//DoctorCoach//Appointments//HE','CALSCALE:GREGORIAN','BEGIN:VEVENT',`UID:${appointment.id}@doctorcoach`,`DTSTAMP:${stamp(new Date().toISOString())}`,`DTSTART:${stamp(appointment.startsAt)}`,`DTEND:${stamp(appointment.endsAt)}`,'SUMMARY:מפגש DoctorCoach',`SEQUENCE:${appointment.version}`,'STATUS:CONFIRMED','BEGIN:VALARM','TRIGGER:-P1D','ACTION:DISPLAY','DESCRIPTION:תזכורת למפגש DoctorCoach','END:VALARM','BEGIN:VALARM','TRIGGER:-PT1H','ACTION:DISPLAY','DESCRIPTION:תזכורת למפגש DoctorCoach','END:VALARM','END:VEVENT','END:VCALENDAR',''].join('\r\n');}

@@ -1,0 +1,7 @@
+'use client';
+import {useLanguage} from './language-provider';
+import type {TrainingController} from '../hooks/use-training';
+export function WorkoutModePreference({controller}:{controller:TrainingController}){
+ const english=useLanguage().language==='en';
+ return <div className="workout-choice-preference no-print" dir={english?'ltr':'rtl'}><label>{english?'How do you choose your workout?':'איך לבחור את האימון שלך?'}<select value={controller.workoutPreference.mode} disabled={controller.busy||controller.auth!=='ready'} onChange={e=>{void controller.saveWorkoutPreference(e.target.value==='flexible'?'flexible':'fixed')}}><option value="fixed">{english?'Fixed order':'סדר קבוע'}</option><option value="flexible">{english?'Choose before each workout':'בחירה לפני כל אימון'}</option></select></label><p>{controller.workoutPreference.mode==='fixed'?(english?'Follow the assigned order. A completed workout advances to the next one; cancellation does not.':'מתקדמים בסדר של התוכנית. סיום אימון מעביר לאימון הבא; ביטול אינו מקדם את הסדר.'):(english?'Choose one of the workouts in your assigned program before starting.':'בוחרים אחד מהאימונים בתוכנית שהוקצתה לך לפני שמתחילים.')}</p><small>{english?'Saved to your account. Applies to the next workout; your active workout and coach instructions stay as they are.':'נשמר בחשבון ומשפיע על האימון הבא. האימון הפעיל והוראות המאמן נשארים כפי שהם.'}</small></div>;
+}

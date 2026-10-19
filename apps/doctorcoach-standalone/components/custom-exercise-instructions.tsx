@@ -1,0 +1,2 @@
+import type {PlanItem} from '../lib/training';
+export function CustomExerciseInstructions({item}:{item:Pick<PlanItem,'customExercise'>}){const e=item.customExercise;if(!e)return null;return <details className="panel"><summary>הוראות לתרגיל האישי · {e.name}</summary><p>{e.en} · {e.equipment}</p><p className="care-preserve">{e.desc}</p>{e.videoUrl&&<a href={e.videoUrl} target="_blank" rel="noopener noreferrer">צפייה בסרטון הביצוע</a>}</details>;}
