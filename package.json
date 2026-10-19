@@ -10,7 +10,7 @@
     "preview": "vite preview",
     "anatomy:dev": "vite --open /anatomy-lab.html",
     "anatomy:build": "tsc --noEmit && vite build --config anatomy.vite.config.ts",
-    "anatomy:test": "node tests/anatomy.test.mjs"
+    "anatomy:test": "node tests/anatomy.test.mjs && node tests/anatomy-bilingual.test.mjs"
   },
   "dependencies": {
     "@react-three/fiber": "^9.8.2",
