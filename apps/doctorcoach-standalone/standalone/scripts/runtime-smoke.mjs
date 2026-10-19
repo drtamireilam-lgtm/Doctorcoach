@@ -7,6 +7,7 @@ import {randomUUID} from 'node:crypto';
 import path from 'node:path';
 import assert from 'node:assert/strict';
 import {signLink} from '../crypto.ts';
+import {themePresets} from '../../lib/advanced-theme.ts';
 const root=new URL('../../',import.meta.url).pathname;
 const require=createRequire(realpathSync(path.join(root,'node_modules/@cloudflare/vite-plugin/package.json')));
 const {Miniflare}=require('miniflare');
@@ -69,6 +70,15 @@ try{
  assert.equal(account.signedIn,true);assert.equal(account.canManageServices,false);assert.equal(account.careRole,null);assert.ok(refreshCount>=1);
  const owner=(await db.prepare('SELECT principal_id FROM dc_identity_aliases WHERE subject=?').bind(identities.get('first@example.test').subject).first()).principal_id;
  assert.equal(initialAppearance.ownerId,owner);
+ // Actual HTTP persistence for every named preset; provider identities remain synthetic.
+ let appearanceVersion=1;
+ for(const preset of themePresets){
+  const saved=await json('/api/preferences/appearance',{appearance:preset.appearance,version:appearanceVersion,expectedOwnerId:owner});appearanceVersion=saved.version;
+  const loaded=await json('/api/preferences/appearance');assert.equal(loaded.ownerId,owner);assert.deepEqual(loaded.appearance,preset.appearance);
+ }
+ await json('/api/preferences/appearance',{appearance:{mode:'light',palette:'pink'},version:appearanceVersion,expectedOwnerId:owner});
+ console.log('PASS: all seven named themes plus Classic persisted through built HTTP owner-scoped preferences. This is not browser visual QA.');
+
  const at=new Date().toISOString(),revision='2026-09-28.1';
  for(const id of ['terms','privacy','health','team','media'])await db.prepare('INSERT INTO user_consents(id,user_id,consent_id,revision,accepted,created_at) VALUES(?,?,?,?,1,?)').bind(randomUUID(),owner,id,revision,at).run();
  await db.prepare("INSERT INTO user_intakes(user_id,answers_json,completed,created_at,updated_at) VALUES(?,'{}',1,?,?)").bind(owner,at,at).run();
