@@ -99,3 +99,20 @@ test('every required preset persists independently with readable surface and con
   for(const [fg,bg] of [['--text',c.background],['--dc-card-text',c.secondary],['--dc-nav-text',c.navigation],['--dc-button-text',c.button]])assert.ok(contrast(v[fg],bg)>=4.5,`${preset.name}: ${fg}`);
  }
 });
+
+
+test('premium UI keeps shared surface tokens and preserves reduced-motion/mobile support',()=>{
+ const css=readFileSync(new URL('../app/advanced-themes.css',import.meta.url),'utf8');
+ for(const token of ['--dc-premium-radius','--dc-premium-elevation','--dc-surface-gradient','--dc-nav-active','--dc-focus'])assert.ok(css.includes(token),token);
+ assert.match(css,/prefers-reduced-motion:reduce/);
+ assert.match(css,/@media\s*\(max-width:600px\)/);
+ assert.match(css,/\.mobile-bottom-nav button\.active/);
+ const wine=themePresets.find(p=>p.id==='wine');
+ assert.ok(wine,'Wine Red preset exists');
+ assert.equal(wine.appearance.custom.background,'#130b13');
+ assert.equal(wine.appearance.custom.secondary,'#211521');
+ assert.equal(wine.appearance.custom.button,'#e83f70');
+ const tokens=themeTokens(wine.appearance);
+ assert.ok(contrast(tokens['--dc-card-text'],wine.appearance.custom.secondary)>=4.5);
+ assert.ok(contrast(tokens['--dc-button-text'],wine.appearance.custom.button)>=4.5);
+});
