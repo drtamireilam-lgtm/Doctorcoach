@@ -75,3 +75,12 @@ test('isolated staging offers a separate test account without legacy links or pr
  f.nodes.get('new-form').fields.confirmed.checked=true;await f.event('new-form','submit');
  assert.deepEqual(f.redirects,['/#program']);
 });
+
+test('refresh restores code entry from the server challenge and does not send another email',async()=>{
+ const f=await ui({responses:{'/auth/pending':{pending:true,email:'resume@example.test',resendAt:Date.now()+30000}}});
+ assert.equal(f.nodes.get('code-form').hidden,false);
+ assert.equal(f.nodes.get('email-form').hidden,true);
+ assert.equal(f.nodes.get('resend').disabled,true);
+ assert.ok(!f.calls.some(([p])=>p==='/auth/send'));
+ assert.equal(f.nodes.get('code-form').fields.code.value,'');
+});

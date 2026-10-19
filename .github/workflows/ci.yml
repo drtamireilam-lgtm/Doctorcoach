@@ -51,6 +51,10 @@ jobs:
       - name: Standalone TypeScript
         run: npm run typecheck
       - name: Build standalone without deployment
+        env:
+          DC_ISOLATED_STAGING_BUILD: "true"
         run: npm run build:standalone
+      - name: Verify isolated LAB deployment target
+        run: node standalone/scripts/check-isolated-staging.mjs dist/server/wrangler.json
       - name: Synthetic Worker authentication and authorization checks
         run: node --experimental-strip-types standalone/scripts/runtime-smoke.mjs
