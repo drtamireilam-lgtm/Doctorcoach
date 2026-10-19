@@ -55,8 +55,12 @@ try{
  assert.equal((await (await request('/api/account',undefined,{'oai-authenticated-user-id':'doctor','oai-authenticated-user-email':'doctor@example.test'})).json()).signedIn,false);
  assert.equal((await request('/api/preferences/appearance')).status,401);
  await json('/auth/send',{email:'first@example.test'});
+ const pending=await json('/auth/pending',{});
+ assert.equal(pending.pending,true);assert.equal(pending.email,'first@example.test');
+ assert.ok(pending.resendAt>Date.now());
  assert.equal((await request('/auth/verify',{code:'999999'})).status,401);
  assert.equal((await json('/auth/verify',{code:'123456'})).linked,false);
+ assert.deepEqual(await json('/auth/pending',{}),{pending:false});
  await json('/auth/register',{confirmed:true});
  const firstCookies=cookies,account=await json('/api/account');
  const initialAppearance=await json('/api/preferences/appearance');
