@@ -24,19 +24,29 @@ export function appearanceWithMode(a:Appearance,mode:Appearance['mode']):Appeara
  return {...a,mode,custom:{...a.custom,background:regenerated.background,secondary:regenerated.secondary,navigation:regenerated.navigation}};
 }
 export const themePresets:{id:string;name:string;he:string;appearance:Appearance}[]=[
- {id:'classic',name:'DoctorCoach Classic — Red & Black',he:'DoctorCoach קלאסי — אדום ושחור',appearance:{mode:'dark',palette:'red',custom:{background:'#0c0c10',primary:'#cf2434',secondary:'#19191f',button:'#cf2434',navigation:'#08080b',accent:'#ff8991'}}},
- {id:'dark',name:'Dark',he:'כהה',appearance:{mode:'dark',palette:'neutral'}},
- {id:'light',name:'Light',he:'בהיר',appearance:{mode:'light',palette:'neutral'}},
- {id:'professional',name:'Blue',he:'כחול',appearance:{mode:'dark',palette:'blue'}},
- {id:'modern',name:'Purple',he:'סגול',appearance:{mode:'dark',palette:'purple'}},
- {id:'wine',name:'Wine Red',he:'אדום יין',appearance:{mode:'dark',palette:'red',custom:{background:'#35101f',primary:'#9f254f',secondary:'#4b1c30',button:'#9f254f',navigation:'#280c17',accent:'#ffb1ce'}}},
- {id:'yellow',name:'Yellow',he:'צהוב',appearance:{mode:'dark',palette:'yellow'}},
- {id:'sport',name:'Forest Green',he:'ירוק יער',appearance:{mode:'dark',palette:'green'}},
+{id:"dark",name:"Dark",he:"שחור קלאסי",appearance:{"mode": "dark", "palette": "neutral", "custom": {"background": "#090c12", "primary": "#77869e", "secondary": "#171c26", "button": "#77869e", "navigation": "#090c12", "accent": "#c5d3eb"}}},
+{id:"light",name:"Light",he:"לבן נקי",appearance:{"mode": "light", "palette": "neutral", "custom": {"background": "#f5f7fb", "primary": "#344663", "secondary": "#ffffff", "button": "#344663", "navigation": "#f5f7fb", "accent": "#334f7c"}}},
+{id:"gold",name:"Premium Gold",he:"זהב מטאלי",appearance:{"mode": "dark", "palette": "yellow", "custom": {"background": "#14110b", "primary": "#d9b65f", "secondary": "#252015", "button": "#d9b65f", "navigation": "#14110b", "accent": "#f2d691"}}},
+{id:"silver",name:"Premium Silver",he:"כסף מטאלי",appearance:{"mode": "dark", "palette": "neutral", "custom": {"background": "#10141b", "primary": "#b8c5d8", "secondary": "#202731", "button": "#b8c5d8", "navigation": "#10141b", "accent": "#e1e8f4"}}},
+{id:"coral",name:"Dark Coral",he:"אדום קורל",appearance:{"mode": "dark", "palette": "red", "custom": {"background": "#190e12", "primary": "#ee736c", "secondary": "#301b22", "button": "#ee736c", "navigation": "#190e12", "accent": "#ffb0a5"}}},
+{id:"professional",name:"Dark Blue",he:"כחול עמוק",appearance:{"mode": "dark", "palette": "blue", "custom": {"background": "#091329", "primary": "#538ce5", "secondary": "#142744", "button": "#538ce5", "navigation": "#091329", "accent": "#a6c9ff"}}},
+{id:"modern",name:"Purple",he:"סגול עשיר",appearance:{"mode": "dark", "palette": "purple", "custom": {"background": "#180e29", "primary": "#a37ae8", "secondary": "#2b1c44", "button": "#a37ae8", "navigation": "#180e29", "accent": "#dbc0ff"}}},
+{id:"wine",name:"Wine Red",he:"אדום יין",appearance:{"mode": "dark", "palette": "red", "custom": {"background": "#210c17", "primary": "#bd5279", "secondary": "#3c1829", "button": "#bd5279", "navigation": "#210c17", "accent": "#ffb1ce"}}},
+{id:"sport",name:"Forest Green",he:"ירוק אמרלד",appearance:{"mode": "dark", "palette": "green", "custom": {"background": "#081b15", "primary": "#49b98d", "secondary": "#12352a", "button": "#49b98d", "navigation": "#081b15", "accent": "#9fe6c6"}}},
+{id:"yellow",name:"Yellow",he:"צהוב עשיר",appearance:{"mode": "dark", "palette": "yellow", "custom": {"background": "#191606", "primary": "#ebcb52", "secondary": "#302b10", "button": "#ebcb52", "navigation": "#191606", "accent": "#ffe89a"}}},
+{id:"amber",name:"Amber Orange",he:"כתום ענבר",appearance:{"mode": "dark", "palette": "orange", "custom": {"background": "#211207", "primary": "#eaa44e", "secondary": "#3a2410", "button": "#eaa44e", "navigation": "#211207", "accent": "#ffd099"}}},
+{id:"teal",name:"Teal Cyan",he:"טורקיז",appearance:{"mode": "dark", "palette": "teal", "custom": {"background": "#071c21", "primary": "#52c4d0", "secondary": "#11343b", "button": "#52c4d0", "navigation": "#071c21", "accent": "#a3eef3"}}},
+{id:"rose",name:"Rose Pink",he:"ורוד",appearance:{"mode": "dark", "palette": "pink", "custom": {"background": "#210f1c", "primary": "#df88b7", "secondary": "#3b2033", "button": "#df88b7", "navigation": "#210f1c", "accent": "#ffc4e5"}}}
 ];
 export const resetAppearance=themePresets[0].appearance;
 export function themeTokens(a:Appearance):Record<string,string>{
  const c=colorsFor(a),bg=c.background,card=c.secondary,nav=c.navigation;
+ const preset=themePresets.find(p=>JSON.stringify(p.appearance)===JSON.stringify(a));
+ const metallic=preset?.id==='gold'||preset?.id==='silver';
+ const sheen=mix(c.button,textOn(c.button)==='#000000'?'#ffffff':'#000000',.12);
+ const buttonGradient=metallic?`linear-gradient(115deg, ${c.button}, ${mix(c.button,'#ffffff',.18)} 38%, ${sheen} 62%, ${c.button})`:`linear-gradient(135deg, ${c.button}, ${sheen})`;
  return {
+ '--dc-button-gradient':buttonGradient,'--dc-surface-gradient':`linear-gradient(145deg, ${card}, ${mix(card,bg,.28)})`,'--dc-canvas-gradient':`linear-gradient(150deg, ${bg}, ${mix(bg,card,.35)})`,'--dc-hover':mix(card,c.accent,.12),'--dc-focus':readableAccent(c.accent,bg),
  '--dc-canvas-text':textOn(bg),'--dc-canvas-muted':mutedOn(bg),'--dc-canvas-accent':readableAccent(c.accent,bg),
  '--canvas':bg,'--card':card,'--raised':card,'--text':textOn(bg),'--muted':mutedOn(bg),
  '--line':mix(bg,textOn(bg),.5),'--input':mix(card,textOn(card),.5),'--red':c.primary,'--lime':readableAccent(c.accent,bg),'--soft-red':mix(bg,c.primary,.18),'--accent-red':readableAccent(c.accent,bg),

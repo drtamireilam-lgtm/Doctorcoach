@@ -2,9 +2,9 @@
 import {Localize,useLanguage} from './language-provider';
 import {ThemeProvider as NextThemeProvider,useTheme} from 'next-themes';
 import {Moon,Sun,Check} from 'lucide-react';
-import {createContext,useCallback,useContext,useEffect,useId,useReducer,useRef,useState,type ReactNode} from 'react';
-import {palettes,isAppearance,isHexColor,parseOwnedAppearanceResponse,PALETTE_STORAGE_KEY,customColorKeys,type Appearance,type CustomColorKey} from '../lib/appearance';
-import {colorsFor,fromPrimary,resetAppearance,swatchFamilies,themeEditReducer,themePresets,themeTokens,appearanceWithMode,type ThemeEditState} from '../lib/advanced-theme';
+import {createContext,useCallback,useContext,useEffect,useReducer,useRef,useState,type ReactNode} from 'react';
+import {parseOwnedAppearanceResponse,PALETTE_STORAGE_KEY,type Appearance} from '../lib/appearance';
+import {colorsFor,resetAppearance,themeEditReducer,themePresets,themeTokens,appearanceWithMode,type ThemeEditState} from '../lib/advanced-theme';
 
 type Message='saved'|'failed'|'conflict'|'account-changed'|null;
 type PaletteContextValue={state:ThemeEditState;current:Appearance;edit:(a:Appearance)=>void;cancel:()=>void;preview:()=>void;load:()=>Promise<void>;save:(appearance?:Appearance)=>Promise<void>;busy:boolean;signedIn:boolean;message:Message};
@@ -90,32 +90,17 @@ export function ThemeToggle(){
  const light=context.current.mode==='light',label=light?'מעבר למצב כהה':'מעבר למצב בהיר';
  return <Localize><button type="button" className="theme-toggle" disabled={context.busy} aria-label={label} title={label} onClick={()=>{const next=appearanceWithMode(context.current,light?'dark':'light');context.edit(next);void context.save(next);}}>{light?<Moon size={19} aria-hidden="true"/>:<Sun size={19} aria-hidden="true"/>}<span>{light?'מצב כהה':'מצב בהיר'}</span></button><span role="status" aria-live="polite" className="theme-toggle-status">{context.message==='failed'?'שמירת העיצוב נכשלה. נסו שוב בהגדרות המראה.':context.message==='conflict'?'העיצוב השתנה בחלון אחר. טענו אותו בהגדרות המראה.':context.message==='saved'?'העיצוב נשמר בחשבון.':!context.signedIn?'יש להתחבר לשמירת העיצוב.':''}</span></Localize>;
 }
-const colorLabels:Record<CustomColorKey,[string,string]>={background:['רקע','Background Color'],primary:['צבע מרכזי','Primary Color'],secondary:['צבע משני וכרטיסים','Secondary Color'],button:['כפתורים','Button Color'],navigation:['ניווט','Navigation Color'],accent:['הדגשות','Accent Color']};
-function ColorField({label,value,disabled,onChange}:{label:string;value:string;disabled:boolean;onChange:(v:string)=>void}){
- const id=useId(),[text,setText]=useState(value);
- useEffect(()=>setText(value),[value]);
- const valid=isHexColor(text);
- return <div className="advanced-color-field"><label htmlFor={id}>{label}</label><div><input type="color" aria-label={`${label} — Color Picker`} value={value} disabled={disabled} onChange={e=>onChange(e.target.value)}/><input id={id} type="text" dir="ltr" value={text} maxLength={7} spellCheck={false} disabled={disabled} aria-invalid={!valid} aria-describedby={!valid?`${id}-error`:undefined} onChange={e=>{const next=e.target.value;setText(next);if(isHexColor(next))onChange(next);}} onBlur={()=>{if(!valid)setText(value);}}/></div>{!valid&&<small id={`${id}-error`} role="status">#RRGGBB</small>}</div>;
-}
 export function AppearancePicker({active=true}:{active?:boolean}){
  const context=useContext(PaletteContext),english=useLanguage().language==='en',t=(he:string,en:string)=>english?en:he;
- const [advanced,setAdvanced]=useState(false);const previewId=useId();
- const cancel=context?.cancel;
- useEffect(()=>{if(!active)cancel?.();return()=>cancel?.();},[active,cancel]);
- if(!context)return null;
- const {current,edit,state,busy,signedIn,message,save,load}=context;
- const colors=colorsFor(current),choosePrimary=(primary:string)=>edit({...current,custom:fromPrimary(primary,current.mode)});
- const patch=(key:CustomColorKey,value:string)=>edit({...current,custom:{...colors,[key]:value}});
- return <div className="appearance-picker advanced-appearance" data-no-translate>
-  <h2>{t('מראה → ערכת עיצוב וצבעים','Appearance → Theme & Colors')}</h2>
-  <p>{t('בחרו צבע מרכזי או התאימו כל אזור בנפרד. השינוי מוצג מיד; לחצו על שמירת העיצוב כדי לשמור בחשבון גם לאחר רענון. ביטול מחזיר לעיצוב השמור.','Choose a primary color or customize individual surfaces. Changes preview instantly; Apply saves to your account and Cancel restores the saved design.')}</p>
-  <fieldset disabled={busy}><legend>{t('ערכות מוכנות','Theme presets')}</legend><div className="appearance-presets">{themePresets.map(p=><button type="button" key={p.id} aria-pressed={JSON.stringify(current)===JSON.stringify(p.appearance)} onClick={()=>edit(p.appearance)} style={{background:colorsFor(p.appearance).background,color:themeTokens(p.appearance)['--text']}}><span className="preset-surfaces" aria-hidden="true">{['background','secondary','button'].map(key=><i key={key} style={{background:colorsFor(p.appearance)[key as 'background'|'secondary'|'button']}}/>)}</span>{english?p.name:p.he}</button>)}</div></fieldset>
-  <fieldset disabled={busy}><legend>{t('מצב תצוגה','Display mode')}</legend><p>{t('החלפת מצב יוצרת מחדש את גווני הרקע. ניתן לערוך אותם שוב בהתאמה המתקדמת.','Switching mode regenerates background shades. You can edit them again in Advanced Customization.')}</p><div className="appearance-modes">{(['dark','light'] as const).map(mode=><button type="button" key={mode} aria-pressed={current.mode===mode} onClick={()=>edit(appearanceWithMode(current,mode))}>{mode==='light'?t('בהיר','Light'):t('כהה','Dark')}</button>)}</div></fieldset>
-  <fieldset disabled={busy}><legend>{t('פלטת צבעים','Color palette')}</legend><div className="advanced-swatch-grid">{swatchFamilies.map(f=><div className="advanced-swatch-family" key={f[1]}><span>{english?f[1]:f[0]}</span><div>{f.slice(2).map(color=><button type="button" key={color} style={{background:color}} aria-label={`${english?f[1]:f[0]} ${color}`} aria-pressed={colors.primary.toLowerCase()===color} onClick={()=>choosePrimary(color)}>{colors.primary.toLowerCase()===color&&<Check size={18} style={{color:themeTokens({...current,custom:fromPrimary(color,current.mode)})['--dc-primary-text']}} aria-hidden="true"/>}</button>)}</div></div>)}</div><ColorField label={t('צבע מרכזי מדויק','Exact primary color')} value={colors.primary} disabled={busy} onChange={choosePrimary}/></fieldset>
-  <button type="button" className="button secondary" aria-expanded={advanced} aria-controls={`${previewId}-advanced`} disabled={busy} onClick={()=>setAdvanced(v=>!v)}>{t('התאמה מתקדמת','Advanced Customization')}</button>
-  {advanced&&<fieldset id={`${previewId}-advanced`} disabled={busy}><legend>{t('צבעים לפי רכיב','Colors by component')}</legend><div className="advanced-color-grid">{customColorKeys.map(key=><ColorField key={key} label={english?colorLabels[key][1]:colorLabels[key][0]} value={colors[key]} disabled={busy} onChange={value=>patch(key,value)}/>)}</div><p>{t('צבעי הטקסט והאייקונים מותאמים אוטומטית לרקע שלהם.','Text and icon colors adapt automatically to their surfaces.')}</p></fieldset>}
-  <section id={previewId} tabIndex={-1} className="appearance-preview advanced-live-preview" aria-label="Preview"><strong>{t('תצוגה מקדימה','Preview')}</strong><nav aria-label={t('דוגמת ניווט','Navigation preview')}>{t('בית · התוכנית שלי · התקדמות','Home · My program · Progress')}</nav><p>{t('האימון הבא שלך','Your next workout')}</p><div className="appearance-preview-actions"><button type="button" className="button primary">{t('כפתור לדוגמה','Example button')}</button><span className="preview-accent">{t('הדגשה לדוגמה','Example accent')}</span></div></section>
-  <div className="care-actions advanced-theme-actions"><button type="button" className="button secondary" disabled={busy} onClick={()=>{context.preview();document.getElementById(previewId)?.focus();}}>Preview</button><button type="button" className="button primary" disabled={busy||!signedIn||!state.draft} onClick={()=>void save()}>{t('שמירת העיצוב','Apply and save')}</button><button type="button" className="button secondary" disabled={busy||!state.draft} onClick={context.cancel}>{t('ביטול','Cancel')}</button><button type="button" className="text-button" disabled={busy} onClick={()=>edit(resetAppearance)}>Reset to Default</button><button type="button" className="text-button" disabled={busy} onClick={()=>void load()}>{t('טעינת העיצוב השמור','Load saved appearance')}</button></div>
-  <p role="status" aria-live="polite">{busy?t('טוען…','Loading…'):message==='saved'?t('העיצוב נשמר בחשבון.','Appearance saved to your account.'):message==='conflict'?t('החשבון או ההעדפה השתנו. טענו את העיצוב השמור לפני שמירה נוספת.','The account or preference changed. Load the saved appearance before saving again.'):message==='account-changed'?t('החשבון השתנה; הוצג העיצוב של החשבון הנוכחי.','Account changed; showing the current account design.'):message==='failed'?t('הסנכרון נכשל. הטיוטה לא נשמרה; נסו לטעון או לשמור שוב.','Sync failed. Your draft has not been saved; retry loading or applying.'):!signedIn?t('יש להתחבר כדי לשמור את העיצוב בחשבון.','Sign in to save your design to your account.'):state.draft?t('תצוגה מקדימה בלבד — לחצו על שמירת העיצוב כדי שהבחירה תישאר לאחר רענון.','Preview only — choose Apply and save to keep this design after refresh.'):t('העיצוב השמור מוצג.','Showing your saved design.')}</p>
- </div>;
+ if(!context||!active)return null;
+ const {current,busy,signedIn,message,edit,save,load}=context;
+ return <section className="appearance-picker simple-appearance" data-no-translate>
+  <h2>{t('מראה האפליקציה','App appearance')}</h2>
+  <p>{t('בחרו ערכה בלחיצה אחת. הבחירה מוחלת מיד ונשמרת אוטומטית בחשבון.','Choose a theme with one tap. It applies immediately and saves automatically to your account.')}</p>
+  <div className="appearance-presets" role="group" aria-label={t('ערכות צבעים','Color themes')}>
+   {themePresets.map(p=>{const selected=JSON.stringify(current)===JSON.stringify(p.appearance),tokens=themeTokens(p.appearance);return <button type="button" key={p.id} disabled={busy||!signedIn} aria-pressed={selected} onClick={()=>{edit(p.appearance);void save(p.appearance);}}><i className="premium-swatch" aria-hidden="true" style={{background:tokens['--dc-button-gradient'],borderColor:colorsFor(p.appearance).accent}}/>{english?p.name:p.he}{selected&&<Check size={18} aria-hidden="true"/>}</button>;})}
+  </div>
+  <p role="status" aria-live="polite">{busy?t('מסנכרן…','Syncing…'):message==='saved'?t('הערכה נשמרה בחשבון.','Theme saved to your account.'):message==='failed'?t('הסנכרון נכשל. הבחירה עדיין לא נשמרה. נסו שוב.','Sync failed. Your selection has not been saved. Try again.'):message==='conflict'?t('ההעדפה השתנתה במכשיר אחר. טענו מחדש ובחרו שוב.','The preference changed on another device. Reload and choose again.'):!signedIn?t('יש להתחבר לשמירת העיצוב.','Sign in to save your appearance.'):''}</p>
+  {(message==='conflict'||message==='failed')&&<button type="button" className="button secondary" disabled={busy} onClick={()=>void load()}>{t('טעינה מחדש','Reload')}</button>}
+ </section>;
 }
