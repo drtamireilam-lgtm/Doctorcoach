@@ -1,14 +1,16 @@
+import {parseLoadMetadata,fromKg,hasTotalLoad,type LoadMetadata} from './load-units.ts';
 import type {EffortScale} from './effort.ts';
 import type {CustomExercise} from './custom-exercise-types.ts';
 import {defaultWorkoutSection,workoutSection,type WorkoutSection} from './workout-sections.ts';
 import {duringPain} from './workout-context.ts';
 export type Unit = 'reps' | 'seconds' | 'minutes';
 export type ExerciseTempo={eccentric:number;bottom:number;concentric:number;top:number};
-export type PlanItem = { exerciseId: string; occurrenceId?:string; customExercise?:CustomExercise;sets: number; reps: number; repsMax?:number|null; unit: Unit; weight: number; weightUnspecified?:boolean; notes: string; tempo?:ExerciseTempo|null; targetRpe?: number|null; targetRpes?:(number|null)[]; effortScale?:EffortScale; approvedSubstitutions?:string[]; dayId?:string; workoutSection?:WorkoutSection };
+export type WarmupSetPrescription = {amount:number;weight:number};
+export type PlanItem = { load?:LoadMetadata; warmupSets?:WarmupSetPrescription[]; side?:'left'|'right'|'both'; exerciseId: string; occurrenceId?:string; customExercise?:CustomExercise;sets: number; reps: number; repsMax?:number|null; unit: Unit; weight: number; weightUnspecified?:boolean; notes: string; tempo?:ExerciseTempo|null; targetRpe?: number|null; targetRpes?:(number|null)[]; effortScale?:EffortScale; approvedSubstitutions?:string[]; dayId?:string; workoutSection?:WorkoutSection };
 export type SetResult = { done: boolean; amount: number; weight: number; actualRpe?: number|null; painDuring?:number|null };
 export type ReadinessSnapshot={id:string;day:string;version:number;capturedAt:string;data:{sleep:number;energy:number;stress:number;note:string}};
 export type WorkoutFollowup={day:string;pain:number;recordedAt:string};
-export type SessionExercise = PlanItem & { name: string; results: SetResult[]; swappedFrom?:string };
+export type SessionExercise = PlanItem & { name: string; results: SetResult[]; warmupResults?:SetResult[]; swappedFrom?:string };
 export type TrainingSession = {
   id: string; planMode?:'legacy'|'self'|'coached'; programId?:string|null; status: 'active' | 'completed' | 'cancelled'; items: SessionExercise[];
   startedAt: string; finishedAt: string | null; before: number; after: number | null;
@@ -50,6 +52,8 @@ export function parsePlanItem(value: unknown, fallback?: PlanItem): PlanItem {
   const sets = value.sets ?? defaults.sets;
   const reps = value.reps ?? defaults.reps;
   const weight = value.weight ?? defaults.weight;
+  let load:LoadMetadata|undefined;
+  try{load=parseLoadMetadata(value.load===undefined&&defaults.load?{...defaults.load,sourceValue:weight===defaults.weight?defaults.load.sourceValue:fromKg(weight as number,defaults.load.sourceUnit)}:value.load,weight as number);}catch{throw new TrainingError('פרטי יחידת המשקל אינם תקינים.');}
   const notes = value.notes ?? defaults.notes;
   const workoutSection=value.workoutSection??defaults.workoutSection??'main';
   if(!['warmup','main','stretch'].includes(workoutSection as string))throw new TrainingError('בחרו חימום, תרגילי אימון או מתיחות.');
@@ -79,9 +83,20 @@ export function parsePlanItem(value: unknown, fallback?: PlanItem): PlanItem {
    if(!Array.isArray(rawTargets)||rawTargets.length>20||(value.targetRpes!==undefined&&rawTargets.length!==sets))throw new TrainingError('יש להגדיר יעד מאמץ לכל סט בתרגיל.');
    targetRpes=Array.from({length:sets},(_,i)=>i<rawTargets.length?parseRpe(rawTargets[i]):targetRpe);
   }
+  const rawWarmups=value.warmupSets===undefined?defaults.warmupSets:value.warmupSets;
+  let warmupSets:WarmupSetPrescription[]|undefined;
+  if(rawWarmups!==undefined){
+   if(!Array.isArray(rawWarmups)||rawWarmups.length>20)throw new TrainingError('אפשר להגדיר עד 20 סטים לחימום.');
+   warmupSets=rawWarmups.map(set=>{
+    if(!isRecord(set)||typeof set.amount!=='number'||!Number.isInteger(set.amount)||set.amount<1||set.amount>unitMax[unit as Unit]||typeof set.weight!=='number'||!Number.isFinite(set.weight)||set.weight<0||set.weight>1000)throw new TrainingError('פרטי סט החימום אינם תקינים.');
+    return {amount:set.amount,weight:set.weight};
+   });
+  }
+  const side=value.side===undefined?defaults.side:value.side===null?undefined:value.side;
+  if(side!==undefined&&!['left','right','both'].includes(String(side)))throw new TrainingError('יש לבחור צד שמאל, ימין או שני הצדדים.');
   const occurrenceId=value.occurrenceId??defaults.occurrenceId;
   if(occurrenceId!==undefined&&(typeof occurrenceId!=='string'||!/^[a-zA-Z0-9:_-]{1,160}$/.test(occurrenceId)))throw new TrainingError('מזהה הופעת התרגיל אינו תקין.');
-  return { exerciseId: value.exerciseId,...(occurrenceId===undefined?{}:{occurrenceId}),...(defaults.customExercise?{customExercise:defaults.customExercise}:{}),sets, reps, unit: unit as Unit, weight, notes: notes.trim(), targetRpe, effortScale,workoutSection:workoutSection as WorkoutSection,...(targetRpes?{targetRpes}:{}),...(tempo===undefined?{}:{tempo}),...(repsMax===undefined?{}:{repsMax:repsMax as number|null}),...(weightUnspecified===undefined?{}:{weightUnspecified:weightUnspecified as boolean}) };
+  return { exerciseId: value.exerciseId,...(load?{load}:{}),...(warmupSets===undefined?{}:{warmupSets}),...(side===undefined?{}:{side:side as PlanItem['side']}),...(occurrenceId===undefined?{}:{occurrenceId}),...(defaults.customExercise?{customExercise:defaults.customExercise}:{}),sets, reps, unit: unit as Unit, weight, notes: notes.trim(), targetRpe, effortScale,workoutSection:workoutSection as WorkoutSection,...(targetRpes?{targetRpes}:{}),...(tempo===undefined?{}:{tempo}),...(repsMax===undefined?{}:{repsMax:repsMax as number|null}),...(weightUnspecified===undefined?{}:{weightUnspecified:weightUnspecified as boolean}) };
 }
 
 export const repetitionLabel=(item:Pick<PlanItem,'reps'|'repsMax'>)=>item.repsMax!=null&&item.repsMax!==item.reps?`${item.reps}–${item.repsMax}`:String(item.reps);
@@ -127,6 +142,7 @@ export function estimated1RM(weight:number,reps:number):number|null {
   return Math.round((reps===1?weight:weight*(1+reps/30))*10)/10;
 }
 export function nextLoad(item:SessionExercise,session:TrainingSession):{weight:number|null;text:string} {
+  if(!hasTotalLoad(item))return {weight:null,text:'יש להזין עומס כולל במפורש לפני חישוב עומס.'};
   if(workoutSection(item)!=='main')return {weight:null,text:'הצעת משקל זמינה לתרגילי האימון בלבד, לא לחימום או למתיחות.'};
   const sets=item.results.filter(s=>s.done);
   if(session.before>0||(session.after??0)>0||(duringPain(session.items??[item])??0)>0||(session.followup?.pain??0)>0)return {weight:null,text:'דווח כאב. יש להתייעץ עם הצוות לפני שינוי עומס.'};
@@ -153,3 +169,14 @@ export function resolveSessionExercise<T extends PlanItem>(items:T[],value:Recor
  if(found.length!==1)throw new TrainingError('יש לבחור הופעת תרגיל אחת מהאימון.');
  return found[0];
 }
+
+/** Warmup results use a separate array and the same strict occurrence/set validation. */
+export function updateWarmupSet(items:SessionExercise[],value:Record<string,unknown>):SessionExercise[]{
+ const selected=resolveSessionExercise(items,value);
+ if(!selected.warmupSets||selected.warmupResults?.length!==selected.warmupSets.length)throw new TrainingError('סט החימום לא נמצא באימון.');
+ const updated=updateSet([{...selected,results:selected.warmupResults}],value)[0];
+ return items.map(item=>item!==selected?item:{...item,warmupResults:updated.results});
+}
+
+/** Strength statistics count work results only; workout task completion remains section-inclusive. */
+export const workCompletion=(items:SessionExercise[])=>completion(items.filter(item=>workoutSection(item)==='main'));

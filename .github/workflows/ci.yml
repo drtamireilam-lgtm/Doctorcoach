@@ -2,7 +2,7 @@ name: DoctorCoach CI
 
 on:
   push:
-    branches: [main, "stabilize/**", "fix/appearance-toggle-persistence-*", "feature/ui-ux-liad-followup-20261019"]
+    branches: [main, "stabilize/**", "fix/appearance-toggle-persistence-*", "feature/ui-ux-liad-followup-20261019", "feature/doctorcoach-2-smart-workout-20261020"]
   pull_request:
     branches: [main]
 
@@ -59,7 +59,7 @@ jobs:
       - name: Synthetic Worker authentication and authorization checks
         run: node --experimental-strip-types standalone/scripts/runtime-smoke.mjs
       - name: Package verified isolated LAB candidate
-        if: github.ref == 'refs/heads/feature/ui-ux-liad-followup-20261019' || github.head_ref == 'feature/lab-apple-anatomy-integration-20261020'
+        if: github.ref == 'refs/heads/feature/ui-ux-liad-followup-20261019' || github.head_ref == 'feature/lab-apple-anatomy-integration-20261020' || github.ref == 'refs/heads/feature/doctorcoach-2-smart-workout-20261020'
         run: |
           mkdir -p .sites-runtime/lab-release
           git rev-parse HEAD > .sites-runtime/lab-release/source-commit.txt
@@ -67,7 +67,7 @@ jobs:
           tar -czf .sites-runtime/lab-release/lab-candidate.tgz dist
           sha256sum .sites-runtime/lab-release/lab-candidate.tgz > .sites-runtime/lab-release/SHA256SUMS
       - name: Save verified LAB candidate without deployment
-        if: github.ref == 'refs/heads/feature/ui-ux-liad-followup-20261019' || github.head_ref == 'feature/lab-apple-anatomy-integration-20261020'
+        if: github.ref == 'refs/heads/feature/ui-ux-liad-followup-20261019' || github.head_ref == 'feature/lab-apple-anatomy-integration-20261020' || github.ref == 'refs/heads/feature/doctorcoach-2-smart-workout-20261020'
         uses: actions/upload-artifact@v4
         with:
           name: isolated-lab-candidate-${{ github.sha }}

@@ -1,3 +1,4 @@
+import {hasTotalLoad} from './load-units.ts';
 import {exerciseOccurrenceKey,targetRpeForSet} from './training.ts';
 import type {SessionExercise,SetResult,TrainingSession} from './training.ts';
 import {duringPain} from './workout-context.ts';
@@ -28,8 +29,9 @@ export function previewNextSetLoad(item:SessionExercise,index:number,session:Pic
 }
 export function nextSetLoad(item:SessionExercise,index:number,session:Pick<TrainingSession,'before'|'after'>&Partial<Pick<TrainingSession,'items'>>,step=2.5):{weight:number|null;calculatedWeight:number|null;relativePercent:number|null;text:string;estimate:number|null}{
  const target=targetRpeForSet(item,index+1);
- const source=item.results[index],next=item.results[index+1];const estimate=source?setEstimated1RM(source,item.unit):null;
+ const source=item.results[index],next=item.results[index+1];const estimate=source&&hasTotalLoad(item)&&workoutSection(item)==='main'?setEstimated1RM(source,item.unit):null;
  const none=(text:string)=>({weight:null,calculatedWeight:null,relativePercent:null,text,estimate});
+ if(!hasTotalLoad(item))return none('המשקל נמדד לכל צד; נדרש עומס כולל מפורש לחישובי כוח.');
  if(workoutSection(item)!=='main')return none('הצעת משקל זמינה לתרגילי האימון בלבד, לא לחימום או למתיחות.');
  if(!source?.done)return none('סמנו את הסט כבוצע כדי לחשב את המשקל לסט הבא.');
  if(!next)return none('זה הסט האחרון בתרגיל.');
