@@ -29,3 +29,11 @@ test('learning deep link opens the dedicated DoctorCoach guide',async()=>{
  const {learningTopic}=await import('../lib/learning-navigation.ts');
  assert.equal(learningTopic('#learn?article=doctorcoach'),'doctorcoach');
 });
+
+test('learning navigation keeps general guides separate from DoctorCoach overview',async()=>{
+ const navigation=await import('../lib/learning-navigation.ts');
+ const exports={},modules={'react/jsx-runtime':jsx,react:{useState:()=>['doctorcoach',()=>{}],useEffect:()=>{}},'../components/language-provider':{Localize:'Localize'},'./anatomy-workspace':{AnatomyWorkspace:'AnatomyWorkspace'},'./learning-workspace':{LearningWorkspace:'LearningWorkspace'},'../lib/learning-navigation':navigation};
+ vm.runInNewContext(ts.transpileModule(fs.readFileSync(new URL('../components/learning-area.tsx',import.meta.url),'utf8'),{compilerOptions:{module:ts.ModuleKind.CommonJS,target:ts.ScriptTarget.ES2022,jsx:ts.JsxEmit.ReactJSX}}).outputText,{exports,require:k=>modules[k]});
+ const links=nodes(exports.LearningArea({onExercise(){}}),n=>n.type==='a');
+ assert.equal(links[1].props.href,'#learn?article=rpe');assert.equal(links[1].props['aria-current'],undefined);assert.equal(links[2].props['aria-current'],'page');
+});
