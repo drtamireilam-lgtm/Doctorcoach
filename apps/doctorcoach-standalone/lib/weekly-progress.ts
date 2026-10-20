@@ -1,3 +1,4 @@
+import {hasTotalLoad} from './load-units.ts';
 import {workoutSection} from './workout-sections.ts';
 import {currentWeek} from './care.ts';
 import {estimated1RM,type TrainingSession} from './training.ts';
@@ -15,7 +16,7 @@ export function weeklyProgress(sessions:TrainingSession[],records:WellnessRecord
   const readinessDays=new Map(readiness.map(r=>[r.day,r.data]));
   for(const s of completed)if(s.readiness&&inWeek(s.readiness.day)&&!readinessDays.has(s.readiness.day))readinessDays.set(s.readiness.day,s.readiness.data);
   const sets=completed.flatMap(s=>s.items.filter(i=>workoutSection(i)==='main').flatMap(i=>i.results.filter(r=>r.done).map(r=>({r,i}))));
-  const loaded=sets.filter(({r,i})=>i.unit==='reps'&&numeric(r.weight)&&numeric(r.amount));
+  const loaded=sets.filter(({r,i})=>hasTotalLoad(i)&&i.unit==='reps'&&numeric(r.weight)&&numeric(r.amount));
   const exercises=new Map<string,{id:string;name:string;weight:number;e1rm:number|null}>();
   for(const {r,i} of loaded){const old=exercises.get(i.exerciseId);const estimate=(r.painDuring??0)>0?null:estimated1RM(r.weight,r.amount);exercises.set(i.exerciseId,{id:i.exerciseId,name:i.name,weight:Math.max(old?.weight??0,r.weight),e1rm:estimate===null?old?.e1rm??null:Math.max(old?.e1rm??0,estimate)});}
   // Never merge different regions/sides/movements or measurement timings.

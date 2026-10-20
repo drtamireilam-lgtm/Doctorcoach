@@ -1,3 +1,4 @@
+import {hasTotalLoad} from './load-units.ts';
 import {TrainingError,type TrainingSession,type SessionExercise} from './training.ts';
 import {setEstimated1RM} from './set-load.ts';
 import {workoutDayId} from './workout-days.ts';
@@ -13,6 +14,7 @@ export function finishFeedback(value:unknown):FinishFeedback|null{
 }
 function metrics(item:SessionExercise){
  const sets=item.results.filter(s=>s.done);
+ if(!hasTotalLoad(item))return {weight:null,reps:item.unit==='reps'&&sets.length?Math.max(...sets.map(s=>s.amount)):null,estimate:null};
  const estimates=sets.map(s=>setEstimated1RM(s,item.unit)).filter((n):n is number=>n!==null);
  return {weight:sets.length?Math.max(...sets.map(s=>s.weight)):null,reps:item.unit==='reps'&&sets.length?Math.max(...sets.map(s=>s.amount)):null,estimate:estimates.length?Math.max(...estimates):null};
 }

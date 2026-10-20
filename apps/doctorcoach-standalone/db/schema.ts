@@ -41,6 +41,7 @@ export const programItems = sqliteTable('program_items', {
   effortScale: text('effort_scale').notNull().default('rpe'),
   notes: text('notes').notNull().default(''),
   tempoJson:text('tempo_json'),
+  loadJson:text('load_json'),
   warmupSetsJson:text('warmup_sets_json'),
   side:text('side'),
   repsMax:integer('reps_max'),

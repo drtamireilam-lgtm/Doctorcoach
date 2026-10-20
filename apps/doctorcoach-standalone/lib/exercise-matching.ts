@@ -47,7 +47,7 @@ export function matchExerciseForImport(name:string,catalog:readonly NamedExercis
  }
  // Spelling similarity is evidence for review only, even at a very high score.
  const scores=new Map<string,number>();
- for(const candidateKey of index.keys){const score=similarity(key,candidateKey);if(score<.72)continue;for(const entry of index.names.get(candidateKey)??[])scores.set(entry.exerciseId,Math.max(scores.get(entry.exerciseId)??0,score));}
+ for(const candidateKey of index.keys){const words=key.split(' '),candidateWords=candidateKey.split(' ');const contained=words.length>=2&&words.every(w=>candidateWords.includes(w));const score=Math.max(similarity(key,candidateKey),contained?.74:0);if(score<.72)continue;for(const entry of index.names.get(candidateKey)??[])scores.set(entry.exerciseId,Math.max(scores.get(entry.exerciseId)??0,score));}
  const candidates=[...scores].sort((a,b)=>b[1]-a[1]||a[0].localeCompare(b[0])).slice(0,5).map(([exerciseId,score])=>({exerciseId,score,reason:'Similar spelling; verify equipment, angle and side manually'}));
  return candidates.length?{exerciseId:'',status:'suggested',confidence:candidates[0].score,candidates}:empty();
 }

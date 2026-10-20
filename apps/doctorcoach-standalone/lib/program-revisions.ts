@@ -3,5 +3,5 @@ import type {CareProgram} from './care.ts';
 
 /** Detached editor data: edits cannot mutate the displayed or persisted source. */
 export function revisionDraft(program:CareProgram){
- return {revisionOf:program.id,title:program.title,items:withOccurrenceIds(program.items).map(item=>({...item,...(item.warmupSets?{warmupSets:item.warmupSets.map(set=>({...set}))}:{}),...(item.tempo?{tempo:{...item.tempo}}:{}),...(item.approvedSubstitutions?{approvedSubstitutions:[...item.approvedSubstitutions]}:{})}))};
+ return {revisionOf:program.id,title:program.title,items:withOccurrenceIds(program.items).map(item=>({...item,...(item.load?{load:{...item.load}}:{}),...(item.warmupSets?{warmupSets:item.warmupSets.map(set=>({...set}))}:{}),...(item.tempo?{tempo:{...item.tempo}}:{}),...(item.approvedSubstitutions?{approvedSubstitutions:[...item.approvedSubstitutions]}:{})}))};
 }

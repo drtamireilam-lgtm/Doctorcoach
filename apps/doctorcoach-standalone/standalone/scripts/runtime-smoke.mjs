@@ -90,9 +90,12 @@ try{
  const firstOccurrence=randomUUID(),secondOccurrence=randomUUID();
  await json('/api/program',{occurrenceId:firstOccurrence,exerciseId:'goblet',sets:2,reps:5,weight:100,targetRpe:8,effortScale:'rir',unit:'reps',notes:'',side:'left',warmupSets:[{amount:10,weight:20},{amount:5,weight:60}]});
  await json('/api/program',{occurrenceId:secondOccurrence,exerciseId:'goblet',sets:3,reps:6,weight:80,targetRpe:9,effortScale:'rpe',unit:'reps',notes:''});
- assert.equal((await json('/api/program')).items.length,2);
+ await json('/api/program',{occurrenceId:randomUUID(),exerciseId:'leg-press',sets:2,reps:10,weight:105*.45359237,load:{sourceValue:105,sourceUnit:'lb',basis:'total'},unit:'reps',notes:''});
+ await json('/api/program',{occurrenceId:randomUUID(),exerciseId:'adduction',sets:2,reps:10,weight:135*.45359237,load:{sourceValue:135,sourceUnit:'lb',basis:'per-side'},unit:'reps',notes:''});
+ const loadProgram=await json('/api/program');assert.equal(loadProgram.items.length,4);assert.equal(loadProgram.items[2].load.sourceValue,105);assert.equal(loadProgram.items[2].weight,105*.45359237);
+ await json('/api/program',loadProgram.items[2]);assert.equal((await json('/api/program')).items[2].weight,105*.45359237);
  let session=(await json('/api/training',{requestId:randomUUID(),before:0})).session;
- assert.equal(session.plannedSets,5);
+ assert.equal(session.plannedSets,9);assert.equal(session.items[2].load.sourceUnit,'lb');assert.equal(session.items[3].load.basis,'per-side');
  assert.notEqual(session.items[0].occurrenceId,session.items[1].occurrenceId);
  assert.equal(session.items[0].side,'left');assert.equal(session.items[0].warmupResults.length,2);assert.equal(session.items[1].warmupResults?.length??0,0);
  const warmupVersion=session.version;

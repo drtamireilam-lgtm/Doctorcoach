@@ -6,7 +6,7 @@ import ts from 'typescript';
 import * as jsx from 'react/jsx-runtime';
 import * as sections from '../lib/workout-sections.ts';
 function load(name,language='he'){
- const exports={};const modules={'react/jsx-runtime':jsx,'./language-provider':{useLanguage:()=>({language}),Localize:'Localize'},'../lib/workout-sections':sections,'../lib/effort':{effortName:()=> 'RPE',effortValue:n=>n,effortTarget:()=> 'RPE 8'},'../lib/training':{targetRpeForSet:()=>8}};
+ const exports={};const modules={'react/jsx-runtime':jsx,'./load-unit-picker':{useLoadUnit:()=> 'kg'},'../lib/load-units':{fromKg:(weight)=>weight},'./language-provider':{useLanguage:()=>({language}),Localize:'Localize'},'../lib/workout-sections':sections,'../lib/effort':{effortName:()=> 'RPE',effortValue:n=>n,effortTarget:()=> 'RPE 8'},'../lib/training':{targetRpeForSet:()=>8}};
  vm.runInNewContext(ts.transpileModule(fs.readFileSync(new URL('../components/'+name,import.meta.url),'utf8'),{compilerOptions:{module:ts.ModuleKind.CommonJS,target:ts.ScriptTarget.ES2022,jsx:ts.JsxEmit.ReactJSX}}).outputText,{exports,require:k=>modules[k]??{}});return exports;
 }
 function nodes(n,p){return !n||typeof n!=='object'?[]:[...(p(n)?[n]:[]),...[n.props?.children].flat(Infinity).flatMap(c=>nodes(c,p))];}
