@@ -150,5 +150,5 @@ html[data-custom-theme] .simple-appearance .appearance-presets button:hover:not(
   .simple-appearance {display:none!important}
 }
 
-html[data-custom-theme] .chart-legend span:first-child i {background:var(--dc-chart-2)}
-html[data-custom-theme] .chart-legend span:last-child i {background:var(--dc-chart-1)}
+html[data-custom-theme] .progress-chart .chart-legend span:first-child i {background:var(--dc-chart-2)}
+html[data-custom-theme] .progress-chart .chart-legend span:last-child i {background:var(--dc-chart-1)}

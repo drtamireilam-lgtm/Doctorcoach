@@ -57,3 +57,13 @@ test('custom chart accents cannot collapse two series to the same color',()=>{
   assert.notEqual(t['--dc-chart-1'],t['--dc-chart-2']);
  }
 });
+
+test('performance legend describes stroke styles instead of hardcoded theme colors',()=>{
+ const exports={};
+ const modules={'react':{useMemo:f=>f(),useState:v=>[v,()=>{}]},'react/jsx-runtime':{jsx:(type,props)=>({type,props}),jsxs:(type,props)=>({type,props})},'../lib/performance':{performancePoints:()=>[],performanceSummary:()=>({best:null,last:null,isPr:false})}};
+ vm.runInNewContext(ts.transpileModule(readFileSync(new URL('../components/performance-workspace.tsx',import.meta.url),'utf8'),{compilerOptions:{module:ts.ModuleKind.CommonJS,jsx:ts.JsxEmit.ReactJSX}}).outputText,{exports,require:k=>modules[k]??{}});
+ const legend=nodes(exports.PerformancePanel({history:[]}),n=>n.props.className==='chart-legend')[0];
+ const text=JSON.stringify(legend);
+ assert.ok(text.includes('קו רציף: e1RM'));assert.ok(text.includes('קו מקווקו: משקל עבודה'));
+ assert.ok(!text.includes('אדום:'));assert.ok(!text.includes('אפור:'));
+});

@@ -6,6 +6,8 @@ const normalize = (text: string) => text.trim().replace(/\s+/g, ' ');
 const dictionary = new Map(hebrew.map((text, index) => [normalize(text), english[index]]));
 // New privacy labels are kept explicit instead of partially translating consent text.
 for(const [he,en] of [
+ ["קו רציף: e1RM", "Solid line: e1RM"],
+ ["קו מקווקו: משקל עבודה", "Dashed line: working weight"],
  ["חזרה לבית", "Back to Home"],
  ["חזרה להגדרות", "Back to settings"],
  ["כאן נמצאים האימון הבא שלך, סיכום התקדמות והודעות מהצוות. בטלפון: בית, התוכנית שלי, התיק שלי ועוד. מידע על הצוות וסיפורי ההתקדמות זמינים במסך ההיכרות הציבורי.", "Your next workout, progress summary and team messages are here. On mobile: Home, My program, My file and More. Team information and progress stories remain in the public introduction."],
