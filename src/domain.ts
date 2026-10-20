@@ -56,12 +56,19 @@ export function estimateE1RM(set: ExerciseSet, mode: EffortMode): number {
 }
 
 export function suggestedNextLoad(set: ExerciseSet, targetEffort: number, mode: EffortMode): string {
-  if (!set.load) return 'Enter load';
-  const delta = mode === 'RPE' ? targetEffort - set.effort : set.effort - targetEffort;
-  if (Math.abs(delta) < 0.5) return 'Keep load';
-  const pct = delta > 0 ? 0.025 : -0.025;
-  const suggested = Math.max(0, Math.round((set.load * (1 + pct)) * 2) / 2);
-  return `${suggested} kg`;
+  if (!Number.isFinite(set.load) || set.load <= 0) return 'Enter load';
+  if (!Number.isFinite(set.reps) || set.reps <= 0) return 'Enter reps';
+  if (!Number.isFinite(set.effort) || !Number.isFinite(targetEffort)) return 'Enter effort';
+  if (mode === 'RPE' && (set.effort < 0 || set.effort > 10 || targetEffort < 0 || targetEffort > 10)) return 'Invalid RPE';
+  if (mode === 'RIR' && (set.effort < 0 || targetEffort < 0)) return 'Invalid RIR';
+
+  // Estimate the same-rep load for the requested effort, using the
+  // completed set's estimated 1RM. Do not round to available gym plates.
+  const actualRir = mode === 'RIR' ? set.effort : 10 - set.effort;
+  const targetRir = mode === 'RIR' ? targetEffort : 10 - targetEffort;
+  const estimatedMax = set.load * (1 + (set.reps + actualRir) / 30);
+  const suggested = estimatedMax / (1 + (set.reps + targetRir) / 30);
+  return `${Math.max(0, Math.round(suggested * 100) / 100)} kg`;
 }
 
 export const bodyRegions = ['Neck / Cervical spine','Shoulder','Elbow','Wrist / Hand','Thoracic spine','Lumbar spine','Hip / Groin','Knee','Ankle / Foot'];
