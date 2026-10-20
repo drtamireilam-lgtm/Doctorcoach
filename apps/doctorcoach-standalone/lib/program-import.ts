@@ -80,7 +80,7 @@ function parseWarmups(raw:string,issues:string[]){
  return parts.map(s=>{const [first,second]=s.split(/[@×x]/).map(Number);return s.includes('@')?{amount:first,weight:second}:{amount:second,weight:first};});
 }
 export function extractImportRows(sheet:ExcelSheet,header:number,mapping:ColumnMapping,options:ImportOptions={}):ImportRow[]{
- if(mapping.exercise===undefined||mapping.sets===undefined||mapping.reps===undefined)throw new Error('יש לבחור עמודות תרגיל, סטים וחזרות.');
+ if(mapping.exercise===undefined)throw new Error('יש לבחור עמודת שם תרגיל. סטים או חזרות חסרים יישארו ריקים להשלמה בעורך.');
  const chosen=Object.values(mapping).filter(v=>v!==undefined);if(new Set(chosen).size!==chosen.length)throw new Error('כל עמודה צריכה לייצג שדה אחד בלבד.');
  if(options.weekColumn!==undefined&&chosen.includes(options.weekColumn))throw new Error('עמודת שבוע היא מידע מקור, ויש לבחור עבורה עמודה נפרדת.');
  const rows:ImportRow[]=[];const days=new Map<string,string>();let sourceDay=sheet.name;let activeMapping=mapping;let activeHeader=sheet.rows[header]??[];let activeWeekColumn=options.weekColumn;let mappingIssues:string[]=[];const initialHeader=sheet.rows[header]??[];const weekLabel=options.weekColumn===undefined?'':initialHeader[options.weekColumn]?.value??'';let activeSection:WorkoutSection='main';
