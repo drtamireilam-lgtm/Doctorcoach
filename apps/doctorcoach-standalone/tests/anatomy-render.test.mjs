@@ -2,12 +2,13 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import {readFileSync} from 'node:fs';
 import {createRequire} from 'node:module';
+import {pathToFileURL} from 'node:url';
 import ts from 'typescript';
 import React from 'react';
 import {renderToStaticMarkup} from 'react-dom/server';
 import {anatomyLabels,regionNames} from '../lib/anatomy-learning.ts';
 const require=createRequire(import.meta.url);
-const fileUrl=path=>'file://'+require.resolve(path);
+const fileUrl=path=>pathToFileURL(require.resolve(path)).href;
 const url=source=>'data:text/javascript;base64,'+Buffer.from(source).toString('base64');
 async function loadComponent(file,language){
  let source=readFileSync(new URL('../components/'+file,import.meta.url),'utf8');

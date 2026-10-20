@@ -88,12 +88,17 @@ try{
  await db.prepare("INSERT INTO user_intakes(user_id,answers_json,completed,created_at,updated_at) VALUES(?,'{}',1,?,?)").bind(owner,at,at).run();
  await db.prepare("INSERT INTO training_access(user_id,mode,self_until,updated_at) VALUES(?,'self',?,?)").bind(owner,new Date(Date.now()+86400000).toISOString(),at).run();
  const firstOccurrence=randomUUID(),secondOccurrence=randomUUID();
- await json('/api/program',{occurrenceId:firstOccurrence,exerciseId:'goblet',sets:2,reps:5,weight:100,targetRpe:8,effortScale:'rir',unit:'reps',notes:''});
+ await json('/api/program',{occurrenceId:firstOccurrence,exerciseId:'goblet',sets:2,reps:5,weight:100,targetRpe:8,effortScale:'rir',unit:'reps',notes:'',side:'left',warmupSets:[{amount:10,weight:20},{amount:5,weight:60}]});
  await json('/api/program',{occurrenceId:secondOccurrence,exerciseId:'goblet',sets:3,reps:6,weight:80,targetRpe:9,effortScale:'rpe',unit:'reps',notes:''});
  assert.equal((await json('/api/program')).items.length,2);
  let session=(await json('/api/training',{requestId:randomUUID(),before:0})).session;
  assert.equal(session.plannedSets,5);
  assert.notEqual(session.items[0].occurrenceId,session.items[1].occurrenceId);
+ assert.equal(session.items[0].side,'left');assert.equal(session.items[0].warmupResults.length,2);assert.equal(session.items[1].warmupResults?.length??0,0);
+ const warmupVersion=session.version;
+ session=(await json('/api/training',{action:'warmupSet',id:session.id,version:session.version,exerciseId:'goblet',occurrenceId:firstOccurrence,setIndex:0,done:true,amount:10,weight:20},'PATCH')).session;
+ assert.equal(session.completedSets,0);assert.equal(session.items[0].results[0].done,false);assert.equal(session.items[0].warmupResults[0].done,true);
+ assert.equal((await request('/api/training',{action:'warmupSet',id:session.id,version:warmupVersion,exerciseId:'goblet',occurrenceId:firstOccurrence,setIndex:0,done:true,amount:10,weight:30},{},'PATCH')).status,409);
  session=(await json('/api/training',{action:'set',id:session.id,version:session.version,exerciseId:'goblet',occurrenceId:firstOccurrence,setIndex:0,done:true,amount:5,weight:100,actualRpe:6},'PATCH')).session;
  session=(await json('/api/training',{action:'nextLoad',id:session.id,version:session.version,exerciseId:'goblet',occurrenceId:firstOccurrence,setIndex:0,step:2.5},'PATCH')).session;
  assert.equal(session.items[0].results[1].weight,105);
@@ -101,6 +106,8 @@ try{
  session=(await json('/api/training',{action:'set',id:session.id,version:session.version,exerciseId:'goblet',occurrenceId:firstOccurrence,setIndex:1,done:true,amount:5,weight:105,actualRpe:8},'PATCH')).session;
  session=(await json('/api/training',{action:'finish',id:session.id,version:session.version,after:0},'PATCH')).session;
  assert.equal((await json('/api/training')).history[0].id,session.id);
+ assert.equal((await json('/api/training')).history[0].items[0].warmupResults[0].weight,20);
+ assert.equal((await json('/api/training')).stats.sets,2,'Embedded warmups do not count as work sets');
  assert.equal((await json('/api/program')).items[0].effortScale,'rir');
  const video=randomUUID(),videoKey='preserved/private/video',videoBytes=new Uint8Array([0,255,1,2,3,0,4]);
  await db.prepare("INSERT INTO media_assets(id,owner_id,kind,exercise_id,caption,mime,bytes,object_key,status,published,created_at) VALUES(?,?,'review','goblet','','video/mp4',?,?,'ready',0,?)").bind(video,owner,videoBytes.length,videoKey,at).run();

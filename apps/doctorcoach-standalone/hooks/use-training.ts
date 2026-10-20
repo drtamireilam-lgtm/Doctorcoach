@@ -6,7 +6,7 @@ import {apiResponseFailure} from '../lib/api-response';
 import type {TrainingAccess} from '../lib/training-access';
 import {customId} from '../lib/custom-exercise-types';
 import { useCallback, useEffect, useRef, useState } from 'react';
-import { defaultPrescription } from '../lib/training';
+import { defaultPrescription,workCompletion } from '../lib/training';
 import type { LegacyLog, PlanItem, TrainingFeed, TrainingSession } from '../lib/training';
 const emptyFeed: TrainingFeed = { active: null, history: [], stats: { total: 0, week: 0, sets: 0 } };
 class ApiError extends Error {
@@ -45,7 +45,7 @@ export function useTraining() {
     const known = old.history.some(x => x.id === session.id);
     return { ...old, active: old.active?.id === session.id ? null : old.active,
       history: session.status === 'completed' ? known?old.history.map(x=>x.id===session.id?session:x):[session, ...old.history].slice(0,50) : old.history,
-      stats: session.status === 'completed' && !known ? { total: old.stats.total + 1, week: old.stats.week + 1, sets: old.stats.sets + session.completedSets } : old.stats };
+      stats: session.status === 'completed' && !known ? { total: old.stats.total + 1, week: old.stats.week + 1, sets: old.stats.sets + workCompletion(session.items) } : old.stats };
   }), []);
   const refresh = useCallback(async () => {
     const sequence=++refreshSequence.current;setRefreshing(true);
@@ -76,8 +76,8 @@ export function useTraining() {
     const result=await request<{workoutPreference:WorkoutPreference}>('/api/program','PATCH',{mode,version:workoutPreference.version});
     setWorkoutPreference(result.workoutPreference);setNotice('העדפת האימון נשמרה.');return true;
   });
-  const savePlan = async (item: PlanItem|Pick<PlanItem,'exerciseId'>) => mutate(async () => {
-    const {customExercise,...payload}=item as PlanItem;
+  const savePlan = async (item: (Omit<PlanItem,'side'>&{side?:PlanItem['side']|null})|Pick<PlanItem,'exerciseId'>) => mutate(async () => {
+    const payload={...item};if('customExercise' in payload)delete payload.customExercise;
     const saved = await request<{item:PlanItem}>('/api/program','POST',payload);
     setPlan(old => old.some(x => planItemKey(x)===planItemKey(saved.item)) ? old.map(x => planItemKey(x)===planItemKey(saved.item) ? saved.item : x) : [...old,saved.item]);
     setNotice('פרטי התרגיל נשמרו.'); return saved.item;
