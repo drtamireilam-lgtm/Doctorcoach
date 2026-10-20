@@ -1,0 +1,396 @@
+{
+  "questionnaire_id": "injury-intake-v1",
+  "title": "לפני שמתחילים",
+  "description": "השאלון נועד להתאים את האפליקציה אליך ולזהות מתי נדרש בירור רפואי נוסף. הוא אינו מהווה אבחנה רפואית.",
+  "start_question": "current_injury",
+  "questions": [
+    {
+      "id": "current_injury",
+      "type": "single_select",
+      "question": "האם יש לך כרגע פציעה, כאב או מגבלה שמפריעים לך באימון או ביום-יום?",
+      "options": [
+        {
+          "value": "yes",
+          "label": "כן",
+          "next": "body_region"
+        },
+        {
+          "value": "no",
+          "label": "לא",
+          "next": "goals"
+        }
+      ],
+      "required": true
+    },
+    {
+      "id": "body_region",
+      "type": "multi_select",
+      "question": "באיזה אזור בגוף נמצאת הבעיה?",
+      "options": [
+        "צוואר",
+        "כתף",
+        "מרפק",
+        "אמה",
+        "שורש כף יד / כף יד",
+        "חזה",
+        "גב עליון / שכמה",
+        "גב תחתון",
+        "אגן / ירך",
+        "מפשעה",
+        "ברך",
+        "שוק",
+        "קרסול",
+        "כף רגל",
+        "אחר"
+      ],
+      "next": "onset",
+      "required": true
+    },
+    {
+      "id": "onset",
+      "type": "single_select",
+      "question": "איך התחילה הבעיה?",
+      "options": [
+        "בבת אחת במהלך אימון",
+        "אחרי טראומה / נפילה / מכה",
+        "בהדרגה לאורך זמן",
+        "לא בטוח/ה"
+      ],
+      "next": "duration"
+    },
+    {
+      "id": "duration",
+      "type": "single_select",
+      "question": "כמה זמן זה נמשך?",
+      "options": [
+        "פחות מ-48 שעות",
+        "2–7 ימים",
+        "1–6 שבועות",
+        "מעל 6 שבועות",
+        "מעל 3 חודשים"
+      ],
+      "next": "pain_score"
+    },
+    {
+      "id": "pain_score",
+      "type": "scale",
+      "question": "מה רמת הכאב כרגע?",
+      "min": 0,
+      "max": 10,
+      "labels": {
+        "0": "ללא כאב",
+        "10": "הכאב החזק ביותר"
+      },
+      "next": "pain_behavior"
+    },
+    {
+      "id": "pain_behavior",
+      "type": "multi_select",
+      "question": "מתי הכאב מופיע?",
+      "options": [
+        "במנוחה",
+        "במהלך תנועה",
+        "במהלך אימון",
+        "אחרי אימון",
+        "יום אחרי אימון",
+        "בלילה",
+        "בבוקר",
+        "לא קבוע"
+      ],
+      "next": "symptoms"
+    },
+    {
+      "id": "symptoms",
+      "type": "multi_select",
+      "question": "האם יש אחד מהדברים הבאים?",
+      "options": [
+        "חולשה",
+        "נימול / עקצוץ",
+        "הקרנת כאב",
+        "נפיחות",
+        "קליקים / תפיסות",
+        "תחושת חוסר יציבות",
+        "ירידה בטווח תנועה",
+        "אף אחד מאלו"
+      ],
+      "next": "red_flags"
+    },
+    {
+      "id": "red_flags",
+      "type": "multi_select",
+      "question": "האם אחד מהמצבים הבאים קיים כרגע?",
+      "options": [
+        {
+          "value": "progressive_weakness",
+          "label": "חולשה חדשה או שמחמירה במהירות"
+        },
+        {
+          "value": "bowel_bladder",
+          "label": "שינוי חדש בשליטה על שתן/צואה או ירידה בתחושה באזור המפשעה"
+        },
+        {
+          "value": "major_trauma",
+          "label": "טראומה משמעותית / חשד לשבר"
+        },
+        {
+          "value": "fever_hot_joint",
+          "label": "חום עם מפרק חם ונפוח"
+        },
+        {
+          "value": "chest_breathing",
+          "label": "כאב בחזה או קוצר נשימה"
+        },
+        {
+          "value": "vascular",
+          "label": "שינוי חד בצבע/חום/נפיחות חריגה בגפה"
+        },
+        {
+          "value": "none",
+          "label": "אף אחד מאלו"
+        }
+      ],
+      "branching": {
+        "if_any_except_none": "medical_review_stop",
+        "if_none": "diagnosis"
+      }
+    },
+    {
+      "id": "diagnosis",
+      "type": "single_select",
+      "question": "האם קיבלת כבר אבחנה רפואית?",
+      "options": [
+        {
+          "value": "yes",
+          "label": "כן",
+          "next": "diagnosis_text"
+        },
+        {
+          "value": "no",
+          "label": "לא",
+          "next": "imaging"
+        }
+      ]
+    },
+    {
+      "id": "diagnosis_text",
+      "type": "text",
+      "question": "מה האבחנה שניתנה לך?",
+      "next": "imaging"
+    },
+    {
+      "id": "imaging",
+      "type": "multi_select",
+      "question": "האם ביצעת בדיקות הדמיה או בדיקות נוספות?",
+      "options": [
+        "MRI",
+        "CT",
+        "US",
+        "צילום רנטגן",
+        "EMG",
+        "לא בוצע",
+        "אחר"
+      ],
+      "next": "surgery"
+    },
+    {
+      "id": "surgery",
+      "type": "single_select",
+      "question": "האם עברת ניתוח באזור הזה?",
+      "options": [
+        "כן",
+        "לא"
+      ],
+      "next": "training_effect"
+    },
+    {
+      "id": "training_effect",
+      "type": "multi_select",
+      "question": "מה הפציעה מונעת ממך כרגע לעשות?",
+      "options": [
+        "Squat",
+        "Bench Press",
+        "Deadlift",
+        "Overhead Press",
+        "Pulling / Rows",
+        "ריצה",
+        "קפיצה",
+        "הליכה",
+        "שינה",
+        "עבודה",
+        "אחר"
+      ],
+      "next": "current_management"
+    },
+    {
+      "id": "current_management",
+      "type": "multi_select",
+      "question": "מה אתה עושה כרגע כדי לטפל בזה?",
+      "options": [
+        "מנוחה",
+        "פיזיותרפיה",
+        "תרופות",
+        "תרגילי שיקום",
+        "שינוי תוכנית אימון",
+        "טיפול רפואי אחר",
+        "שום דבר כרגע"
+      ],
+      "next": "age"
+    },
+    {
+      "id": "age",
+      "type": "number",
+      "question": "מה הגיל שלך?",
+      "min": 13,
+      "max": 100,
+      "next": "medical_history",
+      "required": true
+    },
+    {
+      "id": "medical_history",
+      "type": "multi_select_with_other",
+      "question": "האם יש מחלות רקע או מצבים רפואיים שחשוב שהצוות יכיר?",
+      "options": [
+        "אין מחלות רקע משמעותיות",
+        "מחלות לב / כלי דם",
+        "יתר לחץ דם",
+        "סוכרת",
+        "מחלת ריאות / אסתמה",
+        "מחלה נוירולוגית",
+        "מחלה ראומטולוגית",
+        "בעיה אורתופדית כרונית",
+        "מחלת כליות",
+        "מחלת כבד",
+        "אחר"
+      ],
+      "next": "medications",
+      "required": true
+    },
+    {
+      "id": "medications",
+      "type": "text_optional",
+      "question": "האם אתה נוטל תרופות קבועות או תרופות שמשפיעות על האימון/הפציעה?",
+      "placeholder": "אפשר לכתוב שמות תרופות או להשאיר ריק אם אין.",
+      "next": "prior_injuries",
+      "required": false
+    },
+    {
+      "id": "prior_injuries",
+      "type": "text_optional",
+      "question": "האם היו לך בעבר פציעות משמעותיות, במיוחד באותו אזור?",
+      "placeholder": "לדוגמה: קרע, נקע, פריקה, כאב חוזר, שבר וכו'.",
+      "next": "prior_surgeries",
+      "required": false
+    },
+    {
+      "id": "prior_surgeries",
+      "type": "text_optional",
+      "question": "האם עברת בעבר ניתוחים אורתופדיים או ניתוחים שמשפיעים על האימון?",
+      "placeholder": "אם כן, ציין מה ומתי.",
+      "next": "professional_restrictions",
+      "required": false
+    },
+    {
+      "id": "professional_restrictions",
+      "type": "text_optional",
+      "question": "האם קיבלת כרגע מגבלות או הוראות מרופא/פיזיותרפיסט?",
+      "placeholder": "לדוגמה: לא להרים מעל הראש, הגבלת נשיאת משקל, הגבלת טווח וכו'.",
+      "next": "training_frequency",
+      "required": false
+    },
+    {
+      "id": "training_frequency",
+      "type": "single_select",
+      "question": "כמה פעמים בשבוע אתה מתאמן כיום?",
+      "options": [
+        "כרגע לא מתאמן/ת",
+        "1–2",
+        "3–4",
+        "5–6",
+        "7+"
+      ],
+      "next": "training_style",
+      "required": true
+    },
+    {
+      "id": "training_style",
+      "type": "multi_select",
+      "question": "איזה סוג אימון אתה מבצע בדרך כלל?",
+      "options": [
+        "אימוני כוח כלליים",
+        "Powerlifting",
+        "Bodybuilding",
+        "CrossFit / Functional Fitness",
+        "ריצה",
+        "ספורט קבוצתי",
+        "אומנויות לחימה",
+        "אימון ביתי",
+        "אחר"
+      ],
+      "next": "specific_goals",
+      "required": true
+    },
+    {
+      "id": "specific_goals",
+      "type": "multi_select_with_other",
+      "question": "מה המטרות הספציפיות שלך בחודשים הקרובים?",
+      "options": [
+        "חזרה מלאה לאימון",
+        "חזרה לתרגיל מסוים",
+        "חזרה לתחרות",
+        "העלאת כוח",
+        "עלייה במסת שריר",
+        "ירידה בשומן",
+        "שיפור סיבולת",
+        "שיפור תנועה / גמישות",
+        "מניעת חזרת פציעה",
+        "אחר"
+      ],
+      "next": "goals",
+      "required": true
+    },
+    {
+      "id": "goals",
+      "type": "multi_select",
+      "question": "מה המטרה המרכזית שלך ב-DoctorCoach?",
+      "options": [
+        "לחזור להתאמן ללא כאב",
+        "להמשיך להתאמן סביב פציעה",
+        "לשפר כוח / ביצועים",
+        "לרדת במשקל / לשנות הרכב גוף",
+        "לקבל ליווי רפואי",
+        "לקבל תוכנית אימון",
+        "לקבל ליווי תזונתי",
+        "ללמוד אנטומיה ופציעות"
+      ],
+      "next": "experience"
+    },
+    {
+      "id": "experience",
+      "type": "single_select",
+      "question": "מה רמת הניסיון שלך באימוני כוח?",
+      "options": [
+        "מתחיל/ה",
+        "מתאמן/ת באופן קבוע",
+        "מתקדם/ת",
+        "Powerlifting / Bodybuilding תחרותי"
+      ],
+      "next": "finish"
+    }
+  ],
+  "outcomes": {
+    "medical_review_stop": {
+      "title": "נדרש בירור רפואי לפני המשך",
+      "message": "לפי אחת התשובות שסימנת, עדיף שלא להמשיך למסלול אוטומטי כרגע. האפליקציה תיצור בקשת Medical Review כדי שהצוות יוכל לכוון אותך נכון.",
+      "actions": [
+        "צור Medical Review",
+        "אפשר יצירת קשר עם המזכירות",
+        "אל תציג אבחנה אוטומטית"
+      ]
+    },
+    "finish": {
+      "title": "הפרופיל הראשוני מוכן",
+      "message": "מעכשיו DoctorCoach תציג לך תוכן, שיקום ואימון בצורה שמתאימה יותר למטרות ולמצב שלך.",
+      "next": "navigation_tour"
+    }
+  }
+}

@@ -1,0 +1,13 @@
+.language-toggle{min-height:44px;min-width:44px;border:1px solid var(--line);border-radius:10px;background:var(--card);color:var(--text);font-weight:700;padding:8px 12px;flex:none}
+.sidebar-language-toggle{display:none}
+html[dir=ltr] .nav-link,html[dir=ltr] .service-select,html[dir=ltr] .daily-links button{text-align:left}
+html[dir=ltr] .sidebar{border-left:0;border-right:1px solid var(--line)}
+html[dir=ltr] .nav-link em{margin-right:0;margin-left:auto}
+html[dir=ltr] .avatar{margin-right:0;margin-left:12px}
+html[dir=ltr] .brand-type small{direction:ltr}
+html[dir=ltr] .lucide-arrow-left,html[dir=ltr] .lucide-arrow-right{transform:scaleX(-1)}
+@media(max-width:760px){.header-language-toggle{display:none}.sidebar-language-toggle{display:block;margin:0 18px 16px}html[dir=ltr] .sidebar{right:auto;left:0;transform:translateX(-100%)}html[dir=ltr] .sidebar.open{transform:translateX(0)}}
+html[dir=ltr] .feature-card,html[dir=ltr] .injury-nav button,html[dir=ltr] .install-dialog,html[dir=ltr] .quick-paths button,html[dir=ltr] .dc-dialog,html[dir=ltr] .legacy-table table,html[dir=ltr] .care-field .service-select [data-slot=select-value],html[dir=ltr] .care-stats strong,html[dir=ltr] .care-client,html[dir=ltr] .message-threads button,html[dir=ltr] .anatomy-region-list button,html[dir=ltr] .mapping-topics button,html[dir=ltr] .muscle-card,html[dir=ltr] .muscle-card small,html[dir=ltr] .muscle-english,html[dir=ltr] .mapping-group button,html[dir=ltr] .notification-row,html[dir=ltr] .onboarding-steps button{text-align:left}
+html[dir=ltr] .brand-tagline,html[dir=ltr] .whatsapp-booking{direction:ltr}
+html[dir=ltr] .whatsapp-booking{left:auto;right:max(24px,env(safe-area-inset-right))}
+@media(max-width:760px){html[dir=ltr] .whatsapp-booking{right:max(16px,env(safe-area-inset-right))}}
