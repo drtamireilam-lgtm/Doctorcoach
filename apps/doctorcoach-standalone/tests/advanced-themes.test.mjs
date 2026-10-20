@@ -102,7 +102,7 @@ test('every required preset persists independently with readable surface and con
 
 
 test('premium UI keeps shared surface tokens and preserves reduced-motion/mobile support',()=>{
- const css=readFileSync(new URL('../app/advanced-themes.css',import.meta.url),'utf8');
+ const css=readFileSync(new URL('../app/advanced-themes.css',import.meta.url),'utf8')+readFileSync(new URL('../app/apple-premium.css',import.meta.url),'utf8');
  for(const token of ['--dc-premium-radius','--dc-premium-elevation','--dc-surface-gradient','--dc-nav-active','--dc-focus'])assert.ok(css.includes(token),token);
  assert.match(css,/prefers-reduced-motion:reduce/);
  assert.match(css,/@media\s*\(max-width:600px\)/);

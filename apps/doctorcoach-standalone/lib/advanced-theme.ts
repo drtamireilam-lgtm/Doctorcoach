@@ -45,7 +45,17 @@ export function themeTokens(a:Appearance):Record<string,string>{
  const metallic=preset?.id==='gold'||preset?.id==='silver';
  const sheen=mix(c.button,textOn(c.button)==='#000000'?'#ffffff':'#000000',.12);
  const buttonGradient=metallic?`linear-gradient(115deg, ${c.button}, ${mix(c.button,'#ffffff',.18)} 38%, ${sheen} 62%, ${c.button})`:`linear-gradient(135deg, ${c.button}, ${sheen})`;
+ const raised=mix(card,textOn(card),.055),light=luminance(bg)>.4;
+ const chart1=readableAccent(c.accent,card);
+ const distance=(color:string)=>[1,3,5].reduce((sum,i)=>sum+(parseInt(color.slice(i,i+2),16)-parseInt(chart1.slice(i,i+2),16))**2,0);
+ const chart2=['#75b9d4','#d6a675','#b195dd','#67c39b'].map(color=>readableAccent(color,card)).sort((a,b)=>distance(b)-distance(a))[0];
  return {
+ '--dc-raised':raised,'--dc-raised-text':textOn(raised),'--dc-raised-muted':mutedOn(raised),
+ '--dc-hairline':mix(card,textOn(card),.18),'--dc-nav-line':mix(nav,textOn(nav),.16),'--dc-nav-surface':nav,
+ '--dc-shadow-card':light?'0 2px 6px #10203805, 0 14px 36px #1020380b':'0 2px 6px #00000016, 0 16px 40px #00000030',
+ '--dc-shadow-overlay':light?'0 24px 80px #10203830':'0 24px 80px #00000070',
+ '--dc-chart-1':chart1,'--dc-chart-2':chart2,
+ '--dc-chart-grid':mix(card,textOn(card),.16),
  '--dc-button-gradient':buttonGradient,'--dc-surface-gradient':`linear-gradient(145deg, ${card}, ${mix(card,bg,.28)})`,'--dc-canvas-gradient':`linear-gradient(150deg, ${bg}, ${mix(bg,card,.35)})`,'--dc-hover':mix(card,c.accent,.12),'--dc-focus':readableAccent(c.accent,bg),
  '--dc-canvas-text':textOn(bg),'--dc-canvas-muted':mutedOn(bg),'--dc-canvas-accent':readableAccent(c.accent,bg),
  '--canvas':bg,'--card':card,'--raised':card,'--text':textOn(bg),'--muted':mutedOn(bg),

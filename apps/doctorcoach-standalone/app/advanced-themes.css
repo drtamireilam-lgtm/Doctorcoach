@@ -54,56 +54,8 @@ html[data-custom-theme] .care-success{--text:#c6f7da;--muted:#c6f7da;--foregroun
 
 .theme-toggle-status:not(:empty){max-width:220px;font-size:.8rem;line-height:1.4;color:var(--text)}
 
-/* Premium depth stays on decorative surfaces; medical status colors remain independent. */
-html[data-custom-theme] body{background-image:var(--dc-canvas-gradient)}
-html[data-custom-theme] :is(.panel,.exercise-card,.team-card,.service-card,.care-card):not(.care-error):not(.care-success):not(.warning-box):not(.safety-notice){background-image:var(--dc-surface-gradient);box-shadow:0 8px 24px #00000014}
-html[data-custom-theme] :is(.button.primary,.button.lime){background-image:var(--dc-button-gradient)}
-html[data-custom-theme] :is(.button.primary,.button.lime):hover:not(:disabled){background-image:var(--dc-button-gradient)}
-html[data-custom-theme] :focus-visible{outline:3px solid var(--dc-focus);outline-offset:3px}
 .simple-appearance .appearance-presets{display:grid;grid-template-columns:repeat(auto-fit,minmax(145px,1fr));gap:12px;padding:5px}
 .simple-appearance .appearance-presets button{min-height:64px;padding:10px;border:1px solid var(--dc-card-line);border-radius:14px;background:var(--card);color:var(--dc-card-text);cursor:pointer}
 .simple-appearance .appearance-presets button:hover:not(:disabled){background:var(--dc-hover)}
 .premium-swatch{display:block;width:36px;height:36px;flex-shrink:0;border:1px solid;border-radius:50%;box-shadow:inset 0 2px 5px #ffffff25,0 3px 8px #00000025}
 @media(max-width:400px){.simple-appearance .appearance-presets{grid-template-columns:repeat(2,minmax(0,1fr))}}
-
-
-/* DoctorCoach Premium UI depth — decorative only, preserving layouts and clinical status semantics. */
-html[data-custom-theme] {
-  --dc-premium-radius: 18px;
-  --dc-premium-elevation: 0 10px 30px rgba(0,0,0,.22), 0 2px 8px rgba(0,0,0,.09);
-  --dc-premium-inset: inset 0 1px 0 rgba(255,255,255,.065);
-}
-html[data-custom-theme] :is(.panel,.exercise-card,.team-card,.service-card,.history-session,.modal-card,.dc-dialog,.install-dialog,.notification-popover):not(.care-error):not(.care-success):not(.warning-box):not(.safety-notice) {
-  border-radius: var(--dc-premium-radius);
-  border: 1px solid var(--dc-card-line);
-  background-color: var(--card);
-  background-image: var(--dc-surface-gradient);
-  box-shadow: var(--dc-premium-inset), var(--dc-premium-elevation);
-}
-html[data-custom-theme] :is(.button.primary,.button.lime) {
-  border-radius: 12px;
-  min-height: 44px;
-  box-shadow: 0 5px 16px rgba(0,0,0,.17), inset 0 1px 0 rgba(255,255,255,.15);
-  transition: transform .16s ease, box-shadow .16s ease;
-}
-html[data-custom-theme] :is(.button.primary,.button.lime):active:not(:disabled) {transform:translateY(1px);box-shadow:0 2px 7px rgba(0,0,0,.18)}
-html[data-custom-theme] :is(.mobile-bottom-nav button.active,.nav-link.active) {
-  background:var(--dc-nav-active);
-  color:var(--dc-nav-text);
-  border-color:var(--dc-nav-accent);
-  box-shadow:inset 0 -3px 0 var(--dc-nav-accent);
-}
-html[data-custom-theme] :is(input:not([type=checkbox]):not([type=radio]):not([type=range]):not([type=color]),textarea,select):focus-visible {
-  outline:3px solid var(--dc-focus);
-  outline-offset:2px;
-}
-@media (max-width:600px) {
-  html[data-custom-theme] {--dc-premium-radius:16px;--dc-premium-elevation:0 6px 18px rgba(0,0,0,.17)}
-  html[data-custom-theme] :is(.button.primary,.button.lime) {min-height:44px}
-}
-@media (prefers-reduced-motion:reduce) {
-  html[data-custom-theme] :is(.button.primary,.button.lime) {transition:none}
-}
-@media print {
-  html[data-custom-theme] :is(.panel,.exercise-card,.team-card,.service-card,.history-session) {box-shadow:none!important;background-image:none!important}
-}
