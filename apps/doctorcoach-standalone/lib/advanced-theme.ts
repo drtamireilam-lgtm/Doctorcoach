@@ -31,7 +31,7 @@ export const themePresets:{id:string;name:string;he:string;appearance:Appearance
 {id:"coral",name:"Dark Coral",he:"אדום קורל",appearance:{"mode": "dark", "palette": "red", "custom": {"background": "#190e12", "primary": "#ee736c", "secondary": "#301b22", "button": "#ee736c", "navigation": "#190e12", "accent": "#ffb0a5"}}},
 {id:"professional",name:"Dark Blue",he:"כחול עמוק",appearance:{"mode": "dark", "palette": "blue", "custom": {"background": "#091329", "primary": "#538ce5", "secondary": "#142744", "button": "#538ce5", "navigation": "#091329", "accent": "#a6c9ff"}}},
 {id:"modern",name:"Purple",he:"סגול עשיר",appearance:{"mode": "dark", "palette": "purple", "custom": {"background": "#180e29", "primary": "#a37ae8", "secondary": "#2b1c44", "button": "#a37ae8", "navigation": "#180e29", "accent": "#dbc0ff"}}},
-{id:"wine",name:"Wine Red",he:"אדום יין",appearance:{"mode": "dark", "palette": "red", "custom": {"background": "#210c17", "primary": "#bd5279", "secondary": "#3c1829", "button": "#bd5279", "navigation": "#210c17", "accent": "#ffb1ce"}}},
+{id:"wine",name:"Wine Red",he:"אדום יין",appearance:{"mode": "dark", "palette": "red", "custom": {"background": "#130b13", "primary": "#e83f70", "secondary": "#211521", "button": "#e83f70", "navigation": "#130b13", "accent": "#ff648c"}}},
 {id:"sport",name:"Forest Green",he:"ירוק אמרלד",appearance:{"mode": "dark", "palette": "green", "custom": {"background": "#081b15", "primary": "#49b98d", "secondary": "#12352a", "button": "#49b98d", "navigation": "#081b15", "accent": "#9fe6c6"}}},
 {id:"yellow",name:"Yellow",he:"צהוב עשיר",appearance:{"mode": "dark", "palette": "yellow", "custom": {"background": "#191606", "primary": "#ebcb52", "secondary": "#302b10", "button": "#ebcb52", "navigation": "#191606", "accent": "#ffe89a"}}},
 {id:"amber",name:"Amber Orange",he:"כתום ענבר",appearance:{"mode": "dark", "palette": "orange", "custom": {"background": "#211207", "primary": "#eaa44e", "secondary": "#3a2410", "button": "#eaa44e", "navigation": "#211207", "accent": "#ffd099"}}},
@@ -45,7 +45,17 @@ export function themeTokens(a:Appearance):Record<string,string>{
  const metallic=preset?.id==='gold'||preset?.id==='silver';
  const sheen=mix(c.button,textOn(c.button)==='#000000'?'#ffffff':'#000000',.12);
  const buttonGradient=metallic?`linear-gradient(115deg, ${c.button}, ${mix(c.button,'#ffffff',.18)} 38%, ${sheen} 62%, ${c.button})`:`linear-gradient(135deg, ${c.button}, ${sheen})`;
+ const raised=mix(card,textOn(card),.055),light=luminance(bg)>.4;
+ const chart1=readableAccent(c.accent,card);
+ const distance=(color:string)=>[1,3,5].reduce((sum,i)=>sum+(parseInt(color.slice(i,i+2),16)-parseInt(chart1.slice(i,i+2),16))**2,0);
+ const chart2=['#75b9d4','#d6a675','#b195dd','#67c39b'].map(color=>readableAccent(color,card)).sort((a,b)=>distance(b)-distance(a))[0];
  return {
+ '--dc-raised':raised,'--dc-raised-text':textOn(raised),'--dc-raised-muted':mutedOn(raised),
+ '--dc-hairline':mix(card,textOn(card),.18),'--dc-nav-line':mix(nav,textOn(nav),.16),'--dc-nav-surface':nav,
+ '--dc-shadow-card':light?'0 2px 6px #10203805, 0 14px 36px #1020380b':'0 2px 6px #00000016, 0 16px 40px #00000030',
+ '--dc-shadow-overlay':light?'0 24px 80px #10203830':'0 24px 80px #00000070',
+ '--dc-chart-1':chart1,'--dc-chart-2':chart2,
+ '--dc-chart-grid':mix(card,textOn(card),.16),
  '--dc-button-gradient':buttonGradient,'--dc-surface-gradient':`linear-gradient(145deg, ${card}, ${mix(card,bg,.28)})`,'--dc-canvas-gradient':`linear-gradient(150deg, ${bg}, ${mix(bg,card,.35)})`,'--dc-hover':mix(card,c.accent,.12),'--dc-focus':readableAccent(c.accent,bg),
  '--dc-canvas-text':textOn(bg),'--dc-canvas-muted':mutedOn(bg),'--dc-canvas-accent':readableAccent(c.accent,bg),
  '--canvas':bg,'--card':card,'--raised':card,'--text':textOn(bg),'--muted':mutedOn(bg),

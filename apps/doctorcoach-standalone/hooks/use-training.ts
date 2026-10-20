@@ -15,7 +15,7 @@ class ApiError extends Error {
 }
 async function request<T>(url: string, method = 'GET', body?: unknown): Promise<T> {
   let response: Response;
-  try { response = await fetch(url, { method, cache: 'no-store', headers: body ? { 'Content-Type': 'application/json' } : undefined, body: body ? JSON.stringify(body) : undefined }); }
+  try { response = await fetch(url, { method, cache: 'no-store', signal: AbortSignal.timeout(15000), headers: body ? { 'Content-Type': 'application/json' } : undefined, body: body ? JSON.stringify(body) : undefined }); }
   catch { throw new ApiError('אין חיבור לשרת. השינוי לא אושר; בדקו את החיבור ונסו שוב.', 0); }
   const json = await response.json().catch(() => null) as ({ error?: string; session?: TrainingSession } & T) | null;
   const failure=apiResponseFailure(response,json!==null);

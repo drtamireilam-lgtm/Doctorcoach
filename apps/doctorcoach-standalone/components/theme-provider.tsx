@@ -2,7 +2,7 @@
 import {Localize,useLanguage} from './language-provider';
 import {ThemeProvider as NextThemeProvider,useTheme} from 'next-themes';
 import {Moon,Sun,Check} from 'lucide-react';
-import {createContext,useCallback,useContext,useEffect,useReducer,useRef,useState,type ReactNode} from 'react';
+import {createContext,useCallback,useContext,useEffect,useReducer,useRef,useState,type ReactNode,type CSSProperties} from 'react';
 import {parseOwnedAppearanceResponse,PALETTE_STORAGE_KEY,type Appearance} from '../lib/appearance';
 import {colorsFor,resetAppearance,themeEditReducer,themePresets,themeTokens,appearanceWithMode,type ThemeEditState} from '../lib/advanced-theme';
 
@@ -98,7 +98,13 @@ export function AppearancePicker({active=true}:{active?:boolean}){
   <h2>{t('מראה האפליקציה','App appearance')}</h2>
   <p>{t('בחרו ערכה בלחיצה אחת. הבחירה מוחלת מיד ונשמרת אוטומטית בחשבון.','Choose a theme with one tap. It applies immediately and saves automatically to your account.')}</p>
   <div className="appearance-presets" role="group" aria-label={t('ערכות צבעים','Color themes')}>
-   {themePresets.map(p=>{const selected=JSON.stringify(current)===JSON.stringify(p.appearance),tokens=themeTokens(p.appearance);return <button type="button" key={p.id} disabled={busy||!signedIn} aria-pressed={selected} onClick={()=>{edit(p.appearance);void save(p.appearance);}}><i className="premium-swatch" aria-hidden="true" style={{background:tokens['--dc-button-gradient'],borderColor:colorsFor(p.appearance).accent}}/>{english?p.name:p.he}{selected&&<Check size={18} aria-hidden="true"/>}</button>;})}
+   {themePresets.map(p=>{const selected=JSON.stringify(current)===JSON.stringify(p.appearance),tokens=themeTokens(p.appearance),name=english?p.name:p.he;return <button type="button" key={p.id} disabled={busy||!signedIn} aria-label={name} aria-pressed={selected} onClick={()=>{edit(p.appearance);void save(p.appearance);}}>
+    <span className="theme-miniature" aria-hidden="true" style={tokens as CSSProperties}>
+     <span className="theme-mini-nav"><i/><i/><i/></span>
+     <span className="theme-mini-body"><span className="theme-mini-text"/><span className="theme-mini-card"><i/><i/></span><span className="theme-mini-button"/></span>
+    </span>
+    <span className="theme-preset-label">{name}<span className="theme-selected-mark" aria-hidden="true">{selected?<Check size={16}/>:null}</span></span>
+   </button>;})}
   </div>
   <p role="status" aria-live="polite">{busy?t('מסנכרן…','Syncing…'):message==='saved'?t('הערכה נשמרה בחשבון.','Theme saved to your account.'):message==='failed'?t('הסנכרון נכשל. הבחירה עדיין לא נשמרה. נסו שוב.','Sync failed. Your selection has not been saved. Try again.'):message==='conflict'?t('ההעדפה השתנתה במכשיר אחר. טענו מחדש ובחרו שוב.','The preference changed on another device. Reload and choose again.'):!signedIn?t('יש להתחבר לשמירת העיצוב.','Sign in to save your appearance.'):''}</p>
   {(message==='conflict'||message==='failed')&&<button type="button" className="button secondary" disabled={busy} onClick={()=>void load()}>{t('טעינה מחדש','Reload')}</button>}

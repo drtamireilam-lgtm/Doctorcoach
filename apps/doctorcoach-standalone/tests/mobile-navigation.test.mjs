@@ -12,14 +12,14 @@ test('seven areas exclude staff, subscriptions and active sessions as main desti
  for(const section of ['admin','team','dashboard'])assert.equal(areaFor(section),undefined);
 });
 test('legacy links retain their parent area and phone selection',()=>{
- const groups={home:['home','stories','pro','more'],care:['care','onboarding','settings','membership','privacy','injuries'],plan:['plan','workout','readiness'],history:['history','nutrition','recovery'],library:['library','videos'],learn:['learn'],contact:['contact','messages','feedback','appointments','consult']};
+ const groups={home:['home','stories','pro'],more:['more','settings','membership','privacy'],care:['care','onboarding','injuries'],plan:['plan','workout','readiness'],history:['history','nutrition','recovery'],library:['library','videos'],learn:['learn'],contact:['contact','messages','feedback','appointments','consult']};
  for(const [area,sections] of Object.entries(groups))for(const section of sections){
   assert.equal(areaFor(section),area,section);
-  assert.equal(mobileTabFor(section),section!=='more'&&['home','care','plan'].includes(area)?area:'menu',section);
+  assert.equal(mobileTabFor(section),['settings','membership','privacy'].includes(section)?undefined:area==='history'?'care':section!=='more'&&['home','care','plan'].includes(area)?area:'menu',section);
  }
 });
 test('secondary navigation links stay within their parent area',()=>{
- for(const [area,links] of Object.entries(areaLinks))for(const link of links)assert.equal(areaFor(link.id),area,link.id);
+ for(const [area,links] of Object.entries(areaLinks))for(const link of links)assert.equal(areaFor(link.id),link.id==='history'?'history':area,link.id);
  assert.equal(new Set(Object.values(areaLinks).flat().map(l=>l.id)).size,Object.values(areaLinks).flat().length);
 });
 test('staff shortcuts disappear during authorization refresh and errors despite a stale role',async()=>{

@@ -1,0 +1,9 @@
+'use client';
+import {useState} from 'react';
+import {useLanguage} from './language-provider';
+import {bodyReferences,bodyReferenceLicense,bodyReferenceCredit} from '../lib/anatomy-reference';
+export function AnatomyReference({view}:{view:'front'|'back'}){
+ const {language}=useLanguage(),en=language==='en';const [failed,setFailed]=useState(false),[attempt,setAttempt]=useState(0);const reference=bodyReferences[view];
+ return <figure className="atlas-reference" data-no-translate><h3>{en?'Anatomical reference — '+(view==='front'?'front':'back'):'איור אנטומי — '+(view==='front'?'מבט קדמי':'מבט אחורי')}</h3>{failed?<div role="status"><p>{en?'The reference image could not load. The navigation map and muscle information remain available.':'האיור לא נטען. מפת הניווט ומידע השרירים זמינים.'}</p><button className="button secondary" onClick={()=>{setFailed(false);setAttempt(a=>a+1);}}>{en?'Try again':'ניסיון נוסף'}</button></div>:<img key={view+attempt} src={reference.url} width={reference.width} height={reference.height} loading="lazy" decoding="async" referrerPolicy="no-referrer" alt={en?'OpenStax superficial muscles, '+view+' view':'שרירים שטחיים לפי OpenStax, '+(view==='front'?'מבט קדמי':'מבט אחורי')} onError={()=>setFailed(true)}/>}
+ <figcaption><p>{en?'Overview of superficial muscles. It does not isolate the selected muscle or show all deep structures. The published unlabeled derivative is displayed unchanged.':'סקירה של השרירים השטחיים. האיור אינו מבודד את השריר שנבחר ואינו מציג את כל המבנים העמוקים. גרסת המקור ללא תוויות מוצגת ללא שינוי.'}</p><small>{bodyReferenceCredit}</small><div className="care-actions"><a href={reference.source} target="_blank" rel="noopener noreferrer">{en?'Source & attribution':'מקור וייחוס'}</a><a href={bodyReferenceLicense} target="_blank" rel="noopener noreferrer">CC BY 4.0</a></div></figcaption></figure>;
+}
