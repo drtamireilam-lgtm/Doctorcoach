@@ -1,4 +1,4 @@
-import {feedbackSections,feedbackRegions,feedbackSection,feedbackRegion} from './feedback-topics.ts';
+import {feedbackCategories,feedbackSections,feedbackRegions,feedbackSection,feedbackRegion} from './feedback-topics.ts';
 import {isStaff} from './staff.ts';
 import type {StaffIdentity} from './staff.ts';
 import {inputRecord,integerField,textField,validId} from './care.ts';
@@ -19,7 +19,7 @@ export function communityStore(db:D1Database,adminEmails?:string){
    if(p.action==='review'){requireAdmin(user);if(!['new','reviewing','resolved'].includes(String(p.state)))throw new TrainingError('בחרו מצב תקין.');const row=await db.prepare('UPDATE trainee_feedback SET state=?,response=?,version=version+1,updated_at=? WHERE id=? AND version=? RETURNING id').bind(p.state,textField(p.response,'מענה',3000),stamp,id,integerField(p.version,'גרסה',1,1000000)).first();if(!row)throw new TrainingError('הפנייה עודכנה. רעננו לפני שמירה.',409);}
    else {
     const category=textField(p.category,'סוג פנייה',40,1);
-    if(!['שיפור','לא ברור','בקשה להסבר','בעיה טכנית','בקשה לתוכן חדש'].includes(category))throw new TrainingError('בחרו סוג פנייה.');
+    if(!feedbackCategories.includes(category))throw new TrainingError('בחרו סוג פנייה.');
     const context=textField(p.context,'הקשר',200,1),content=textField(p.content,'משוב',3000,3);
     const section=p.section===undefined?feedbackSection(context):textField(p.section,'תחום',30,1),bodyRegion=p.bodyRegion===undefined?feedbackRegion(context):textField(p.bodyRegion,'אזור בגוף',40,1);
     if(!feedbackSections.some(o=>o.value===section)||!feedbackRegions.some(o=>o.value===bodyRegion))throw new TrainingError('בחרו תחום ואזור בגוף מהרשימה.');
