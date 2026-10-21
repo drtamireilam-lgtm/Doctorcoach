@@ -1,4 +1,4 @@
-import { reviewAsset, reviewBindings, type AssetReview, type MeshBinding, type AdmissionResult } from './anatomy-asset-admission';
+import { reviewAsset, reviewBindings, type AssetReview, type MeshBinding, type AdmissionResult } from './anatomy-asset-admission.ts';
 
 /**
  * Preflight for loading anatomical geometry in the DoctorCoach viewer.
