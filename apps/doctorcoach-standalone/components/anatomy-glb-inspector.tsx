@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, type ChangeEvent } from 'react';
+import { AnatomyGlbPreview } from './anatomy-glb-preview';
 import { inspectGlb } from '../lib/anatomy-glb-inventory';
 
 type GlbSummary = { meshNodeNames: string[]; meshCount: number };
@@ -10,12 +11,14 @@ type GlbSummary = { meshNodeNames: string[]; meshCount: number };
  * claim that an inspected model is licensed or anatomically validated.
  */
 export function AnatomyGlbInspector({ language = 'he' }: { language?: 'he' | 'en' }) {
+  const [previewFile, setPreviewFile] = useState<File | null>(null);
   const [summary, setSummary] = useState<GlbSummary | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [fileName, setFileName] = useState('');
   const he = language === 'he';
   async function onFile(event: ChangeEvent<HTMLInputElement>) {
     setSummary(null);
+    setPreviewFile(null);
     setError(null);
     const file = event.currentTarget.files?.[0];
     if (!file) return;
@@ -30,6 +33,7 @@ export function AnatomyGlbInspector({ language = 'he' }: { language?: 'he' | 'en
     }
     try {
       setSummary(inspectGlb(await file.arrayBuffer()));
+      setPreviewFile(file);
     } catch (cause) {
       setError(cause instanceof Error ? cause.message : 'Invalid GLB');
     }
@@ -42,6 +46,7 @@ export function AnatomyGlbInspector({ language = 'he' }: { language?: 'he' | 'en
       <label htmlFor="anatomy-glb-file">{he ? 'בחירת קובץ GLB' : 'Choose a GLB file'}</label>
       <input id="anatomy-glb-file" type="file" accept=".glb,model/gltf-binary" onChange={onFile} />
       {error && <p role="alert">{error}</p>}
+      {previewFile && <AnatomyGlbPreview file={previewFile} language={language} />}
       {summary && (
         <div aria-live="polite">
           <p>{fileName}: {summary.meshCount} {he ? 'רשתות תלת־ממד' : 'meshes'}, {summary.meshNodeNames.length} {he ? 'רכיבים בעלי שם' : 'named mesh nodes'}</p>
