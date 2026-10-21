@@ -17,6 +17,7 @@ LAB deployment; this session did not independently verify that deployment.
   fail with their names; image-only worksheets are not silently imported.
 - Keep source worksheet and row coordinates in preview. Distinct source keys
   prevent occurrence ID and React key collisions between worksheets.
+- Uniform RPE override applies to all selected worksheets, clearing source RIR.
 - Move individual occurrences up/down within a day without deduplication.
 - Recognize Hebrew singular note and update-weight headers. Preserve muscle
   group labels and truncated source-image loads as notes, never numeric loads.
@@ -33,7 +34,7 @@ LAB deployment; this session did not independently verify that deployment.
 - Source kg/lb and per-side data checked. Repeated exercises retained.
 - Invalid update load `17,17,18,17` blocks finalization. Truncated visible loads
   remain notes. No synthetic replacement was used for original-file inspection.
-- Standalone test suite: 1,321 passing; includes import, persistence, security
+- Standalone test suite: 1,322 passing; includes import, persistence, security
   and ownership regression tests. Root tests: 10 foundation + 6 PostgreSQL
   ownership/concurrency tests passing. TypeScript and standalone/root builds pass.
 - Scoped lint has no errors (one pre-existing unused-parameter warning).

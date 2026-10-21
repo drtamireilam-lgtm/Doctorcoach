@@ -145,7 +145,7 @@ export function duplicateImportRowNumbers(rows:ImportRow[]){const seen=new Map<s
 
 /** Combine explicitly selected worksheets without losing their source coordinates.
  * Sheet-local days are independent; repeated occurrences are never deduplicated. */
-export function extractWorkbookImport(sheets:ExcelSheet[],selected:number[],catalog:Exercise[]=exercises):ImportRow[]{
+export function extractWorkbookImport(sheets:ExcelSheet[],selected:number[],catalog:Exercise[]=exercises,targetRpe=''):ImportRow[]{
  if(!selected.length||new Set(selected).size!==selected.length||selected.some(i=>!Number.isInteger(i)||i<0||i>=sheets.length))throw new Error('בחרו גיליונות תקינים לייבוא.');
  const result:ImportRow[]=[];let nextDay=1;
  for(const index of [...selected].sort((a,b)=>a-b)){
@@ -153,7 +153,7 @@ export function extractWorkbookImport(sheets:ExcelSheet[],selected:number[],cata
   try{
    const detected=detectImportColumns(sheet);
    if(detected.mapping.exercise===undefined)throw new Error('לא זוהתה עמודת תרגיל. השתמשו בייבוא גיליון יחיד ובמיפוי ידני.');
-   const rows=extractImportRows(sheet,detected.header,detected.mapping,{lastRow:importTableEnd(sheet,detected.header,detected.mapping),catalog});
+   const rows=extractImportRows(sheet,detected.header,detected.mapping,{lastRow:importTableEnd(sheet,detected.header,detected.mapping),catalog,targetRpe});
    const days=new Map<string,string>();
    for(const row of rows){
     if(!days.has(row.dayId)){if(nextDay>7)throw new Error('התוכנית מכילה יותר מ־7 ימי אימון.');days.set(row.dayId,String(nextDay++));}

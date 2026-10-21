@@ -17,6 +17,12 @@ test('unreadable selected sheets fail explicitly rather than silently disappeari
  assert.equal(typeof importer.extractWorkbookImport,'function');
  assert.throws(()=>importer.extractWorkbookImport([sheet('Reference',[['Image only']])],[0]),/Reference/);
 });
+test('uniform effort override applies across selected worksheets and clears source RIR',()=>{
+ const sheets=[sheet('A',[['Exercise','Sets','Reps','RIR'],['Hip Thrust',3,8,2]]),sheet('B',[['Exercise','Sets','Reps','RPE'],['Hip Thrust',2,6,7]])];
+ const rows=importer.extractWorkbookImport(sheets,[0,1],undefined,'9');
+ assert.deepEqual(rows.map(r=>[r.rpe,r.rir]),[['9',''],['9','']]);
+ assert.throws(()=>importer.extractWorkbookImport(sheets,[0,1],undefined,'11'));
+});
 test('reordering one occurrence preserves the independent prescriptions and identity',()=>{
  const s=sheet('Plan',[['Exercise','Sets','Reps'],['Hip Thrust',3,8],['Hip Thrust',2,10]]);
  const rows=importer.extractImportRows(s,0,{exercise:0,sets:1,reps:2});
