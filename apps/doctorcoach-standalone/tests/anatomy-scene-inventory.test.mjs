@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { inventoryMeshNodes, createApprovedSceneSelection } from '../lib/anatomy-scene-inventory.ts';
+import { inventoryMeshNodes, duplicateMeshNodeNames, createApprovedSceneSelection } from '../lib/anatomy-scene-inventory.ts';
 
 const tree = { name: 'Root', children: [
   { name: 'ShoulderGroup', children: [
@@ -33,4 +33,15 @@ test('selection rejects mesh names absent from the actual geometry', () => {
   assert.throws(() => createApprovedSceneSelection(tree, asset,
     [{ anatomySlug: 'deltoid', meshNodeName: 'NotInGLB', review: 'approved' }],
     new Set(['deltoid'])), /unknown_mesh/);
+});
+
+test('duplicate mesh names cannot silently select the wrong anatomy', () => {
+  const ambiguous = { name: 'Root', children: [
+    { name: 'DeltoidMesh', isMesh: true },
+    { name: 'DeltoidMesh', isMesh: true }
+  ] };
+  assert.deepEqual(duplicateMeshNodeNames(ambiguous), ['DeltoidMesh']);
+  assert.throws(() => createApprovedSceneSelection(ambiguous, asset,
+    [{ anatomySlug: 'deltoid', meshNodeName: 'DeltoidMesh', review: 'approved' }],
+    new Set(['deltoid'])), /Ambiguous anatomy mesh names/);
 });
