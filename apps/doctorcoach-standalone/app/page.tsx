@@ -1,4 +1,5 @@
 'use client';
+import {readExerciseSelection} from '../lib/anatomy-exercise-navigation';
 import {allowProgramDraftLeave} from '../lib/program-draft-navigation';
 import {useCustomExercises} from '../hooks/use-custom-exercises';
 import type {CustomExercise} from '../lib/custom-exercise-types';
@@ -86,7 +87,7 @@ export default function HomePage(){
       const hash = window.location.hash.slice(1).split('?')[0];
       setRecovery(recoveryTarget(window.location.hash));
       setSection(nav.some(n => n.id === hash) ? hash as Section : 'home');
-      setSelected(null);
+      setSelected(readExerciseSelection(window.location.hash,new Set(exById.keys())));
       setMenu(false);
     };
     syncSection();

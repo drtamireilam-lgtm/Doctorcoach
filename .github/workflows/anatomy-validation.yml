@@ -4,15 +4,15 @@ on:
     branches:
       - feature/anatomy-asset-safety-stage36
     paths:
-      - 'apps/doctorcoach-standalone/lib/anatomy-*.ts'
-      - 'apps/doctorcoach-standalone/tests/anatomy-*.test.mjs'
+      - 'apps/doctorcoach-standalone/**'
       - '.github/workflows/anatomy-validation.yml'
   workflow_dispatch:
+permissions:
+  contents: read
 jobs:
-  anatomy-unit-tests:
+  anatomy-validation:
     runs-on: ubuntu-latest
-    permissions:
-      contents: read
+    timeout-minutes: 20
     defaults:
       run:
         working-directory: apps/doctorcoach-standalone
@@ -20,6 +20,26 @@ jobs:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with:
-          node-version: '22.16.0'
-      - name: Run anatomy validation unit tests
-        run: node --experimental-strip-types --test tests/anatomy-asset-admission.test.mjs tests/anatomy-scene-preflight.test.mjs tests/anatomy-scene-inventory.test.mjs
+          node-version: '24'
+      - uses: pnpm/action-setup@v4
+        with:
+          version: '11.25.0'
+          package_json_file: apps/doctorcoach-standalone/package.json
+      - name: Install locked dependencies
+        run: pnpm install --frozen-lockfile
+      - name: TypeScript and complete unit suite
+        run: npm run typecheck && npm test
+      - name: Build isolated LAB candidate (no deployment)
+        run: npm run build:standalone && node standalone/scripts/check-isolated-staging.mjs dist/server/wrangler.json
+        env:
+          DC_ISOLATED_STAGING_BUILD: 'true'
+      - name: Install test browser
+        run: pnpm exec playwright install --with-deps chromium
+      - name: Render and interact with the actual app
+        run: npm run test:anatomy:browser
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: anatomy-browser-evidence
+          path: /tmp/dc-anatomy-evidence/
+          if-no-files-found: ignore

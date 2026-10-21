@@ -13,6 +13,8 @@ import {muscleRegionId} from '../lib/anatomy-navigation';
 import {translateText} from '../lib/localization';
 import {AnatomyBodyMap} from './anatomy-body-map';
 import {anatomyLabels,anatomyHash,readAnatomyHash,anatomyMatches,learningCard,regionNames,type AnatomySide,type AnatomyView} from '../lib/anatomy-learning';
+import {anatomy3dLabEnabled} from '../lib/anatomy-lab';
+import {AnatomyShoulderViewer} from './anatomy-shoulder-viewer';
 import {LearningMotion} from './anatomy-learning-motion';
 const muscleRegions=regions.map(r=>({id:r.id,muscleSlugs:regionMuscles(r.id).map(m=>m.slug)}));
 export function AnatomyWorkspace({onExercise}:{onExercise:(id:string)=>void}){
@@ -32,6 +34,7 @@ export function AnatomyWorkspace({onExercise}:{onExercise:(id:string)=>void}){
  return <section className="anatomy-workspace care-stack anatomy-atlas" dir={language==='en'?'ltr':'rtl'} data-no-translate>
   <div className="workspace-heading"><div><span className="eyebrow">DoctorCoach · {language==='he'?'אנטומיה ולמידה':'Anatomy & learning'}</span><h1>{t.title}</h1><p>{t.intro}</p><small>{muscles.length} {t.count}</small></div><BookOpen size={28}/></div>
   <div className="browse-search-panel"><div className="search-box"><Search size={20} aria-hidden="true"/><input type="search" maxLength={120} value={state.search} placeholder={t.search} aria-label={t.search} onChange={e=>update({search:e.target.value,muscle:undefined},true)}/></div><label className="library-filter">{t.region}<select value={region} onChange={e=>openRegion(e.target.value)}>{regions.map(r=><option value={r.id} key={r.id}>{regionLabel(r.id)}</option>)}</select></label>{state.search&&<button className="text-button" onClick={()=>update({search:''},true)}>{t.clear}</button>}</div>
+  {anatomy3dLabEnabled&&region==='shoulder'&&<AnatomyShoulderViewer language={language} onExercise={onExercise} onMuscle={slug=>{const m=muscles.find(m=>m.slug===slug);if(m)openMuscle(m);}}/>}
   <div className="atlas-layout"><div className="atlas-map-column"><AnatomyBodyMap language={language} region={region} side={state.side} view={state.view} onRegion={openRegion} onSide={side=>update({side})} onView={(view:AnatomyView)=>update({view})}/><nav className="anatomy-region-list" aria-label={t.region}>{regions.map(r=><button key={r.id} onClick={()=>openRegion(r.id)} aria-pressed={region===r.id}>{regionLabel(r.id)}</button>)}</nav></div>
    <div className="care-stack" data-tour="region-muscles">{muscle?<>
     <button className="back-link" onClick={()=>update({muscle:undefined})}>{language==='he'?<ArrowRight size={18}/>:<ArrowLeft size={18}/>} {t.return}</button>

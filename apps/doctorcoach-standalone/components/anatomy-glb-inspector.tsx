@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, type ChangeEvent } from 'react';
+import { useRef, useState, type ChangeEvent } from 'react';
 import { AnatomyGlbPreview } from './anatomy-glb-preview';
 import { inspectGlb } from '../lib/anatomy-glb-inventory';
 
@@ -16,7 +16,9 @@ export function AnatomyGlbInspector({ language = 'he' }: { language?: 'he' | 'en
   const [error, setError] = useState<string | null>(null);
   const [fileName, setFileName] = useState('');
   const he = language === 'he';
+  const requestId = useRef(0);
   async function onFile(event: ChangeEvent<HTMLInputElement>) {
+    const request = ++requestId.current;
     setSummary(null);
     setPreviewFile(null);
     setError(null);
@@ -32,9 +34,12 @@ export function AnatomyGlbInspector({ language = 'he' }: { language?: 'he' | 'en
       return;
     }
     try {
-      setSummary(inspectGlb(await file.arrayBuffer()));
+      const summary = inspectGlb(await file.arrayBuffer());
+      if (request !== requestId.current) return;
+      setSummary(summary);
       setPreviewFile(file);
     } catch (cause) {
+      if (request !== requestId.current) return;
       setError(cause instanceof Error ? cause.message : 'Invalid GLB');
     }
   }

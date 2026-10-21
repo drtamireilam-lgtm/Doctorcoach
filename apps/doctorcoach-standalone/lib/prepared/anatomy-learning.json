@@ -53,7 +53,16 @@
         "id": "paused-bench",
         "role": "primary"
       }
-    ]
+    ],
+    "innervation": {
+      "en": "Medial and lateral pectoral nerves",
+      "he": "העצבים הפקטורליים המדיאלי והלטרלי"
+    },
+    "innervationReference": {
+      "source": "https://medicine.uams.edu/neuroscience/education/medical-school-courses/human-structure-module/anatomy-tables/muscle-tables/muscles-of-the-upper-limb/",
+      "checkedAt": "2026-10-21",
+      "status": "reference-checked; clinical review pending"
+    }
   },
   {
     "slug": "pectoralis-minor",
@@ -132,7 +141,16 @@
         "id": "overhead-press",
         "role": "secondary"
       }
-    ]
+    ],
+    "innervation": {
+      "en": "Motor: accessory nerve; proprioception: C3–C4",
+      "he": "מוטורי: עצב הלוואי; פרופריוספציה: C3–C4"
+    },
+    "innervationReference": {
+      "source": "https://medicine.uams.edu/neuroscience/education/medical-school-courses/human-structure-module/anatomy-tables/muscle-tables/muscles-of-the-upper-limb/",
+      "checkedAt": "2026-10-21",
+      "status": "reference-checked; clinical review pending"
+    }
   },
   {
     "slug": "latissimus-dorsi",
@@ -403,7 +421,21 @@
     "source": "https://medicine.uams.edu/neuroscience/education/medical-school-courses/human-structure-module/anatomy-tables/muscle-tables/muscles-of-the-upper-limb/",
     "region": "shoulder",
     "view": "back",
-    "links": []
+    "links": [
+      {
+        "id": "scaption",
+        "role": "primary"
+      }
+    ],
+    "innervation": {
+      "en": "Suprascapular nerve",
+      "he": "העצב הסופרה־סקפולרי"
+    },
+    "innervationReference": {
+      "source": "https://medicine.uams.edu/neuroscience/education/medical-school-courses/human-structure-module/anatomy-tables/muscle-tables/muscles-of-the-upper-limb/",
+      "checkedAt": "2026-10-21",
+      "status": "reference-checked; clinical review pending"
+    }
   },
   {
     "slug": "infraspinatus",
@@ -439,7 +471,16 @@
         "id": "band-er",
         "role": "primary"
       }
-    ]
+    ],
+    "innervation": {
+      "en": "Suprascapular nerve",
+      "he": "העצב הסופרה־סקפולרי"
+    },
+    "innervationReference": {
+      "source": "https://medicine.uams.edu/neuroscience/education/medical-school-courses/human-structure-module/anatomy-tables/muscle-tables/muscles-of-the-upper-limb/",
+      "checkedAt": "2026-10-21",
+      "status": "reference-checked; clinical review pending"
+    }
   },
   {
     "slug": "teres-minor",
@@ -475,7 +516,16 @@
         "id": "band-er",
         "role": "primary"
       }
-    ]
+    ],
+    "innervation": {
+      "en": "Axillary nerve",
+      "he": "העצב האקסילרי"
+    },
+    "innervationReference": {
+      "source": "https://medicine.uams.edu/neuroscience/education/medical-school-courses/human-structure-module/anatomy-tables/muscle-tables/muscles-of-the-upper-limb/",
+      "checkedAt": "2026-10-21",
+      "status": "reference-checked; clinical review pending"
+    }
   },
   {
     "slug": "subscapularis",
@@ -506,7 +556,21 @@
     "source": "https://medicine.uams.edu/neuroscience/education/medical-school-courses/human-structure-module/anatomy-tables/muscle-tables/muscles-of-the-upper-limb/",
     "region": "shoulder",
     "view": "front",
-    "links": []
+    "links": [
+      {
+        "id": "overhead-press",
+        "role": "stabilizer"
+      }
+    ],
+    "innervation": {
+      "en": "Upper and lower subscapular nerves",
+      "he": "העצבים הסאבסקפולריים העליון והתחתון"
+    },
+    "innervationReference": {
+      "source": "https://medicine.uams.edu/neuroscience/education/medical-school-courses/human-structure-module/anatomy-tables/muscle-tables/muscles-of-the-upper-limb/",
+      "checkedAt": "2026-10-21",
+      "status": "reference-checked; clinical review pending"
+    }
   },
   {
     "slug": "deltoid",
@@ -558,7 +622,16 @@
         "id": "incline-db",
         "role": "secondary"
       }
-    ]
+    ],
+    "innervation": {
+      "en": "Axillary nerve",
+      "he": "העצב האקסילרי"
+    },
+    "innervationReference": {
+      "source": "https://medicine.uams.edu/neuroscience/education/medical-school-courses/human-structure-module/anatomy-tables/muscle-tables/muscles-of-the-upper-limb/",
+      "checkedAt": "2026-10-21",
+      "status": "reference-checked; clinical review pending"
+    }
   },
   {
     "slug": "serratus-anterior",
@@ -594,7 +667,16 @@
         "id": "wall-slide",
         "role": "primary"
       }
-    ]
+    ],
+    "innervation": {
+      "en": "Long thoracic nerve",
+      "he": "העצב הטורקלי הארוך"
+    },
+    "innervationReference": {
+      "source": "https://medicine.uams.edu/neuroscience/education/medical-school-courses/human-structure-module/anatomy-tables/muscle-tables/muscles-of-the-upper-limb/",
+      "checkedAt": "2026-10-21",
+      "status": "reference-checked; clinical review pending"
+    }
   },
   {
     "slug": "brachialis",
@@ -1825,5 +1907,50 @@
         "role": "secondary"
       }
     ]
+  },
+  {
+    "slug": "teres-major",
+    "region": "shoulder",
+    "view": "back",
+    "location": {
+      "en": "Posterior shoulder",
+      "he": "הכתף האחורית"
+    },
+    "origin": {
+      "en": "Posterior inferior scapular angle",
+      "he": "המשטח האחורי של הזווית התחתונה בשכמה"
+    },
+    "insertion": {
+      "en": "Medial edge of the humeral intertubercular groove",
+      "he": "השפה המדיאלית של החריץ הבין־גבשושי בזרוע"
+    },
+    "action": {
+      "en": "Arm adduction, internal rotation and extension",
+      "he": "קירוב, סיבוב פנימי ופשיטת הזרוע"
+    },
+    "joints": {
+      "en": "Glenohumeral joint",
+      "he": "המפרק הגלנוהומרלי"
+    },
+    "training": {
+      "en": "Assists pulling; not a rotator cuff muscle",
+      "he": "מסייע במשיכה; אינו שריר בשרוול המסובב"
+    },
+    "source": "https://medicine.uams.edu/neuroscience/education/medical-school-courses/human-structure-module/anatomy-tables/muscle-tables/muscles-of-the-upper-limb/",
+    "links": [
+      {
+        "id": "lat-pulldown",
+        "role": "secondary"
+      }
+    ],
+    "innervation": {
+      "en": "Lower subscapular nerve",
+      "he": "העצב הסאבסקפולרי התחתון"
+    },
+    "innervationReference": {
+      "source": "https://medicine.uams.edu/neuroscience/education/medical-school-courses/human-structure-module/anatomy-tables/muscle-tables/muscles-of-the-upper-limb/",
+      "checkedAt": "2026-10-21",
+      "status": "reference-checked; clinical review pending"
+    }
   }
 ]

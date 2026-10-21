@@ -23,3 +23,9 @@ test('rejects invalid mesh index', () => {
 test('rejects corrupt header', () => {
  assert.throws(() => inspectGlb(new ArrayBuffer(20)), /Invalid GLB magic/);
 });
+test('rejects external resources before a local preview can request them',()=>{
+ assert.throws(()=>inspectGlb(fixture({asset:{version:'2.0'},buffers:[{uri:'https://example.test/model.bin'}]})),/External resources/);
+});
+test('rejects duplicate selectable mesh node names',()=>{
+ assert.throws(()=>inspectGlb(fixture({asset:{version:'2.0'},meshes:[{}],nodes:[{name:'same',mesh:0},{name:'same',mesh:0}]})),/Duplicate mesh/);
+});

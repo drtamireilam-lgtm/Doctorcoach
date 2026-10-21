@@ -1,5 +1,5 @@
 'use client';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 declare module 'react' {
   namespace JSX {
@@ -16,6 +16,7 @@ declare module 'react' {
 
 /** Local file preview only. Not approved for publication or medical use. */
 export function AnatomyGlbPreview({ file, language = 'he' }: { file: File | null; language?: 'he' | 'en' }) {
+  const element = useRef<HTMLElement|null>(null);
   const [url, setUrl] = useState<string | null>(null);
   const [ready, setReady] = useState(false);
   const [error, setError] = useState(false);
@@ -31,11 +32,17 @@ export function AnatomyGlbPreview({ file, language = 'he' }: { file: File | null
     import('@google/model-viewer').then(() => { if (active) setReady(true); }).catch(() => { if (active) setError(true); });
     return () => { active = false; setReady(false); setError(false); };
   }, [url]);
+  useEffect(() => {
+    const el = element.current; if (!ready || !el) return;
+    const fail = () => setError(true);
+    el.addEventListener('error', fail);
+    return () => el.removeEventListener('error', fail);
+  }, [ready, url]);
   if (!url) return null;
   return <section dir={language === 'he' ? 'rtl' : 'ltr'}>
     <p>{language === 'he' ? 'תצוגה מקדימה בלבד — לא אושרו דיוק אנטומי או זכויות שימוש.' : 'Preview only — anatomy and rights are not approved.'}</p>
     {error && <p role="alert">{language === 'he' ? 'שגיאה בטעינת המציג' : 'Viewer failed to load'}</p>}
-    {ready && !error && <model-viewer src={url} alt="GLB preview" camera-controls touch-action="pan-y"
+    {ready && !error && <model-viewer ref={element} src={url} alt="GLB preview" camera-controls touch-action="pan-y"
       style={{ width: '100%', height: 'min(65vh, 520px)' }} />}
   </section>;
 }

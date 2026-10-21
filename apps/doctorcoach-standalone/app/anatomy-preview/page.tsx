@@ -1,5 +1,7 @@
 'use client';
 
+import {anatomy3dLabEnabled} from '../../lib/anatomy-lab';
+import { AnatomyShoulderViewer } from '../../components/anatomy-shoulder-viewer';
 import { AnatomyGlbInspector } from '../../components/anatomy-glb-inspector';
 import { useState } from 'react';
 
@@ -16,6 +18,7 @@ export default function AnatomyPreviewPage() {
         <button type="button" onClick={() => setLanguage(language === 'he' ? 'en' : 'he')}
           aria-label="Switch language">{language === 'he' ? 'English' : 'עברית'}</button>
       </header>
+      {anatomy3dLabEnabled&&<AnatomyShoulderViewer language={language} onExercise={id=>{window.location.href='/#library?exercise='+encodeURIComponent(id);}} onMuscle={slug=>{window.location.href='/#learn?region=shoulder&muscle='+encodeURIComponent(slug);}}/>}
       <AnatomyGlbInspector language={language} />
     </main>
   );
