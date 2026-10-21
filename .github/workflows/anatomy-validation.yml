@@ -1,0 +1,25 @@
+name: Anatomy validation (isolated)
+on:
+  push:
+    branches:
+      - feature/anatomy-asset-safety-stage36
+    paths:
+      - 'apps/doctorcoach-standalone/lib/anatomy-*.ts'
+      - 'apps/doctorcoach-standalone/tests/anatomy-*.test.mjs'
+      - '.github/workflows/anatomy-validation.yml'
+  workflow_dispatch:
+jobs:
+  anatomy-unit-tests:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    defaults:
+      run:
+        working-directory: apps/doctorcoach-standalone
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22.16.0'
+      - name: Run anatomy validation unit tests
+        run: node --experimental-strip-types --test tests/anatomy-asset-admission.test.mjs tests/anatomy-scene-preflight.test.mjs tests/anatomy-scene-inventory.test.mjs
