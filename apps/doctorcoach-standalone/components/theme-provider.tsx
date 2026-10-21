@@ -98,7 +98,7 @@ export function AppearancePicker({active=true}:{active?:boolean}){
   <h2>{t('מראה האפליקציה','App appearance')}</h2>
   <p>{t('בחרו ערכה בלחיצה אחת. הבחירה מוחלת מיד ונשמרת אוטומטית בחשבון.','Choose a theme with one tap. It applies immediately and saves automatically to your account.')}</p>
   <div className="appearance-presets" role="group" aria-label={t('ערכות צבעים','Color themes')}>
-   {themePresets.map(p=>{const selected=JSON.stringify(current)===JSON.stringify(p.appearance),tokens=themeTokens(p.appearance),name=english?p.name:p.he;return <button type="button" key={p.id} disabled={busy||!signedIn} aria-label={name} aria-pressed={selected} onClick={()=>{edit(p.appearance);void save(p.appearance);}}>
+   {themePresets.map(p=>{const selected=current.mode===p.appearance.mode&&current.palette===p.appearance.palette&&JSON.stringify(colorsFor(current))===JSON.stringify(colorsFor(p.appearance)),tokens=themeTokens(p.appearance),name=english?p.name:p.he;return <button type="button" key={p.id} disabled={busy||!signedIn} aria-label={name} aria-pressed={selected} onClick={()=>{edit(p.appearance);void save(p.appearance);}}>
     <span className="theme-miniature" aria-hidden="true" style={tokens as CSSProperties}>
      <span className="theme-mini-nav"><i/><i/><i/></span>
      <span className="theme-mini-body"><span className="theme-mini-text"/><span className="theme-mini-card"><i/><i/></span><span className="theme-mini-button"/></span>

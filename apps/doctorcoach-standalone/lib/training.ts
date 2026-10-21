@@ -7,7 +7,7 @@ export type Unit = 'reps' | 'seconds' | 'minutes';
 export type ExerciseTempo={eccentric:number;bottom:number;concentric:number;top:number};
 export type WarmupSetPrescription = {amount:number;weight:number};
 export type PlanItem = { load?:LoadMetadata; warmupSets?:WarmupSetPrescription[]; side?:'left'|'right'|'both'; exerciseId: string; occurrenceId?:string; customExercise?:CustomExercise;sets: number; reps: number; repsMax?:number|null; unit: Unit; weight: number; weightUnspecified?:boolean; notes: string; tempo?:ExerciseTempo|null; targetRpe?: number|null; targetRpes?:(number|null)[]; effortScale?:EffortScale; approvedSubstitutions?:string[]; dayId?:string; workoutSection?:WorkoutSection };
-export type SetResult = { done: boolean; amount: number; weight: number; actualRpe?: number|null; painDuring?:number|null };
+export type SetResult = { weightSource?:'manual'|'automatic'; done: boolean; amount: number; weight: number; actualRpe?: number|null; painDuring?:number|null };
 export type ReadinessSnapshot={id:string;day:string;version:number;capturedAt:string;data:{sleep:number;energy:number;stress:number;note:string}};
 export type WorkoutFollowup={day:string;pain:number;recordedAt:string};
 export type SessionExercise = PlanItem & { name: string; results: SetResult[]; warmupResults?:SetResult[]; swappedFrom?:string };
@@ -117,7 +117,7 @@ export function updateSet(items: SessionExercise[], value: Record<string, unknow
   const actualRpe = value.actualRpe === undefined ? (items[index].results[Number(value.setIndex)].actualRpe ?? null) : parseRpe(value.actualRpe);
   const painDuring=value.painDuring===undefined?items[index].results[Number(value.setIndex)].painDuring:value.painDuring;
   if(painDuring!==undefined&&painDuring!==null&&!isScore(painDuring))throw new TrainingError('כאב במהלך הסט צריך להיות בין 0 ל־10.');
-  return items.map((item, i) => i !== index ? item : { ...item, results: item.results.map((set, j) => j !== value.setIndex ? set : { done: value.done as boolean, amount, weight, actualRpe,...(painDuring===undefined?{}:{painDuring:painDuring as number|null}) }) });
+  return items.map((item, i) => i !== index ? item : { ...item, results: item.results.map((set, j) => j !== value.setIndex ? set : { done: value.done as boolean, amount, weight, actualRpe,weightSource:set.weightSource==='manual'||value.weightSource==='manual'||weight!==set.weight&&value.weightSource!=='automatic'?'manual':value.weightSource==='automatic'?'automatic':set.weightSource,...(painDuring===undefined?{}:{painDuring:painDuring as number|null}) }) });
 }
 
 export function formatDate(value: string): string {
@@ -146,10 +146,10 @@ export function nextLoad(item:SessionExercise,session:TrainingSession):{weight:n
   if(workoutSection(item)!=='main')return {weight:null,text:'הצעת משקל זמינה לתרגילי האימון בלבד, לא לחימום או למתיחות.'};
   const sets=item.results.filter(s=>s.done);
   if(session.before>0||(session.after??0)>0||(duringPain(session.items??[item])??0)>0||(session.followup?.pain??0)>0)return {weight:null,text:'דווח כאב. יש להתייעץ עם הצוות לפני שינוי עומס.'};
-  if(item.unit!=='reps'||!item.targetRpe||sets.length!==item.sets||sets.some(s=>!s.actualRpe||s.weight<=0))return {weight:null,text:'הצעה תוצג לאחר השלמת כל הסטים עם משקל ויעד מאמץ ודיווח מאמץ בפועל.'};
+  if(item.unit!=='reps'||item.results.some((_,i)=>targetRpeForSet(item,i)==null)||sets.length!==item.sets||sets.some(s=>!s.actualRpe||s.weight<=0))return {weight:null,text:'הצעה תוצג לאחר השלמת כל הסטים עם משקל ויעד מאמץ ודיווח מאמץ בפועל.'};
   if(new Set(sets.map(s=>s.weight)).size!==1)return {weight:null,text:'נרשמו משקלים שונים. בחרו עומס להמשך יחד עם המאמן.'};
-  const weight=sets[0].weight, effort=Math.max(...sets.map(s=>s.actualRpe!));
-  const factor=sets.some(s=>s.amount<item.reps)||effort>item.targetRpe+0.5?0.975:effort<item.targetRpe-0.5?1.025:1;
+  const weight=sets[0].weight;
+  const factor=sets.some((s,i)=>s.amount<item.reps||s.actualRpe!>targetRpeForSet(item,i)!+0.5)?0.975:sets.every((s,i)=>s.actualRpe!<targetRpeForSet(item,i)!-0.5)?1.025:1;
   return {weight:Math.round(weight*factor*4)/4,text:factor>1?'הצעה לדיון עם המאמן: עלייה של כ־2.5%':factor<1?'הצעה לדיון עם המאמן: הפחתה של כ־2.5%':'הצעה לדיון עם המאמן: אותו עומס'};
 }
 
