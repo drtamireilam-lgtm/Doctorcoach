@@ -177,8 +177,8 @@ export function trainingStore(db: D1Database,config:ProgramAuthorConfig={}) {
         if(payload.autoNextLoad===true&&payload.done===true){
          const item=resolveSessionExercise(items,payload)!;const index=Number(payload.setIndex);
          const suggestion=nextSetLoad(item,index,{...session,items},typeof payload.step==='number'?payload.step:2.5);
-         const weight=payload.loadMode==='calculated'?suggestion.calculatedWeight:suggestion.weight;
-         if(weight!==null&&weight>0&&weight<=1000&&item.results[index+1]?.actualRpe==null&&(item.results[index+1]?.painDuring??0)===0)items=items.map(i=>i!==item?i:{...i,results:i.results.map((r,j)=>j===index+1?{...r,weight,actualRpe:null}:r)});
+         const weight=suggestion.weight;
+         if(weight!==null&&weight>0&&weight<=1000&&item.results[index+1]?.weightSource!=='manual'&&item.results[index+1]?.actualRpe==null&&(item.results[index+1]?.painDuring??0)===0)items=items.map(i=>i!==item?i:{...i,results:i.results.map((r,j)=>j===index+1?{...r,weight,weightSource:'automatic' as const,actualRpe:null}:r)});
         }
       }
       else if(payload.action==='effortScale'){
@@ -187,7 +187,7 @@ export function trainingStore(db: D1Database,config:ProgramAuthorConfig={}) {
       } else if(payload.action==='nextLoad'){
         const item=resolveSessionExercise(items,payload);const index=Number(payload.setIndex);if(!item||!Number.isInteger(payload.setIndex)||index<0||index>=item.results.length||typeof payload.step!=='number')throw new TrainingError('פרטי התאמת המשקל אינם תקינים.');
         const suggestion=nextSetLoad(item,index,session,payload.step);if(suggestion.weight===null)throw new TrainingError(suggestion.text);
-        items=items.map(i=>i!==item?i:{...i,results:i.results.map((r,j)=>j===index+1?{...r,weight:suggestion.weight!,actualRpe:null}:r)});
+        items=items.map(i=>i!==item?i:{...i,results:i.results.map((r,j)=>j===index+1?{...r,weight:suggestion.weight!,weightSource:'automatic' as const,actualRpe:null}:r)});
       } else if (payload.action === 'swap') {
         const current=resolveSessionExercise(items,payload),replacement=byId.get(String(payload.replacementId))??(await availableCustomExercises(db,owner,session.planMode==='coached'?owner:undefined)).find(e=>e.id===payload.replacementId);
         if(session.planMode==='coached'){
