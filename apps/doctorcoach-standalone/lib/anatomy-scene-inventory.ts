@@ -8,6 +8,17 @@ export type SceneNode = {
   isMesh?: boolean;
 };
 
+/** Report ambiguous mesh names before a click-to-select mapping is built. */
+export function duplicateMeshNodeNames(root: SceneNode): readonly string[] {
+  const counts = new Map<string, number>();
+  const walk = (node: SceneNode) => {
+    if (node.isMesh && node.name.trim()) counts.set(node.name, (counts.get(node.name) ?? 0) + 1);
+    for (const child of node.children ?? []) walk(child);
+  };
+  walk(root);
+  return [...counts].filter(([, count]) => count > 1).map(([name]) => name);
+}
+
 /** Traverse actual loaded geometry; group nodes are not selectable meshes. */
 export function inventoryMeshNodes(root: SceneNode): ReadonlySet<string> {
   const names = new Set<string>();
@@ -30,5 +41,7 @@ export function createApprovedSceneSelection(
   bindings: readonly MeshBinding[],
   anatomySlugs: ReadonlySet<string>
 ): ReadonlyMap<string, string> {
+  const duplicates = duplicateMeshNodeNames(root);
+  if (duplicates.length > 0) throw new Error('Ambiguous anatomy mesh names: ' + duplicates.join(', '));
   return approvedMeshLookup(asset, bindings, anatomySlugs, inventoryMeshNodes(root));
 }
