@@ -59,3 +59,17 @@ html[data-custom-theme] .care-success{--text:#c6f7da;--muted:#c6f7da;--foregroun
 .simple-appearance .appearance-presets button:hover:not(:disabled){background:var(--dc-hover)}
 .premium-swatch{display:block;width:36px;height:36px;flex-shrink:0;border:1px solid;border-radius:50%;box-shadow:inset 0 2px 5px #ffffff25,0 3px 8px #00000025}
 @media(max-width:400px){.simple-appearance .appearance-presets{grid-template-columns:repeat(2,minmax(0,1fr))}}
+
+/* Reference palette: near-black canvas, colored edges and localized light. */
+html[data-custom-theme] .home-shortcuts{--home-card:var(--card);--home-art:var(--canvas);--home-copy:var(--dc-card-text);--home-muted:var(--dc-card-muted);--home-red:var(--dc-card-accent);--home-border:var(--dc-edge)}
+html[data-custom-theme] :is(.home-shortcut,.quick-paths button,.navigation-hub-grid>button){background-image:var(--dc-surface-gradient);border-color:var(--dc-edge);box-shadow:inset 0 1px 0 var(--dc-glow),0 8px 24px #00000020}
+html[data-custom-theme] .home-shortcut-art{background-image:var(--dc-canvas-gradient)}
+html[data-custom-theme] .home-shortcut-art>svg{filter:drop-shadow(0 0 7px var(--dc-glow))}
+html[data-custom-theme] :is(.topbar,.sidebar,.mobile-bottom-nav){border-color:var(--dc-edge)}
+html[data-custom-theme] :is(.nav-link.active,.mobile-bottom-nav button.active){background:var(--dc-nav-active);color:var(--dc-nav-accent);box-shadow:inset 0 1px 0 var(--dc-nav-accent),0 0 12px var(--dc-glow)}
+html[data-custom-theme] .mobile-bottom-nav button.active svg{color:var(--dc-nav-accent)}
+.simple-appearance .appearance-presets button[aria-pressed=true]{outline:none;border-color:var(--dc-card-accent);box-shadow:inset 0 0 0 1px var(--dc-card-accent),0 0 12px var(--dc-glow);background:var(--dc-hover)}
+.simple-appearance .appearance-presets button:focus-visible{outline:3px solid var(--dc-focus);outline-offset:3px}
+html[data-custom-theme] .navigation-hub-grid>button{color:var(--dc-card-text)}
+html[data-custom-theme] .navigation-hub-grid small{color:var(--dc-card-muted)}
+html[data-custom-theme] .navigation-hub-grid>button>svg:first-child{color:var(--dc-card-accent)}
