@@ -1,7 +1,7 @@
 import {unzipSync,strFromU8} from 'fflate';
 import {XMLParser} from 'fast-xml-parser';
 export type ExcelCell={value:string;formula:boolean;dateConverted?:boolean};
-export type ExcelSheet={name:string;rows:ExcelCell[][]};
+export type ExcelSheet={name:string;rows:ExcelCell[][];mergedRanges?:string[]};
 const list=(v:any):any[]=>v==null?[]:Array.isArray(v)?v:[v];
 // Read-only OOXML: no formulas, macros, hyperlinks or external relationships run.
 export function readExcelWorkbook(bytes:Uint8Array):ExcelSheet[]{
@@ -57,6 +57,8 @@ export function readExcelWorkbook(bytes:Uint8Array):ExcelSheet[]{
    }
    rows[rowIndex]=cells;
   }
-  return {name:decode(String(s['@name']??'גיליון')),rows};
+  // Keep merge metadata for review; never copy a merged anchor into covered cells.
+  const mergedRanges=list(data?.mergeCells?.mergeCell).map(m=>String(m['@ref']??'')).filter(ref=>/^[A-Z]+[1-9]\d*:[A-Z]+[1-9]\d*$/.test(ref));
+  return {name:decode(String(s['@name']??'גיליון')),rows,...(mergedRanges.length?{mergedRanges}: {})};
  });
 }

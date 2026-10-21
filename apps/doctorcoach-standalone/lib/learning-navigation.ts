@@ -1,4 +1,4 @@
-export const learningTopics=['shoulder','knee','spine','rpe'] as const;
+export const learningTopics=['shoulder','knee','spine','rpe','doctorcoach'] as const;
 export type LearningTopic=typeof learningTopics[number];
 export function learningTopic(hash:string):LearningTopic|null{
  const [section,query='']=hash.replace(/^#/,'').split('?');

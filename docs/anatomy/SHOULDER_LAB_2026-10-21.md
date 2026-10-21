@@ -83,3 +83,9 @@ A preinstalled Chromium can be selected with `ANATOMY_CHROMIUM=/absolute/path/to
 To regenerate the asset, run `python scripts/anatomy/fetch-shoulder.py`, download the official `LATEST/isa_element_parts.txt`, then run `python scripts/anatomy/build-shoulder.py /tmp/dc-shoulder-source.zip /path/to/isa_element_parts.txt`. Source IDs are explicit, not inferred by fuzzy matching.
 
 Next priority: authenticated isolated LAB/device acceptance and clinician review of shoulder geometry/content, followed by remaining structures and a second anatomical region using reviewed source mappings.
+
+## Integration with the current LAB branch
+
+Integrated the full Smart Load LAB branch at `49969c3cc5ef7051afa792b2e02bf4bbedbed7f1` into the existing anatomy development branch. This preserves the latest workout set actions, load calculations, import handling, navigation and premium themes. Merge resolutions retain the current LAB home/auth behavior, anatomy viewer/deep links, verified innervation additions and deterministic billing test dates. The two existing atlas content files were compared by slug: no current LAB cards were lost.
+
+Revalidation: TypeScript passed; all 1,358 unit tests passed with no failures or skips; isolated standalone build and static target check passed; all 16 browser checks passed with zero uncaught errors or HTTP 5xx responses. These are local checks, not evidence of live LAB deployment. Cloudflare dashboard Worker identity was confirmed from the user-provided URL as `doctorcoach-isolated-staging`; deployment remains pending.

@@ -1,0 +1,154 @@
+/* Shared presentation layer. ThemeProvider owns colors; status surfaces retain
+   their clinical semantics. Imported last so legacy page rules cannot flatten it. */
+html[data-custom-theme] {
+  --dc-radius-sm: 12px;
+  --dc-radius-md: 18px;
+  --dc-radius-lg: 26px;
+  --dc-space: 8px;
+  --dc-ease: cubic-bezier(.2,.7,.2,1);
+  --dc-premium-radius: var(--dc-radius-lg);
+  --dc-premium-elevation: var(--dc-shadow-card);
+  --secondary: var(--dc-raised);
+  --secondary-foreground: var(--dc-raised-text);
+  --popover: var(--card);
+  --primary: var(--dc-button);
+  --primary-foreground: var(--dc-button-text);
+  --chart-1: var(--dc-chart-1);
+  --chart-2: var(--dc-chart-2);
+}
+html[data-custom-theme] body {
+  background: var(--dc-canvas-gradient) fixed;
+  color: var(--dc-canvas-text);
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+html[data-custom-theme] .content {max-width:1480px;margin-inline:auto;min-width:0;padding:32px clamp(20px,3vw,48px) 56px}
+html[data-custom-theme] :is(.content h1,.view-title) {font-size:clamp(28px,3vw,40px);font-weight:700;line-height:1.24;letter-spacing:-.025em;text-wrap:balance}
+html[data-custom-theme] .content h2 {line-height:1.35;font-weight:650;letter-spacing:-.012em}
+html[data-custom-theme] :is(.content p,.content label) {line-height:1.65}
+html[data-custom-theme] :is(.section-heading,.page-heading) {gap:16px;margin-block-end:24px}
+html[data-custom-theme] :is(.eyebrow,.side-label) {font-size:12px;font-weight:650;letter-spacing:.025em}
+html[data-custom-theme] :is(.care-stack,.view-home,.view-settings) {gap:24px}
+
+/* Surfaces: canvas -> card -> inset control. Never recolor safety messages. */
+html[data-custom-theme] :is(.panel,.exercise-card,.team-card,.service-card,.care-card,.wellness-card,.history-session,.training-metrics>div,.care-stats>div,.stats-row>div,[data-slot=card],.compact-menu,.anatomy-map-panel):not(:is(.care-error,.care-success,.warning-box,.safety-notice,.service-form-error,.intake-error-summary)) {
+  --text:var(--dc-card-text);--muted:var(--dc-card-muted);--foreground:var(--dc-card-text);--muted-foreground:var(--dc-card-muted);--line:var(--dc-hairline);--dc-focus:var(--dc-card-accent);
+  color:var(--dc-card-text);background:var(--dc-surface-gradient);border:1px solid var(--dc-hairline);
+  border-radius:var(--dc-radius-lg);box-shadow:inset 0 1px 0 #ffffff08,var(--dc-shadow-card);
+}
+html[data-custom-theme] :is(.panel,.care-card,.wellness-card) {padding:clamp(20px,2.2vw,32px)}
+html[data-custom-theme] :is(.panel,.care-card) :is(.panel,.care-card) {border-radius:var(--dc-radius-md);box-shadow:none}
+html[data-custom-theme] :is(.care-person,.care-note,.care-dose-list>div,.set-line,.service-setup,.care-program-edit,.care-appointment-editor,.training-metrics>div,.care-stats>div) {border-color:var(--dc-hairline);border-radius:var(--dc-radius-md)}
+html[data-custom-theme] :is(.training-metrics>div,.care-stats>div,.set-line:not(.done),.care-note,.service-setup) {background:var(--dc-raised);color:var(--dc-raised-text);--text:var(--dc-raised-text);--muted:var(--dc-raised-muted);box-shadow:none}
+html[data-custom-theme] :is(.training-metrics strong,.care-stats strong,.stats-row strong) {font-variant-numeric:tabular-nums;letter-spacing:-.035em}
+html[data-custom-theme] :is(.hero,.dashboard-last,.resume-banner,.workout-summary,.active-workout-strip) {border-radius:var(--dc-radius-lg);border-color:var(--dc-nav-line);background:var(--dc-canvas-gradient);box-shadow:var(--dc-shadow-card)}
+html[data-custom-theme] .trainee-start {position:relative;border-block-start:3px solid var(--dc-card-accent);padding:clamp(24px,3vw,40px)}
+html[data-custom-theme] .personal-greeting {color:var(--dc-card-muted);font-size:15px;margin-block-end:12px}
+html[data-custom-theme] .trainee-start>h1 {margin-block:0 12px}
+html[data-custom-theme] .trainee-start>p:not(.personal-greeting) {max-width:65ch;color:var(--dc-card-muted)}
+html[data-custom-theme] .home-workout-preview {padding:16px 18px;background:var(--dc-raised);color:var(--dc-raised-text)!important;border:1px solid var(--dc-hairline);border-radius:var(--dc-radius-md)}
+html[data-custom-theme] .trainee-start-actions {gap:12px;margin-block:24px}
+html[data-custom-theme] .trainee-start-steps {border-block-start:1px solid var(--dc-hairline);padding-block-start:20px}
+html[data-custom-theme] .trainee-step-number {border-radius:50%;background:var(--dc-raised);color:var(--dc-raised-text);border-color:var(--dc-hairline)}
+
+/* Keep existing navigation destinations and role filtering. */
+html[data-custom-theme] :is(.sidebar,.topbar,.mobile-bottom-nav) {background:var(--dc-nav-surface);border-color:var(--dc-nav-line);--dc-focus:var(--dc-nav-accent)}
+html[data-custom-theme] .sidebar {border-inline-end:1px solid var(--dc-nav-line);box-shadow:none}
+html[data-custom-theme] .topbar {border-block-end:1px solid var(--dc-nav-line);box-shadow:0 4px 20px #00000006;gap:12px}
+html[data-custom-theme] .nav-link {min-height:48px;border-radius:var(--dc-radius-sm);margin-block:4px;gap:12px;transition:background .18s var(--dc-ease)}
+html[data-custom-theme] :is(.nav-link.active,.mobile-bottom-nav button.active) {background:var(--dc-nav-active);color:var(--dc-nav-text);border-color:transparent;box-shadow:none}
+html[data-custom-theme] .nav-link.active {box-shadow:inset 0 -2px 0 var(--dc-nav-accent)}
+html[data-custom-theme] .side-support {background:var(--dc-nav-active);color:var(--dc-nav-text);border:1px solid var(--dc-nav-line);border-radius:var(--dc-radius-md);box-shadow:none}
+html[data-custom-theme] .compact-menu>button {min-height:72px;border-color:var(--dc-hairline);padding:18px 20px;transition:background .16s var(--dc-ease)}
+html[data-custom-theme] .compact-menu>button>svg:first-child {color:var(--dc-card-accent)}
+html[data-custom-theme] .compact-menu>button:hover {background:var(--dc-hover)}
+html[data-custom-theme] :is(.compact-menu>button,.nav-link,.mobile-bottom-nav button):focus-visible {outline:3px solid currentColor;outline-offset:-4px}
+
+/* Actions share touch geometry and states, including shadcn primitives. */
+html[data-custom-theme] :is(.button,[data-slot=button],.theme-toggle,.account-shortcut,.icon-label,.icon-only) {min-height:46px;border-radius:var(--dc-radius-sm);font-weight:600;gap:9px;transition:background .16s var(--dc-ease),box-shadow .16s var(--dc-ease),transform .16s var(--dc-ease)}
+html[data-custom-theme] :is(.button.primary,.button.lime,[data-slot=button][data-variant=default]) {background:var(--dc-button-gradient);color:var(--dc-button-text);border:1px solid var(--dc-button);box-shadow:inset 0 1px 0 #ffffff22,0 4px 12px #00000020;padding:12px 20px}
+html[data-custom-theme] :is(.button.primary,.button.lime,[data-slot=button][data-variant=default]):hover:not(:disabled) {background:var(--dc-button-gradient);box-shadow:inset 0 0 0 1px var(--dc-button-text),0 6px 16px #00000024;filter:none}
+html[data-custom-theme] :is(.button.secondary,.theme-toggle,.account-shortcut,.icon-label,.icon-only,[data-slot=button][data-variant=secondary],[data-slot=button][data-variant=outline]) {background:var(--dc-raised);color:var(--dc-raised-text);border:1px solid var(--dc-hairline);box-shadow:inset 0 1px 0 #ffffff08}
+html[data-custom-theme] :is(.button.secondary,.theme-toggle,.account-shortcut,.icon-label,.icon-only):hover:not(:disabled) {background:var(--dc-raised);border-color:var(--dc-raised-muted)}
+html[data-custom-theme] :is(.button,[data-slot=button]):active:not(:disabled) {transform:translateY(1px);box-shadow:none}
+html[data-custom-theme] :is(button:disabled,[aria-disabled=true]) {opacity:.55;cursor:not-allowed;transform:none}
+html[data-custom-theme] :is(button,a,input,textarea,select,[role=tab],[role=combobox]):focus-visible {outline:3px solid var(--dc-focus);outline-offset:3px}
+
+/* Form controls remain visibly distinct from their surrounding panel. */
+html[data-custom-theme] :is(input:not([type=checkbox]):not([type=radio]):not([type=range]):not([type=color]):not([type=hidden]),textarea,select,.service-select-trigger,[data-slot=select-trigger],[data-slot=input],[data-slot=textarea],.search-box) {background:var(--dc-raised);color:var(--dc-raised-text);border:1px solid var(--input);border-radius:var(--dc-radius-sm);min-height:46px;max-width:100%;box-shadow:inset 0 1px 2px #00000008;font:inherit}
+html[data-custom-theme] textarea {min-height:112px}
+html[data-custom-theme] :is(input,textarea)::placeholder {color:var(--dc-raised-muted);opacity:1}
+html[data-custom-theme] :is(input,textarea,select,[data-slot=select-trigger]):focus-visible {outline-color:var(--dc-raised-text)}
+html[data-custom-theme] .search-box input {border:0;box-shadow:none;background:transparent;min-width:0}
+html[data-custom-theme] :is(input,textarea,select)[aria-invalid=true] {border-color:#e38c9a;outline-color:#e38c9a}
+html[data-custom-theme] :is(.library-mode,.care-tabs>[data-slot=tabs-list],[data-slot=tabs-list]) {background:var(--dc-raised);color:var(--dc-raised-text);padding:5px;border:1px solid var(--dc-hairline);border-radius:14px;gap:4px;max-width:100%;overflow-x:auto}
+html[data-custom-theme] :is([data-slot=tabs-trigger],.library-mode button) {border-radius:10px;min-height:44px;color:var(--dc-raised-text)}
+html[data-custom-theme] :is([data-slot=tabs-trigger][data-state=active],.library-mode button[aria-pressed=true]) {background:var(--card);color:var(--dc-card-text);border-color:var(--dc-hairline);box-shadow:0 2px 8px #00000020}
+
+/* Portals use the same theme tokens because they mount under body. */
+html[data-custom-theme] :is(.modal-card,.dc-dialog,.install-dialog,.navigation-tour,[data-slot=dialog-content],[data-slot=alert-dialog-content],[data-slot=sheet-content]) {background:var(--card);color:var(--dc-card-text);border:1px solid var(--dc-hairline);border-radius:var(--dc-radius-lg);box-shadow:var(--dc-shadow-overlay);max-height:calc(100dvh - 48px);max-width:min(620px,calc(100vw - 32px));overflow-y:auto;overscroll-behavior:contain;--text:var(--dc-card-text);--muted:var(--dc-card-muted)}
+html[data-custom-theme] :is(.notification-popover,.service-select-options,[data-slot=select-content],[data-slot=dropdown-menu-content],[data-slot=popover-content],[data-slot=command]) {background:var(--card);color:var(--dc-card-text);border:1px solid var(--dc-hairline);border-radius:var(--dc-radius-md);box-shadow:var(--dc-shadow-overlay);max-width:calc(100vw - 24px)}
+html[data-custom-theme] :is([data-slot=select-item],[data-slot=dropdown-menu-item]) {min-height:44px;border-radius:8px}
+html[data-custom-theme] :is([data-slot=select-item],[data-slot=dropdown-menu-item])[data-highlighted] {background:var(--dc-raised);color:var(--dc-raised-text)}
+html[data-custom-theme] :is([data-slot=progress],.dc-slider [data-slot=slider-track],.onboard-progress span) {background:var(--dc-hairline);border-radius:999px}
+html[data-custom-theme] :is([data-slot=progress-indicator],.onboard-progress .filled) {background:var(--dc-button-gradient)}
+html[data-custom-theme] :is(.chart-values,[data-slot=table-container]) {max-width:100%;overflow-x:auto;border-radius:var(--dc-radius-sm)}
+html[data-custom-theme] :is(.chart-values table,[data-slot=table]) {width:100%;font-variant-numeric:tabular-nums;border-collapse:collapse}
+html[data-custom-theme] :is(.chart-values th,[data-slot=table-head]) {background:var(--dc-raised);color:var(--dc-raised-text);text-align:start}
+html[data-custom-theme] :is(.chart-values td,.chart-values th,[data-slot=table-cell],[data-slot=table-head]) {padding:12px 16px;border-block-end:1px solid var(--dc-hairline)}
+html[data-custom-theme] .recharts-default-tooltip {border-radius:12px!important;background:var(--card)!important;border-color:var(--dc-hairline)!important;color:var(--dc-card-text)!important;box-shadow:var(--dc-shadow-card)}
+
+/* Each choice is a decorative layout sample, never synthetic patient data. */
+html[data-custom-theme] .simple-appearance .appearance-presets {grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:16px;padding:4px;margin-block:24px}
+html[data-custom-theme] .simple-appearance .appearance-presets button {display:flex;flex-direction:column;align-items:stretch;gap:0;min-width:0;padding:6px;background:var(--card);color:var(--dc-card-text);border:1px solid var(--dc-hairline);border-radius:var(--dc-radius-md);box-shadow:none;text-align:start;transition:border-color .16s var(--dc-ease),box-shadow .16s var(--dc-ease)}
+html[data-custom-theme] .simple-appearance .appearance-presets button[aria-pressed=true] {border-color:var(--dc-card-accent);outline:2px solid var(--dc-card-accent);outline-offset:2px}
+html[data-custom-theme] .simple-appearance .appearance-presets button:hover:not(:disabled) {box-shadow:var(--dc-shadow-card);background:var(--card)}
+.theme-miniature {display:flex;min-height:112px;overflow:hidden;border-radius:12px;background:var(--dc-canvas-gradient);border:1px solid var(--dc-hairline);pointer-events:none}
+.theme-mini-nav {display:flex;flex-direction:column;align-items:center;gap:10px;width:25%;padding:18px 8px;background:var(--dc-nav-surface);border-inline-end:1px solid var(--dc-nav-line)}
+.theme-mini-nav i {height:5px;width:70%;background:var(--dc-nav-muted);border-radius:3px;opacity:.5}
+.theme-mini-nav i:first-child {background:var(--dc-nav-accent);opacity:1}
+.theme-mini-body {display:flex;flex:1;flex-direction:column;gap:10px;min-width:0;padding:16px 12px}
+.theme-mini-text {height:6px;width:65%;background:var(--dc-canvas-text);border-radius:3px}
+.theme-mini-card {display:grid;gap:6px;padding:10px;border:1px solid var(--dc-hairline);border-radius:8px;background:var(--dc-surface-gradient);box-shadow:0 3px 6px #00000016}
+.theme-mini-card i {height:4px;width:75%;background:var(--dc-card-muted);border-radius:3px}
+.theme-mini-card i:last-child {width:45%;background:var(--dc-card-accent)}
+.theme-mini-button {height:15px;width:55%;background:var(--dc-button-gradient);border-radius:5px}
+.theme-preset-label {display:flex;align-items:center;justify-content:space-between;gap:6px;min-height:46px;padding:10px 6px;font-size:14px;font-weight:600;overflow-wrap:anywhere}
+.theme-selected-mark {display:grid;place-items:center;flex:none;width:22px;height:22px;border:1px solid var(--dc-hairline);border-radius:50%;color:var(--dc-card-accent)}
+[aria-pressed=true]>.theme-preset-label>.theme-selected-mark {background:var(--dc-button);color:var(--dc-button-text);border-color:var(--dc-button)}
+
+@media (hover:hover) and (pointer:fine) {
+  html[data-custom-theme] .exercise-card:hover {box-shadow:var(--dc-shadow-card);border-color:var(--dc-card-accent)}
+}
+@media(max-width:760px) {
+  html[data-custom-theme] {--dc-radius-lg:22px;--dc-radius-md:16px}
+  html[data-custom-theme] .content {padding:24px max(16px,env(safe-area-inset-right)) calc(148px + env(safe-area-inset-bottom)) max(16px,env(safe-area-inset-left))}
+  html[data-custom-theme] :is(.panel,.care-card,.wellness-card) {padding:20px}
+  html[data-custom-theme] .trainee-start {padding:24px 20px}
+  html[data-custom-theme] .topbar {padding-inline:max(12px,env(safe-area-inset-left)) max(12px,env(safe-area-inset-right));flex-wrap:wrap;height:auto;min-height:calc(64px + env(safe-area-inset-top));padding-block:env(safe-area-inset-top) 8px}
+  html[data-custom-theme] .topbar-end {flex-wrap:wrap;gap:6px}
+  html[data-custom-theme] .theme-toggle-status:not(:empty) {flex-basis:100%;max-width:100%;font-size:12px}
+  html[data-custom-theme] .mobile-bottom-nav {padding:8px max(8px,env(safe-area-inset-right)) calc(8px + env(safe-area-inset-bottom)) max(8px,env(safe-area-inset-left));border-block-start:1px solid var(--dc-nav-line);box-shadow:0 -8px 28px #00000016}
+  html[data-custom-theme] .mobile-bottom-nav button {min-height:48px;border-radius:14px;gap:4px}
+  html[data-custom-theme] .mobile-bottom-nav button.active {box-shadow:inset 0 2px 0 var(--dc-nav-accent)}
+  html[data-custom-theme] :is(input,textarea,select,[data-slot=select-trigger]) {font-size:16px}
+  html[data-custom-theme] .compact-menu>button {min-height:68px;padding:16px}
+  html[data-custom-theme] .simple-appearance .appearance-presets {grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+  html[data-custom-theme] :is(.dc-dialog,.install-dialog,[data-slot=dialog-content],[data-slot=alert-dialog-content]) {max-height:calc(100dvh - 32px - env(safe-area-inset-top) - env(safe-area-inset-bottom));scroll-padding-block:20px}
+}
+@media(prefers-reduced-motion:reduce) {
+  html[data-custom-theme] *,html[data-custom-theme] *::before,html[data-custom-theme] *::after {animation:none!important;transition:none!important;scroll-behavior:auto!important}
+  html[data-custom-theme] :is(.button,[data-slot=button]):active {transform:none}
+}
+@media(forced-colors:active) {
+  .theme-selected-mark {border-color:ButtonText}
+  html[data-custom-theme] .appearance-presets button[aria-pressed=true] {outline:3px solid Highlight}
+}
+@media print {
+  html[data-custom-theme] body,html[data-custom-theme] :is(.panel,.care-card,.wellness-card,.history-session) {background:#fff!important;color:#111!important;box-shadow:none!important;border-color:#777!important}
+  .simple-appearance {display:none!important}
+}
+
+html[data-custom-theme] .progress-chart .chart-legend span:first-child i {background:var(--dc-chart-2)}
+html[data-custom-theme] .progress-chart .chart-legend span:last-child i {background:var(--dc-chart-1)}

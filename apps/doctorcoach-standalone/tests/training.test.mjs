@@ -89,3 +89,52 @@ test('invalid inputs and empty finishes do not create fabricated performance',as
 test('private JSON responses cannot be stored by HTTP caches',()=>{
   assert.equal(privateJson({anything:'test'}).headers.get('cache-control'),'private, no-store');
 });
+
+test('embedded warmups and side roundtrip independently of repeated work occurrences',async()=>{
+ const {store}=database();const warmupSets=[{amount:5,weight:10},{amount:3,weight:20}];
+ await store.savePlan('a',{...defaultPrescription('goblet'),occurrenceId:'first',warmupSets,side:'left'});
+ await store.savePlan('a',{...defaultPrescription('goblet'),occurrenceId:'second',warmupSets:[{amount:2,weight:5}],side:'right'});
+ const plan=await store.getPlan('a');assert.deepEqual(plan[0].warmupSets,warmupSets);assert.equal(plan[0].side,'left');
+ const s=await store.start('a',{requestId:randomUUID(),before:0});assert.equal(s.plannedSets,4);assert.equal(s.items[0].warmupResults.length,2);
+ const saved=await store.patch('a',{id:s.id,version:s.version,action:'warmupSet',exerciseId:'goblet',occurrenceId:'second',setIndex:0,done:true,amount:4,weight:6});
+ assert.equal(saved.completedSets,0);assert.equal(saved.items[0].warmupResults[0].done,false);assert.equal(saved.items[1].warmupResults[0].weight,6);assert.equal(saved.items[1].results[0].weight,0);
+ assert.deepEqual((await store.feed('a')).active.items,saved.items);
+ await assert.rejects(()=>store.patch('a',{id:s.id,version:s.version,action:'warmupSet',exerciseId:'goblet',occurrenceId:'second',setIndex:0,done:false,amount:4,weight:6}),e=>e.status===409);
+ await assert.rejects(()=>store.patch('b',{id:s.id,version:saved.version,action:'warmupSet',exerciseId:'goblet',occurrenceId:'second',setIndex:0,done:false,amount:4,weight:6}),e=>e.status===404);
+ await assert.rejects(()=>store.patch('a',{id:s.id,version:saved.version,action:'warmupSet',exerciseId:'goblet',setIndex:0,done:true,amount:4,weight:6}));
+ await assert.rejects(()=>store.patch('a',{id:s.id,version:saved.version,action:'finish',after:0}));
+ const work=await store.patch('a',{id:s.id,version:saved.version,action:'set',exerciseId:'goblet',occurrenceId:'first',setIndex:0,done:true,amount:8,weight:30});
+ await store.patch('a',{id:s.id,version:work.version,action:'finish',after:0});assert.deepEqual((await store.feed('a')).history[0].items[1].warmupResults,saved.items[1].warmupResults);
+});
+
+test('warmup and side validation rejects invalid prescriptions and preserves omission fallback',()=>{
+ const p={...defaultPrescription('goblet'),warmupSets:[{amount:4,weight:5}],side:'both'};
+ assert.deepEqual(parsePlanItem({exerciseId:'goblet'},p).warmupSets,p.warmupSets);
+ for(const warmupSets of [null,{},Array.from({length:21},()=>({amount:2,weight:1})),[{amount:0,weight:0}],[{amount:2,weight:Infinity}],[{amount:2,weight:-1}]])assert.throws(()=>parsePlanItem({...p,warmupSets}));
+ assert.throws(()=>parsePlanItem({...p,side:'up'}));assert.deepEqual(parsePlanItem({...p,warmupSets:[]}).warmupSets,[]);
+});
+
+test('swapping before work cannot discard completed warmups and resets incompatible warmup units',async()=>{
+ const {store}=database();await store.savePlan('a',{...defaultPrescription('goblet'),warmupSets:[{amount:5,weight:10}]});
+ const s=await store.start('a',{requestId:randomUUID(),before:0});
+ const saved=await store.patch('a',{id:s.id,version:s.version,action:'warmupSet',exerciseId:'goblet',setIndex:0,done:true,amount:5,weight:10});
+ await assert.rejects(()=>store.patch('a',{id:s.id,version:saved.version,action:'swap',exerciseId:'goblet',replacementId:'walk',confirmed:true}));
+ const undone=await store.patch('a',{id:s.id,version:saved.version,action:'warmupSet',exerciseId:'goblet',setIndex:0,done:false,amount:5,weight:10});
+ const swapped=await store.patch('a',{id:s.id,version:undone.version,action:'swap',exerciseId:'goblet',replacementId:'walk',confirmed:true});
+ assert.equal(swapped.items[0].unit,'minutes');assert.deepEqual(swapped.items[0].warmupSets,[]);assert.deepEqual(swapped.items[0].warmupResults,[]);
+});
+
+test('lifetime work-set statistics exclude preparation while session completion remains compatible',async()=>{
+ const {store}=database();await store.savePlan('a',{...defaultPrescription('goblet'),sets:1});await store.savePlan('a',{...defaultPrescription('wall-slide'),sets:1,workoutSection:'warmup'});
+ let s=await store.start('a',{requestId:randomUUID(),before:0});
+ for(const exerciseId of ['goblet','wall-slide'])s=await store.patch('a',{id:s.id,version:s.version,action:'set',exerciseId,setIndex:0,done:true,amount:8,weight:0});
+ s=await store.patch('a',{id:s.id,version:s.version,action:'finish',after:0});assert.equal(s.completedSets,2);assert.equal((await store.feed('a')).stats.sets,1);
+});
+
+test('explicit null clears self-plan side while omission preserves existing prescription',async()=>{
+ const {store}=database();const p={...defaultPrescription('goblet'),side:'left'};await store.savePlan('a',p);
+ await store.savePlan('a',{exerciseId:'goblet',weight:5});assert.equal((await store.getPlan('a'))[0].side,'left');
+ const wire=JSON.parse(JSON.stringify({...p,side:null}));const parsed=parsePlanItem(wire,p);assert.equal('side' in parsed,false);
+ const saved=await store.savePlan('a',wire);assert.equal('side' in saved,false);assert.equal('side' in (await store.getPlan('a'))[0],false);
+ assert.equal('side' in (await store.start('a',{requestId:randomUUID(),before:0})).items[0],false);
+});

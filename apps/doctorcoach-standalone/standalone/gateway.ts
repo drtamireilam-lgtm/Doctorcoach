@@ -22,6 +22,7 @@ export function authGateway(db:D1Database,provider:AuthProvider,settings:AuthSet
   if(url.pathname.startsWith('/auth/')){
    if(req.method!=='POST'||req.headers.get('origin')!==origin||req.headers.get('sec-fetch-site')==='cross-site')return reply(403,{error:'Same-origin POST required'});
    try{if(!/^application\/json(?:;|$)/i.test(req.headers.get('content-type')??''))throw new AuthFailure(400);const raw=await req.text();if(raw.length>12000)throw new AuthFailure(413);const payload=JSON.parse(raw) as Record<string,unknown>;if(!payload||typeof payload!=='object'||Array.isArray(payload))throw new AuthFailure(400);
+    if(url.pathname==='/auth/pending')return reply(200,await store.pending(cookie(req,challengeCookie)));
     if(url.pathname==='/auth/send'){const r=await store.send(String(payload.email??''),req.headers.get('cf-connecting-ip')??'unknown');return reply(200,{sent:true},[setCookie(challengeCookie,r.challenge,600)]);}
     if(url.pathname==='/auth/verify'){const r=await store.verify(cookie(req,challengeCookie),String(payload.code??''));if(sid)await store.logout(sid);return reply(200,{authenticated:true,linked:!!r.user,...capabilities},[setCookie(sessionCookie,r.sid,43200),setCookie(challengeCookie,'',0)]);}
     if(url.pathname==='/auth/status'||url.pathname==='/auth/refresh'){const r=await store.current(sid);return reply(200,{authenticated:true,linked:!!r.user,email:r.email,...capabilities});}
