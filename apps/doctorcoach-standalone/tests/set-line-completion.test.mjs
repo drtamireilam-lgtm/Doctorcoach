@@ -34,7 +34,11 @@ for(const [nextReps,expected] of [[5,162.5],[6,157.5]])test(`165 x 5 at RPE 8 co
  const draw=()=>nodes(render({item:session.items[0],index:0,controller,hasOtherDraft:false,onDirty:()=>{}}));
  draw().find(n=>n.props?.['aria-label']?.startsWith('משקל בסט')).props.onChange({target:{value:'165'}});
  draw().find(n=>n.props?.ariaLabel?.startsWith('RPE בסט')).props.onChange(8);
- await draw().find(n=>n.props?.className?.startsWith('set-save')).props.onClick();
+ const controls=draw();
+ assert.equal(controls.filter(n=>n.props?.className?.startsWith('set-save')).length,1);
+ assert.equal(controls.some(n=>n.props?.onCheckedChange&&n.props?.['aria-label']?.startsWith('סימון סט')),false);
+ assert.equal(controls.find(n=>n.props?.className?.startsWith('set-save')).props.children,'סיום סט');
+ await controls.find(n=>n.props?.className?.startsWith('set-save')).props.onClick();
  assert.equal(session.items[0].results[0].done,true);
  assert.equal(session.items[0].results[0].weight,165);
  assert.equal(session.items[0].results[1].weight,expected);
