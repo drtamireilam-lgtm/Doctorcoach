@@ -10,10 +10,10 @@ import {matchExerciseForImport} from './exercise-matching.ts';
 export const importFields=['exercise','sets','reps','weight','rpe','rir','tempo','notes','day','section','unit','warmupSets','side','weightUnit','loadBasis'] as const;
 export type ImportField=typeof importFields[number];
 export type ColumnMapping=Partial<Record<ImportField,number>>;
-export type ImportRow={row:number;name:string;sourceDay:string;dayId:string;exerciseId:string;sets:string;reps:string;weight:string;weightUnit?:string;loadBasis?:string;rpe:string;rir:string;tempo:string;notes:string;unit:string;section:WorkoutSection;issues:string[];ignored:boolean;matchStatus?:ReturnType<typeof matchExerciseForImport>['status'];matchConfidence?:number;matchConfirmed?:boolean;warmupSets?:{amount:number;weight:number}[];side?:'left'|'right'|'both';sourcePrescription?:{sets:string;reps:string;unit:string;side:string;warmupSets:string};sourceLog?:string;sourceWeek?:string;sourceSets?:SourceSet[];sourceLogError?:string|null};
+export type ImportRow={sourceSheet?:string;sourceKey?:string;row:number;name:string;sourceDay:string;dayId:string;exerciseId:string;sets:string;reps:string;weight:string;weightUnit?:string;loadBasis?:string;rpe:string;rir:string;tempo:string;notes:string;unit:string;section:WorkoutSection;issues:string[];ignored:boolean;matchStatus?:ReturnType<typeof matchExerciseForImport>['status'];matchConfidence?:number;matchConfirmed?:boolean;warmupSets?:{amount:number;weight:number}[];side?:'left'|'right'|'both';sourcePrescription?:{sets:string;reps:string;unit:string;side:string;warmupSets:string};sourceLog?:string;sourceWeek?:string;sourceSets?:SourceSet[];sourceLogError?:string|null};
 export type ImportOptions={lastRow?:number;weekColumn?:number;targetRpe?:string;catalog?:Exercise[]};
 const normalize=(s:string)=>s.trim().toLowerCase().replace(/[’'".,()]/g,'').replace(/[_-]/g,' ').replace(/\s+/g,' ');
-const aliases:Record<ImportField,string[]>={warmupSets:['warmup sets','warm up sets','warmup weight x reps','warmup weight/reps','חימום משקל חזרות','סטי חימום','סטים לחימום'],weightUnit:['weight unit','load unit','mass unit','יחידת משקל'],loadBasis:['load basis','weight basis','basis','אופן מדידת המשקל'],side:['side','צד'],exercise:['exercise','exercise name','movement','תרגיל','שם תרגיל','שם התנועה','תרגילים'],sets:['sets','סטים','מספר סטים'],reps:['reps','repetitions','חזרות','מספר חזרות'],weight:['weight','load','משקל','משקל עבודה','משקל פתיחה'],rpe:['rpe','target rpe','מאמץ'],rir:['rir','target rir'],tempo:['tempo','טמפו'],notes:['notes','note','הערות','הנחיות','דגשים'],day:['day','workout','יום','אימון','יום אימון'],section:['section','חלק בתוכנית','קטגוריה'],unit:['unit','units','יחידת מידה']};
+const aliases:Record<ImportField,string[]>={warmupSets:['warmup sets','warm up sets','warmup weight x reps','warmup weight/reps','חימום משקל חזרות','סטי חימום','סטים לחימום'],weightUnit:['weight unit','load unit','mass unit','יחידת משקל'],loadBasis:['load basis','weight basis','basis','אופן מדידת המשקל'],side:['side','צד'],exercise:['exercise','exercise name','movement','תרגיל','שם תרגיל','שם התנועה','תרגילים'],sets:['sets','סטים','מספר סטים'],reps:['reps','repetitions','חזרות','מספר חזרות'],weight:['weight','load','משקל','משקל עבודה','משקל פתיחה','משקל לעדכון'],rpe:['rpe','target rpe','מאמץ'],rir:['rir','target rir'],tempo:['tempo','טמפו'],notes:['notes','note','הערה','הערות','הנחיות','דגשים'],day:['day','workout','יום','אימון','יום אימון'],section:['section','חלק בתוכנית','קטגוריה'],unit:['unit','units','יחידת מידה']};
 export const massUnit=(raw:string):'kg'|'lb'|undefined=>/^(kg|kgs|kilograms?|ק[״"']?ג|קילוגרם)$/i.test(raw.trim())?'kg':/^(lb|lbs|pounds?|פאונד|ליברות)$/i.test(raw.trim())?'lb':undefined;
 export function detectImportColumns(sheet:ExcelSheet,headerLimit=30){let best={header:0,mapping:{} as ColumnMapping,score:0,issues:[] as string[]};const nameCache=new Map<string,boolean>();const recognized=(v:string)=>{if(!/[a-zא-ת]/i.test(v))return false;if(!nameCache.has(v))nameCache.set(v,!!matchImportExercise(v));return nameCache.get(v)!;};
  for(let header=0;header<Math.min(sheet.rows.length,headerLimit);header++){
@@ -114,8 +114,10 @@ export function extractImportRows(sheet:ExcelSheet,header:number,mapping:ColumnM
   const rawUnit=value('unit');const sourceUnit=({'חזרות':'reps','שניות':'seconds','דקות':'minutes'} as Record<string,string>)[rawUnit]??rawUnit;
   const match=matchExerciseForImport(name,options.catalog);const matched=(options.catalog??exercises).find(e=>e.id===match.exerciseId);if(!part&&activeSection==='main'&&matched?.kind==='מתיחה')section='stretch';
   const dose=parseDose(value('sets'),value('reps'),sourceUnit,value('side'),issues);const warmupSets=parseWarmups(value('warmupSets'),issues);
+  const context=activeHeader.flatMap((cell,column)=>/^(קבוצה|קבוצת שרירים|muscle group|group|משקל נראה בתמונה)$/i.test(cell.value.trim())&&cells[column]?.value?[`${cell.value}: ${cells[column].value}`]:[]);
+  const notes=[value('notes'),...context].filter(Boolean).join('\n');
   const log=activeWeekColumn===undefined?undefined:cells[activeWeekColumn];const parsed=log?.formula?{sets:[],error:'דיווח השבוע הוא נוסחה. יש לבדוק את הערך ידנית.'}:parseSourceSets(log?.value??'');
-  rows.push({row:index+1,sourcePrescription:{sets:value('sets'),reps:value('reps'),unit:rawUnit,side:value('side'),warmupSets:value('warmupSets')},name,sourceDay:day,dayId:dayId(day),exerciseId:match.exerciseId,matchStatus:match.status,matchConfidence:match.confidence,sets:dose.sets,reps:dose.reps,weight:value('weight'),weightUnit:massUnit(value('weightUnit')||((activeHeader[activeMapping.weight??-1]?.value??'').match(/(?:kg|lbs?|ק[״"']?ג|פאונד)/i)?.[0]??''))||value('weightUnit'),loadBasis:value('loadBasis')||(/per[ -]?side|each side|לכל צד/i.test(value('notes')+' '+value('weight'))?'per-side':'total'),rpe:options.targetRpe||value('rpe'),rir:options.targetRpe?'':value('rir'),tempo:value('tempo'),notes:value('notes'),unit:dose.unit,...(dose.side?{side:dose.side}:{}),...(warmupSets?{warmupSets}:{}),section,issues,ignored:false,...(options.weekColumn===undefined?{}:{sourceLog:log?.value??'',sourceWeek:weekLabel,sourceSets:parsed.sets,sourceLogError:parsed.error})});
+  rows.push({row:index+1,sourcePrescription:{sets:value('sets'),reps:value('reps'),unit:rawUnit,side:value('side'),warmupSets:value('warmupSets')},name,sourceDay:day,dayId:dayId(day),exerciseId:match.exerciseId,matchStatus:match.status,matchConfidence:match.confidence,sets:dose.sets,reps:dose.reps,weight:value('weight'),weightUnit:massUnit(value('weightUnit')||((activeHeader[activeMapping.weight??-1]?.value??'').match(/(?:kg|lbs?|ק[״"']?ג|פאונד)/i)?.[0]??''))||value('weightUnit'),loadBasis:value('loadBasis')||(/per[ -]?side|each side|לכל צד/i.test(value('notes')+' '+value('weight'))?'per-side':'total'),rpe:options.targetRpe||value('rpe'),rir:options.targetRpe?'':value('rir'),tempo:value('tempo'),notes,unit:dose.unit,...(dose.side?{side:dose.side}:{}),...(warmupSets?{warmupSets}:{}),section,issues,ignored:false,...(options.weekColumn===undefined?{}:{sourceLog:log?.value??'',sourceWeek:weekLabel,sourceSets:parsed.sets,sourceLogError:parsed.error})});
  }
  if(!rows.length)throw new Error('לא נמצאו שורות תרגילים. בדקו את שורת הכותרות והעמודות.');
  if(rows.length>60||days.size>7)throw new Error('בחרו גיליון עם עד 60 שורות תרגילים ועד 7 ימי אימון.');
@@ -136,7 +138,37 @@ function rowToItem(row:ImportRow,catalog:Exercise[]=exercises):PlanItem{
  let tempo=null;if(row.tempo){const parts=row.tempo.replace(/[–—]/g,'-').split('-').map(value=>numeric(value,'טמפו'));if(parts.length!==4)throw new Error('טמפו צריך לכלול ארבעה שלבים, למשל 3-0-2-0.');tempo={eccentric:parts[0],bottom:parts[1],concentric:parts[2],top:parts[3]};}
  return parseAssignedItems([{exerciseId:row.exerciseId,sets:numeric(row.sets,'סטים'),reps:amount,...(upper===undefined?{}:{repsMax:upper}),unit:row.unit||(custom?custom.unit:defaultPrescription(row.exerciseId).unit),...importedLoad,targetRpe:effort,effortScale:row.rir?'rir':'rpe',tempo,notes:row.notes,dayId:row.dayId,workoutSection:row.section,...(row.side?{side:row.side}:{}),...(row.warmupSets?{warmupSets:row.warmupSets}:{})}],customs)[0];
 }
-export function finalizeImport(rows:ImportRow[],catalog:Exercise[]=exercises){return parseAssignedItems(rows.filter(r=>!r.ignored).map(r=>({...importRowItem(r,catalog),occurrenceId:`import:${r.row}`})),catalog.filter(e=>customId(e.id)) as CustomExercise[]);}
+export function finalizeImport(rows:ImportRow[],catalog:Exercise[]=exercises){return parseAssignedItems(rows.filter(r=>!r.ignored).map(r=>({...importRowItem(r,catalog),occurrenceId:`import:${r.sourceKey??r.row}`})),catalog.filter(e=>customId(e.id)) as CustomExercise[]);}
 
 export function matchExerciseForRow(name:string,catalog:Exercise[]=exercises){const match=matchExerciseForImport(name,catalog);return {exerciseId:match.exerciseId,matchStatus:match.status,matchConfidence:match.confidence,matchConfirmed:false};}
 export function duplicateImportRowNumbers(rows:ImportRow[]){const seen=new Map<string,number>(),duplicates=new Set<number>();for(const row of rows.filter(r=>!r.ignored)){const key=JSON.stringify([row.dayId,row.exerciseId||normalize(row.name),row.sets,row.reps,row.weight,row.weightUnit??'',row.loadBasis??'',row.rpe,row.rir,row.section,row.tempo,row.notes]);const old=seen.get(key);if(old!==undefined){duplicates.add(old);duplicates.add(row.row);}else seen.set(key,row.row);}return [...duplicates];}
+
+/** Combine explicitly selected worksheets without losing their source coordinates.
+ * Sheet-local days are independent; repeated occurrences are never deduplicated. */
+export function extractWorkbookImport(sheets:ExcelSheet[],selected:number[],catalog:Exercise[]=exercises):ImportRow[]{
+ if(!selected.length||new Set(selected).size!==selected.length||selected.some(i=>!Number.isInteger(i)||i<0||i>=sheets.length))throw new Error('בחרו גיליונות תקינים לייבוא.');
+ const result:ImportRow[]=[];let nextDay=1;
+ for(const index of [...selected].sort((a,b)=>a-b)){
+  const sheet=sheets[index];
+  try{
+   const detected=detectImportColumns(sheet);
+   if(detected.mapping.exercise===undefined)throw new Error('לא זוהתה עמודת תרגיל. השתמשו בייבוא גיליון יחיד ובמיפוי ידני.');
+   const rows=extractImportRows(sheet,detected.header,detected.mapping,{lastRow:importTableEnd(sheet,detected.header,detected.mapping),catalog});
+   const days=new Map<string,string>();
+   for(const row of rows){
+    if(!days.has(row.dayId)){if(nextDay>7)throw new Error('התוכנית מכילה יותר מ־7 ימי אימון.');days.set(row.dayId,String(nextDay++));}
+    result.push({...row,dayId:days.get(row.dayId)!,sourceSheet:sheet.name,sourceKey:`${index}:${row.row}`});
+   }
+  }catch(error){throw new Error(sheet.name+': '+(error as Error).message);}
+ }
+ if(result.length>60)throw new Error('ניתן לבדוק עד 60 שורות בכל ייבוא.');
+ return result;
+}
+/** Move a single occurrence within its day; other days keep their positions. */
+export function moveImportRow(rows:ImportRow[],index:number,direction:-1|1):ImportRow[]{
+ const row=rows[index];if(!row||row.ignored)return rows;
+ let target=index+direction;
+ while(target>=0&&target<rows.length&&(rows[target].ignored||rows[target].dayId!==row.dayId))target+=direction;
+ if(target<0||target>=rows.length)return rows;
+ const updated=[...rows];[updated[index],updated[target]]=[updated[target],updated[index]];return updated;
+}

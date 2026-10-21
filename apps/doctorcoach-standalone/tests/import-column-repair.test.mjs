@@ -1,6 +1,15 @@
 import test from 'node:test';import assert from 'node:assert/strict';
 import {detectImportColumns,extractImportRows,importRowItem} from '../lib/program-import.ts';
 const sheet=rows=>({name:'Plan',rows:rows.map(r=>r.map(value=>({value:String(value),formula:false})))});
+test('source update loads and singular Hebrew notes are retained, invalid load lists block approval',()=>{
+ const s=sheet([['אימון','תרגיל','סטים','חזרות','משקל לעדכון','הערה','משקל נראה בתמונה'],['A','Hip Thrust',2,'8-10','17,17,18,17','יש לבדוק','36…']]);
+ const d=detectImportColumns(s),r=extractImportRows(s,d.header,d.mapping)[0];
+ assert.equal(r.weight,'17,17,18,17');assert.ok(r.notes.includes('יש לבדוק'));assert.ok(r.notes.includes('36…'));assert.throws(()=>importRowItem(r));
+});
+test('muscle-group labels are preserved as context without inventing training days',()=>{
+ const s=sheet([['קבוצה','תרגיל','סטים','חזרות'],['קוואדס','Leg Press',3,8]]),d=detectImportColumns(s),r=extractImportRows(s,d.header,d.mapping)[0];
+ assert.ok(r.notes.includes('קוואדס'));assert.equal(r.dayId,'1');
+});
 test('semantic bilingual headers locate a delayed reordered table and mass unit',()=>{
  const s=sheet([['Coach plan'],[],['Load','Repetitions','Movement','Target RPE','Sets','Unit'],[105,10,'Leg Press',8,2,'lb']]);const d=detectImportColumns(s);assert.equal(d.header,2);assert.equal(d.mapping.exercise,2);assert.equal(d.mapping.reps,1);assert.equal(d.mapping.weightUnit,5);assert.equal(d.mapping.unit,undefined);const row=extractImportRows(s,d.header,d.mapping)[0];assert.equal(row.name,'Leg Press');assert.equal(row.reps,'10');assert.equal(row.weightUnit,'lb');
 });
