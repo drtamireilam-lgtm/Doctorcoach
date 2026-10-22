@@ -18,12 +18,16 @@ for name,items in catalog.items():
   vertices=[];indices=[];offset=0
   for fid in ids:
    assert fid not in used;used.add(fid);v,f,src=load(fid);record=next(s for s in entry['sources'] if s['elementId']==fid)
-   assert v[:,0].mean()<0,name+':'+slug+' right-side spatial coordinates disagree'
+   assert entry['side'] in ['right','midline']
+   if entry['side']=='midline':
+    assert layer=='bone' and (slug=='sacrum' or slug.startswith(('cervical-','thoracic-','lumbar-')))
+    assert v[:,0].min()<0<v[:,0].max(),name+':'+slug+' midline geometry does not cross sagittal plane'
+   else:assert v[:,0].mean()<0,name+':'+slug+' right-side spatial coordinates disagree'
    assert record['sha256']==src['sha256'];assert record['mappingRows']==src['mappingRows'] or set(record['mappingRows']).issubset(src['mappingRows'])
-   assert any('right' in r.split('\t')[1] for r in record['mappingRows']);vertices.append(v);indices.append(f+offset);offset+=len(v)
+   assert entry['side']=='midline' or any('right' in r.split('\t')[1] for r in record['mappingRows']);vertices.append(v);indices.append(f+offset);offset+=len(v)
   node=next(n for n in doc['nodes'] if n['name']==slug);mesh=doc['meshes'][node['mesh']];assert mesh['name']==slug
   primitive=mesh['primitives'][0];material=primitive['material'];assert material not in materials;materials.add(material);assert doc['materials'][material]['name']==slug
   expected=np.concatenate(vertices).astype('<f4').flatten();actual=data(primitive['attributes']['POSITION']);assert np.array_equal(actual,expected),name+':'+slug+' positions differ'
   assert np.array_equal(data(primitive['indices']),np.concatenate(indices).flatten()),name+':'+slug+' triangles differ'
-  results.append({'model':name,'structure':slug,'elements':ids,'sourceCoordinatesAndTriangles':'exact float32 match','rightSideEvidence':True,'uniqueMaterial':True})
+  results.append({'model':name,'structure':slug,'elements':ids,'sourceCoordinatesAndTriangles':'exact float32 match','laterality':entry['side'],'sideEvidence':True,'uniqueMaterial':True})
 print(json.dumps({'status':'source fidelity and mapping checked','clinicalReview':'pending','structures':results},ensure_ascii=False,indent=2))

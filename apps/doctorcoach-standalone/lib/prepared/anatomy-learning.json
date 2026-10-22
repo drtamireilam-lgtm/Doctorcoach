@@ -246,7 +246,16 @@
         "id": "cable-row",
         "role": "secondary"
       }
-    ]
+    ],
+    "innervation": {
+      "he": "עצב השכמה הגבי, בעיקר C5",
+      "en": "Dorsal scapular nerve, chiefly C5"
+    },
+    "innervationReference": {
+      "source": "https://medicine.uams.edu/neuroscience/education/medical-school-courses/human-structure-module/anatomy-tables/muscle-tables/muscles-of-the-back-region/",
+      "checkedAt": "2026-10-22",
+      "status": "reference-checked; clinical review pending"
+    }
   },
   {
     "slug": "rhomboid-minor",
@@ -290,7 +299,16 @@
         "id": "cable-row",
         "role": "secondary"
       }
-    ]
+    ],
+    "innervation": {
+      "he": "עצב השכמה הגבי, בעיקר C5",
+      "en": "Dorsal scapular nerve, chiefly C5"
+    },
+    "innervationReference": {
+      "source": "https://medicine.uams.edu/neuroscience/education/medical-school-courses/human-structure-module/anatomy-tables/muscle-tables/muscles-of-the-back-region/",
+      "checkedAt": "2026-10-22",
+      "status": "reference-checked; clinical review pending"
+    }
   },
   {
     "slug": "biceps-brachii",
@@ -3854,5 +3872,262 @@
         "https://medicine.uams.edu/neuroscience/education/medical-school-courses/human-structure-module/anatomy-tables/muscle-tables/muscles-of-the-lower-limb/"
       ]
     }
+  },
+  {
+    "slug": "iliocostalis-lumborum",
+    "region": "lower_back_spine",
+    "view": "back",
+    "location": {
+      "he": "הגב העמוק, בצד עמוד השדרה",
+      "en": "Deep back beside the vertebral column"
+    },
+    "origin": {
+      "he": "הרכס האחורי של הכסל והעצה",
+      "en": "Posterior iliac crest and sacrum"
+    },
+    "insertion": {
+      "he": "צלעות וזיזים רוחביים מותניים; החיבורים משתנים בין חלקי השריר ובין אנשים",
+      "en": "Ribs and lumbar transverse processes; attachments vary by subdivision and individual"
+    },
+    "action": {
+      "he": "יישור הגו; כיווץ חד־צדי תורם לכפיפה לאותו צד",
+      "en": "Trunk extension; unilateral contraction contributes to same-side lateral flexion"
+    },
+    "joints": {
+      "he": "מפרקי עמוד השדרה, בהתאם לגובה החיבורים",
+      "en": "Intervertebral joints according to attachment levels"
+    },
+    "training": {
+      "he": "משתתף בשליטת הגו יחד עם שרירים נוספים. תרגיל אינו מבטיח בידוד או טיפול בכאב.",
+      "en": "Contributes to trunk control with other muscles. An exercise does not guarantee isolation or pain treatment."
+    },
+    "source": "https://www.elsevier.com/resources/anatomy/muscular-system/muscles-of-back/iliocostalis-lumborum-muscle/21106",
+    "innervation": {
+      "he": "ענפים אחוריים של עצבי השדרה בגבהים המתאימים",
+      "en": "Posterior rami of spinal nerves at corresponding levels"
+    },
+    "innervationReference": {
+      "source": "https://www.elsevier.com/resources/anatomy/muscular-system/muscles-of-back/iliocostalis-lumborum-muscle/21106",
+      "checkedAt": "2026-10-22",
+      "status": "reference-checked; clinical review pending"
+    },
+    "links": [
+      {
+        "id": "deadlift",
+        "role": "stabilizer"
+      },
+      {
+        "id": "rdl",
+        "role": "stabilizer"
+      },
+      {
+        "id": "bird-dog",
+        "role": "stabilizer"
+      }
+    ]
+  },
+  {
+    "slug": "iliocostalis-thoracis",
+    "region": "lower_back_spine",
+    "view": "back",
+    "location": {
+      "he": "הגב העמוק, בצד עמוד השדרה",
+      "en": "Deep back beside the vertebral column"
+    },
+    "origin": {
+      "he": "זוויות שש הצלעות התחתונות",
+      "en": "Angles of the lower six ribs"
+    },
+    "insertion": {
+      "he": "זוויות שש הצלעות העליונות",
+      "en": "Angles of the upper six ribs"
+    },
+    "action": {
+      "he": "יישור הגו; כיווץ חד־צדי תורם לכפיפה לאותו צד",
+      "en": "Trunk extension; unilateral contraction contributes to same-side lateral flexion"
+    },
+    "joints": {
+      "he": "מפרקי עמוד השדרה, בהתאם לגובה החיבורים",
+      "en": "Intervertebral joints according to attachment levels"
+    },
+    "training": {
+      "he": "משתתף בשליטת הגו יחד עם שרירים נוספים. תרגיל אינו מבטיח בידוד או טיפול בכאב.",
+      "en": "Contributes to trunk control with other muscles. An exercise does not guarantee isolation or pain treatment."
+    },
+    "source": "https://www.elsevier.com/resources/anatomy/muscular-system/muscles-of-back/iliocostalis-thoracis-muscle/23569",
+    "innervation": {
+      "he": "ענפים אחוריים של עצבי השדרה בגבהים המתאימים",
+      "en": "Posterior rami of spinal nerves at corresponding levels"
+    },
+    "innervationReference": {
+      "source": "https://www.elsevier.com/resources/anatomy/muscular-system/muscles-of-back/iliocostalis-thoracis-muscle/23569",
+      "checkedAt": "2026-10-22",
+      "status": "reference-checked; clinical review pending"
+    },
+    "links": [
+      {
+        "id": "deadlift",
+        "role": "stabilizer"
+      },
+      {
+        "id": "rdl",
+        "role": "stabilizer"
+      },
+      {
+        "id": "bird-dog",
+        "role": "stabilizer"
+      }
+    ]
+  },
+  {
+    "slug": "longissimus-thoracis",
+    "region": "lower_back_spine",
+    "view": "back",
+    "location": {
+      "he": "הגב העמוק, בצד עמוד השדרה",
+      "en": "Deep back beside the vertebral column"
+    },
+    "origin": {
+      "he": "העצה, רכס הכסל והזיזים הקוציים המותניים דרך מוצא משותף",
+      "en": "Sacrum, iliac crest and lumbar spinous processes through a common origin"
+    },
+    "insertion": {
+      "he": "זיזים רוחביים חזיים ומותניים והחלקים האחוריים של הצלעות",
+      "en": "Thoracic and lumbar transverse processes and posterior ribs"
+    },
+    "action": {
+      "he": "יישור הגו; כיווץ חד־צדי תורם לכפיפה לאותו צד",
+      "en": "Trunk extension; unilateral contraction contributes to same-side lateral flexion"
+    },
+    "joints": {
+      "he": "מפרקי עמוד השדרה, בהתאם לגובה החיבורים",
+      "en": "Intervertebral joints according to attachment levels"
+    },
+    "training": {
+      "he": "משתתף בשליטת הגו יחד עם שרירים נוספים. תרגיל אינו מבטיח בידוד או טיפול בכאב.",
+      "en": "Contributes to trunk control with other muscles. An exercise does not guarantee isolation or pain treatment."
+    },
+    "source": "https://www.elsevier.com/resources/anatomy/muscular-system/muscles-of-back/longissimus-thoracis-muscle/21643",
+    "innervation": {
+      "he": "ענפים אחוריים של עצבי השדרה בגבהים המתאימים",
+      "en": "Posterior rami of spinal nerves at corresponding levels"
+    },
+    "innervationReference": {
+      "source": "https://www.elsevier.com/resources/anatomy/muscular-system/muscles-of-back/longissimus-thoracis-muscle/21643",
+      "checkedAt": "2026-10-22",
+      "status": "reference-checked; clinical review pending"
+    },
+    "links": [
+      {
+        "id": "deadlift",
+        "role": "stabilizer"
+      },
+      {
+        "id": "rdl",
+        "role": "stabilizer"
+      },
+      {
+        "id": "bird-dog",
+        "role": "stabilizer"
+      }
+    ]
+  },
+  {
+    "slug": "spinalis-thoracis",
+    "region": "lower_back_spine",
+    "view": "back",
+    "location": {
+      "he": "הגב העמוק, בצד עמוד השדרה",
+      "en": "Deep back beside the vertebral column"
+    },
+    "origin": {
+      "he": "זיזים קוציים באזור החזי התחתון והמותני העליון, עם שונות בחיבורים",
+      "en": "Lower thoracic and upper lumbar spinous processes, with variable attachments"
+    },
+    "insertion": {
+      "he": "זיזים קוציים של חוליות החזה העליונות והאמצעיות",
+      "en": "Upper and middle thoracic spinous processes"
+    },
+    "action": {
+      "he": "יישור הגו; כיווץ חד־צדי תורם לכפיפה לאותו צד",
+      "en": "Trunk extension; unilateral contraction contributes to same-side lateral flexion"
+    },
+    "joints": {
+      "he": "מפרקי עמוד השדרה, בהתאם לגובה החיבורים",
+      "en": "Intervertebral joints according to attachment levels"
+    },
+    "training": {
+      "he": "משתתף בשליטת הגו יחד עם שרירים נוספים. תרגיל אינו מבטיח בידוד או טיפול בכאב.",
+      "en": "Contributes to trunk control with other muscles. An exercise does not guarantee isolation or pain treatment."
+    },
+    "source": "https://www.elsevier.com/resources/anatomy/muscular-system/muscles-of-back/spinalis-thoracis-muscle/16413",
+    "innervation": {
+      "he": "ענפים אחוריים של עצבי השדרה בגבהים המתאימים",
+      "en": "Posterior rami of spinal nerves at corresponding levels"
+    },
+    "innervationReference": {
+      "source": "https://www.elsevier.com/resources/anatomy/muscular-system/muscles-of-back/spinalis-thoracis-muscle/16413",
+      "checkedAt": "2026-10-22",
+      "status": "reference-checked; clinical review pending"
+    },
+    "links": [
+      {
+        "id": "deadlift",
+        "role": "stabilizer"
+      },
+      {
+        "id": "rdl",
+        "role": "stabilizer"
+      },
+      {
+        "id": "bird-dog",
+        "role": "stabilizer"
+      }
+    ]
+  },
+  {
+    "slug": "semispinalis-thoracis",
+    "region": "lower_back_spine",
+    "view": "back",
+    "location": {
+      "he": "הגב העמוק, בצד עמוד השדרה",
+      "en": "Deep back beside the vertebral column"
+    },
+    "origin": {
+      "he": "זיזים רוחביים בחזה התחתון, בקירוב T6–T11; קיימת שונות",
+      "en": "Lower thoracic transverse processes, approximately T6–T11; variable"
+    },
+    "insertion": {
+      "he": "זיזים קוציים בקירוב C6–T4, מספר מקטעים מעל המוצא",
+      "en": "Spinous processes approximately C6–T4, several levels above the origin"
+    },
+    "action": {
+      "he": "יישור הגו; כיווץ חד־צדי מסובב לצד הנגדי",
+      "en": "Trunk extension; unilateral contraction contributes to opposite-side rotation"
+    },
+    "joints": {
+      "he": "מפרקי עמוד השדרה, בהתאם לגובה החיבורים",
+      "en": "Intervertebral joints according to attachment levels"
+    },
+    "training": {
+      "he": "משתתף בשליטת הגו יחד עם שרירים נוספים. תרגיל אינו מבטיח בידוד או טיפול בכאב.",
+      "en": "Contributes to trunk control with other muscles. An exercise does not guarantee isolation or pain treatment."
+    },
+    "source": "https://www.elsevier.com/resources/anatomy/muscular-system/muscles-of-back/semispinalis-thoracis-muscle/18584",
+    "innervation": {
+      "he": "ענפים אחוריים של עצבי השדרה החזיים",
+      "en": "Posterior rami of thoracic spinal nerves"
+    },
+    "innervationReference": {
+      "source": "https://www.elsevier.com/resources/anatomy/muscular-system/muscles-of-back/semispinalis-thoracis-muscle/18584",
+      "checkedAt": "2026-10-22",
+      "status": "reference-checked; clinical review pending"
+    },
+    "links": [
+      {
+        "id": "bird-dog",
+        "role": "stabilizer"
+      }
+    ]
   }
 ]
