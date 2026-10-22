@@ -55,7 +55,7 @@ test('exercise catalog IDs and anatomy links remain unique and coverage does not
  const ids=exercises.map(e=>e.id);
  assert.equal(new Set(ids).size,ids.length,'Duplicate canonical exercise IDs');
  const linked=new Set(learningCards.flatMap(card=>card.links.map(link=>link.id)));
- assert.ok(linked.size>=70,'Exercise-to-anatomy coverage dropped below reviewed baseline');
+ assert.ok(linked.size>=79,'Exercise-to-anatomy coverage dropped below integrated baseline');
  for(const id of linked)assert.ok(ids.includes(id),'Orphan anatomy link: '+id);
  const roles=new Set(['primary','secondary','stabilizer']);
  for(const card of learningCards){
@@ -66,4 +66,10 @@ test('exercise catalog IDs and anatomy links remain unique and coverage does not
    byExercise.set(link.id,link.role);
   }
  }
+});
+
+test('rehabilitation anatomy coverage remains at integrated baseline',()=>{
+ const rehabIds=new Set(exercises.filter(e=>e.kind==='שיקום'||e.kind==='סביב פציעה').map(e=>e.id));
+ const linkedRehab=new Set(learningCards.flatMap(card=>card.links.map(link=>link.id)).filter(id=>rehabIds.has(id)));
+ assert.ok(linkedRehab.size>=26,'Rehabilitation anatomy links regressed');
 });
