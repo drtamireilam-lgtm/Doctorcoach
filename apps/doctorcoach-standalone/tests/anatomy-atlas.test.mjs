@@ -2,7 +2,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import {readFileSync} from 'node:fs';
 import {anatomyModels,modelForRegion,validateAnatomyAsset,visibleStructureIds,readCameraState} from '../lib/anatomy-models.ts';
-import {learningCard,exerciseMuscles} from '../lib/anatomy-learning.ts';
+import {learningCard,learningCards,exerciseMuscles} from '../lib/anatomy-learning.ts';
 const bytes=m=>{const b=readFileSync(new URL('../public'+m.src,import.meta.url));return b.buffer.slice(b.byteOffset,b.byteOffset+b.byteLength);};
 test('body and arm use real packaged geometry within separate mobile budgets',async()=>{
  for(const m of anatomyModels){const b=bytes(m);assert.ok(b.byteLength<=m.maxBytes,m.id);await validateAnatomyAsset(b,m);assert.equal(new Set(m.structures.map(s=>s.id)).size,m.structures.length);assert.equal(m.asset.licenseId,'CC-BY-4.0');assert.equal(m.asset.anatomicalReview,'pending');assert.ok(m.structures.every(s=>s.sources.length&&s.sources.every(p=>p.mappingRows.length)),m.id);}
@@ -24,6 +24,19 @@ test('isolation never reveals a hidden or unknown structure and reset restores a
 test('camera restoration accepts only bounded finite positions and targets',()=>{
  assert.deepEqual(readCameraState({position:[0,0,2],target:[0,.1,0]}),{position:[0,0,2],target:[0,.1,0]});
  for(const bad of [null,{}, {position:[NaN,0,1],target:[0,0,0]},{position:[0,0,Infinity],target:[0,0,0]},{position:[10000,0,1],target:[0,0,0]},{position:[0,0,0],target:[0,0,0]}])assert.equal(readCameraState(bad),null);
+});
+
+test('individually hidden structures stay hidden through isolation and layer changes',()=>{
+ const model=modelForRegion('elbow'),layers=new Set(['bone','muscle']);
+ const hidden=new Set(['biceps-brachii']);
+ assert.ok(!visibleStructureIds(model,layers,null,hidden).includes('biceps-brachii'));
+ assert.deepEqual(visibleStructureIds(model,layers,'biceps-brachii',hidden),[]);
+ assert.deepEqual(visibleStructureIds(model,new Set(['bone']),null,hidden),model.structures.filter(s=>s.layer==='bone').map(s=>s.id));
+ assert.equal(visibleStructureIds(model,layers,null,new Set()).length,model.structures.length);
+});
+
+test('every authored learning card includes bilingual innervation with its own reference',()=>{
+ for(const card of learningCards){assert.ok(card.innervation?.he?.trim(),card.slug+' Hebrew innervation');assert.ok(card.innervation?.en?.trim(),card.slug+' English innervation');assert.ok(card.innervationReference,card.slug+' reference');}
 });
 test('new modeled muscles have complete bilingual learning cards and canonical reverse exercise links',()=>{
  for(const s of modelForRegion('elbow').structures.filter(s=>s.layer==='muscle')){const c=learningCard(s.id);assert.ok(c,s.id);for(const f of ['origin','insertion','action','joints','training','innervation'])assert.ok(c[f]?.he&&c[f]?.en,s.id+':'+f);assert.ok(c.links.length,s.id);for(const link of c.links)assert.ok(exerciseMuscles(link.id).some(m=>m.slug===s.id));}

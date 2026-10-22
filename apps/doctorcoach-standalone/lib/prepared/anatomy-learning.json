@@ -211,7 +211,16 @@
         "id": "cable-row",
         "role": "primary"
       }
-    ]
+    ],
+    "innervation": {
+      "he": "העצב התורקודורסלי, C6–C8.",
+      "en": "Thoracodorsal nerve, C6–C8."
+    },
+    "innervationReference": {
+      "source": "https://rad.uw.edu/muscle-atlas/latissimus-dorsi",
+      "checkedAt": "2026-10-22",
+      "status": "source-checked; clinical review pending"
+    }
   },
   {
     "slug": "rhomboid-major",
@@ -1925,7 +1934,16 @@
         "id": "bird-dog",
         "role": "stabilizer"
       }
-    ]
+    ],
+    "innervation": {
+      "he": "ענפים אחוריים של עצבי השדרה, באופן סגמנטלי ובהתאם לחלק השריר.",
+      "en": "Segmental posterior rami of spinal nerves; supply depends on the component."
+    },
+    "innervationReference": {
+      "source": "https://medicine.uams.edu/neuroscience/education/medical-school-courses/human-structure-module/anatomy-tables/muscle-tables/muscles-of-the-back-region/",
+      "checkedAt": "2026-10-22",
+      "status": "source-checked; clinical review pending"
+    }
   },
   {
     "slug": "multifidus",
@@ -1969,7 +1987,16 @@
         "id": "plank",
         "role": "stabilizer"
       }
-    ]
+    ],
+    "innervation": {
+      "he": "ענפים אחוריים של עצבי השדרה; באזור המותני בעיקר הענפים המדיאליים.",
+      "en": "Posterior rami of spinal nerves; predominantly their medial branches in the lumbar region."
+    },
+    "innervationReference": {
+      "source": "https://medicine.uams.edu/neuroscience/education/medical-school-courses/human-structure-module/anatomy-tables/muscle-tables/muscles-of-the-back-region/",
+      "checkedAt": "2026-10-22",
+      "status": "source-checked; clinical review pending"
+    }
   },
   {
     "slug": "rectus-abdominis",
@@ -2009,7 +2036,16 @@
         "id": "hanging-knee",
         "role": "secondary"
       }
-    ]
+    ],
+    "innervation": {
+      "he": "עצבים תורקואבדומינליים T7–T11 והעצב התת־צלעי T12.",
+      "en": "Thoracoabdominal nerves T7–T11 and subcostal nerve T12."
+    },
+    "innervationReference": {
+      "source": "https://medicine.uams.edu/neuroscience/education/medical-school-courses/human-structure-module/anatomy-tables/muscle-tables/muscles-of-the-abdominal-region/",
+      "checkedAt": "2026-10-22",
+      "status": "source-checked; clinical review pending"
+    }
   },
   {
     "slug": "external-oblique",
@@ -2106,7 +2142,16 @@
         "id": "crunch",
         "role": "secondary"
       }
-    ]
+    ],
+    "innervation": {
+      "he": "עצבים תורקואבדומינליים T7–T11, העצב התת־צלעי T12 והעצבים האיליוהיפוגסטרי והאיליואינגווינלי L1.",
+      "en": "Thoracoabdominal nerves T7–T11, subcostal nerve T12, and iliohypogastric and ilioinguinal nerves L1."
+    },
+    "innervationReference": {
+      "source": "https://medicine.uams.edu/neuroscience/education/medical-school-courses/human-structure-module/anatomy-tables/muscle-tables/muscles-of-the-abdominal-region/",
+      "checkedAt": "2026-10-22",
+      "status": "source-checked; clinical review pending"
+    }
   },
   {
     "slug": "transversus-abdominis",
@@ -2150,7 +2195,16 @@
         "id": "plank",
         "role": "stabilizer"
       }
-    ]
+    ],
+    "innervation": {
+      "he": "עצבים תורקואבדומינליים T7–T11, העצב התת־צלעי T12 והעצבים האיליוהיפוגסטרי והאיליואינגווינלי L1.",
+      "en": "Thoracoabdominal nerves T7–T11, subcostal nerve T12, and iliohypogastric and ilioinguinal nerves L1."
+    },
+    "innervationReference": {
+      "source": "https://medicine.uams.edu/neuroscience/education/medical-school-courses/human-structure-module/anatomy-tables/muscle-tables/muscles-of-the-abdominal-region/",
+      "checkedAt": "2026-10-22",
+      "status": "source-checked; clinical review pending"
+    }
   },
   {
     "slug": "quadratus-lumborum",
@@ -2186,7 +2240,16 @@
         "id": "side-plank",
         "role": "secondary"
       }
-    ]
+    ],
+    "innervation": {
+      "he": "העצב התת־צלעי T12 וענפים קדמיים של עצבי השדרה L1–L4.",
+      "en": "Subcostal nerve T12 and anterior rami of spinal nerves L1–L4."
+    },
+    "innervationReference": {
+      "source": "https://medicine.uams.edu/neuroscience/education/medical-school-courses/human-structure-module/anatomy-tables/muscle-tables/muscles-of-the-abdominal-region/",
+      "checkedAt": "2026-10-22",
+      "status": "source-checked; clinical review pending"
+    }
   },
   {
     "slug": "teres-major",

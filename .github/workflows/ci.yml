@@ -50,6 +50,12 @@ jobs:
         run: npm test
       - name: Standalone TypeScript
         run: npm run typecheck
+      - name: Install anatomy browser
+        if: startsWith(github.ref, 'refs/heads/feature/anatomy-completion-')
+        run: pnpm exec playwright install --with-deps chromium
+      - name: Anatomy viewer controls and bundled model smoke
+        if: startsWith(github.ref, 'refs/heads/feature/anatomy-completion-')
+        run: node scripts/anatomy/viewer-controls-smoke.mjs
       - name: Build standalone without deployment
         env:
           DC_ISOLATED_STAGING_BUILD: "true"

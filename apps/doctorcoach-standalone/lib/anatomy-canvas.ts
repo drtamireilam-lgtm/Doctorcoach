@@ -61,8 +61,13 @@ export async function createAnatomyCanvas(host:HTMLElement,onSelect:(id:string|n
   const halfFov=Math.atan(Math.tan(THREE.MathUtils.degToRad(camera.fov)/2)*Math.min(camera.aspect,1));
   const distance=Math.max(extent.length()/2/Math.sin(halfFov)*1.1,controls.minDistance*1.1);
   controls.target.copy(target);camera.position.copy(target).addScaledVector(direction,distance);controls.update();render();remember();
- },setView(view:AnatomyCamera){const positions={front:[0,0,presetDistance],back:[0,0,-presetDistance],left:[presetDistance,0,0],right:[-presetDistance,0,0]};camera.position.fromArray(positions[view]).add(presetTarget);controls.target.copy(presetTarget);controls.update();render();remember();},update(selected:string|null,visible:ReadonlySet<AtlasLayer>,isolated:string|null=null){
-  const shown=new Set(visibleStructureIds(modelSpec,visible,isolated));
+ },pan(horizontal:number,vertical:number){
+  const distance=-camera.position.distanceTo(controls.target)*.12;
+  const offset=new THREE.Vector3().setFromMatrixColumn(camera.matrix,0).multiplyScalar(horizontal*distance)
+   .addScaledVector(new THREE.Vector3().setFromMatrixColumn(camera.matrix,1),vertical*distance);
+  camera.position.add(offset);controls.target.add(offset);controls.update();render();remember();
+ },setView(view:AnatomyCamera){const positions={front:[0,0,presetDistance],back:[0,0,-presetDistance],left:[presetDistance,0,0],right:[-presetDistance,0,0]};camera.position.fromArray(positions[view]).add(presetTarget);controls.target.copy(presetTarget);controls.update();render();remember();},update(selected:string|null,visible:ReadonlySet<AtlasLayer>,isolated:string|null=null,hidden:ReadonlySet<string>=new Set()){
+  const shown=new Set(visibleStructureIds(modelSpec,visible,isolated,hidden));
   for(const mesh of meshes){const structure=modelSpec.structures.find(s=>s.id===mesh.name);if(!structure)continue;mesh.visible=shown.has(structure.id);
    const color=structure.id===selected?[.12,.65,1]:structure.layer==='bone'?[.88,.84,.71]:(structure.layer==='surface'||structure.layer==='cartilage')?[.32,.46,.59]:[.65,.18,.25];
    for(const material of Array.isArray(mesh.material)?mesh.material:[mesh.material])if(material instanceof THREE.MeshStandardMaterial)material.color.setRGB(color[0],color[1],color[2],THREE.LinearSRGBColorSpace);
