@@ -12,7 +12,7 @@ const errors=[],checks=[];let page;
 try{
  const context=await browser.newContext({viewport:{width:390,height:844},isMobile:true,hasTouch:true});page=await context.newPage();page.setDefaultTimeout(60000);page.setDefaultNavigationTimeout(90000);
  page.on('pageerror',e=>errors.push(e.message));
- for(const name of ['body','arm','forearm','hand','hip']){
+ for(const name of ['body','arm','forearm','hand','hip','knee']){
   const manifest=JSON.parse(await readFile(new URL('../../lib/prepared/'+name+'-model.json',import.meta.url),'utf8'));
   const response=await context.request.get(origin+'/anatomy/'+name+'.glb');assert.equal(response.status(),200);
   assert.equal(createHash('sha256').update(await response.body()).digest('hex'),manifest.glbSha256);checks.push(name+' live GLB matches reviewed asset checksum');
@@ -35,6 +35,12 @@ try{
  await hip.locator('.atlas-exercises button').first().click();await page.locator('.atlas-exercise-links a[href*="muscle=gluteus-maximus"]').waitFor();await page.goBack();await hip.locator('canvas').waitFor();assert.equal(await hip.getByRole('combobox').inputValue(),'gluteus-maximus');checks.push('live hip geometry, muscle focus and hip thrust roundtrip');
  await page.goto(origin+'/?lang=he#learn?region=hip_glute&muscle=gluteus-medius',{waitUntil:'domcontentloaded'});
  await hip.locator('canvas').waitFor();assert.equal(await hip.getAttribute('dir'),'rtl');await hip.getByRole('heading',{name:'שריר העכוז האמצעי',exact:true}).waitFor();checks.push('live hip Hebrew content and RTL');
+ await page.goto(origin+'/?lang=en#learn?region=knee&muscle=rectus-femoris',{waitUntil:'domcontentloaded'});
+ const knee=page.locator('[data-model-id="knee"]');await knee.locator('canvas').waitFor();assert.equal(await knee.getByRole('combobox').locator('option').count(),17);await knee.getByRole('button',{name:'Front view',exact:true}).click();
+ const kneeCamera=await page.evaluate(()=>JSON.parse(sessionStorage.getItem('dc-knee-view')).camera);assert.ok(Math.hypot(...kneeCamera.target)>.01);assert.ok(Math.hypot(...kneeCamera.position.map((n,i)=>n-kneeCamera.target[i]))<1);
+ await page.screenshot({path:'/tmp/dc-knee-live-initial.png',fullPage:true});await knee.locator('.atlas-exercises button').first().click();await page.locator('.atlas-exercise-links a[href*="region=knee"][href*="muscle=rectus-femoris"]').click();await knee.locator('canvas').waitFor();assert.equal(await knee.getByRole('combobox').inputValue(),'rectus-femoris');checks.push('live knee joint framing and canonical leg-extension reverse link');
+ await page.goto(origin+'/?lang=he#learn?region=knee&muscle=vastus-medialis',{waitUntil:'domcontentloaded'});
+ await knee.locator('canvas').waitFor();assert.equal(await knee.getAttribute('dir'),'rtl');assert.equal(await knee.getByRole('combobox').inputValue(),'vastus-medialis');checks.push('live knee Hebrew RTL and quadriceps selection');
  assert.deepEqual(errors,[]);checks.push('no uncaught errors in live acceptance flow');
  const dir='/tmp/dc-anatomy-live-evidence';await mkdir(dir,{recursive:true});await page.screenshot({path:dir+'/arm-mobile-lab.png',fullPage:true});
  const result={origin,checkedAt:new Date().toISOString(),checks,errors};await writeFile(dir+'/live.json',JSON.stringify(result,null,2));console.log(JSON.stringify(result,null,2));

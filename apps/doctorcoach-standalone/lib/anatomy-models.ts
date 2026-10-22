@@ -2,13 +2,14 @@ import shoulder from './prepared/shoulder-model.json' with {type:'json'};
 import arm from './prepared/arm-model.json' with {type:'json'};
 import forearm from './prepared/forearm-model.json' with {type:'json'};
 import hand from './prepared/hand-model.json' with {type:'json'};
+import knee from './prepared/knee-model.json' with {type:'json'};
 import hip from './prepared/hip-model.json' with {type:'json'};
 import body from './prepared/body-model.json' with {type:'json'};
 import {inspectGlb} from './anatomy-glb-inventory.ts';
 export type AtlasLayer='bone'|'muscle'|'surface';
 export type AtlasStructure={id:string;he:string;en:string;layer:AtlasLayer;side:string;regionId?:string;sources:{elementId:string;sha256:string;mappingRows:string[]}[]};
 export type AtlasAsset={glbSha256:string;licenseId:string;licenseEvidence:string;attribution:string;anatomicalReview:string;structures:AtlasStructure[];unavailable:string[]};
-export type AnatomyModel={id:string;he:string;en:string;regions:string[];src:string;maxBytes:number;asset:AtlasAsset;structures:AtlasStructure[];overview?:boolean};
+export type AnatomyModel={id:string;he:string;en:string;regions:string[];src:string;maxBytes:number;asset:AtlasAsset;structures:AtlasStructure[];overview?:boolean;availabilityNote?:{he:string;en:string};initialFocus?:{structure:string;scale:number}};
 export const anatomyModels:AnatomyModel[]=[
  {id:'body',he:'הגוף בתלת־ממד',en:'3D body navigator',regions:[],src:'/anatomy/body.glb',maxBytes:2*1024*1024,asset:body as AtlasAsset,structures:body.structures as AtlasStructure[],overview:true},
  {id:'shoulder',he:'כתף בתלת־ממד',en:'3D shoulder',regions:['shoulder'],src:'/anatomy/shoulder.glb',maxBytes:3*1024*1024,asset:shoulder as AtlasAsset,structures:shoulder.structures as AtlasStructure[]},
@@ -16,6 +17,7 @@ export const anatomyModels:AnatomyModel[]=[
  {id:'forearm',he:'אמה בתלת־ממד',en:'3D forearm',regions:['forearm'],src:'/anatomy/forearm.glb',maxBytes:3*1024*1024,asset:forearm as AtlasAsset,structures:forearm.structures as AtlasStructure[]},
  {id:'hand',he:'שורש כף היד וכף היד בתלת־ממד',en:'3D wrist & hand',regions:['wrist_hand'],src:'/anatomy/hand.glb',maxBytes:3*1024*1024,asset:hand as AtlasAsset,structures:hand.structures as AtlasStructure[]},
  {id:'hip',he:'מפרק הירך והאגן בתלת־ממד',en:'3D hip & pelvis',regions:['hip_glute'],src:'/anatomy/hip.glb',maxBytes:2*1024*1024,asset:hip as AtlasAsset,structures:hip.structures as AtlasStructure[]},
+ {id:'knee',he:'הברך והשרירים החוצים אותה בתלת־ממד',en:'3D knee & crossing muscles',regions:['knee'],src:'/anatomy/knee.glb',maxBytes:3*1024*1024,asset:knee as AtlasAsset,structures:knee.structures as AtlasStructure[],initialFocus:{structure:'patella',scale:4},availabilityNote:{he:'מניסקוסים, רצועות צולבות וצדיות, סחוס וקופסית אינם כלולים. עצם האגן והעקב מוצגות להקשר של חיבורי השרירים.',en:'Menisci, cruciate and collateral ligaments, cartilage and capsule are not included. The hip bone and calcaneus provide muscle-attachment context.'}},
 ];
 export const modelForRegion=(region:string)=>anatomyModels.find(m=>m.regions.includes(region));
 export async function validateAnatomyAsset(bytes:ArrayBuffer,model:AnatomyModel){
@@ -45,4 +47,10 @@ export function readCameraState(value:unknown):CameraState|null{
  const valid=(a:unknown):a is [number,number,number]=>Array.isArray(a)&&a.length===3&&a.every(n=>typeof n==='number'&&Number.isFinite(n)&&Math.abs(n)<20);
  if(!valid(v.position)||!valid(v.target)||Math.hypot(...v.position.map((n,i)=>n-v.target[i]))<.01)return null;
  return {position:[...v.position],target:[...v.target]};
+}
+
+/** Prefer the current mapped region; fallback only in explicit anatomy LAB mode. */
+export function modelRegionForMuscle(id:string,preferred:string,enabled:boolean):string{
+ if(!enabled||modelForRegion(preferred)?.structures.some(s=>s.id===id))return preferred;
+ return anatomyModels.find(m=>!m.overview&&m.structures.some(s=>s.id===id))?.regions[0]??preferred;
 }

@@ -931,8 +931,24 @@
       {
         "id": "paused-squat",
         "role": "primary"
+      },
+      {
+        "id": "leg-extension-isometric",
+        "role": "primary"
       }
-    ]
+    ],
+    "innervation": {
+      "he": "העצב הפמורלי",
+      "en": "Femoral nerve"
+    },
+    "innervationReference": "https://medicine.uams.edu/neuroscience/education/medical-school-courses/human-structure-module/anatomy-tables/muscle-tables/muscles-of-the-lower-limb/",
+    "contentReview": {
+      "status": "reference-checked; clinical review pending",
+      "checkedAt": "2026-10-22",
+      "sources": [
+        "https://medicine.uams.edu/neuroscience/education/medical-school-courses/human-structure-module/anatomy-tables/muscle-tables/muscles-of-the-lower-limb/"
+      ]
+    }
   },
   {
     "slug": "vastus-lateralis",
@@ -987,8 +1003,24 @@
       {
         "id": "paused-squat",
         "role": "primary"
+      },
+      {
+        "id": "leg-extension-isometric",
+        "role": "primary"
       }
-    ]
+    ],
+    "innervation": {
+      "he": "העצב הפמורלי",
+      "en": "Femoral nerve"
+    },
+    "innervationReference": "https://medicine.uams.edu/neuroscience/education/medical-school-courses/human-structure-module/anatomy-tables/muscle-tables/muscles-of-the-lower-limb/",
+    "contentReview": {
+      "status": "reference-checked; clinical review pending",
+      "checkedAt": "2026-10-22",
+      "sources": [
+        "https://medicine.uams.edu/neuroscience/education/medical-school-courses/human-structure-module/anatomy-tables/muscle-tables/muscles-of-the-lower-limb/"
+      ]
+    }
   },
   {
     "slug": "vastus-medialis",
@@ -1043,8 +1075,24 @@
       {
         "id": "paused-squat",
         "role": "primary"
+      },
+      {
+        "id": "leg-extension-isometric",
+        "role": "primary"
       }
-    ]
+    ],
+    "innervation": {
+      "he": "העצב הפמורלי",
+      "en": "Femoral nerve"
+    },
+    "innervationReference": "https://medicine.uams.edu/neuroscience/education/medical-school-courses/human-structure-module/anatomy-tables/muscle-tables/muscles-of-the-lower-limb/",
+    "contentReview": {
+      "status": "reference-checked; clinical review pending",
+      "checkedAt": "2026-10-22",
+      "sources": [
+        "https://medicine.uams.edu/neuroscience/education/medical-school-courses/human-structure-module/anatomy-tables/muscle-tables/muscles-of-the-lower-limb/"
+      ]
+    }
   },
   {
     "slug": "vastus-intermedius",
@@ -1099,8 +1147,24 @@
       {
         "id": "paused-squat",
         "role": "primary"
+      },
+      {
+        "id": "leg-extension-isometric",
+        "role": "primary"
       }
-    ]
+    ],
+    "innervation": {
+      "he": "העצב הפמורלי",
+      "en": "Femoral nerve"
+    },
+    "innervationReference": "https://medicine.uams.edu/neuroscience/education/medical-school-courses/human-structure-module/anatomy-tables/muscle-tables/muscles-of-the-lower-limb/",
+    "contentReview": {
+      "status": "reference-checked; clinical review pending",
+      "checkedAt": "2026-10-22",
+      "sources": [
+        "https://medicine.uams.edu/neuroscience/education/medical-school-courses/human-structure-module/anatomy-tables/muscle-tables/muscles-of-the-lower-limb/"
+      ]
+    }
   },
   {
     "slug": "biceps-femoris-long-head",
@@ -1152,7 +1216,19 @@
         "id": "deadlift",
         "role": "secondary"
       }
-    ]
+    ],
+    "innervation": {
+      "he": "החלק הטיביאלי של העצב הסיאטי",
+      "en": "Tibial division of the sciatic nerve"
+    },
+    "innervationReference": "https://medicine.uams.edu/neuroscience/education/medical-school-courses/human-structure-module/anatomy-tables/muscle-tables/muscles-of-the-lower-limb/",
+    "contentReview": {
+      "status": "reference-checked; clinical review pending",
+      "checkedAt": "2026-10-22",
+      "sources": [
+        "https://medicine.uams.edu/neuroscience/education/medical-school-courses/human-structure-module/anatomy-tables/muscle-tables/muscles-of-the-lower-limb/"
+      ]
+    }
   },
   {
     "slug": "biceps-femoris-short-head",
@@ -1192,7 +1268,19 @@
         "id": "lying-curl",
         "role": "primary"
       }
-    ]
+    ],
+    "innervation": {
+      "he": "החלק הפיבולרי המשותף של העצב הסיאטי",
+      "en": "Common fibular division of the sciatic nerve"
+    },
+    "innervationReference": "https://medicine.uams.edu/neuroscience/education/medical-school-courses/human-structure-module/anatomy-tables/muscle-tables/muscles-of-the-lower-limb/",
+    "contentReview": {
+      "status": "reference-checked; clinical review pending",
+      "checkedAt": "2026-10-22",
+      "sources": [
+        "https://medicine.uams.edu/neuroscience/education/medical-school-courses/human-structure-module/anatomy-tables/muscle-tables/muscles-of-the-lower-limb/"
+      ]
+    }
   },
   {
     "slug": "semitendinosus",
@@ -1244,7 +1332,19 @@
         "id": "deadlift",
         "role": "secondary"
       }
-    ]
+    ],
+    "innervation": {
+      "he": "החלק הטיביאלי של העצב הסיאטי",
+      "en": "Tibial division of the sciatic nerve"
+    },
+    "innervationReference": "https://medicine.uams.edu/neuroscience/education/medical-school-courses/human-structure-module/anatomy-tables/muscle-tables/muscles-of-the-lower-limb/",
+    "contentReview": {
+      "status": "reference-checked; clinical review pending",
+      "checkedAt": "2026-10-22",
+      "sources": [
+        "https://medicine.uams.edu/neuroscience/education/medical-school-courses/human-structure-module/anatomy-tables/muscle-tables/muscles-of-the-lower-limb/"
+      ]
+    }
   },
   {
     "slug": "semimembranosus",
@@ -1296,7 +1396,19 @@
         "id": "deadlift",
         "role": "secondary"
       }
-    ]
+    ],
+    "innervation": {
+      "he": "החלק הטיביאלי של העצב הסיאטי",
+      "en": "Tibial division of the sciatic nerve"
+    },
+    "innervationReference": "https://medicine.uams.edu/neuroscience/education/medical-school-courses/human-structure-module/anatomy-tables/muscle-tables/muscles-of-the-lower-limb/",
+    "contentReview": {
+      "status": "reference-checked; clinical review pending",
+      "checkedAt": "2026-10-22",
+      "sources": [
+        "https://medicine.uams.edu/neuroscience/education/medical-school-courses/human-structure-module/anatomy-tables/muscle-tables/muscles-of-the-lower-limb/"
+      ]
+    }
   },
   {
     "slug": "gluteus-maximus",
@@ -1608,7 +1720,19 @@
         "id": "seated-calf",
         "role": "secondary"
       }
-    ]
+    ],
+    "innervation": {
+      "he": "העצב הטיביאלי",
+      "en": "Tibial nerve"
+    },
+    "innervationReference": "https://medicine.uams.edu/neuroscience/education/medical-school-courses/human-structure-module/anatomy-tables/muscle-tables/muscles-of-the-lower-limb/",
+    "contentReview": {
+      "status": "reference-checked; clinical review pending",
+      "checkedAt": "2026-10-22",
+      "sources": [
+        "https://medicine.uams.edu/neuroscience/education/medical-school-courses/human-structure-module/anatomy-tables/muscle-tables/muscles-of-the-lower-limb/"
+      ]
+    }
   },
   {
     "slug": "soleus",
@@ -2993,6 +3117,49 @@
       "checkedAt": "2026-10-22",
       "sources": [
         "https://rad.uw.edu/muscle-atlas/psoas"
+      ]
+    }
+  },
+  {
+    "slug": "popliteus",
+    "region": "knee",
+    "view": "back",
+    "source": "https://rad.uw.edu/muscle-atlas/popliteus",
+    "links": [],
+    "location": {
+      "he": "החלק האחורי העמוק של הברך",
+      "en": "Deep posterior knee"
+    },
+    "origin": {
+      "he": "האזור הפופליטאלי בקונדיל החיצוני של עצם הירך",
+      "en": "Popliteal groove of the lateral femoral condyle"
+    },
+    "insertion": {
+      "he": "המשטח האחורי של השוקה, מעל הקו הסולאלי",
+      "en": "Posterior tibia above the soleal line"
+    },
+    "action": {
+      "he": "מסובב את השוקה פנימה כשהיא חופשית, ומסייע בהתחלת כפיפת הברך",
+      "en": "Medially rotates the free tibia and assists initiation of knee flexion"
+    },
+    "joints": {
+      "he": "מפרק הברך",
+      "en": "Knee joint"
+    },
+    "training": {
+      "he": "שריר עמוק התורם לשליטה סיבובית; אין תרגיל ייעודי מקושר בספרייה",
+      "en": "Deep muscle contributing to rotational control; no dedicated exercise link is defined"
+    },
+    "innervation": {
+      "he": "העצב הטיביאלי",
+      "en": "Tibial nerve"
+    },
+    "innervationReference": "https://rad.uw.edu/muscle-atlas/popliteus",
+    "contentReview": {
+      "status": "reference-checked; clinical review pending",
+      "checkedAt": "2026-10-22",
+      "sources": [
+        "https://rad.uw.edu/muscle-atlas/popliteus"
       ]
     }
   }

@@ -22,9 +22,18 @@ export async function createAnatomyCanvas(host:HTMLElement,onSelect:(id:string|n
  const scene=new THREE.Scene();scene.add(model);scene.add(new THREE.HemisphereLight(0xffffff,0x52617a,2.5));
  const light=new THREE.DirectionalLight(0xffffff,3);light.position.set(2,3,4);scene.add(light);
  const box=new THREE.Box3().setFromObject(model),center=box.getCenter(new THREE.Vector3()),size=box.getSize(new THREE.Vector3());
- model.position.sub(center);const radius=Math.max(size.x,size.y,size.z)*1.8;
- const camera=new THREE.PerspectiveCamera(35,1,.001,Math.max(10,radius*10));
- camera.position.set(0,0,radius);const controls=new OrbitControls(camera,renderer.domElement);
+ model.position.sub(center);model.updateMatrixWorld(true);const radius=Math.max(size.x,size.y,size.z)*1.8;
+ const aspect=Math.max(host.clientWidth,1)/Math.max(host.clientHeight,1);
+ const camera=new THREE.PerspectiveCamera(35,aspect,.001,Math.max(10,radius*10));
+ const presetTarget=new THREE.Vector3();let presetDistance=radius;
+ const framing=modelSpec.initialFocus,anchor=framing&&meshes.find(m=>m.name===framing.structure);
+ if(anchor&&framing&&Number.isFinite(framing.scale)&&framing.scale>0){
+  const bounds=new THREE.Box3().setFromObject(anchor);bounds.getCenter(presetTarget);
+  const halfFov=Math.atan(Math.tan(THREE.MathUtils.degToRad(camera.fov)/2)*Math.min(aspect,1));
+  presetDistance=bounds.getSize(new THREE.Vector3()).length()/2*framing.scale/Math.sin(halfFov);
+ }
+ camera.position.copy(presetTarget).add(new THREE.Vector3(0,0,presetDistance));const controls=new OrbitControls(camera,renderer.domElement);
+ controls.target.copy(presetTarget);controls.update();
  controls.enablePan=false;controls.enableDamping=false;controls.minDistance=radius*(modelSpec.overview ? .3 : .03);controls.maxDistance=radius*3;
  // OrbitControls owns pinch/wheel; one-finger vertical movement remains page scrolling.
  renderer.domElement.style.touchAction='pan-y';
@@ -51,7 +60,7 @@ export async function createAnatomyCanvas(host:HTMLElement,onSelect:(id:string|n
   const halfFov=Math.atan(Math.tan(THREE.MathUtils.degToRad(camera.fov)/2)*Math.min(camera.aspect,1));
   const distance=Math.max(extent.length()/2/Math.sin(halfFov)*1.1,controls.minDistance*1.1);
   controls.target.copy(target);camera.position.copy(target).addScaledVector(direction,distance);controls.update();render();remember();
- },setView(view:AnatomyCamera){const positions={front:[0,0,radius],back:[0,0,-radius],left:[radius,0,0],right:[-radius,0,0]};camera.position.fromArray(positions[view]);controls.target.set(0,0,0);controls.update();render();remember();},update(selected:string|null,visible:ReadonlySet<AtlasLayer>,isolated:string|null=null){
+ },setView(view:AnatomyCamera){const positions={front:[0,0,presetDistance],back:[0,0,-presetDistance],left:[presetDistance,0,0],right:[-presetDistance,0,0]};camera.position.fromArray(positions[view]).add(presetTarget);controls.target.copy(presetTarget);controls.update();render();remember();},update(selected:string|null,visible:ReadonlySet<AtlasLayer>,isolated:string|null=null){
   const shown=new Set(visibleStructureIds(modelSpec,visible,isolated));
   for(const mesh of meshes){const structure=modelSpec.structures.find(s=>s.id===mesh.name);if(!structure)continue;mesh.visible=shown.has(structure.id);
    const color=structure.id===selected?[.12,.65,1]:structure.layer==='bone'?[.88,.84,.71]:structure.layer==='surface'?[.32,.46,.59]:[.65,.18,.25];

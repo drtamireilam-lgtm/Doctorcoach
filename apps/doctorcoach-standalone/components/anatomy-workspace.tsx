@@ -14,7 +14,7 @@ import {translateText} from '../lib/localization';
 import {AnatomyBodyMap} from './anatomy-body-map';
 import {anatomyLabels,anatomyHash,readAnatomyHash,anatomyMatches,learningCard,regionNames,type AnatomySide,type AnatomyView} from '../lib/anatomy-learning';
 import {anatomy3dLabEnabled} from '../lib/anatomy-lab';
-import {modelForRegion} from '../lib/anatomy-models';
+import {modelForRegion,modelRegionForMuscle} from '../lib/anatomy-models';
 import {AnatomyAtlasViewer} from './anatomy-atlas-viewer';
 import {LearningMotion} from './anatomy-learning-motion';
 const muscleRegions=regions.map(r=>({id:r.id,muscleSlugs:regionMuscles(r.id).map(m=>m.slug)}));
@@ -23,7 +23,7 @@ export function AnatomyWorkspace({onExercise}:{onExercise:(id:string)=>void}){
  const [state,setState]=useState(()=>readAnatomyHash('',regions.map(r=>r.id),muscles.map(m=>m.slug)));
  const [overview,setOverview]=useState(true),[expandedCard,setExpandedCard]=useState(false);
  const [topic,setTopic]=useState('');const detail=useRef<HTMLElement>(null);const pendingFocus=useRef(false);
- useEffect(()=>{function sync(){setExpandedCard(false);const query=new URLSearchParams(window.location.hash.split('?')[1]??'');setOverview(query.get('atlas')==='body'||!query.has('region')&&!query.has('muscle'));const next=readAnatomyHash(window.location.hash,regions.map(r=>r.id),muscles.map(m=>m.slug));if(next.muscle)next.region=muscleRegionId(next.muscle,next.region,muscleRegions)??next.region;setState(next);setTopic('');}sync();window.addEventListener('hashchange',sync);window.addEventListener('popstate',sync);return()=>{window.removeEventListener('hashchange',sync);window.removeEventListener('popstate',sync);};},[]);
+ useEffect(()=>{function sync(){setExpandedCard(false);const query=new URLSearchParams(window.location.hash.split('?')[1]??'');setOverview(query.get('atlas')==='body'||!query.has('region')&&!query.has('muscle'));const next=readAnatomyHash(window.location.hash,regions.map(r=>r.id),muscles.map(m=>m.slug));if(next.muscle)next.region=modelRegionForMuscle(next.muscle,muscleRegionId(next.muscle,next.region,muscleRegions)??next.region,anatomy3dLabEnabled);setState(next);setTopic('');}sync();window.addEventListener('hashchange',sync);window.addEventListener('popstate',sync);return()=>{window.removeEventListener('hashchange',sync);window.removeEventListener('popstate',sync);};},[]);
  useEffect(()=>{if(pendingFocus.current&&state.muscle){detail.current?.focus({preventScroll:true});detail.current?.scrollIntoView({block:'start',behavior:'instant'});pendingFocus.current=false;}},[state.muscle]);
  const update=(patch:Partial<typeof state>,replace=false,keepBody=false)=>{const next={...state,...patch};window.history[replace?'replaceState':'pushState'](null,'',anatomyHash(next)+(keepBody?'&atlas=body':''));setState(next);};
  const region=state.region;const muscle=muscles.find(m=>m.slug===state.muscle)??null;
@@ -31,7 +31,7 @@ export function AnatomyWorkspace({onExercise}:{onExercise:(id:string)=>void}){
  const regionLabel=(id:string)=>language==='en'?regionNames[id]??id:regions.find(r=>r.id===id)?.label??id;
  function showBody(){window.history.pushState(null,'','#learn?atlas=body');setState(previous=>({...previous,muscle:undefined,search:''}));setExpandedCard(false);setTopic('');setOverview(true);}
  function openRegion(id:string,side?:AnatomySide){setOverview(false);setExpandedCard(false);update({region:id,muscle:undefined,search:'',...(side?{side}:{}),view:['upper_back_scapula','lower_back_spine','hip_glute'].includes(id)?'back':['chest','core_abdomen','groin'].includes(id)?'front':state.view});setTopic('');}
- function openMuscle(m:Muscle){setOverview(false);setExpandedCard(true);pendingFocus.current=true;const card=learningCard(m.slug);update({region:muscleRegionId(m.slug,region,muscleRegions)??region,muscle:m.slug,...(card?{view:card.view}:{})});setTopic('');}
+ function openMuscle(m:Muscle){setOverview(false);setExpandedCard(true);pendingFocus.current=true;const card=learningCard(m.slug);update({region:modelRegionForMuscle(m.slug,muscleRegionId(m.slug,region,muscleRegions)??region,anatomy3dLabEnabled),muscle:m.slug,...(card?{view:card.view}:{})});setTopic('');}
  const listed=state.search.trim()?muscles.filter(m=>anatomyMatches(m,state.search)):regionMuscles(region);
  const mappings=injuryMappings(region,muscle?.slug);const card=muscle?learningCard(muscle.slug):undefined;
  return <section className="anatomy-workspace care-stack anatomy-atlas" dir={language==='en'?'ltr':'rtl'} data-no-translate>
