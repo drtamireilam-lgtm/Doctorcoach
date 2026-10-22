@@ -4,6 +4,7 @@ import {readFileSync} from 'node:fs';
 import ts from 'typescript';
 import {learningCards,exerciseMuscles,anatomyHash,readAnatomyHash,anatomyMatches,anatomyLabels,regionNames} from '../lib/anatomy-learning.ts';
 import {exercises} from '../lib/content.ts';
+import {rehabExercises} from '../lib/rehab-exercises.ts';
 import {platform,doctor,client} from './platform-db.mjs';
 import {communityStore} from '../lib/community-store.ts';
 const json=name=>JSON.parse(readFileSync(new URL('../lib/prepared/'+name+'.json',import.meta.url)));
@@ -49,4 +50,27 @@ test('anatomy content and illustration reports keep stable page/language context
  for(const [i,category] of ['טעות בתוכן','תקלה בהמחשה'].entries())await store.saveFeedback(client,{id:crypto.randomUUID(),context:'anatomy:rectus-femoris | lang:en | side:left',category,content:'Synthetic anatomy feedback',section:'anatomy',bodyRegion:'thigh'});
  assert.equal((await store.feedback(client)).items.length,2);assert.equal((await store.feedback(other)).items.length,0);await assert.rejects(()=>store.feedback(client,true),e=>e.status===403);
  const reviewed=(await store.feedback(doctor,true,{section:'anatomy'})).items;assert.equal(reviewed.length,2);assert.ok(reviewed.every(x=>x.context.includes('lang:en')&&x.bodyRegion==='thigh'));
+});
+
+test('exercise catalog IDs and anatomy links remain unique and coverage does not regress',()=>{
+ const ids=exercises.map(e=>e.id);
+ assert.equal(new Set(ids).size,ids.length,'Duplicate canonical exercise IDs');
+ const linked=new Set(learningCards.flatMap(card=>card.links.map(link=>link.id)));
+ assert.ok(linked.size>=79,'Exercise-to-anatomy coverage dropped below integrated baseline');
+ for(const id of linked)assert.ok(ids.includes(id),'Orphan anatomy link: '+id);
+ const roles=new Set(['primary','secondary','stabilizer']);
+ for(const card of learningCards){
+  const byExercise=new Map();
+  for(const link of card.links){
+   assert.ok(roles.has(link.role),'Invalid muscle role: '+card.slug);
+   assert.ok(!byExercise.has(link.id),'Duplicate exercise-to-muscle link: '+card.slug+'/'+link.id);
+   byExercise.set(link.id,link.role);
+  }
+ }
+});
+
+test('rehabilitation anatomy coverage remains at integrated baseline',()=>{
+ const rehabIds=new Set(rehabExercises.map(e=>e.id));
+ const linkedRehab=new Set(learningCards.flatMap(card=>card.links.map(link=>link.id)).filter(id=>rehabIds.has(id)));
+ assert.ok(linkedRehab.size>=26,'Rehabilitation anatomy links regressed');
 });
