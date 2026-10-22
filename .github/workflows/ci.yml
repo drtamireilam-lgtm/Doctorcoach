@@ -56,6 +56,9 @@ jobs:
       - name: Anatomy viewer controls and bundled model smoke
         if: startsWith(github.ref, 'refs/heads/feature/anatomy-completion-')
         run: node scripts/anatomy/viewer-controls-smoke.mjs
+      - name: Full anatomy application browser smoke
+        if: startsWith(github.ref, 'refs/heads/feature/anatomy-completion-')
+        run: node scripts/anatomy/browser-smoke.mjs
       - name: Build standalone without deployment
         env:
           DC_ISOLATED_STAGING_BUILD: "true"
