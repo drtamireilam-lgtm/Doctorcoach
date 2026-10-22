@@ -48,6 +48,9 @@ try{
  assert.equal(await page.getByRole('combobox').locator('option[value="deltoid"]').count(),0);
  await page.reload();await page.locator('canvas').waitFor();
  assert.equal(await page.getByRole('combobox').locator('option[value="deltoid"]').count(),0);
+ // The developer preview's language is component state and resets to Hebrew on reload.
+ await page.getByRole('button',{name:'Switch language',exact:true}).click();
+ await page.locator('section[aria-label="3D shoulder"]').waitFor();
  await page.getByRole('button',{name:/Restore hidden structures/}).click();
  await page.getByRole('combobox').selectOption('deltoid');
  await page.getByRole('button',{name:'Isolate structure',exact:true}).click();
