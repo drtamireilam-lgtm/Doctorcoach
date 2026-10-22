@@ -9,7 +9,7 @@ test('hip navigator opens a licensed source-mapped right hip with selectable bon
  for(const s of model.structures){assert.equal(s.regionId,'hip_glute');assert.equal(s.side,'right');for(const source of s.sources){assert.ok(source.mappingRows.some(r=>r.split('\t')[1].includes('right')),s.id);assert.ok(!used.has(source.elementId));used.add(source.elementId);}
  const mesh=doc.meshes.find(m=>m.name===s.id),a=doc.accessors[mesh.primitives[0].attributes.POSITION];assert.ok((a.min[0]+a.max[0])/2<0,s.id+': geometry is on the wrong side');}
  assert.equal(model.asset.licenseId,'CC-BY-4.0');assert.equal(model.asset.anatomicalReview,'pending');
- assert.ok(model.asset.unavailable.includes('cartilage'));assert.equal(modelForRegion('ankle_foot'),undefined);
+ assert.ok(model.asset.unavailable.includes('cartilage'));assert.equal(modelForRegion('cervical_neck'),undefined);
 });
 test('all modeled hip muscles have bilingual referenced information and canonical exercise relationships',()=>{
  const model=modelForRegion('hip_glute');assert.ok(model,'hip model missing');

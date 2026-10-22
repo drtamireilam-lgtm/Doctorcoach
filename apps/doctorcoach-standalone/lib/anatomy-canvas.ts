@@ -32,7 +32,8 @@ export async function createAnatomyCanvas(host:HTMLElement,onSelect:(id:string|n
   const halfFov=Math.atan(Math.tan(THREE.MathUtils.degToRad(camera.fov)/2)*Math.min(aspect,1));
   presetDistance=bounds.getSize(new THREE.Vector3()).length()/2*framing.scale/Math.sin(halfFov);
  }
- camera.position.copy(presetTarget).add(new THREE.Vector3(0,0,presetDistance));const controls=new OrbitControls(camera,renderer.domElement);
+ const initialPositions={front:[0,0,presetDistance],back:[0,0,-presetDistance],left:[presetDistance,0,0],right:[-presetDistance,0,0]};
+ camera.position.fromArray(initialPositions[modelSpec.initialView??'front']).add(presetTarget);const controls=new OrbitControls(camera,renderer.domElement);
  controls.target.copy(presetTarget);controls.update();
  controls.enablePan=false;controls.enableDamping=false;controls.minDistance=radius*(modelSpec.overview ? .3 : .03);controls.maxDistance=radius*3;
  // OrbitControls owns pinch/wheel; one-finger vertical movement remains page scrolling.

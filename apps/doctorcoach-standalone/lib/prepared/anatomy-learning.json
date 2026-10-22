@@ -1772,7 +1772,19 @@
         "id": "standing-calf",
         "role": "primary"
       }
-    ]
+    ],
+    "innervation": {
+      "he": "העצב הטיביאלי",
+      "en": "Tibial nerve"
+    },
+    "innervationReference": "https://medicine.uams.edu/neuroscience/education/medical-school-courses/human-structure-module/anatomy-tables/muscle-tables/muscles-of-the-lower-limb/",
+    "contentReview": {
+      "status": "reference-checked; clinical review pending",
+      "checkedAt": "2026-10-22",
+      "sources": [
+        "https://medicine.uams.edu/neuroscience/education/medical-school-courses/human-structure-module/anatomy-tables/muscle-tables/muscles-of-the-lower-limb/"
+      ]
+    }
   },
   {
     "slug": "tibialis-anterior",
@@ -1803,7 +1815,28 @@
       "en": "Contributes to lifting the forefoot"
     },
     "source": "https://medicine.uams.edu/neuroscience/education/medical-school-courses/human-structure-module/anatomy-tables/muscle-tables/muscles-of-the-lower-limb/",
-    "links": []
+    "links": [
+      {
+        "id": "tibialis-raise",
+        "role": "primary"
+      },
+      {
+        "id": "ankle-inversion-band",
+        "role": "secondary"
+      }
+    ],
+    "innervation": {
+      "he": "העצב הפיבולרי העמוק",
+      "en": "Deep fibular nerve"
+    },
+    "innervationReference": "https://medicine.uams.edu/neuroscience/education/medical-school-courses/human-structure-module/anatomy-tables/muscle-tables/muscles-of-the-lower-limb/",
+    "contentReview": {
+      "status": "reference-checked; clinical review pending",
+      "checkedAt": "2026-10-22",
+      "sources": [
+        "https://medicine.uams.edu/neuroscience/education/medical-school-courses/human-structure-module/anatomy-tables/muscle-tables/muscles-of-the-lower-limb/"
+      ]
+    }
   },
   {
     "slug": "sternocleidomastoid",
@@ -3160,6 +3193,665 @@
       "checkedAt": "2026-10-22",
       "sources": [
         "https://rad.uw.edu/muscle-atlas/popliteus"
+      ]
+    }
+  },
+  {
+    "slug": "tibialis-posterior",
+    "region": "lower_leg",
+    "view": "back",
+    "source": "https://rad.uw.edu/muscle-atlas/tibialis-posterior",
+    "links": [
+      {
+        "id": "ankle-inversion-band",
+        "role": "primary"
+      }
+    ],
+    "location": {
+      "he": "המדור האחורי העמוק של השוק",
+      "en": "Deep posterior leg"
+    },
+    "origin": {
+      "he": "השוקה, השוקית והקרום הבין־גרמי מאחור",
+      "en": "Posterior tibia, fibula and interosseous membrane"
+    },
+    "insertion": {
+      "he": "בעיקר גבשושית עצם הסירה, עם שלוחות לעצמות היתד ולמסרקים",
+      "en": "Mainly navicular tuberosity, with cuneiform and metatarsal slips"
+    },
+    "action": {
+      "he": "אינוורסיה וכפיפה כפית; תורם לתמיכת הקשת",
+      "en": "Inversion and plantarflexion; contributes to arch support"
+    },
+    "innervation": {
+      "he": "העצב הטיביאלי",
+      "en": "Tibial nerve"
+    },
+    "training": {
+      "he": "משתתף בהנעת כף הרגל פנימה; אינו מבודד בתרגיל",
+      "en": "Contributes to resisted inward foot movement; the exercise does not isolate it"
+    },
+    "joints": {
+      "he": "קרסול ומפרקי כף הרגל",
+      "en": "Ankle and foot joints"
+    },
+    "innervationReference": "https://rad.uw.edu/muscle-atlas/tibialis-posterior",
+    "contentReview": {
+      "status": "reference-checked; clinical review pending",
+      "checkedAt": "2026-10-22",
+      "sources": [
+        "https://rad.uw.edu/muscle-atlas/tibialis-posterior"
+      ]
+    }
+  },
+  {
+    "slug": "fibularis-longus",
+    "region": "lower_leg",
+    "view": "front",
+    "source": "https://rad.uw.edu/muscle-atlas/peroneus-longus",
+    "links": [
+      {
+        "id": "ankle-eversion-band",
+        "role": "primary"
+      }
+    ],
+    "location": {
+      "he": "המדור הצדי של השוק",
+      "en": "Lateral leg compartment"
+    },
+    "origin": {
+      "he": "ראש השוקית והחלק המקורב של משטחה הצדי",
+      "en": "Fibular head and proximal lateral shaft"
+    },
+    "insertion": {
+      "he": "הצד הכפי של בסיס המסרק הראשון ועצם היתד המדיאלית",
+      "en": "Plantar first metatarsal base and medial cuneiform"
+    },
+    "action": {
+      "he": "איוורסיה וסיוע בכפיפה כפית",
+      "en": "Eversion and assistance with plantarflexion"
+    },
+    "innervation": {
+      "he": "העצב הפיבולרי השטחי",
+      "en": "Superficial fibular nerve"
+    },
+    "training": {
+      "he": "משתתף בהנעת כף הרגל החוצה כנגד התנגדות",
+      "en": "Contributes to resisted outward foot movement"
+    },
+    "joints": {
+      "he": "קרסול ומפרקי כף הרגל",
+      "en": "Ankle and foot joints"
+    },
+    "innervationReference": "https://rad.uw.edu/muscle-atlas/peroneus-longus",
+    "contentReview": {
+      "status": "reference-checked; clinical review pending",
+      "checkedAt": "2026-10-22",
+      "sources": [
+        "https://rad.uw.edu/muscle-atlas/peroneus-longus"
+      ]
+    }
+  },
+  {
+    "slug": "fibularis-brevis",
+    "region": "lower_leg",
+    "view": "front",
+    "source": "https://rad.uw.edu/muscle-atlas/peroneus-brevis",
+    "links": [
+      {
+        "id": "ankle-eversion-band",
+        "role": "primary"
+      }
+    ],
+    "location": {
+      "he": "המדור הצדי של השוק",
+      "en": "Lateral leg compartment"
+    },
+    "origin": {
+      "he": "שני השלישים המרוחקים של השוקית הצִדית",
+      "en": "Distal two-thirds of the lateral fibula"
+    },
+    "insertion": {
+      "he": "גבשושית בסיס המסרק החמישי",
+      "en": "Tuberosity of the fifth metatarsal base"
+    },
+    "action": {
+      "he": "איוורסיה וסיוע בכפיפה כפית",
+      "en": "Eversion and assistance with plantarflexion"
+    },
+    "innervation": {
+      "he": "העצב הפיבולרי השטחי",
+      "en": "Superficial fibular nerve"
+    },
+    "training": {
+      "he": "משתתף בהנעת כף הרגל החוצה כנגד התנגדות",
+      "en": "Contributes to resisted outward foot movement"
+    },
+    "joints": {
+      "he": "קרסול ומפרקי כף הרגל",
+      "en": "Ankle and foot joints"
+    },
+    "innervationReference": "https://rad.uw.edu/muscle-atlas/peroneus-brevis",
+    "contentReview": {
+      "status": "reference-checked; clinical review pending",
+      "checkedAt": "2026-10-22",
+      "sources": [
+        "https://rad.uw.edu/muscle-atlas/peroneus-brevis"
+      ]
+    }
+  },
+  {
+    "slug": "fibularis-tertius",
+    "region": "lower_leg",
+    "view": "front",
+    "source": "https://rad.uw.edu/muscle-atlas/peroneus-tertius",
+    "links": [
+      {
+        "id": "tibialis-raise",
+        "role": "secondary"
+      },
+      {
+        "id": "ankle-eversion-band",
+        "role": "secondary"
+      }
+    ],
+    "location": {
+      "he": "החלק המרוחק של קדמת השוק",
+      "en": "Distal anterior leg"
+    },
+    "origin": {
+      "he": "החלק המרוחק של השוקית הקדמית והרקמות הבין־שריריות",
+      "en": "Distal anterior fibula and intermuscular tissues"
+    },
+    "insertion": {
+      "he": "הצד הגבי של בסיס המסרק החמישי",
+      "en": "Dorsal fifth metatarsal base"
+    },
+    "action": {
+      "he": "כפיפה גבית ואיוורסיה",
+      "en": "Dorsiflexion and eversion"
+    },
+    "innervation": {
+      "he": "העצב הפיבולרי העמוק",
+      "en": "Deep fibular nerve"
+    },
+    "training": {
+      "he": "מסייע בהרמת קדמת כף הרגל ובתנועה החוצה",
+      "en": "Assists forefoot lifting and outward foot movement"
+    },
+    "joints": {
+      "he": "קרסול ומפרקי כף הרגל",
+      "en": "Ankle and foot joints"
+    },
+    "innervationReference": "https://rad.uw.edu/muscle-atlas/peroneus-tertius",
+    "contentReview": {
+      "status": "reference-checked; clinical review pending",
+      "checkedAt": "2026-10-22",
+      "sources": [
+        "https://rad.uw.edu/muscle-atlas/peroneus-tertius"
+      ]
+    }
+  },
+  {
+    "slug": "extensor-hallucis-longus",
+    "region": "lower_leg",
+    "view": "front",
+    "source": "https://rad.uw.edu/muscle-atlas/extensor-hallucis-longus",
+    "links": [
+      {
+        "id": "toe-yoga",
+        "role": "secondary"
+      },
+      {
+        "id": "tibialis-raise",
+        "role": "secondary"
+      }
+    ],
+    "location": {
+      "he": "המדור הקדמי של השוק, בין פושטי האצבעות לטיביאליס הקדמי",
+      "en": "Anterior leg between the other anterior-compartment muscles"
+    },
+    "origin": {
+      "he": "השוקית הקדמית והקרום הבין־גרמי",
+      "en": "Anterior fibula and interosseous membrane"
+    },
+    "insertion": {
+      "he": "הצד הגבי של בסיס הגליל המרוחק בבוהן",
+      "en": "Dorsal distal phalanx base of the great toe"
+    },
+    "action": {
+      "he": "יישור הבוהן וסיוע בכפיפה גבית",
+      "en": "Great-toe extension and assistance with dorsiflexion"
+    },
+    "innervation": {
+      "he": "העצב הפיבולרי העמוק",
+      "en": "Deep fibular nerve"
+    },
+    "training": {
+      "he": "משתתף בהרמת הבוהן ובהרמת קדמת כף הרגל",
+      "en": "Contributes to great-toe and forefoot lifting"
+    },
+    "joints": {
+      "he": "קרסול ומפרקי כף הרגל",
+      "en": "Ankle and foot joints"
+    },
+    "innervationReference": "https://rad.uw.edu/muscle-atlas/extensor-hallucis-longus",
+    "contentReview": {
+      "status": "reference-checked; clinical review pending",
+      "checkedAt": "2026-10-22",
+      "sources": [
+        "https://rad.uw.edu/muscle-atlas/extensor-hallucis-longus"
+      ]
+    }
+  },
+  {
+    "slug": "extensor-digitorum-longus",
+    "region": "lower_leg",
+    "view": "front",
+    "source": "https://rad.uw.edu/muscle-atlas/extensor-digitorum-longus",
+    "links": [
+      {
+        "id": "toe-yoga",
+        "role": "secondary"
+      },
+      {
+        "id": "tibialis-raise",
+        "role": "secondary"
+      }
+    ],
+    "location": {
+      "he": "המדור הקדמי־צדי של השוק",
+      "en": "Anterolateral leg"
+    },
+    "origin": {
+      "he": "הקונדיל הצדי של השוקה, השוקית הקדמית והקרום הבין־גרמי",
+      "en": "Lateral tibial condyle, anterior fibula and interosseous membrane"
+    },
+    "insertion": {
+      "he": "הגלילים האמצעיים והמרוחקים באצבעות 2–5 דרך מנגנון היישור",
+      "en": "Middle and distal phalanges of toes 2–5 through extensor expansions"
+    },
+    "action": {
+      "he": "יישור אצבעות 2–5 וסיוע בכפיפה גבית",
+      "en": "Extension of toes 2–5 and assistance with dorsiflexion"
+    },
+    "innervation": {
+      "he": "העצב הפיבולרי העמוק",
+      "en": "Deep fibular nerve"
+    },
+    "training": {
+      "he": "משתתף בהרמת האצבעות ובתנועת קדמת כף הרגל",
+      "en": "Contributes to toe and forefoot lifting"
+    },
+    "joints": {
+      "he": "קרסול ומפרקי כף הרגל",
+      "en": "Ankle and foot joints"
+    },
+    "innervationReference": "https://rad.uw.edu/muscle-atlas/extensor-digitorum-longus",
+    "contentReview": {
+      "status": "reference-checked; clinical review pending",
+      "checkedAt": "2026-10-22",
+      "sources": [
+        "https://rad.uw.edu/muscle-atlas/extensor-digitorum-longus"
+      ]
+    }
+  },
+  {
+    "slug": "plantaris",
+    "region": "lower_leg",
+    "view": "back",
+    "source": "https://rad.uw.edu/muscle-atlas/plantaris",
+    "links": [],
+    "location": {
+      "he": "השוק האחורית, שריר קטן עם גיד ארוך",
+      "en": "Posterior calf, a small muscle with a long tendon"
+    },
+    "origin": {
+      "he": "הרכס העל־קונדילרי הצדי של עצם הירך",
+      "en": "Lateral supracondylar line of the femur"
+    },
+    "insertion": {
+      "he": "המשטח האחורי של עצם העקב, סמוך לגיד אכילס",
+      "en": "Posterior calcaneus near the Achilles tendon"
+    },
+    "action": {
+      "he": "סיוע חלש בכפיפה כפית ובכפיפת הברך",
+      "en": "Weak assistance with plantarflexion and knee flexion"
+    },
+    "innervation": {
+      "he": "העצב הטיביאלי",
+      "en": "Tibial nerve"
+    },
+    "training": {
+      "he": "תרומה קטנה יחסית; אין קישור לתרגיל המבודד אותו",
+      "en": "Relatively small contribution; no isolating exercise link is defined"
+    },
+    "joints": {
+      "he": "קרסול וברך",
+      "en": "Ankle and knee"
+    },
+    "innervationReference": "https://rad.uw.edu/muscle-atlas/plantaris",
+    "contentReview": {
+      "status": "reference-checked; clinical review pending",
+      "checkedAt": "2026-10-22",
+      "sources": [
+        "https://rad.uw.edu/muscle-atlas/plantaris"
+      ]
+    }
+  },
+  {
+    "slug": "flexor-hallucis-longus",
+    "region": "lower_leg",
+    "view": "back",
+    "source": "https://rad.uw.edu/muscle-atlas/flexor-hallucis-longus",
+    "links": [],
+    "location": {
+      "he": "המדור האחורי העמוק של השוק",
+      "en": "Deep posterior leg"
+    },
+    "origin": {
+      "he": "השוקית האחורית המרוחקת והקרום הבין־גרמי",
+      "en": "Distal posterior fibula and interosseous membrane"
+    },
+    "insertion": {
+      "he": "הצד הכפי של בסיס הגליל המרוחק בבוהן",
+      "en": "Plantar distal phalanx base of the great toe"
+    },
+    "action": {
+      "he": "כפיפת הבוהן וסיוע בכפיפה כפית",
+      "en": "Great-toe flexion and assistance with plantarflexion"
+    },
+    "innervation": {
+      "he": "העצב הטיביאלי",
+      "en": "Tibial nerve"
+    },
+    "training": {
+      "he": "משתתף בכפיפת האצבעות; אין תרגיל ייעודי מקושר",
+      "en": "Contributes to toe flexion; no dedicated exercise link is defined"
+    },
+    "joints": {
+      "he": "קרסול ומפרקי כף הרגל",
+      "en": "Ankle and foot joints"
+    },
+    "innervationReference": "https://rad.uw.edu/muscle-atlas/flexor-hallucis-longus",
+    "contentReview": {
+      "status": "reference-checked; clinical review pending",
+      "checkedAt": "2026-10-22",
+      "sources": [
+        "https://rad.uw.edu/muscle-atlas/flexor-hallucis-longus"
+      ]
+    }
+  },
+  {
+    "slug": "flexor-digitorum-longus",
+    "region": "lower_leg",
+    "view": "back",
+    "source": "https://rad.uw.edu/muscle-atlas/flexor-digitorum-longus",
+    "links": [],
+    "location": {
+      "he": "המדור האחורי העמוק של השוק",
+      "en": "Deep posterior leg"
+    },
+    "origin": {
+      "he": "המשטח האחורי של השוקה, מתחת לקו הסולאלי",
+      "en": "Posterior tibia below the soleal line"
+    },
+    "insertion": {
+      "he": "הצד הכפי של בסיסי הגלילים המרוחקים באצבעות 2–5",
+      "en": "Plantar distal phalanx bases of toes 2–5"
+    },
+    "action": {
+      "he": "כפיפת אצבעות 2–5 וסיוע בכפיפה כפית",
+      "en": "Flexion of toes 2–5 and assistance with plantarflexion"
+    },
+    "innervation": {
+      "he": "העצב הטיביאלי",
+      "en": "Tibial nerve"
+    },
+    "training": {
+      "he": "משתתף בכפיפת האצבעות; אין תרגיל ייעודי מקושר",
+      "en": "Contributes to toe flexion; no dedicated exercise link is defined"
+    },
+    "joints": {
+      "he": "קרסול ומפרקי כף הרגל",
+      "en": "Ankle and foot joints"
+    },
+    "innervationReference": "https://rad.uw.edu/muscle-atlas/flexor-digitorum-longus",
+    "contentReview": {
+      "status": "reference-checked; clinical review pending",
+      "checkedAt": "2026-10-22",
+      "sources": [
+        "https://rad.uw.edu/muscle-atlas/flexor-digitorum-longus"
+      ]
+    }
+  },
+  {
+    "slug": "abductor-hallucis",
+    "region": "ankle_foot",
+    "view": "front",
+    "source": "https://medicine.uams.edu/neuroscience/education/medical-school-courses/human-structure-module/anatomy-tables/muscle-tables/muscles-of-the-lower-limb/",
+    "links": [
+      {
+        "id": "short-foot",
+        "role": "secondary"
+      }
+    ],
+    "location": {
+      "he": "השוליים המדיאליים של סוליית כף הרגל",
+      "en": "Medial border of the sole"
+    },
+    "origin": {
+      "he": "החלק המדיאלי של גבשושית עצם העקב",
+      "en": "Medial calcaneal tuberosity"
+    },
+    "insertion": {
+      "he": "הצד המדיאלי של בסיס הגליל המקורב בבוהן",
+      "en": "Medial proximal phalanx base of the great toe"
+    },
+    "action": {
+      "he": "הרחקת הבוהן וסיוע בכפיפת מפרק המסרק־גליל שלה",
+      "en": "Great-toe abduction and assistance with MTP flexion"
+    },
+    "innervation": {
+      "he": "העצב הפלנטרי המדיאלי",
+      "en": "Medial plantar nerve"
+    },
+    "training": {
+      "he": "משתתף בשליטה של שרירי כף הרגל; קיצור כף הרגל אינו מבודד אותו",
+      "en": "Contributes to intrinsic foot control; short-foot exercise does not isolate it"
+    },
+    "joints": {
+      "he": "מפרק המסרק־גליל של הבוהן",
+      "en": "Great-toe MTP joint"
+    },
+    "innervationReference": "https://medicine.uams.edu/neuroscience/education/medical-school-courses/human-structure-module/anatomy-tables/muscle-tables/muscles-of-the-lower-limb/",
+    "contentReview": {
+      "status": "reference-checked; clinical review pending",
+      "checkedAt": "2026-10-22",
+      "sources": [
+        "https://medicine.uams.edu/neuroscience/education/medical-school-courses/human-structure-module/anatomy-tables/muscle-tables/muscles-of-the-lower-limb/"
+      ]
+    }
+  },
+  {
+    "slug": "flexor-digitorum-brevis",
+    "region": "ankle_foot",
+    "view": "front",
+    "source": "https://medicine.uams.edu/neuroscience/education/medical-school-courses/human-structure-module/anatomy-tables/muscle-tables/muscles-of-the-lower-limb/",
+    "links": [],
+    "location": {
+      "he": "השכבה השטחית במרכז סוליית כף הרגל",
+      "en": "Superficial central sole"
+    },
+    "origin": {
+      "he": "עצם העקב והאפונאורוזה הפלנטרית",
+      "en": "Calcaneus and plantar aponeurosis"
+    },
+    "insertion": {
+      "he": "הגלילים האמצעיים באצבעות 2–5",
+      "en": "Middle phalanges of toes 2–5"
+    },
+    "action": {
+      "he": "כפיפת אצבעות 2–5",
+      "en": "Flexion of toes 2–5"
+    },
+    "innervation": {
+      "he": "העצב הפלנטרי המדיאלי",
+      "en": "Medial plantar nerve"
+    },
+    "training": {
+      "he": "כופף אצבעות מקומי; אין תרגיל ייעודי מקושר",
+      "en": "Intrinsic toe flexor; no dedicated exercise link is defined"
+    },
+    "joints": {
+      "he": "מפרקי האצבעות 2–5",
+      "en": "Joints of toes 2–5"
+    },
+    "innervationReference": "https://medicine.uams.edu/neuroscience/education/medical-school-courses/human-structure-module/anatomy-tables/muscle-tables/muscles-of-the-lower-limb/",
+    "contentReview": {
+      "status": "reference-checked; clinical review pending",
+      "checkedAt": "2026-10-22",
+      "sources": [
+        "https://medicine.uams.edu/neuroscience/education/medical-school-courses/human-structure-module/anatomy-tables/muscle-tables/muscles-of-the-lower-limb/"
+      ]
+    }
+  },
+  {
+    "slug": "extensor-hallucis-brevis",
+    "region": "ankle_foot",
+    "view": "front",
+    "source": "https://medicine.uams.edu/neuroscience/education/medical-school-courses/human-structure-module/anatomy-tables/muscle-tables/muscles-of-the-lower-limb/",
+    "links": [
+      {
+        "id": "toe-yoga",
+        "role": "secondary"
+      }
+    ],
+    "location": {
+      "he": "גב כף הרגל, בחלק המדיאלי של קבוצת הפושטים הקצרים",
+      "en": "Dorsal foot, medial part of the short extensor group"
+    },
+    "origin": {
+      "he": "המשטח העליון־צדי של עצם העקב",
+      "en": "Superolateral calcaneus"
+    },
+    "insertion": {
+      "he": "בסיס הגליל המקורב בבוהן",
+      "en": "Proximal phalanx base of the great toe"
+    },
+    "action": {
+      "he": "יישור הבוהן במפרק המסרק־גליל",
+      "en": "Great-toe MTP extension"
+    },
+    "innervation": {
+      "he": "העצב הפיבולרי העמוק",
+      "en": "Deep fibular nerve"
+    },
+    "training": {
+      "he": "מסייע בהרמת הבוהן; תרגיל השליטה אינו מבודד אותו",
+      "en": "Assists great-toe lifting; the control exercise does not isolate it"
+    },
+    "joints": {
+      "he": "מפרק המסרק־גליל של הבוהן",
+      "en": "Great-toe MTP joint"
+    },
+    "innervationReference": "https://medicine.uams.edu/neuroscience/education/medical-school-courses/human-structure-module/anatomy-tables/muscle-tables/muscles-of-the-lower-limb/",
+    "contentReview": {
+      "status": "reference-checked; clinical review pending",
+      "checkedAt": "2026-10-22",
+      "sources": [
+        "https://medicine.uams.edu/neuroscience/education/medical-school-courses/human-structure-module/anatomy-tables/muscle-tables/muscles-of-the-lower-limb/"
+      ]
+    }
+  },
+  {
+    "slug": "flexor-hallucis-brevis",
+    "region": "ankle_foot",
+    "view": "front",
+    "source": "https://medicine.uams.edu/neuroscience/education/medical-school-courses/human-structure-module/anatomy-tables/muscle-tables/muscles-of-the-lower-limb/",
+    "links": [
+      {
+        "id": "toe-yoga",
+        "role": "secondary"
+      }
+    ],
+    "location": {
+      "he": "השכבה העמוקה של אזור הבוהן בכף הרגל",
+      "en": "Deep plantar great-toe region"
+    },
+    "origin": {
+      "he": "עצם הקובייה ועצם היתד הלטרלית",
+      "en": "Cuboid and lateral cuneiform"
+    },
+    "insertion": {
+      "he": "שני צדי בסיס הגליל המקורב בבוהן דרך מנגנון הססמואידים",
+      "en": "Both sides of the great-toe proximal phalanx base via the sesamoid apparatus"
+    },
+    "action": {
+      "he": "כפיפת הבוהן במפרק המסרק־גליל",
+      "en": "Great-toe MTP flexion"
+    },
+    "innervation": {
+      "he": "בעיקר העצב הפלנטרי המדיאלי; תיתכן אספקה לטרלית לראש הלטרלי",
+      "en": "Mainly medial plantar nerve; the lateral head may receive lateral plantar supply"
+    },
+    "training": {
+      "he": "משתתף בשליטה בבוהן; התרגיל אינו מבודד את השריר",
+      "en": "Contributes to great-toe control; the exercise does not isolate it"
+    },
+    "joints": {
+      "he": "מפרק המסרק־גליל של הבוהן",
+      "en": "Great-toe MTP joint"
+    },
+    "innervationReference": "https://medicine.uams.edu/neuroscience/education/medical-school-courses/human-structure-module/anatomy-tables/muscle-tables/muscles-of-the-lower-limb/",
+    "contentReview": {
+      "status": "reference-checked; clinical review pending",
+      "checkedAt": "2026-10-22",
+      "sources": [
+        "https://medicine.uams.edu/neuroscience/education/medical-school-courses/human-structure-module/anatomy-tables/muscle-tables/muscles-of-the-lower-limb/"
+      ]
+    }
+  },
+  {
+    "slug": "adductor-hallucis",
+    "region": "ankle_foot",
+    "view": "front",
+    "source": "https://medicine.uams.edu/neuroscience/education/medical-school-courses/human-structure-module/anatomy-tables/muscle-tables/muscles-of-the-lower-limb/",
+    "links": [],
+    "location": {
+      "he": "השכבה העמוקה של קדמת סוליית כף הרגל",
+      "en": "Deep plantar forefoot"
+    },
+    "origin": {
+      "he": "ראש אלכסוני: בסיסי מסרקים 2–4; ראש רוחבי: אזור ראשי מסרקים 3–5",
+      "en": "Oblique head: metatarsal bases 2–4; transverse head: metatarsal heads 3–5"
+    },
+    "insertion": {
+      "he": "הצד הלטרלי של בסיס הגליל המקורב בבוהן",
+      "en": "Lateral proximal phalanx base of the great toe"
+    },
+    "action": {
+      "he": "קירוב הבוהן אל ציר כף הרגל",
+      "en": "Adduction of the great toe toward the foot axis"
+    },
+    "innervation": {
+      "he": "הענף העמוק של העצב הפלנטרי הלטרלי",
+      "en": "Deep branch of lateral plantar nerve"
+    },
+    "training": {
+      "he": "תורם לשליטת הבוהן; אין תרגיל ייעודי מקושר",
+      "en": "Contributes to great-toe control; no dedicated exercise link is defined"
+    },
+    "joints": {
+      "he": "מפרק המסרק־גליל של הבוהן",
+      "en": "Great-toe MTP joint"
+    },
+    "innervationReference": "https://medicine.uams.edu/neuroscience/education/medical-school-courses/human-structure-module/anatomy-tables/muscle-tables/muscles-of-the-lower-limb/",
+    "contentReview": {
+      "status": "reference-checked; clinical review pending",
+      "checkedAt": "2026-10-22",
+      "sources": [
+        "https://medicine.uams.edu/neuroscience/education/medical-school-courses/human-structure-module/anatomy-tables/muscle-tables/muscles-of-the-lower-limb/"
       ]
     }
   }

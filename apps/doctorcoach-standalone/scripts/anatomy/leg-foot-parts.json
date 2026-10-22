@@ -1,0 +1,711 @@
+{
+  "lowerleg": [
+    [
+      "femur",
+      "Femur — attachment context",
+      "עצם הירך — הקשר לחיבורי השרירים",
+      "bone",
+      [
+        "FJ3365"
+      ]
+    ],
+    [
+      "tibia",
+      "Tibia",
+      "עצם השוקה",
+      "bone",
+      [
+        "FJ3387"
+      ]
+    ],
+    [
+      "fibula",
+      "Fibula",
+      "עצם השוקית",
+      "bone",
+      [
+        "FJ3366"
+      ]
+    ],
+    [
+      "talus",
+      "Talus",
+      "עצם הערקום",
+      "bone",
+      [
+        "FJ3385"
+      ]
+    ],
+    [
+      "calcaneus",
+      "Calcaneus",
+      "עצם העקב",
+      "bone",
+      [
+        "FJ3360"
+      ]
+    ],
+    [
+      "navicular",
+      "Navicular",
+      "עצם הסירה בכף הרגל",
+      "bone",
+      [
+        "FJ3308"
+      ]
+    ],
+    [
+      "cuboid",
+      "Cuboid",
+      "עצם הקובייה",
+      "bone",
+      [
+        "FJ3364"
+      ]
+    ],
+    [
+      "medial-cuneiform",
+      "Medial cuneiform",
+      "עצם היתד המדיאלית",
+      "bone",
+      [
+        "FJ3377"
+      ]
+    ],
+    [
+      "intermediate-cuneiform",
+      "Intermediate cuneiform",
+      "עצם היתד האמצעית",
+      "bone",
+      [
+        "FJ3370"
+      ]
+    ],
+    [
+      "lateral-cuneiform",
+      "Lateral cuneiform",
+      "עצם היתד הלטרלית",
+      "bone",
+      [
+        "FJ3373"
+      ]
+    ],
+    [
+      "metatarsal-1",
+      "Metatarsal 1",
+      "עצם מסרק 1",
+      "bone",
+      [
+        "FJ3351"
+      ]
+    ],
+    [
+      "metatarsal-2",
+      "Metatarsal 2",
+      "עצם מסרק 2",
+      "bone",
+      [
+        "FJ3353"
+      ]
+    ],
+    [
+      "metatarsal-3",
+      "Metatarsal 3",
+      "עצם מסרק 3",
+      "bone",
+      [
+        "FJ3355"
+      ]
+    ],
+    [
+      "metatarsal-4",
+      "Metatarsal 4",
+      "עצם מסרק 4",
+      "bone",
+      [
+        "FJ3357"
+      ]
+    ],
+    [
+      "metatarsal-5",
+      "Metatarsal 5",
+      "עצם מסרק 5",
+      "bone",
+      [
+        "FJ3359"
+      ]
+    ],
+    [
+      "proximal-phalanx-1",
+      "Proximal phalanx of toe 1",
+      "גליל מקורב באצבע 1",
+      "bone",
+      [
+        "FJ3310"
+      ]
+    ],
+    [
+      "proximal-phalanx-2",
+      "Proximal phalanx of toe 2",
+      "גליל מקורב באצבע 2",
+      "bone",
+      [
+        "FJ3319"
+      ]
+    ],
+    [
+      "proximal-phalanx-3",
+      "Proximal phalanx of toe 3",
+      "גליל מקורב באצבע 3",
+      "bone",
+      [
+        "FJ3320"
+      ]
+    ],
+    [
+      "proximal-phalanx-4",
+      "Proximal phalanx of toe 4",
+      "גליל מקורב באצבע 4",
+      "bone",
+      [
+        "FJ3321"
+      ]
+    ],
+    [
+      "proximal-phalanx-5",
+      "Proximal phalanx of toe 5",
+      "גליל מקורב באצבע 5",
+      "bone",
+      [
+        "FJ3324"
+      ]
+    ],
+    [
+      "middle-phalanx-2",
+      "Middle phalanx of toe 2",
+      "גליל אמצעי באצבע 2",
+      "bone",
+      [
+        "FJ3300"
+      ]
+    ],
+    [
+      "middle-phalanx-3",
+      "Middle phalanx of toe 3",
+      "גליל אמצעי באצבע 3",
+      "bone",
+      [
+        "FJ3301"
+      ]
+    ],
+    [
+      "middle-phalanx-4",
+      "Middle phalanx of toe 4",
+      "גליל אמצעי באצבע 4",
+      "bone",
+      [
+        "FJ3302"
+      ]
+    ],
+    [
+      "middle-phalanx-5",
+      "Middle phalanx of toe 5",
+      "גליל אמצעי באצבע 5",
+      "bone",
+      [
+        "FJ3305"
+      ]
+    ],
+    [
+      "distal-phalanx-1",
+      "Distal phalanx of toe 1",
+      "גליל מרוחק באצבע 1",
+      "bone",
+      [
+        "FJ3192"
+      ]
+    ],
+    [
+      "distal-phalanx-2",
+      "Distal phalanx of toe 2",
+      "גליל מרוחק באצבע 2",
+      "bone",
+      [
+        "FJ3189"
+      ]
+    ],
+    [
+      "distal-phalanx-3",
+      "Distal phalanx of toe 3",
+      "גליל מרוחק באצבע 3",
+      "bone",
+      [
+        "FJ3190"
+      ]
+    ],
+    [
+      "distal-phalanx-4",
+      "Distal phalanx of toe 4",
+      "גליל מרוחק באצבע 4",
+      "bone",
+      [
+        "FJ3191"
+      ]
+    ],
+    [
+      "distal-phalanx-5",
+      "Distal phalanx of toe 5",
+      "גליל מרוחק באצבע 5",
+      "bone",
+      [
+        "FJ3195"
+      ]
+    ],
+    [
+      "tibialis-anterior",
+      "Tibialis Anterior",
+      "טיביאליס אנטריור",
+      "muscle",
+      [
+        "FJ1439"
+      ]
+    ],
+    [
+      "tibialis-posterior",
+      "Tibialis Posterior",
+      "טיביאליס פוסטריור",
+      "muscle",
+      [
+        "FJ1440"
+      ]
+    ],
+    [
+      "extensor-hallucis-longus",
+      "Extensor Hallucis Longus",
+      "אקסטנסור הלוסיס לונגוס",
+      "muscle",
+      [
+        "FJ1408"
+      ]
+    ],
+    [
+      "extensor-digitorum-longus",
+      "Extensor Digitorum Longus",
+      "אקסטנסור דיגיטורום לונגוס",
+      "muscle",
+      [
+        "FJ1406"
+      ]
+    ],
+    [
+      "fibularis-tertius",
+      "Fibularis Tertius",
+      "פיבולריס טרציוס",
+      "muscle",
+      [
+        "FJ1411"
+      ]
+    ],
+    [
+      "fibularis-longus",
+      "Fibularis Longus",
+      "פיבולריס לונגוס",
+      "muscle",
+      [
+        "FJ1410"
+      ]
+    ],
+    [
+      "fibularis-brevis",
+      "Fibularis Brevis",
+      "פיבולריס ברביס",
+      "muscle",
+      [
+        "FJ1409"
+      ]
+    ],
+    [
+      "gastrocnemius",
+      "Gastrocnemius",
+      "גסטרוקנמיוס",
+      "muscle",
+      [
+        "FJ1397",
+        "FJ1394"
+      ]
+    ],
+    [
+      "soleus",
+      "Soleus",
+      "סולאוס",
+      "muscle",
+      [
+        "FJ1437"
+      ]
+    ],
+    [
+      "plantaris",
+      "Plantaris",
+      "פלנטריס",
+      "muscle",
+      [
+        "FJ1429"
+      ]
+    ],
+    [
+      "flexor-hallucis-longus",
+      "Flexor Hallucis Longus",
+      "פלקסור הלוסיס לונגוס",
+      "muscle",
+      [
+        "FJ1415"
+      ]
+    ],
+    [
+      "flexor-digitorum-longus",
+      "Flexor Digitorum Longus",
+      "פלקסור דיגיטורום לונגוס",
+      "muscle",
+      [
+        "FJ1414"
+      ]
+    ]
+  ],
+  "foot": [
+    [
+      "tibia",
+      "Tibia",
+      "עצם השוקה",
+      "bone",
+      [
+        "FJ3387"
+      ]
+    ],
+    [
+      "fibula",
+      "Fibula",
+      "עצם השוקית",
+      "bone",
+      [
+        "FJ3366"
+      ]
+    ],
+    [
+      "talus",
+      "Talus",
+      "עצם הערקום",
+      "bone",
+      [
+        "FJ3385"
+      ]
+    ],
+    [
+      "calcaneus",
+      "Calcaneus",
+      "עצם העקב",
+      "bone",
+      [
+        "FJ3360"
+      ]
+    ],
+    [
+      "navicular",
+      "Navicular",
+      "עצם הסירה בכף הרגל",
+      "bone",
+      [
+        "FJ3308"
+      ]
+    ],
+    [
+      "cuboid",
+      "Cuboid",
+      "עצם הקובייה",
+      "bone",
+      [
+        "FJ3364"
+      ]
+    ],
+    [
+      "medial-cuneiform",
+      "Medial cuneiform",
+      "עצם היתד המדיאלית",
+      "bone",
+      [
+        "FJ3377"
+      ]
+    ],
+    [
+      "intermediate-cuneiform",
+      "Intermediate cuneiform",
+      "עצם היתד האמצעית",
+      "bone",
+      [
+        "FJ3370"
+      ]
+    ],
+    [
+      "lateral-cuneiform",
+      "Lateral cuneiform",
+      "עצם היתד הלטרלית",
+      "bone",
+      [
+        "FJ3373"
+      ]
+    ],
+    [
+      "metatarsal-1",
+      "Metatarsal 1",
+      "עצם מסרק 1",
+      "bone",
+      [
+        "FJ3351"
+      ]
+    ],
+    [
+      "metatarsal-2",
+      "Metatarsal 2",
+      "עצם מסרק 2",
+      "bone",
+      [
+        "FJ3353"
+      ]
+    ],
+    [
+      "metatarsal-3",
+      "Metatarsal 3",
+      "עצם מסרק 3",
+      "bone",
+      [
+        "FJ3355"
+      ]
+    ],
+    [
+      "metatarsal-4",
+      "Metatarsal 4",
+      "עצם מסרק 4",
+      "bone",
+      [
+        "FJ3357"
+      ]
+    ],
+    [
+      "metatarsal-5",
+      "Metatarsal 5",
+      "עצם מסרק 5",
+      "bone",
+      [
+        "FJ3359"
+      ]
+    ],
+    [
+      "proximal-phalanx-1",
+      "Proximal phalanx of toe 1",
+      "גליל מקורב באצבע 1",
+      "bone",
+      [
+        "FJ3310"
+      ]
+    ],
+    [
+      "proximal-phalanx-2",
+      "Proximal phalanx of toe 2",
+      "גליל מקורב באצבע 2",
+      "bone",
+      [
+        "FJ3319"
+      ]
+    ],
+    [
+      "proximal-phalanx-3",
+      "Proximal phalanx of toe 3",
+      "גליל מקורב באצבע 3",
+      "bone",
+      [
+        "FJ3320"
+      ]
+    ],
+    [
+      "proximal-phalanx-4",
+      "Proximal phalanx of toe 4",
+      "גליל מקורב באצבע 4",
+      "bone",
+      [
+        "FJ3321"
+      ]
+    ],
+    [
+      "proximal-phalanx-5",
+      "Proximal phalanx of toe 5",
+      "גליל מקורב באצבע 5",
+      "bone",
+      [
+        "FJ3324"
+      ]
+    ],
+    [
+      "middle-phalanx-2",
+      "Middle phalanx of toe 2",
+      "גליל אמצעי באצבע 2",
+      "bone",
+      [
+        "FJ3300"
+      ]
+    ],
+    [
+      "middle-phalanx-3",
+      "Middle phalanx of toe 3",
+      "גליל אמצעי באצבע 3",
+      "bone",
+      [
+        "FJ3301"
+      ]
+    ],
+    [
+      "middle-phalanx-4",
+      "Middle phalanx of toe 4",
+      "גליל אמצעי באצבע 4",
+      "bone",
+      [
+        "FJ3302"
+      ]
+    ],
+    [
+      "middle-phalanx-5",
+      "Middle phalanx of toe 5",
+      "גליל אמצעי באצבע 5",
+      "bone",
+      [
+        "FJ3305"
+      ]
+    ],
+    [
+      "distal-phalanx-1",
+      "Distal phalanx of toe 1",
+      "גליל מרוחק באצבע 1",
+      "bone",
+      [
+        "FJ3192"
+      ]
+    ],
+    [
+      "distal-phalanx-2",
+      "Distal phalanx of toe 2",
+      "גליל מרוחק באצבע 2",
+      "bone",
+      [
+        "FJ3189"
+      ]
+    ],
+    [
+      "distal-phalanx-3",
+      "Distal phalanx of toe 3",
+      "גליל מרוחק באצבע 3",
+      "bone",
+      [
+        "FJ3190"
+      ]
+    ],
+    [
+      "distal-phalanx-4",
+      "Distal phalanx of toe 4",
+      "גליל מרוחק באצבע 4",
+      "bone",
+      [
+        "FJ3191"
+      ]
+    ],
+    [
+      "distal-phalanx-5",
+      "Distal phalanx of toe 5",
+      "גליל מרוחק באצבע 5",
+      "bone",
+      [
+        "FJ3195"
+      ]
+    ],
+    [
+      "tibialis-anterior",
+      "Tibialis Anterior",
+      "טיביאליס אנטריור",
+      "muscle",
+      [
+        "FJ1439"
+      ]
+    ],
+    [
+      "tibialis-posterior",
+      "Tibialis Posterior",
+      "טיביאליס פוסטריור",
+      "muscle",
+      [
+        "FJ1440"
+      ]
+    ],
+    [
+      "fibularis-longus",
+      "Fibularis Longus",
+      "פיבולריס לונגוס",
+      "muscle",
+      [
+        "FJ1410"
+      ]
+    ],
+    [
+      "fibularis-brevis",
+      "Fibularis Brevis",
+      "פיבולריס ברביס",
+      "muscle",
+      [
+        "FJ1409"
+      ]
+    ],
+    [
+      "abductor-hallucis",
+      "Abductor Hallucis",
+      "אבדקטור הלוסיס",
+      "muscle",
+      [
+        "FJ1400"
+      ]
+    ],
+    [
+      "flexor-digitorum-brevis",
+      "Flexor Digitorum Brevis",
+      "פלקסור דיגיטורום ברביס",
+      "muscle",
+      [
+        "FJ1413"
+      ]
+    ],
+    [
+      "extensor-hallucis-brevis",
+      "Extensor Hallucis Brevis",
+      "אקסטנסור הלוסיס ברביס",
+      "muscle",
+      [
+        "FJ1407"
+      ]
+    ],
+    [
+      "flexor-hallucis-brevis",
+      "Flexor Hallucis Brevis",
+      "פלקסור הלוסיס ברביס",
+      "muscle",
+      [
+        "FJ1396",
+        "FJ1393"
+      ]
+    ],
+    [
+      "adductor-hallucis",
+      "Adductor Hallucis",
+      "אדקטור הלוסיס",
+      "muscle",
+      [
+        "FJ1398",
+        "FJ1445"
+      ]
+    ]
+  ]
+}

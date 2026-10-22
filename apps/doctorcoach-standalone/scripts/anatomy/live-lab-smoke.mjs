@@ -12,7 +12,7 @@ const errors=[],checks=[];let page;
 try{
  const context=await browser.newContext({viewport:{width:390,height:844},isMobile:true,hasTouch:true});page=await context.newPage();page.setDefaultTimeout(60000);page.setDefaultNavigationTimeout(90000);
  page.on('pageerror',e=>errors.push(e.message));
- for(const name of ['body','arm','forearm','hand','hip','knee']){
+ for(const name of ['body','arm','forearm','hand','hip','knee','lowerleg','foot']){
   const manifest=JSON.parse(await readFile(new URL('../../lib/prepared/'+name+'-model.json',import.meta.url),'utf8'));
   const response=await context.request.get(origin+'/anatomy/'+name+'.glb');assert.equal(response.status(),200);
   assert.equal(createHash('sha256').update(await response.body()).digest('hex'),manifest.glbSha256);checks.push(name+' live GLB matches reviewed asset checksum');
@@ -41,6 +41,13 @@ try{
  await page.screenshot({path:'/tmp/dc-knee-live-initial.png',fullPage:true});await knee.locator('.atlas-exercises button').first().click();await page.locator('.atlas-exercise-links a[href*="region=knee"][href*="muscle=rectus-femoris"]').click();await knee.locator('canvas').waitFor();assert.equal(await knee.getByRole('combobox').inputValue(),'rectus-femoris');checks.push('live knee joint framing and canonical leg-extension reverse link');
  await page.goto(origin+'/?lang=he#learn?region=knee&muscle=vastus-medialis',{waitUntil:'domcontentloaded'});
  await knee.locator('canvas').waitFor();assert.equal(await knee.getAttribute('dir'),'rtl');assert.equal(await knee.getByRole('combobox').inputValue(),'vastus-medialis');checks.push('live knee Hebrew RTL and quadriceps selection');
+ await page.goto(origin+'/?lang=en#learn?region=lower_leg&muscle=soleus',{waitUntil:'domcontentloaded'});
+ const calf=page.locator('[data-model-id="lowerleg"]');await calf.locator('canvas').waitFor();assert.equal(await calf.getByRole('combobox').locator('option').count(),42);await calf.locator('.atlas-exercises button').first().click();await page.locator('.atlas-exercise-links a[href*="muscle=soleus"]').waitFor();await page.goBack();await calf.locator('canvas').waitFor();assert.equal(await calf.getByRole('combobox').inputValue(),'soleus');checks.push('live calf and seated-calf exercise return');
+ await page.goto(origin+'/?lang=en#learn?region=ankle_foot&muscle=abductor-hallucis',{waitUntil:'domcontentloaded'});
+ const foot=page.locator('[data-model-id="foot"]');await foot.locator('canvas').waitFor();assert.equal(await foot.getByRole('combobox').locator('option').count(),38);await foot.getByRole('button',{name:'Reset',exact:true}).click();const fc=await page.evaluate(()=>JSON.parse(sessionStorage.getItem('dc-foot-view')).camera);assert.ok(fc.position[0]-fc.target[0]>.1);
+ await page.screenshot({path:'/tmp/dc-foot-live-initial.png',fullPage:true});await foot.getByRole('combobox').selectOption('abductor-hallucis');await foot.locator('.atlas-exercises button').first().click();await page.locator('.atlas-exercise-links a[href*="region=ankle_foot"][href*="muscle=abductor-hallucis"]').click();await foot.locator('canvas').waitFor();assert.equal(await foot.getByRole('combobox').inputValue(),'abductor-hallucis');checks.push('live foot default medial framing and short-foot reverse link');
+ await page.goto(origin+'/?lang=he#learn?region=ankle_foot&muscle=flexor-hallucis-brevis',{waitUntil:'domcontentloaded'});
+ await foot.locator('canvas').waitFor();assert.equal(await foot.getAttribute('dir'),'rtl');assert.equal(await foot.getByRole('combobox').inputValue(),'flexor-hallucis-brevis');checks.push('live foot Hebrew content and two-head muscle selection');
  assert.deepEqual(errors,[]);checks.push('no uncaught errors in live acceptance flow');
  const dir='/tmp/dc-anatomy-live-evidence';await mkdir(dir,{recursive:true});await page.screenshot({path:dir+'/arm-mobile-lab.png',fullPage:true});
  const result={origin,checkedAt:new Date().toISOString(),checks,errors};await writeFile(dir+'/live.json',JSON.stringify(result,null,2));console.log(JSON.stringify(result,null,2));
