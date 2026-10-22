@@ -1,10 +1,13 @@
 /** Read-only acceptance of the fixed isolated LAB; never accepts a Production target. */
 import {chromium} from '@playwright/test';
-import {createHash} from 'node:crypto';
+import {createHash,X509Certificate} from 'node:crypto';
 import {readFile,mkdir,writeFile} from 'node:fs/promises';
 import assert from 'node:assert/strict';
 const origin='https://doctorcoach-isolated-staging.dr-tamireilam.workers.dev';
-const browser=await chromium.launch({executablePath:process.env.ANATOMY_CHROMIUM||undefined,headless:true,...(process.env.HTTPS_PROXY?{proxy:{server:process.env.HTTPS_PROXY}}:{}),args:['--no-sandbox','--enable-unsafe-swiftshader','--use-gl=angle','--use-angle=swiftshader','--ignore-gpu-blocklist']});
+// Bundled Chromium has its own trust store. Pin only the CA already trusted by this host's Node/curl proxy.
+const proxyCa=process.env.HTTPS_PROXY&&process.env.NODE_EXTRA_CA_CERTS;
+const proxySpki=proxyCa?createHash('sha256').update(new X509Certificate(await readFile(proxyCa)).publicKey.export({type:'spki',format:'der'})).digest('base64'):null;
+const browser=await chromium.launch({executablePath:process.env.ANATOMY_CHROMIUM||undefined,headless:true,...(process.env.HTTPS_PROXY?{proxy:{server:process.env.HTTPS_PROXY}}:{}),args:[...(proxySpki?['--ignore-certificate-errors-spki-list='+proxySpki]:[]),'--no-sandbox','--enable-unsafe-swiftshader','--use-gl=angle','--use-angle=swiftshader','--ignore-gpu-blocklist']});
 const errors=[],checks=[];let page;
 try{
  const context=await browser.newContext({viewport:{width:390,height:844},isMobile:true,hasTouch:true});page=await context.newPage();page.setDefaultTimeout(60000);page.setDefaultNavigationTimeout(90000);
