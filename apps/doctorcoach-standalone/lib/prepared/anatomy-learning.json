@@ -315,8 +315,8 @@
       "en": "Bends the elbow and turns the palm upward"
     },
     "joints": {
-      "he": "מרפק והאמה",
-      "en": "Elbow and forearm"
+      "he": "מרפק, המפרקים הרדיו־אולנריים וכתף",
+      "en": "Elbow, radioulnar joints and shoulder"
     },
     "source": "https://medicine.uams.edu/neuroscience/education/medical-school-courses/human-structure-module/anatomy-tables/muscle-tables/muscles-of-the-upper-limb/",
     "region": "elbow",
@@ -342,7 +342,12 @@
         "id": "cable-row",
         "role": "secondary"
       }
-    ]
+    ],
+    "innervation": {
+      "he": "העצב השרירי־עורי (C5–C6)",
+      "en": "Musculocutaneous nerve (C5–C6)"
+    },
+    "innervationReference": "https://medicine.uams.edu/neuroscience/education/medical-school-courses/human-structure-module/anatomy-tables/muscle-tables/muscles-of-the-upper-limb/"
   },
   {
     "slug": "triceps-brachii",
@@ -390,7 +395,12 @@
         "id": "overhead-press",
         "role": "secondary"
       }
-    ]
+    ],
+    "innervation": {
+      "he": "העצב הרדיאלי",
+      "en": "Radial nerve"
+    },
+    "innervationReference": "https://medicine.uams.edu/neuroscience/education/medical-school-courses/human-structure-module/anatomy-tables/muscle-tables/muscles-of-the-upper-limb/"
   },
   {
     "slug": "supraspinatus",
@@ -716,7 +726,12 @@
         "id": "lat-pulldown",
         "role": "secondary"
       }
-    ]
+    ],
+    "innervation": {
+      "he": "העצב השרירי־עורי (C5–C6)",
+      "en": "Musculocutaneous nerve (C5–C6)"
+    },
+    "innervationReference": "https://medicine.uams.edu/neuroscience/education/medical-school-courses/human-structure-module/anatomy-tables/muscle-tables/muscles-of-the-upper-limb/"
   },
   {
     "slug": "brachioradialis",
@@ -752,7 +767,12 @@
         "id": "hammer-curl",
         "role": "primary"
       }
-    ]
+    ],
+    "innervation": {
+      "he": "העצב הרדיאלי",
+      "en": "Radial nerve"
+    },
+    "innervationReference": "https://medicine.uams.edu/neuroscience/education/medical-school-courses/human-structure-module/anatomy-tables/muscle-tables/muscles-of-the-upper-limb/"
   },
   {
     "slug": "flexor-carpi-radialis",

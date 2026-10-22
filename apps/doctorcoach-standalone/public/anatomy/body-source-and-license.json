@@ -1,0 +1,436 @@
+{
+  "assetId": "bp3d-4-body",
+  "sourceUrl": "https://dbarchive.biosciencedbc.jp/data/bodyparts3d/LATEST/isa_BP3D_4.0_obj_99.zip",
+  "creator": "The Database Center for Life Science",
+  "licenseId": "CC-BY-4.0",
+  "licenseUrl": "https://creativecommons.org/licenses/by/4.0/",
+  "licenseEvidence": "https://dbarchive.biosciencedbc.jp/en/bodyparts3d/lic.html",
+  "attribution": "BodyParts3D, © The Database Center for Life Science licensed under CC Attribution 4.0 International",
+  "modifications": "Original whole-body skin ELEMENT FJ2810 simplified to 24,000 triangles with fast-simplification 0.1.13, then partitioned into approximate navigation zones. Zones are NOT anatomical boundaries or muscle geometry. mm XYZ converted to metres X Z -Y; normals and materials added.",
+  "downloadedSubsetSha256": "08f93d7da473e1c3b60a1795f8b2eef77e58d18060ccdf130af8b73de6de29c4",
+  "glbSha256": "6465b2edd9037fb7a45d81719a1eb07881af8bf0c19682720698581fbfc89a51",
+  "anatomicalReview": "pending",
+  "structures": [
+    {
+      "id": "head-context",
+      "en": "Head — context only",
+      "he": "ראש — להתמצאות בלבד",
+      "layer": "surface",
+      "side": "both",
+      "sources": [
+        {
+          "elementId": "FJ2810",
+          "sha256": "682f402206f15592acdeaae8ffb6b34c3e5c3267fa4685e63d2e4920ef2a80e0",
+          "mappingRows": [
+            "FMA7163\tskin\tFJ2810",
+            "FMA55665\tnonparenchymatous organ\tFJ2810",
+            "FMA55670\tsolid organ\tFJ2810",
+            "FMA61775\tphysical anatomical entity\tFJ2810",
+            "FMA62955\tanatomical entity\tFJ2810",
+            "FMA67135\tanatomical structure\tFJ2810",
+            "FMA67165\tmaterial anatomical entity\tFJ2810",
+            "FMA67498\torgan\tFJ2810"
+          ]
+        }
+      ],
+      "triangles": 2240,
+      "review": "pending"
+    },
+    {
+      "id": "cervical_neck",
+      "en": "Neck",
+      "he": "צוואר",
+      "layer": "surface",
+      "side": "both",
+      "regionId": "cervical_neck",
+      "sources": [
+        {
+          "elementId": "FJ2810",
+          "sha256": "682f402206f15592acdeaae8ffb6b34c3e5c3267fa4685e63d2e4920ef2a80e0",
+          "mappingRows": [
+            "FMA7163\tskin\tFJ2810",
+            "FMA55665\tnonparenchymatous organ\tFJ2810",
+            "FMA55670\tsolid organ\tFJ2810",
+            "FMA61775\tphysical anatomical entity\tFJ2810",
+            "FMA62955\tanatomical entity\tFJ2810",
+            "FMA67135\tanatomical structure\tFJ2810",
+            "FMA67165\tmaterial anatomical entity\tFJ2810",
+            "FMA67498\torgan\tFJ2810"
+          ]
+        }
+      ],
+      "triangles": 823,
+      "review": "pending"
+    },
+    {
+      "id": "shoulder",
+      "en": "Shoulder",
+      "he": "כתף",
+      "layer": "surface",
+      "side": "both",
+      "regionId": "shoulder",
+      "sources": [
+        {
+          "elementId": "FJ2810",
+          "sha256": "682f402206f15592acdeaae8ffb6b34c3e5c3267fa4685e63d2e4920ef2a80e0",
+          "mappingRows": [
+            "FMA7163\tskin\tFJ2810",
+            "FMA55665\tnonparenchymatous organ\tFJ2810",
+            "FMA55670\tsolid organ\tFJ2810",
+            "FMA61775\tphysical anatomical entity\tFJ2810",
+            "FMA62955\tanatomical entity\tFJ2810",
+            "FMA67135\tanatomical structure\tFJ2810",
+            "FMA67165\tmaterial anatomical entity\tFJ2810",
+            "FMA67498\torgan\tFJ2810"
+          ]
+        }
+      ],
+      "triangles": 1679,
+      "review": "pending"
+    },
+    {
+      "id": "elbow",
+      "en": "Arm / elbow",
+      "he": "זרוע ומרפק",
+      "layer": "surface",
+      "side": "both",
+      "regionId": "elbow",
+      "sources": [
+        {
+          "elementId": "FJ2810",
+          "sha256": "682f402206f15592acdeaae8ffb6b34c3e5c3267fa4685e63d2e4920ef2a80e0",
+          "mappingRows": [
+            "FMA7163\tskin\tFJ2810",
+            "FMA55665\tnonparenchymatous organ\tFJ2810",
+            "FMA55670\tsolid organ\tFJ2810",
+            "FMA61775\tphysical anatomical entity\tFJ2810",
+            "FMA62955\tanatomical entity\tFJ2810",
+            "FMA67135\tanatomical structure\tFJ2810",
+            "FMA67165\tmaterial anatomical entity\tFJ2810",
+            "FMA67498\torgan\tFJ2810"
+          ]
+        }
+      ],
+      "triangles": 1015,
+      "review": "pending"
+    },
+    {
+      "id": "forearm",
+      "en": "Forearm",
+      "he": "אמה",
+      "layer": "surface",
+      "side": "both",
+      "regionId": "forearm",
+      "sources": [
+        {
+          "elementId": "FJ2810",
+          "sha256": "682f402206f15592acdeaae8ffb6b34c3e5c3267fa4685e63d2e4920ef2a80e0",
+          "mappingRows": [
+            "FMA7163\tskin\tFJ2810",
+            "FMA55665\tnonparenchymatous organ\tFJ2810",
+            "FMA55670\tsolid organ\tFJ2810",
+            "FMA61775\tphysical anatomical entity\tFJ2810",
+            "FMA62955\tanatomical entity\tFJ2810",
+            "FMA67135\tanatomical structure\tFJ2810",
+            "FMA67165\tmaterial anatomical entity\tFJ2810",
+            "FMA67498\torgan\tFJ2810"
+          ]
+        }
+      ],
+      "triangles": 1086,
+      "review": "pending"
+    },
+    {
+      "id": "wrist_hand",
+      "en": "Wrist / hand",
+      "he": "שורש כף היד וכף היד",
+      "layer": "surface",
+      "side": "both",
+      "regionId": "wrist_hand",
+      "sources": [
+        {
+          "elementId": "FJ2810",
+          "sha256": "682f402206f15592acdeaae8ffb6b34c3e5c3267fa4685e63d2e4920ef2a80e0",
+          "mappingRows": [
+            "FMA7163\tskin\tFJ2810",
+            "FMA55665\tnonparenchymatous organ\tFJ2810",
+            "FMA55670\tsolid organ\tFJ2810",
+            "FMA61775\tphysical anatomical entity\tFJ2810",
+            "FMA62955\tanatomical entity\tFJ2810",
+            "FMA67135\tanatomical structure\tFJ2810",
+            "FMA67165\tmaterial anatomical entity\tFJ2810",
+            "FMA67498\torgan\tFJ2810"
+          ]
+        }
+      ],
+      "triangles": 3953,
+      "review": "pending"
+    },
+    {
+      "id": "chest",
+      "en": "Chest",
+      "he": "בית החזה",
+      "layer": "surface",
+      "side": "both",
+      "regionId": "chest",
+      "sources": [
+        {
+          "elementId": "FJ2810",
+          "sha256": "682f402206f15592acdeaae8ffb6b34c3e5c3267fa4685e63d2e4920ef2a80e0",
+          "mappingRows": [
+            "FMA7163\tskin\tFJ2810",
+            "FMA55665\tnonparenchymatous organ\tFJ2810",
+            "FMA55670\tsolid organ\tFJ2810",
+            "FMA61775\tphysical anatomical entity\tFJ2810",
+            "FMA62955\tanatomical entity\tFJ2810",
+            "FMA67135\tanatomical structure\tFJ2810",
+            "FMA67165\tmaterial anatomical entity\tFJ2810",
+            "FMA67498\torgan\tFJ2810"
+          ]
+        }
+      ],
+      "triangles": 943,
+      "review": "pending"
+    },
+    {
+      "id": "upper_back_scapula",
+      "en": "Upper back",
+      "he": "גב עליון",
+      "layer": "surface",
+      "side": "both",
+      "regionId": "upper_back_scapula",
+      "sources": [
+        {
+          "elementId": "FJ2810",
+          "sha256": "682f402206f15592acdeaae8ffb6b34c3e5c3267fa4685e63d2e4920ef2a80e0",
+          "mappingRows": [
+            "FMA7163\tskin\tFJ2810",
+            "FMA55665\tnonparenchymatous organ\tFJ2810",
+            "FMA55670\tsolid organ\tFJ2810",
+            "FMA61775\tphysical anatomical entity\tFJ2810",
+            "FMA62955\tanatomical entity\tFJ2810",
+            "FMA67135\tanatomical structure\tFJ2810",
+            "FMA67165\tmaterial anatomical entity\tFJ2810",
+            "FMA67498\torgan\tFJ2810"
+          ]
+        }
+      ],
+      "triangles": 881,
+      "review": "pending"
+    },
+    {
+      "id": "core_abdomen",
+      "en": "Abdomen",
+      "he": "בטן",
+      "layer": "surface",
+      "side": "both",
+      "regionId": "core_abdomen",
+      "sources": [
+        {
+          "elementId": "FJ2810",
+          "sha256": "682f402206f15592acdeaae8ffb6b34c3e5c3267fa4685e63d2e4920ef2a80e0",
+          "mappingRows": [
+            "FMA7163\tskin\tFJ2810",
+            "FMA55665\tnonparenchymatous organ\tFJ2810",
+            "FMA55670\tsolid organ\tFJ2810",
+            "FMA61775\tphysical anatomical entity\tFJ2810",
+            "FMA62955\tanatomical entity\tFJ2810",
+            "FMA67135\tanatomical structure\tFJ2810",
+            "FMA67165\tmaterial anatomical entity\tFJ2810",
+            "FMA67498\torgan\tFJ2810"
+          ]
+        }
+      ],
+      "triangles": 689,
+      "review": "pending"
+    },
+    {
+      "id": "lower_back_spine",
+      "en": "Lumbar back",
+      "he": "גב תחתון",
+      "layer": "surface",
+      "side": "both",
+      "regionId": "lower_back_spine",
+      "sources": [
+        {
+          "elementId": "FJ2810",
+          "sha256": "682f402206f15592acdeaae8ffb6b34c3e5c3267fa4685e63d2e4920ef2a80e0",
+          "mappingRows": [
+            "FMA7163\tskin\tFJ2810",
+            "FMA55665\tnonparenchymatous organ\tFJ2810",
+            "FMA55670\tsolid organ\tFJ2810",
+            "FMA61775\tphysical anatomical entity\tFJ2810",
+            "FMA62955\tanatomical entity\tFJ2810",
+            "FMA67135\tanatomical structure\tFJ2810",
+            "FMA67165\tmaterial anatomical entity\tFJ2810",
+            "FMA67498\torgan\tFJ2810"
+          ]
+        }
+      ],
+      "triangles": 669,
+      "review": "pending"
+    },
+    {
+      "id": "hip_glute",
+      "en": "Hip / glutes",
+      "he": "ירך ועכוז",
+      "layer": "surface",
+      "side": "both",
+      "regionId": "hip_glute",
+      "sources": [
+        {
+          "elementId": "FJ2810",
+          "sha256": "682f402206f15592acdeaae8ffb6b34c3e5c3267fa4685e63d2e4920ef2a80e0",
+          "mappingRows": [
+            "FMA7163\tskin\tFJ2810",
+            "FMA55665\tnonparenchymatous organ\tFJ2810",
+            "FMA55670\tsolid organ\tFJ2810",
+            "FMA61775\tphysical anatomical entity\tFJ2810",
+            "FMA62955\tanatomical entity\tFJ2810",
+            "FMA67135\tanatomical structure\tFJ2810",
+            "FMA67165\tmaterial anatomical entity\tFJ2810",
+            "FMA67498\torgan\tFJ2810"
+          ]
+        }
+      ],
+      "triangles": 1048,
+      "review": "pending"
+    },
+    {
+      "id": "groin",
+      "en": "Pelvis / groin",
+      "he": "אגן ומפשעה",
+      "layer": "surface",
+      "side": "both",
+      "regionId": "groin",
+      "sources": [
+        {
+          "elementId": "FJ2810",
+          "sha256": "682f402206f15592acdeaae8ffb6b34c3e5c3267fa4685e63d2e4920ef2a80e0",
+          "mappingRows": [
+            "FMA7163\tskin\tFJ2810",
+            "FMA55665\tnonparenchymatous organ\tFJ2810",
+            "FMA55670\tsolid organ\tFJ2810",
+            "FMA61775\tphysical anatomical entity\tFJ2810",
+            "FMA62955\tanatomical entity\tFJ2810",
+            "FMA67135\tanatomical structure\tFJ2810",
+            "FMA67165\tmaterial anatomical entity\tFJ2810",
+            "FMA67498\torgan\tFJ2810"
+          ]
+        }
+      ],
+      "triangles": 1609,
+      "review": "pending"
+    },
+    {
+      "id": "thigh",
+      "en": "Thigh",
+      "he": "ירך",
+      "layer": "surface",
+      "side": "both",
+      "regionId": "thigh",
+      "sources": [
+        {
+          "elementId": "FJ2810",
+          "sha256": "682f402206f15592acdeaae8ffb6b34c3e5c3267fa4685e63d2e4920ef2a80e0",
+          "mappingRows": [
+            "FMA7163\tskin\tFJ2810",
+            "FMA55665\tnonparenchymatous organ\tFJ2810",
+            "FMA55670\tsolid organ\tFJ2810",
+            "FMA61775\tphysical anatomical entity\tFJ2810",
+            "FMA62955\tanatomical entity\tFJ2810",
+            "FMA67135\tanatomical structure\tFJ2810",
+            "FMA67165\tmaterial anatomical entity\tFJ2810",
+            "FMA67498\torgan\tFJ2810"
+          ]
+        }
+      ],
+      "triangles": 1447,
+      "review": "pending"
+    },
+    {
+      "id": "knee",
+      "en": "Knee",
+      "he": "ברך",
+      "layer": "surface",
+      "side": "both",
+      "regionId": "knee",
+      "sources": [
+        {
+          "elementId": "FJ2810",
+          "sha256": "682f402206f15592acdeaae8ffb6b34c3e5c3267fa4685e63d2e4920ef2a80e0",
+          "mappingRows": [
+            "FMA7163\tskin\tFJ2810",
+            "FMA55665\tnonparenchymatous organ\tFJ2810",
+            "FMA55670\tsolid organ\tFJ2810",
+            "FMA61775\tphysical anatomical entity\tFJ2810",
+            "FMA62955\tanatomical entity\tFJ2810",
+            "FMA67135\tanatomical structure\tFJ2810",
+            "FMA67165\tmaterial anatomical entity\tFJ2810",
+            "FMA67498\torgan\tFJ2810"
+          ]
+        }
+      ],
+      "triangles": 744,
+      "review": "pending"
+    },
+    {
+      "id": "lower_leg",
+      "en": "Lower leg",
+      "he": "שוק",
+      "layer": "surface",
+      "side": "both",
+      "regionId": "lower_leg",
+      "sources": [
+        {
+          "elementId": "FJ2810",
+          "sha256": "682f402206f15592acdeaae8ffb6b34c3e5c3267fa4685e63d2e4920ef2a80e0",
+          "mappingRows": [
+            "FMA7163\tskin\tFJ2810",
+            "FMA55665\tnonparenchymatous organ\tFJ2810",
+            "FMA55670\tsolid organ\tFJ2810",
+            "FMA61775\tphysical anatomical entity\tFJ2810",
+            "FMA62955\tanatomical entity\tFJ2810",
+            "FMA67135\tanatomical structure\tFJ2810",
+            "FMA67165\tmaterial anatomical entity\tFJ2810",
+            "FMA67498\torgan\tFJ2810"
+          ]
+        }
+      ],
+      "triangles": 1545,
+      "review": "pending"
+    },
+    {
+      "id": "ankle_foot",
+      "en": "Ankle / foot",
+      "he": "קרסול וכף רגל",
+      "layer": "surface",
+      "side": "both",
+      "regionId": "ankle_foot",
+      "sources": [
+        {
+          "elementId": "FJ2810",
+          "sha256": "682f402206f15592acdeaae8ffb6b34c3e5c3267fa4685e63d2e4920ef2a80e0",
+          "mappingRows": [
+            "FMA7163\tskin\tFJ2810",
+            "FMA55665\tnonparenchymatous organ\tFJ2810",
+            "FMA55670\tsolid organ\tFJ2810",
+            "FMA61775\tphysical anatomical entity\tFJ2810",
+            "FMA62955\tanatomical entity\tFJ2810",
+            "FMA67135\tanatomical structure\tFJ2810",
+            "FMA67165\tmaterial anatomical entity\tFJ2810",
+            "FMA67498\torgan\tFJ2810"
+          ]
+        }
+      ],
+      "triangles": 3629,
+      "review": "pending"
+    }
+  ],
+  "unavailable": [
+    "muscle-detail",
+    "skeletal-layers",
+    "anatomical-region-boundaries",
+    "internal-organs"
+  ]
+}
