@@ -64,7 +64,7 @@ export async function createAnatomyCanvas(host:HTMLElement,onSelect:(id:string|n
  },setView(view:AnatomyCamera){const positions={front:[0,0,presetDistance],back:[0,0,-presetDistance],left:[presetDistance,0,0],right:[-presetDistance,0,0]};camera.position.fromArray(positions[view]).add(presetTarget);controls.target.copy(presetTarget);controls.update();render();remember();},update(selected:string|null,visible:ReadonlySet<AtlasLayer>,isolated:string|null=null){
   const shown=new Set(visibleStructureIds(modelSpec,visible,isolated));
   for(const mesh of meshes){const structure=modelSpec.structures.find(s=>s.id===mesh.name);if(!structure)continue;mesh.visible=shown.has(structure.id);
-   const color=structure.id===selected?[.12,.65,1]:structure.layer==='bone'?[.88,.84,.71]:structure.layer==='surface'?[.32,.46,.59]:[.65,.18,.25];
+   const color=structure.id===selected?[.12,.65,1]:structure.layer==='bone'?[.88,.84,.71]:(structure.layer==='surface'||structure.layer==='cartilage')?[.32,.46,.59]:[.65,.18,.25];
    for(const material of Array.isArray(mesh.material)?mesh.material:[mesh.material])if(material instanceof THREE.MeshStandardMaterial)material.color.setRGB(color[0],color[1],color[2],THREE.LinearSRGBColorSpace);
   }render();}};
 }

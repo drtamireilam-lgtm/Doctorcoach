@@ -20,7 +20,8 @@ for name,items in catalog.items():
    assert fid not in used;used.add(fid);v,f,src=load(fid);record=next(s for s in entry['sources'] if s['elementId']==fid)
    assert entry['side'] in ['right','midline']
    if entry['side']=='midline':
-    assert layer=='bone' and (slug=='sacrum' or slug.startswith(('cervical-','thoracic-','lumbar-')))
+    assert layer=='bone' and (slug in ['sacrum','sternum'] or slug.startswith(('cervical-','thoracic-','lumbar-')))
+    if slug=='sternum':assert fid in {'FJ3290','FJ3178','FJ3153'} and any(r.split('\t')[1]=={'FJ3290':'manubrium','FJ3178':'body of sternum','FJ3153':'xiphoid process'}[fid] for r in src['mappingRows'])
     assert v[:,0].min()<0<v[:,0].max(),name+':'+slug+' midline geometry does not cross sagittal plane'
    else:assert v[:,0].mean()<0,name+':'+slug+' right-side spatial coordinates disagree'
    assert record['sha256']==src['sha256'];assert record['mappingRows']==src['mappingRows'] or set(record['mappingRows']).issubset(src['mappingRows'])

@@ -93,7 +93,16 @@
     "source": "https://medicine.uams.edu/neuroscience/education/medical-school-courses/human-structure-module/anatomy-tables/muscle-tables/muscles-of-the-upper-limb/",
     "region": "chest",
     "view": "front",
-    "links": []
+    "links": [],
+    "innervation": {
+      "he": "העצב הפקטורלי המדיאלי, C8–T1",
+      "en": "Medial pectoral nerve, C8–T1"
+    },
+    "innervationReference": {
+      "source": "https://medicine.uams.edu/neuroscience/education/medical-school-courses/human-structure-module/anatomy-tables/muscle-tables/muscles-of-the-thorax/",
+      "checkedAt": "2026-10-22",
+      "status": "reference-checked; clinical review pending"
+    }
   },
   {
     "slug": "trapezius",
@@ -2051,13 +2060,22 @@
       },
       {
         "id": "side-plank",
-        "role": "primary"
+        "role": "stabilizer"
       },
       {
         "id": "crunch",
         "role": "secondary"
       }
-    ]
+    ],
+    "innervation": {
+      "he": "עצבוב מקטעי מענפים של עצבי השדרה החזיים התחתונים; בדרך כלל T7–T12, כולל העצב התת־צלעי. תוארה שונות אנטומית.",
+      "en": "Segmental branches of lower thoracic spinal nerves, usually T7–T12 including the subcostal nerve; anatomical variation is described."
+    },
+    "innervationReference": {
+      "source": "https://pubmed.ncbi.nlm.nih.gov/10409811/",
+      "checkedAt": "2026-10-22",
+      "status": "reference-checked against primary innervation study and academic abdominal wall tables; clinical review pending"
+    }
   },
   {
     "slug": "internal-oblique",
