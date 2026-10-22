@@ -302,6 +302,7 @@ try{
  await page.goto('http://127.0.0.1:'+port+'/?lang=en#learn?region=shoulder&muscle=latissimus-dorsi',{waitUntil:'domcontentloaded'});
  await page.locator('[data-model-id="shoulder"] canvas').waitFor({timeout:60000});await page.locator('#atlas-muscle-title').waitFor({state:'visible'});
  assert.match(await page.locator('#atlas-muscle-title').innerText(),/Latissimus dorsi/i);
+ await page.locator('.atlas-detail').getByText('Thoracodorsal nerve, C6–C8.',{exact:true}).waitFor();
  assert.equal(await page.locator('[data-model-id="shoulder"]').getByRole('combobox').inputValue(),'');
  await page.getByText('The selected muscle has no geometry in this model. Its learning card is available below.',{exact:true}).waitFor();
  console.log('Check passed:',checks.length+1);checks.push('unmodeled muscle deep link preserves its learning card without highlighting another mesh');
