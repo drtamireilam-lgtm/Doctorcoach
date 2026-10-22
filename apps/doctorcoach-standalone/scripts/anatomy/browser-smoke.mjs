@@ -128,11 +128,12 @@ try{
  console.log('Check passed:',checks.length+1);checks.push('dedicated forearm model selects a wrist flexor and focuses its actual geometry');
  await page.goto('http://127.0.0.1:'+port+'/?lang=en#learn?region=wrist_hand&muscle=abductor-pollicis-brevis',{waitUntil:'domcontentloaded'});
  const hand=page.locator('[data-model-id="hand"]');await hand.locator('canvas').waitFor({timeout:60000});await hand.getByRole('heading',{name:'Abductor pollicis brevis',exact:true}).waitFor();
+ await page.screenshot({path:'/tmp/dc-anatomy-evidence/hand-initial-mobile.png',fullPage:true});
  await hand.getByText('No exercise link has been defined yet.',{exact:true}).waitFor();
  await hand.getByRole('button',{name:'Isolate structure',exact:true}).click();await hand.getByRole('button',{name:'Focus structure',exact:true}).click();
  assert.equal(await hand.getByRole('button',{name:'Show all structures',exact:true}).getAttribute('aria-pressed'),'true');
- assert.equal(await hand.getByRole('combobox').locator('option').count(),32);
- console.log('Check passed:',checks.length+1);checks.push('hand model exposes 27 bones and four thumb muscles with honest missing exercise links and isolation');
+ assert.equal(await hand.getByRole('combobox').locator('option').count(),31);
+ console.log('Check passed:',checks.length+1);checks.push('hand model exposes 27 bones and three thumb muscles with honest missing exercise links and isolation');
  await hand.getByRole('button',{name:'Show all structures',exact:true}).click();await hand.getByRole('combobox').selectOption('adductor-pollicis');
  await hand.locator('.atlas-exercises button').first().click();await page.locator('.atlas-exercise-links a[href*="muscle=adductor-pollicis"]').waitFor();await page.goBack();
  await page.locator('[data-model-id="hand"] canvas').waitFor({timeout:60000});assert.equal(await page.locator('[data-model-id="hand"]').getByRole('combobox').inputValue(),'adductor-pollicis');

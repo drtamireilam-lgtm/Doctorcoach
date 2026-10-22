@@ -520,16 +520,6 @@
       "uniqueMaterial": true
     },
     {
-      "model": "hand",
-      "structure": "flexor-pollicis-brevis",
-      "elements": [
-        "FJ1469M"
-      ],
-      "sourceCoordinatesAndTriangles": "exact float32 match",
-      "rightSideEvidence": true,
-      "uniqueMaterial": true
-    },
-    {
       "model": "shoulder",
       "structure": "clavicle",
       "elements": [

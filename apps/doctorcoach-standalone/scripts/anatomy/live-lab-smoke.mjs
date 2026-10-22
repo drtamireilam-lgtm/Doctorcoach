@@ -26,7 +26,8 @@ try{
  await page.goto(origin+'/?lang=en#learn?region=forearm&muscle=flexor-carpi-radialis',{waitUntil:'domcontentloaded'});
  const forearm=page.locator('[data-model-id="forearm"]');await forearm.locator('canvas').waitFor();await forearm.getByRole('heading',{name:'Flexor carpi radialis',exact:true}).waitFor();await forearm.getByRole('button',{name:'Focus structure',exact:true}).click();checks.push('live dedicated forearm and source mesh focus');
  await page.goto(origin+'/?lang=en#learn?region=wrist_hand&muscle=abductor-pollicis-brevis',{waitUntil:'domcontentloaded'});
- const hand=page.locator('[data-model-id="hand"]');await hand.locator('canvas').waitFor();await hand.getByRole('heading',{name:'Abductor pollicis brevis',exact:true}).waitFor();assert.equal(await hand.getByRole('combobox').locator('option').count(),32);
+ const hand=page.locator('[data-model-id="hand"]');await hand.locator('canvas').waitFor();await hand.getByRole('heading',{name:'Abductor pollicis brevis',exact:true}).waitFor();assert.equal(await hand.getByRole('combobox').locator('option').count(),31);
+ await page.screenshot({path:'/tmp/dc-hand-initial-live.png',fullPage:true});
  await hand.getByRole('combobox').selectOption('adductor-pollicis');await hand.locator('.atlas-exercises button').first().click();await page.locator('.atlas-exercise-links a[href*="muscle=adductor-pollicis"]').waitFor();await page.goBack();await hand.locator('canvas').waitFor();assert.equal(await hand.getByRole('combobox').inputValue(),'adductor-pollicis');checks.push('live hand bones, thumb selection and exercise roundtrip');
  assert.deepEqual(errors,[]);checks.push('no uncaught errors in live acceptance flow');
  const dir='/tmp/dc-anatomy-live-evidence';await mkdir(dir,{recursive:true});await page.screenshot({path:dir+'/arm-mobile-lab.png',fullPage:true});

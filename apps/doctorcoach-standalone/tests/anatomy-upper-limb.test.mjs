@@ -9,7 +9,7 @@ test('upper limb has a distinct forearm and a real complete hand skeleton',async
  assert.ok(arm.structures.some(s=>s.id==='coracobrachialis'));
  assert.equal(hand.structures.filter(s=>s.layer==='bone').length,27);
  for(const id of ['flexor-carpi-radialis','flexor-carpi-ulnaris','extensor-carpi-radialis-brevis','extensor-carpi-radialis-longus','extensor-carpi-ulnaris','pronator-teres','pronator-quadratus','supinator'])assert.ok(forearm.structures.some(s=>s.id===id),id);
- for(const id of ['adductor-pollicis','opponens-pollicis','abductor-pollicis-brevis','flexor-pollicis-brevis'])assert.ok(hand.structures.some(s=>s.id===id),id);
+ for(const id of ['adductor-pollicis','opponens-pollicis','abductor-pollicis-brevis'])assert.ok(hand.structures.some(s=>s.id===id),id);
  for(const model of [arm,forearm,hand]){const b=readFileSync(new URL('../public'+model.src,import.meta.url));await validateAnatomyAsset(b.buffer.slice(b.byteOffset,b.byteOffset+b.byteLength),model);const used=new Set();for(const s of model.structures){for(const part of s.sources){assert.ok(part.mappingRows.some(r=>r.split('\t')[1].includes('right')),s.id+':'+part.elementId);assert.ok(!used.has(part.elementId),s.id+': duplicated source geometry');used.add(part.elementId);}}}
 });
 test('modeled new muscles have bilingual attachments, checked innervation and honest exercise relationships',()=>{
@@ -34,4 +34,10 @@ test('named selection rejects swapped node-to-mesh bindings even with an updated
  const text=JSON.stringify(doc);assert.ok(Buffer.byteLength(text)<=length);altered.fill(32,20,20+length);altered.write(text,20);
  const spec={...model,asset:{...model.asset,glbSha256:createHash('sha256').update(altered).digest('hex')}};
  await assert.rejects(()=>validateAnatomyAsset(altered.buffer.slice(altered.byteOffset,altered.byteOffset+altered.byteLength),spec),/binding/i);
+});
+
+test('right hand geometry stays with its skeleton even when source metadata mislabels laterality',()=>{
+ const model=modelForRegion('wrist_hand'),b=readFileSync(new URL('../public'+model.src,import.meta.url)),doc=JSON.parse(b.subarray(20,20+b.readUInt32LE(12)).toString());
+ for(const mesh of doc.meshes){const a=doc.accessors[mesh.primitives[0].attributes.POSITION];assert.ok((a.min[0]+a.max[0])/2<0,mesh.name+': opposite-side geometry');}
+ assert.ok(!model.structures.some(s=>s.id==='flexor-pollicis-brevis'),'source laterality conflict must remain unavailable');
 });

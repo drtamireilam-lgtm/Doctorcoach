@@ -8,7 +8,7 @@
   "attribution": "BodyParts3D, © The Database Center for Life Science licensed under CC Attribution 4.0 International",
   "modifications": "Explicit right-side BodyParts3D ELEMENT mapping; component heads combined only where named in the catalog; original source vertices/triangles retained, mm XYZ converted to metres X Z -Y; normals/materials added. No invented structures.",
   "downloadedSubsetSha256": "87e7928be3e0fed96d78953f124725e1bd9b781e25514c8632ca78b8cde4a04c",
-  "glbSha256": "8378d6d7a662fda9c1dd29377807807b77be356c09464957b0e9378e3a01d61c",
+  "glbSha256": "3dc464dc5730afbd3d0a6a8d800eadbe8badccadccdcaad38e94cfd0fe8756cc",
   "anatomicalReview": "pending",
   "structures": [
     {
@@ -954,39 +954,6 @@
       ],
       "triangles": 744,
       "review": "pending"
-    },
-    {
-      "id": "flexor-pollicis-brevis",
-      "en": "Flexor pollicis brevis",
-      "he": "פלקסור פוליסיס ברביס",
-      "layer": "muscle",
-      "side": "right",
-      "regionId": "wrist_hand",
-      "sources": [
-        {
-          "elementId": "FJ1469M",
-          "sha256": "dbab9fdb424e8370bed0229f47af76209ab5f61613fc1c910d427a73e6ee8bd7",
-          "mappingRows": [
-            "FMA5022\tmuscle organ\tFJ1469M",
-            "FMA9621\tmuscle of upper limb\tFJ1469M",
-            "FMA37348\tmuscle of free upper limb\tFJ1469M",
-            "FMA37372\tmuscle of hand\tFJ1469M",
-            "FMA37378\tflexor pollicis brevis\tFJ1469M",
-            "FMA37388\tright flexor pollicis brevis\tFJ1469M",
-            "FMA42380\tintrinsic muscle of hand\tFJ1469M",
-            "FMA55665\tnonparenchymatous organ\tFJ1469M",
-            "FMA55670\tsolid organ\tFJ1469M",
-            "FMA61775\tphysical anatomical entity\tFJ1469M",
-            "FMA62955\tanatomical entity\tFJ1469M",
-            "FMA64916\tthenar muscle\tFJ1469M",
-            "FMA67135\tanatomical structure\tFJ1469M",
-            "FMA67165\tmaterial anatomical entity\tFJ1469M",
-            "FMA67498\torgan\tFJ1469M"
-          ]
-        }
-      ],
-      "triangles": 714,
-      "review": "pending"
     }
   ],
   "unavailable": [
@@ -995,6 +962,7 @@
     "nerves",
     "cartilage",
     "unlisted-muscles",
-    "forearm-context-bones"
+    "forearm-context-bones",
+    "flexor-pollicis-brevis-source-laterality-conflict"
   ]
 }

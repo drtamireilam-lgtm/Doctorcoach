@@ -18,6 +18,7 @@ for name,items in catalog.items():
   vertices=[];indices=[];offset=0
   for fid in ids:
    assert fid not in used;used.add(fid);v,f,src=load(fid);record=next(s for s in entry['sources'] if s['elementId']==fid)
+   assert v[:,0].mean()<0,name+':'+slug+' right-side spatial coordinates disagree'
    assert record['sha256']==src['sha256'];assert record['mappingRows']==src['mappingRows'] or set(record['mappingRows']).issubset(src['mappingRows'])
    assert any('right' in r.split('\t')[1] for r in record['mappingRows']);vertices.append(v);indices.append(f+offset);offset+=len(v)
   node=next(n for n in doc['nodes'] if n['name']==slug);mesh=doc['meshes'][node['mesh']];assert mesh['name']==slug
