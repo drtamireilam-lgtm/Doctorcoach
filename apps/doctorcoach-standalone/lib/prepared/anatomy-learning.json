@@ -1626,30 +1626,30 @@
     "region": "groin",
     "view": "front",
     "location": {
-      "he": "הירך המדיאלית",
+      "he": "הצד הפנימי של הירך",
       "en": "Medial thigh"
     },
     "origin": {
-      "he": "גוף עצם החיק",
-      "en": "Body of the pubis"
+      "he": "המשטח הקדמי של גוף עצם החיק",
+      "en": "Anterior pubic body"
     },
     "insertion": {
-      "he": "השליש האמצעי של הקו המחוספס בפמור",
-      "en": "Middle linea aspera"
+      "he": "השליש האמצעי של הקו המחוספס בעצם הירך",
+      "en": "Middle third of femoral linea aspera"
     },
     "action": {
-      "he": "קירוב ירך; מסייע בכפיפה",
-      "en": "Hip adduction; assists flexion"
+      "he": "קירוב וכפיפת ירך",
+      "en": "Hip adduction and flexion"
     },
     "joints": {
-      "he": "ירך",
-      "en": "Hip"
+      "he": "מפרק הירך",
+      "en": "Hip joint"
     },
     "training": {
-      "he": "משתתף בתרגילי קירוב ירכיים",
-      "en": "Contributes to hip-adduction exercises"
+      "he": "משתתף בתרגילי קירוב ירכיים; העומס מותאם ליכולת ולתסמינים",
+      "en": "Contributes to hip-adduction tasks; loading depends on capacity and symptoms"
     },
-    "source": "https://medicine.uams.edu/neuroscience/education/medical-school-courses/human-structure-module/anatomy-tables/muscle-tables/muscles-of-the-lower-limb/",
+    "source": "https://rad.uw.edu/muscle-atlas/adductor-longus",
     "links": [
       {
         "id": "adduction",
@@ -1663,37 +1663,46 @@
         "id": "copenhagen-short-lever",
         "role": "primary"
       }
-    ]
+    ],
+    "innervation": {
+      "he": "החלוקה הקדמית של העצב הסותם",
+      "en": "Anterior division of obturator nerve"
+    },
+    "innervationReference": {
+      "source": "https://rad.uw.edu/muscle-atlas/adductor-longus",
+      "checkedAt": "2026-10-22",
+      "status": "source-checked; clinical review pending"
+    }
   },
   {
     "slug": "adductor-magnus",
     "region": "groin",
     "view": "back",
     "location": {
-      "he": "הירך המדיאלית העמוקה",
+      "he": "הצד הפנימי העמוק של הירך",
       "en": "Deep medial thigh"
     },
     "origin": {
       "he": "ענפי החיק והשת וגבשושית השת",
-      "en": "Ischiopubic rami and ischial tuberosity"
+      "en": "Pubic and ischial rami; ischial tuberosity"
     },
     "insertion": {
-      "he": "הקו המחוספס וגבשושית המקרבים",
-      "en": "Linea aspera and adductor tubercle"
+      "he": "גבשושית העכוז, הקו המחוספס, הרכס העלי־קונדילרי המדיאלי וגבשושית המקרבים בעצם הירך",
+      "en": "Femoral gluteal tuberosity, linea aspera, medial supracondylar ridge and adductor tubercle"
     },
     "action": {
-      "he": "קירוב; החלק ההמסטרינגי מיישר ירך",
-      "en": "Adduction; hamstring portion extends the hip"
+      "he": "קירוב ירך; סיבים עליונים מסייעים בכפיפה והחלק ההמסטרינגי ביישור",
+      "en": "Hip adduction; upper fibers assist flexion, hamstring portion assists extension"
     },
     "joints": {
-      "he": "ירך",
-      "en": "Hip"
+      "he": "מפרק הירך",
+      "en": "Hip joint"
     },
     "training": {
-      "he": "משתתף בקירוב ירך ובתנועות סקוואט",
-      "en": "Contributes to hip adduction and squatting"
+      "he": "משתתף בקירוב וביישור ירך. חלקיו התפקודיים אינם מופרדים בגאומטריה",
+      "en": "Contributes to hip adduction and extension. Functional portions are not separated in this mesh"
     },
-    "source": "https://medicine.uams.edu/neuroscience/education/medical-school-courses/human-structure-module/anatomy-tables/muscle-tables/muscles-of-the-lower-limb/",
+    "source": "https://rad.uw.edu/muscle-atlas/adductor-magnus",
     "links": [
       {
         "id": "adduction",
@@ -1703,7 +1712,16 @@
         "id": "back-squat",
         "role": "secondary"
       }
-    ]
+    ],
+    "innervation": {
+      "he": "החלוקה האחורית של העצב הסותם לחלק המקרב; המרכיב הטיביאלי של העצב הסיאטי לחלק ההמסטרינגי",
+      "en": "Posterior obturator division supplies adductor portion; tibial division of sciatic nerve supplies hamstring portion"
+    },
+    "innervationReference": {
+      "source": "https://rad.uw.edu/muscle-atlas/adductor-magnus",
+      "checkedAt": "2026-10-22",
+      "status": "source-checked; clinical review pending"
+    }
   },
   {
     "slug": "gastrocnemius",
@@ -4631,5 +4649,188 @@
     },
     "source": "https://www.lumen.luc.edu/lumen/meded/grossanatomy/dissector/muscles/obci.htm",
     "links": []
+  },
+  {
+    "slug": "adductor-brevis",
+    "region": "groin",
+    "view": "front",
+    "links": [
+      {
+        "id": "adduction",
+        "role": "primary"
+      },
+      {
+        "id": "adductor-squeeze",
+        "role": "primary"
+      }
+    ],
+    "location": {
+      "he": "הצד הפנימי של הירך, עמוק למקרב הארוך",
+      "en": "Medial thigh, deep to adductor longus"
+    },
+    "origin": {
+      "he": "המשטח הקדמי של הענף התחתון של עצם החיק",
+      "en": "Anterior inferior pubic ramus"
+    },
+    "insertion": {
+      "he": "הקו המסרקי והחלק העליון של השפה המדיאלית של הקו המחוספס בעצם הירך",
+      "en": "Femoral pectineal line and upper medial lip of linea aspera"
+    },
+    "action": {
+      "he": "קירוב וכפיפת ירך",
+      "en": "Hip adduction and flexion"
+    },
+    "joints": {
+      "he": "מפרק הירך",
+      "en": "Hip joint"
+    },
+    "training": {
+      "he": "מסייע לתנועת קירוב כנגד התנגדות; בידוד המודל מאפשר לראות את מיקומו העמוק",
+      "en": "Contributes to resisted hip adduction; model isolation reveals its deep position"
+    },
+    "innervation": {
+      "he": "החלוקה הקדמית או האחורית של העצב הסותם",
+      "en": "Anterior or posterior division of obturator nerve"
+    },
+    "source": "https://rad.uw.edu/muscle-atlas/adductor-brevis",
+    "innervationReference": {
+      "source": "https://rad.uw.edu/muscle-atlas/adductor-brevis",
+      "checkedAt": "2026-10-22",
+      "status": "source-checked; clinical review pending"
+    }
+  },
+  {
+    "slug": "pectineus",
+    "region": "groin",
+    "view": "front",
+    "links": [
+      {
+        "id": "adduction",
+        "role": "primary"
+      }
+    ],
+    "location": {
+      "he": "החלק הקדמי־מדיאלי העליון של הירך",
+      "en": "Upper anteromedial thigh"
+    },
+    "origin": {
+      "he": "רכס החיק והמשטח המסרקי של עצם החיק",
+      "en": "Pubic pecten and pectineal surface"
+    },
+    "insertion": {
+      "he": "הקו המסרקי של עצם הירך",
+      "en": "Pectineal line of femur"
+    },
+    "action": {
+      "he": "קירוב וכפיפת ירך",
+      "en": "Hip adduction and flexion"
+    },
+    "joints": {
+      "he": "מפרק הירך",
+      "en": "Hip joint"
+    },
+    "training": {
+      "he": "משתתף בקירוב ובכפיפה; אין להסיק ממיקום כאב על שריר מסוים",
+      "en": "Contributes to adduction and flexion; pain location alone does not identify a muscle"
+    },
+    "innervation": {
+      "he": "בדרך כלל העצב הפמורלי; לעיתים נוסף גם עצבוב מהעצב הסותם",
+      "en": "Usually femoral nerve; sometimes additional obturator innervation"
+    },
+    "source": "https://rad.uw.edu/muscle-atlas/pectineus",
+    "innervationReference": {
+      "source": "https://rad.uw.edu/muscle-atlas/pectineus",
+      "checkedAt": "2026-10-22",
+      "status": "source-checked; clinical review pending"
+    }
+  },
+  {
+    "slug": "gracilis",
+    "region": "groin",
+    "view": "front",
+    "links": [
+      {
+        "id": "adduction",
+        "role": "primary"
+      },
+      {
+        "id": "adductor-squeeze",
+        "role": "primary"
+      }
+    ],
+    "location": {
+      "he": "שריר שטחי לאורך הצד הפנימי של הירך",
+      "en": "Superficial medial thigh"
+    },
+    "origin": {
+      "he": "השוליים התחתונים של מאחה החיק, הענף התחתון של החיק והענף הסמוך של השת",
+      "en": "Inferior pubic symphysis margin, inferior pubic ramus and adjacent ischial ramus"
+    },
+    "insertion": {
+      "he": "המשטח המדיאלי העליון של השוקה כחלק מרגל האווז",
+      "en": "Upper medial tibial surface at pes anserinus"
+    },
+    "action": {
+      "he": "קירוב ירך, כפיפת ברך וסיוע בסיבוב פנימי של השוק",
+      "en": "Hip adduction, knee flexion and assistance with medial tibial rotation"
+    },
+    "joints": {
+      "he": "ירך וברך",
+      "en": "Hip and knee"
+    },
+    "training": {
+      "he": "חוצה ירך וברך; משתתף בתרגילי קירוב ובכפיפת ברך",
+      "en": "Crosses hip and knee; contributes to adduction and knee flexion"
+    },
+    "innervation": {
+      "he": "החלוקה הקדמית של העצב הסותם",
+      "en": "Anterior division of obturator nerve"
+    },
+    "source": "https://rad.uw.edu/muscle-atlas/gracilis",
+    "innervationReference": {
+      "source": "https://rad.uw.edu/muscle-atlas/gracilis",
+      "checkedAt": "2026-10-22",
+      "status": "source-checked; clinical review pending"
+    }
+  },
+  {
+    "slug": "sartorius",
+    "region": "thigh",
+    "view": "front",
+    "links": [],
+    "location": {
+      "he": "מהאגן הקדמי לאורך הירך עד הצד הפנימי של הברך",
+      "en": "Anterior pelvis across thigh to medial knee"
+    },
+    "origin": {
+      "he": "קוץ הכסל הקדמי העליון",
+      "en": "Anterior superior iliac spine"
+    },
+    "insertion": {
+      "he": "המשטח המדיאלי העליון של השוקה כחלק מרגל האווז",
+      "en": "Upper medial tibial surface at pes anserinus"
+    },
+    "action": {
+      "he": "כפיפה וסיבוב חיצוני של הירך וכפיפת הברך",
+      "en": "Hip flexion and lateral rotation; knee flexion"
+    },
+    "joints": {
+      "he": "ירך וברך",
+      "en": "Hip and knee"
+    },
+    "training": {
+      "he": "שריר דו־מפרקי; אין בספרייה קישור ייעודי מאומת עבורו בשלב זה",
+      "en": "Two-joint muscle; no specific verified exercise relationship is assigned yet"
+    },
+    "innervation": {
+      "he": "העצב הפמורלי",
+      "en": "Femoral nerve"
+    },
+    "source": "https://rad.uw.edu/muscle-atlas/sartorius",
+    "innervationReference": {
+      "source": "https://rad.uw.edu/muscle-atlas/sartorius",
+      "checkedAt": "2026-10-22",
+      "status": "source-checked; clinical review pending"
+    }
   }
 ]

@@ -10,11 +10,12 @@ test('right knee has six real bones and ten distinct source-mapped muscles with 
  for(const p of s.sources){assert.ok(p.mappingRows.some(r=>r.split('\t')[1].includes('right')),s.id);assert.ok(!seen.has(p.elementId));seen.add(p.elementId);}
  const mesh=doc.meshes.find(x=>x.name===s.id),a=doc.accessors[mesh.primitives[0].attributes.POSITION];assert.ok((a.min[0]+a.max[0])/2<0,s.id);}
  for(const id of ['menisci','cruciate-ligaments','collateral-ligaments','cartilage','separate-tendons'])assert.ok(m.asset.unavailable.includes(id),id);
- assert.equal(m.asset.anatomicalReview,'pending');assert.equal(atlas.modelForRegion('groin'),undefined);
+ assert.equal(m.asset.anatomicalReview,'pending');assert.equal(atlas.modelForRegion('unavailable-region'),undefined);
 });
 test('exercise anatomy can resolve an existing muscle into its available LAB model without changing normal routes',()=>{
  assert.equal(typeof atlas.modelRegionForMuscle,'function','LAB model resolution missing');
- assert.equal(atlas.modelRegionForMuscle('rectus-femoris','thigh',true),'knee');
+ assert.equal(atlas.modelRegionForMuscle('rectus-femoris','thigh',true),'thigh');
+ assert.equal(atlas.modelRegionForMuscle('rectus-femoris','shoulder',true),'knee');
  assert.equal(atlas.modelRegionForMuscle('rectus-femoris','thigh',false),'thigh');
  assert.equal(atlas.modelRegionForMuscle('gastrocnemius','lower_leg',true),'lower_leg');
  assert.equal(atlas.modelRegionForMuscle('brachioradialis','elbow',true),'elbow');
