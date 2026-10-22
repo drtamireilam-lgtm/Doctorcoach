@@ -6,7 +6,7 @@ import {learningCard,exerciseMuscles} from '../lib/anatomy-learning.ts';
 const bytes=m=>{const b=readFileSync(new URL('../public'+m.src,import.meta.url));return b.buffer.slice(b.byteOffset,b.byteOffset+b.byteLength);};
 test('body and arm use real packaged geometry within separate mobile budgets',async()=>{
  for(const m of anatomyModels){const b=bytes(m);assert.ok(b.byteLength<=m.maxBytes,m.id);await validateAnatomyAsset(b,m);assert.equal(new Set(m.structures.map(s=>s.id)).size,m.structures.length);assert.equal(m.asset.licenseId,'CC-BY-4.0');assert.equal(m.asset.anatomicalReview,'pending');assert.ok(m.structures.every(s=>s.sources.length&&s.sources.every(p=>p.mappingRows.length)),m.id);}
- assert.equal(modelForRegion('shoulder').id,'shoulder');assert.equal(modelForRegion('elbow').id,'arm');assert.equal(modelForRegion('forearm').id,'arm');assert.equal(modelForRegion('knee'),undefined);
+ assert.equal(modelForRegion('shoulder').id,'shoulder');assert.equal(modelForRegion('elbow').id,'arm');assert.equal(modelForRegion('forearm').id,'forearm');assert.equal(modelForRegion('knee'),undefined);
 });
 test('asset admission refuses altered geometry, excess bytes and a mismatched mapping',async()=>{
  const model=modelForRegion('elbow'),b=bytes(model);const altered=b.slice(0);new Uint8Array(altered)[altered.byteLength-8]^=1;

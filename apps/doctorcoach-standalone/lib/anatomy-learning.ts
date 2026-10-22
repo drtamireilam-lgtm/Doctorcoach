@@ -3,7 +3,7 @@ export type AnatomyLanguage='he'|'en';
 export type AnatomySide='both'|'left'|'right';
 export type AnatomyView='front'|'back';
 export type Bilingual={he:string;en:string};
-export type LearningCard={innervation?:Bilingual;slug:string;location:Bilingual;origin:Bilingual;insertion:Bilingual;action:Bilingual;joints:Bilingual;training:Bilingual;source:string;region:string;view:AnatomyView;links:{id:string;role:'primary'|'secondary'|'stabilizer'}[]};
+export type LearningCard={innervationReference?:string|{source:string;checkedAt:string;status:string};innervation?:Bilingual;slug:string;location:Bilingual;origin:Bilingual;insertion:Bilingual;action:Bilingual;joints:Bilingual;training:Bilingual;source:string;region:string;view:AnatomyView;links:{id:string;role:'primary'|'secondary'|'stabilizer'}[]};
 export const learningCards=cards as LearningCard[];
 export const learningCard=(slug:string)=>learningCards.find(card=>card.slug===slug);
 export const exerciseMuscles=(id:string)=>learningCards.flatMap(card=>card.links.filter(link=>link.id===id).map(link=>({slug:card.slug,role:link.role})));

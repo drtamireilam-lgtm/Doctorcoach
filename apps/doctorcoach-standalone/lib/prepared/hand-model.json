@@ -1,0 +1,1000 @@
+{
+  "assetId": "bp3d-4-hand",
+  "sourceUrl": "https://dbarchive.biosciencedbc.jp/data/bodyparts3d/LATEST/isa_BP3D_4.0_obj_99.zip",
+  "creator": "The Database Center for Life Science",
+  "licenseId": "CC-BY-4.0",
+  "licenseUrl": "https://creativecommons.org/licenses/by/4.0/",
+  "licenseEvidence": "https://dbarchive.biosciencedbc.jp/en/bodyparts3d/lic.html",
+  "attribution": "BodyParts3D, © The Database Center for Life Science licensed under CC Attribution 4.0 International",
+  "modifications": "Explicit right-side BodyParts3D ELEMENT mapping; component heads combined only where named in the catalog; original source vertices/triangles retained, mm XYZ converted to metres X Z -Y; normals/materials added. No invented structures.",
+  "downloadedSubsetSha256": "87e7928be3e0fed96d78953f124725e1bd9b781e25514c8632ca78b8cde4a04c",
+  "glbSha256": "8378d6d7a662fda9c1dd29377807807b77be356c09464957b0e9378e3a01d61c",
+  "anatomicalReview": "pending",
+  "structures": [
+    {
+      "id": "scaphoid",
+      "en": "Scaphoid",
+      "he": "עצם הסירה",
+      "layer": "bone",
+      "side": "right",
+      "regionId": "wrist_hand",
+      "sources": [
+        {
+          "elementId": "FJ3383",
+          "sha256": "e96e60d6c03b0581caa5733e3ab65aca6dc3671a476d78f123dcd48ecbee0050",
+          "mappingRows": [
+            "FMA5018\tbone organ\tFJ3383",
+            "FMA7475\tshort bone\tFJ3383",
+            "FMA23709\tscaphoid\tFJ3383",
+            "FMA23889\tcarpal bone\tFJ3383",
+            "FMA24435\tright scaphoid\tFJ3383",
+            "FMA33302\tproximal carpal bone\tFJ3383",
+            "FMA55671\tcavitated organ\tFJ3383",
+            "FMA55673\torgan with cavitated organ parts\tFJ3383",
+            "FMA61775\tphysical anatomical entity\tFJ3383",
+            "FMA62955\tanatomical entity\tFJ3383",
+            "FMA67135\tanatomical structure\tFJ3383",
+            "FMA67165\tmaterial anatomical entity\tFJ3383",
+            "FMA67498\torgan\tFJ3383"
+          ]
+        }
+      ],
+      "triangles": 322,
+      "review": "pending"
+    },
+    {
+      "id": "lunate",
+      "en": "Lunate",
+      "he": "עצם הסהר",
+      "layer": "bone",
+      "side": "right",
+      "regionId": "wrist_hand",
+      "sources": [
+        {
+          "elementId": "FJ3374",
+          "sha256": "82da5ab98cc4f4e311eba2ee20b811bfa392a05d65d9f8c4ed0b9c7fd62880a1",
+          "mappingRows": [
+            "FMA5018\tbone organ\tFJ3374",
+            "FMA7475\tshort bone\tFJ3374",
+            "FMA23712\tlunate\tFJ3374",
+            "FMA23889\tcarpal bone\tFJ3374",
+            "FMA24437\tright lunate\tFJ3374",
+            "FMA33302\tproximal carpal bone\tFJ3374",
+            "FMA55671\tcavitated organ\tFJ3374",
+            "FMA55673\torgan with cavitated organ parts\tFJ3374",
+            "FMA61775\tphysical anatomical entity\tFJ3374",
+            "FMA62955\tanatomical entity\tFJ3374",
+            "FMA67135\tanatomical structure\tFJ3374",
+            "FMA67165\tmaterial anatomical entity\tFJ3374",
+            "FMA67498\torgan\tFJ3374"
+          ]
+        }
+      ],
+      "triangles": 332,
+      "review": "pending"
+    },
+    {
+      "id": "triquetrum",
+      "en": "Triquetrum",
+      "he": "העצם המשולשת",
+      "layer": "bone",
+      "side": "right",
+      "regionId": "wrist_hand",
+      "sources": [
+        {
+          "elementId": "FJ3390",
+          "sha256": "aa1d02ab7a2b7e2d87125a43fc92f497d9d35323de3d1a8b25185dbb7dd5cc09",
+          "mappingRows": [
+            "FMA5018\tbone organ\tFJ3390",
+            "FMA7475\tshort bone\tFJ3390",
+            "FMA23715\ttriquetral\tFJ3390",
+            "FMA23889\tcarpal bone\tFJ3390",
+            "FMA24439\tright triquetral\tFJ3390",
+            "FMA33302\tproximal carpal bone\tFJ3390",
+            "FMA55671\tcavitated organ\tFJ3390",
+            "FMA55673\torgan with cavitated organ parts\tFJ3390",
+            "FMA61775\tphysical anatomical entity\tFJ3390",
+            "FMA62955\tanatomical entity\tFJ3390",
+            "FMA67135\tanatomical structure\tFJ3390",
+            "FMA67165\tmaterial anatomical entity\tFJ3390",
+            "FMA67498\torgan\tFJ3390"
+          ]
+        }
+      ],
+      "triangles": 170,
+      "review": "pending"
+    },
+    {
+      "id": "pisiform",
+      "en": "Pisiform",
+      "he": "עצם העדשה",
+      "layer": "bone",
+      "side": "right",
+      "regionId": "wrist_hand",
+      "sources": [
+        {
+          "elementId": "FJ3382",
+          "sha256": "c5b1ce6020acc6e1feff8f44a3f0b5ec717e3cb3218701fbe86644975d981684",
+          "mappingRows": [
+            "FMA5018\tbone organ\tFJ3382",
+            "FMA7475\tshort bone\tFJ3382",
+            "FMA23718\tpisiform\tFJ3382",
+            "FMA23889\tcarpal bone\tFJ3382",
+            "FMA24441\tright pisiform\tFJ3382",
+            "FMA33302\tproximal carpal bone\tFJ3382",
+            "FMA55671\tcavitated organ\tFJ3382",
+            "FMA55673\torgan with cavitated organ parts\tFJ3382",
+            "FMA61775\tphysical anatomical entity\tFJ3382",
+            "FMA62955\tanatomical entity\tFJ3382",
+            "FMA67135\tanatomical structure\tFJ3382",
+            "FMA67165\tmaterial anatomical entity\tFJ3382",
+            "FMA67498\torgan\tFJ3382"
+          ]
+        }
+      ],
+      "triangles": 190,
+      "review": "pending"
+    },
+    {
+      "id": "trapezium",
+      "en": "Trapezium",
+      "he": "עצם הטרפז",
+      "layer": "bone",
+      "side": "right",
+      "regionId": "wrist_hand",
+      "sources": [
+        {
+          "elementId": "FJ3388",
+          "sha256": "3b2475587f9ca59d43cb48c7275999f795f97f8b0ed6c68d5b37ff582382d81f",
+          "mappingRows": [
+            "FMA5018\tbone organ\tFJ3388",
+            "FMA7475\tshort bone\tFJ3388",
+            "FMA23721\ttrapezium\tFJ3388",
+            "FMA23889\tcarpal bone\tFJ3388",
+            "FMA24443\tright trapezium\tFJ3388",
+            "FMA33303\tdistal carpal bone\tFJ3388",
+            "FMA55671\tcavitated organ\tFJ3388",
+            "FMA55673\torgan with cavitated organ parts\tFJ3388",
+            "FMA61775\tphysical anatomical entity\tFJ3388",
+            "FMA62955\tanatomical entity\tFJ3388",
+            "FMA67135\tanatomical structure\tFJ3388",
+            "FMA67165\tmaterial anatomical entity\tFJ3388",
+            "FMA67498\torgan\tFJ3388"
+          ]
+        }
+      ],
+      "triangles": 434,
+      "review": "pending"
+    },
+    {
+      "id": "trapezoid",
+      "en": "Trapezoid",
+      "he": "העצם דמוית הטרפז",
+      "layer": "bone",
+      "side": "right",
+      "regionId": "wrist_hand",
+      "sources": [
+        {
+          "elementId": "FJ3389",
+          "sha256": "6823c47b6593463e65b85861e51026b06b76e0196dde1e8fae8b902a32f2a0e8",
+          "mappingRows": [
+            "FMA5018\tbone organ\tFJ3389",
+            "FMA7475\tshort bone\tFJ3389",
+            "FMA23724\ttrapezoid\tFJ3389",
+            "FMA23725\tright trapezoid\tFJ3389",
+            "FMA23889\tcarpal bone\tFJ3389",
+            "FMA33303\tdistal carpal bone\tFJ3389",
+            "FMA55671\tcavitated organ\tFJ3389",
+            "FMA55673\torgan with cavitated organ parts\tFJ3389",
+            "FMA61775\tphysical anatomical entity\tFJ3389",
+            "FMA62955\tanatomical entity\tFJ3389",
+            "FMA67135\tanatomical structure\tFJ3389",
+            "FMA67165\tmaterial anatomical entity\tFJ3389",
+            "FMA67498\torgan\tFJ3389"
+          ]
+        }
+      ],
+      "triangles": 360,
+      "review": "pending"
+    },
+    {
+      "id": "capitate",
+      "en": "Capitate",
+      "he": "העצם הגדולה",
+      "layer": "bone",
+      "side": "right",
+      "regionId": "wrist_hand",
+      "sources": [
+        {
+          "elementId": "FJ3361",
+          "sha256": "982098ff86ccc18075bd4ecf422c4bca732f4d691d249c8f381bac574287c59b",
+          "mappingRows": [
+            "FMA5018\tbone organ\tFJ3361",
+            "FMA7475\tshort bone\tFJ3361",
+            "FMA23727\tcapitate\tFJ3361",
+            "FMA23889\tcarpal bone\tFJ3361",
+            "FMA24446\tright capitate\tFJ3361",
+            "FMA33303\tdistal carpal bone\tFJ3361",
+            "FMA55671\tcavitated organ\tFJ3361",
+            "FMA55673\torgan with cavitated organ parts\tFJ3361",
+            "FMA61775\tphysical anatomical entity\tFJ3361",
+            "FMA62955\tanatomical entity\tFJ3361",
+            "FMA67135\tanatomical structure\tFJ3361",
+            "FMA67165\tmaterial anatomical entity\tFJ3361",
+            "FMA67498\torgan\tFJ3361"
+          ]
+        }
+      ],
+      "triangles": 428,
+      "review": "pending"
+    },
+    {
+      "id": "hamate",
+      "en": "Hamate",
+      "he": "עצם האנקול",
+      "layer": "bone",
+      "side": "right",
+      "regionId": "wrist_hand",
+      "sources": [
+        {
+          "elementId": "FJ3367",
+          "sha256": "9c27cf5b75dd149f2469403af7ad68263e1eff29307864ae10481ac647262eba",
+          "mappingRows": [
+            "FMA5018\tbone organ\tFJ3367",
+            "FMA7475\tshort bone\tFJ3367",
+            "FMA23730\thamate\tFJ3367",
+            "FMA23889\tcarpal bone\tFJ3367",
+            "FMA24448\tright hamate\tFJ3367",
+            "FMA33303\tdistal carpal bone\tFJ3367",
+            "FMA55671\tcavitated organ\tFJ3367",
+            "FMA55673\torgan with cavitated organ parts\tFJ3367",
+            "FMA61775\tphysical anatomical entity\tFJ3367",
+            "FMA62955\tanatomical entity\tFJ3367",
+            "FMA67135\tanatomical structure\tFJ3367",
+            "FMA67165\tmaterial anatomical entity\tFJ3367",
+            "FMA67498\torgan\tFJ3367"
+          ]
+        }
+      ],
+      "triangles": 522,
+      "review": "pending"
+    },
+    {
+      "id": "metacarpal-1",
+      "en": "Metacarpal 1",
+      "he": "עצם מסרק 1",
+      "layer": "bone",
+      "side": "right",
+      "regionId": "wrist_hand",
+      "sources": [
+        {
+          "elementId": "FJ3350",
+          "sha256": "92ef27746cf2c5b317b88558b42e171128f980ea16414ca6e3647d19d1594382",
+          "mappingRows": [
+            "FMA5018\tbone organ\tFJ3350",
+            "FMA7474\tlong bone\tFJ3350",
+            "FMA9612\tmetacarpal bone\tFJ3350",
+            "FMA23899\tfirst metacarpal bone\tFJ3350",
+            "FMA24464\tright first metacarpal bone\tFJ3350",
+            "FMA55671\tcavitated organ\tFJ3350",
+            "FMA55673\torgan with cavitated organ parts\tFJ3350",
+            "FMA61775\tphysical anatomical entity\tFJ3350",
+            "FMA62955\tanatomical entity\tFJ3350",
+            "FMA67135\tanatomical structure\tFJ3350",
+            "FMA67165\tmaterial anatomical entity\tFJ3350",
+            "FMA67498\torgan\tFJ3350"
+          ]
+        }
+      ],
+      "triangles": 566,
+      "review": "pending"
+    },
+    {
+      "id": "metacarpal-2",
+      "en": "Metacarpal 2",
+      "he": "עצם מסרק 2",
+      "layer": "bone",
+      "side": "right",
+      "regionId": "wrist_hand",
+      "sources": [
+        {
+          "elementId": "FJ3352",
+          "sha256": "6d4e9874925f542124ced9e041f340de5b9c8f872d6ad7e2d483e9d0ab159980",
+          "mappingRows": [
+            "FMA5018\tbone organ\tFJ3352",
+            "FMA7474\tlong bone\tFJ3352",
+            "FMA9612\tmetacarpal bone\tFJ3352",
+            "FMA23900\tsecond metacarpal bone\tFJ3352",
+            "FMA24466\tright second metacarpal bone\tFJ3352",
+            "FMA55671\tcavitated organ\tFJ3352",
+            "FMA55673\torgan with cavitated organ parts\tFJ3352",
+            "FMA61775\tphysical anatomical entity\tFJ3352",
+            "FMA62955\tanatomical entity\tFJ3352",
+            "FMA67135\tanatomical structure\tFJ3352",
+            "FMA67165\tmaterial anatomical entity\tFJ3352",
+            "FMA67498\torgan\tFJ3352"
+          ]
+        }
+      ],
+      "triangles": 748,
+      "review": "pending"
+    },
+    {
+      "id": "metacarpal-3",
+      "en": "Metacarpal 3",
+      "he": "עצם מסרק 3",
+      "layer": "bone",
+      "side": "right",
+      "regionId": "wrist_hand",
+      "sources": [
+        {
+          "elementId": "FJ3354",
+          "sha256": "98a26b8f08e6cd3578706a65d83c2e1e432d7a206202294cd525aa287b75072b",
+          "mappingRows": [
+            "FMA5018\tbone organ\tFJ3354",
+            "FMA7474\tlong bone\tFJ3354",
+            "FMA9612\tmetacarpal bone\tFJ3354",
+            "FMA23901\tthird metacarpal bone\tFJ3354",
+            "FMA24468\tright third metacarpal bone\tFJ3354",
+            "FMA55671\tcavitated organ\tFJ3354",
+            "FMA55673\torgan with cavitated organ parts\tFJ3354",
+            "FMA61775\tphysical anatomical entity\tFJ3354",
+            "FMA62955\tanatomical entity\tFJ3354",
+            "FMA67135\tanatomical structure\tFJ3354",
+            "FMA67165\tmaterial anatomical entity\tFJ3354",
+            "FMA67498\torgan\tFJ3354"
+          ]
+        }
+      ],
+      "triangles": 702,
+      "review": "pending"
+    },
+    {
+      "id": "metacarpal-4",
+      "en": "Metacarpal 4",
+      "he": "עצם מסרק 4",
+      "layer": "bone",
+      "side": "right",
+      "regionId": "wrist_hand",
+      "sources": [
+        {
+          "elementId": "FJ3356",
+          "sha256": "3bb88e2a98ce1cb0ab8af411397e5edc5777546c394b25d4d4ee585493ee3718",
+          "mappingRows": [
+            "FMA5018\tbone organ\tFJ3356",
+            "FMA7474\tlong bone\tFJ3356",
+            "FMA9612\tmetacarpal bone\tFJ3356",
+            "FMA23902\tfourth metacarpal bone\tFJ3356",
+            "FMA24470\tright fourth metacarpal bone\tFJ3356",
+            "FMA55671\tcavitated organ\tFJ3356",
+            "FMA55673\torgan with cavitated organ parts\tFJ3356",
+            "FMA61775\tphysical anatomical entity\tFJ3356",
+            "FMA62955\tanatomical entity\tFJ3356",
+            "FMA67135\tanatomical structure\tFJ3356",
+            "FMA67165\tmaterial anatomical entity\tFJ3356",
+            "FMA67498\torgan\tFJ3356"
+          ]
+        }
+      ],
+      "triangles": 536,
+      "review": "pending"
+    },
+    {
+      "id": "metacarpal-5",
+      "en": "Metacarpal 5",
+      "he": "עצם מסרק 5",
+      "layer": "bone",
+      "side": "right",
+      "regionId": "wrist_hand",
+      "sources": [
+        {
+          "elementId": "FJ3358",
+          "sha256": "23d26888c325fd6a2de2688e948de72057afaf383db13875445fe597bd2a8bfd",
+          "mappingRows": [
+            "FMA5018\tbone organ\tFJ3358",
+            "FMA7474\tlong bone\tFJ3358",
+            "FMA9612\tmetacarpal bone\tFJ3358",
+            "FMA23903\tfifth metacarpal bone\tFJ3358",
+            "FMA24472\tright fifth metacarpal bone\tFJ3358",
+            "FMA55671\tcavitated organ\tFJ3358",
+            "FMA55673\torgan with cavitated organ parts\tFJ3358",
+            "FMA61775\tphysical anatomical entity\tFJ3358",
+            "FMA62955\tanatomical entity\tFJ3358",
+            "FMA67135\tanatomical structure\tFJ3358",
+            "FMA67165\tmaterial anatomical entity\tFJ3358",
+            "FMA67498\torgan\tFJ3358"
+          ]
+        }
+      ],
+      "triangles": 506,
+      "review": "pending"
+    },
+    {
+      "id": "proximal-phalanx-1",
+      "en": "Proximal phalanx, digit 1",
+      "he": "גליל מקורב, אצבע 1",
+      "layer": "bone",
+      "side": "right",
+      "regionId": "wrist_hand",
+      "sources": [
+        {
+          "elementId": "FJ3327",
+          "sha256": "84d3df498603c91935ae8edfc341c17ad3e46b910249a98e1e3edd4ccf309e71",
+          "mappingRows": [
+            "FMA5018\tbone organ\tFJ3327",
+            "FMA7474\tlong bone\tFJ3327",
+            "FMA23914\tphalanx of finger\tFJ3327",
+            "FMA23918\tproximal phalanx of thumb\tFJ3327",
+            "FMA24450\tproximal phalanx of right thumb\tFJ3327",
+            "FMA35477\tphalanx of thumb\tFJ3327",
+            "FMA55671\tcavitated organ\tFJ3327",
+            "FMA55673\torgan with cavitated organ parts\tFJ3327",
+            "FMA61775\tphysical anatomical entity\tFJ3327",
+            "FMA62955\tanatomical entity\tFJ3327",
+            "FMA67135\tanatomical structure\tFJ3327",
+            "FMA67165\tmaterial anatomical entity\tFJ3327",
+            "FMA67498\torgan\tFJ3327"
+          ]
+        }
+      ],
+      "triangles": 318,
+      "review": "pending"
+    },
+    {
+      "id": "distal-phalanx-1",
+      "en": "Distal phalanx, digit 1",
+      "he": "גליל מרוחק, אצבע 1",
+      "layer": "bone",
+      "side": "right",
+      "regionId": "wrist_hand",
+      "sources": [
+        {
+          "elementId": "FJ3198",
+          "sha256": "bfae0f42c3cffa63b93403bf6fe1b446dcf0f8fc3e1f8994544ac256830a7b3e",
+          "mappingRows": [
+            "FMA5018\tbone organ\tFJ3198",
+            "FMA7474\tlong bone\tFJ3198",
+            "FMA23914\tphalanx of finger\tFJ3198",
+            "FMA23945\tdistal phalanx of thumb\tFJ3198",
+            "FMA24459\tdistal phalanx of right thumb\tFJ3198",
+            "FMA35477\tphalanx of thumb\tFJ3198",
+            "FMA55671\tcavitated organ\tFJ3198",
+            "FMA55673\torgan with cavitated organ parts\tFJ3198",
+            "FMA61775\tphysical anatomical entity\tFJ3198",
+            "FMA62955\tanatomical entity\tFJ3198",
+            "FMA67135\tanatomical structure\tFJ3198",
+            "FMA67165\tmaterial anatomical entity\tFJ3198",
+            "FMA67498\torgan\tFJ3198"
+          ]
+        }
+      ],
+      "triangles": 240,
+      "review": "pending"
+    },
+    {
+      "id": "proximal-phalanx-2",
+      "en": "Proximal phalanx, digit 2",
+      "he": "גליל מקורב, אצבע 2",
+      "layer": "bone",
+      "side": "right",
+      "regionId": "wrist_hand",
+      "sources": [
+        {
+          "elementId": "FJ3322",
+          "sha256": "03cb38d378f7eb94046e45a6fcc214c48b1081b6a35c37a491bde356cb948764",
+          "mappingRows": [
+            "FMA5018\tbone organ\tFJ3322",
+            "FMA7474\tlong bone\tFJ3322",
+            "FMA23914\tphalanx of finger\tFJ3322",
+            "FMA23919\tproximal phalanx of index finger\tFJ3322",
+            "FMA24451\tproximal phalanx of right index finger\tFJ3322",
+            "FMA35480\tphalanx of index finger\tFJ3322",
+            "FMA55671\tcavitated organ\tFJ3322",
+            "FMA55673\torgan with cavitated organ parts\tFJ3322",
+            "FMA61775\tphysical anatomical entity\tFJ3322",
+            "FMA62955\tanatomical entity\tFJ3322",
+            "FMA67135\tanatomical structure\tFJ3322",
+            "FMA67165\tmaterial anatomical entity\tFJ3322",
+            "FMA67498\torgan\tFJ3322"
+          ]
+        }
+      ],
+      "triangles": 386,
+      "review": "pending"
+    },
+    {
+      "id": "middle-phalanx-2",
+      "en": "Middle phalanx, digit 2",
+      "he": "גליל אמצעי, אצבע 2",
+      "layer": "bone",
+      "side": "right",
+      "regionId": "wrist_hand",
+      "sources": [
+        {
+          "elementId": "FJ3303",
+          "sha256": "af5955d21314bf58ed06fc28f28467e56ce366b658372b37a5e21936ed9f2c8b",
+          "mappingRows": [
+            "FMA5018\tbone organ\tFJ3303",
+            "FMA7474\tlong bone\tFJ3303",
+            "FMA23914\tphalanx of finger\tFJ3303",
+            "FMA23933\tmiddle phalanx of index finger\tFJ3303",
+            "FMA24455\tmiddle phalanx of right index finger\tFJ3303",
+            "FMA35480\tphalanx of index finger\tFJ3303",
+            "FMA55671\tcavitated organ\tFJ3303",
+            "FMA55673\torgan with cavitated organ parts\tFJ3303",
+            "FMA61775\tphysical anatomical entity\tFJ3303",
+            "FMA62955\tanatomical entity\tFJ3303",
+            "FMA67135\tanatomical structure\tFJ3303",
+            "FMA67165\tmaterial anatomical entity\tFJ3303",
+            "FMA67498\torgan\tFJ3303"
+          ]
+        }
+      ],
+      "triangles": 264,
+      "review": "pending"
+    },
+    {
+      "id": "distal-phalanx-2",
+      "en": "Distal phalanx, digit 2",
+      "he": "גליל מרוחק, אצבע 2",
+      "layer": "bone",
+      "side": "right",
+      "regionId": "wrist_hand",
+      "sources": [
+        {
+          "elementId": "FJ3193",
+          "sha256": "00d90373136e996def72c45bb2de42630f7533014b622d36bbf56c4121355e4b",
+          "mappingRows": [
+            "FMA5018\tbone organ\tFJ3193",
+            "FMA7474\tlong bone\tFJ3193",
+            "FMA23914\tphalanx of finger\tFJ3193",
+            "FMA23946\tdistal phalanx of index finger\tFJ3193",
+            "FMA24460\tdistal phalanx of right index finger\tFJ3193",
+            "FMA35480\tphalanx of index finger\tFJ3193",
+            "FMA55671\tcavitated organ\tFJ3193",
+            "FMA55673\torgan with cavitated organ parts\tFJ3193",
+            "FMA61775\tphysical anatomical entity\tFJ3193",
+            "FMA62955\tanatomical entity\tFJ3193",
+            "FMA67135\tanatomical structure\tFJ3193",
+            "FMA67165\tmaterial anatomical entity\tFJ3193",
+            "FMA67498\torgan\tFJ3193"
+          ]
+        }
+      ],
+      "triangles": 210,
+      "review": "pending"
+    },
+    {
+      "id": "proximal-phalanx-3",
+      "en": "Proximal phalanx, digit 3",
+      "he": "גליל מקורב, אצבע 3",
+      "layer": "bone",
+      "side": "right",
+      "regionId": "wrist_hand",
+      "sources": [
+        {
+          "elementId": "FJ3325",
+          "sha256": "ea76430375e036eea61a11c3edcbece711496563e5f2d35e6bee7f1a1cb49569",
+          "mappingRows": [
+            "FMA5018\tbone organ\tFJ3325",
+            "FMA7474\tlong bone\tFJ3325",
+            "FMA23914\tphalanx of finger\tFJ3325",
+            "FMA23920\tproximal phalanx of middle finger\tFJ3325",
+            "FMA24452\tproximal phalanx of right middle finger\tFJ3325",
+            "FMA35483\tphalanx of middle finger\tFJ3325",
+            "FMA55671\tcavitated organ\tFJ3325",
+            "FMA55673\torgan with cavitated organ parts\tFJ3325",
+            "FMA61775\tphysical anatomical entity\tFJ3325",
+            "FMA62955\tanatomical entity\tFJ3325",
+            "FMA67135\tanatomical structure\tFJ3325",
+            "FMA67165\tmaterial anatomical entity\tFJ3325",
+            "FMA67498\torgan\tFJ3325"
+          ]
+        }
+      ],
+      "triangles": 458,
+      "review": "pending"
+    },
+    {
+      "id": "middle-phalanx-3",
+      "en": "Middle phalanx, digit 3",
+      "he": "גליל אמצעי, אצבע 3",
+      "layer": "bone",
+      "side": "right",
+      "regionId": "wrist_hand",
+      "sources": [
+        {
+          "elementId": "FJ3306",
+          "sha256": "60a6197d8d7dedcb1039f82613c3c9e968109a9588b89a767ba6a44202f7c830",
+          "mappingRows": [
+            "FMA5018\tbone organ\tFJ3306",
+            "FMA7474\tlong bone\tFJ3306",
+            "FMA23914\tphalanx of finger\tFJ3306",
+            "FMA23934\tmiddle phalanx of middle finger\tFJ3306",
+            "FMA24456\tmiddle phalanx of right middle finger\tFJ3306",
+            "FMA35483\tphalanx of middle finger\tFJ3306",
+            "FMA55671\tcavitated organ\tFJ3306",
+            "FMA55673\torgan with cavitated organ parts\tFJ3306",
+            "FMA61775\tphysical anatomical entity\tFJ3306",
+            "FMA62955\tanatomical entity\tFJ3306",
+            "FMA67135\tanatomical structure\tFJ3306",
+            "FMA67165\tmaterial anatomical entity\tFJ3306",
+            "FMA67498\torgan\tFJ3306"
+          ]
+        }
+      ],
+      "triangles": 342,
+      "review": "pending"
+    },
+    {
+      "id": "distal-phalanx-3",
+      "en": "Distal phalanx, digit 3",
+      "he": "גליל מרוחק, אצבע 3",
+      "layer": "bone",
+      "side": "right",
+      "regionId": "wrist_hand",
+      "sources": [
+        {
+          "elementId": "FJ3196",
+          "sha256": "901e109df6e4a98b88dae7cdddda416c4cdd91e58093f1dc51d80ccc7c4e9b34",
+          "mappingRows": [
+            "FMA5018\tbone organ\tFJ3196",
+            "FMA7474\tlong bone\tFJ3196",
+            "FMA23914\tphalanx of finger\tFJ3196",
+            "FMA23947\tdistal phalanx of middle finger\tFJ3196",
+            "FMA24461\tdistal phalanx of right middle finger\tFJ3196",
+            "FMA35483\tphalanx of middle finger\tFJ3196",
+            "FMA55671\tcavitated organ\tFJ3196",
+            "FMA55673\torgan with cavitated organ parts\tFJ3196",
+            "FMA61775\tphysical anatomical entity\tFJ3196",
+            "FMA62955\tanatomical entity\tFJ3196",
+            "FMA67135\tanatomical structure\tFJ3196",
+            "FMA67165\tmaterial anatomical entity\tFJ3196",
+            "FMA67498\torgan\tFJ3196"
+          ]
+        }
+      ],
+      "triangles": 174,
+      "review": "pending"
+    },
+    {
+      "id": "proximal-phalanx-4",
+      "en": "Proximal phalanx, digit 4",
+      "he": "גליל מקורב, אצבע 4",
+      "layer": "bone",
+      "side": "right",
+      "regionId": "wrist_hand",
+      "sources": [
+        {
+          "elementId": "FJ3326",
+          "sha256": "5bb35c193650c9e390ad18d2e9ca834c19ab32d478a12446380d8cd50b9b0ca2",
+          "mappingRows": [
+            "FMA5018\tbone organ\tFJ3326",
+            "FMA7474\tlong bone\tFJ3326",
+            "FMA23914\tphalanx of finger\tFJ3326",
+            "FMA23921\tproximal phalanx of ring finger\tFJ3326",
+            "FMA24453\tproximal phalanx of right ring finger\tFJ3326",
+            "FMA35486\tphalanx of ring finger\tFJ3326",
+            "FMA55671\tcavitated organ\tFJ3326",
+            "FMA55673\torgan with cavitated organ parts\tFJ3326",
+            "FMA61775\tphysical anatomical entity\tFJ3326",
+            "FMA62955\tanatomical entity\tFJ3326",
+            "FMA67135\tanatomical structure\tFJ3326",
+            "FMA67165\tmaterial anatomical entity\tFJ3326",
+            "FMA67498\torgan\tFJ3326"
+          ]
+        }
+      ],
+      "triangles": 376,
+      "review": "pending"
+    },
+    {
+      "id": "middle-phalanx-4",
+      "en": "Middle phalanx, digit 4",
+      "he": "גליל אמצעי, אצבע 4",
+      "layer": "bone",
+      "side": "right",
+      "regionId": "wrist_hand",
+      "sources": [
+        {
+          "elementId": "FJ3292",
+          "sha256": "11af3f3453af291b20b0f4a9002c3e0906535acdc0004bd175876ddeecb9a094",
+          "mappingRows": [
+            "FMA5018\tbone organ\tFJ3292",
+            "FMA7474\tlong bone\tFJ3292",
+            "FMA23914\tphalanx of finger\tFJ3292",
+            "FMA23935\tmiddle phalanx of ring finger\tFJ3292",
+            "FMA24457\tmiddle phalanx of right ring finger\tFJ3292",
+            "FMA35486\tphalanx of ring finger\tFJ3292",
+            "FMA55671\tcavitated organ\tFJ3292",
+            "FMA55673\torgan with cavitated organ parts\tFJ3292",
+            "FMA61775\tphysical anatomical entity\tFJ3292",
+            "FMA62955\tanatomical entity\tFJ3292",
+            "FMA67135\tanatomical structure\tFJ3292",
+            "FMA67165\tmaterial anatomical entity\tFJ3292",
+            "FMA67498\torgan\tFJ3292"
+          ]
+        }
+      ],
+      "triangles": 316,
+      "review": "pending"
+    },
+    {
+      "id": "distal-phalanx-4",
+      "en": "Distal phalanx, digit 4",
+      "he": "גליל מרוחק, אצבע 4",
+      "layer": "bone",
+      "side": "right",
+      "regionId": "wrist_hand",
+      "sources": [
+        {
+          "elementId": "FJ3197",
+          "sha256": "4fece0e70293449e99a1b27a0d40c9d4fedd548ff0471fa7c783e5d973cbfba3",
+          "mappingRows": [
+            "FMA5018\tbone organ\tFJ3197",
+            "FMA7474\tlong bone\tFJ3197",
+            "FMA23914\tphalanx of finger\tFJ3197",
+            "FMA23948\tdistal phalanx of ring finger\tFJ3197",
+            "FMA24462\tdistal phalanx of right ring finger\tFJ3197",
+            "FMA35486\tphalanx of ring finger\tFJ3197",
+            "FMA55671\tcavitated organ\tFJ3197",
+            "FMA55673\torgan with cavitated organ parts\tFJ3197",
+            "FMA61775\tphysical anatomical entity\tFJ3197",
+            "FMA62955\tanatomical entity\tFJ3197",
+            "FMA67135\tanatomical structure\tFJ3197",
+            "FMA67165\tmaterial anatomical entity\tFJ3197",
+            "FMA67498\torgan\tFJ3197"
+          ]
+        }
+      ],
+      "triangles": 112,
+      "review": "pending"
+    },
+    {
+      "id": "proximal-phalanx-5",
+      "en": "Proximal phalanx, digit 5",
+      "he": "גליל מקורב, אצבע 5",
+      "layer": "bone",
+      "side": "right",
+      "regionId": "wrist_hand",
+      "sources": [
+        {
+          "elementId": "FJ3323",
+          "sha256": "c3aaebcb7e86e3610f6d7a6896b33a60d7f544f924bdf0c4b639f8dae8c62e55",
+          "mappingRows": [
+            "FMA5018\tbone organ\tFJ3323",
+            "FMA7474\tlong bone\tFJ3323",
+            "FMA23914\tphalanx of finger\tFJ3323",
+            "FMA23922\tproximal phalanx of little finger\tFJ3323",
+            "FMA24454\tproximal phalanx of right little finger\tFJ3323",
+            "FMA35489\tphalanx of little finger\tFJ3323",
+            "FMA55671\tcavitated organ\tFJ3323",
+            "FMA55673\torgan with cavitated organ parts\tFJ3323",
+            "FMA61775\tphysical anatomical entity\tFJ3323",
+            "FMA62955\tanatomical entity\tFJ3323",
+            "FMA67135\tanatomical structure\tFJ3323",
+            "FMA67165\tmaterial anatomical entity\tFJ3323",
+            "FMA67498\torgan\tFJ3323"
+          ]
+        }
+      ],
+      "triangles": 314,
+      "review": "pending"
+    },
+    {
+      "id": "middle-phalanx-5",
+      "en": "Middle phalanx, digit 5",
+      "he": "גליל אמצעי, אצבע 5",
+      "layer": "bone",
+      "side": "right",
+      "regionId": "wrist_hand",
+      "sources": [
+        {
+          "elementId": "FJ3304",
+          "sha256": "4cd1972167a669afb93f288cf994101bb32083b95efbfc1696b1781560586ca0",
+          "mappingRows": [
+            "FMA5018\tbone organ\tFJ3304",
+            "FMA7474\tlong bone\tFJ3304",
+            "FMA23914\tphalanx of finger\tFJ3304",
+            "FMA23936\tmiddle phalanx of little finger\tFJ3304",
+            "FMA24458\tmiddle phalanx of right little finger\tFJ3304",
+            "FMA35489\tphalanx of little finger\tFJ3304",
+            "FMA55671\tcavitated organ\tFJ3304",
+            "FMA55673\torgan with cavitated organ parts\tFJ3304",
+            "FMA61775\tphysical anatomical entity\tFJ3304",
+            "FMA62955\tanatomical entity\tFJ3304",
+            "FMA67135\tanatomical structure\tFJ3304",
+            "FMA67165\tmaterial anatomical entity\tFJ3304",
+            "FMA67498\torgan\tFJ3304"
+          ]
+        }
+      ],
+      "triangles": 208,
+      "review": "pending"
+    },
+    {
+      "id": "distal-phalanx-5",
+      "en": "Distal phalanx, digit 5",
+      "he": "גליל מרוחק, אצבע 5",
+      "layer": "bone",
+      "side": "right",
+      "regionId": "wrist_hand",
+      "sources": [
+        {
+          "elementId": "FJ3194",
+          "sha256": "0edc751d14c5260c93fcde78f868ce49521eec95085a613417a96ddfd6a8965d",
+          "mappingRows": [
+            "FMA5018\tbone organ\tFJ3194",
+            "FMA7474\tlong bone\tFJ3194",
+            "FMA23914\tphalanx of finger\tFJ3194",
+            "FMA23949\tdistal phalanx of little finger\tFJ3194",
+            "FMA24463\tdistal phalanx of right little finger\tFJ3194",
+            "FMA35489\tphalanx of little finger\tFJ3194",
+            "FMA55671\tcavitated organ\tFJ3194",
+            "FMA55673\torgan with cavitated organ parts\tFJ3194",
+            "FMA61775\tphysical anatomical entity\tFJ3194",
+            "FMA62955\tanatomical entity\tFJ3194",
+            "FMA67135\tanatomical structure\tFJ3194",
+            "FMA67165\tmaterial anatomical entity\tFJ3194",
+            "FMA67498\torgan\tFJ3194"
+          ]
+        }
+      ],
+      "triangles": 188,
+      "review": "pending"
+    },
+    {
+      "id": "adductor-pollicis",
+      "en": "Adductor pollicis",
+      "he": "אדקטור פוליסיס",
+      "layer": "muscle",
+      "side": "right",
+      "regionId": "wrist_hand",
+      "sources": [
+        {
+          "elementId": "FJ1481",
+          "sha256": "7f95a0d24a061eefc13bbef6c842b7e685798dfd16e767b955015dafde1f858d",
+          "mappingRows": [
+            "FMA45729\thead of organ\tFJ1481",
+            "FMA46119\toblique head of adductor pollicis\tFJ1481",
+            "FMA46121\toblique head of right adductor pollicis\tFJ1481",
+            "FMA55268\torgan zone\tFJ1481",
+            "FMA61775\tphysical anatomical entity\tFJ1481",
+            "FMA62955\tanatomical entity\tFJ1481",
+            "FMA67135\tanatomical structure\tFJ1481",
+            "FMA67165\tmaterial anatomical entity\tFJ1481",
+            "FMA67619\torgan region\tFJ1481",
+            "FMA82472\tcardinal organ part\tFJ1481",
+            "FMA85453\thead of muscle organ\tFJ1481"
+          ]
+        },
+        {
+          "elementId": "FJ1515",
+          "sha256": "75f0a7b8130a70da1efb175638927868a2eb8d1f79916916666d100ec92190f2",
+          "mappingRows": [
+            "FMA45729\thead of organ\tFJ1515",
+            "FMA46120\ttransverse head of adductor pollicis\tFJ1515",
+            "FMA46123\ttransverse head of right adductor pollicis\tFJ1515",
+            "FMA55268\torgan zone\tFJ1515",
+            "FMA61775\tphysical anatomical entity\tFJ1515",
+            "FMA62955\tanatomical entity\tFJ1515",
+            "FMA67135\tanatomical structure\tFJ1515",
+            "FMA67165\tmaterial anatomical entity\tFJ1515",
+            "FMA67619\torgan region\tFJ1515",
+            "FMA82472\tcardinal organ part\tFJ1515",
+            "FMA85453\thead of muscle organ\tFJ1515"
+          ]
+        }
+      ],
+      "triangles": 1412,
+      "review": "pending"
+    },
+    {
+      "id": "opponens-pollicis",
+      "en": "Opponens pollicis",
+      "he": "אופוננס פוליסיס",
+      "layer": "muscle",
+      "side": "right",
+      "regionId": "wrist_hand",
+      "sources": [
+        {
+          "elementId": "FJ1501",
+          "sha256": "abbd7e3223c7aae817ecd4e613e24c7dcd2aff20d56ea35a1517c73f6bae7a9e",
+          "mappingRows": [
+            "FMA5022\tmuscle organ\tFJ1501",
+            "FMA9621\tmuscle of upper limb\tFJ1501",
+            "FMA37348\tmuscle of free upper limb\tFJ1501",
+            "FMA37372\tmuscle of hand\tFJ1501",
+            "FMA37379\topponens pollicis\tFJ1501",
+            "FMA37390\tright opponens pollicis\tFJ1501",
+            "FMA42380\tintrinsic muscle of hand\tFJ1501",
+            "FMA55665\tnonparenchymatous organ\tFJ1501",
+            "FMA55670\tsolid organ\tFJ1501",
+            "FMA61775\tphysical anatomical entity\tFJ1501",
+            "FMA62955\tanatomical entity\tFJ1501",
+            "FMA64916\tthenar muscle\tFJ1501",
+            "FMA67135\tanatomical structure\tFJ1501",
+            "FMA67165\tmaterial anatomical entity\tFJ1501",
+            "FMA67498\torgan\tFJ1501"
+          ]
+        }
+      ],
+      "triangles": 956,
+      "review": "pending"
+    },
+    {
+      "id": "abductor-pollicis-brevis",
+      "en": "Abductor pollicis brevis",
+      "he": "אבדקטור פוליסיס ברביס",
+      "layer": "muscle",
+      "side": "right",
+      "regionId": "wrist_hand",
+      "sources": [
+        {
+          "elementId": "FJ1483",
+          "sha256": "e8fae19efda4874793724ff541efd7d9ead31b50fbb343254e3f8effd8aa734d",
+          "mappingRows": [
+            "FMA5022\tmuscle organ\tFJ1483",
+            "FMA9621\tmuscle of upper limb\tFJ1483",
+            "FMA37348\tmuscle of free upper limb\tFJ1483",
+            "FMA37372\tmuscle of hand\tFJ1483",
+            "FMA37373\tabductor pollicis brevis\tFJ1483",
+            "FMA37386\tright abductor pollicis brevis\tFJ1483",
+            "FMA42380\tintrinsic muscle of hand\tFJ1483",
+            "FMA55665\tnonparenchymatous organ\tFJ1483",
+            "FMA55670\tsolid organ\tFJ1483",
+            "FMA61775\tphysical anatomical entity\tFJ1483",
+            "FMA62955\tanatomical entity\tFJ1483",
+            "FMA64916\tthenar muscle\tFJ1483",
+            "FMA67135\tanatomical structure\tFJ1483",
+            "FMA67165\tmaterial anatomical entity\tFJ1483",
+            "FMA67498\torgan\tFJ1483"
+          ]
+        }
+      ],
+      "triangles": 744,
+      "review": "pending"
+    },
+    {
+      "id": "flexor-pollicis-brevis",
+      "en": "Flexor pollicis brevis",
+      "he": "פלקסור פוליסיס ברביס",
+      "layer": "muscle",
+      "side": "right",
+      "regionId": "wrist_hand",
+      "sources": [
+        {
+          "elementId": "FJ1469M",
+          "sha256": "dbab9fdb424e8370bed0229f47af76209ab5f61613fc1c910d427a73e6ee8bd7",
+          "mappingRows": [
+            "FMA5022\tmuscle organ\tFJ1469M",
+            "FMA9621\tmuscle of upper limb\tFJ1469M",
+            "FMA37348\tmuscle of free upper limb\tFJ1469M",
+            "FMA37372\tmuscle of hand\tFJ1469M",
+            "FMA37378\tflexor pollicis brevis\tFJ1469M",
+            "FMA37388\tright flexor pollicis brevis\tFJ1469M",
+            "FMA42380\tintrinsic muscle of hand\tFJ1469M",
+            "FMA55665\tnonparenchymatous organ\tFJ1469M",
+            "FMA55670\tsolid organ\tFJ1469M",
+            "FMA61775\tphysical anatomical entity\tFJ1469M",
+            "FMA62955\tanatomical entity\tFJ1469M",
+            "FMA64916\tthenar muscle\tFJ1469M",
+            "FMA67135\tanatomical structure\tFJ1469M",
+            "FMA67165\tmaterial anatomical entity\tFJ1469M",
+            "FMA67498\torgan\tFJ1469M"
+          ]
+        }
+      ],
+      "triangles": 714,
+      "review": "pending"
+    }
+  ],
+  "unavailable": [
+    "separate-tendons",
+    "ligaments",
+    "nerves",
+    "cartilage",
+    "unlisted-muscles",
+    "forearm-context-bones"
+  ]
+}

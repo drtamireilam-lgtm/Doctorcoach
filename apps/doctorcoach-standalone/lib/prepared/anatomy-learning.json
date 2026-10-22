@@ -779,19 +779,19 @@
     "region": "forearm",
     "view": "front",
     "location": {
-      "he": "הצד הקדמי של האמה",
-      "en": "Anterior forearm"
+      "he": "השכבה השטחית הקדמית של האמה, בצד הרדיאלי",
+      "en": "Superficial anterior forearm on the radial side"
     },
     "origin": {
-      "he": "אפיקונדיל מדיאלי של עצם הזרוע",
-      "en": "Medial humeral epicondyle"
+      "he": "האפיקונדיל המדיאלי של עצם הזרוע דרך הגיד המכופף המשותף",
+      "en": "Medial humeral epicondyle via the common flexor origin"
     },
     "insertion": {
-      "he": "בסיסי עצמות המסרק השנייה והשלישית",
-      "en": "Bases of the second and third metacarpals"
+      "he": "בסיס עצם המסרק השנייה, עם שלוחה לשלישית",
+      "en": "Base of the second metacarpal with a slip to the third"
     },
     "action": {
-      "he": "כפיפה וסטייה רדיאלית של שורש כף היד",
+      "he": "כפיפה והטיה רדיאלית של שורש כף היד",
       "en": "Wrist flexion and radial deviation"
     },
     "joints": {
@@ -799,35 +799,51 @@
       "en": "Wrist"
     },
     "training": {
-      "he": "משתתף בכפיפות כף יד ובשליטת אחיזה",
-      "en": "Contributes to wrist curls and grip control"
+      "he": "משתתף בכפיפת שורש כף היד; כיוון העומס והאחיזה משפיעים על תרומתו",
+      "en": "Contributes to wrist curls; grip and load direction affect its contribution"
     },
     "source": "https://medicine.uams.edu/neuroscience/education/medical-school-courses/human-structure-module/anatomy-tables/muscle-tables/muscles-of-the-upper-limb/",
     "links": [
       {
         "id": "wrist-curl",
         "role": "primary"
+      },
+      {
+        "id": "wrist-flexion-eccentric",
+        "role": "primary"
       }
-    ]
+    ],
+    "innervation": {
+      "he": "העצב המדיאני",
+      "en": "Median nerve"
+    },
+    "innervationReference": "https://medicine.uams.edu/neuroscience/education/medical-school-courses/human-structure-module/anatomy-tables/muscle-tables/muscles-of-the-upper-limb/",
+    "contentReview": {
+      "status": "reference-checked; clinical review pending",
+      "checkedAt": "2026-10-22",
+      "sources": [
+        "https://medicine.uams.edu/neuroscience/education/medical-school-courses/human-structure-module/anatomy-tables/muscle-tables/muscles-of-the-upper-limb/"
+      ]
+    }
   },
   {
     "slug": "extensor-carpi-radialis-brevis",
     "region": "forearm",
-    "view": "back",
+    "view": "front",
     "location": {
-      "he": "הצד האחורי של האמה",
-      "en": "Posterior forearm"
+      "he": "המדור האחורי של האמה, עמוק בחלקו לאקסטנסור קרפי רדיאליס לונגוס",
+      "en": "Posterior forearm, partly deep to extensor carpi radialis longus"
     },
     "origin": {
-      "he": "הגיד המיישר המשותף באזור האפיקונדיל הלטרלי",
-      "en": "Common extensor origin at the lateral epicondyle"
+      "he": "האפיקונדיל הלטרלי של עצם הזרוע דרך הגיד הפושט המשותף",
+      "en": "Lateral humeral epicondyle via the common extensor origin"
     },
     "insertion": {
-      "he": "בסיס עצם המסרק השלישית",
-      "en": "Base of the third metacarpal"
+      "he": "הצד הגבי של בסיס המסרק השלישי",
+      "en": "Dorsal base of the third metacarpal"
     },
     "action": {
-      "he": "יישור וסטייה רדיאלית של שורש כף היד",
+      "he": "יישור והטיה רדיאלית של שורש כף היד",
       "en": "Wrist extension and radial deviation"
     },
     "joints": {
@@ -835,16 +851,32 @@
       "en": "Wrist"
     },
     "training": {
-      "he": "משתתף ביישור כף יד ובייצובה באחיזה",
-      "en": "Contributes to wrist extension and wrist control during gripping"
+      "he": "משתתף ביישור שורש כף היד ובייצובו בזמן אחיזה",
+      "en": "Contributes to wrist extension and stabilizes the wrist during gripping"
     },
-    "source": "https://medicine.uams.edu/neuroscience/education/medical-school-courses/human-structure-module/anatomy-tables/muscle-tables/muscles-of-the-upper-limb/",
+    "source": "https://rad.uw.edu/muscle-atlas/extensor-carpi-radialis-brevis",
     "links": [
       {
         "id": "wrist-ext",
         "role": "primary"
+      },
+      {
+        "id": "wrist-extension-eccentric",
+        "role": "primary"
       }
-    ]
+    ],
+    "innervation": {
+      "he": "הענף העמוק של העצב הרדיאלי",
+      "en": "Deep branch of radial nerve"
+    },
+    "innervationReference": "https://rad.uw.edu/muscle-atlas/extensor-carpi-radialis-brevis",
+    "contentReview": {
+      "status": "reference-checked; clinical review pending",
+      "checkedAt": "2026-10-22",
+      "sources": [
+        "https://rad.uw.edu/muscle-atlas/extensor-carpi-radialis-brevis"
+      ]
+    }
   },
   {
     "slug": "rectus-femoris",
@@ -1971,6 +2003,542 @@
       "source": "https://medicine.uams.edu/neuroscience/education/medical-school-courses/human-structure-module/anatomy-tables/muscle-tables/muscles-of-the-upper-limb/",
       "checkedAt": "2026-10-21",
       "status": "reference-checked; clinical review pending"
+    }
+  },
+  {
+    "slug": "coracobrachialis",
+    "region": "elbow",
+    "view": "front",
+    "source": "https://medicine.uams.edu/neuroscience/education/medical-school-courses/human-structure-module/anatomy-tables/muscle-tables/muscles-of-the-upper-limb/",
+    "links": [
+      {
+        "id": "overhead-press",
+        "role": "secondary"
+      }
+    ],
+    "location": {
+      "he": "בחלק המקורב והמדיאלי של הזרוע, עמוק לדו־ראשי ולידו",
+      "en": "Proximal medial arm, deep and medial to biceps"
+    },
+    "origin": {
+      "he": "זיז הקורקואיד של עצם השכמה",
+      "en": "Coracoid process of the scapula"
+    },
+    "insertion": {
+      "he": "המשטח המדיאלי של עצם הזרוע באזור אמצע הגוף",
+      "en": "Medial humeral shaft around its middle"
+    },
+    "action": {
+      "he": "כפיפה וקירוב של הזרוע בכתף",
+      "en": "Shoulder flexion and adduction"
+    },
+    "joints": {
+      "he": "כתף; אינו חוצה את המרפק",
+      "en": "Shoulder; does not cross the elbow"
+    },
+    "training": {
+      "he": "מסייע לתנועת הזרוע; אינו מכופף מרפק. בידוד המודל מסייע לראותו מתחת לדו־ראשי",
+      "en": "Assists arm movement, not elbow flexion. Isolate the mesh to see its position beneath biceps"
+    },
+    "innervation": {
+      "he": "העצב השרירי־עורי",
+      "en": "Musculocutaneous nerve"
+    },
+    "innervationReference": "https://medicine.uams.edu/neuroscience/education/medical-school-courses/human-structure-module/anatomy-tables/muscle-tables/muscles-of-the-upper-limb/",
+    "contentReview": {
+      "status": "reference-checked; clinical review pending",
+      "checkedAt": "2026-10-22",
+      "sources": [
+        "https://medicine.uams.edu/neuroscience/education/medical-school-courses/human-structure-module/anatomy-tables/muscle-tables/muscles-of-the-upper-limb/"
+      ]
+    }
+  },
+  {
+    "slug": "flexor-carpi-ulnaris",
+    "region": "forearm",
+    "view": "front",
+    "source": "https://medicine.uams.edu/neuroscience/education/medical-school-courses/human-structure-module/anatomy-tables/muscle-tables/muscles-of-the-upper-limb/",
+    "links": [
+      {
+        "id": "wrist-curl",
+        "role": "primary"
+      },
+      {
+        "id": "wrist-flexion-eccentric",
+        "role": "primary"
+      }
+    ],
+    "location": {
+      "he": "הצד האולנרי של האמה הקדמית",
+      "en": "Ulnar side of the anterior forearm"
+    },
+    "origin": {
+      "he": "ראש הומרלי: אפיקונדיל מדיאלי; ראש אולנרי: אולקרנון ושפת האולנה האחורית",
+      "en": "Humeral head: medial epicondyle; ulnar head: olecranon and posterior ulnar border"
+    },
+    "insertion": {
+      "he": "עצם העדשה; המשכיות רצועתית לאנקול ההמטום ולבסיס המסרק החמישי",
+      "en": "Pisiform, continuing through ligaments to the hook of hamate and fifth metacarpal base"
+    },
+    "action": {
+      "he": "כפיפה והטיה אולנרית של שורש כף היד",
+      "en": "Wrist flexion and ulnar deviation"
+    },
+    "joints": {
+      "he": "שורש כף היד",
+      "en": "Wrist"
+    },
+    "training": {
+      "he": "משתתף בכפיפת שורש כף היד ובהטייתו לצד האולנרי",
+      "en": "Contributes to wrist flexion and movement toward the ulnar side"
+    },
+    "innervation": {
+      "he": "העצב האולנרי",
+      "en": "Ulnar nerve"
+    },
+    "innervationReference": "https://medicine.uams.edu/neuroscience/education/medical-school-courses/human-structure-module/anatomy-tables/muscle-tables/muscles-of-the-upper-limb/",
+    "contentReview": {
+      "status": "reference-checked; clinical review pending",
+      "checkedAt": "2026-10-22",
+      "sources": [
+        "https://medicine.uams.edu/neuroscience/education/medical-school-courses/human-structure-module/anatomy-tables/muscle-tables/muscles-of-the-upper-limb/"
+      ]
+    }
+  },
+  {
+    "slug": "extensor-carpi-radialis-longus",
+    "region": "forearm",
+    "view": "front",
+    "source": "https://medicine.uams.edu/neuroscience/education/medical-school-courses/human-structure-module/anatomy-tables/muscle-tables/muscles-of-the-upper-limb/",
+    "links": [
+      {
+        "id": "wrist-ext",
+        "role": "primary"
+      },
+      {
+        "id": "farmer-carry",
+        "role": "stabilizer"
+      }
+    ],
+    "location": {
+      "he": "האמה האחורית־לטרלית, סמוך לברכיורדיאליס",
+      "en": "Posterolateral forearm beside brachioradialis"
+    },
+    "origin": {
+      "he": "החלק המרוחק של הרכס העל־קונדילרי הלטרלי של הזרוע",
+      "en": "Distal lateral supracondylar ridge of the humerus"
+    },
+    "insertion": {
+      "he": "הצד הגבי של בסיס המסרק השני",
+      "en": "Dorsal base of the second metacarpal"
+    },
+    "action": {
+      "he": "יישור והטיה רדיאלית של שורש כף היד",
+      "en": "Wrist extension and radial deviation"
+    },
+    "joints": {
+      "he": "שורש כף היד",
+      "en": "Wrist"
+    },
+    "training": {
+      "he": "מסייע ביישור ובייצוב שורש כף היד בזמן נשיאת משקל",
+      "en": "Assists wrist extension and stability during loaded gripping"
+    },
+    "innervation": {
+      "he": "העצב הרדיאלי",
+      "en": "Radial nerve"
+    },
+    "innervationReference": "https://medicine.uams.edu/neuroscience/education/medical-school-courses/human-structure-module/anatomy-tables/muscle-tables/muscles-of-the-upper-limb/",
+    "contentReview": {
+      "status": "reference-checked; clinical review pending",
+      "checkedAt": "2026-10-22",
+      "sources": [
+        "https://medicine.uams.edu/neuroscience/education/medical-school-courses/human-structure-module/anatomy-tables/muscle-tables/muscles-of-the-upper-limb/"
+      ]
+    }
+  },
+  {
+    "slug": "extensor-carpi-ulnaris",
+    "region": "forearm",
+    "view": "front",
+    "source": "https://medicine.uams.edu/neuroscience/education/medical-school-courses/human-structure-module/anatomy-tables/muscle-tables/muscles-of-the-upper-limb/",
+    "links": [
+      {
+        "id": "wrist-ext",
+        "role": "primary"
+      },
+      {
+        "id": "farmer-carry",
+        "role": "stabilizer"
+      }
+    ],
+    "location": {
+      "he": "הצד האולנרי של האמה האחורית",
+      "en": "Ulnar side of the posterior forearm"
+    },
+    "origin": {
+      "he": "האפיקונדיל הלטרלי והגבול האחורי של האולנה",
+      "en": "Lateral epicondyle and posterior border of the ulna"
+    },
+    "insertion": {
+      "he": "הצד הגבי של בסיס המסרק החמישי",
+      "en": "Dorsal base of the fifth metacarpal"
+    },
+    "action": {
+      "he": "יישור והטיה אולנרית של שורש כף היד",
+      "en": "Wrist extension and ulnar deviation"
+    },
+    "joints": {
+      "he": "שורש כף היד",
+      "en": "Wrist"
+    },
+    "training": {
+      "he": "משתתף ביישור ובייצוב אולנרי של שורש כף היד",
+      "en": "Contributes to wrist extension and ulnar-side wrist stability"
+    },
+    "innervation": {
+      "he": "הענף העמוק של העצב הרדיאלי, דרך העצב הבין־גרמי האחורי",
+      "en": "Deep radial branch via the posterior interosseous nerve"
+    },
+    "innervationReference": "https://medicine.uams.edu/neuroscience/education/medical-school-courses/human-structure-module/anatomy-tables/muscle-tables/muscles-of-the-upper-limb/",
+    "contentReview": {
+      "status": "reference-checked; clinical review pending",
+      "checkedAt": "2026-10-22",
+      "sources": [
+        "https://medicine.uams.edu/neuroscience/education/medical-school-courses/human-structure-module/anatomy-tables/muscle-tables/muscles-of-the-upper-limb/"
+      ]
+    }
+  },
+  {
+    "slug": "pronator-teres",
+    "region": "forearm",
+    "view": "front",
+    "source": "https://medicine.uams.edu/neuroscience/education/medical-school-courses/human-structure-module/anatomy-tables/muscle-tables/muscles-of-the-upper-limb/",
+    "links": [
+      {
+        "id": "forearm-pronation-band",
+        "role": "primary"
+      }
+    ],
+    "location": {
+      "he": "האמה הקדמית המקורבת, בכיוון אלכסוני לרדיוס",
+      "en": "Proximal anterior forearm, crossing obliquely toward the radius"
+    },
+    "origin": {
+      "he": "ראש הומרלי: אפיקונדיל מדיאלי; ראש אולנרי: זיז הקורונואיד",
+      "en": "Humeral head: medial epicondyle; ulnar head: coronoid process"
+    },
+    "insertion": {
+      "he": "אמצע המשטח הלטרלי של הרדיוס",
+      "en": "Middle of the lateral radial shaft"
+    },
+    "action": {
+      "he": "פרונציה של האמה; סיוע בכפיפת המרפק",
+      "en": "Forearm pronation; assists elbow flexion"
+    },
+    "joints": {
+      "he": "המפרקים הרדיו־אולנריים ומרפק",
+      "en": "Radioulnar joints and elbow"
+    },
+    "training": {
+      "he": "מסובב את האמה לכיוון כף יד מטה; התנועה נבדלת מכפיפת שורש כף היד",
+      "en": "Turns the forearm toward palm-down; this differs from wrist flexion"
+    },
+    "innervation": {
+      "he": "העצב המדיאני",
+      "en": "Median nerve"
+    },
+    "innervationReference": "https://medicine.uams.edu/neuroscience/education/medical-school-courses/human-structure-module/anatomy-tables/muscle-tables/muscles-of-the-upper-limb/",
+    "contentReview": {
+      "status": "reference-checked; clinical review pending",
+      "checkedAt": "2026-10-22",
+      "sources": [
+        "https://medicine.uams.edu/neuroscience/education/medical-school-courses/human-structure-module/anatomy-tables/muscle-tables/muscles-of-the-upper-limb/"
+      ]
+    }
+  },
+  {
+    "slug": "pronator-quadratus",
+    "region": "forearm",
+    "view": "front",
+    "source": "https://medicine.uams.edu/neuroscience/education/medical-school-courses/human-structure-module/anatomy-tables/muscle-tables/muscles-of-the-upper-limb/",
+    "links": [
+      {
+        "id": "forearm-pronation-band",
+        "role": "primary"
+      }
+    ],
+    "location": {
+      "he": "השכבה העמוקה הקדמית של האמה המרוחקת",
+      "en": "Deep anterior distal forearm"
+    },
+    "origin": {
+      "he": "הרבע המרוחק הקדמי של האולנה",
+      "en": "Anterior distal quarter of the ulna"
+    },
+    "insertion": {
+      "he": "הרבע המרוחק הקדמי של הרדיוס",
+      "en": "Anterior distal quarter of the radius"
+    },
+    "action": {
+      "he": "פרונציה של האמה",
+      "en": "Forearm pronation"
+    },
+    "joints": {
+      "he": "המפרקים הרדיו־אולנריים",
+      "en": "Radioulnar joints"
+    },
+    "training": {
+      "he": "משתתף בפרונציה; במודל הוא סמוך לשורש כף היד ועמוק למכופפים",
+      "en": "Contributes to pronation; lies close to the wrist, deep to the flexors"
+    },
+    "innervation": {
+      "he": "העצב הבין־גרמי הקדמי, ענף של המדיאני",
+      "en": "Anterior interosseous branch of the median nerve"
+    },
+    "innervationReference": "https://medicine.uams.edu/neuroscience/education/medical-school-courses/human-structure-module/anatomy-tables/muscle-tables/muscles-of-the-upper-limb/",
+    "contentReview": {
+      "status": "reference-checked; clinical review pending",
+      "checkedAt": "2026-10-22",
+      "sources": [
+        "https://medicine.uams.edu/neuroscience/education/medical-school-courses/human-structure-module/anatomy-tables/muscle-tables/muscles-of-the-upper-limb/"
+      ]
+    }
+  },
+  {
+    "slug": "supinator",
+    "region": "forearm",
+    "view": "front",
+    "source": "https://medicine.uams.edu/neuroscience/education/medical-school-courses/human-structure-module/anatomy-tables/muscle-tables/muscles-of-the-upper-limb/",
+    "links": [
+      {
+        "id": "forearm-supination-band",
+        "role": "primary"
+      }
+    ],
+    "location": {
+      "he": "סביב החלק המקורב של הרדיוס, בשכבה עמוקה",
+      "en": "Deep around the proximal radius"
+    },
+    "origin": {
+      "he": "אפיקונדיל לטרלי, רצועות רדיאלית ואנולרית, ורכס הסופינטור באולנה",
+      "en": "Lateral epicondyle, radial collateral and annular ligaments, and ulnar supinator crest"
+    },
+    "insertion": {
+      "he": "החלק המקורב של הרדיוס",
+      "en": "Proximal radius"
+    },
+    "action": {
+      "he": "סופינציה של האמה",
+      "en": "Forearm supination"
+    },
+    "joints": {
+      "he": "המפרקים הרדיו־אולנריים",
+      "en": "Radioulnar joints"
+    },
+    "training": {
+      "he": "מסובב את האמה לכיוון כף יד מעלה; פועל לצד הדו־ראשי",
+      "en": "Turns the forearm toward palm-up, working with biceps"
+    },
+    "innervation": {
+      "he": "הענף העמוק של העצב הרדיאלי",
+      "en": "Deep branch of radial nerve"
+    },
+    "innervationReference": "https://medicine.uams.edu/neuroscience/education/medical-school-courses/human-structure-module/anatomy-tables/muscle-tables/muscles-of-the-upper-limb/",
+    "contentReview": {
+      "status": "reference-checked; clinical review pending",
+      "checkedAt": "2026-10-22",
+      "sources": [
+        "https://medicine.uams.edu/neuroscience/education/medical-school-courses/human-structure-module/anatomy-tables/muscle-tables/muscles-of-the-upper-limb/"
+      ]
+    }
+  },
+  {
+    "slug": "adductor-pollicis",
+    "region": "wrist_hand",
+    "view": "front",
+    "source": "https://medicine.uams.edu/neuroscience/education/medical-school-courses/human-structure-module/anatomy-tables/muscle-tables/muscles-of-the-upper-limb/",
+    "links": [
+      {
+        "id": "grip-isometric",
+        "role": "secondary"
+      }
+    ],
+    "location": {
+      "he": "המדור העמוק של האגודל, בצד האולנרי של כרית האגודל",
+      "en": "Deep thumb compartment on the ulnar side of the thenar region"
+    },
+    "origin": {
+      "he": "ראש אלכסוני: קפיטייט ובסיסי מסרקים 2–3; ראש רוחבי: גוף המסרק השלישי",
+      "en": "Oblique head: capitate and second/third metacarpal bases; transverse head: third metacarpal shaft"
+    },
+    "insertion": {
+      "he": "הצד האולנרי של בסיס הגליל המקורב באגודל",
+      "en": "Ulnar side of the thumb proximal phalanx base"
+    },
+    "action": {
+      "he": "קירוב האגודל",
+      "en": "Thumb adduction"
+    },
+    "joints": {
+      "he": "מפרקי האגודל",
+      "en": "Thumb joints"
+    },
+    "training": {
+      "he": "תורם לצביטה ולייצוב האגודל כנגד האצבעות; אחיזה כללית אינה מבודדת אותו",
+      "en": "Contributes to pinch and thumb support against the fingers; general grip does not isolate it"
+    },
+    "innervation": {
+      "he": "הענף העמוק של העצב האולנרי",
+      "en": "Deep branch of the ulnar nerve"
+    },
+    "innervationReference": "https://medicine.uams.edu/neuroscience/education/medical-school-courses/human-structure-module/anatomy-tables/muscle-tables/muscles-of-the-upper-limb/",
+    "contentReview": {
+      "status": "reference-checked; clinical review pending",
+      "checkedAt": "2026-10-22",
+      "sources": [
+        "https://medicine.uams.edu/neuroscience/education/medical-school-courses/human-structure-module/anatomy-tables/muscle-tables/muscles-of-the-upper-limb/"
+      ]
+    }
+  },
+  {
+    "slug": "opponens-pollicis",
+    "region": "wrist_hand",
+    "view": "front",
+    "source": "https://medicine.uams.edu/neuroscience/education/medical-school-courses/human-structure-module/anatomy-tables/muscle-tables/muscles-of-the-upper-limb/",
+    "links": [
+      {
+        "id": "grip-isometric",
+        "role": "secondary"
+      }
+    ],
+    "location": {
+      "he": "כרית האגודל, עמוק לאבדקטור פוליסיס ברביס",
+      "en": "Thenar eminence, deep to abductor pollicis brevis"
+    },
+    "origin": {
+      "he": "הרטינקולום הפלקסורי ועצם הטרפז",
+      "en": "Flexor retinaculum and trapezium"
+    },
+    "insertion": {
+      "he": "המשטח הלטרלי של המסרק הראשון",
+      "en": "Lateral surface of the first metacarpal"
+    },
+    "action": {
+      "he": "אופוזיציה של האגודל באמצעות תנועת המסרק הראשון",
+      "en": "Thumb opposition through first-metacarpal movement"
+    },
+    "joints": {
+      "he": "המפרק הקרפו־מטקרפלי הראשון",
+      "en": "First carpometacarpal joint"
+    },
+    "training": {
+      "he": "מסייע בהבאת האגודל כנגד האצבעות בעת אחיזה",
+      "en": "Helps position the thumb against the fingers during gripping"
+    },
+    "innervation": {
+      "he": "הענף החוזר של העצב המדיאני",
+      "en": "Recurrent branch of the median nerve"
+    },
+    "innervationReference": "https://medicine.uams.edu/neuroscience/education/medical-school-courses/human-structure-module/anatomy-tables/muscle-tables/muscles-of-the-upper-limb/",
+    "contentReview": {
+      "status": "reference-checked; clinical review pending",
+      "checkedAt": "2026-10-22",
+      "sources": [
+        "https://medicine.uams.edu/neuroscience/education/medical-school-courses/human-structure-module/anatomy-tables/muscle-tables/muscles-of-the-upper-limb/"
+      ]
+    }
+  },
+  {
+    "slug": "abductor-pollicis-brevis",
+    "region": "wrist_hand",
+    "view": "front",
+    "source": "https://medicine.uams.edu/neuroscience/education/medical-school-courses/human-structure-module/anatomy-tables/muscle-tables/muscles-of-the-upper-limb/",
+    "links": [],
+    "location": {
+      "he": "השכבה השטחית של כרית האגודל",
+      "en": "Superficial thenar eminence"
+    },
+    "origin": {
+      "he": "הרטינקולום הפלקסורי, עצם הסירה ועצם הטרפז",
+      "en": "Flexor retinaculum, scaphoid and trapezium"
+    },
+    "insertion": {
+      "he": "הצד הרדיאלי של בסיס הגליל המקורב באגודל",
+      "en": "Radial side of the thumb proximal phalanx base"
+    },
+    "action": {
+      "he": "הרחקת האגודל ממישור כף היד",
+      "en": "Palmar abduction of the thumb"
+    },
+    "joints": {
+      "he": "מפרקי האגודל",
+      "en": "Thumb joints"
+    },
+    "training": {
+      "he": "מרחיק את האגודל בניצב למישור כף היד. אין כרגע בספרייה תרגיל ייעודי מקושר",
+      "en": "Moves the thumb away from the plane of the palm. No specific linked exercise is currently available"
+    },
+    "innervation": {
+      "he": "הענף החוזר של העצב המדיאני",
+      "en": "Recurrent branch of the median nerve"
+    },
+    "innervationReference": "https://medicine.uams.edu/neuroscience/education/medical-school-courses/human-structure-module/anatomy-tables/muscle-tables/muscles-of-the-upper-limb/",
+    "contentReview": {
+      "status": "reference-checked; clinical review pending",
+      "checkedAt": "2026-10-22",
+      "sources": [
+        "https://medicine.uams.edu/neuroscience/education/medical-school-courses/human-structure-module/anatomy-tables/muscle-tables/muscles-of-the-upper-limb/"
+      ]
+    }
+  },
+  {
+    "slug": "flexor-pollicis-brevis",
+    "region": "wrist_hand",
+    "view": "front",
+    "source": "https://medicine.uams.edu/neuroscience/education/medical-school-courses/human-structure-module/anatomy-tables/muscle-tables/muscles-of-the-upper-limb/",
+    "links": [
+      {
+        "id": "grip-isometric",
+        "role": "secondary"
+      }
+    ],
+    "location": {
+      "he": "כרית האגודל, בצד הפלקסורי",
+      "en": "Flexor side of the thenar eminence"
+    },
+    "origin": {
+      "he": "הרטינקולום הפלקסורי ועצם הטרפז; תיאור הראש השטחי",
+      "en": "Flexor retinaculum and trapezium; superficial-head description"
+    },
+    "insertion": {
+      "he": "הצד הרדיאלי של בסיס הגליל המקורב באגודל",
+      "en": "Radial side of the thumb proximal phalanx base"
+    },
+    "action": {
+      "he": "כפיפת האגודל במפרק המטקרפו־פלנגיאלי",
+      "en": "Thumb flexion at the metacarpophalangeal joint"
+    },
+    "joints": {
+      "he": "המפרק המטקרפו־פלנגיאלי של האגודל",
+      "en": "Thumb metacarpophalangeal joint"
+    },
+    "training": {
+      "he": "מסייע בכפיפת האגודל ובאחיזה; מבנה הראשים והעצבוב עשויים להשתנות",
+      "en": "Assists thumb flexion and grip; head anatomy and innervation may vary"
+    },
+    "innervation": {
+      "he": "בעיקר הענף החוזר המדיאני לראש השטחי; ייתכן עצבוב אולנרי או כפול, בעיקר בראש העמוק",
+      "en": "Mainly recurrent median supply to the superficial head; ulnar or dual supply may occur, especially in the deep head"
+    },
+    "innervationReference": "https://pubmed.ncbi.nlm.nih.gov/29290870/",
+    "contentReview": {
+      "status": "reference-checked; clinical review pending",
+      "checkedAt": "2026-10-22",
+      "sources": [
+        "https://medicine.uams.edu/neuroscience/education/medical-school-courses/human-structure-module/anatomy-tables/muscle-tables/muscles-of-the-upper-limb/",
+        "https://pubmed.ncbi.nlm.nih.gov/29290870/"
+      ]
     }
   }
 ]

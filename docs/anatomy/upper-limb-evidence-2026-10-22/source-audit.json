@@ -1,0 +1,659 @@
+{
+  "status": "source fidelity and mapping checked",
+  "clinicalReview": "pending",
+  "structures": [
+    {
+      "model": "arm",
+      "structure": "scapula",
+      "elements": [
+        "FJ3384"
+      ],
+      "sourceCoordinatesAndTriangles": "exact float32 match",
+      "rightSideEvidence": true,
+      "uniqueMaterial": true
+    },
+    {
+      "model": "arm",
+      "structure": "humerus",
+      "elements": [
+        "FJ3368"
+      ],
+      "sourceCoordinatesAndTriangles": "exact float32 match",
+      "rightSideEvidence": true,
+      "uniqueMaterial": true
+    },
+    {
+      "model": "arm",
+      "structure": "radius",
+      "elements": [
+        "FJ3349"
+      ],
+      "sourceCoordinatesAndTriangles": "exact float32 match",
+      "rightSideEvidence": true,
+      "uniqueMaterial": true
+    },
+    {
+      "model": "arm",
+      "structure": "ulna",
+      "elements": [
+        "FJ3391"
+      ],
+      "sourceCoordinatesAndTriangles": "exact float32 match",
+      "rightSideEvidence": true,
+      "uniqueMaterial": true
+    },
+    {
+      "model": "arm",
+      "structure": "biceps-brachii",
+      "elements": [
+        "FJ1512",
+        "FJ1478"
+      ],
+      "sourceCoordinatesAndTriangles": "exact float32 match",
+      "rightSideEvidence": true,
+      "uniqueMaterial": true
+    },
+    {
+      "model": "arm",
+      "structure": "triceps-brachii",
+      "elements": [
+        "FJ1477",
+        "FJ1479",
+        "FJ1480"
+      ],
+      "sourceCoordinatesAndTriangles": "exact float32 match",
+      "rightSideEvidence": true,
+      "uniqueMaterial": true
+    },
+    {
+      "model": "arm",
+      "structure": "brachialis",
+      "elements": [
+        "FJ1486"
+      ],
+      "sourceCoordinatesAndTriangles": "exact float32 match",
+      "rightSideEvidence": true,
+      "uniqueMaterial": true
+    },
+    {
+      "model": "arm",
+      "structure": "brachioradialis",
+      "elements": [
+        "FJ1487"
+      ],
+      "sourceCoordinatesAndTriangles": "exact float32 match",
+      "rightSideEvidence": true,
+      "uniqueMaterial": true
+    },
+    {
+      "model": "arm",
+      "structure": "coracobrachialis",
+      "elements": [
+        "FJ1488"
+      ],
+      "sourceCoordinatesAndTriangles": "exact float32 match",
+      "rightSideEvidence": true,
+      "uniqueMaterial": true
+    },
+    {
+      "model": "forearm",
+      "structure": "humerus",
+      "elements": [
+        "FJ3368"
+      ],
+      "sourceCoordinatesAndTriangles": "exact float32 match",
+      "rightSideEvidence": true,
+      "uniqueMaterial": true
+    },
+    {
+      "model": "forearm",
+      "structure": "radius",
+      "elements": [
+        "FJ3349"
+      ],
+      "sourceCoordinatesAndTriangles": "exact float32 match",
+      "rightSideEvidence": true,
+      "uniqueMaterial": true
+    },
+    {
+      "model": "forearm",
+      "structure": "ulna",
+      "elements": [
+        "FJ3391"
+      ],
+      "sourceCoordinatesAndTriangles": "exact float32 match",
+      "rightSideEvidence": true,
+      "uniqueMaterial": true
+    },
+    {
+      "model": "forearm",
+      "structure": "brachioradialis",
+      "elements": [
+        "FJ1487"
+      ],
+      "sourceCoordinatesAndTriangles": "exact float32 match",
+      "rightSideEvidence": true,
+      "uniqueMaterial": true
+    },
+    {
+      "model": "forearm",
+      "structure": "flexor-carpi-radialis",
+      "elements": [
+        "FJ1496"
+      ],
+      "sourceCoordinatesAndTriangles": "exact float32 match",
+      "rightSideEvidence": true,
+      "uniqueMaterial": true
+    },
+    {
+      "model": "forearm",
+      "structure": "flexor-carpi-ulnaris",
+      "elements": [
+        "FJ1473",
+        "FJ1518"
+      ],
+      "sourceCoordinatesAndTriangles": "exact float32 match",
+      "rightSideEvidence": true,
+      "uniqueMaterial": true
+    },
+    {
+      "model": "forearm",
+      "structure": "extensor-carpi-radialis-brevis",
+      "elements": [
+        "FJ1489"
+      ],
+      "sourceCoordinatesAndTriangles": "exact float32 match",
+      "rightSideEvidence": true,
+      "uniqueMaterial": true
+    },
+    {
+      "model": "forearm",
+      "structure": "extensor-carpi-radialis-longus",
+      "elements": [
+        "FJ1490"
+      ],
+      "sourceCoordinatesAndTriangles": "exact float32 match",
+      "rightSideEvidence": true,
+      "uniqueMaterial": true
+    },
+    {
+      "model": "forearm",
+      "structure": "extensor-carpi-ulnaris",
+      "elements": [
+        "FJ1472",
+        "FJ1517"
+      ],
+      "sourceCoordinatesAndTriangles": "exact float32 match",
+      "rightSideEvidence": true,
+      "uniqueMaterial": true
+    },
+    {
+      "model": "forearm",
+      "structure": "pronator-teres",
+      "elements": [
+        "FJ1474",
+        "FJ1516"
+      ],
+      "sourceCoordinatesAndTriangles": "exact float32 match",
+      "rightSideEvidence": true,
+      "uniqueMaterial": true
+    },
+    {
+      "model": "forearm",
+      "structure": "pronator-quadratus",
+      "elements": [
+        "FJ1503"
+      ],
+      "sourceCoordinatesAndTriangles": "exact float32 match",
+      "rightSideEvidence": true,
+      "uniqueMaterial": true
+    },
+    {
+      "model": "forearm",
+      "structure": "supinator",
+      "elements": [
+        "FJ1505"
+      ],
+      "sourceCoordinatesAndTriangles": "exact float32 match",
+      "rightSideEvidence": true,
+      "uniqueMaterial": true
+    },
+    {
+      "model": "hand",
+      "structure": "scaphoid",
+      "elements": [
+        "FJ3383"
+      ],
+      "sourceCoordinatesAndTriangles": "exact float32 match",
+      "rightSideEvidence": true,
+      "uniqueMaterial": true
+    },
+    {
+      "model": "hand",
+      "structure": "lunate",
+      "elements": [
+        "FJ3374"
+      ],
+      "sourceCoordinatesAndTriangles": "exact float32 match",
+      "rightSideEvidence": true,
+      "uniqueMaterial": true
+    },
+    {
+      "model": "hand",
+      "structure": "triquetrum",
+      "elements": [
+        "FJ3390"
+      ],
+      "sourceCoordinatesAndTriangles": "exact float32 match",
+      "rightSideEvidence": true,
+      "uniqueMaterial": true
+    },
+    {
+      "model": "hand",
+      "structure": "pisiform",
+      "elements": [
+        "FJ3382"
+      ],
+      "sourceCoordinatesAndTriangles": "exact float32 match",
+      "rightSideEvidence": true,
+      "uniqueMaterial": true
+    },
+    {
+      "model": "hand",
+      "structure": "trapezium",
+      "elements": [
+        "FJ3388"
+      ],
+      "sourceCoordinatesAndTriangles": "exact float32 match",
+      "rightSideEvidence": true,
+      "uniqueMaterial": true
+    },
+    {
+      "model": "hand",
+      "structure": "trapezoid",
+      "elements": [
+        "FJ3389"
+      ],
+      "sourceCoordinatesAndTriangles": "exact float32 match",
+      "rightSideEvidence": true,
+      "uniqueMaterial": true
+    },
+    {
+      "model": "hand",
+      "structure": "capitate",
+      "elements": [
+        "FJ3361"
+      ],
+      "sourceCoordinatesAndTriangles": "exact float32 match",
+      "rightSideEvidence": true,
+      "uniqueMaterial": true
+    },
+    {
+      "model": "hand",
+      "structure": "hamate",
+      "elements": [
+        "FJ3367"
+      ],
+      "sourceCoordinatesAndTriangles": "exact float32 match",
+      "rightSideEvidence": true,
+      "uniqueMaterial": true
+    },
+    {
+      "model": "hand",
+      "structure": "metacarpal-1",
+      "elements": [
+        "FJ3350"
+      ],
+      "sourceCoordinatesAndTriangles": "exact float32 match",
+      "rightSideEvidence": true,
+      "uniqueMaterial": true
+    },
+    {
+      "model": "hand",
+      "structure": "metacarpal-2",
+      "elements": [
+        "FJ3352"
+      ],
+      "sourceCoordinatesAndTriangles": "exact float32 match",
+      "rightSideEvidence": true,
+      "uniqueMaterial": true
+    },
+    {
+      "model": "hand",
+      "structure": "metacarpal-3",
+      "elements": [
+        "FJ3354"
+      ],
+      "sourceCoordinatesAndTriangles": "exact float32 match",
+      "rightSideEvidence": true,
+      "uniqueMaterial": true
+    },
+    {
+      "model": "hand",
+      "structure": "metacarpal-4",
+      "elements": [
+        "FJ3356"
+      ],
+      "sourceCoordinatesAndTriangles": "exact float32 match",
+      "rightSideEvidence": true,
+      "uniqueMaterial": true
+    },
+    {
+      "model": "hand",
+      "structure": "metacarpal-5",
+      "elements": [
+        "FJ3358"
+      ],
+      "sourceCoordinatesAndTriangles": "exact float32 match",
+      "rightSideEvidence": true,
+      "uniqueMaterial": true
+    },
+    {
+      "model": "hand",
+      "structure": "proximal-phalanx-1",
+      "elements": [
+        "FJ3327"
+      ],
+      "sourceCoordinatesAndTriangles": "exact float32 match",
+      "rightSideEvidence": true,
+      "uniqueMaterial": true
+    },
+    {
+      "model": "hand",
+      "structure": "distal-phalanx-1",
+      "elements": [
+        "FJ3198"
+      ],
+      "sourceCoordinatesAndTriangles": "exact float32 match",
+      "rightSideEvidence": true,
+      "uniqueMaterial": true
+    },
+    {
+      "model": "hand",
+      "structure": "proximal-phalanx-2",
+      "elements": [
+        "FJ3322"
+      ],
+      "sourceCoordinatesAndTriangles": "exact float32 match",
+      "rightSideEvidence": true,
+      "uniqueMaterial": true
+    },
+    {
+      "model": "hand",
+      "structure": "middle-phalanx-2",
+      "elements": [
+        "FJ3303"
+      ],
+      "sourceCoordinatesAndTriangles": "exact float32 match",
+      "rightSideEvidence": true,
+      "uniqueMaterial": true
+    },
+    {
+      "model": "hand",
+      "structure": "distal-phalanx-2",
+      "elements": [
+        "FJ3193"
+      ],
+      "sourceCoordinatesAndTriangles": "exact float32 match",
+      "rightSideEvidence": true,
+      "uniqueMaterial": true
+    },
+    {
+      "model": "hand",
+      "structure": "proximal-phalanx-3",
+      "elements": [
+        "FJ3325"
+      ],
+      "sourceCoordinatesAndTriangles": "exact float32 match",
+      "rightSideEvidence": true,
+      "uniqueMaterial": true
+    },
+    {
+      "model": "hand",
+      "structure": "middle-phalanx-3",
+      "elements": [
+        "FJ3306"
+      ],
+      "sourceCoordinatesAndTriangles": "exact float32 match",
+      "rightSideEvidence": true,
+      "uniqueMaterial": true
+    },
+    {
+      "model": "hand",
+      "structure": "distal-phalanx-3",
+      "elements": [
+        "FJ3196"
+      ],
+      "sourceCoordinatesAndTriangles": "exact float32 match",
+      "rightSideEvidence": true,
+      "uniqueMaterial": true
+    },
+    {
+      "model": "hand",
+      "structure": "proximal-phalanx-4",
+      "elements": [
+        "FJ3326"
+      ],
+      "sourceCoordinatesAndTriangles": "exact float32 match",
+      "rightSideEvidence": true,
+      "uniqueMaterial": true
+    },
+    {
+      "model": "hand",
+      "structure": "middle-phalanx-4",
+      "elements": [
+        "FJ3292"
+      ],
+      "sourceCoordinatesAndTriangles": "exact float32 match",
+      "rightSideEvidence": true,
+      "uniqueMaterial": true
+    },
+    {
+      "model": "hand",
+      "structure": "distal-phalanx-4",
+      "elements": [
+        "FJ3197"
+      ],
+      "sourceCoordinatesAndTriangles": "exact float32 match",
+      "rightSideEvidence": true,
+      "uniqueMaterial": true
+    },
+    {
+      "model": "hand",
+      "structure": "proximal-phalanx-5",
+      "elements": [
+        "FJ3323"
+      ],
+      "sourceCoordinatesAndTriangles": "exact float32 match",
+      "rightSideEvidence": true,
+      "uniqueMaterial": true
+    },
+    {
+      "model": "hand",
+      "structure": "middle-phalanx-5",
+      "elements": [
+        "FJ3304"
+      ],
+      "sourceCoordinatesAndTriangles": "exact float32 match",
+      "rightSideEvidence": true,
+      "uniqueMaterial": true
+    },
+    {
+      "model": "hand",
+      "structure": "distal-phalanx-5",
+      "elements": [
+        "FJ3194"
+      ],
+      "sourceCoordinatesAndTriangles": "exact float32 match",
+      "rightSideEvidence": true,
+      "uniqueMaterial": true
+    },
+    {
+      "model": "hand",
+      "structure": "adductor-pollicis",
+      "elements": [
+        "FJ1481",
+        "FJ1515"
+      ],
+      "sourceCoordinatesAndTriangles": "exact float32 match",
+      "rightSideEvidence": true,
+      "uniqueMaterial": true
+    },
+    {
+      "model": "hand",
+      "structure": "opponens-pollicis",
+      "elements": [
+        "FJ1501"
+      ],
+      "sourceCoordinatesAndTriangles": "exact float32 match",
+      "rightSideEvidence": true,
+      "uniqueMaterial": true
+    },
+    {
+      "model": "hand",
+      "structure": "abductor-pollicis-brevis",
+      "elements": [
+        "FJ1483"
+      ],
+      "sourceCoordinatesAndTriangles": "exact float32 match",
+      "rightSideEvidence": true,
+      "uniqueMaterial": true
+    },
+    {
+      "model": "hand",
+      "structure": "flexor-pollicis-brevis",
+      "elements": [
+        "FJ1469M"
+      ],
+      "sourceCoordinatesAndTriangles": "exact float32 match",
+      "rightSideEvidence": true,
+      "uniqueMaterial": true
+    },
+    {
+      "model": "shoulder",
+      "structure": "clavicle",
+      "elements": [
+        "FJ3362"
+      ],
+      "sourceCoordinatesAndTriangles": "exact float32 match",
+      "rightSideEvidence": true,
+      "uniqueMaterial": true
+    },
+    {
+      "model": "shoulder",
+      "structure": "scapula",
+      "elements": [
+        "FJ3384"
+      ],
+      "sourceCoordinatesAndTriangles": "exact float32 match",
+      "rightSideEvidence": true,
+      "uniqueMaterial": true
+    },
+    {
+      "model": "shoulder",
+      "structure": "humerus",
+      "elements": [
+        "FJ3368"
+      ],
+      "sourceCoordinatesAndTriangles": "exact float32 match",
+      "rightSideEvidence": true,
+      "uniqueMaterial": true
+    },
+    {
+      "model": "shoulder",
+      "structure": "deltoid",
+      "elements": [
+        "FJ1467",
+        "FJ1468",
+        "FJ1513"
+      ],
+      "sourceCoordinatesAndTriangles": "exact float32 match",
+      "rightSideEvidence": true,
+      "uniqueMaterial": true
+    },
+    {
+      "model": "shoulder",
+      "structure": "supraspinatus",
+      "elements": [
+        "FJ1506"
+      ],
+      "sourceCoordinatesAndTriangles": "exact float32 match",
+      "rightSideEvidence": true,
+      "uniqueMaterial": true
+    },
+    {
+      "model": "shoulder",
+      "structure": "infraspinatus",
+      "elements": [
+        "FJ1500"
+      ],
+      "sourceCoordinatesAndTriangles": "exact float32 match",
+      "rightSideEvidence": true,
+      "uniqueMaterial": true
+    },
+    {
+      "model": "shoulder",
+      "structure": "subscapularis",
+      "elements": [
+        "FJ1504"
+      ],
+      "sourceCoordinatesAndTriangles": "exact float32 match",
+      "rightSideEvidence": true,
+      "uniqueMaterial": true
+    },
+    {
+      "model": "shoulder",
+      "structure": "teres-minor",
+      "elements": [
+        "FJ1508"
+      ],
+      "sourceCoordinatesAndTriangles": "exact float32 match",
+      "rightSideEvidence": true,
+      "uniqueMaterial": true
+    },
+    {
+      "model": "shoulder",
+      "structure": "teres-major",
+      "elements": [
+        "FJ1507"
+      ],
+      "sourceCoordinatesAndTriangles": "exact float32 match",
+      "rightSideEvidence": true,
+      "uniqueMaterial": true
+    },
+    {
+      "model": "shoulder",
+      "structure": "trapezius",
+      "elements": [
+        "FJ1520",
+        "FJ1521",
+        "FJ1554"
+      ],
+      "sourceCoordinatesAndTriangles": "exact float32 match",
+      "rightSideEvidence": true,
+      "uniqueMaterial": true
+    },
+    {
+      "model": "shoulder",
+      "structure": "serratus-anterior",
+      "elements": [
+        "FJ1459"
+      ],
+      "sourceCoordinatesAndTriangles": "exact float32 match",
+      "rightSideEvidence": true,
+      "uniqueMaterial": true
+    },
+    {
+      "model": "shoulder",
+      "structure": "pectoralis-major",
+      "elements": [
+        "FJ1447",
+        "FJ1446",
+        "FJ1464"
+      ],
+      "sourceCoordinatesAndTriangles": "exact float32 match",
+      "rightSideEvidence": true,
+      "uniqueMaterial": true
+    }
+  ]
+}

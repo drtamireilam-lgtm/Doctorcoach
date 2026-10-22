@@ -25,7 +25,7 @@ export async function createAnatomyCanvas(host:HTMLElement,onSelect:(id:string|n
  model.position.sub(center);const radius=Math.max(size.x,size.y,size.z)*1.8;
  const camera=new THREE.PerspectiveCamera(35,1,.001,Math.max(10,radius*10));
  camera.position.set(0,0,radius);const controls=new OrbitControls(camera,renderer.domElement);
- controls.enablePan=false;controls.enableDamping=false;controls.minDistance=radius*.3;controls.maxDistance=radius*3;
+ controls.enablePan=false;controls.enableDamping=false;controls.minDistance=radius*(modelSpec.overview ? .3 : .03);controls.maxDistance=radius*3;
  // OrbitControls owns pinch/wheel; one-finger vertical movement remains page scrolling.
  renderer.domElement.style.touchAction='pan-y';
  renderer.domElement.setAttribute('aria-label',modelSpec.en);renderer.domElement.setAttribute('role','img');
@@ -44,7 +44,14 @@ export async function createAnatomyCanvas(host:HTMLElement,onSelect:(id:string|n
  const canvas=renderer.domElement;canvas.addEventListener('pointerdown',pointerDown);canvas.addEventListener('pointerup',pointerUp);canvas.addEventListener('pointercancel',cancel);
  function dispose(){if(disposed)return;disposed=true;observer.disconnect();controls.removeEventListener('change',render);controls.removeEventListener('end',remember);controls.dispose();canvas.removeEventListener('pointerdown',pointerDown);canvas.removeEventListener('pointerup',pointerUp);canvas.removeEventListener('pointercancel',cancel);releaseModel();renderer.dispose();renderer.forceContextLoss();canvas.remove();signal.removeEventListener('abort',dispose);}
  signal.addEventListener('abort',dispose,{once:true});
- return {dispose,snapshot,setView(view:AnatomyCamera){const positions={front:[0,0,radius],back:[0,0,-radius],left:[radius,0,0],right:[-radius,0,0]};camera.position.fromArray(positions[view]);controls.target.set(0,0,0);controls.update();render();remember();},update(selected:string|null,visible:ReadonlySet<AtlasLayer>,isolated:string|null=null){
+ return {dispose,snapshot,focus(id:string){
+  const mesh=meshes.find(m=>m.name===id&&m.visible);if(!mesh)return;
+  const bounds=new THREE.Box3().setFromObject(mesh),target=bounds.getCenter(new THREE.Vector3()),extent=bounds.getSize(new THREE.Vector3());
+  const direction=camera.position.clone().sub(controls.target).normalize();
+  const halfFov=Math.atan(Math.tan(THREE.MathUtils.degToRad(camera.fov)/2)*Math.min(camera.aspect,1));
+  const distance=Math.max(extent.length()/2/Math.sin(halfFov)*1.1,controls.minDistance*1.1);
+  controls.target.copy(target);camera.position.copy(target).addScaledVector(direction,distance);controls.update();render();remember();
+ },setView(view:AnatomyCamera){const positions={front:[0,0,radius],back:[0,0,-radius],left:[radius,0,0],right:[-radius,0,0]};camera.position.fromArray(positions[view]);controls.target.set(0,0,0);controls.update();render();remember();},update(selected:string|null,visible:ReadonlySet<AtlasLayer>,isolated:string|null=null){
   const shown=new Set(visibleStructureIds(modelSpec,visible,isolated));
   for(const mesh of meshes){const structure=modelSpec.structures.find(s=>s.id===mesh.name);if(!structure)continue;mesh.visible=shown.has(structure.id);
    const color=structure.id===selected?[.12,.65,1]:structure.layer==='bone'?[.88,.84,.71]:structure.layer==='surface'?[.32,.46,.59]:[.65,.18,.25];

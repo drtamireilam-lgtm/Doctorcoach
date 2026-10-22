@@ -1,0 +1,453 @@
+{
+  "assetId": "bp3d-4-forearm",
+  "sourceUrl": "https://dbarchive.biosciencedbc.jp/data/bodyparts3d/LATEST/isa_BP3D_4.0_obj_99.zip",
+  "creator": "The Database Center for Life Science",
+  "licenseId": "CC-BY-4.0",
+  "licenseUrl": "https://creativecommons.org/licenses/by/4.0/",
+  "licenseEvidence": "https://dbarchive.biosciencedbc.jp/en/bodyparts3d/lic.html",
+  "attribution": "BodyParts3D, © The Database Center for Life Science licensed under CC Attribution 4.0 International",
+  "modifications": "Explicit right-side BodyParts3D ELEMENT mapping; component heads combined only where named in the catalog; original source vertices/triangles retained, mm XYZ converted to metres X Z -Y; normals/materials added. No invented structures.",
+  "downloadedSubsetSha256": "87e7928be3e0fed96d78953f124725e1bd9b781e25514c8632ca78b8cde4a04c",
+  "glbSha256": "f59406fd015f4e813570d12fd9fd41b3a245b4c5e010daf9ce3acc52220fe50a",
+  "anatomicalReview": "pending",
+  "structures": [
+    {
+      "id": "humerus",
+      "en": "Humerus",
+      "he": "עצם הזרוע",
+      "layer": "bone",
+      "side": "right",
+      "regionId": "forearm",
+      "sources": [
+        {
+          "elementId": "FJ3368",
+          "sha256": "85f5445a11ecb029b027db0b9b34933982836d442b19ff531d1ca35a3bc3a237",
+          "mappingRows": [
+            "FMA5018\tbone organ\tFJ3368",
+            "FMA7474\tlong bone\tFJ3368",
+            "FMA13303\thumerus\tFJ3368",
+            "FMA23130\tright humerus\tFJ3368",
+            "FMA55671\tcavitated organ\tFJ3368",
+            "FMA55673\torgan with cavitated organ parts\tFJ3368",
+            "FMA61775\tphysical anatomical entity\tFJ3368",
+            "FMA62955\tanatomical entity\tFJ3368",
+            "FMA67135\tanatomical structure\tFJ3368",
+            "FMA67165\tmaterial anatomical entity\tFJ3368",
+            "FMA67498\torgan\tFJ3368"
+          ]
+        }
+      ],
+      "triangles": 3784,
+      "review": "pending"
+    },
+    {
+      "id": "radius",
+      "en": "Radius",
+      "he": "עצם החישור",
+      "layer": "bone",
+      "side": "right",
+      "regionId": "forearm",
+      "sources": [
+        {
+          "elementId": "FJ3349",
+          "sha256": "0f824e639b13ea02959734a0d9bd8d7ca67d0b51f531a138d769e1d3b22e0c98",
+          "mappingRows": [
+            "FMA5018\tbone organ\tFJ3349",
+            "FMA7474\tlong bone\tFJ3349",
+            "FMA23463\tradius\tFJ3349",
+            "FMA23464\tright radius\tFJ3349",
+            "FMA55671\tcavitated organ\tFJ3349",
+            "FMA55673\torgan with cavitated organ parts\tFJ3349",
+            "FMA61775\tphysical anatomical entity\tFJ3349",
+            "FMA62955\tanatomical entity\tFJ3349",
+            "FMA67135\tanatomical structure\tFJ3349",
+            "FMA67165\tmaterial anatomical entity\tFJ3349",
+            "FMA67498\torgan\tFJ3349"
+          ]
+        }
+      ],
+      "triangles": 672,
+      "review": "pending"
+    },
+    {
+      "id": "ulna",
+      "en": "Ulna",
+      "he": "עצם הגומד",
+      "layer": "bone",
+      "side": "right",
+      "regionId": "forearm",
+      "sources": [
+        {
+          "elementId": "FJ3391",
+          "sha256": "0aad73148e036c980ab24dfa675fcc1f109e5c60d82c12f3696420cf93cb4a98",
+          "mappingRows": [
+            "FMA5018\tbone organ\tFJ3391",
+            "FMA7474\tlong bone\tFJ3391",
+            "FMA23466\tulna\tFJ3391",
+            "FMA23467\tright ulna\tFJ3391",
+            "FMA55671\tcavitated organ\tFJ3391",
+            "FMA55673\torgan with cavitated organ parts\tFJ3391",
+            "FMA61775\tphysical anatomical entity\tFJ3391",
+            "FMA62955\tanatomical entity\tFJ3391",
+            "FMA67135\tanatomical structure\tFJ3391",
+            "FMA67165\tmaterial anatomical entity\tFJ3391",
+            "FMA67498\torgan\tFJ3391"
+          ]
+        }
+      ],
+      "triangles": 834,
+      "review": "pending"
+    },
+    {
+      "id": "brachioradialis",
+      "en": "Brachioradialis",
+      "he": "ברכיורדיאליס",
+      "layer": "muscle",
+      "side": "right",
+      "regionId": "forearm",
+      "sources": [
+        {
+          "elementId": "FJ1487",
+          "sha256": "0ff651a5417f240c6a5205bef5218336a61fe3474752cca1b483d02aae0b92ad",
+          "mappingRows": [
+            "FMA5022\tmuscle organ\tFJ1487",
+            "FMA9621\tmuscle of upper limb\tFJ1487",
+            "FMA37348\tmuscle of free upper limb\tFJ1487",
+            "FMA37371\tmuscle of forearm\tFJ1487",
+            "FMA38485\tbrachioradialis\tFJ1487",
+            "FMA38486\tright brachioradialis\tFJ1487",
+            "FMA38488\tmuscle of posterior compartment of forearm\tFJ1487",
+            "FMA38491\tsuperficial muscle of posterior compartment of forearm\tFJ1487",
+            "FMA55665\tnonparenchymatous organ\tFJ1487",
+            "FMA55670\tsolid organ\tFJ1487",
+            "FMA61775\tphysical anatomical entity\tFJ1487",
+            "FMA62955\tanatomical entity\tFJ1487",
+            "FMA67135\tanatomical structure\tFJ1487",
+            "FMA67165\tmaterial anatomical entity\tFJ1487",
+            "FMA67498\torgan\tFJ1487"
+          ]
+        }
+      ],
+      "triangles": 4874,
+      "review": "pending"
+    },
+    {
+      "id": "flexor-carpi-radialis",
+      "en": "Flexor carpi radialis",
+      "he": "פלקסור קרפי רדיאליס",
+      "layer": "muscle",
+      "side": "right",
+      "regionId": "forearm",
+      "sources": [
+        {
+          "elementId": "FJ1496",
+          "sha256": "8e83c638e2353bb8ba65547f4b846d89a1f393c4761806faf8e09970c9b6b6bf",
+          "mappingRows": [
+            "FMA5022\tmuscle organ\tFJ1496",
+            "FMA9621\tmuscle of upper limb\tFJ1496",
+            "FMA37348\tmuscle of free upper limb\tFJ1496",
+            "FMA37371\tmuscle of forearm\tFJ1496",
+            "FMA38456\tmuscle of anterior compartment of forearm\tFJ1496",
+            "FMA38459\tflexor carpi radialis\tFJ1496",
+            "FMA38460\tright flexor carpi radialis\tFJ1496",
+            "FMA38472\tsuperficial muscle of anterior compartment of forearm\tFJ1496",
+            "FMA55665\tnonparenchymatous organ\tFJ1496",
+            "FMA55670\tsolid organ\tFJ1496",
+            "FMA61775\tphysical anatomical entity\tFJ1496",
+            "FMA62955\tanatomical entity\tFJ1496",
+            "FMA67135\tanatomical structure\tFJ1496",
+            "FMA67165\tmaterial anatomical entity\tFJ1496",
+            "FMA67498\torgan\tFJ1496"
+          ]
+        }
+      ],
+      "triangles": 1148,
+      "review": "pending"
+    },
+    {
+      "id": "flexor-carpi-ulnaris",
+      "en": "Flexor carpi ulnaris",
+      "he": "פלקסור קרפי אולנריס",
+      "layer": "muscle",
+      "side": "right",
+      "regionId": "forearm",
+      "sources": [
+        {
+          "elementId": "FJ1473",
+          "sha256": "ccab7efb32e7b3cfc21039a138811f2972df5f2d91d23bbdbe63f13354774795",
+          "mappingRows": [
+            "FMA38615\thumeral head of flexor carpi ulnaris\tFJ1473",
+            "FMA38617\thumeral head of right flexor carpi ulnaris\tFJ1473",
+            "FMA45729\thead of organ\tFJ1473",
+            "FMA55268\torgan zone\tFJ1473",
+            "FMA61775\tphysical anatomical entity\tFJ1473",
+            "FMA62955\tanatomical entity\tFJ1473",
+            "FMA67135\tanatomical structure\tFJ1473",
+            "FMA67165\tmaterial anatomical entity\tFJ1473",
+            "FMA67619\torgan region\tFJ1473",
+            "FMA82472\tcardinal organ part\tFJ1473",
+            "FMA85453\thead of muscle organ\tFJ1473"
+          ]
+        },
+        {
+          "elementId": "FJ1518",
+          "sha256": "22abf242ce9d43dd9c6e02ef297b8e5982227a7ec1c7ead965674b92b476bad2",
+          "mappingRows": [
+            "FMA38616\tulnar head of flexor carpi ulnaris\tFJ1518",
+            "FMA38619\tulnar head of right flexor carpi ulnaris\tFJ1518",
+            "FMA45729\thead of organ\tFJ1518",
+            "FMA55268\torgan zone\tFJ1518",
+            "FMA61775\tphysical anatomical entity\tFJ1518",
+            "FMA62955\tanatomical entity\tFJ1518",
+            "FMA67135\tanatomical structure\tFJ1518",
+            "FMA67165\tmaterial anatomical entity\tFJ1518",
+            "FMA67619\torgan region\tFJ1518",
+            "FMA82472\tcardinal organ part\tFJ1518",
+            "FMA85453\thead of muscle organ\tFJ1518"
+          ]
+        }
+      ],
+      "triangles": 4194,
+      "review": "pending"
+    },
+    {
+      "id": "extensor-carpi-radialis-brevis",
+      "en": "Extensor carpi radialis brevis",
+      "he": "אקסטנסור קרפי רדיאליס ברביס",
+      "layer": "muscle",
+      "side": "right",
+      "regionId": "forearm",
+      "sources": [
+        {
+          "elementId": "FJ1489",
+          "sha256": "31ccd9ec738252ec2eae88cf68068679d0663425c98b8d90dcbca18b3cbd1988",
+          "mappingRows": [
+            "FMA5022\tmuscle organ\tFJ1489",
+            "FMA9621\tmuscle of upper limb\tFJ1489",
+            "FMA37348\tmuscle of free upper limb\tFJ1489",
+            "FMA37371\tmuscle of forearm\tFJ1489",
+            "FMA38488\tmuscle of posterior compartment of forearm\tFJ1489",
+            "FMA38491\tsuperficial muscle of posterior compartment of forearm\tFJ1489",
+            "FMA38497\textensor carpi radialis brevis\tFJ1489",
+            "FMA38498\tright extensor carpi radialis brevis\tFJ1489",
+            "FMA55665\tnonparenchymatous organ\tFJ1489",
+            "FMA55670\tsolid organ\tFJ1489",
+            "FMA61775\tphysical anatomical entity\tFJ1489",
+            "FMA62955\tanatomical entity\tFJ1489",
+            "FMA67135\tanatomical structure\tFJ1489",
+            "FMA67165\tmaterial anatomical entity\tFJ1489",
+            "FMA67498\torgan\tFJ1489"
+          ]
+        }
+      ],
+      "triangles": 2098,
+      "review": "pending"
+    },
+    {
+      "id": "extensor-carpi-radialis-longus",
+      "en": "Extensor carpi radialis longus",
+      "he": "אקסטנסור קרפי רדיאליס לונגוס",
+      "layer": "muscle",
+      "side": "right",
+      "regionId": "forearm",
+      "sources": [
+        {
+          "elementId": "FJ1490",
+          "sha256": "8b6ec821491a2eafaee8c813cfad4532beae94c354595cc3e922d8cdbb36fb32",
+          "mappingRows": [
+            "FMA5022\tmuscle organ\tFJ1490",
+            "FMA9621\tmuscle of upper limb\tFJ1490",
+            "FMA37348\tmuscle of free upper limb\tFJ1490",
+            "FMA37371\tmuscle of forearm\tFJ1490",
+            "FMA38488\tmuscle of posterior compartment of forearm\tFJ1490",
+            "FMA38491\tsuperficial muscle of posterior compartment of forearm\tFJ1490",
+            "FMA38494\textensor carpi radialis longus\tFJ1490",
+            "FMA38495\tright extensor carpi radialis longus\tFJ1490",
+            "FMA55665\tnonparenchymatous organ\tFJ1490",
+            "FMA55670\tsolid organ\tFJ1490",
+            "FMA61775\tphysical anatomical entity\tFJ1490",
+            "FMA62955\tanatomical entity\tFJ1490",
+            "FMA67135\tanatomical structure\tFJ1490",
+            "FMA67165\tmaterial anatomical entity\tFJ1490",
+            "FMA67498\torgan\tFJ1490"
+          ]
+        }
+      ],
+      "triangles": 2474,
+      "review": "pending"
+    },
+    {
+      "id": "extensor-carpi-ulnaris",
+      "en": "Extensor carpi ulnaris",
+      "he": "אקסטנסור קרפי אולנריס",
+      "layer": "muscle",
+      "side": "right",
+      "regionId": "forearm",
+      "sources": [
+        {
+          "elementId": "FJ1472",
+          "sha256": "f6aadd5b1df9440ec0c4fabf21641f72447d5190bcaf58f357e8b5a76b3f5889",
+          "mappingRows": [
+            "FMA5022\tmuscle organ\tFJ1472",
+            "FMA9621\tmuscle of upper limb\tFJ1472",
+            "FMA37348\tmuscle of free upper limb\tFJ1472",
+            "FMA37371\tmuscle of forearm\tFJ1472",
+            "FMA38488\tmuscle of posterior compartment of forearm\tFJ1472",
+            "FMA38491\tsuperficial muscle of posterior compartment of forearm\tFJ1472",
+            "FMA38506\textensor carpi ulnaris\tFJ1472",
+            "FMA38507\tright extensor carpi ulnaris\tFJ1472",
+            "FMA55665\tnonparenchymatous organ\tFJ1472",
+            "FMA55670\tsolid organ\tFJ1472",
+            "FMA61775\tphysical anatomical entity\tFJ1472",
+            "FMA62955\tanatomical entity\tFJ1472",
+            "FMA67135\tanatomical structure\tFJ1472",
+            "FMA67165\tmaterial anatomical entity\tFJ1472",
+            "FMA67498\torgan\tFJ1472"
+          ]
+        },
+        {
+          "elementId": "FJ1517",
+          "sha256": "e6a4cec704d3601a33704b40ee1f3f7bce484017dd563d1f4d2da43331b3ffce",
+          "mappingRows": [
+            "FMA5022\tmuscle organ\tFJ1517",
+            "FMA9621\tmuscle of upper limb\tFJ1517",
+            "FMA37348\tmuscle of free upper limb\tFJ1517",
+            "FMA37371\tmuscle of forearm\tFJ1517",
+            "FMA38488\tmuscle of posterior compartment of forearm\tFJ1517",
+            "FMA38491\tsuperficial muscle of posterior compartment of forearm\tFJ1517",
+            "FMA38506\textensor carpi ulnaris\tFJ1517",
+            "FMA38507\tright extensor carpi ulnaris\tFJ1517",
+            "FMA55665\tnonparenchymatous organ\tFJ1517",
+            "FMA55670\tsolid organ\tFJ1517",
+            "FMA61775\tphysical anatomical entity\tFJ1517",
+            "FMA62955\tanatomical entity\tFJ1517",
+            "FMA67135\tanatomical structure\tFJ1517",
+            "FMA67165\tmaterial anatomical entity\tFJ1517",
+            "FMA67498\torgan\tFJ1517"
+          ]
+        }
+      ],
+      "triangles": 3394,
+      "review": "pending"
+    },
+    {
+      "id": "pronator-teres",
+      "en": "Pronator teres",
+      "he": "פרונטור טרס",
+      "layer": "muscle",
+      "side": "right",
+      "regionId": "forearm",
+      "sources": [
+        {
+          "elementId": "FJ1474",
+          "sha256": "589e18d8dd9eac471404fae1035b01476ed0021af1cb2822c8c759164a2a45ba",
+          "mappingRows": [
+            "FMA38558\thumeral head of pronator teres\tFJ1474",
+            "FMA38560\thumeral head of right pronator teres\tFJ1474",
+            "FMA45729\thead of organ\tFJ1474",
+            "FMA55268\torgan zone\tFJ1474",
+            "FMA61775\tphysical anatomical entity\tFJ1474",
+            "FMA62955\tanatomical entity\tFJ1474",
+            "FMA67135\tanatomical structure\tFJ1474",
+            "FMA67165\tmaterial anatomical entity\tFJ1474",
+            "FMA67619\torgan region\tFJ1474",
+            "FMA82472\tcardinal organ part\tFJ1474",
+            "FMA85453\thead of muscle organ\tFJ1474"
+          ]
+        },
+        {
+          "elementId": "FJ1516",
+          "sha256": "62058afdb37b3637c21f7ad15fe681acced1e36c986190a692f1733cb0a79760",
+          "mappingRows": [
+            "FMA38559\tulnar head of pronator teres\tFJ1516",
+            "FMA38562\tulnar head of right pronator teres\tFJ1516",
+            "FMA45729\thead of organ\tFJ1516",
+            "FMA55268\torgan zone\tFJ1516",
+            "FMA61775\tphysical anatomical entity\tFJ1516",
+            "FMA62955\tanatomical entity\tFJ1516",
+            "FMA67135\tanatomical structure\tFJ1516",
+            "FMA67165\tmaterial anatomical entity\tFJ1516",
+            "FMA67619\torgan region\tFJ1516",
+            "FMA82472\tcardinal organ part\tFJ1516",
+            "FMA85453\thead of muscle organ\tFJ1516"
+          ]
+        }
+      ],
+      "triangles": 2886,
+      "review": "pending"
+    },
+    {
+      "id": "pronator-quadratus",
+      "en": "Pronator quadratus",
+      "he": "פרונטור קוואדרטוס",
+      "layer": "muscle",
+      "side": "right",
+      "regionId": "forearm",
+      "sources": [
+        {
+          "elementId": "FJ1503",
+          "sha256": "04adea4b7060a08c9d734ea78156525b3d3983fc1da0601ac151198985e78cfd",
+          "mappingRows": [
+            "FMA5022\tmuscle organ\tFJ1503",
+            "FMA9621\tmuscle of upper limb\tFJ1503",
+            "FMA37348\tmuscle of free upper limb\tFJ1503",
+            "FMA37371\tmuscle of forearm\tFJ1503",
+            "FMA38453\tpronator quadratus\tFJ1503",
+            "FMA38454\tright pronator quadratus\tFJ1503",
+            "FMA38456\tmuscle of anterior compartment of forearm\tFJ1503",
+            "FMA38475\tdeep muscle of anterior compartment of forearm\tFJ1503",
+            "FMA55665\tnonparenchymatous organ\tFJ1503",
+            "FMA55670\tsolid organ\tFJ1503",
+            "FMA61775\tphysical anatomical entity\tFJ1503",
+            "FMA62955\tanatomical entity\tFJ1503",
+            "FMA67135\tanatomical structure\tFJ1503",
+            "FMA67165\tmaterial anatomical entity\tFJ1503",
+            "FMA67498\torgan\tFJ1503"
+          ]
+        }
+      ],
+      "triangles": 1838,
+      "review": "pending"
+    },
+    {
+      "id": "supinator",
+      "en": "Supinator",
+      "he": "סופינטור",
+      "layer": "muscle",
+      "side": "right",
+      "regionId": "forearm",
+      "sources": [
+        {
+          "elementId": "FJ1505",
+          "sha256": "83c5940f2c6516ecf5b0eb69de5dc0a056177b29f7bc046b94cc20c85460ae46",
+          "mappingRows": [
+            "FMA5022\tmuscle organ\tFJ1505",
+            "FMA9621\tmuscle of upper limb\tFJ1505",
+            "FMA37348\tmuscle of free upper limb\tFJ1505",
+            "FMA37371\tmuscle of forearm\tFJ1505",
+            "FMA38488\tmuscle of posterior compartment of forearm\tFJ1505",
+            "FMA38509\tdeep muscle of posterior compartment of forearm\tFJ1505",
+            "FMA38512\tsupinator\tFJ1505",
+            "FMA38513\tright supinator\tFJ1505",
+            "FMA55665\tnonparenchymatous organ\tFJ1505",
+            "FMA55670\tsolid organ\tFJ1505",
+            "FMA61775\tphysical anatomical entity\tFJ1505",
+            "FMA62955\tanatomical entity\tFJ1505",
+            "FMA67135\tanatomical structure\tFJ1505",
+            "FMA67165\tmaterial anatomical entity\tFJ1505",
+            "FMA67498\torgan\tFJ1505"
+          ]
+        }
+      ],
+      "triangles": 3110,
+      "review": "pending"
+    }
+  ],
+  "unavailable": [
+    "separate-tendons",
+    "ligaments",
+    "nerves",
+    "cartilage",
+    "unlisted-muscles"
+  ]
+}
