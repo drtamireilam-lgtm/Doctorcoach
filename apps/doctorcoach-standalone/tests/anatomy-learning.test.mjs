@@ -4,6 +4,7 @@ import {readFileSync} from 'node:fs';
 import ts from 'typescript';
 import {learningCards,exerciseMuscles,anatomyHash,readAnatomyHash,anatomyMatches,anatomyLabels,regionNames} from '../lib/anatomy-learning.ts';
 import {exercises} from '../lib/content.ts';
+import {rehabExercises} from '../lib/rehab-exercises.ts';
 import {platform,doctor,client} from './platform-db.mjs';
 import {communityStore} from '../lib/community-store.ts';
 const json=name=>JSON.parse(readFileSync(new URL('../lib/prepared/'+name+'.json',import.meta.url)));
@@ -69,7 +70,7 @@ test('exercise catalog IDs and anatomy links remain unique and coverage does not
 });
 
 test('rehabilitation anatomy coverage remains at integrated baseline',()=>{
- const rehabIds=new Set(exercises.filter(e=>e.kind==='שיקום'||e.kind==='סביב פציעה').map(e=>e.id));
+ const rehabIds=new Set(rehabExercises.map(e=>e.id));
  const linkedRehab=new Set(learningCards.flatMap(card=>card.links.map(link=>link.id)).filter(id=>rehabIds.has(id)));
  assert.ok(linkedRehab.size>=26,'Rehabilitation anatomy links regressed');
 });
