@@ -516,6 +516,10 @@
       {
         "id": "band-er",
         "role": "primary"
+      },
+      {
+        "id": "side-lying-external-rotation",
+        "role": "primary"
       }
     ],
     "innervation": {
@@ -561,6 +565,10 @@
       {
         "id": "band-er",
         "role": "primary"
+      },
+      {
+        "id": "side-lying-external-rotation",
+        "role": "secondary"
       }
     ],
     "innervation": {
@@ -711,6 +719,10 @@
     "links": [
       {
         "id": "wall-slide",
+        "role": "primary"
+      },
+      {
+        "id": "push-up-plus",
         "role": "primary"
       }
     ],
@@ -971,6 +983,14 @@
       {
         "id": "leg-extension-isometric",
         "role": "primary"
+      },
+      {
+        "id": "wall-sit",
+        "role": "secondary"
+      },
+      {
+        "id": "step-down",
+        "role": "secondary"
       }
     ],
     "innervation": {
@@ -1043,6 +1063,14 @@
       {
         "id": "leg-extension-isometric",
         "role": "primary"
+      },
+      {
+        "id": "wall-sit",
+        "role": "primary"
+      },
+      {
+        "id": "step-down",
+        "role": "primary"
       }
     ],
     "innervation": {
@@ -1114,6 +1142,14 @@
       },
       {
         "id": "leg-extension-isometric",
+        "role": "primary"
+      },
+      {
+        "id": "wall-sit",
+        "role": "primary"
+      },
+      {
+        "id": "step-down",
         "role": "primary"
       }
     ],
@@ -1251,6 +1287,14 @@
       {
         "id": "deadlift",
         "role": "secondary"
+      },
+      {
+        "id": "hamstring-bridge",
+        "role": "primary"
+      },
+      {
+        "id": "nordic-hamstring",
+        "role": "primary"
       }
     ],
     "innervation": {
@@ -1367,6 +1411,14 @@
       {
         "id": "deadlift",
         "role": "secondary"
+      },
+      {
+        "id": "hamstring-bridge",
+        "role": "primary"
+      },
+      {
+        "id": "nordic-hamstring",
+        "role": "primary"
       }
     ],
     "innervation": {
@@ -1431,6 +1483,14 @@
       {
         "id": "deadlift",
         "role": "secondary"
+      },
+      {
+        "id": "hamstring-bridge",
+        "role": "primary"
+      },
+      {
+        "id": "nordic-hamstring",
+        "role": "primary"
       }
     ],
     "innervation": {
@@ -1503,6 +1563,14 @@
       {
         "id": "deadlift",
         "role": "secondary"
+      },
+      {
+        "id": "single-leg-glute-bridge",
+        "role": "primary"
+      },
+      {
+        "id": "single-leg-rdl",
+        "role": "secondary"
       }
     ],
     "innervation": {
@@ -1563,6 +1631,14 @@
       {
         "id": "clamshell",
         "role": "secondary"
+      },
+      {
+        "id": "single-leg-glute-bridge",
+        "role": "stabilizer"
+      },
+      {
+        "id": "single-leg-rdl",
+        "role": "stabilizer"
       }
     ],
     "innervation": {
@@ -2035,6 +2111,10 @@
       {
         "id": "hanging-knee",
         "role": "secondary"
+      },
+      {
+        "id": "mcgill-curl-up",
+        "role": "primary"
       }
     ],
     "innervation": {
