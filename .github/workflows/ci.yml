@@ -50,9 +50,13 @@ jobs:
         run: npm test
       - name: Standalone TypeScript
         run: npm run typecheck
-      - name: Install anatomy browser
+      - name: Select runner anatomy browser
         if: startsWith(github.ref, 'refs/heads/feature/anatomy-completion-')
-        run: pnpm exec playwright install --with-deps chromium
+        timeout-minutes: 1
+        run: |
+          browser_path="$(command -v google-chrome)"
+          test -x "$browser_path"
+          echo "ANATOMY_CHROMIUM=$browser_path" >> "$GITHUB_ENV"
       - name: Anatomy viewer controls and bundled model smoke
         if: startsWith(github.ref, 'refs/heads/feature/anatomy-completion-')
         run: node scripts/anatomy/viewer-controls-smoke.mjs
