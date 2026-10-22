@@ -1866,37 +1866,6 @@
     }
   },
   {
-    "slug": "sternocleidomastoid",
-    "region": "cervical_neck",
-    "view": "front",
-    "location": {
-      "he": "קדמת הצוואר בצדדים",
-      "en": "Anterolateral neck"
-    },
-    "origin": {
-      "he": "עצם החזה והבריח המדיאלי",
-      "en": "Sternum and medial clavicle"
-    },
-    "insertion": {
-      "he": "זיז המסטואיד והקו העורפי העליון",
-      "en": "Mastoid process and superior nuchal line"
-    },
-    "action": {
-      "he": "כפיפה צידית לאותו צד וסיבוב לצד הנגדי; פעולה דו־צדדית מורכבת",
-      "en": "Ipsilateral side-bending and contralateral rotation; bilateral action varies with head position"
-    },
-    "joints": {
-      "he": "ראש וצוואר",
-      "en": "Head and cervical spine"
-    },
-    "training": {
-      "he": "מסייע בתנועות ראש וצוואר; תרגול יותאם בידי הצוות",
-      "en": "Contributes to head and neck movement; training is individualized by the team"
-    },
-    "source": "https://openstax.org/books/anatomy-and-physiology-2e/pages/11-3-axial-muscles-of-the-head-neck-and-back",
-    "links": []
-  },
-  {
     "slug": "erector-spinae",
     "region": "lower_back_spine",
     "view": "back",
@@ -4147,5 +4116,520 @@
         "role": "stabilizer"
       }
     ]
+  },
+  {
+    "slug": "sternocleidomastoid",
+    "region": "cervical_neck",
+    "view": "front",
+    "location": {
+      "he": "הצוואר וחיבורי הראש או חגורת הכתפיים",
+      "en": "Neck and attachments to the head or shoulder girdle"
+    },
+    "origin": {
+      "he": "מנובריום ושליש מדיאלי של עצם הבריח",
+      "en": "Manubrium and medial third of clavicle"
+    },
+    "insertion": {
+      "he": "זיז המסטואיד והחלק הלטרלי של הקו העורפי העליון",
+      "en": "Mastoid process and lateral superior nuchal line"
+    },
+    "action": {
+      "he": "כפיפה צידית לאותו צד וסיבוב לצד הנגדי; פעולה דו־צדדית תלויה במנח הראש",
+      "en": "Same-side lateral flexion and opposite-side rotation; bilateral action depends on head position"
+    },
+    "joints": {
+      "he": "עמוד השדרה הצווארי ומפרקי הראש העליונים",
+      "en": "Cervical spine and upper head-neck joints"
+    },
+    "training": {
+      "he": "תרגול בשליטה ובטווח שנבחר עם הצוות. הקישור מציין השתתפות בתנועה ואינו מבטיח בידוד שריר או טיפול בכאב.",
+      "en": "Use controlled movement in a range selected with the team. Links indicate participation, not guaranteed isolation or pain treatment."
+    },
+    "innervation": {
+      "he": "עצב הלוואי XI מוטורי; תחושה עמוקה מענפים צוואריים C2–C3",
+      "en": "Accessory nerve XI for motor supply; C2–C3 proprioceptive contributions"
+    },
+    "innervationReference": {
+      "source": "https://medicine.uams.edu/neuroscience/education/medical-school-courses/human-structure-module/anatomy-tables/muscle-tables/muscles-of-the-head-and-neck/",
+      "checkedAt": "2026-10-22",
+      "status": "reference-checked; clinical review pending"
+    },
+    "source": "https://medicine.uams.edu/neuroscience/education/medical-school-courses/human-structure-module/anatomy-tables/muscle-tables/muscles-of-the-head-and-neck/",
+    "links": [
+      {
+        "id": "cervical-isometric-rotation",
+        "role": "stabilizer"
+      }
+    ]
+  },
+  {
+    "slug": "levator-scapulae",
+    "region": "cervical_neck",
+    "view": "back",
+    "location": {
+      "he": "הצוואר וחיבורי הראש או חגורת הכתפיים",
+      "en": "Neck and attachments to the head or shoulder girdle"
+    },
+    "origin": {
+      "he": "זיזים רוחביים C1–C4",
+      "en": "Transverse processes C1–C4"
+    },
+    "insertion": {
+      "he": "הגבול המדיאלי העליון של השכמה",
+      "en": "Upper medial scapular border"
+    },
+    "action": {
+      "he": "הרמת השכמה; סיוע בכפיפה צידית של הצוואר כשהשכמה מקובעת",
+      "en": "Scapular elevation; assists neck side-bending with the scapula fixed"
+    },
+    "joints": {
+      "he": "חגורת הכתפיים ועמוד השדרה הצווארי",
+      "en": "Shoulder girdle and cervical spine"
+    },
+    "training": {
+      "he": "תרגול בשליטה ובטווח שנבחר עם הצוות. הקישור מציין השתתפות בתנועה ואינו מבטיח בידוד שריר או טיפול בכאב.",
+      "en": "Use controlled movement in a range selected with the team. Links indicate participation, not guaranteed isolation or pain treatment."
+    },
+    "innervation": {
+      "he": "עצב השכמה הגבי, בעיקר C5, וענפים C3–C4",
+      "en": "Dorsal scapular nerve, chiefly C5, and C3–C4 branches"
+    },
+    "innervationReference": {
+      "source": "https://medicine.uams.edu/neuroscience/education/medical-school-courses/human-structure-module/anatomy-tables/muscle-tables/muscles-of-the-back-region/",
+      "checkedAt": "2026-10-22",
+      "status": "reference-checked; clinical review pending"
+    },
+    "source": "https://medicine.uams.edu/neuroscience/education/medical-school-courses/human-structure-module/anatomy-tables/muscle-tables/muscles-of-the-back-region/",
+    "links": [
+      {
+        "id": "shrug",
+        "role": "secondary"
+      }
+    ]
+  },
+  {
+    "slug": "scalenes",
+    "region": "cervical_neck",
+    "view": "front",
+    "location": {
+      "he": "הצוואר וחיבורי הראש או חגורת הכתפיים",
+      "en": "Neck and attachments to the head or shoulder girdle"
+    },
+    "origin": {
+      "he": "זיזים רוחביים צוואריים, לפי השריר בקבוצה",
+      "en": "Cervical transverse processes, varying by component"
+    },
+    "insertion": {
+      "he": "הסקאלנים הקדמי והאמצעי: צלע 1; האחורי: צלע 2",
+      "en": "Anterior and middle scalenes: first rib; posterior scalene: second rib"
+    },
+    "action": {
+      "he": "כפיפה צידית וסיוע בכפיפת הצוואר ובהרמת צלעות עליונות",
+      "en": "Lateral neck flexion; assists neck flexion and upper-rib elevation"
+    },
+    "joints": {
+      "he": "עמוד השדרה הצווארי; חיבורי הצלעות העליונות בנשימה",
+      "en": "Cervical spine; upper-rib articulations during breathing"
+    },
+    "training": {
+      "he": "תרגול בשליטה ובטווח שנבחר עם הצוות. הקישור מציין השתתפות בתנועה ואינו מבטיח בידוד שריר או טיפול בכאב.",
+      "en": "Use controlled movement in a range selected with the team. Links indicate participation, not guaranteed isolation or pain treatment."
+    },
+    "innervation": {
+      "he": "ענפים קדמיים של עצבים צוואריים, בקירוב C3–C8 לפי השריר; קיימת שונות",
+      "en": "Anterior rami of cervical nerves, approximately C3–C8 by component; variable"
+    },
+    "innervationReference": {
+      "source": "https://medicine.uams.edu/neuroscience/education/medical-school-courses/human-structure-module/anatomy-tables/muscle-tables/muscles-of-the-head-and-neck/",
+      "checkedAt": "2026-10-22",
+      "status": "reference-checked; clinical review pending"
+    },
+    "source": "https://medicine.uams.edu/neuroscience/education/medical-school-courses/human-structure-module/anatomy-tables/muscle-tables/muscles-of-the-head-and-neck/",
+    "links": []
+  },
+  {
+    "slug": "longus-capitis",
+    "region": "cervical_neck",
+    "view": "front",
+    "location": {
+      "he": "הצוואר וחיבורי הראש או חגורת הכתפיים",
+      "en": "Neck and attachments to the head or shoulder girdle"
+    },
+    "origin": {
+      "he": "הגבשושיות הקדמיות בזיזים רוחביים C3–C6",
+      "en": "Anterior tubercles of C3–C6 transverse processes"
+    },
+    "insertion": {
+      "he": "החלק הבזילרי של עצם העורף",
+      "en": "Basilar occipital bone"
+    },
+    "action": {
+      "he": "כפיפת הראש במפרקי העורף־אטלס",
+      "en": "Head flexion at the atlanto-occipital joints"
+    },
+    "joints": {
+      "he": "מפרקי העורף־אטלס; לפי הפעולה גם האטלס־ציר",
+      "en": "Atlanto-occipital joints; atlanto-axial joints according to the action"
+    },
+    "training": {
+      "he": "תרגול בשליטה ובטווח שנבחר עם הצוות. הקישור מציין השתתפות בתנועה ואינו מבטיח בידוד שריר או טיפול בכאב.",
+      "en": "Use controlled movement in a range selected with the team. Links indicate participation, not guaranteed isolation or pain treatment."
+    },
+    "innervation": {
+      "he": "ענפים קדמיים של עצבים צוואריים עליונים, בדרך כלל C1–C3",
+      "en": "Anterior rami of upper cervical nerves, usually C1–C3"
+    },
+    "innervationReference": {
+      "source": "https://www.elsevier.com/resources/anatomy/muscular-system/muscles-of-neck/longus-capitis-muscle/19819",
+      "checkedAt": "2026-10-22",
+      "status": "reference-checked; clinical review pending"
+    },
+    "source": "https://www.elsevier.com/resources/anatomy/muscular-system/muscles-of-neck/longus-capitis-muscle/19819",
+    "links": [
+      {
+        "id": "deep-neck-flexor-hold",
+        "role": "primary"
+      }
+    ]
+  },
+  {
+    "slug": "splenius-capitis",
+    "region": "cervical_neck",
+    "view": "back",
+    "location": {
+      "he": "הצוואר וחיבורי הראש או חגורת הכתפיים",
+      "en": "Neck and attachments to the head or shoulder girdle"
+    },
+    "origin": {
+      "he": "רצועת העורף וזיזים קוציים בקירוב C7–T3",
+      "en": "Nuchal ligament and spinous processes approximately C7–T3"
+    },
+    "insertion": {
+      "he": "זיז המסטואיד והקו העורפי העליון בצד הלטרלי",
+      "en": "Mastoid process and lateral superior nuchal line"
+    },
+    "action": {
+      "he": "יישור הראש; סיבוב לאותו צד בכיווץ חד־צדי",
+      "en": "Head extension; same-side rotation on unilateral contraction"
+    },
+    "joints": {
+      "he": "עמוד השדרה הצווארי ומפרקי הראש העליונים",
+      "en": "Cervical spine and upper head-neck joints"
+    },
+    "training": {
+      "he": "תרגול בשליטה ובטווח שנבחר עם הצוות. הקישור מציין השתתפות בתנועה ואינו מבטיח בידוד שריר או טיפול בכאב.",
+      "en": "Use controlled movement in a range selected with the team. Links indicate participation, not guaranteed isolation or pain treatment."
+    },
+    "innervation": {
+      "he": "ענפים אחוריים של עצבים צוואריים, בעיקר C2–C3",
+      "en": "Posterior rami of cervical nerves, chiefly C2–C3"
+    },
+    "innervationReference": {
+      "source": "https://www.elsevier.com/resources/anatomy/muscular-system/muscles-of-back/splenius-capitis-muscle/24194",
+      "checkedAt": "2026-10-22",
+      "status": "reference-checked; clinical review pending"
+    },
+    "source": "https://www.elsevier.com/resources/anatomy/muscular-system/muscles-of-back/splenius-capitis-muscle/24194",
+    "links": [
+      {
+        "id": "cervical-isometric-rotation",
+        "role": "stabilizer"
+      }
+    ]
+  },
+  {
+    "slug": "splenius-cervicis",
+    "region": "cervical_neck",
+    "view": "back",
+    "location": {
+      "he": "הצוואר וחיבורי הראש או חגורת הכתפיים",
+      "en": "Neck and attachments to the head or shoulder girdle"
+    },
+    "origin": {
+      "he": "זיזים קוציים T3–T6",
+      "en": "Spinous processes T3–T6"
+    },
+    "insertion": {
+      "he": "זיזים רוחביים C1–C3, עם שונות בגובה החיבורים",
+      "en": "Transverse processes C1–C3, with variable attachment levels"
+    },
+    "action": {
+      "he": "יישור הצוואר; סיבוב וכפיפה צידית לאותו צד",
+      "en": "Neck extension; same-side rotation and lateral flexion"
+    },
+    "joints": {
+      "he": "מפרקי עמוד השדרה הצווארי",
+      "en": "Cervical intervertebral joints"
+    },
+    "training": {
+      "he": "תרגול בשליטה ובטווח שנבחר עם הצוות. הקישור מציין השתתפות בתנועה ואינו מבטיח בידוד שריר או טיפול בכאב.",
+      "en": "Use controlled movement in a range selected with the team. Links indicate participation, not guaranteed isolation or pain treatment."
+    },
+    "innervation": {
+      "he": "ענפים אחוריים של עצבים צוואריים תחתונים",
+      "en": "Posterior rami of lower cervical nerves"
+    },
+    "innervationReference": {
+      "source": "https://www.elsevier.com/resources/anatomy/muscular-system/muscles-of-back/splenius-colli-muscle/18089",
+      "checkedAt": "2026-10-22",
+      "status": "reference-checked; clinical review pending"
+    },
+    "source": "https://www.elsevier.com/resources/anatomy/muscular-system/muscles-of-back/splenius-colli-muscle/18089",
+    "links": [
+      {
+        "id": "cervical-isometric-rotation",
+        "role": "stabilizer"
+      }
+    ]
+  },
+  {
+    "slug": "semispinalis-capitis",
+    "region": "cervical_neck",
+    "view": "back",
+    "location": {
+      "he": "הצוואר וחיבורי הראש או חגורת הכתפיים",
+      "en": "Neck and attachments to the head or shoulder girdle"
+    },
+    "origin": {
+      "he": "זיזים מפרקיים C4–C7 וזיזים רוחביים T1–T6",
+      "en": "Articular processes C4–C7 and transverse processes T1–T6"
+    },
+    "insertion": {
+      "he": "עצם העורף בין הקווים העורפיים",
+      "en": "Occipital bone between the nuchal lines"
+    },
+    "action": {
+      "he": "יישור הראש; סיבוב לצד הנגדי בכיווץ חד־צדי",
+      "en": "Head extension; opposite-side rotation on unilateral contraction"
+    },
+    "joints": {
+      "he": "עמוד השדרה הצווארי ומפרקי הראש העליונים",
+      "en": "Cervical spine and upper head-neck joints"
+    },
+    "training": {
+      "he": "תרגול בשליטה ובטווח שנבחר עם הצוות. הקישור מציין השתתפות בתנועה ואינו מבטיח בידוד שריר או טיפול בכאב.",
+      "en": "Use controlled movement in a range selected with the team. Links indicate participation, not guaranteed isolation or pain treatment."
+    },
+    "innervation": {
+      "he": "ענפים אחוריים של עצבים צוואריים, בעיקר C2–C3",
+      "en": "Posterior rami of cervical nerves, chiefly C2–C3"
+    },
+    "innervationReference": {
+      "source": "https://www.elsevier.com/resources/anatomy/muscular-system/muscles-of-back/semispinalis-capitis-muscle/23896",
+      "checkedAt": "2026-10-22",
+      "status": "reference-checked; clinical review pending"
+    },
+    "source": "https://www.elsevier.com/resources/anatomy/muscular-system/muscles-of-back/semispinalis-capitis-muscle/23896",
+    "links": [
+      {
+        "id": "cervical-isometric-rotation",
+        "role": "stabilizer"
+      }
+    ]
+  },
+  {
+    "slug": "upper-trapezius",
+    "region": "cervical_neck",
+    "view": "back",
+    "location": {
+      "he": "הצוואר וחיבורי הראש או חגורת הכתפיים",
+      "en": "Neck and attachments to the head or shoulder girdle"
+    },
+    "origin": {
+      "he": "עצם העורף ורצועת העורף",
+      "en": "Occipital bone and nuchal ligament"
+    },
+    "insertion": {
+      "he": "השליש הלטרלי של עצם הבריח",
+      "en": "Lateral third of clavicle"
+    },
+    "action": {
+      "he": "הרמת חגורת הכתפיים וסיוע בסיבוב השכמה מעלה",
+      "en": "Shoulder-girdle elevation and assistance in upward scapular rotation"
+    },
+    "joints": {
+      "he": "חגורת הכתפיים והתנועה השכמתית־חזית",
+      "en": "Shoulder girdle and scapulothoracic movement"
+    },
+    "training": {
+      "he": "תרגול בשליטה ובטווח שנבחר עם הצוות. הקישור מציין השתתפות בתנועה ואינו מבטיח בידוד שריר או טיפול בכאב.",
+      "en": "Use controlled movement in a range selected with the team. Links indicate participation, not guaranteed isolation or pain treatment."
+    },
+    "innervation": {
+      "he": "מוטורי: עצב הלוואי XI; תחושה עמוקה: C3–C4",
+      "en": "Motor: accessory nerve XI; proprioception: C3–C4"
+    },
+    "innervationReference": {
+      "source": "https://medicine.uams.edu/neuroscience/education/medical-school-courses/human-structure-module/anatomy-tables/muscle-tables/muscles-of-the-back-region/",
+      "checkedAt": "2026-10-22",
+      "status": "reference-checked; clinical review pending"
+    },
+    "source": "https://medicine.uams.edu/neuroscience/education/medical-school-courses/human-structure-module/anatomy-tables/muscle-tables/muscles-of-the-back-region/",
+    "links": [
+      {
+        "id": "shrug",
+        "role": "primary"
+      }
+    ]
+  },
+  {
+    "slug": "rectus-capitis-posterior-major",
+    "region": "cervical_neck",
+    "view": "back",
+    "location": {
+      "he": "הצוואר וחיבורי הראש או חגורת הכתפיים",
+      "en": "Neck and attachments to the head or shoulder girdle"
+    },
+    "origin": {
+      "he": "הזיז הקוצי של C2",
+      "en": "Spinous process of C2"
+    },
+    "insertion": {
+      "he": "החלק הלטרלי של הקו העורפי התחתון",
+      "en": "Lateral inferior nuchal line"
+    },
+    "action": {
+      "he": "יישור הראש וסיוע בסיבוב לאותו צד",
+      "en": "Head extension and assistance in same-side rotation"
+    },
+    "joints": {
+      "he": "מפרקי העורף־אטלס; לפי הפעולה גם האטלס־ציר",
+      "en": "Atlanto-occipital joints; atlanto-axial joints according to the action"
+    },
+    "training": {
+      "he": "תרגול בשליטה ובטווח שנבחר עם הצוות. הקישור מציין השתתפות בתנועה ואינו מבטיח בידוד שריר או טיפול בכאב.",
+      "en": "Use controlled movement in a range selected with the team. Links indicate participation, not guaranteed isolation or pain treatment."
+    },
+    "innervation": {
+      "he": "העצב התת־עורפי, הענף האחורי של C1",
+      "en": "Suboccipital nerve, posterior ramus of C1"
+    },
+    "innervationReference": {
+      "source": "https://www.lumen.luc.edu/lumen/meded/grossanatomy/dissector/muscles/rpmj.htm",
+      "checkedAt": "2026-10-22",
+      "status": "reference-checked; clinical review pending"
+    },
+    "source": "https://www.lumen.luc.edu/lumen/meded/grossanatomy/dissector/muscles/rpmj.htm",
+    "links": []
+  },
+  {
+    "slug": "rectus-capitis-posterior-minor",
+    "region": "cervical_neck",
+    "view": "back",
+    "location": {
+      "he": "הצוואר וחיבורי הראש או חגורת הכתפיים",
+      "en": "Neck and attachments to the head or shoulder girdle"
+    },
+    "origin": {
+      "he": "הגבשושית האחורית של C1",
+      "en": "Posterior tubercle of C1"
+    },
+    "insertion": {
+      "he": "החלק המדיאלי של הקו העורפי התחתון",
+      "en": "Medial inferior nuchal line"
+    },
+    "action": {
+      "he": "סיוע ביישור הראש ובשליטה במנח העורף",
+      "en": "Assists head extension and upper-neck postural control"
+    },
+    "joints": {
+      "he": "מפרקי העורף־אטלס; לפי הפעולה גם האטלס־ציר",
+      "en": "Atlanto-occipital joints; atlanto-axial joints according to the action"
+    },
+    "training": {
+      "he": "תרגול בשליטה ובטווח שנבחר עם הצוות. הקישור מציין השתתפות בתנועה ואינו מבטיח בידוד שריר או טיפול בכאב.",
+      "en": "Use controlled movement in a range selected with the team. Links indicate participation, not guaranteed isolation or pain treatment."
+    },
+    "innervation": {
+      "he": "העצב התת־עורפי, הענף האחורי של C1",
+      "en": "Suboccipital nerve, posterior ramus of C1"
+    },
+    "innervationReference": {
+      "source": "https://www.lumen.luc.edu/lumen/meded/grossanatomy/dissector/muscles/rpmn.htm",
+      "checkedAt": "2026-10-22",
+      "status": "reference-checked; clinical review pending"
+    },
+    "source": "https://www.lumen.luc.edu/lumen/meded/grossanatomy/dissector/muscles/rpmn.htm",
+    "links": []
+  },
+  {
+    "slug": "obliquus-capitis-superior",
+    "region": "cervical_neck",
+    "view": "back",
+    "location": {
+      "he": "הצוואר וחיבורי הראש או חגורת הכתפיים",
+      "en": "Neck and attachments to the head or shoulder girdle"
+    },
+    "origin": {
+      "he": "הזיז הרוחבי של C1",
+      "en": "Transverse process of C1"
+    },
+    "insertion": {
+      "he": "עצם העורף מעל הקו העורפי התחתון",
+      "en": "Occipital bone above the inferior nuchal line"
+    },
+    "action": {
+      "he": "סיוע ביישור הראש ובכפיפה צידית לאותו צד",
+      "en": "Assists head extension and same-side lateral flexion"
+    },
+    "joints": {
+      "he": "מפרקי העורף־אטלס; לפי הפעולה גם האטלס־ציר",
+      "en": "Atlanto-occipital joints; atlanto-axial joints according to the action"
+    },
+    "training": {
+      "he": "תרגול בשליטה ובטווח שנבחר עם הצוות. הקישור מציין השתתפות בתנועה ואינו מבטיח בידוד שריר או טיפול בכאב.",
+      "en": "Use controlled movement in a range selected with the team. Links indicate participation, not guaranteed isolation or pain treatment."
+    },
+    "innervation": {
+      "he": "העצב התת־עורפי, הענף האחורי של C1",
+      "en": "Suboccipital nerve, posterior ramus of C1"
+    },
+    "innervationReference": {
+      "source": "https://www.lumen.luc.edu/lumen/meded/grossanatomy/dissector/muscles/obcs.htm",
+      "checkedAt": "2026-10-22",
+      "status": "reference-checked; clinical review pending"
+    },
+    "source": "https://www.lumen.luc.edu/lumen/meded/grossanatomy/dissector/muscles/obcs.htm",
+    "links": []
+  },
+  {
+    "slug": "obliquus-capitis-inferior",
+    "region": "cervical_neck",
+    "view": "back",
+    "location": {
+      "he": "הצוואר וחיבורי הראש או חגורת הכתפיים",
+      "en": "Neck and attachments to the head or shoulder girdle"
+    },
+    "origin": {
+      "he": "הזיז הקוצי של C2",
+      "en": "Spinous process of C2"
+    },
+    "insertion": {
+      "he": "הזיז הרוחבי של C1",
+      "en": "Transverse process of C1"
+    },
+    "action": {
+      "he": "סיבוב האטלס והראש לאותו צד ביחס ל־C2",
+      "en": "Same-side rotation of atlas and head relative to C2"
+    },
+    "joints": {
+      "he": "מפרקי האטלס־ציר, C1–C2",
+      "en": "Atlanto-axial joints, C1–C2"
+    },
+    "training": {
+      "he": "תרגול בשליטה ובטווח שנבחר עם הצוות. הקישור מציין השתתפות בתנועה ואינו מבטיח בידוד שריר או טיפול בכאב.",
+      "en": "Use controlled movement in a range selected with the team. Links indicate participation, not guaranteed isolation or pain treatment."
+    },
+    "innervation": {
+      "he": "העצב התת־עורפי, הענף האחורי של C1",
+      "en": "Suboccipital nerve, posterior ramus of C1"
+    },
+    "innervationReference": {
+      "source": "https://www.lumen.luc.edu/lumen/meded/grossanatomy/dissector/muscles/obci.htm",
+      "checkedAt": "2026-10-22",
+      "status": "reference-checked; clinical review pending"
+    },
+    "source": "https://www.lumen.luc.edu/lumen/meded/grossanatomy/dissector/muscles/obci.htm",
+    "links": []
   }
 ]

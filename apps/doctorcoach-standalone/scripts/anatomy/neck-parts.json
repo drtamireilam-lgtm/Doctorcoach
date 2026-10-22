@@ -1,0 +1,296 @@
+{
+  "neck": [
+    [
+      "cervical-1",
+      "Cervical vertebra 1",
+      "חוליה צווארית 1",
+      "bone",
+      [
+        "FJ3176"
+      ]
+    ],
+    [
+      "cervical-2",
+      "Cervical vertebra 2",
+      "חוליה צווארית 2",
+      "bone",
+      [
+        "FJ3177"
+      ]
+    ],
+    [
+      "cervical-3",
+      "Cervical vertebra 3",
+      "חוליה צווארית 3",
+      "bone",
+      [
+        "FJ3161"
+      ]
+    ],
+    [
+      "cervical-4",
+      "Cervical vertebra 4",
+      "חוליה צווארית 4",
+      "bone",
+      [
+        "FJ3164"
+      ]
+    ],
+    [
+      "cervical-5",
+      "Cervical vertebra 5",
+      "חוליה צווארית 5",
+      "bone",
+      [
+        "FJ3167"
+      ]
+    ],
+    [
+      "cervical-6",
+      "Cervical vertebra 6",
+      "חוליה צווארית 6",
+      "bone",
+      [
+        "FJ3170"
+      ]
+    ],
+    [
+      "cervical-7",
+      "Cervical vertebra 7",
+      "חוליה צווארית 7",
+      "bone",
+      [
+        "FJ3172"
+      ]
+    ],
+    [
+      "thoracic-1",
+      "Thoracic vertebra 1",
+      "חוליה חזית 1",
+      "bone",
+      [
+        "FJ3158"
+      ]
+    ],
+    [
+      "thoracic-2",
+      "Thoracic vertebra 2",
+      "חוליה חזית 2",
+      "bone",
+      [
+        "FJ3160"
+      ]
+    ],
+    [
+      "thoracic-3",
+      "Thoracic vertebra 3",
+      "חוליה חזית 3",
+      "bone",
+      [
+        "FJ3163"
+      ]
+    ],
+    [
+      "thoracic-4",
+      "Thoracic vertebra 4",
+      "חוליה חזית 4",
+      "bone",
+      [
+        "FJ3166"
+      ]
+    ],
+    [
+      "thoracic-5",
+      "Thoracic vertebra 5",
+      "חוליה חזית 5",
+      "bone",
+      [
+        "FJ3169"
+      ]
+    ],
+    [
+      "thoracic-6",
+      "Thoracic vertebra 6",
+      "חוליה חזית 6",
+      "bone",
+      [
+        "FJ3171"
+      ]
+    ],
+    [
+      "scapula",
+      "Scapula",
+      "עצם השכמה",
+      "bone",
+      [
+        "FJ3384"
+      ]
+    ],
+    [
+      "clavicle",
+      "Clavicle",
+      "עצם הבריח",
+      "bone",
+      [
+        "FJ3362"
+      ]
+    ],
+    [
+      "rib-1",
+      "Rib 1",
+      "צלע 1",
+      "bone",
+      [
+        "FJ3334"
+      ]
+    ],
+    [
+      "rib-2",
+      "Rib 2",
+      "צלע 2",
+      "bone",
+      [
+        "FJ3336"
+      ]
+    ],
+    [
+      "sternum",
+      "Sternum — attachment context",
+      "עצם החזה — הקשר לחיבורי השרירים",
+      "bone",
+      [
+        "FJ3290",
+        "FJ3178",
+        "FJ3153"
+      ]
+    ],
+    [
+      "occipital-bone",
+      "Occipital bone",
+      "עצם העורף",
+      "bone",
+      [
+        "FJ3309"
+      ]
+    ],
+    [
+      "temporal-bone",
+      "Temporal bone",
+      "עצם הרקה",
+      "bone",
+      [
+        "FJ3386"
+      ]
+    ],
+    [
+      "sternocleidomastoid",
+      "Sternocleidomastoid",
+      "סטרנוקליידומסטואיד",
+      "muscle",
+      [
+        "FJ1595"
+      ]
+    ],
+    [
+      "levator-scapulae",
+      "Levator scapulae",
+      "מרים השכמה",
+      "muscle",
+      [
+        "FJ1532"
+      ]
+    ],
+    [
+      "scalenes",
+      "Scalenes — anterior, middle and posterior",
+      "סקאלנים — קדמי, אמצעי ואחורי",
+      "muscle",
+      [
+        "FJ1592",
+        "FJ1593",
+        "FJ1594"
+      ]
+    ],
+    [
+      "longus-capitis",
+      "Longus capitis",
+      "לונגוס קפיטיס",
+      "muscle",
+      [
+        "FJ1582"
+      ]
+    ],
+    [
+      "splenius-capitis",
+      "Splenius capitis",
+      "ספלניוס קפיטיס",
+      "muscle",
+      [
+        "FJ1545"
+      ]
+    ],
+    [
+      "splenius-cervicis",
+      "Splenius cervicis",
+      "ספלניוס סרוויסיס",
+      "muscle",
+      [
+        "FJ1546"
+      ]
+    ],
+    [
+      "semispinalis-capitis",
+      "Semispinalis capitis",
+      "סמיספינאליס קפיטיס",
+      "muscle",
+      [
+        "FJ1538"
+      ]
+    ],
+    [
+      "upper-trapezius",
+      "Upper trapezius — descending part",
+      "טרפזיוס עליון — החלק היורד",
+      "muscle",
+      [
+        "FJ1521"
+      ]
+    ],
+    [
+      "rectus-capitis-posterior-major",
+      "Rectus capitis posterior major",
+      "הישר האחורי הגדול של הראש",
+      "muscle",
+      [
+        "FJ1589"
+      ]
+    ],
+    [
+      "rectus-capitis-posterior-minor",
+      "Rectus capitis posterior minor",
+      "הישר האחורי הקטן של הראש",
+      "muscle",
+      [
+        "FJ1590"
+      ]
+    ],
+    [
+      "obliquus-capitis-superior",
+      "Obliquus capitis superior",
+      "האלכסוני העליון של הראש",
+      "muscle",
+      [
+        "FJ1585"
+      ]
+    ],
+    [
+      "obliquus-capitis-inferior",
+      "Obliquus capitis inferior",
+      "האלכסוני התחתון של הראש",
+      "muscle",
+      [
+        "FJ1584"
+      ]
+    ]
+  ]
+}

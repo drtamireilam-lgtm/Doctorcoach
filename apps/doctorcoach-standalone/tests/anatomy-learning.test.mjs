@@ -20,7 +20,7 @@ test('all retained muscles remain searchable and have a reachable region',()=>{
 });
 test('main muscle cards contain original bilingual attachment and training summaries',()=>{
  assert.ok(learningCards.length>=42);assert.equal(new Set(learningCards.map(c=>c.slug)).size,learningCards.length);
- for(const c of learningCards){assert.ok(canonical.has(c.slug),c.slug);assert.ok(regionNames[c.region]);for(const key of ['location','origin','insertion','action','joints','training']){assert.ok(c[key].he.trim(),c.slug+key);assert.ok(/[\u0590-\u05ff]/.test(c[key].he));assert.ok(c[key].en.trim());assert.ok(!/[\u0590-\u05ff]/.test(c[key].en),c.slug+key);}assert.ok(['medicine.uams.edu','openstax.org','rad.uw.edu','www.elsevier.com'].includes(new URL(c.source).hostname));}
+ for(const c of learningCards){assert.ok(canonical.has(c.slug),c.slug);assert.ok(regionNames[c.region]);for(const key of ['location','origin','insertion','action','joints','training']){assert.ok(c[key].he.trim(),c.slug+key);assert.ok(/[\u0590-\u05ff]/.test(c[key].he));assert.ok(c[key].en.trim());assert.ok(!/[\u0590-\u05ff]/.test(c[key].en),c.slug+key);}assert.ok(['medicine.uams.edu','openstax.org','rad.uw.edu','www.elsevier.com','www.lumen.luc.edu'].includes(new URL(c.source).hostname));}
  for(const region of ['shoulder','chest','upper_back_scapula','elbow','forearm','core_abdomen','hip_glute','thigh','lower_leg','cervical_neck','lower_back_spine','groin'])assert.ok(learningCards.some(c=>c.region===region),region);
 });
 test('bidirectional exercise links resolve canonical exercise IDs and never duplicate an exercise per muscle',()=>{

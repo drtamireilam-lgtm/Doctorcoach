@@ -526,5 +526,53 @@
     "wikimedia_search": "https://www.elsevier.com/resources/anatomy/muscular-system/muscles-of-back/semispinalis-thoracis-muscle/18584",
     "google_images_search": "",
     "status": "reference-checked; clinical review pending"
+  },
+  {
+    "region_id": "cervical_neck",
+    "region_he": "צוואר / עמוד שדרה צווארי",
+    "region_en": "Cervical Spine / Neck",
+    "muscle_id": "rectus-capitis-posterior-major",
+    "name_en": "Rectus capitis posterior major",
+    "name_he": "הישר האחורי הגדול של הראש",
+    "primary_function_he": "יישור הראש וסיוע בסיבוב לאותו צד",
+    "wikimedia_search": "https://www.lumen.luc.edu/lumen/meded/grossanatomy/dissector/muscles/rpmj.htm",
+    "google_images_search": "",
+    "status": "reference-checked; clinical review pending"
+  },
+  {
+    "region_id": "cervical_neck",
+    "region_he": "צוואר / עמוד שדרה צווארי",
+    "region_en": "Cervical Spine / Neck",
+    "muscle_id": "rectus-capitis-posterior-minor",
+    "name_en": "Rectus capitis posterior minor",
+    "name_he": "הישר האחורי הקטן של הראש",
+    "primary_function_he": "סיוע ביישור הראש ובשליטה במנח העורף",
+    "wikimedia_search": "https://www.lumen.luc.edu/lumen/meded/grossanatomy/dissector/muscles/rpmn.htm",
+    "google_images_search": "",
+    "status": "reference-checked; clinical review pending"
+  },
+  {
+    "region_id": "cervical_neck",
+    "region_he": "צוואר / עמוד שדרה צווארי",
+    "region_en": "Cervical Spine / Neck",
+    "muscle_id": "obliquus-capitis-superior",
+    "name_en": "Obliquus capitis superior",
+    "name_he": "האלכסוני העליון של הראש",
+    "primary_function_he": "סיוע ביישור הראש ובכפיפה צידית לאותו צד",
+    "wikimedia_search": "https://www.lumen.luc.edu/lumen/meded/grossanatomy/dissector/muscles/obcs.htm",
+    "google_images_search": "",
+    "status": "reference-checked; clinical review pending"
+  },
+  {
+    "region_id": "cervical_neck",
+    "region_he": "צוואר / עמוד שדרה צווארי",
+    "region_en": "Cervical Spine / Neck",
+    "muscle_id": "obliquus-capitis-inferior",
+    "name_en": "Obliquus capitis inferior",
+    "name_he": "האלכסוני התחתון של הראש",
+    "primary_function_he": "סיבוב האטלס והראש לאותו צד ביחס ל־C2",
+    "wikimedia_search": "https://www.lumen.luc.edu/lumen/meded/grossanatomy/dissector/muscles/obci.htm",
+    "google_images_search": "",
+    "status": "reference-checked; clinical review pending"
   }
 ]

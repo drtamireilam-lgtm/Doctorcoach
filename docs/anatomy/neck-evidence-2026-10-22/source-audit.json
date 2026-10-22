@@ -1,0 +1,362 @@
+{
+  "status": "source fidelity and mapping checked",
+  "clinicalReview": "pending",
+  "structures": [
+    {
+      "model": "neck",
+      "structure": "cervical-1",
+      "elements": [
+        "FJ3176"
+      ],
+      "sourceCoordinatesAndTriangles": "exact float32 match",
+      "laterality": "midline",
+      "sideEvidence": true,
+      "uniqueMaterial": true
+    },
+    {
+      "model": "neck",
+      "structure": "cervical-2",
+      "elements": [
+        "FJ3177"
+      ],
+      "sourceCoordinatesAndTriangles": "exact float32 match",
+      "laterality": "midline",
+      "sideEvidence": true,
+      "uniqueMaterial": true
+    },
+    {
+      "model": "neck",
+      "structure": "cervical-3",
+      "elements": [
+        "FJ3161"
+      ],
+      "sourceCoordinatesAndTriangles": "exact float32 match",
+      "laterality": "midline",
+      "sideEvidence": true,
+      "uniqueMaterial": true
+    },
+    {
+      "model": "neck",
+      "structure": "cervical-4",
+      "elements": [
+        "FJ3164"
+      ],
+      "sourceCoordinatesAndTriangles": "exact float32 match",
+      "laterality": "midline",
+      "sideEvidence": true,
+      "uniqueMaterial": true
+    },
+    {
+      "model": "neck",
+      "structure": "cervical-5",
+      "elements": [
+        "FJ3167"
+      ],
+      "sourceCoordinatesAndTriangles": "exact float32 match",
+      "laterality": "midline",
+      "sideEvidence": true,
+      "uniqueMaterial": true
+    },
+    {
+      "model": "neck",
+      "structure": "cervical-6",
+      "elements": [
+        "FJ3170"
+      ],
+      "sourceCoordinatesAndTriangles": "exact float32 match",
+      "laterality": "midline",
+      "sideEvidence": true,
+      "uniqueMaterial": true
+    },
+    {
+      "model": "neck",
+      "structure": "cervical-7",
+      "elements": [
+        "FJ3172"
+      ],
+      "sourceCoordinatesAndTriangles": "exact float32 match",
+      "laterality": "midline",
+      "sideEvidence": true,
+      "uniqueMaterial": true
+    },
+    {
+      "model": "neck",
+      "structure": "thoracic-1",
+      "elements": [
+        "FJ3158"
+      ],
+      "sourceCoordinatesAndTriangles": "exact float32 match",
+      "laterality": "midline",
+      "sideEvidence": true,
+      "uniqueMaterial": true
+    },
+    {
+      "model": "neck",
+      "structure": "thoracic-2",
+      "elements": [
+        "FJ3160"
+      ],
+      "sourceCoordinatesAndTriangles": "exact float32 match",
+      "laterality": "midline",
+      "sideEvidence": true,
+      "uniqueMaterial": true
+    },
+    {
+      "model": "neck",
+      "structure": "thoracic-3",
+      "elements": [
+        "FJ3163"
+      ],
+      "sourceCoordinatesAndTriangles": "exact float32 match",
+      "laterality": "midline",
+      "sideEvidence": true,
+      "uniqueMaterial": true
+    },
+    {
+      "model": "neck",
+      "structure": "thoracic-4",
+      "elements": [
+        "FJ3166"
+      ],
+      "sourceCoordinatesAndTriangles": "exact float32 match",
+      "laterality": "midline",
+      "sideEvidence": true,
+      "uniqueMaterial": true
+    },
+    {
+      "model": "neck",
+      "structure": "thoracic-5",
+      "elements": [
+        "FJ3169"
+      ],
+      "sourceCoordinatesAndTriangles": "exact float32 match",
+      "laterality": "midline",
+      "sideEvidence": true,
+      "uniqueMaterial": true
+    },
+    {
+      "model": "neck",
+      "structure": "thoracic-6",
+      "elements": [
+        "FJ3171"
+      ],
+      "sourceCoordinatesAndTriangles": "exact float32 match",
+      "laterality": "midline",
+      "sideEvidence": true,
+      "uniqueMaterial": true
+    },
+    {
+      "model": "neck",
+      "structure": "scapula",
+      "elements": [
+        "FJ3384"
+      ],
+      "sourceCoordinatesAndTriangles": "exact float32 match",
+      "laterality": "right",
+      "sideEvidence": true,
+      "uniqueMaterial": true
+    },
+    {
+      "model": "neck",
+      "structure": "clavicle",
+      "elements": [
+        "FJ3362"
+      ],
+      "sourceCoordinatesAndTriangles": "exact float32 match",
+      "laterality": "right",
+      "sideEvidence": true,
+      "uniqueMaterial": true
+    },
+    {
+      "model": "neck",
+      "structure": "rib-1",
+      "elements": [
+        "FJ3334"
+      ],
+      "sourceCoordinatesAndTriangles": "exact float32 match",
+      "laterality": "right",
+      "sideEvidence": true,
+      "uniqueMaterial": true
+    },
+    {
+      "model": "neck",
+      "structure": "rib-2",
+      "elements": [
+        "FJ3336"
+      ],
+      "sourceCoordinatesAndTriangles": "exact float32 match",
+      "laterality": "right",
+      "sideEvidence": true,
+      "uniqueMaterial": true
+    },
+    {
+      "model": "neck",
+      "structure": "sternum",
+      "elements": [
+        "FJ3290",
+        "FJ3178",
+        "FJ3153"
+      ],
+      "sourceCoordinatesAndTriangles": "exact float32 match",
+      "laterality": "midline",
+      "sideEvidence": true,
+      "uniqueMaterial": true
+    },
+    {
+      "model": "neck",
+      "structure": "occipital-bone",
+      "elements": [
+        "FJ3309"
+      ],
+      "sourceCoordinatesAndTriangles": "exact float32 match",
+      "laterality": "midline",
+      "sideEvidence": true,
+      "uniqueMaterial": true
+    },
+    {
+      "model": "neck",
+      "structure": "temporal-bone",
+      "elements": [
+        "FJ3386"
+      ],
+      "sourceCoordinatesAndTriangles": "exact float32 match",
+      "laterality": "right",
+      "sideEvidence": true,
+      "uniqueMaterial": true
+    },
+    {
+      "model": "neck",
+      "structure": "sternocleidomastoid",
+      "elements": [
+        "FJ1595"
+      ],
+      "sourceCoordinatesAndTriangles": "exact float32 match",
+      "laterality": "right",
+      "sideEvidence": true,
+      "uniqueMaterial": true
+    },
+    {
+      "model": "neck",
+      "structure": "levator-scapulae",
+      "elements": [
+        "FJ1532"
+      ],
+      "sourceCoordinatesAndTriangles": "exact float32 match",
+      "laterality": "right",
+      "sideEvidence": true,
+      "uniqueMaterial": true
+    },
+    {
+      "model": "neck",
+      "structure": "scalenes",
+      "elements": [
+        "FJ1592",
+        "FJ1593",
+        "FJ1594"
+      ],
+      "sourceCoordinatesAndTriangles": "exact float32 match",
+      "laterality": "right",
+      "sideEvidence": true,
+      "uniqueMaterial": true
+    },
+    {
+      "model": "neck",
+      "structure": "longus-capitis",
+      "elements": [
+        "FJ1582"
+      ],
+      "sourceCoordinatesAndTriangles": "exact float32 match",
+      "laterality": "right",
+      "sideEvidence": true,
+      "uniqueMaterial": true
+    },
+    {
+      "model": "neck",
+      "structure": "splenius-capitis",
+      "elements": [
+        "FJ1545"
+      ],
+      "sourceCoordinatesAndTriangles": "exact float32 match",
+      "laterality": "right",
+      "sideEvidence": true,
+      "uniqueMaterial": true
+    },
+    {
+      "model": "neck",
+      "structure": "splenius-cervicis",
+      "elements": [
+        "FJ1546"
+      ],
+      "sourceCoordinatesAndTriangles": "exact float32 match",
+      "laterality": "right",
+      "sideEvidence": true,
+      "uniqueMaterial": true
+    },
+    {
+      "model": "neck",
+      "structure": "semispinalis-capitis",
+      "elements": [
+        "FJ1538"
+      ],
+      "sourceCoordinatesAndTriangles": "exact float32 match",
+      "laterality": "right",
+      "sideEvidence": true,
+      "uniqueMaterial": true
+    },
+    {
+      "model": "neck",
+      "structure": "upper-trapezius",
+      "elements": [
+        "FJ1521"
+      ],
+      "sourceCoordinatesAndTriangles": "exact float32 match",
+      "laterality": "right",
+      "sideEvidence": true,
+      "uniqueMaterial": true
+    },
+    {
+      "model": "neck",
+      "structure": "rectus-capitis-posterior-major",
+      "elements": [
+        "FJ1589"
+      ],
+      "sourceCoordinatesAndTriangles": "exact float32 match",
+      "laterality": "right",
+      "sideEvidence": true,
+      "uniqueMaterial": true
+    },
+    {
+      "model": "neck",
+      "structure": "rectus-capitis-posterior-minor",
+      "elements": [
+        "FJ1590"
+      ],
+      "sourceCoordinatesAndTriangles": "exact float32 match",
+      "laterality": "right",
+      "sideEvidence": true,
+      "uniqueMaterial": true
+    },
+    {
+      "model": "neck",
+      "structure": "obliquus-capitis-superior",
+      "elements": [
+        "FJ1585"
+      ],
+      "sourceCoordinatesAndTriangles": "exact float32 match",
+      "laterality": "right",
+      "sideEvidence": true,
+      "uniqueMaterial": true
+    },
+    {
+      "model": "neck",
+      "structure": "obliquus-capitis-inferior",
+      "elements": [
+        "FJ1584"
+      ],
+      "sourceCoordinatesAndTriangles": "exact float32 match",
+      "laterality": "right",
+      "sideEvidence": true,
+      "uniqueMaterial": true
+    }
+  ]
+}
