@@ -50,8 +50,8 @@ export async function validateAnatomyAsset(bytes:ArrayBuffer,model:AnatomyModel)
  }
 
 }
-export function visibleStructureIds(model:AnatomyModel,layers:ReadonlySet<AtlasLayer>,isolated:string|null){
- return model.structures.filter(s=>layers.has(s.layer)&&(!isolated||s.id===isolated)).map(s=>s.id);
+export function visibleStructureIds(model:AnatomyModel,layers:ReadonlySet<AtlasLayer>,isolated:string|null,hidden:ReadonlySet<string>=new Set()){
+ return model.structures.filter(s=>layers.has(s.layer)&&!hidden.has(s.id)&&(!isolated||s.id===isolated)).map(s=>s.id);
 }
 export type CameraState={position:[number,number,number];target:[number,number,number]};
 export function readCameraState(value:unknown):CameraState|null{

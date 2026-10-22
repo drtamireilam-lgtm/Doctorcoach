@@ -50,6 +50,19 @@ jobs:
         run: npm test
       - name: Standalone TypeScript
         run: npm run typecheck
+      - name: Select runner anatomy browser
+        if: startsWith(github.ref, 'refs/heads/feature/anatomy-completion-')
+        timeout-minutes: 1
+        run: |
+          browser_path="$(command -v google-chrome)"
+          test -x "$browser_path"
+          echo "ANATOMY_CHROMIUM=$browser_path" >> "$GITHUB_ENV"
+      - name: Anatomy viewer controls and bundled model smoke
+        if: startsWith(github.ref, 'refs/heads/feature/anatomy-completion-')
+        run: node scripts/anatomy/viewer-controls-smoke.mjs
+      - name: Full anatomy application browser smoke
+        if: startsWith(github.ref, 'refs/heads/feature/anatomy-completion-')
+        run: node scripts/anatomy/browser-smoke.mjs
       - name: Build standalone without deployment
         env:
           DC_ISOLATED_STAGING_BUILD: "true"
