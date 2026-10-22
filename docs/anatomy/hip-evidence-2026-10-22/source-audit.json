@@ -1,0 +1,146 @@
+{
+  "status": "source fidelity and mapping checked",
+  "clinicalReview": "pending",
+  "structures": [
+    {
+      "model": "hip",
+      "structure": "hip-bone",
+      "elements": [
+        "FJ3152"
+      ],
+      "sourceCoordinatesAndTriangles": "exact float32 match",
+      "rightSideEvidence": true,
+      "uniqueMaterial": true
+    },
+    {
+      "model": "hip",
+      "structure": "femur",
+      "elements": [
+        "FJ3365"
+      ],
+      "sourceCoordinatesAndTriangles": "exact float32 match",
+      "rightSideEvidence": true,
+      "uniqueMaterial": true
+    },
+    {
+      "model": "hip",
+      "structure": "gluteus-maximus",
+      "elements": [
+        "FJ1418"
+      ],
+      "sourceCoordinatesAndTriangles": "exact float32 match",
+      "rightSideEvidence": true,
+      "uniqueMaterial": true
+    },
+    {
+      "model": "hip",
+      "structure": "gluteus-medius",
+      "elements": [
+        "FJ1419"
+      ],
+      "sourceCoordinatesAndTriangles": "exact float32 match",
+      "rightSideEvidence": true,
+      "uniqueMaterial": true
+    },
+    {
+      "model": "hip",
+      "structure": "gluteus-minimus",
+      "elements": [
+        "FJ1420"
+      ],
+      "sourceCoordinatesAndTriangles": "exact float32 match",
+      "rightSideEvidence": true,
+      "uniqueMaterial": true
+    },
+    {
+      "model": "hip",
+      "structure": "tensor-fasciae-latae",
+      "elements": [
+        "FJ1438"
+      ],
+      "sourceCoordinatesAndTriangles": "exact float32 match",
+      "rightSideEvidence": true,
+      "uniqueMaterial": true
+    },
+    {
+      "model": "hip",
+      "structure": "piriformis",
+      "elements": [
+        "FJ1428"
+      ],
+      "sourceCoordinatesAndTriangles": "exact float32 match",
+      "rightSideEvidence": true,
+      "uniqueMaterial": true
+    },
+    {
+      "model": "hip",
+      "structure": "obturator-internus",
+      "elements": [
+        "FJ1426"
+      ],
+      "sourceCoordinatesAndTriangles": "exact float32 match",
+      "rightSideEvidence": true,
+      "uniqueMaterial": true
+    },
+    {
+      "model": "hip",
+      "structure": "obturator-externus",
+      "elements": [
+        "FJ1425"
+      ],
+      "sourceCoordinatesAndTriangles": "exact float32 match",
+      "rightSideEvidence": true,
+      "uniqueMaterial": true
+    },
+    {
+      "model": "hip",
+      "structure": "superior-gemellus",
+      "elements": [
+        "FJ1417"
+      ],
+      "sourceCoordinatesAndTriangles": "exact float32 match",
+      "rightSideEvidence": true,
+      "uniqueMaterial": true
+    },
+    {
+      "model": "hip",
+      "structure": "inferior-gemellus",
+      "elements": [
+        "FJ1416"
+      ],
+      "sourceCoordinatesAndTriangles": "exact float32 match",
+      "rightSideEvidence": true,
+      "uniqueMaterial": true
+    },
+    {
+      "model": "hip",
+      "structure": "quadratus-femoris",
+      "elements": [
+        "FJ1432"
+      ],
+      "sourceCoordinatesAndTriangles": "exact float32 match",
+      "rightSideEvidence": true,
+      "uniqueMaterial": true
+    },
+    {
+      "model": "hip",
+      "structure": "iliacus",
+      "elements": [
+        "FJ1422"
+      ],
+      "sourceCoordinatesAndTriangles": "exact float32 match",
+      "rightSideEvidence": true,
+      "uniqueMaterial": true
+    },
+    {
+      "model": "hip",
+      "structure": "psoas-major",
+      "elements": [
+        "FJ1431"
+      ],
+      "sourceCoordinatesAndTriangles": "exact float32 match",
+      "rightSideEvidence": true,
+      "uniqueMaterial": true
+    }
+  ]
+}

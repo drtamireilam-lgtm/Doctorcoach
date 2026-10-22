@@ -12,7 +12,7 @@ const errors=[],checks=[];let page;
 try{
  const context=await browser.newContext({viewport:{width:390,height:844},isMobile:true,hasTouch:true});page=await context.newPage();page.setDefaultTimeout(60000);page.setDefaultNavigationTimeout(90000);
  page.on('pageerror',e=>errors.push(e.message));
- for(const name of ['body','arm','forearm','hand']){
+ for(const name of ['body','arm','forearm','hand','hip']){
   const manifest=JSON.parse(await readFile(new URL('../../lib/prepared/'+name+'-model.json',import.meta.url),'utf8'));
   const response=await context.request.get(origin+'/anatomy/'+name+'.glb');assert.equal(response.status(),200);
   assert.equal(createHash('sha256').update(await response.body()).digest('hex'),manifest.glbSha256);checks.push(name+' live GLB matches reviewed asset checksum');
@@ -29,6 +29,12 @@ try{
  const hand=page.locator('[data-model-id="hand"]');await hand.locator('canvas').waitFor();await hand.getByRole('heading',{name:'Abductor pollicis brevis',exact:true}).waitFor();assert.equal(await hand.getByRole('combobox').locator('option').count(),31);
  await page.screenshot({path:'/tmp/dc-hand-initial-live.png',fullPage:true});
  await hand.getByRole('combobox').selectOption('adductor-pollicis');await hand.locator('.atlas-exercises button').first().click();await page.locator('.atlas-exercise-links a[href*="muscle=adductor-pollicis"]').waitFor();await page.goBack();await hand.locator('canvas').waitFor();assert.equal(await hand.getByRole('combobox').inputValue(),'adductor-pollicis');checks.push('live hand bones, thumb selection and exercise roundtrip');
+ await page.goto(origin+'/?lang=en#learn?region=hip_glute&muscle=gluteus-maximus',{waitUntil:'domcontentloaded'});
+ const hip=page.locator('[data-model-id="hip"]');await hip.locator('canvas').waitFor();await hip.getByRole('heading',{name:'Gluteus maximus',exact:true}).waitFor();assert.equal(await hip.getByRole('combobox').locator('option').count(),15);
+ await page.screenshot({path:'/tmp/dc-hip-live-initial.png',fullPage:true});await hip.getByRole('button',{name:'Back view',exact:true}).click();await hip.getByRole('button',{name:'Focus structure',exact:true}).click();
+ await hip.locator('.atlas-exercises button').first().click();await page.locator('.atlas-exercise-links a[href*="muscle=gluteus-maximus"]').waitFor();await page.goBack();await hip.locator('canvas').waitFor();assert.equal(await hip.getByRole('combobox').inputValue(),'gluteus-maximus');checks.push('live hip geometry, muscle focus and hip thrust roundtrip');
+ await page.goto(origin+'/?lang=he#learn?region=hip_glute&muscle=gluteus-medius',{waitUntil:'domcontentloaded'});
+ await hip.locator('canvas').waitFor();assert.equal(await hip.getAttribute('dir'),'rtl');await hip.getByRole('heading',{name:'שריר העכוז האמצעי',exact:true}).waitFor();checks.push('live hip Hebrew content and RTL');
  assert.deepEqual(errors,[]);checks.push('no uncaught errors in live acceptance flow');
  const dir='/tmp/dc-anatomy-live-evidence';await mkdir(dir,{recursive:true});await page.screenshot({path:dir+'/arm-mobile-lab.png',fullPage:true});
  const result={origin,checkedAt:new Date().toISOString(),checks,errors};await writeFile(dir+'/live.json',JSON.stringify(result,null,2));console.log(JSON.stringify(result,null,2));

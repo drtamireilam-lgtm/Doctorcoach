@@ -2,6 +2,7 @@ import shoulder from './prepared/shoulder-model.json' with {type:'json'};
 import arm from './prepared/arm-model.json' with {type:'json'};
 import forearm from './prepared/forearm-model.json' with {type:'json'};
 import hand from './prepared/hand-model.json' with {type:'json'};
+import hip from './prepared/hip-model.json' with {type:'json'};
 import body from './prepared/body-model.json' with {type:'json'};
 import {inspectGlb} from './anatomy-glb-inventory.ts';
 export type AtlasLayer='bone'|'muscle'|'surface';
@@ -14,6 +15,7 @@ export const anatomyModels:AnatomyModel[]=[
  {id:'arm',he:'זרוע ומרפק בתלת־ממד',en:'3D arm & elbow',regions:['elbow'],src:'/anatomy/arm.glb',maxBytes:3*1024*1024,asset:arm as AtlasAsset,structures:arm.structures as AtlasStructure[]},
  {id:'forearm',he:'אמה בתלת־ממד',en:'3D forearm',regions:['forearm'],src:'/anatomy/forearm.glb',maxBytes:3*1024*1024,asset:forearm as AtlasAsset,structures:forearm.structures as AtlasStructure[]},
  {id:'hand',he:'שורש כף היד וכף היד בתלת־ממד',en:'3D wrist & hand',regions:['wrist_hand'],src:'/anatomy/hand.glb',maxBytes:3*1024*1024,asset:hand as AtlasAsset,structures:hand.structures as AtlasStructure[]},
+ {id:'hip',he:'מפרק הירך והאגן בתלת־ממד',en:'3D hip & pelvis',regions:['hip_glute'],src:'/anatomy/hip.glb',maxBytes:2*1024*1024,asset:hip as AtlasAsset,structures:hip.structures as AtlasStructure[]},
 ];
 export const modelForRegion=(region:string)=>anatomyModels.find(m=>m.regions.includes(region));
 export async function validateAnatomyAsset(bytes:ArrayBuffer,model:AnatomyModel){

@@ -1,11 +1,11 @@
 """Download only cataloged ELEMENTs, with exact ranges and ZIP CRC validation."""
-import pathlib,json,struct,subprocess,zipfile,zlib,concurrent.futures
+import sys,pathlib,json,struct,subprocess,zipfile,zlib,concurrent.futures
 url='https://dbarchive.biosciencedbc.jp/data/bodyparts3d/LATEST/isa_BP3D_4.0_obj_99.zip';size=142903898
-out=pathlib.Path('/tmp/dc-upper-limb-source.zip')
+out=pathlib.Path(sys.argv[2] if len(sys.argv)>2 else '/tmp/dc-upper-limb-source.zip')
 cached={}
 if out.exists():
  with zipfile.ZipFile(out) as previous:cached={n:previous.read(n) for n in previous.namelist()}
-catalog=json.loads(pathlib.Path(__file__).with_name('upper-limb-parts.json').read_text());ids={fid for items in catalog.values() for item in items for fid in item[4]}
+catalog=json.loads((pathlib.Path(sys.argv[1]) if len(sys.argv)>1 else pathlib.Path(__file__).with_name('upper-limb-parts.json')).read_text());ids={fid for items in catalog.values() for item in items for fid in item[4]}
 def fetch(start,end):
  data=subprocess.check_output(['curl','-sSL','--fail','--retry','2','--max-time','60','-r',f'{start}-{end}',url])
  if len(data)!=end-start+1:raise ValueError('Server did not honor byte range')

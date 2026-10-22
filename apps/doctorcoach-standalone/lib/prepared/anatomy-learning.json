@@ -1356,7 +1356,19 @@
         "id": "deadlift",
         "role": "secondary"
       }
-    ]
+    ],
+    "innervation": {
+      "he": "העצב הגלוטאלי התחתון",
+      "en": "Inferior gluteal nerve"
+    },
+    "innervationReference": "https://medicine.uams.edu/neuroscience/education/medical-school-courses/human-structure-module/anatomy-tables/muscle-tables/muscles-of-the-lower-limb/",
+    "contentReview": {
+      "status": "reference-checked; clinical review pending",
+      "checkedAt": "2026-10-22",
+      "sources": [
+        "https://medicine.uams.edu/neuroscience/education/medical-school-courses/human-structure-module/anatomy-tables/muscle-tables/muscles-of-the-lower-limb/"
+      ]
+    }
   },
   {
     "slug": "gluteus-medius",
@@ -1395,8 +1407,28 @@
       {
         "id": "side-plank",
         "role": "secondary"
+      },
+      {
+        "id": "balance",
+        "role": "stabilizer"
+      },
+      {
+        "id": "clamshell",
+        "role": "secondary"
       }
-    ]
+    ],
+    "innervation": {
+      "he": "העצב הגלוטאלי העליון",
+      "en": "Superior gluteal nerve"
+    },
+    "innervationReference": "https://medicine.uams.edu/neuroscience/education/medical-school-courses/human-structure-module/anatomy-tables/muscle-tables/muscles-of-the-lower-limb/",
+    "contentReview": {
+      "status": "reference-checked; clinical review pending",
+      "checkedAt": "2026-10-22",
+      "sources": [
+        "https://medicine.uams.edu/neuroscience/education/medical-school-courses/human-structure-module/anatomy-tables/muscle-tables/muscles-of-the-lower-limb/"
+      ]
+    }
   },
   {
     "slug": "gluteus-minimus",
@@ -1431,8 +1463,24 @@
       {
         "id": "hip-abduction-machine",
         "role": "primary"
+      },
+      {
+        "id": "balance",
+        "role": "stabilizer"
       }
-    ]
+    ],
+    "innervation": {
+      "he": "העצב הגלוטאלי העליון",
+      "en": "Superior gluteal nerve"
+    },
+    "innervationReference": "https://medicine.uams.edu/neuroscience/education/medical-school-courses/human-structure-module/anatomy-tables/muscle-tables/muscles-of-the-lower-limb/",
+    "contentReview": {
+      "status": "reference-checked; clinical review pending",
+      "checkedAt": "2026-10-22",
+      "sources": [
+        "https://medicine.uams.edu/neuroscience/education/medical-school-courses/human-structure-module/anatomy-tables/muscle-tables/muscles-of-the-lower-limb/"
+      ]
+    }
   },
   {
     "slug": "adductor-longus",
@@ -2538,6 +2586,413 @@
       "sources": [
         "https://medicine.uams.edu/neuroscience/education/medical-school-courses/human-structure-module/anatomy-tables/muscle-tables/muscles-of-the-upper-limb/",
         "https://pubmed.ncbi.nlm.nih.gov/29290870/"
+      ]
+    }
+  },
+  {
+    "slug": "tensor-fasciae-latae",
+    "region": "hip_glute",
+    "view": "front",
+    "source": "https://rad.uw.edu/muscle-atlas/tensor-fascia-lata",
+    "links": [
+      {
+        "id": "hip-abduction-machine",
+        "role": "secondary"
+      }
+    ],
+    "location": {
+      "he": "קדמת הצד החיצוני של האגן",
+      "en": "Anterolateral pelvis"
+    },
+    "origin": {
+      "he": "הקוץ הכסלי הקדמי העליון והחלק הקדמי של רכס הכסל",
+      "en": "Anterior superior iliac spine and anterior iliac crest"
+    },
+    "insertion": {
+      "he": "הרצועה האיליוטיביאלית",
+      "en": "Iliotibial tract"
+    },
+    "action": {
+      "he": "כפיפה, הרחקה וסיבוב פנימי של הירך; מתיחת המחתלה תורמת ליציבות הירך והברך",
+      "en": "Hip flexion, abduction and medial rotation; fascial tension supports hip and knee stability"
+    },
+    "innervation": {
+      "he": "העצב הגלוטאלי העליון",
+      "en": "Superior gluteal nerve"
+    },
+    "training": {
+      "he": "משתתף בהרחקת ירך, לצד שרירי העכוז",
+      "en": "Assists hip abduction alongside the gluteal muscles"
+    },
+    "joints": {
+      "he": "מפרק הירך; השפעה עקיפה על הברך דרך הרצועה האיליוטיביאלית",
+      "en": "Hip joint; indirect knee support via the iliotibial tract"
+    },
+    "innervationReference": "https://rad.uw.edu/muscle-atlas/tensor-fascia-lata",
+    "contentReview": {
+      "status": "reference-checked; clinical review pending",
+      "checkedAt": "2026-10-22",
+      "sources": [
+        "https://rad.uw.edu/muscle-atlas/tensor-fascia-lata"
+      ]
+    }
+  },
+  {
+    "slug": "piriformis",
+    "region": "hip_glute",
+    "view": "back",
+    "source": "https://rad.uw.edu/muscle-atlas/piriformis",
+    "links": [
+      {
+        "id": "clamshell",
+        "role": "secondary"
+      }
+    ],
+    "location": {
+      "he": "המדור האחורי העמוק של הירך",
+      "en": "Deep posterior hip"
+    },
+    "origin": {
+      "he": "המשטח הקדמי של עצם העצה, סמוך לנקב השת הגדול",
+      "en": "Anterior sacrum near the greater sciatic foramen"
+    },
+    "insertion": {
+      "he": "הגבול העליון של הטרוכנטר הגדול",
+      "en": "Superior border of the greater trochanter"
+    },
+    "action": {
+      "he": "סיבוב חיצוני של הירך; מסייע בהרחקת ירך כפופה",
+      "en": "Hip lateral rotation; assists abduction when the hip is flexed"
+    },
+    "innervation": {
+      "he": "העצב לשריר האגסי, מענפים של מקלעת העצה",
+      "en": "Nerve to piriformis from the sacral plexus"
+    },
+    "training": {
+      "he": "משתתף בשליטה סיבובית של הירך; פעולתו תלויה בזווית המפרק",
+      "en": "Contributes to hip rotational control; function depends on joint angle"
+    },
+    "joints": {
+      "he": "מפרק הירך",
+      "en": "Hip joint"
+    },
+    "innervationReference": "https://rad.uw.edu/muscle-atlas/piriformis",
+    "contentReview": {
+      "status": "reference-checked; clinical review pending",
+      "checkedAt": "2026-10-22",
+      "sources": [
+        "https://rad.uw.edu/muscle-atlas/piriformis"
+      ]
+    }
+  },
+  {
+    "slug": "obturator-internus",
+    "region": "hip_glute",
+    "view": "back",
+    "source": "https://rad.uw.edu/muscle-atlas/obturator-internus",
+    "links": [],
+    "location": {
+      "he": "דופן האגן הפנימית והירך האחורית העמוקה",
+      "en": "Inner pelvic wall and deep posterior hip"
+    },
+    "origin": {
+      "he": "הצד הפנימי של קרום הסותם והשוליים הגרמיים של נקב הסותם",
+      "en": "Internal obturator membrane and bony margins of the obturator foramen"
+    },
+    "insertion": {
+      "he": "המשטח המדיאלי של הטרוכנטר הגדול, יחד עם השרירים התאומים",
+      "en": "Medial greater trochanter with the gemelli"
+    },
+    "action": {
+      "he": "סיבוב חיצוני של הירך; מסייע בהרחקת ירך כפופה",
+      "en": "Hip lateral rotation; assists abduction in flexion"
+    },
+    "innervation": {
+      "he": "העצב לשריר הסותם הפנימי",
+      "en": "Nerve to obturator internus"
+    },
+    "training": {
+      "he": "מסובב עמוק; טרם הוגדר בספרייה תרגיל המכוון אליו במפורש",
+      "en": "Deep rotator; no explicitly targeted library exercise is defined"
+    },
+    "joints": {
+      "he": "מפרק הירך",
+      "en": "Hip joint"
+    },
+    "innervationReference": "https://rad.uw.edu/muscle-atlas/obturator-internus",
+    "contentReview": {
+      "status": "reference-checked; clinical review pending",
+      "checkedAt": "2026-10-22",
+      "sources": [
+        "https://rad.uw.edu/muscle-atlas/obturator-internus"
+      ]
+    }
+  },
+  {
+    "slug": "obturator-externus",
+    "region": "hip_glute",
+    "view": "back",
+    "source": "https://medicine.uams.edu/neuroscience/education/medical-school-courses/human-structure-module/anatomy-tables/muscle-tables/muscles-of-the-lower-limb/",
+    "links": [],
+    "location": {
+      "he": "סביב הצד החיצוני של נקב הסותם, עמוק בירך",
+      "en": "Around the external obturator foramen, deep in the hip"
+    },
+    "origin": {
+      "he": "המשטח החיצוני של קרום הסותם והענפים הגרמיים הסמוכים",
+      "en": "External obturator membrane and adjacent pubic rami"
+    },
+    "insertion": {
+      "he": "הגומה הטרוכנטרית של עצם הירך",
+      "en": "Trochanteric fossa of the femur"
+    },
+    "action": {
+      "he": "סיבוב חיצוני של הירך",
+      "en": "Hip lateral rotation"
+    },
+    "innervation": {
+      "he": "העצב הסותם",
+      "en": "Obturator nerve"
+    },
+    "training": {
+      "he": "מסובב ירך עמוק; אין קישור ייעודי לתרגיל בספרייה",
+      "en": "Deep hip rotator; no dedicated exercise link is defined"
+    },
+    "joints": {
+      "he": "מפרק הירך",
+      "en": "Hip joint"
+    },
+    "innervationReference": "https://medicine.uams.edu/neuroscience/education/medical-school-courses/human-structure-module/anatomy-tables/muscle-tables/muscles-of-the-lower-limb/",
+    "contentReview": {
+      "status": "reference-checked; clinical review pending",
+      "checkedAt": "2026-10-22",
+      "sources": [
+        "https://medicine.uams.edu/neuroscience/education/medical-school-courses/human-structure-module/anatomy-tables/muscle-tables/muscles-of-the-lower-limb/"
+      ]
+    }
+  },
+  {
+    "slug": "superior-gemellus",
+    "region": "hip_glute",
+    "view": "back",
+    "source": "https://rad.uw.edu/muscle-atlas/superior-gemellus",
+    "links": [],
+    "location": {
+      "he": "הירך האחורית העמוקה, מעל גיד הסותם הפנימי",
+      "en": "Deep posterior hip above the obturator internus tendon"
+    },
+    "origin": {
+      "he": "קוץ השת",
+      "en": "Ischial spine"
+    },
+    "insertion": {
+      "he": "הטרוכנטר הגדול דרך הגיד המשותף עם הסותם הפנימי",
+      "en": "Greater trochanter via the shared obturator internus tendon"
+    },
+    "action": {
+      "he": "סיבוב חיצוני; מסייע בהרחקת ירך כפופה",
+      "en": "Lateral rotation; assists abduction of the flexed hip"
+    },
+    "innervation": {
+      "he": "לרוב העצב לסותם הפנימי; קיימת שונות בענפים העצביים",
+      "en": "Usually nerve to obturator internus; innervation varies"
+    },
+    "training": {
+      "he": "חלק ממסובבי הירך העמוקים; אין תרגיל ייעודי מקושר",
+      "en": "Part of the deep hip rotators; no dedicated exercise link"
+    },
+    "joints": {
+      "he": "מפרק הירך",
+      "en": "Hip joint"
+    },
+    "innervationReference": "https://rad.uw.edu/muscle-atlas/superior-gemellus",
+    "contentReview": {
+      "status": "reference-checked; clinical review pending",
+      "checkedAt": "2026-10-22",
+      "sources": [
+        "https://rad.uw.edu/muscle-atlas/superior-gemellus"
+      ]
+    }
+  },
+  {
+    "slug": "inferior-gemellus",
+    "region": "hip_glute",
+    "view": "back",
+    "source": "https://rad.uw.edu/muscle-atlas/inferior-gemellus",
+    "links": [],
+    "location": {
+      "he": "הירך האחורית העמוקה, מתחת לגיד הסותם הפנימי",
+      "en": "Deep posterior hip below the obturator internus tendon"
+    },
+    "origin": {
+      "he": "גבשושית השת",
+      "en": "Ischial tuberosity"
+    },
+    "insertion": {
+      "he": "הטרוכנטר הגדול דרך הגיד המשותף עם הסותם הפנימי",
+      "en": "Greater trochanter via the shared obturator internus tendon"
+    },
+    "action": {
+      "he": "סיבוב חיצוני; מסייע בהרחקת ירך כפופה",
+      "en": "Lateral rotation; assists abduction of the flexed hip"
+    },
+    "innervation": {
+      "he": "לרוב העצב למרובע הירך; קיימת שונות בענפים העצביים",
+      "en": "Usually nerve to quadratus femoris; innervation varies"
+    },
+    "training": {
+      "he": "מסובב ירך עמוק; אין תרגיל ייעודי מקושר",
+      "en": "Deep hip rotator; no dedicated exercise link"
+    },
+    "joints": {
+      "he": "מפרק הירך",
+      "en": "Hip joint"
+    },
+    "innervationReference": "https://rad.uw.edu/muscle-atlas/inferior-gemellus",
+    "contentReview": {
+      "status": "reference-checked; clinical review pending",
+      "checkedAt": "2026-10-22",
+      "sources": [
+        "https://rad.uw.edu/muscle-atlas/inferior-gemellus"
+      ]
+    }
+  },
+  {
+    "slug": "quadratus-femoris",
+    "region": "hip_glute",
+    "view": "back",
+    "source": "https://rad.uw.edu/muscle-atlas/quadratus-femoris",
+    "links": [],
+    "location": {
+      "he": "הירך האחורית העמוקה, מתחת לתאום התחתון",
+      "en": "Deep posterior hip below inferior gemellus"
+    },
+    "origin": {
+      "he": "הגבול הצדי של גבשושית השת",
+      "en": "Lateral border of the ischial tuberosity"
+    },
+    "insertion": {
+      "he": "הגבשושית המרובעת והעצם הסמוכה ברכס הבין־טרוכנטרי",
+      "en": "Quadrate tubercle and adjacent intertrochanteric crest"
+    },
+    "action": {
+      "he": "סיבוב חיצוני של הירך; מסייע בקירוב",
+      "en": "Hip lateral rotation; assists adduction"
+    },
+    "innervation": {
+      "he": "העצב לשריר המרובע של הירך",
+      "en": "Nerve to quadratus femoris"
+    },
+    "training": {
+      "he": "משתתף בשליטה סיבובית עמוקה; אין תרגיל ייעודי מקושר",
+      "en": "Contributes to deep rotational control; no dedicated exercise link"
+    },
+    "joints": {
+      "he": "מפרק הירך",
+      "en": "Hip joint"
+    },
+    "innervationReference": "https://rad.uw.edu/muscle-atlas/quadratus-femoris",
+    "contentReview": {
+      "status": "reference-checked; clinical review pending",
+      "checkedAt": "2026-10-22",
+      "sources": [
+        "https://rad.uw.edu/muscle-atlas/quadratus-femoris"
+      ]
+    }
+  },
+  {
+    "slug": "iliacus",
+    "region": "hip_glute",
+    "view": "front",
+    "source": "https://rad.uw.edu/muscle-atlas/iliacus",
+    "links": [
+      {
+        "id": "hanging-leg-raise",
+        "role": "primary"
+      }
+    ],
+    "location": {
+      "he": "הגומה הכסלית בתוך האגן",
+      "en": "Iliac fossa inside the pelvis"
+    },
+    "origin": {
+      "he": "הגומה הכסלית, רכס הכסל ואזור עצם העצה הסמוך",
+      "en": "Iliac fossa, iliac crest and adjacent sacral region"
+    },
+    "insertion": {
+      "he": "הטרוכנטר הקטן, יחד עם הפסואס הגדול",
+      "en": "Lesser trochanter with psoas major"
+    },
+    "action": {
+      "he": "כפיפת הירך ביחס לאגן",
+      "en": "Hip flexion relative to the pelvis"
+    },
+    "innervation": {
+      "he": "העצב הפמורלי",
+      "en": "Femoral nerve"
+    },
+    "training": {
+      "he": "משתתף בהרמת הרגל; שליטת האגן והגו משנה את אופי התרגיל",
+      "en": "Contributes to leg lifting; pelvic and trunk control affect the exercise"
+    },
+    "joints": {
+      "he": "מפרק הירך",
+      "en": "Hip joint"
+    },
+    "innervationReference": "https://rad.uw.edu/muscle-atlas/iliacus",
+    "contentReview": {
+      "status": "reference-checked; clinical review pending",
+      "checkedAt": "2026-10-22",
+      "sources": [
+        "https://rad.uw.edu/muscle-atlas/iliacus"
+      ]
+    }
+  },
+  {
+    "slug": "psoas-major",
+    "region": "hip_glute",
+    "view": "front",
+    "source": "https://rad.uw.edu/muscle-atlas/psoas",
+    "links": [
+      {
+        "id": "hanging-leg-raise",
+        "role": "primary"
+      }
+    ],
+    "location": {
+      "he": "מהעמוד המותני אל קדמת הירך",
+      "en": "From the lumbar spine to the anterior hip"
+    },
+    "origin": {
+      "he": "גופי החוליות והדיסקים T12–L5 והזיזים הרוחביים המותניים",
+      "en": "T12–L5 vertebral bodies/discs and lumbar transverse processes"
+    },
+    "insertion": {
+      "he": "הטרוכנטר הקטן של עצם הירך",
+      "en": "Lesser trochanter of the femur"
+    },
+    "action": {
+      "he": "כפיפת הירך והגו זה ביחס לזה",
+      "en": "Flexes the hip and trunk relative to one another"
+    },
+    "innervation": {
+      "he": "ענפים ישירים של המקלעת המותנית",
+      "en": "Direct branches of the lumbar plexus"
+    },
+    "training": {
+      "he": "משתתף בהרמת הרגל; אינו שריר בטן",
+      "en": "Contributes to leg raising; it is not an abdominal muscle"
+    },
+    "joints": {
+      "he": "מפרק הירך ועמוד השדרה המותני",
+      "en": "Hip joint and lumbar spine"
+    },
+    "innervationReference": "https://rad.uw.edu/muscle-atlas/psoas",
+    "contentReview": {
+      "status": "reference-checked; clinical review pending",
+      "checkedAt": "2026-10-22",
+      "sources": [
+        "https://rad.uw.edu/muscle-atlas/psoas"
       ]
     }
   }

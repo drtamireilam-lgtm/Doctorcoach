@@ -2,9 +2,9 @@
 Run: python audit-upper-limb.py /tmp/dc-upper-limb-source.zip /tmp/dc-element-parts.txt
 This establishes source fidelity, identities and laterality, not clinical approval.
 """
-import json,pathlib,struct,hashlib
+import sys,json,pathlib,struct,hashlib
 from atlas_converter import load,np,root
-catalog=json.loads(pathlib.Path(__file__).with_name('upper-limb-parts.json').read_text());results=[]
+catalog=json.loads((pathlib.Path(sys.argv[3]) if len(sys.argv)>3 else pathlib.Path(__file__).with_name('upper-limb-parts.json')).read_text());results=[]
 for name,items in catalog.items():
  raw=(root/'public/anatomy'/(name+'.glb')).read_bytes();size=struct.unpack_from('<I',raw,12)[0];doc=json.loads(raw[20:20+size]);start=28+size
  manifest=json.loads((root/'lib/prepared'/(name+'-model.json')).read_text());assert hashlib.sha256(raw).hexdigest()==manifest['glbSha256']
