@@ -50,3 +50,20 @@ test('anatomy content and illustration reports keep stable page/language context
  assert.equal((await store.feedback(client)).items.length,2);assert.equal((await store.feedback(other)).items.length,0);await assert.rejects(()=>store.feedback(client,true),e=>e.status===403);
  const reviewed=(await store.feedback(doctor,true,{section:'anatomy'})).items;assert.equal(reviewed.length,2);assert.ok(reviewed.every(x=>x.context.includes('lang:en')&&x.bodyRegion==='thigh'));
 });
+
+test('exercise catalog IDs and anatomy links remain unique and coverage does not regress',()=>{
+ const ids=exercises.map(e=>e.id);
+ assert.equal(new Set(ids).size,ids.length,'Duplicate canonical exercise IDs');
+ const linked=new Set(learningCards.flatMap(card=>card.links.map(link=>link.id)));
+ assert.ok(linked.size>=70,'Exercise-to-anatomy coverage dropped below reviewed baseline');
+ for(const id of linked)assert.ok(ids.includes(id),'Orphan anatomy link: '+id);
+ const roles=new Set(['primary','secondary','stabilizer']);
+ for(const card of learningCards){
+  const byExercise=new Map();
+  for(const link of card.links){
+   assert.ok(roles.has(link.role),'Invalid muscle role: '+card.slug);
+   assert.ok(!byExercise.has(link.id),'Duplicate exercise-to-muscle link: '+card.slug+'/'+link.id);
+   byExercise.set(link.id,link.role);
+  }
+ }
+});
