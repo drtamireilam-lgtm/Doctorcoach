@@ -17,6 +17,7 @@ import {anatomy3dLabEnabled} from '../lib/anatomy-lab';
 import {modelForRegion,modelRegionForMuscle} from '../lib/anatomy-models';
 import {AnatomyAtlasViewer} from './anatomy-atlas-viewer';
 import {LearningMotion} from './anatomy-learning-motion';
+import {stretchingTargets,stretchesForMuscle} from '../lib/stretch-anatomy-targets';
 const muscleRegions=regions.map(r=>({id:r.id,muscleSlugs:regionMuscles(r.id).map(m=>m.slug)}));
 export function AnatomyWorkspace({onExercise}:{onExercise:(id:string)=>void}){
  const {language}=useLanguage();const t=anatomyLabels[language];
@@ -50,7 +51,8 @@ export function AnatomyWorkspace({onExercise}:{onExercise:(id:string)=>void}){
      <LearningMotion slug={muscle.slug}/>
      {muscleMovements(muscle).length>0&&<details className="browse-advanced"><summary>{language==='he'?'תנועות שבהן השריר משתתף':'Movements involving this muscle'}</summary>{muscleMovements(muscle).map(m=><div className="movement-row" key={m.movement_id}><strong>{language==='en'?m.name_en:m.animation_action_he}</strong><span>{translateText(m.animation_start_he,language)}</span></div>)}</details>}
      <h3>{t.exercises}</h3><div className="atlas-exercises">{card?.links.map(link=>{const e=exerciseFor(link.id);return e?<button type="button" className="panel" key={link.id} onClick={()=>onExercise(e.id)}><strong>{language==='en'?e.en:e.name}</strong><small>{t[link.role]}</small><span aria-hidden="true">↗</span></button>:null;})}</div>{!card?.links.length&&<p className="care-muted">{t.noExercises}</p>}
-     {card&&<a className="text-button" href={card.source} target="_blank" rel="noopener noreferrer">{t.source} ↗</a>}
+     {stretchesForMuscle(muscle.slug).length>0&&<section aria-label={language==='he'?'מתיחות לשריר':'Stretches for this muscle'}><h3>{language==='he'?'מתיחות לשריר':'Stretches for this muscle'}</h3><div className="atlas-exercises">{stretchesForMuscle(muscle.slug).map(id=>{const e=exerciseFor(id);return e&&stretchingTargets(id).includes(muscle.slug)?<button type="button" className="panel" key={id} onClick={()=>onExercise(e.id)}><strong>{language==='en'?e.en:e.name}</strong><small>{language==='he'?'שריר מטרה למתיחה':'Stretch target'}</small><span aria-hidden="true">↗</span></button>:null;})}</div></section>}
+      {card&&<a className="text-button" href={card.source} target="_blank" rel="noopener noreferrer">{t.source} ↗</a>}
      <details className="browse-advanced"><summary>{language==='he'?'מקורות נוספים':'More references'}</summary><div className="anatomy-sources">{muscle.source&&<a href={muscle.source} target="_blank" rel="noopener noreferrer">{language==='he'?'קטלוג איורים במקור':'Original illustration catalog'}</a>}{anatomicalSources.map(source=><a key={source.url} href={source.url} target="_blank" rel="noopener noreferrer">{translateText(source.title,language)}</a>)}</div></details>
      <p className="care-muted">{t.learnOnly}</p><h3>{t.feedback}</h3><FeedbackButton key={muscle.slug+language} context={'anatomy:'+muscle.slug+' | lang:'+language+' | side:'+state.side} displayContext={name(muscle)} section="anatomy" bodyRegion={region==='wrist_hand'?'wrist':region}/>
      <details className="browse-advanced"><summary>{t.motion}</summary><InjuryMapping mappings={mappings} topic={topic} setTopic={setTopic} onExercise={onExercise}/></details>
