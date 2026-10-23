@@ -331,6 +331,28 @@ try{
  await page.setViewportSize({width:1280,height:900});await page.locator('[data-model-id="arm"] canvas').waitFor();
  assert.ok(await page.evaluate(()=>document.documentElement.scrollWidth<=window.innerWidth));assert.equal(await page.locator('canvas').count(),1);
  console.log('Check passed:',checks.length+1);checks.push('desktop viewport retains one responsive scene without horizontal overflow');
+ // Exercise the integration UI, not just the target lookup data. No login or remote writes.
+ for(const language of ['en','he']){
+  await page.setViewportSize({width:390,height:844});
+  await page.goto('http://127.0.0.1:'+port+'/?lang='+language+'#library?exercise=stretch-doorway-chest',{waitUntil:'domcontentloaded'});
+  const target=page.locator('.atlas-exercise-links a[href*="muscle=pectoralis-major"]');
+  await target.waitFor();assert.equal(await target.count(),1);
+  assert.ok((await target.innerText()).includes(language==='en'?'Stretch target':'שריר מטרה למתיחה'));
+  assert.ok(!/Primary muscle|Assisting muscle|Stabilizer|שריר עיקרי|שריר מסייע|מייצב/.test(await target.innerText()));
+  await target.click();
+  const chest=page.locator('[data-model-id="torso"]');await chest.locator('canvas').waitFor();
+  assert.equal(await chest.getByRole('combobox').inputValue(),'pectoralis-major');
+  assert.equal(await chest.getAttribute('dir'),language==='en'?'ltr':'rtl');
+  await page.reload();await chest.locator('canvas').waitFor();
+  assert.equal(await chest.getByRole('combobox').inputValue(),'pectoralis-major');
+  await chest.getByRole('button',{name:language==='en'?'Open muscle learning card':'פתיחת כרטיס השריר',exact:true}).click();
+  const stretches=page.getByRole('region',{name:language==='en'?'Stretches for this muscle':'מתיחות לשריר',exact:true});
+  assert.equal(await stretches.locator('button').count(),1);
+  await stretches.locator('button').click();await target.waitFor();
+  assert.equal(await target.count(),1);
+  assert.ok(await page.evaluate(()=>document.documentElement.scrollWidth<=window.innerWidth));
+  console.log('Check passed:',checks.length+1);checks.push(language+' stretch target, atlas selection/reload and muscle-card return keep stretching semantics');
+ }
  assert.deepEqual(serverErrors,[]);console.log('Check passed:',checks.length+1);checks.push('migrated local app returns no HTTP 5xx responses');
  assert.deepEqual(errors,[]);console.log('Check passed:',checks.length+1);checks.push('no uncaught browser errors');
  console.log(JSON.stringify({passed:checks,browserErrors:errors,serverErrors},null,2));
