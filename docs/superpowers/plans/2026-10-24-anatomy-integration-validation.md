@@ -18,11 +18,11 @@
 
 - [x] Read the complete master brief, requested completion audit, branch histories, PRs and exact-head CI steps.
 - [x] Confirm the defect: run 39841196372 passed while all three browser setup/test steps were skipped; run 39804083398 executed them successfully.
-- [ ] Expand `.github/workflows/ci.yml` triggers and browser step conditions for anatomy integration and anatomy-targeting PRs.
-- [ ] Extend `apps/doctorcoach-standalone/scripts/anatomy/browser-smoke.mjs` with English/Hebrew stretch-to-muscle-to-stretch navigation checks, reload persistence and absence of contraction labels on stretch links.
-- [ ] Record exact model/card/catalog/link inventory, source/review/laterality boundaries, live public asset hashes and integration recommendations in `docs/anatomy/PROJECT_AUDIT_2026-10-24.md`.
-- [ ] Run existing tests, TypeScript, isolated build/preflight and browser suites where the local environment supports them; report every failure or block.
-- [ ] Review the scoped diff, commit, push and open a PR against `integration/anatomy-rehab-stretch-20261022`; inspect its CI without deploying.
+- [x] Expand `.github/workflows/ci.yml` triggers and browser step conditions for anatomy integration and anatomy-targeting PRs.
+- [x] Extend `apps/doctorcoach-standalone/scripts/anatomy/browser-smoke.mjs` with English/Hebrew stretch-to-muscle-to-stretch navigation checks, reload persistence and absence of contraction labels on stretch links.
+- [x] Record exact model/card/catalog/link inventory, source/review/laterality boundaries, live public asset hashes and integration recommendations in `docs/anatomy/PROJECT_AUDIT_2026-10-24.md`.
+- [x] Run existing tests, TypeScript, isolated build/preflight and browser suites where the local environment supports them; report every failure or block in the audit. 1,390 full standalone tests, 71 targeted anatomy tests, 16 root checks and 16 viewer checks passed. Full-app migrations and first build hit local timeouts.
+- [x] Review the scoped diff, commit, push and open a PR against `integration/anatomy-rehab-stretch-20261022`; PR #35 is a draft. Initial CI inspection confirms build success and standalone checks in progress; final acceptance requires actual browser step results.
 
 ## Review focus
 

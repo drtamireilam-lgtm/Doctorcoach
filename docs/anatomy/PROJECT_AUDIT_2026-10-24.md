@@ -63,7 +63,21 @@ Fresh GitHub API inspection found:
 - [Completion CI 39804083398](https://github.com/drtamireilam-lgtm/Doctorcoach/actions/runs/39804083398), exact head `e20bd38`: success. Foundation security/build, standalone unit suite, TypeScript, viewer smoke, full anatomy application browser smoke, isolated build/preflight and synthetic Worker authentication/authorization steps all succeeded.
 - [Integration CI 39841196372](https://github.com/drtamireilam-lgtm/Doctorcoach/actions/runs/39841196372), exact head `ec333c0`: success. Foundation/standalone tests, TypeScript, isolated build/preflight and synthetic Worker checks succeeded. **Browser selection, viewer smoke and full anatomy application browser smoke were all skipped.** Green CI therefore did not verify the integrated browser experience.
 
-The earlier document's Windows native Miniflare failure and migration timeout remain historical local limitations, not the current completion Linux CI outcome. Neither CI result is a new physical-device, authenticated clinical workflow, real email/OTP or deployment acceptance test. New local and follow-up CI results are recorded below after execution.
+The earlier document's Windows native Miniflare failure is not reproduced in the new full local unit run: all 1,390 tests passed. The local migration timeout does recur in the full application browser harness. Neither CI result is a new physical-device, authenticated clinical workflow, real email/OTP or deployment acceptance test.
+
+Fresh local verification of this follow-up:
+
+- `npm test` in the standalone app: **1,390 passed, zero failed/skipped**, Node 24.22.0, about 385 seconds. The first sandboxed attempt could not spawn test workers; the permitted rerun completed successfully.
+- Targeted `anatomy*.test.mjs` plus stretch tests: **71 passed**, zero failed/skipped.
+- Root `npm test`: **16 foundation/RLS checks passed**, including ownership, cross-user denial, forged-role metadata and anonymous access checks in a local PostgreSQL engine.
+- Standalone TypeScript: passed.
+- Real Chromium viewer harness: **16 checks passed**, all 13 models loaded, no uncaught errors; simulated mobile viewport, not physical-device acceptance.
+- Browser CI selection: eight push/PR context cases passed, including synthetic merge refs and unrelated-branch exclusion. Script syntax and `git diff --check` passed.
+- Full local app browser harness: **blocked before browser assertions** by the existing 120-second local D1 migration timeout. The new EN/HE stretch assertions were not reached locally.
+- First isolated local build: exceeded the existing 180-second wrapper timeout at SSR compilation while the full suite was running. A retry without that concurrent suite is tracked separately; no successful local build is claimed here yet.
+- Focused independent review of workflow conditions and real UI test navigation: no actionable findings. This is code review, not a replacement for executing the new browser assertions.
+
+Draft [PR #35](https://github.com/drtamireilam-lgtm/Doctorcoach/pull/35) targets the integration branch, not main. Its Linux CI status must be checked for the actual pushed revision; the previous base branch's successful run is not evidence for this change.
 
 ## LAB evidence
 
