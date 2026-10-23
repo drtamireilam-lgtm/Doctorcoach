@@ -1,6 +1,8 @@
 """Fetch original 4.0 bone ELEMENTs only; verify byte ranges and each ZIP CRC.
 
 Usage: python fetch-skeleton.py SOURCE_DIRECTORY OUTPUT.zip
+Optional third argument: explicit catalog JSON with structures[].sourceIds,
+to fetch another audited subset using the same archive verification.
 SOURCE_DIRECTORY contains official isa_element_parts.txt and archive-directory.bin
 (the final 203898 bytes of the 142903898-byte official archive).
 No installation, credentials or application deployment are involved.
@@ -12,6 +14,12 @@ source = pathlib.Path(sys.argv[1])
 out = pathlib.Path(sys.argv[2])
 rows = [r.split('\t') for r in (source/'isa_element_parts.txt').read_text().splitlines()[1:]]
 ids = {r[2] for r in rows if r[0] == 'FMA5018'} | {'FJ3153', 'FJ3178', 'FJ3290'}
+if len(sys.argv)>3:
+    import json
+    catalog=json.loads(pathlib.Path(sys.argv[3]).read_text(encoding='utf8'))
+    ids={fid for item in catalog['structures'] for fid in item['sourceIds']}
+    if not ids or not ids<={r[2] for r in rows}:
+        raise ValueError('Catalog contains unmapped source ELEMENTs')
 directory = (source/'archive-directory.bin').read_bytes()
 p = directory.find(b'PK\x01\x02')
 entries = []

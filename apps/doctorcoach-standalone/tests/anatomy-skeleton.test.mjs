@@ -40,10 +40,10 @@ test('hiding one side never hides the opposite bone and original regional routin
  assert.deepEqual(visibleStructureIds(model,new Set(['bone']),'right-humerus'),['right-humerus']);
  assert.equal(anatomyModels[0].id,'body');assert.equal(modelForRegion('forearm').id,'forearm');assert.equal(modelForRegion('shoulder').id,'shoulder');
 });
-test('fresh overview opens skeleton while old surface links and region return modes remain compatible',()=>{
- assert.equal(anatomyOverviewFromHash('#learn'),'skeleton');assert.equal(anatomyOverviewFromHash('#learn?atlas=skeleton'),'skeleton');
+test('fresh overview opens layered body while old surface links and region return modes remain compatible',()=>{
+ assert.equal(anatomyOverviewFromHash('#learn'),'musculoskeletal');assert.equal(anatomyOverviewFromHash('#learn?atlas=skeleton'),'skeleton');
  assert.equal(anatomyOverviewFromHash('#learn?atlas=body'),'body');assert.equal(anatomyOverviewFromHash('#learn?region=elbow'),'body');
- assert.equal(anatomyOverviewFromHash('#learn?region=elbow','skeleton'),'skeleton');assert.equal(anatomyOverviewFromHash('#learn?atlas=invalid'),'skeleton');
+ assert.equal(anatomyOverviewFromHash('#learn?region=elbow','skeleton'),'skeleton');assert.equal(anatomyOverviewFromHash('#learn?atlas=invalid'),'musculoskeletal');
 });
 test('regional detail links require the actual same-side bone source',()=>{
  const model=skeleton();assert.equal(detailModelForStructure(model.structures.find(s=>s.id==='right-humerus')).id,'arm');
