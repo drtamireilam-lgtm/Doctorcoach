@@ -4,7 +4,7 @@ on:
   push:
     branches: [main, "stabilize/**", "fix/appearance-toggle-persistence-*", "feature/ui-ux-liad-followup-20261019", "feature/doctorcoach-2-smart-workout-20261020", "feature/anatomy-completion-*", "integration/anatomy-rehab-stretch-*"]
   pull_request:
-    branches: [main, "feature/anatomy-*", "integration/anatomy-*"]
+    branches: [main, "feature/anatomy-*", "integration/anatomy-*", "codex/anatomy-*"]
 
 permissions:
   contents: read
@@ -36,7 +36,7 @@ jobs:
     timeout-minutes: 20
     env:
       # PR refs are synthetic merge refs; use the source and target branch names too.
-      ANATOMY_BROWSER_CHECKS: ${{ startsWith(github.ref_name, 'feature/anatomy-') || startsWith(github.ref_name, 'integration/anatomy-') || startsWith(github.head_ref, 'feature/anatomy-') || startsWith(github.head_ref, 'integration/anatomy-') || startsWith(github.base_ref, 'feature/anatomy-') || startsWith(github.base_ref, 'integration/anatomy-') }}
+      ANATOMY_BROWSER_CHECKS: ${{ startsWith(github.ref_name, 'feature/anatomy-') || startsWith(github.ref_name, 'integration/anatomy-') || startsWith(github.head_ref, 'feature/anatomy-') || startsWith(github.head_ref, 'integration/anatomy-') || startsWith(github.base_ref, 'feature/anatomy-') || startsWith(github.base_ref, 'integration/anatomy-') || startsWith(github.base_ref, 'codex/anatomy-') }}
     defaults:
       run:
         working-directory: apps/doctorcoach-standalone
