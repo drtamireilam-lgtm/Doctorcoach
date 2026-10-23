@@ -4,7 +4,7 @@ on:
   push:
     branches: [main, "stabilize/**", "fix/appearance-toggle-persistence-*", "feature/ui-ux-liad-followup-20261019", "feature/doctorcoach-2-smart-workout-20261020", "feature/anatomy-completion-*", "integration/anatomy-rehab-stretch-*"]
   pull_request:
-    branches: [main]
+    branches: [main, "feature/anatomy-*", "integration/anatomy-*"]
 
 permissions:
   contents: read
@@ -34,6 +34,9 @@ jobs:
   standalone:
     runs-on: ubuntu-latest
     timeout-minutes: 20
+    env:
+      # PR refs are synthetic merge refs; use the source and target branch names too.
+      ANATOMY_BROWSER_CHECKS: ${{ startsWith(github.ref_name, 'feature/anatomy-') || startsWith(github.ref_name, 'integration/anatomy-') || startsWith(github.head_ref, 'feature/anatomy-') || startsWith(github.head_ref, 'integration/anatomy-') || startsWith(github.base_ref, 'feature/anatomy-') || startsWith(github.base_ref, 'integration/anatomy-') }}
     defaults:
       run:
         working-directory: apps/doctorcoach-standalone
@@ -51,17 +54,17 @@ jobs:
       - name: Standalone TypeScript
         run: npm run typecheck
       - name: Select runner anatomy browser
-        if: startsWith(github.ref, 'refs/heads/feature/anatomy-completion-')
+        if: env.ANATOMY_BROWSER_CHECKS == 'true'
         timeout-minutes: 1
         run: |
           browser_path="$(command -v google-chrome)"
           test -x "$browser_path"
           echo "ANATOMY_CHROMIUM=$browser_path" >> "$GITHUB_ENV"
       - name: Anatomy viewer controls and bundled model smoke
-        if: startsWith(github.ref, 'refs/heads/feature/anatomy-completion-')
+        if: env.ANATOMY_BROWSER_CHECKS == 'true'
         run: node scripts/anatomy/viewer-controls-smoke.mjs
       - name: Full anatomy application browser smoke
-        if: startsWith(github.ref, 'refs/heads/feature/anatomy-completion-')
+        if: env.ANATOMY_BROWSER_CHECKS == 'true'
         run: node scripts/anatomy/browser-smoke.mjs
       - name: Build standalone without deployment
         env:
