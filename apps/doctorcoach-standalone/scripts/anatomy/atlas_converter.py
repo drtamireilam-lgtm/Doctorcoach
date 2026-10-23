@@ -41,5 +41,5 @@ def emit(name,parts,mods,unavailable):
  glb=struct.pack('<III',0x46546c67,2,28+len(j)+len(binary))+struct.pack('<II',len(j),0x4e4f534a)+j+struct.pack('<II',len(binary),0x004e4942)+binary
  manifest={'assetId':'bp3d-4-'+name,'sourceUrl':'https://dbarchive.biosciencedbc.jp/data/bodyparts3d/LATEST/isa_BP3D_4.0_obj_99.zip','creator':'The Database Center for Life Science','licenseId':'CC-BY-4.0','licenseUrl':'https://creativecommons.org/licenses/by/4.0/','licenseEvidence':'https://dbarchive.biosciencedbc.jp/en/bodyparts3d/lic.html','attribution':'BodyParts3D, © The Database Center for Life Science licensed under CC Attribution 4.0 International','modifications':mods,'downloadedSubsetSha256':hashlib.sha256(pathlib.Path(sys.argv[1]).read_bytes()).hexdigest(),'glbSha256':hashlib.sha256(glb).hexdigest(),'anatomicalReview':'pending','structures':structures,'unavailable':unavailable}
  out=root/'public/anatomy';(out/(name+'.glb')).write_bytes(glb)
- for p in [root/'lib/prepared'/(name+'-model.json'),out/(name+'-source-and-license.json')]:p.write_text(json.dumps(manifest,ensure_ascii=False,indent=2)+'\n')
+ for p in [root/'lib/prepared'/(name+'-model.json'),out/(name+'-source-and-license.json')]:p.write_text(json.dumps(manifest,ensure_ascii=False,indent=2)+'\n',encoding='utf8')
  print(name,len(glb),'bytes',sum(s['triangles'] for s in structures),'triangles',flush=True)

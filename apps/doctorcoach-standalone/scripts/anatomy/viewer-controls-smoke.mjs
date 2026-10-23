@@ -20,7 +20,7 @@ const server=await createServer({configFile:false,root:fixture,publicDir:resolve
 await server.listen();let browser;const errors=[],checks=[];
 try{
  browser=await chromium.launch({executablePath:process.env.ANATOMY_CHROMIUM||undefined,headless:true,args:['--enable-unsafe-swiftshader','--use-gl=angle','--use-angle=swiftshader']});
- const page=await browser.newPage({viewport:{width:390,height:844},isMobile:true,hasTouch:true});page.setDefaultTimeout(30000);
+ const page=await browser.newPage({viewport:{width:390,height:844},isMobile:true,hasTouch:true});page.setDefaultTimeout(30000);page.setDefaultNavigationTimeout(90000);
  async function ready(modelId){
   await page.locator('[data-model-id="'+modelId+'"] canvas').waitFor();
   await page.waitForFunction(id=>{
@@ -29,7 +29,7 @@ try{
   },modelId);
  }
  page.on('pageerror',e=>errors.push(e.message));
- await page.goto('http://127.0.0.1:37852');
+ await page.goto('http://127.0.0.1:37852',{waitUntil:'domcontentloaded'});
  const viewer=page.locator('[data-model-id]');
  await viewer.getByRole('button',{name:'Front view',exact:true}).waitFor();
  await ready('shoulder');
@@ -58,13 +58,32 @@ try{
  await page.getByRole('button',{name:'Switch language'}).click();assert.equal(await viewer.getAttribute('dir'),'rtl');assert.equal(await viewer.getByRole('combobox').inputValue(),'deltoid');
  await page.screenshot({path:join(evidence,'viewer-he-mobile.png'),fullPage:true});checks.push('Hebrew RTL retains selection');
  await page.getByRole('button',{name:'Switch language'}).click();
- for(const id of ['body','arm','forearm','hand','hip','knee','lowerleg','foot','spine','torso','neck','thigh']){
+ for(const id of ['body','skeleton','arm','forearm','hand','hip','knee','lowerleg','foot','spine','torso','neck','thigh']){
   await page.getByLabel('Model',{exact:true}).selectOption(id);
   await ready(id);
   assert.equal(await page.locator('canvas').count(),1,id);assert.equal(await page.getByRole('alert').count(),0,id);
   assert.ok(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth),id+' overflow');checks.push(id+' real GLB renders and previous scene disposes');
  }
  await page.screenshot({path:join(evidence,'viewer-en-mobile.png'),fullPage:true});
+ await page.getByLabel('Model',{exact:true}).selectOption('skeleton');await ready('skeleton');
+ assert.equal(await viewer.getByRole('combobox').locator('option').count(),202);
+ await viewer.getByRole('combobox').selectOption('left-humerus');await viewer.getByText('Left side',{exact:true}).waitFor();
+ assert.equal(await viewer.getByRole('button',{name:'Open region',exact:true}).count(),0);
+ await viewer.getByRole('button',{name:'Hide structure',exact:true}).click();
+ assert.equal(await viewer.getByRole('combobox').locator('option[value="left-humerus"]').count(),0);
+ assert.equal(await viewer.getByRole('combobox').locator('option[value="right-humerus"]').count(),1);
+ await viewer.getByRole('button',{name:/Restore hidden structures/}).click();
+ await viewer.getByRole('combobox').selectOption('right-humerus');await viewer.getByText('Right side',{exact:true}).waitFor();
+ await viewer.getByRole('button',{name:'Open region',exact:true}).waitFor();
+ await viewer.getByRole('button',{name:'Reset',exact:true}).click();
+ await viewer.locator('canvas').screenshot({path:join(evidence,'skeleton-front.png')});
+ await viewer.getByRole('button',{name:'Back view',exact:true}).click();
+ await viewer.locator('canvas').screenshot({path:join(evidence,'skeleton-back.png')});
+ await page.getByRole('button',{name:'Switch language'}).click();
+ await viewer.getByRole('combobox').selectOption('left-femur');await viewer.getByText('צד שמאל',{exact:true}).waitFor();
+ await viewer.getByRole('button',{name:'בידוד המבנה',exact:true}).click();await viewer.getByRole('button',{name:'התמקדות במבנה',exact:true}).click();
+ assert.equal(await viewer.getAttribute('dir'),'rtl');assert.equal(await page.locator('canvas').count(),1);
+ checks.push('whole-body skeleton preserves 201 structures, real bilateral side labels, independent hiding and Hebrew isolation');
  assert.deepEqual(errors,[]);await writeFile(join(evidence,'viewer-checks.json'),JSON.stringify({checks,errors,scope:'Chromium software WebGL, simulated 390px mobile; viewer harness, no authenticated application regression'},null,2));
  console.log(JSON.stringify({checks,errors},null,2));
 }finally{await browser?.close();await server.close();}

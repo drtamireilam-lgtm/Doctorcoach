@@ -92,7 +92,7 @@ try{
  assert.equal(await page.locator('section[aria-label="כתף בתלת־ממד"]').getByRole('combobox').inputValue(),'deltoid');
  console.log('Check passed:',checks.length+1);checks.push('browser back restores integrated anatomy and selection');
  // Full-body navigation and the second detailed region use the same integrated app.
- await page.goto('http://127.0.0.1:'+port+'/#learn',{waitUntil:'domcontentloaded'});
+ await page.goto('http://127.0.0.1:'+port+'/#learn?atlas=body',{waitUntil:'domcontentloaded'});
  const body=page.locator('[data-model-id="body"]');await body.locator('canvas').waitFor({timeout:60000});
  await page.waitForFunction(()=>{const b=document.querySelector('[data-model-id="body"] button');return b&&!b.disabled;});
  assert.equal(await page.locator('canvas').count(),1);assert.equal(await page.locator('.atlas-layout').count(),0);assert.equal(modelRequests.filter(u=>u.endsWith('/arm.glb')).length,0);
@@ -375,6 +375,29 @@ try{
   await page.reload();await page.locator('.atlas-detail .atlas-content-review').waitFor();
   assert.equal(await page.locator('.atlas-detail .atlas-content-review').innerText(),pending);
   console.log('Check passed:',checks.length+1);checks.push(language+' ten source-checked forearm cards show pending review and honest missing geometry with no invented exercise links');
+ }
+ for(const language of ['en','he']){
+  await page.goto('http://127.0.0.1:'+port+'/?lang='+language+'#learn',{waitUntil:'domcontentloaded'});
+  const skeleton=page.locator('[data-model-id="skeleton"]');await skeleton.locator('canvas').waitFor();
+  assert.equal(await skeleton.getByRole('combobox').locator('option').count(),202);
+  await skeleton.getByRole('combobox').selectOption('left-humerus');
+  await skeleton.getByText(language==='en'?'Left side':'צד שמאל',{exact:true}).waitFor();
+  assert.equal(await skeleton.getByRole('button',{name:language==='en'?'Open region':'פתיחת האזור',exact:true}).count(),0);
+  await skeleton.getByRole('button',{name:language==='en'?'Hide structure':'הסתרת המבנה',exact:true}).click();
+  await page.reload();await skeleton.locator('canvas').waitFor();
+  assert.equal(await skeleton.getByRole('combobox').locator('option[value="left-humerus"]').count(),0);
+  assert.equal(await skeleton.getByRole('combobox').locator('option[value="right-humerus"]').count(),1);
+  await skeleton.getByRole('button',{name:language==='en'?/Restore hidden structures/:/החזרת מבנים מוסתרים/}).click();
+  await skeleton.getByRole('combobox').selectOption('right-humerus');
+  await skeleton.getByRole('button',{name:language==='en'?'Open region':'פתיחת האזור',exact:true}).click();
+  await page.locator('[data-model-id="arm"] canvas').waitFor();
+  await page.getByRole('button',{name:language==='en'?'Back to full body':'חזרה לגוף המלא',exact:true}).click();await skeleton.locator('canvas').waitFor();
+  await page.getByRole('button',{name:language==='en'?'Body region map':'מפת אזורי הגוף',exact:true}).click();await page.locator('[data-model-id="body"] canvas').waitFor();
+  await page.getByRole('button',{name:language==='en'?'Full-body skeleton':'שלד גוף מלא',exact:true}).click();await skeleton.locator('canvas').waitFor();
+  assert.equal(await page.locator('canvas').count(),1);assert.ok(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth));
+  await skeleton.getByRole('button',{name:language==='en'?'Reset':'איפוס',exact:true}).click();
+  await skeleton.locator('canvas').screenshot({path:join(evidenceDir,'skeleton-'+language+'-mobile.png')});
+  console.log('Check passed:',checks.length+1);checks.push(language+' whole-body skeleton default, left/right integrity, hidden-state reload, same-side detail return and surface mode compatibility');
  }
  assert.deepEqual(serverErrors,[]);console.log('Check passed:',checks.length+1);checks.push('migrated local app returns no HTTP 5xx responses');
  assert.deepEqual(errors,[]);console.log('Check passed:',checks.length+1);checks.push('no uncaught browser errors');
