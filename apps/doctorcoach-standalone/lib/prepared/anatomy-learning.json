@@ -5239,5 +5239,181 @@
         "https://medicine.uams.edu/neuroscience/education/medical-school-courses/human-structure-module/anatomy-tables/muscle-tables/muscles-of-the-upper-limb/"
       ]
     }
+  },
+  {
+    "slug": "flexor-digitorum-superficialis",
+    "location": {
+      "he": "השכבה האמצעית במדור הקדמי של האמה",
+      "en": "Intermediate layer of the anterior forearm"
+    },
+    "origin": {
+      "he": "ראש זרוע־גומד: האפיקונדיל המדיאלי, הרצועה הקולטרלית האולנרית והזיז הכותרתי; ראש חישורי: החלק הקדמי של החישור",
+      "en": "Humeroulnar head from the medial epicondyle, ulnar collateral ligament and coronoid process; radial head from anterior radius"
+    },
+    "insertion": {
+      "he": "צדי הגלילים האמצעיים של אצבעות 2–5",
+      "en": "Sides of the middle phalanges of fingers 2–5"
+    },
+    "action": {
+      "he": "כיפוף אצבעות 2–5 במפרקים הבין־גליליים המקורבים; משתתף גם בכיפוף מפרקי המסרק־גליל ושורש כף היד",
+      "en": "Flexes fingers 2–5 at the proximal interphalangeal joints; also contributes to knuckle and wrist flexion"
+    },
+    "joints": {
+      "he": "מפרקי PIP ו־MCP של אצבעות 2–5 ושורש כף היד",
+      "en": "Finger 2–5 PIP and MCP joints; wrist"
+    },
+    "innervation": {
+      "he": "העצב המדיאני",
+      "en": "Median nerve"
+    },
+    "training": {
+      "he": "כיפוף מפרק האצבע האמצעי שונה מכיפוף קצה האצבע. אין להסיק שתרגיל אחיזה כללי מבודד שריר זה",
+      "en": "Bending the middle finger joint differs from bending the fingertip joint. Generic gripping does not establish muscle isolation"
+    },
+    "region": "forearm",
+    "view": "front",
+    "source": "https://rad.uw.edu/muscle-atlas/flexor-digitorum-superficialis",
+    "innervationReference": "https://rad.uw.edu/muscle-atlas/flexor-digitorum-superficialis",
+    "links": [],
+    "contentReview": {
+      "status": "reference-checked; clinical review pending",
+      "checkedAt": "2026-10-24",
+      "sources": [
+        "https://rad.uw.edu/muscle-atlas/flexor-digitorum-superficialis",
+        "https://medicine.uams.edu/neuroscience/education/medical-school-courses/human-structure-module/anatomy-tables/muscle-tables/muscles-of-the-upper-limb/"
+      ]
+    }
+  },
+  {
+    "slug": "flexor-digitorum-profundus",
+    "location": {
+      "he": "השכבה העמוקה במדור הקדמי של האמה",
+      "en": "Deep compartment of the anterior forearm"
+    },
+    "origin": {
+      "he": "החלק המקורב של הגומד, בעיקר משטחיו הקדמי והמדיאלי, והקרום הבין־גרמי",
+      "en": "Proximal ulna, mainly its anterior and medial surfaces, and the interosseous membrane"
+    },
+    "insertion": {
+      "he": "בסיסי הגלילים המרוחקים של אצבעות 2–5",
+      "en": "Bases of the distal phalanges of fingers 2–5"
+    },
+    "action": {
+      "he": "כיפוף אצבעות 2–5 במפרקים הבין־גליליים המרוחקים; משתתף בכיפוף יתר מפרקי האצבעות וכף היד",
+      "en": "Flexes fingers 2–5 at the distal interphalangeal joints and contributes to other finger and hand flexion"
+    },
+    "joints": {
+      "he": "מפרקי DIP, ‏PIP ו־MCP של אצבעות 2–5 ושורש כף היד",
+      "en": "Finger 2–5 DIP, PIP and MCP joints; wrist"
+    },
+    "innervation": {
+      "he": "אצבעות 2–3: העצב הבין־גרמי הקדמי, ענף של העצב המדיאני; אצבעות 4–5: העצב האולנרי",
+      "en": "For digits 2–3: anterior interosseous branch of the median nerve; for digits 4–5: ulnar nerve"
+    },
+    "training": {
+      "he": "לשריר יש חלוקת עצבוב לפי אצבעות. הכרטיס אינו מחליף בדיקת תפקוד עצבי ואינו קובע תוכנית שיקום",
+      "en": "Innervation differs between finger groups. This card neither replaces a nerve-function examination nor defines a rehabilitation plan"
+    },
+    "region": "forearm",
+    "view": "front",
+    "source": "https://rad.uw.edu/muscle-atlas/flexor-digitorum-profundus",
+    "innervationReference": "https://rad.uw.edu/muscle-atlas/flexor-digitorum-profundus",
+    "links": [],
+    "contentReview": {
+      "status": "reference-checked; clinical review pending",
+      "checkedAt": "2026-10-24",
+      "sources": [
+        "https://rad.uw.edu/muscle-atlas/flexor-digitorum-profundus",
+        "https://medicine.uams.edu/neuroscience/education/medical-school-courses/human-structure-module/anatomy-tables/muscle-tables/muscles-of-the-upper-limb/"
+      ]
+    }
+  },
+  {
+    "slug": "flexor-pollicis-longus",
+    "location": {
+      "he": "השכבה העמוקה באמה הקדמית; הגיד ממשיך לאגודל",
+      "en": "Deep anterior forearm, with its tendon continuing into the thumb"
+    },
+    "origin": {
+      "he": "המשטח הקדמי של החישור והקרום הבין־גרמי הסמוך",
+      "en": "Anterior radius and adjacent interosseous membrane"
+    },
+    "insertion": {
+      "he": "בסיס הגליל המרוחק של האגודל",
+      "en": "Base of the thumb distal phalanx"
+    },
+    "action": {
+      "he": "כיפוף האגודל במפרק הבין־גלילי; משתתף גם בכיפוף מפרק המסרק־גליל",
+      "en": "Flexes the thumb interphalangeal joint and also contributes to metacarpophalangeal flexion"
+    },
+    "joints": {
+      "he": "המפרק הבין־גלילי ומפרק המסרק־גליל של האגודל",
+      "en": "Thumb IP and MCP joints"
+    },
+    "innervation": {
+      "he": "העצב הבין־גרמי הקדמי, ענף של העצב המדיאני",
+      "en": "Anterior interosseous branch of the median nerve"
+    },
+    "training": {
+      "he": "כיפוף קצה האגודל שונה מתנועת בסיסו. לא נוסף קישור לתרגיל מתוך שם השריר בלבד",
+      "en": "Thumb-tip flexion differs from thumb-base movement. Exercise links are not inferred solely from the muscle name"
+    },
+    "region": "forearm",
+    "view": "front",
+    "source": "https://rad.uw.edu/muscle-atlas/flexor-pollicis-longus",
+    "innervationReference": "https://rad.uw.edu/muscle-atlas/flexor-pollicis-longus",
+    "links": [],
+    "contentReview": {
+      "status": "reference-checked; clinical review pending",
+      "checkedAt": "2026-10-24",
+      "sources": [
+        "https://rad.uw.edu/muscle-atlas/flexor-pollicis-longus",
+        "https://medicine.uams.edu/neuroscience/education/medical-school-courses/human-structure-module/anatomy-tables/muscle-tables/muscles-of-the-upper-limb/"
+      ]
+    }
+  },
+  {
+    "slug": "palmaris-longus",
+    "location": {
+      "he": "השכבה השטחית במדור הקדמי של האמה",
+      "en": "Superficial layer of the anterior forearm"
+    },
+    "origin": {
+      "he": "האפיקונדיל המדיאלי של עצם הזרוע דרך מוצא הכופפים המשותף",
+      "en": "Shared flexor origin at the medial humeral epicondyle"
+    },
+    "insertion": {
+      "he": "החלק המרוחק של רצועת הכופפים והאלל הכפי",
+      "en": "Distal flexor retinaculum and the palmar aponeurosis"
+    },
+    "action": {
+      "he": "מסייע בכיפוף שורש כף היד ומותח את האלל הכפי",
+      "en": "Assists wrist flexion while tensioning the palmar aponeurosis"
+    },
+    "joints": {
+      "he": "שורש כף היד",
+      "en": "Wrist"
+    },
+    "innervation": {
+      "he": "העצב המדיאני",
+      "en": "Median nerve"
+    },
+    "training": {
+      "he": "פעולתו קשורה לשורש כף היד ולרקמה הכפית, ולא לאחז בגלילי האצבעות. אין כאן קישור לתרגיל בידוד",
+      "en": "Its attachment is palmar rather than on finger phalanges. No isolated-muscle exercise link is assigned"
+    },
+    "region": "forearm",
+    "view": "front",
+    "source": "https://rad.uw.edu/muscle-atlas/palmaris-longus",
+    "innervationReference": "https://rad.uw.edu/muscle-atlas/palmaris-longus",
+    "links": [],
+    "contentReview": {
+      "status": "reference-checked; clinical review pending",
+      "checkedAt": "2026-10-24",
+      "sources": [
+        "https://rad.uw.edu/muscle-atlas/palmaris-longus",
+        "https://medicine.uams.edu/neuroscience/education/medical-school-courses/human-structure-module/anatomy-tables/muscle-tables/muscles-of-the-upper-limb/"
+      ]
+    }
   }
 ]

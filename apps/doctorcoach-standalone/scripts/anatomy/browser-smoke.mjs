@@ -355,7 +355,7 @@ try{
  }
  for(const language of ['en','he']){
   const pending=language==='en'?'References checked; clinical review of this content is still pending.':'המקורות נבדקו; הסקירה הקלינית של התוכן עדיין ממתינה.';
-  for(const slug of ['extensor-digitorum','extensor-digiti-minimi','extensor-indicis','abductor-pollicis-longus','extensor-pollicis-brevis','extensor-pollicis-longus']){
+  for(const slug of ['extensor-digitorum','extensor-digiti-minimi','extensor-indicis','abductor-pollicis-longus','extensor-pollicis-brevis','extensor-pollicis-longus','flexor-digitorum-superficialis','flexor-digitorum-profundus','flexor-pollicis-longus','palmaris-longus']){
    await page.goto('http://127.0.0.1:'+port+'/?lang='+language+'#learn?region=forearm&muscle='+slug,{waitUntil:'domcontentloaded'});
    const detail=page.locator('.atlas-detail'),forearm=page.locator('[data-model-id="forearm"]');
    await detail.locator('.atlas-content-review').waitFor();
@@ -374,7 +374,7 @@ try{
   }
   await page.reload();await page.locator('.atlas-detail .atlas-content-review').waitFor();
   assert.equal(await page.locator('.atlas-detail .atlas-content-review').innerText(),pending);
-  console.log('Check passed:',checks.length+1);checks.push(language+' six source-checked forearm cards show pending review and honest missing geometry with no invented exercise links');
+  console.log('Check passed:',checks.length+1);checks.push(language+' ten source-checked forearm cards show pending review and honest missing geometry with no invented exercise links');
  }
  assert.deepEqual(serverErrors,[]);console.log('Check passed:',checks.length+1);checks.push('migrated local app returns no HTTP 5xx responses');
  assert.deepEqual(errors,[]);console.log('Check passed:',checks.length+1);checks.push('no uncaught browser errors');
