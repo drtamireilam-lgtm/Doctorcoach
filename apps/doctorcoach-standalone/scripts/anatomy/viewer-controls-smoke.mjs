@@ -11,24 +11,32 @@ const evidence=resolve(process.env.ANATOMY_EVIDENCE_DIR??join(tmpdir(),'dc-viewe
 await mkdir(evidence,{recursive:true});
 const source=root.replaceAll('\\','/');
 await writeFile(join(fixture,'index.html'),'<html><meta name="viewport" content="width=device-width,initial-scale=1"><div id="root"></div><script type="module" src="/main.tsx"></script></html>');
+// Delayed mounts reproduce the transition where camera controls do not exist yet.
 await writeFile(join(fixture,'main.tsx'),`import React,{useState} from 'react';import {createRoot} from 'react-dom/client';
 import {AnatomyModelViewer} from '/@fs/${source}/components/anatomy-model-viewer.tsx';
 import {anatomyModels} from '/@fs/${source}/lib/anatomy-models.ts';
-function App(){const [id,setId]=useState('shoulder'),[language,setLanguage]=useState('en');return <><button onClick={()=>setLanguage(language==='en'?'he':'en')}>Switch language</button><select aria-label="Model" value={id} onChange={e=>setId(e.target.value)}>{anatomyModels.map(m=><option key={m.id}>{m.id}</option>)}</select><AnatomyModelViewer key={id} initialSelection={id==='shoulder'?'deltoid':undefined} autoOpen model={anatomyModels.find(m=>m.id===id)} language={language} onExercise={()=>{}} onMuscle={()=>{}}/></>};createRoot(document.getElementById('root')).render(<App/>);`);
+function App(){const [id,setId]=useState('shoulder'),[language,setLanguage]=useState('en'),[mounted,setMounted]=useState(true);const changeModel=id=>{setMounted(false);setId(id);setTimeout(()=>setMounted(true),100);};return <><button onClick={()=>setLanguage(language==='en'?'he':'en')}>Switch language</button><select aria-label="Model" value={id} onChange={e=>changeModel(e.target.value)}>{anatomyModels.map(m=><option key={m.id}>{m.id}</option>)}</select>{mounted&&<AnatomyModelViewer key={id} initialSelection={id==='shoulder'?'deltoid':undefined} autoOpen model={anatomyModels.find(m=>m.id===id)} language={language} onExercise={()=>{}} onMuscle={()=>{}}/>}</>};createRoot(document.getElementById('root')).render(<App/>);`);
 const server=await createServer({configFile:false,root:fixture,publicDir:resolve('public'),plugins:[react()],resolve:{alias:{react:resolve('node_modules/react'),'react-dom':resolve('node_modules/react-dom')}},server:{host:'127.0.0.1',port:37852,strictPort:true,fs:{allow:[root,fixture]}}});
 await server.listen();let browser;const errors=[],checks=[];
 try{
  browser=await chromium.launch({executablePath:process.env.ANATOMY_CHROMIUM||undefined,headless:true,args:['--enable-unsafe-swiftshader','--use-gl=angle','--use-angle=swiftshader']});
  const page=await browser.newPage({viewport:{width:390,height:844},isMobile:true,hasTouch:true});page.setDefaultTimeout(30000);
+ async function ready(modelId){
+  await page.locator('[data-model-id="'+modelId+'"] canvas').waitFor();
+  await page.waitForFunction(id=>{
+   const button=document.querySelector('[data-model-id="'+id+'"] [aria-label="Camera"] button');
+   return !!button&&!button.disabled;
+  },modelId);
+ }
  page.on('pageerror',e=>errors.push(e.message));
  await page.goto('http://127.0.0.1:37852');
  const viewer=page.locator('[data-model-id]');
  await viewer.getByRole('button',{name:'Front view',exact:true}).waitFor();
- await page.waitForFunction(()=>!document.querySelector('[aria-label="Camera"] button')?.disabled);
+ await ready('shoulder');
  await viewer.getByRole('combobox').selectOption('deltoid');
  await viewer.getByRole('button',{name:'Hide structure',exact:true}).click();
  assert.equal(await viewer.getByRole('combobox').locator('option[value="deltoid"]').count(),0);
- await page.reload();await page.waitForFunction(()=>!document.querySelector('[aria-label="Camera"] button')?.disabled);
+ await page.reload();await ready('shoulder');
  assert.equal(await viewer.getByRole('combobox').locator('option[value="deltoid"]').count(),0);
  await viewer.getByRole('button',{name:/Restore hidden structures/}).click();
  await viewer.getByRole('combobox').selectOption('deltoid');
@@ -52,7 +60,7 @@ try{
  await page.getByRole('button',{name:'Switch language'}).click();
  for(const id of ['body','arm','forearm','hand','hip','knee','lowerleg','foot','spine','torso','neck','thigh']){
   await page.getByLabel('Model',{exact:true}).selectOption(id);
-  await page.waitForFunction(()=>!document.querySelector('[aria-label="Camera"] button')?.disabled);
+  await ready(id);
   assert.equal(await page.locator('canvas').count(),1,id);assert.equal(await page.getByRole('alert').count(),0,id);
   assert.ok(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth),id+' overflow');checks.push(id+' real GLB renders and previous scene disposes');
  }

@@ -74,10 +74,12 @@ Fresh local verification of this follow-up:
 - Real Chromium viewer harness: **16 checks passed**, all 13 models loaded, no uncaught errors; simulated mobile viewport, not physical-device acceptance.
 - Browser CI selection: eight push/PR context cases passed, including synthetic merge refs and unrelated-branch exclusion. Script syntax and `git diff --check` passed.
 - Full local app browser harness: **blocked before browser assertions** by the existing 120-second local D1 migration timeout. The new EN/HE stretch assertions were not reached locally.
-- First isolated local build: exceeded the existing 180-second wrapper timeout at SSR compilation while the full suite was running. A retry without that concurrent suite is tracked separately; no successful local build is claimed here yet.
+- First isolated local build: exceeded the existing 180-second wrapper timeout at SSR compilation while the full suite was running. The retry after that suite finished **passed**, including `check-isolated-staging.mjs dist/server/wrangler.json`. The target preflight is static configuration validation, not ownership/deployment approval.
 - Focused independent review of workflow conditions and real UI test navigation: no actionable findings. This is code review, not a replacement for executing the new browser assertions.
 
 Draft [PR #35](https://github.com/drtamireilam-lgtm/Doctorcoach/pull/35) targets the integration branch, not main. Its Linux CI status must be checked for the actual pushed revision; the previous base branch's successful run is not evidence for this change.
+
+The first follow-up [CI run 40025839299](https://github.com/drtamireilam-lgtm/Doctorcoach/actions/runs/40025839299) executed the previously skipped viewer suite and exposed a pre-existing readiness race: `!document.querySelector(...)?.disabled` returns true when the camera button does not exist. The model-switch check then counted zero canvases. A test-only 100 ms delayed mount reproduced the same `body: 0 !== 1` failure locally. Requiring the requested model's canvas and an existing enabled camera button made all 16 checks pass with that delayed fixture. This is a browser-harness fix; the application viewer and assets are unchanged. The full-app suite still requires the final Linux CI result.
 
 ## LAB evidence
 
