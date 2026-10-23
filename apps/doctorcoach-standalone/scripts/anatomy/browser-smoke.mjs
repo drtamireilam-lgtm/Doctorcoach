@@ -92,7 +92,7 @@ try{
  assert.equal(await page.locator('section[aria-label="כתף בתלת־ממד"]').getByRole('combobox').inputValue(),'deltoid');
  console.log('Check passed:',checks.length+1);checks.push('browser back restores integrated anatomy and selection');
  // Full-body navigation and the second detailed region use the same integrated app.
- await page.goto('http://127.0.0.1:'+port+'/#learn',{waitUntil:'domcontentloaded'});
+ await page.goto('http://127.0.0.1:'+port+'/#learn?atlas=body',{waitUntil:'domcontentloaded'});
  const body=page.locator('[data-model-id="body"]');await body.locator('canvas').waitFor({timeout:60000});
  await page.waitForFunction(()=>{const b=document.querySelector('[data-model-id="body"] button');return b&&!b.disabled;});
  assert.equal(await page.locator('canvas').count(),1);assert.equal(await page.locator('.atlas-layout').count(),0);assert.equal(modelRequests.filter(u=>u.endsWith('/arm.glb')).length,0);
