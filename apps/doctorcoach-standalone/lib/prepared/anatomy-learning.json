@@ -4975,5 +4975,269 @@
       "checkedAt": "2026-10-22",
       "status": "source-checked; clinical review pending"
     }
+  },
+  {
+    "slug": "extensor-digitorum",
+    "location": {
+      "he": "המדור האחורי השטחי של האמה; גידים ממשיכים לאצבעות 2–5",
+      "en": "Superficial posterior forearm, with tendons continuing to fingers 2–5"
+    },
+    "origin": {
+      "he": "האפיקונדיל הלטרלי של עצם הזרוע דרך הגיד הפושט המשותף",
+      "en": "Common extensor origin on the lateral humeral epicondyle"
+    },
+    "insertion": {
+      "he": "מנגנוני היישור בגב אצבעות 2–5",
+      "en": "Dorsal extensor expansions of fingers 2–5"
+    },
+    "action": {
+      "he": "יישור אצבעות 2–5 במפרקי המסרק־גליל; מסייע ביישור שורש כף היד",
+      "en": "Straightens fingers 2–5 at the metacarpophalangeal joints and assists wrist extension"
+    },
+    "joints": {
+      "he": "מפרקי המסרק־גליל של אצבעות 2–5 ושורש כף היד",
+      "en": "Finger 2–5 metacarpophalangeal joints and wrist"
+    },
+    "training": {
+      "he": "פתיחת האצבעות ויישור שורש כף היד הן תנועות שונות. טרם הוגדר קישור תרגיל שנבדק לשריר זה",
+      "en": "Finger opening differs from wrist extension. No reviewed exercise mapping is assigned to this card"
+    },
+    "region": "forearm",
+    "view": "back",
+    "innervation": {
+      "he": "העצב הבין־גרמי האחורי, המשך הענף העמוק של העצב הרדיאלי",
+      "en": "Posterior interosseous nerve, continuing from the deep radial branch"
+    },
+    "source": "https://rad.uw.edu/muscle-atlas/extensor-digitorum",
+    "innervationReference": "https://rad.uw.edu/muscle-atlas/extensor-digitorum",
+    "links": [],
+    "contentReview": {
+      "status": "reference-checked; clinical review pending",
+      "checkedAt": "2026-10-24",
+      "sources": [
+        "https://rad.uw.edu/muscle-atlas/extensor-digitorum",
+        "https://medicine.uams.edu/neuroscience/education/medical-school-courses/human-structure-module/anatomy-tables/muscle-tables/muscles-of-the-upper-limb/"
+      ]
+    }
+  },
+  {
+    "slug": "extensor-digiti-minimi",
+    "location": {
+      "he": "המדור האחורי השטחי של האמה, בצד הזרת",
+      "en": "Superficial posterior forearm toward the little-finger side"
+    },
+    "origin": {
+      "he": "מוצא הפושטים המשותף באפיקונדיל הלטרלי של עצם הזרוע",
+      "en": "Lateral humeral epicondyle through the shared extensor origin"
+    },
+    "insertion": {
+      "he": "מנגנון היישור בגב הזרת",
+      "en": "Little finger dorsal extensor expansion"
+    },
+    "action": {
+      "he": "יישור הזרת במפרק המסרק־גליל ובמפרקים הבין־גליליים",
+      "en": "Straightens the little finger at its metacarpophalangeal and interphalangeal joints"
+    },
+    "joints": {
+      "he": "מפרק המסרק־גליל והמפרקים הבין־גליליים של הזרת",
+      "en": "Little finger metacarpophalangeal and interphalangeal joints"
+    },
+    "training": {
+      "he": "יישור הזרת אינו זהה ליישור שורש כף היד. אין כאן טענה לבידוד השריר בתרגיל כללי",
+      "en": "Little-finger extension differs from wrist extension. A general exercise is not assumed to isolate this muscle"
+    },
+    "region": "forearm",
+    "view": "back",
+    "innervation": {
+      "he": "העצב הבין־גרמי האחורי, המשך הענף העמוק של העצב הרדיאלי",
+      "en": "Posterior interosseous nerve, continuing from the deep radial branch"
+    },
+    "source": "https://rad.uw.edu/muscle-atlas/extensor-digiti-minimi",
+    "innervationReference": "https://rad.uw.edu/muscle-atlas/extensor-digiti-minimi",
+    "links": [],
+    "contentReview": {
+      "status": "reference-checked; clinical review pending",
+      "checkedAt": "2026-10-24",
+      "sources": [
+        "https://rad.uw.edu/muscle-atlas/extensor-digiti-minimi",
+        "https://medicine.uams.edu/neuroscience/education/medical-school-courses/human-structure-module/anatomy-tables/muscle-tables/muscles-of-the-upper-limb/"
+      ]
+    }
+  },
+  {
+    "slug": "extensor-indicis",
+    "location": {
+      "he": "השכבה העמוקה במדור האחורי של האמה",
+      "en": "Deep layer of the posterior forearm"
+    },
+    "origin": {
+      "he": "השטח האחורי של הגומד והקרום הבין־גרמי הסמוך",
+      "en": "Posterior ulna and adjacent interosseous membrane"
+    },
+    "insertion": {
+      "he": "מנגנון היישור בגב האצבע המורה",
+      "en": "Index finger dorsal extensor expansion"
+    },
+    "action": {
+      "he": "יישור האצבע המורה; מסייע ביישור כף היד",
+      "en": "Straightens the index finger and assists hand extension at the wrist"
+    },
+    "joints": {
+      "he": "מפרקי המסרק־גליל והבין־גליליים של האצבע המורה; שורש כף היד",
+      "en": "Index finger metacarpophalangeal and interphalangeal joints; wrist"
+    },
+    "training": {
+      "he": "לימוד יישור האצבע המורה נפרד מלימוד יישור האגודל. טרם נוסף קישור תרגיל מאומת",
+      "en": "Index-finger extension is distinct from thumb extension. No verified exercise link has been added"
+    },
+    "region": "forearm",
+    "view": "back",
+    "innervation": {
+      "he": "העצב הבין־גרמי האחורי, המשך הענף העמוק של העצב הרדיאלי",
+      "en": "Posterior interosseous nerve, continuing from the deep radial branch"
+    },
+    "source": "https://rad.uw.edu/muscle-atlas/extensor-indicis",
+    "innervationReference": "https://rad.uw.edu/muscle-atlas/extensor-indicis",
+    "links": [],
+    "contentReview": {
+      "status": "reference-checked; clinical review pending",
+      "checkedAt": "2026-10-24",
+      "sources": [
+        "https://rad.uw.edu/muscle-atlas/extensor-indicis",
+        "https://medicine.uams.edu/neuroscience/education/medical-school-courses/human-structure-module/anatomy-tables/muscle-tables/muscles-of-the-upper-limb/"
+      ]
+    }
+  },
+  {
+    "slug": "abductor-pollicis-longus",
+    "location": {
+      "he": "השכבה העמוקה באמה האחורית; הגיד ממשיך לבסיס האגודל",
+      "en": "Deep posterior forearm, continuing by tendon toward the thumb base"
+    },
+    "origin": {
+      "he": "השטחים האחוריים של החישור והגומד והקרום הבין־גרמי",
+      "en": "Dorsal radius, dorsal ulna and the membrane between them"
+    },
+    "insertion": {
+      "he": "בסיס עצם המסרק הראשונה",
+      "en": "Base of the first metacarpal"
+    },
+    "action": {
+      "he": "הרחקה ויישור של האגודל במפרק שורש כף היד־מסרק",
+      "en": "Abducts and extends the thumb at the carpometacarpal joint"
+    },
+    "joints": {
+      "he": "מפרק שורש כף היד־מסרק של האגודל",
+      "en": "Thumb carpometacarpal joint"
+    },
+    "training": {
+      "he": "תנועת בסיס האגודל נבדלת מיישור קצהו. הכרטיס אינו מגדיר תרגיל שיקום או מינון",
+      "en": "Movement at the thumb base differs from tip extension. This card does not prescribe rehabilitation or dosage"
+    },
+    "region": "forearm",
+    "view": "back",
+    "innervation": {
+      "he": "העצב הבין־גרמי האחורי, המשך הענף העמוק של העצב הרדיאלי",
+      "en": "Posterior interosseous nerve, continuing from the deep radial branch"
+    },
+    "source": "https://rad.uw.edu/muscle-atlas/abductor-pollicis-longus",
+    "innervationReference": "https://rad.uw.edu/muscle-atlas/abductor-pollicis-longus",
+    "links": [],
+    "contentReview": {
+      "status": "reference-checked; clinical review pending",
+      "checkedAt": "2026-10-24",
+      "sources": [
+        "https://rad.uw.edu/muscle-atlas/abductor-pollicis-longus",
+        "https://medicine.uams.edu/neuroscience/education/medical-school-courses/human-structure-module/anatomy-tables/muscle-tables/muscles-of-the-upper-limb/"
+      ]
+    }
+  },
+  {
+    "slug": "extensor-pollicis-brevis",
+    "location": {
+      "he": "השכבה העמוקה במדור האחורי של האמה",
+      "en": "Deep compartment of the posterior forearm"
+    },
+    "origin": {
+      "he": "השטח האחורי של החישור והקרום הבין־גרמי",
+      "en": "Dorsal radius and adjacent interosseous membrane"
+    },
+    "insertion": {
+      "he": "בסיס הגליל המקורב של האגודל",
+      "en": "Base of the thumb proximal phalanx"
+    },
+    "action": {
+      "he": "יישור הגליל המקורב של האגודל במפרק המסרק־גליל",
+      "en": "Extends the thumb proximal phalanx at the metacarpophalangeal joint"
+    },
+    "joints": {
+      "he": "מפרק המסרק־גליל של האגודל",
+      "en": "Thumb metacarpophalangeal joint"
+    },
+    "training": {
+      "he": "יישור מפרק המסרק־גליל נבדל מיישור קצה האגודל. אין קישור לתרגיל שאמור לבודד שריר זה",
+      "en": "Thumb knuckle extension differs from tip extension. No exercise is assigned as an isolated test of this muscle"
+    },
+    "region": "forearm",
+    "view": "back",
+    "innervation": {
+      "he": "העצב הבין־גרמי האחורי, המשך הענף העמוק של העצב הרדיאלי",
+      "en": "Posterior interosseous nerve, continuing from the deep radial branch"
+    },
+    "source": "https://rad.uw.edu/muscle-atlas/extensor-pollicis-brevis",
+    "innervationReference": "https://rad.uw.edu/muscle-atlas/extensor-pollicis-brevis",
+    "links": [],
+    "contentReview": {
+      "status": "reference-checked; clinical review pending",
+      "checkedAt": "2026-10-24",
+      "sources": [
+        "https://rad.uw.edu/muscle-atlas/extensor-pollicis-brevis",
+        "https://medicine.uams.edu/neuroscience/education/medical-school-courses/human-structure-module/anatomy-tables/muscle-tables/muscles-of-the-upper-limb/"
+      ]
+    }
+  },
+  {
+    "slug": "extensor-pollicis-longus",
+    "location": {
+      "he": "השכבה העמוקה באמה האחורית; הגיד ממשיך לגב האגודל",
+      "en": "Deep posterior forearm, with its tendon continuing to the dorsal thumb"
+    },
+    "origin": {
+      "he": "החלק האמצעי של השטח האחורי של הגומד והקרום הבין־גרמי",
+      "en": "Middle posterior ulna and adjacent interosseous membrane"
+    },
+    "insertion": {
+      "he": "בסיס הגליל המרוחק של האגודל",
+      "en": "Base of the thumb distal phalanx"
+    },
+    "action": {
+      "he": "יישור האגודל במפרק הבין־גלילי",
+      "en": "Straightens the thumb at the interphalangeal joint"
+    },
+    "joints": {
+      "he": "המפרק הבין־גלילי של האגודל",
+      "en": "Thumb interphalangeal joint"
+    },
+    "training": {
+      "he": "תנועת קצה האגודל נבדלת מתנועת בסיסו. לא הוסקו קישורי תרגילים מתוך שם השריר בלבד",
+      "en": "Thumb-tip movement differs from thumb-base movement. Exercise links are not inferred from the muscle name alone"
+    },
+    "region": "forearm",
+    "view": "back",
+    "innervation": {
+      "he": "העצב הבין־גרמי האחורי, המשך הענף העמוק של העצב הרדיאלי",
+      "en": "Posterior interosseous nerve, continuing from the deep radial branch"
+    },
+    "source": "https://rad.uw.edu/muscle-atlas/extensor-pollicis-longus",
+    "innervationReference": "https://rad.uw.edu/muscle-atlas/extensor-pollicis-longus",
+    "links": [],
+    "contentReview": {
+      "status": "reference-checked; clinical review pending",
+      "checkedAt": "2026-10-24",
+      "sources": [
+        "https://rad.uw.edu/muscle-atlas/extensor-pollicis-longus",
+        "https://medicine.uams.edu/neuroscience/education/medical-school-courses/human-structure-module/anatomy-tables/muscle-tables/muscles-of-the-upper-limb/"
+      ]
+    }
   }
 ]

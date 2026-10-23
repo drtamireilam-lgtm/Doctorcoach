@@ -353,6 +353,29 @@ try{
   assert.ok(await page.evaluate(()=>document.documentElement.scrollWidth<=window.innerWidth));
   console.log('Check passed:',checks.length+1);checks.push(language+' stretch target, atlas selection/reload and muscle-card return keep stretching semantics');
  }
+ for(const language of ['en','he']){
+  const pending=language==='en'?'References checked; clinical review of this content is still pending.':'המקורות נבדקו; הסקירה הקלינית של התוכן עדיין ממתינה.';
+  for(const slug of ['extensor-digitorum','extensor-digiti-minimi','extensor-indicis','abductor-pollicis-longus','extensor-pollicis-brevis','extensor-pollicis-longus']){
+   await page.goto('http://127.0.0.1:'+port+'/?lang='+language+'#learn?region=forearm&muscle='+slug,{waitUntil:'domcontentloaded'});
+   const detail=page.locator('.atlas-detail'),forearm=page.locator('[data-model-id="forearm"]');
+   await detail.locator('.atlas-content-review').waitFor();
+   assert.equal(await detail.locator('.atlas-content-review').innerText(),pending);
+   assert.equal(await detail.locator('.atlas-definitions > div').count(),6);
+   assert.equal(await detail.getByRole('link',{name:language==='en'?'Professional reference ↗':'מקור מקצועי ↗',exact:true}).getAttribute('href'),'https://rad.uw.edu/muscle-atlas/'+slug);
+   if(slug==='extensor-pollicis-brevis'){
+    await detail.locator('summary').filter({hasText:language==='en'?'More references':'מקורות נוספים'}).click();
+    assert.equal(await detail.getByRole('link',{name:language==='en'?'Additional content reference':'מקור נוסף לתוכן',exact:true}).getAttribute('href'),'https://medicine.uams.edu/neuroscience/education/medical-school-courses/human-structure-module/anatomy-tables/muscle-tables/muscles-of-the-upper-limb/');
+   }
+   assert.equal(await detail.locator('.atlas-exercises button').count(),0);
+   await forearm.locator('canvas').waitFor();assert.equal(await forearm.getByRole('combobox').inputValue(),'');
+   await forearm.getByText(language==='en'?'The selected muscle has no geometry in this model. Its learning card is available below.':'לשריר שנבחר אין גאומטריה במודל הזה. כרטיס הלמידה שלו מופיע בהמשך.',{exact:true}).waitFor();
+   assert.equal(await page.locator('.anatomy-workspace').getAttribute('dir'),language==='en'?'ltr':'rtl');
+   assert.equal(await page.locator('canvas').count(),1);assert.ok(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth));
+  }
+  await page.reload();await page.locator('.atlas-detail .atlas-content-review').waitFor();
+  assert.equal(await page.locator('.atlas-detail .atlas-content-review').innerText(),pending);
+  console.log('Check passed:',checks.length+1);checks.push(language+' six source-checked forearm cards show pending review and honest missing geometry with no invented exercise links');
+ }
  assert.deepEqual(serverErrors,[]);console.log('Check passed:',checks.length+1);checks.push('migrated local app returns no HTTP 5xx responses');
  assert.deepEqual(errors,[]);console.log('Check passed:',checks.length+1);checks.push('no uncaught browser errors');
  console.log(JSON.stringify({passed:checks,browserErrors:errors,serverErrors},null,2));
