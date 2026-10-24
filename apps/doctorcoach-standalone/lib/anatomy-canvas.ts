@@ -6,6 +6,7 @@ import {createExerciseRig} from './anatomy-motion-rig';
 import type {ExerciseMotionProfile,MotionMode} from './anatomy-exercise-motion';
 import {createJointRig} from './anatomy-joint-rig';
 import type {JointMovement,JointSide} from './anatomy-joint-movements';
+import type {JointScope} from './anatomy-joint-context';
 export type AnatomyCamera='front'|'back'|'left'|'right';
 /** A single owned scene. Render only on changes; stop listeners and free all GPU resources. */
 export async function createAnatomyCanvas(host:HTMLElement,onSelect:(id:string|null)=>void,signal:AbortSignal,options:{model?:AnatomyModel;camera?:CameraState|null;onCameraChange?:(state:CameraState)=>void;motion?:ExerciseMotionProfile;jointMotion?:{movement:JointMovement;side:JointSide}}={}){
@@ -47,7 +48,7 @@ export async function createAnatomyCanvas(host:HTMLElement,onSelect:(id:string|n
  renderer.domElement.style.touchAction='pan-y';
  renderer.domElement.setAttribute('aria-label',modelSpec.en);renderer.domElement.setAttribute('role','img');
  host.appendChild(renderer.domElement);let disposed=false;
- const render=()=>{if(!disposed)renderer.render(scene,camera);};controls.addEventListener('change',render);
+ const render=()=>{if(!disposed){renderer.render(scene,camera);if(jointRig)renderer.domElement.dataset.jointTriangles=String(renderer.info.render.triangles);}};controls.addEventListener('change',render);
  const snapshot=():CameraState=>({position:camera.position.toArray() as [number,number,number],target:controls.target.toArray() as [number,number,number]});
  const remember=()=>options.onCameraChange?.(snapshot());controls.addEventListener('end',remember);
  const restored=readCameraState(options.camera);if(restored){camera.position.fromArray(restored.position);controls.target.fromArray(restored.target);controls.update();}
@@ -62,19 +63,20 @@ export async function createAnatomyCanvas(host:HTMLElement,onSelect:(id:string|n
  const canvas=renderer.domElement;canvas.addEventListener('pointerdown',pointerDown);canvas.addEventListener('pointerup',pointerUp);canvas.addEventListener('pointercancel',cancel);
  function dispose(){if(disposed)return;disposed=true;observer.disconnect();controls.removeEventListener('change',render);controls.removeEventListener('end',remember);controls.dispose();canvas.removeEventListener('pointerdown',pointerDown);canvas.removeEventListener('pointerup',pointerUp);canvas.removeEventListener('pointercancel',cancel);rig?.dispose();jointRig?.dispose();releaseModel();renderer.dispose();renderer.forceContextLoss();canvas.remove();signal.removeEventListener('abort',dispose);}
  signal.addEventListener('abort',dispose,{once:true});
- return {dispose,snapshot,setJointMovement(movement:JointMovement,side:JointSide){jointRig?.configure(movement,side);render();},setJointPose(phase:number,reference=false,bones=true,muscles=false){jointRig?.pose(phase,reference,bones,muscles);render();},setJointNeutral(bones=true,muscles=false,movement?:JointMovement,side:JointSide='both'){jointRig?.neutral(bones,muscles,movement,side);render();},setExercisePose(degrees:number,mode:MotionMode,bones=true,muscles=true){rig?.pose(degrees,mode,bones,muscles);render();},focus(id:string){
-  const mesh=meshes.find(m=>m.name===id&&m.visible);if(!mesh)return;
-  const bounds=new THREE.Box3().setFromObject(mesh),target=bounds.getCenter(new THREE.Vector3()),extent=bounds.getSize(new THREE.Vector3());
+ function focusIds(ids:readonly string[],visibleOnly=true){
+  const wanted=new Set(ids),targets=meshes.filter(m=>wanted.has(m.name)&&(!visibleOnly||m.visible));if(!targets.length)return;
+  model.updateMatrixWorld(true);const bounds=new THREE.Box3();for(const mesh of targets)bounds.expandByObject(mesh);const target=bounds.getCenter(new THREE.Vector3()),extent=bounds.getSize(new THREE.Vector3());
   const direction=camera.position.clone().sub(controls.target).normalize();
   const halfFov=Math.atan(Math.tan(THREE.MathUtils.degToRad(camera.fov)/2)*Math.min(camera.aspect,1));
   const distance=Math.max(extent.length()/2/Math.sin(halfFov)*1.1,controls.minDistance*1.1);
   controls.target.copy(target);camera.position.copy(target).addScaledVector(direction,distance);controls.update();render();remember();
- },pan(horizontal:number,vertical:number){
+ }
+ return {dispose,snapshot,setJointMovement(movement:JointMovement,side:JointSide){jointRig?.configure(movement,side);render();},setJointScope(scope:JointScope){if(jointRig?.setScope(scope))render();},focusJointContext(){if(jointRig)focusIds(jointRig.contextIds(),false);},setJointPose(phase:number,reference=false,bones=true,muscles=false){jointRig?.pose(phase,reference,bones,muscles);render();},setJointNeutral(bones=true,muscles=false,movement?:JointMovement,side:JointSide='both'){jointRig?.neutral(bones,muscles,movement,side);render();},setExercisePose(degrees:number,mode:MotionMode,bones=true,muscles=true){rig?.pose(degrees,mode,bones,muscles);render();},focus(id:string){focusIds([id]);},pan(horizontal:number,vertical:number){
   const distance=-camera.position.distanceTo(controls.target)*.12;
   const offset=new THREE.Vector3().setFromMatrixColumn(camera.matrix,0).multiplyScalar(horizontal*distance)
    .addScaledVector(new THREE.Vector3().setFromMatrixColumn(camera.matrix,1),vertical*distance);
   camera.position.add(offset);controls.target.add(offset);controls.update();render();remember();
- },setView(view:AnatomyCamera){const positions={front:[0,0,presetDistance],back:[0,0,-presetDistance],left:[presetDistance,0,0],right:[-presetDistance,0,0]};camera.position.fromArray(positions[view]).add(presetTarget);controls.target.copy(presetTarget);controls.update();render();remember();},update(selected:string|null,visible:ReadonlySet<AtlasLayer>,isolated:string|null=null,hidden:ReadonlySet<string>=new Set()){
+ },setView(view:AnatomyCamera){const local=jointRig?.getScope()==='joint',distance=local?camera.position.distanceTo(controls.target):presetDistance,target=local?controls.target.clone():presetTarget;const positions={front:[0,0,distance],back:[0,0,-distance],left:[distance,0,0],right:[-distance,0,0]};camera.position.fromArray(positions[view]).add(target);controls.target.copy(target);controls.update();render();remember();},update(selected:string|null,visible:ReadonlySet<AtlasLayer>,isolated:string|null=null,hidden:ReadonlySet<string>=new Set()){
   const shown=new Set(visibleStructureIds(modelSpec,visible,isolated,hidden));
   for(const mesh of meshes){const structure=modelSpec.structures.find(s=>s.id===mesh.name);if(!structure)continue;mesh.visible=shown.has(structure.id);
    const color=structure.id===selected?[.12,.65,1]:structure.layer==='bone'?[.88,.84,.71]:(structure.layer==='surface'||structure.layer==='cartilage')?[.32,.46,.59]:[.65,.18,.25];
