@@ -23,6 +23,7 @@ try{
  await nav.getByRole('link',{name:'Physiology',exact:true}).waitFor();
  assert.equal(await nav.getByRole('link').count(),3);
  await page.getByRole('heading',{name:'ATP and energy systems',exact:true}).waitFor();
+ await page.locator('.dc-splash').waitFor({state:'hidden'});
  await page.screenshot({path:resolve(evidence,'en-desktop-physiology.png'),fullPage:true});
  checks.push('three internal sections; physiology direct route');
  await page.getByRole('link',{name:'Read: ATP and energy systems',exact:true}).click();
@@ -71,9 +72,9 @@ try{
   await page.goto(base+'/?lang=en#learn?article=creatine',{waitUntil:'domcontentloaded'});
   await page.getByRole('heading',{name:'Creatine',level:2}).waitFor();
   await page.locator('.theme-toggle').click();
-  await page.waitForFunction(()=>document.documentElement.classList.contains('light'));
+  await page.waitForFunction(()=>document.documentElement.classList.contains('light')&&document.documentElement.dataset.palette==='neutral');
   await page.reload({waitUntil:'domcontentloaded'});
-  await page.waitForFunction(()=>document.documentElement.classList.contains('light'));
+  await page.waitForFunction(()=>document.documentElement.classList.contains('light')&&document.documentElement.dataset.palette==='neutral');
   assert.equal(fixtureAppearance.mode,'light');
   assert.equal(await page.locator('html').getAttribute('data-palette'),'neutral');
   await page.screenshot({path:resolve(evidence,'en-desktop-creatine-light.png'),fullPage:true});
@@ -82,9 +83,9 @@ try{
   await page.getByRole('heading',{name:'פיזיולוגיה',level:1}).waitFor();
   await page.screenshot({path:resolve(evidence,'he-mobile-physiology-light.png'),fullPage:true});
   await page.locator('.theme-toggle').click();
-  await page.waitForFunction(()=>document.documentElement.classList.contains('dark'));
+  await page.waitForFunction(()=>document.documentElement.classList.contains('dark')&&document.documentElement.dataset.palette==='neutral');
   await page.reload({waitUntil:'domcontentloaded'});
-  await page.waitForFunction(()=>document.documentElement.classList.contains('dark'));
+  await page.waitForFunction(()=>document.documentElement.classList.contains('dark')&&document.documentElement.dataset.palette==='neutral');
   checks.push('light/dark toggle and palette survive refresh using isolated appearance API fixture (no account writes)');
  }
  console.log(JSON.stringify({base,checks,errors},null,2));
