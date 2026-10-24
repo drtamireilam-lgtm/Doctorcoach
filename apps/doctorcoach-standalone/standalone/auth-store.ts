@@ -23,6 +23,14 @@ export function authStore(db:D1Database,provider:AuthProvider,settings:AuthSetti
  }
  async function userFor(identity:VerifiedIdentity):Promise<StandaloneUser|null>{let principal:{userId:string};try{principal=await mapping.resolve(identity);}catch(e){if((e as {status?:number}).status===404)return null;throw e;}const detail=await db.prepare('SELECT email,display_name FROM dc_identity_details WHERE principal_id=?').bind(principal.userId).first<{email:string;display_name:string}>();if(!detail)throw new AuthFailure(403,'Account needs verified identity details');return {userId:principal.userId,email:detail.email,displayName:detail.display_name};}
  return {
+  async limitOAuth(ip:string){await limit('oauth-ip:'+await digest(ip),20,3600000);},
+  async acceptOAuth(tokens:Tokens){
+   const proof=await provider.authenticate(tokens.access_token),at=now();
+   if(!proof||at-proof.claims.authenticatedAt>60000||proof.claims.authenticatedAt>at+30000||tokens.expires_at<=at)throw new AuthFailure(401);
+   const identity=await external(proof),sid=random(),hash=await digest(sid),cipher=await vault.seal(tokens,hash);
+   await db.prepare('INSERT INTO dc_auth_sessions(id_hash,issuer,subject,email,tokens_cipher,created_at,last_seen,expires_at) VALUES(?,?,?,?,?,?,?,?)').bind(hash,provider.issuer,identity.subject,email(proof.email),cipher,at,at,at+12*3600000).run();
+   return {sid,user:await userFor(identity)};
+  },
   async pending(challenge:string){
    if(!/^[0-9a-f-]{72}$/.test(challenge))return {pending:false as const};
    const c=await db.prepare('SELECT email,expires_at FROM dc_auth_challenges WHERE id_hash=? AND consumed_at IS NULL AND expires_at>? AND attempts<5').bind(await digest(challenge),now()).first<{email:string;expires_at:number}>();

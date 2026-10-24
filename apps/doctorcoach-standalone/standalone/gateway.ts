@@ -2,6 +2,7 @@ import {authStore,type AuthSettings} from './auth-store.ts';
 import {AuthFailure,type AuthProvider} from './provider.ts';
 import {authPage} from './page.ts';
 import {signLink,random} from './crypto.ts';
+import {oauthFlow,oauthCookie,oauthCookieValue,isSocialProvider} from './oauth.ts';
 export const sessionCookie='__Host-dc_session',challengeCookie='__Host-dc_challenge';
 export function cookie(request:Request,name:string){const matches=(request.headers.get('cookie')??'').split(';').map(x=>x.trim()).filter(x=>x.startsWith(name+'='));return matches.length===1?matches[0].slice(name.length+1):'';}
 export function safeReturn(value:string|null){if(!value||!value.startsWith('/')||value.startsWith('//'))return '/';try{const u=new URL(value,'https://app.local');if(u.origin!=='https://app.local'||/^\/(auth(?:\/|$)|sign(?:in|out)-with-chatgpt|callback)/.test(u.pathname))return '/';return u.pathname+u.search+u.hash;}catch{return '/';}}
@@ -9,6 +10,7 @@ export function sanitize(request:Request){const h=new Headers(request.headers);f
 function setCookie(name:string,value:string,maxAge:number){return `${name}=${value}; Path=/; HttpOnly; Secure; SameSite=Strict; Max-Age=${maxAge}`;}
 export function authGateway(db:D1Database,provider:AuthProvider,settings:AuthSettings&{externalPrivateKey?:JsonWebKey;legacyLinkUrl?:string;isolatedStaging?:boolean}){
  const store=authStore(db,provider,settings),origin=new URL(settings.origin).origin;
+ const flow=oauthFlow(settings.encryptionKey,origin,settings.now??Date.now);
  const linkUrl=settings.legacyLinkUrl?new URL(settings.legacyLinkUrl):null;
  if(linkUrl&&(linkUrl.protocol!=='https:'||linkUrl.username||linkUrl.password||linkUrl.search||linkUrl.hash||linkUrl.origin===origin))throw new Error('Invalid legacy bridge URL');
  const capabilities={canRegister:settings.allowNewAccounts,linkingReady:!!(linkUrl&&settings.externalPrivateKey&&settings.legacyPublicKey)};
@@ -19,10 +21,33 @@ export function authGateway(db:D1Database,provider:AuthProvider,settings:AuthSet
   if(url.pathname==='/mcp')return reply(503,{error:'Standalone MCP OAuth is not configured'});
   if(['/signin-with-chatgpt','/signout-with-chatgpt'].includes(url.pathname)){const target=url.pathname.startsWith('/signout')?'/auth/signout':'/auth/signin';return Response.redirect(origin+target+'?return_to='+encodeURIComponent(safeReturn(url.searchParams.get('return_to'))),303);}
   if(req.method==='GET'&&['/auth/signin','/auth/signout'].includes(url.pathname))return authPage({signout:url.pathname.endsWith('signout'),returnTo:safeReturn(url.searchParams.get('return_to')),english:url.searchParams.get('lang')==='en',isolatedStaging:settings.isolatedStaging});
+  if(url.pathname==='/auth/oauth/callback'){
+   if(req.method!=='GET')return reply(405,{error:'GET required'});
+   let target='/',english=false,problem='failed';
+   try{
+    const state=await flow.read(cookie(req,oauthCookie));target=safeReturn(state.returnTo);english=state.english;
+    if(url.searchParams.has('error')){if(url.searchParams.get('error')==='access_denied')problem='cancelled';throw new AuthFailure(401);}
+    const codes=url.searchParams.getAll('code');if(codes.length!==1||!codes[0]||!provider.oauth)throw new AuthFailure(401);
+    const tokens=await provider.oauth.exchange(codes[0],state.verifier),r=await store.acceptOAuth(tokens);
+    if(state.previousSid)await store.logout(state.previousSid);
+    const destination=r.user?origin+target:origin+'/auth/signin?lang='+(english?'en':'he')+'&return_to='+encodeURIComponent(target);
+    const headers=new Headers({Location:destination,'Cache-Control':'no-store','Referrer-Policy':'no-referrer'});headers.append('Set-Cookie',setCookie(sessionCookie,r.sid,43200));headers.append('Set-Cookie',oauthCookieValue('',0));headers.append('Set-Cookie',setCookie(challengeCookie,'',0));return new Response(null,{status:303,headers});
+   }catch{
+    const headers=new Headers({Location:origin+'/auth/signin?lang='+(english?'en':'he')+'&return_to='+encodeURIComponent(target)+'&oauth_error='+problem,'Cache-Control':'no-store','Referrer-Policy':'no-referrer'});headers.append('Set-Cookie',oauthCookieValue('',0));return new Response(null,{status:303,headers});
+   }
+  }
   if(url.pathname.startsWith('/auth/')){
    if(req.method!=='POST'||req.headers.get('origin')!==origin||req.headers.get('sec-fetch-site')==='cross-site')return reply(403,{error:'Same-origin POST required'});
    try{if(!/^application\/json(?:;|$)/i.test(req.headers.get('content-type')??''))throw new AuthFailure(400);const raw=await req.text();if(raw.length>12000)throw new AuthFailure(413);const payload=JSON.parse(raw) as Record<string,unknown>;if(!payload||typeof payload!=='object'||Array.isArray(payload))throw new AuthFailure(400);
     if(url.pathname==='/auth/pending')return reply(200,await store.pending(cookie(req,challengeCookie)));
+    if(url.pathname==='/auth/providers')return reply(200,provider.oauth?await provider.oauth.enabled():{google:false,apple:false});
+    if(url.pathname==='/auth/oauth/start'){
+     if(!isSocialProvider(payload.provider))throw new AuthFailure(400);
+     await store.limitOAuth(req.headers.get('cf-connecting-ip')??'unknown');
+     if(!provider.oauth||!(await provider.oauth.enabled())[payload.provider])throw new AuthFailure(503);
+     const state=await flow.start(payload.provider,safeReturn(typeof payload.returnTo==='string'?payload.returnTo:null),payload.english===true,sid);
+     return reply(200,{url:provider.oauth.authorizationUrl(payload.provider,origin+'/auth/oauth/callback',state.challenge)},[oauthCookieValue(state.value)]);
+    }
     if(url.pathname==='/auth/send'){const r=await store.send(String(payload.email??''),req.headers.get('cf-connecting-ip')??'unknown');return reply(200,{sent:true},[setCookie(challengeCookie,r.challenge,600)]);}
     if(url.pathname==='/auth/verify'){const r=await store.verify(cookie(req,challengeCookie),String(payload.code??''));if(sid)await store.logout(sid);return reply(200,{authenticated:true,linked:!!r.user,...capabilities},[setCookie(sessionCookie,r.sid,43200),setCookie(challengeCookie,'',0)]);}
     if(url.pathname==='/auth/status'||url.pathname==='/auth/refresh'){const r=await store.current(sid);return reply(200,{authenticated:true,linked:!!r.user,email:r.email,...capabilities});}
@@ -30,7 +55,7 @@ export function authGateway(db:D1Database,provider:AuthProvider,settings:AuthSet
     if(url.pathname==='/auth/link/start'){if(!settings.externalPrivateKey)throw new AuthFailure(503,'Account linking not configured');const r=await store.current(sid);if(r.user)throw new AuthFailure(409);if(at()-r.authenticatedAt>10*60000)throw new AuthFailure(401);const proof=await signLink({iss:origin,aud:settings.legacyIssuer,sub:r.subject,target:r.subject,email:r.email,nonce:random(),iat:at(),exp:at()+5*60000},settings.externalPrivateKey);return reply(200,{proof,...(capabilities.linkingReady?{handoffUrl:linkUrl!.href+'#request='+encodeURIComponent(proof)}:{})});}
     if(url.pathname==='/auth/link/inspect')return reply(200,await store.inspectLink(sid,String(payload.proof??'')));
     if(url.pathname==='/auth/link'){await store.link(sid,String(payload.proof??''),payload.confirmed===true);return reply(200,{linked:true});}
-    if(url.pathname==='/auth/logout'){await store.logout(sid);return reply(200,{signedOut:true},[setCookie(sessionCookie,'',0),setCookie(challengeCookie,'',0)]);}
+    if(url.pathname==='/auth/logout'){await store.logout(sid);return reply(200,{signedOut:true},[setCookie(sessionCookie,'',0),setCookie(challengeCookie,'',0),oauthCookieValue('',0)]);}
     return reply(404,{error:'Not found'});
    }catch(e){const status=e instanceof AuthFailure?e.status:(e as {status?:number}).status??401;return reply(status>=400&&status<=599?status:401,{error:status===429?'Too many attempts. Try later.':status===409?'Existing account needs ownership verification.':status===503?'Sign-in configuration is incomplete.':'Sign-in failed. Check the code or sign in again.'});}
   }

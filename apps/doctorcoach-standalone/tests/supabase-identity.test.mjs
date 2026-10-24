@@ -43,6 +43,16 @@ test('refresh does not make old OTP authentication fresh',async()=>{
   const result=await setup().verify(token({amr:[{method:'otp',timestamp:now/1000-3600},{method:'token_refresh',timestamp:now/1000-1}]}));
   assert.equal(result.authenticatedAt,now-3600000);
 });
+
+test('OAuth primary authentication is explicitly opt-in and still requires the trusted user and active session',async()=>{
+ const proof=token({amr:[{method:'oauth',timestamp:now/1000-30},{method:'token_refresh',timestamp:now/1000-1}]});
+ assert.equal(await setup().verify(proof),null);
+ const enabled=setup({primaryMethods:['otp','oauth']});
+ assert.equal((await enabled.verify(proof)).authenticatedAt,now-30000);
+ assert.equal(enabled.calls.length,2);
+ assert.equal(await setup({primaryMethods:['otp','oauth'],checkSession:async()=>false}).verify(proof),null);
+ assert.equal(await setup({primaryMethods:['otp','oauth'],getUser:async()=>({data:{user:null},error:'invalid'})}).verify(proof),null);
+});
 test('expiry is rechecked after asynchronous provider/session calls',async()=>{
   let clock=now;
   const {verify}=setup({now:()=>clock,checkSession:async()=>{clock+=700000;return true;}});
