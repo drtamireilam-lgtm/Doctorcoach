@@ -14,6 +14,7 @@ import './advanced-themes.css';
 import './trainee-ux.css';
 import './apple-premium.css';
 import './smart-workout.css';
+import './clinical.css';
 import {PrivacyLinks} from '../components/privacy-links';
 import {LanguageProvider} from '../components/language-provider';
 import { ThemeProvider } from '../components/theme-provider';

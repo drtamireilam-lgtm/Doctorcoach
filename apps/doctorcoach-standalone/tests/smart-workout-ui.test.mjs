@@ -32,8 +32,12 @@ test('learning deep link opens the dedicated DoctorCoach guide',async()=>{
 
 test('learning navigation keeps general guides separate from DoctorCoach overview',async()=>{
  const navigation=await import('../lib/learning-navigation.ts');
- const exports={},modules={'react/jsx-runtime':jsx,react:{useState:()=>['doctorcoach',()=>{}],useEffect:()=>{}},'../components/language-provider':{Localize:'Localize'},'./anatomy-workspace':{AnatomyWorkspace:'AnatomyWorkspace'},'./learning-workspace':{LearningWorkspace:'LearningWorkspace'},'../lib/learning-navigation':navigation};
+ let stateIndex=0;
+ const exports={},modules={'react/jsx-runtime':jsx,react:{useState:()=>[['doctorcoach','anatomy'][stateIndex++],()=>{}],useEffect:()=>{}},'../components/language-provider':{Localize:'Localize',useLanguage:()=>({language:'he'})},'./anatomy-workspace':{AnatomyWorkspace:'AnatomyWorkspace'},'./learning-workspace':{LearningWorkspace:'LearningWorkspace'},'../lib/learning-navigation':navigation};
  vm.runInNewContext(ts.transpileModule(fs.readFileSync(new URL('../components/learning-area.tsx',import.meta.url),'utf8'),{compilerOptions:{module:ts.ModuleKind.CommonJS,target:ts.ScriptTarget.ES2022,jsx:ts.JsxEmit.ReactJSX}}).outputText,{exports,require:k=>modules[k]});
  const links=nodes(exports.LearningArea({onExercise(){}}),n=>n.type==='a');
- assert.equal(links[1].props.href,'#learn?article=rpe');assert.equal(links[1].props['aria-current'],undefined);assert.equal(links[2].props['aria-current'],'page');
+ const general=links.find(a=>a.props.href==='#learn?article=rpe'),overview=links.find(a=>a.props.href==='#learn?article=doctorcoach');
+ assert.ok(general);assert.equal(general.props['aria-current'],undefined);assert.equal(overview.props['aria-current'],'page');
+ assert.ok(links.some(a=>a.props.href==='#learn?section=physiology'));
+ assert.ok(links.some(a=>a.props.href==='#learn?section=supplements'));
 });
