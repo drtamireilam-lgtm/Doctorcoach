@@ -19,7 +19,7 @@ All enabled items below are **prototypes awaiting source calibration**; none is 
 | Elbow | Flexion, extension | Clinical pivot validation; no hinge-based clinical accuracy claim |
 | Forearm | Pronation, supination | Provisional proximal-radius to distal-ulna axis; crossing/clearance requires anatomical review |
 | Wrist | Flexion, extension, radial/ulnar deviation | Carpal coupling is simplified to one rigid hand group |
-| Fingers | Composite MCP/PIP/DIP flexion and return extension, digits 2–5 | Abduction/adduction: per-digit MCP axes and reference spread |
+| Fingers | Composite MCP/PIP/DIP flexion and return extension, digits 2–5; small MCP spread/return of digits 2, 4, 5 around a fixed third digit | Source-derived palm-plane/MCP-cap axes require calibration; return adduction stops at original spread, not certified closed-finger neutral |
 | Thumb | None | Opposition, flexion/extension, abduction/adduction: specimen-specific coupled CMC/MCP/IP axes/translation |
 | Hip | Flexion, extension, abduction/adduction, internal/external rotation | Hip-center calibration; no ground contact, balance or loaded motion |
 | Knee | Flexion, extension | Internal/external rotation: flexion-dependent roll/glide, screw-home and patellar tracking |
@@ -29,7 +29,9 @@ All enabled items below are **prototypes awaiting source calibration**; none is 
 | Cervical | None | Flexion/extension, left/right rotation and lateral flexion: unequal C0–C1/C1–C2/subaxial contributions and facet/disc constraints |
 | Thoracic and lumbar | None | Flexion/extension, rotation, lateral flexion for each region: per-level landmarks, unequal segment contributions and thoracic rib-cage coupling |
 
-Total: **28 enabled prototypes, 33 explicitly blocked movements**, in 14 UI categories (hand/thumb separate; thoracic/lumbar together with separate definitions). Selecting a blocked movement stops playback, resets visible bones and clears previous muscle associations; it never silently plays another movement.
+After the source-plane finger continuation: **30 enabled prototypes, 31 explicitly blocked movements**, in 14 UI categories (hand/thumb separate; thoracic/lumbar together with separate definitions). Selecting a blocked movement stops playback, resets visible bones and clears previous muscle associations; it never silently plays another movement.
+
+Continuation branch `codex/anatomy-finger-spread-20261024` starts from the latest deployed PR41 commit `1e5e82f44a60c24d30f891dd2b76211a7219077e`, after refreshing remote heads. It adds a reusable three-landmark plane-normal channel, rejecting zero-length/near-collinear planes. Third-metacarpal base/head and second-metacarpal head define the approximate palm plane independently from each source side. Small relative MCP excursions (index 8°, ring −4°, little −8° about that normal) preserve the original rigid phalangeal chains and leave metacarpals, middle digit, wrist and opposite hand fixed. These are illustration choices, not clinical ROM. Adduction begins and resets at the source-pose midpoint and returns only to the original spread. The third digit remains the chosen demonstration reference; its own bidirectional abduction is not included. Dorsal/palmar interossei and abductor digiti minimi have no separate meshes in the combined source, so missing muscle anatomy is disclosed rather than fabricated.
 
 ## Architecture and controls
 
@@ -52,6 +54,7 @@ Reference checking established physiological direction conventions, the fixed-ul
 - [StatPearls shoulder](https://www.ncbi.nlm.nih.gov/books/NBK536933/) and [scapulohumeral muscles](https://www.ncbi.nlm.nih.gov/sites/books/NBK546633/): shoulder-girdle coupling and coordination.
 - [StatPearls elbow](https://www.ncbi.nlm.nih.gov/books/NBK532948/): hinge/radioulnar distinctions and muscle associations.
 - [StatPearls hand muscles](https://www.ncbi.nlm.nih.gov/books/NBK537229/?report=printable) and [MCP joints](https://www.ncbi.nlm.nih.gov/books/NBK538343/): finger/wrist roles and joints.
+- [MCP joint muscles](https://www.ncbi.nlm.nih.gov/books/NBK538428/?report=printable) and [hand compartments](https://www.ncbi.nlm.nih.gov/sites/books/NBK532942/?report=printable): interosseous and fifth-digit abductor associations. These references do not certify geometric pivot estimates or prescribe the prototype excursion.
 - [Brukner & Khan, clinical biomechanics, table 8.1](https://accessphysiotherapy.mhmedical.com/content.aspx?bookid=1970&sectionid=168689485): position-dependent lower-limb ROM references, distinct from demonstration excursions.
 - [Thumb CMC biomechanics study](https://pmc.ncbi.nlm.nih.gov/articles/PMC11154835/): coupled rotations/translations require specimen coordinates.
 - [Subtalar anatomy](https://pubmed.ncbi.nlm.nih.gov/30097077/) and [Clinical Methods](https://www.ncbi.nlm.nih.gov/books/NBK266/?report=reader): subtalar/tarsal constraints and toe joint examination.

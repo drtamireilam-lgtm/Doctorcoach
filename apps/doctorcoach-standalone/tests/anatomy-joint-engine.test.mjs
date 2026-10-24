@@ -49,6 +49,25 @@ test('source-bound generic rig moves independent sides, retains every source ver
  assert.throws(()=>rig.configure(movementById('thumb-opposition'),'both'),/unavailable/i);
  rig.dispose();assert.ok(meshes.every(m=>m.parent===root&&m.layers.mask===1));for(const m of meshes){m.geometry.dispose();m.material.dispose();}
 });
+test('finger MCP spread uses a mirrored source palm plane, fixes middle/metacarpals and preserves IP distances',()=>{
+ const spread=movementById('fingers-abduction'),returning=movementById('fingers-adduction');assert.equal(spread.status,'prototype');assert.equal(returning.status,'prototype');assert.equal(initialPlayback(returning).phase,.5);
+ const {root,meshes,model}=sourceScene(),rig=createJointRig(root,meshes,model);const rest=new Map(meshes.map(m=>[m.name,new THREE.Vector3().fromBufferAttribute(m.geometry.attributes.position,0)]));
+ const point=id=>{root.updateMatrixWorld(true);return meshes.find(m=>m.name===id).localToWorld(rest.get(id).clone());};
+ for(const side of ['left','right','both']){
+  rig.configure(spread,side);rig.pose(.5);const activeSides=side==='both'?['left','right']:[side];
+  for(const s of activeSides){for(const digit of ['index','ring','little']){const id='distal-phalanx-of-'+s+'-'+digit+'-finger',sign=(s==='right'?-1:1)*(digit==='index'?1:-1);assert.ok((point(id).x-rest.get(id).x)*sign>0,'digit must spread away from middle reference');const proximal='proximal-phalanx-of-'+s+'-'+digit+'-finger';assert.ok(Math.abs(point(id).distanceTo(point(proximal))-rest.get(id).distanceTo(rest.get(proximal)))<1e-8,'IP chain must remain rigid');}
+   for(const id of [s+'-second-metacarpal-bone',s+'-third-metacarpal-bone','distal-phalanx-of-'+s+'-middle-finger'])assert.ok(point(id).distanceTo(rest.get(id))<1e-8);
+  }
+  if(side!=='both'){const other=side==='right'?'left':'right';for(const digit of ['index','ring','little']){const id='distal-phalanx-of-'+other+'-'+digit+'-finger';assert.ok(point(id).distanceTo(rest.get(id))<1e-8);}}
+  rig.configure(returning,side);rig.pose(initialPlayback(returning).phase);for(const m of meshes)assert.ok(point(m.name).distanceTo(rest.get(m.name))<1e-8);
+ }
+ rig.dispose();for(const m of meshes){m.geometry.dispose();m.material.dispose();}
+});
+test('a degenerate source plane fails closed and restores owned source objects',()=>{
+ const spread=movementById('fingers-abduction');assert.equal(spread.status,'prototype');const {root,meshes,model}=sourceScene(),rig=createJointRig(root,meshes,model);
+ const bad={...spread,build:side=>spread.build(side).map(c=>({...c,axisPlane:{origin:{bone:side+'-third-metacarpal-bone',end:'proximal'},longitudinal:{bone:side+'-third-metacarpal-bone',end:'proximal'},radial:{bone:side+'-third-metacarpal-bone',end:'proximal'}}}))};
+ assert.throws(()=>rig.configure(bad,'right'),/plane/i);assert.ok(meshes.every(m=>m.parent===root&&m.position.length()===0));rig.dispose();for(const m of meshes){m.geometry.dispose();m.material.dispose();}
+});
 
 
 
