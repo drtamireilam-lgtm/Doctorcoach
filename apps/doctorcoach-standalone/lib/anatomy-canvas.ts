@@ -2,9 +2,11 @@ import * as THREE from 'three';
 import {OrbitControls} from 'three/addons/controls/OrbitControls.js';
 import {GLTFLoader} from 'three/addons/loaders/GLTFLoader.js';
 import {anatomyModels,decodeAnatomyAsset,validateAnatomyAsset,visibleStructureIds,readCameraState,type AnatomyModel,type AtlasLayer,type CameraState} from './anatomy-models';
+import {createExerciseRig} from './anatomy-motion-rig';
+import type {ExerciseMotionProfile,MotionMode} from './anatomy-exercise-motion';
 export type AnatomyCamera='front'|'back'|'left'|'right';
 /** A single owned scene. Render only on changes; stop listeners and free all GPU resources. */
-export async function createAnatomyCanvas(host:HTMLElement,onSelect:(id:string|null)=>void,signal:AbortSignal,options:{model?:AnatomyModel;camera?:CameraState|null;onCameraChange?:(state:CameraState)=>void}={}){
+export async function createAnatomyCanvas(host:HTMLElement,onSelect:(id:string|null)=>void,signal:AbortSignal,options:{model?:AnatomyModel;camera?:CameraState|null;onCameraChange?:(state:CameraState)=>void;motion?:ExerciseMotionProfile}={}){
  const modelSpec=options.model??anatomyModels[1];
  const response=await fetch(modelSpec.src,{signal});
  if(!response.ok)throw new Error('Model request failed');
@@ -16,8 +18,10 @@ export async function createAnatomyCanvas(host:HTMLElement,onSelect:(id:string|n
  model.traverse(object=>{if(object instanceof THREE.Mesh)meshes.push(object);});
  const releaseModel=()=>{for(const mesh of meshes){mesh.geometry.dispose();for(const material of Array.isArray(mesh.material)?mesh.material:[mesh.material])material.dispose();}};
  if(signal.aborted){releaseModel();throw new DOMException('Aborted','AbortError');}
+ let rig:ReturnType<typeof createExerciseRig>|undefined;
+ try{if(options.motion)rig=createExerciseRig(model,meshes,modelSpec,options.motion);}catch(cause){releaseModel();throw cause;}
  let renderer:THREE.WebGLRenderer;
- try{renderer=new THREE.WebGLRenderer({antialias:true,alpha:true,powerPreference:'low-power'});}catch(cause){releaseModel();throw cause;}
+ try{renderer=new THREE.WebGLRenderer({antialias:true,alpha:true,powerPreference:'low-power'});}catch(cause){rig?.dispose();releaseModel();throw cause;}
  renderer.setPixelRatio(Math.min(window.devicePixelRatio,1.5));renderer.outputColorSpace=THREE.SRGBColorSpace;
  const scene=new THREE.Scene();scene.add(model);scene.add(new THREE.HemisphereLight(0xffffff,0x52617a,2.5));
  const light=new THREE.DirectionalLight(0xffffff,3);light.position.set(2,3,4);scene.add(light);
@@ -49,12 +53,13 @@ export async function createAnatomyCanvas(host:HTMLElement,onSelect:(id:string|n
  let down:{x:number;y:number}|null=null;const pointers=new Set<number>();let gesture=false;
  const pointerDown=(event:PointerEvent)=>{pointers.add(event.pointerId);if(pointers.size>1){gesture=true;down=null;}else {gesture=false;down={x:event.clientX,y:event.clientY};}};
  const raycaster=new THREE.Raycaster();
+ if(options.motion)raycaster.layers.enable(1);
  const pointerUp=(event:PointerEvent)=>{pointers.delete(event.pointerId);const point=down;down=null;if(gesture||!point||Math.hypot(event.clientX-point.x,event.clientY-point.y)>6)return;const bounds=renderer.domElement.getBoundingClientRect();raycaster.setFromCamera(new THREE.Vector2((event.clientX-bounds.left)/bounds.width*2-1,-(event.clientY-bounds.top)/bounds.height*2+1),camera);const hit=raycaster.intersectObjects(meshes.filter(m=>m.visible),false)[0];onSelect(hit?.object.name??null);};
  const cancel=(event:PointerEvent)=>{pointers.delete(event.pointerId);down=null;};
  const canvas=renderer.domElement;canvas.addEventListener('pointerdown',pointerDown);canvas.addEventListener('pointerup',pointerUp);canvas.addEventListener('pointercancel',cancel);
- function dispose(){if(disposed)return;disposed=true;observer.disconnect();controls.removeEventListener('change',render);controls.removeEventListener('end',remember);controls.dispose();canvas.removeEventListener('pointerdown',pointerDown);canvas.removeEventListener('pointerup',pointerUp);canvas.removeEventListener('pointercancel',cancel);releaseModel();renderer.dispose();renderer.forceContextLoss();canvas.remove();signal.removeEventListener('abort',dispose);}
+ function dispose(){if(disposed)return;disposed=true;observer.disconnect();controls.removeEventListener('change',render);controls.removeEventListener('end',remember);controls.dispose();canvas.removeEventListener('pointerdown',pointerDown);canvas.removeEventListener('pointerup',pointerUp);canvas.removeEventListener('pointercancel',cancel);rig?.dispose();releaseModel();renderer.dispose();renderer.forceContextLoss();canvas.remove();signal.removeEventListener('abort',dispose);}
  signal.addEventListener('abort',dispose,{once:true});
- return {dispose,snapshot,focus(id:string){
+ return {dispose,snapshot,setExercisePose(degrees:number,mode:MotionMode,bones=true,muscles=true){rig?.pose(degrees,mode,bones,muscles);render();},focus(id:string){
   const mesh=meshes.find(m=>m.name===id&&m.visible);if(!mesh)return;
   const bounds=new THREE.Box3().setFromObject(mesh),target=bounds.getCenter(new THREE.Vector3()),extent=bounds.getSize(new THREE.Vector3());
   const direction=camera.position.clone().sub(controls.target).normalize();
