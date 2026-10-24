@@ -37,7 +37,15 @@ export function createJointRig(root:THREE.Object3D,meshes:THREE.Mesh[],model:Ana
   clear();channels=next;associate(movement,side);
   try{
    const pivots=channels.map(c=>locate(c.pivot));
-   axes=channels.map((c,i)=>c.axisEnd?locate(c.axisEnd).sub(pivots[i]).normalize().multiplyScalar(c.axis[0]):new THREE.Vector3(...c.axis).normalize());
+   axes=channels.map((c,i)=>{
+    if(c.axisPlane){
+     if(c.axisEnd)throw new Error('Ambiguous source plane axis');
+     const origin=locate(c.axisPlane.origin),long=locate(c.axisPlane.longitudinal).sub(origin),radial=locate(c.axisPlane.radial).sub(origin),normal=long.clone().cross(radial),product=long.lengthSq()*radial.lengthSq();
+     if(!Number.isFinite(product)||product<1e-16||!Number.isFinite(normal.lengthSq())||normal.lengthSq()/product<1e-4)throw new Error('Degenerate source plane');
+     return normal.normalize();
+    }
+    return c.axisEnd?locate(c.axisEnd).sub(pivots[i]).normalize().multiplyScalar(c.axis[0]):new THREE.Vector3(...c.axis).normalize();
+   });
    if(axes.some(a=>a.lengthSq()<.99))throw new Error('Invalid source joint axis');
    channels.forEach((c,i)=>{const group=new THREE.Group();group.name=c.id;const parentIndex=c.parent?channels.findIndex(p=>p.id===c.parent):-1;const parent=parentIndex>=0?groups[parentIndex]:root;group.position.copy(pivots[i]);if(parentIndex>=0)group.position.sub(pivots[parentIndex]);parent.add(group);groups.push(group);});
    for(const mesh of meshes){const index=channels.findLastIndex(c=>c.bones.includes(mesh.name));if(index>=0){groups[index].add(mesh);mesh.position.copy(pivots[index]).negate();}}
