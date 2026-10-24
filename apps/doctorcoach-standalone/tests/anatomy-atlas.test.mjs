@@ -1,11 +1,11 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import {readFileSync} from 'node:fs';
-import {anatomyModels,modelForRegion,validateAnatomyAsset,visibleStructureIds,readCameraState} from '../lib/anatomy-models.ts';
+import {anatomyModels,modelForRegion,decodeAnatomyAsset,validateAnatomyAsset,visibleStructureIds,readCameraState} from '../lib/anatomy-models.ts';
 import {learningCard,learningCards,exerciseMuscles} from '../lib/anatomy-learning.ts';
 const bytes=m=>{const b=readFileSync(new URL('../public'+m.src,import.meta.url));return b.buffer.slice(b.byteOffset,b.byteOffset+b.byteLength);};
 test('body and arm use real packaged geometry within separate mobile budgets',async()=>{
- for(const m of anatomyModels){const b=bytes(m);assert.ok(b.byteLength<=m.maxBytes,m.id);await validateAnatomyAsset(b,m);assert.equal(new Set(m.structures.map(s=>s.id)).size,m.structures.length);assert.equal(m.asset.licenseId,'CC-BY-4.0');assert.equal(m.asset.anatomicalReview,'pending');assert.ok(m.structures.every(s=>s.sources.length&&s.sources.every(p=>p.mappingRows.length)),m.id);}
+ for(const m of anatomyModels){const packed=bytes(m);assert.ok(packed.byteLength<=25*1024*1024,m.id+' hosting budget');const b=await decodeAnatomyAsset(packed,m);assert.ok(b.byteLength<=m.maxBytes,m.id);await validateAnatomyAsset(b,m);assert.equal(new Set(m.structures.map(s=>s.id)).size,m.structures.length);assert.equal(m.asset.licenseId,'CC-BY-4.0');assert.equal(m.asset.anatomicalReview,'pending');assert.ok(m.structures.every(s=>s.sources.length&&s.sources.every(p=>p.mappingRows.length)),m.id);}
  assert.equal(modelForRegion('shoulder').id,'shoulder');assert.equal(modelForRegion('elbow').id,'arm');assert.equal(modelForRegion('forearm').id,'forearm');assert.equal(modelForRegion('unavailable-region'),undefined);
 });
 test('asset admission refuses altered geometry, excess bytes and a mismatched mapping',async()=>{

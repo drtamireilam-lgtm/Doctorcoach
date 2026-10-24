@@ -33,3 +33,5 @@
 - [x] Register combined model; add overview choice and default; map learning cards and exercise history through canonical IDs while preserving side-aware detail routing.
 - [x] Extend viewer and full-application browser checks for layers, bilateral picking/selection, card/exercise round trip, reload, and the skeleton-only mode.
 - [ ] Run anatomy/unit/type/browser/build checks, visually inspect front/back with and without muscles, request independent review, push draft PR and verify current-head CI.
+
+Ruling: Publish lossless gzip rather than the 31.24 MiB raw combined GLB — Workers individual static assets are limited to 25 MiB; this preserves every original triangle and position. The 23.92 MiB package has its own checksum/budget; the browser bounds decoding and then verifies the original GLB. No new runtime dependency. Tests cover all models' hosted sizes and compressed corruption/decoded overflow.

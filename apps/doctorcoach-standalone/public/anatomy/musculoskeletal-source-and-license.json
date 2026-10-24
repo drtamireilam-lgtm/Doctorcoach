@@ -12592,6 +12592,11 @@
   ],
   "sourceMappingSha256": "a3de74423f943b0d724ae8f59b3a817f87c423a544f8db98113b1980817cbeaf",
   "skeletonBaseSha256": "59bb680ea241ad612a716316f1c1f6356279823c05059577ebaddec7951d8248",
+  "transport": {
+    "encoding": "gzip",
+    "sha256": "1bf7c14973d3b8247f454dac591784be4c5c6623cd77b8ff75a9ff59cb828f12",
+    "maxBytes": 26214400
+  },
   "coverage": {
     "status": "partial muscle coverage; clinical review pending",
     "bones": 201,

@@ -3,7 +3,7 @@
 Usage: python build-musculoskeletal.py muscle-subset.zip isa_element_parts.txt
 Requires NumPy. No simplification, repositioning or new mirroring.
 """
-import hashlib,json,pathlib,struct,sys
+import gzip,hashlib,json,pathlib,struct,sys
 from atlas_converter import load,emit,np,root
 
 catalog=json.loads(pathlib.Path(__file__).with_name('musculoskeletal-parts.json').read_text(encoding='utf8'))
@@ -51,6 +51,11 @@ if len(used)!=214 or len(parts)!=379:raise ValueError('Audited inventory changed
 emit('musculoskeletal',parts,'Unchanged validated skeleton position/index buffers plus 89 existing regional muscle groups on both actual source sides (178 muscle structures, 214 distinct muscle ELEMENTs). All muscle triangles retained, mm XYZ converted to metres X Z -Y. No new mirroring, repositioning, scaling, welding or fabricated anatomy. Full trapezius replaces overlapping upper-trapezius. Scalenes and other regional groups remain grouped. Original official source geometry may itself include mirrored meshes; M suffixes are preserved as provenance, not a claim of independent acquisition.',['coccyx','auditory-ossicles','teeth','intervertebral-discs','articular-cartilage','costal-cartilage','ligaments','nerves','vessels','separate-tendons','latissimus-dorsi','rectus-abdominis','internal-oblique','transversus-abdominis','multifidus','quadratus-lumborum','unlisted-muscles'])
 out=root/'public/anatomy/musculoskeletal.glb'
 if out.stat().st_size>32*1024*1024:raise ValueError('Combined model exceeds 32 MiB budget')
+packed=bytearray(gzip.compress(out.read_bytes(),compresslevel=9,mtime=0))
+packed[9]=255  # Stable gzip OS byte across converter operating systems.
+if len(packed)>25*1024*1024:raise ValueError('Package exceeds the Workers 25 MiB static-asset limit')
+out.with_suffix('.glb.gz').write_bytes(packed)
+out.unlink()  # Only this generated intermediate; do not publish an oversized raw asset.
 byid={s['id']:s for s in catalog['structures']}
 for target in [root/'lib/prepared/musculoskeletal-model.json',root/'public/anatomy/musculoskeletal-source-and-license.json']:
     manifest=json.loads(target.read_text(encoding='utf8'))
@@ -58,5 +63,7 @@ for target in [root/'lib/prepared/musculoskeletal-model.json',root/'public/anato
         if item['layer']=='muscle':item['learningId']=byid[item['id']]['learningId']
     manifest['sourceMappingSha256']=catalog['mappingSha256']
     manifest['skeletonBaseSha256']=skeleton['glbSha256']
+    manifest['transport']={'encoding':'gzip','sha256':hashlib.sha256(packed).hexdigest(),'maxBytes':25*1024*1024}
     manifest['coverage']={'status':'partial muscle coverage; clinical review pending','bones':201,'muscles':178,'bilateralMuscleGroups':89,'muscleSourceElements':214,'triangles':sum(p[7].shape[0] for p in parts),'coordinateSystem':'metres, Y-up, faces +Z; original shared positions retained'}
     target.write_text(json.dumps(manifest,ensure_ascii=False,indent=2)+'\n',encoding='utf8')
+print('Lossless package',len(packed),'bytes',flush=True)

@@ -1,11 +1,13 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import {readFileSync} from 'node:fs';
+import {gunzipSync} from 'node:zlib';
+import * as assets from '../lib/anatomy-models.ts';
 import {anatomyModels,detailModelForStructure,validateAnatomyAsset,visibleStructureIds} from '../lib/anatomy-models.ts';
 import {anatomyOverviewFromHash} from '../lib/anatomy-overview.ts';
 import {learningCard} from '../lib/anatomy-learning.ts';
 const model=()=>{const m=anatomyModels.find(m=>m.id==='musculoskeletal');assert.ok(m,'Combined bone and muscle model must exist');return m;};
-const bytes=m=>readFileSync(new URL('../public'+m.src,import.meta.url));
+const bytes=m=>{const b=readFileSync(new URL('../public'+m.src,import.meta.url));return m.asset.transport?gunzipSync(b):b;};
 function position(b,id){const j=JSON.parse(b.subarray(20,20+b.readUInt32LE(12)).toString()),n=j.nodes.find(n=>n.name===id),p=j.meshes[n.mesh].primitives[0],a=j.accessors[p.attributes.POSITION],v=j.bufferViews[a.bufferView],start=28+b.readUInt32LE(12)+(v.byteOffset??0)+(a.byteOffset??0);return b.subarray(start,start+a.count*12);}
 
 test('combined asset contains the original skeleton and 89 bilateral muscle groups with unique checked source identity',async()=>{
@@ -34,4 +36,16 @@ test('fresh overview opens the layered model while explicit skeleton and map lin
  assert.equal(anatomyOverviewFromHash('#learn'),'musculoskeletal');assert.equal(anatomyOverviewFromHash('#learn?atlas=musculoskeletal'),'musculoskeletal');
  assert.equal(anatomyOverviewFromHash('#learn?atlas=skeleton'),'skeleton');assert.equal(anatomyOverviewFromHash('#learn?atlas=body'),'body');
  assert.equal(anatomyOverviewFromHash('#learn?region=elbow'),'body');
+});
+test('lossless package fits the hosting limit and rejects corrupted or oversized transport before decoding',async()=>{
+ const m=model();assert.equal(m.asset.transport?.encoding,'gzip');
+ const file=readFileSync(new URL('../public'+m.src,import.meta.url));assert.ok(file.length<=25*1024*1024);
+ const packed=file.buffer.slice(file.byteOffset,file.byteOffset+file.byteLength),decoded=await assets.decodeAnatomyAsset(packed,m);
+ assert.ok(Buffer.from(decoded).equals(bytes(m)));await validateAnatomyAsset(decoded,m);
+ assert.equal(await assets.decodeAnatomyAsset(decoded,m),decoded,'Fetch may already decode an HTTP Content-Encoding gzip response');
+ const badDecoded=decoded.slice(0);new Uint8Array(badDecoded)[badDecoded.byteLength-8]^=1;await assert.rejects(()=>assets.decodeAnatomyAsset(badDecoded,m),/checksum/i);
+ const corrupt=packed.slice(0);new Uint8Array(corrupt)[20]^=1;await assert.rejects(()=>assets.decodeAnatomyAsset(corrupt,m),/checksum/i);
+ await assert.rejects(()=>assets.decodeAnatomyAsset(packed,{...m,asset:{...m.asset,transport:{...m.asset.transport,maxBytes:8}}}),/budget/i);
+ await assert.rejects(()=>assets.decodeAnatomyAsset(packed,{...m,maxBytes:8}),/budget/i);
+ const arm=anatomyModels.find(m=>m.id==='arm'),raw=bytes(arm);const rawBuffer=raw.buffer.slice(raw.byteOffset,raw.byteOffset+raw.byteLength);assert.equal(await assets.decodeAnatomyAsset(rawBuffer,arm),rawBuffer);
 });
