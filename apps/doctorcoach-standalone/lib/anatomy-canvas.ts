@@ -1,14 +1,14 @@
 import * as THREE from 'three';
 import {OrbitControls} from 'three/addons/controls/OrbitControls.js';
 import {GLTFLoader} from 'three/addons/loaders/GLTFLoader.js';
-import {anatomyModels,validateAnatomyAsset,visibleStructureIds,readCameraState,type AnatomyModel,type AtlasLayer,type CameraState} from './anatomy-models';
+import {anatomyModels,decodeAnatomyAsset,validateAnatomyAsset,visibleStructureIds,readCameraState,type AnatomyModel,type AtlasLayer,type CameraState} from './anatomy-models';
 export type AnatomyCamera='front'|'back'|'left'|'right';
 /** A single owned scene. Render only on changes; stop listeners and free all GPU resources. */
 export async function createAnatomyCanvas(host:HTMLElement,onSelect:(id:string|null)=>void,signal:AbortSignal,options:{model?:AnatomyModel;camera?:CameraState|null;onCameraChange?:(state:CameraState)=>void}={}){
  const modelSpec=options.model??anatomyModels[1];
  const response=await fetch(modelSpec.src,{signal});
  if(!response.ok)throw new Error('Model request failed');
- const bytes=await response.arrayBuffer();
+ const bytes=await decodeAnatomyAsset(await response.arrayBuffer(),modelSpec,signal);
  await validateAnatomyAsset(bytes,modelSpec);
  if(signal.aborted)throw new DOMException('Aborted','AbortError');
  const gltf=await new GLTFLoader().parseAsync(bytes,'');

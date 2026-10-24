@@ -377,7 +377,7 @@ try{
   console.log('Check passed:',checks.length+1);checks.push(language+' ten source-checked forearm cards show pending review and honest missing geometry with no invented exercise links');
  }
  for(const language of ['en','he']){
-  await page.goto('http://127.0.0.1:'+port+'/?lang='+language+'#learn',{waitUntil:'domcontentloaded'});
+  await page.goto('http://127.0.0.1:'+port+'/?lang='+language+'#learn?atlas=skeleton',{waitUntil:'domcontentloaded'});
   const skeleton=page.locator('[data-model-id="skeleton"]');await skeleton.locator('canvas').waitFor();
   assert.equal(await skeleton.getByRole('combobox').locator('option').count(),202);
   await skeleton.getByRole('combobox').selectOption('left-humerus');
@@ -397,7 +397,27 @@ try{
   assert.equal(await page.locator('canvas').count(),1);assert.ok(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth));
   await skeleton.getByRole('button',{name:language==='en'?'Reset':'איפוס',exact:true}).click();
   await skeleton.locator('canvas').screenshot({path:join(evidenceDir,'skeleton-'+language+'-mobile.png')});
-  console.log('Check passed:',checks.length+1);checks.push(language+' whole-body skeleton default, left/right integrity, hidden-state reload, same-side detail return and surface mode compatibility');
+  console.log('Check passed:',checks.length+1);checks.push(language+' explicit whole-body skeleton, left/right integrity, hidden-state reload, same-side detail return and surface mode compatibility');
+ }
+ for(const language of ['en','he']){
+  const en=language==='en';
+  await page.goto('http://127.0.0.1:'+port+'/?lang='+language+'#learn',{waitUntil:'domcontentloaded'});
+  const layered=page.locator('[data-model-id="musculoskeletal"]');await layered.locator('canvas').waitFor();
+  await page.waitForFunction(()=>{const b=document.querySelector('[data-model-id="musculoskeletal"] [aria-label="Camera"] button,[data-model-id="musculoskeletal"] [aria-label="מצלמה"] button');return b&&!b.disabled;});
+  await layered.getByRole('button',{name:en?'Reset':'איפוס',exact:true}).click();assert.equal(await layered.getByRole('combobox').locator('option').count(),380);
+  await layered.getByRole('button',{name:en?'Muscles':'שרירים',exact:true}).click();assert.equal(await layered.getByRole('combobox').locator('option').count(),202);
+  await page.reload();await layered.locator('canvas').waitFor();assert.equal(await layered.getByRole('button',{name:en?'Muscles':'שרירים',exact:true}).getAttribute('aria-pressed'),'false');
+  await layered.getByRole('button',{name:en?'Muscles':'שרירים',exact:true}).click();await layered.getByRole('combobox').selectOption('left-biceps-brachii');await layered.getByText(en?'Left side':'צד שמאל',{exact:true}).waitFor();
+  assert.equal(await layered.getByRole('button',{name:en?'Open region':'פתיחת האזור',exact:true}).count(),0);assert.equal(await layered.getByRole('button',{name:en?'Open muscle learning card':'פתיחת כרטיס השריר',exact:true}).count(),0);
+  assert.ok(await layered.locator('.atlas-definitions').count());await layered.locator('.atlas-exercises button').first().click();await page.waitForFunction(()=>location.hash==='#library');
+  await page.goBack();await layered.locator('canvas').waitFor();assert.equal(await layered.getByRole('combobox').inputValue(),'left-biceps-brachii');
+  await layered.getByRole('button',{name:en?'Hide structure':'הסתרת המבנה',exact:true}).click();await page.reload();await layered.locator('canvas').waitFor();assert.equal(await layered.getByRole('combobox').locator('option[value="left-biceps-brachii"]').count(),0);assert.equal(await layered.getByRole('combobox').locator('option[value="right-biceps-brachii"]').count(),1);
+  await layered.getByRole('button',{name:en?/Restore hidden structures/:/החזרת מבנים מוסתרים/}).click();await layered.getByRole('combobox').selectOption('right-biceps-brachii');
+  await layered.getByRole('button',{name:en?'Open muscle learning card':'פתיחת כרטיס השריר',exact:true}).click();await page.locator('[data-model-id="arm"] canvas').waitFor();assert.equal(await page.locator('[data-model-id="arm"]').getByRole('combobox').inputValue(),'biceps-brachii');
+  await page.getByRole('button',{name:en?'Back to full body':'חזרה לגוף המלא',exact:true}).click();await layered.locator('canvas').waitFor();
+  await page.getByRole('button',{name:en?'Full-body skeleton':'שלד גוף מלא',exact:true}).click();await page.locator('[data-model-id="skeleton"] canvas').waitFor();await page.getByRole('button',{name:en?'Bones and muscles':'שלד ושרירים',exact:true}).click();await layered.locator('canvas').waitFor();
+  await layered.getByRole('button',{name:en?'Reset':'איפוס',exact:true}).click();assert.equal(await page.locator('canvas').count(),1);assert.ok(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth));await layered.locator('canvas').screenshot({path:join(evidenceDir,'muscles-'+language+'-mobile.png')});
+  console.log('Check passed:',checks.length+1);checks.push(language+' combined model default, independent layers and reload, left canonical exercise round trip, right learning-card routing and skeleton mode preserved');
  }
  assert.deepEqual(serverErrors,[]);console.log('Check passed:',checks.length+1);checks.push('migrated local app returns no HTTP 5xx responses');
  assert.deepEqual(errors,[]);console.log('Check passed:',checks.length+1);checks.push('no uncaught browser errors');
