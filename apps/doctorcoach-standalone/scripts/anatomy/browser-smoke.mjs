@@ -419,6 +419,15 @@ try{
   await layered.getByRole('button',{name:en?'Reset':'איפוס',exact:true}).click();assert.equal(await page.locator('canvas').count(),1);assert.ok(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth));await layered.locator('canvas').screenshot({path:join(evidenceDir,'muscles-'+language+'-mobile.png')});
   console.log('Check passed:',checks.length+1);checks.push(language+' combined model default, independent layers and reload, left canonical exercise round trip, right learning-card routing and skeleton mode preserved');
  }
+ for(const language of ['en','he']){
+  const en=language==='en';await page.goto('http://127.0.0.1:'+port+'/?lang='+language+'#library?exercise=barbell-curl',{waitUntil:'domcontentloaded'});
+  await page.getByRole('button',{name:en?'3D Anatomical Demonstration':'הדגמה אנטומית בתלת־ממד',exact:true}).click();const demo=page.locator('[data-exercise-motion="barbell-curl"]');await demo.locator('canvas').waitFor();
+  await page.waitForFunction(()=>{const button=[...document.querySelectorAll('[data-exercise-motion] button')].find(b=>b.textContent==='Reset motion'||b.textContent==='איפוס תנועה');return button&&!button.disabled;});assert.equal(await page.locator('canvas').count(),1);
+  const slider=demo.getByRole('slider');await slider.focus();await slider.press('End');assert.equal(await slider.inputValue(),'100');await demo.getByRole('button',{name:en?'Active muscles — reference pose':'שרירים פעילים — מנח ייחוס',exact:true}).click();assert.equal(await slider.inputValue(),'0');assert.ok(await demo.getByRole('button',{name:en?'Play':'הפעלה',exact:true}).isDisabled());assert.equal(await demo.locator('[aria-label="Muscle roles"],[aria-label="תפקידי השרירים"]').locator('li').count(),5);assert.equal(await demo.getAttribute('dir'),en?'ltr':'rtl');assert.ok(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth));
+  await page.getByRole('button',{name:en?'Close 3D demonstration':'סגירת הדגמת תלת־ממד',exact:true}).click();assert.equal(await page.locator('canvas').count(),0);
+  await page.goto('http://127.0.0.1:'+port+'/?lang='+language+'#learn?atlas=skeleton',{waitUntil:'domcontentloaded'});await page.locator('[data-model-id="skeleton"] canvas').waitFor();assert.equal(await page.locator('[data-model-id="skeleton"]').getByRole('combobox').locator('option').count(),202);
+  console.log('Check passed:',checks.length+1);checks.push(language+' canonical curl library detail opens source-bound motion prototype, neutral muscle reference and unchanged static atlas');
+ }
  assert.deepEqual(serverErrors,[]);console.log('Check passed:',checks.length+1);checks.push('migrated local app returns no HTTP 5xx responses');
  assert.deepEqual(errors,[]);console.log('Check passed:',checks.length+1);checks.push('no uncaught browser errors');
  console.log(JSON.stringify({passed:checks,browserErrors:errors,serverErrors},null,2));

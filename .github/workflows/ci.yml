@@ -66,6 +66,9 @@ jobs:
       - name: Full anatomy application browser smoke
         if: env.ANATOMY_BROWSER_CHECKS == 'true'
         run: node scripts/anatomy/browser-smoke.mjs
+      - name: Anatomical exercise motion controls and lifecycle
+        if: env.ANATOMY_BROWSER_CHECKS == 'true'
+        run: node scripts/anatomy/exercise-motion-smoke.mjs
       - name: Build standalone without deployment
         env:
           DC_ISOLATED_STAGING_BUILD: "true"
