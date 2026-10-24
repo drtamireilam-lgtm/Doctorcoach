@@ -4,6 +4,7 @@ import {jointRegions,jointMovements,movementById,channelsFor} from '../lib/anato
 import {loopProgress,initialPlayback,advancePlayback,resetPlayback,setPlaybackSpeed,togglePlayback} from '../lib/anatomy-joint-playback.ts';
 import {anatomyModels} from '../lib/anatomy-models.ts';
 import {createJointRig} from '../lib/anatomy-joint-rig.ts';
+import {jointContext} from '../lib/anatomy-joint-context.ts';
 import {readFileSync} from 'node:fs';
 import {gunzipSync} from 'node:zlib';
 import * as THREE from 'three';
@@ -67,6 +68,21 @@ test('a degenerate source plane fails closed and restores owned source objects',
  const spread=movementById('fingers-abduction');assert.equal(spread.status,'prototype');const {root,meshes,model}=sourceScene(),rig=createJointRig(root,meshes,model);
  const bad={...spread,build:side=>spread.build(side).map(c=>({...c,axisPlane:{origin:{bone:side+'-third-metacarpal-bone',end:'proximal'},longitudinal:{bone:side+'-third-metacarpal-bone',end:'proximal'},radial:{bone:side+'-third-metacarpal-bone',end:'proximal'}}}))};
  assert.throws(()=>rig.configure(bad,'right'),/plane/i);assert.ok(meshes.every(m=>m.parent===root&&m.position.length()===0));rig.dispose();for(const m of meshes){m.geometry.dispose();m.material.dispose();}
+});
+test('joint context includes every animated bone and proximal support while excluding unrelated anatomy',()=>{
+ const model=anatomyModels.find(m=>m.id==='musculoskeletal');
+ for(const m of jointMovements)for(const side of ['left','right','both']){const c=jointContext(model,m,side);if(m.status==='blocked'){assert.equal(c.bones.size,0);continue;}for(const id of channelsFor(m,side).flatMap(c=>c.bones))assert.ok(c.bones.has(id));assert.ok(!c.bones.has('frontal-bone'));for(const id of c.bones)assert.equal(model.structures.find(s=>s.id===id).layer,'bone');}
+ const elbow=jointContext(model,movementById('elbow-flexion'),'right');assert.ok(elbow.bones.has('right-humerus'));assert.ok(elbow.bones.has('right-radius'));assert.ok(!elbow.bones.has('left-humerus'));
+ const hand=jointContext(model,movementById('fingers-abduction'),'left');assert.ok(hand.bones.has('left-third-metacarpal-bone'));assert.ok(!hand.bones.has('left-femur'));assert.ok([...hand.muscles].every(id=>model.structures.find(s=>s.id===id).side==='left'));
+});
+test('focused scope retains pose/source geometry and reduces rendered bone vertices without hiding active parts',()=>{
+ const {root,meshes,model}=sourceScene(),rig=createJointRig(root,meshes,model),movement=movementById('elbow-flexion');rig.configure(movement,'right');rig.pose(.23);
+ const radius=meshes.find(m=>m.name==='right-radius'),position=()=>{root.updateMatrixWorld(true);return radius.localToWorld(new THREE.Vector3().fromBufferAttribute(radius.geometry.attributes.position,0));},before=position();
+ const visibleVertices=()=>{let count=0;root.traverse(m=>{if(m.userData.jointBoneBatch&&m.visible)count+=m.geometry.attributes.position.count;});return count;};const bodyCount=visibleVertices();
+ rig.setScope('joint');assert.ok(position().distanceTo(before)<1e-9);assert.ok(visibleVertices()<bodyCount*.5);assert.ok(meshes.find(m=>m.name==='right-humerus').visible);assert.ok(!meshes.find(m=>m.name==='left-humerus').visible);assert.ok(!meshes.find(m=>m.name==='right-femur').visible);
+ for(const id of channelsFor(movement,'right').flatMap(c=>c.bones))assert.ok(meshes.find(m=>m.name===id).visible);
+ rig.neutral(true,true,movement,'right');assert.ok(!meshes.find(m=>m.name==='left-biceps-brachii').visible);assert.ok(meshes.find(m=>m.name==='right-biceps-brachii').visible);
+ rig.setScope('body');rig.pose(.23);assert.equal(visibleVertices(),bodyCount);assert.ok(position().distanceTo(before)<1e-9);rig.dispose();for(const m of meshes){m.geometry.dispose();m.material.dispose();}
 });
 
 
