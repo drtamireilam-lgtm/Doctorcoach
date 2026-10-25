@@ -21,10 +21,24 @@ test('More keeps account settings separate from its compact destinations',()=>{
   assert.equal(nodes(tree,n=>n.type==='a'&&n.props.href?.includes('signout')).length,0);
  }
 });
-test('returning home has no duplicate navigation gallery; public introduction remains',()=>{
- const {HomeIntroduction}=component('site-areas.tsx');
- assert.equal(HomeIntroduction({go:()=>{},completed:true,returning:true}),null);
- assert.ok(HomeIntroduction({go:()=>{},completed:false,returning:false}));
+test('returning home retains a named medical consultation action without a navigation gallery',()=>{
+ for(const language of ['he','en']){
+  const visited=[],{HomeIntroduction}=component('site-areas.tsx',language);
+  const tree=HomeIntroduction({go:s=>visited.push(s),completed:true,returning:true});
+  const buttons=nodes(tree,n=>n.type==='button');assert.equal(buttons.length,1);
+  assert.equal(buttons[0].props.children,language==='he'?'ייעוץ רפואי עם ד״ר תמיר עילם':'Medical consultation with Dr. Tamir Eilam');
+  buttons[0].props.onClick();assert.deepEqual(visited,['consult']);
+  assert.equal(nodes(tree,n=>n.type==='nav').length,0);
+  assert.ok(HomeIntroduction({go:()=>{},completed:false,returning:false}));
+ }
+});
+test('public home medical consultation identifies the physician in both languages',()=>{
+ for(const language of ['he','en']){
+  const visited=[],tree=component('site-areas.tsx',language).SiteIntroduction({go:s=>visited.push(s),completed:false});
+  const label=language==='he'?'ייעוץ רפואי עם ד״ר תמיר עילם':'Medical consultation with Dr. Tamir Eilam';
+  const button=nodes(tree,n=>n.type==='button'&&n.props.children===label)[0];assert.ok(button);
+  button.props.onClick();assert.deepEqual(visited,['consult']);
+ }
 });
 test('settings separate technical/account controls from the personal file',()=>{
  for(const language of ['he','en']){
