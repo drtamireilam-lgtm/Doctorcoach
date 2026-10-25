@@ -99,3 +99,14 @@
 מומלץ להמשיך מיד לאחר פתיחת גישת הניהול בבדיקת הגדרות Auth ובתכנון/מימוש מדיניות קישור ספק מפורשת. עד שהפער הזה נפתר וכל דרישות הקבלה נבדקו, הסטטוס הכולל נשאר BLOCKED.
 
 מקורות רשמיים שנבדקו: https://supabase.com/docs/guides/auth/social-sign-in/auth-google ; https://supabase.com/docs/guides/auth/social-sign-in/auth-apple ; https://supabase.com/docs/guides/auth/auth-identity-linking ; https://supabase.com/changelog.md
+
+
+## עדכון לאחר אישור הבעלים — 25.10.2026
+
+הגישה ללוח Supabase הושלמה ואומת פרויקט DoctorCoach-Staging, ref jbfkzkzcznfacsjdawmf. הבקשה הראשונה פגה; בקשת GitHub חדשה הצליחה ללא הזנת פרטים חוזרת.
+
+בתצורה החיה אומתו Google ו־Apple כבויים; Client IDs וסודות בשני הספקים ריקים. Email ו־Confirm email פעילים; anonymous ו־manual linking כבויים. לא נחשפו סודות. הממצא הנוכחי מחליף את תצפית 24 באוקטובר לגבי Client ID של Google.
+
+אותר ותוקן: Site URL היה http://localhost:3000 ורשימת Redirect URLs ריקה. נשמר Site URL https://doctorcoach-isolated-staging.dr-tamireilam.workers.dev ונוסף callback יחיד https://doctorcoach-isolated-staging.dr-tamireilam.workers.dev/auth/oauth/callback. שני הערכים אומתו לאחר טעינה מחדש. לא שונו ספקים, משתמשים, roles, RLS או Production. תווית main Production בממשק שייכת לענף ברירת המחדל של פרויקט ה־Staging המאושר, ולא לפרויקט Production של האפליקציה.
+
+CI של קומיט 9e0d0e4 עבר: https://github.com/drtamireilam-lgtm/Doctorcoach/actions/runs/40200313140 . ספקים סינתטיים אינם הוכחת התחברות אמיתית. פרטי Google/Apple חסרים, מדיניות קישור מפורש, Cloudflare, פריסה וקבלת משתמשים אמיתיים עדיין BLOCKED. אין צורך באישור חוזר לגישת Supabase שהושלמה.
