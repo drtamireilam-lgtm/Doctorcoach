@@ -1,3 +1,4 @@
+import {activityPrivacy} from './activity-privacy.ts';
 import {trainingSessionFromRow} from './training-store.ts';
 import {careStore,type CareConfig} from './care-store.ts';
 import {staffRoleGuard} from './care-write-guard.ts';
@@ -28,9 +29,9 @@ export function staffReviewQueueStore(db:D1Database,config:CareConfig={}){
  },
  async session(user:StaffIdentity,id:string){
   const {staff,role}=await context(user),allowed=eligible(staff.email,role);validId(id);
-  const row=await db.prepare(`WITH eligible AS (${allowed.sql}) SELECT s.* FROM training_sessions s JOIN eligible e ON e.client_id=s.owner_id WHERE s.id=? AND s.status='completed' AND s.finished_at<=?`).bind(...allowed.args,id,new Date().toISOString()).first<Parameters<typeof trainingSessionFromRow>[0]>();
+  const row=await db.prepare(`WITH eligible AS (${allowed.sql}) SELECT s.* FROM training_sessions s JOIN eligible e ON e.client_id=s.owner_id WHERE s.id=? AND s.status='completed' AND s.finished_at<=?`).bind(...allowed.args,id,new Date().toISOString()).first<Parameters<typeof trainingSessionFromRow>[0]&{owner_id:string}>();
   if(!row)throw new TrainingError('האימון אינו זמין בהרשאות הנוכחיות.',404);
-  return {session:trainingSessionFromRow(row)};
+  const activity=await activityPrivacy(db,user,String(row.owner_id));const result=activity.sanitize({session:trainingSessionFromRow(row)});const stillAllowed=await db.prepare(`WITH eligible AS (${allowed.sql}) SELECT 1 FROM eligible WHERE client_id=?`).bind(...allowed.args,row.owner_id).first();if(!stillAllowed)throw new TrainingError('Workout relationship changed during read',403);await activity.recheck();return result;
  },
  async review(user:StaffIdentity,payload:unknown){
   const {staff,role}=await context(user),p=inputRecord(payload),id=validId(p.id),version=integerField(p.version,'גרסה',1,1000000);
