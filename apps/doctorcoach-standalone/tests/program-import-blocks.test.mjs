@@ -67,3 +67,10 @@ test('correcting source load units reparses source warmups and preserves explici
  const edited={...corrected,warmupSetsEdited:true,warmupSets:[{amount:7,weight:12}]};
  assert.deepEqual(finalizeImport([edited])[0].warmupSets,[{amount:7,weight:12}]);
 });
+test('explicit workout headings with descriptive suffixes keep day order and repeated exercises',()=>{
+ for(const headings of [['Day A — Upper body','Workout B: Lower body'],['יום א – פלג גוף עליון','אימון ב: פלג גוף תחתון']]){
+  const r=parse(sheet([['Exercise','Sets','Reps'],[headings[0]],['Leg Press',3,'18-6'],[headings[1]],['Leg Press',2,8]]));
+  assert.equal(r.length,2);assert.deepEqual(r.map(x=>x.sourceDay),headings);assert.deepEqual(r.map(x=>x.dayId),['1','2']);
+  const items=finalizeImport(r);assert.equal(items[0].repsMax,18);assert.notEqual(items[0].occurrenceId,items[1].occurrenceId);
+ }
+});

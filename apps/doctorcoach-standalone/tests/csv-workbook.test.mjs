@@ -26,3 +26,20 @@ test('XLSX records merged ranges without inventing covered cell values',()=>{
  const bytes=zipSync({'xl/workbook.xml':strToU8('<workbook><sheets><sheet name="Plan" id="r1"/></sheets></workbook>'),'xl/_rels/workbook.xml.rels':strToU8('<Relationships><Relationship Id="r1" Target="worksheets/sheet1.xml"/></Relationships>'),'xl/worksheets/sheet1.xml':strToU8('<worksheet><sheetData><row r="1"><c r="A1"><v>3</v></c></row></sheetData><mergeCells><mergeCell ref="A1:B2"/></mergeCells></worksheet>')});
  const sheet=readExcelWorkbook(bytes)[0];assert.deepEqual(sheet.mergedRanges,['A1:B2']);assert.equal(sheet.rows[0][1],undefined);assert.equal(sheet.rows[1],undefined);
 });
+test('CSV workout titles with commas do not override a later semicolon table',()=>{
+ const rows=read('Training plan, week 1\nExercise;Sets;Reps;Notes\nLeg Press;3;18-6;steady, controlled\nHip Thrust;4;8;pause, squeeze');
+ assert.equal(rows[1].length,4);assert.equal(rows[2][0].value,'Leg Press');assert.equal(rows[2][2].value,'18-6');assert.equal(rows[2][3].value,'steady, controlled');
+});
+test('CSV title separators do not override a tab-separated workout table',()=>{
+ const rows=read('Training; week 1\nExercise\tSets\tReps\nLeg Press\t3\t8\nHip Thrust\t4\t10');
+ assert.equal(rows[1].length,3);assert.equal(rows[3][0].value,'Hip Thrust');assert.equal(rows[3][2].value,'10');
+});
+test('CSV optional trailing cells do not let consistent punctuation in notes replace header delimiters',()=>{
+ const rows=read('Exercise,Sets,Reps,Notes,Weight\nLeg Press,3,8,slow; controlled\nHip Thrust,4,10,pause; squeeze\nSquat,3,8,slow; controlled,50');
+ assert.equal(rows[0].length,5);assert.equal(rows[1][0].value,'Leg Press');assert.equal(rows[1][3].value,'slow; controlled');assert.equal(rows[1].length,4);assert.equal(rows[3][4].value,'50');
+});
+test('quoted header-like notes cannot vote for another delimiter',()=>{
+ const rows=read('Plan, week 1\nExercise;Sets;Reps;Notes\nLeg Press;3;8;"Exercise,Sets,Reps"\nHip Thrust;4;10;"Exercise,Sets,Reps"');
+ assert.equal(rows[2][3].value,'Exercise,Sets,Reps');assert.equal(rows[2][0].value,'Leg Press');
+ assert.throws(()=>read(','.repeat(100000)),/32/);
+});
