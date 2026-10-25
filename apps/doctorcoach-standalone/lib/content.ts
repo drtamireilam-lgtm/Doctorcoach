@@ -1,3 +1,4 @@
+import {generalMovements} from './general-movements.ts';
 import {rehabExercises} from './rehab-exercises.ts';
 import {gymExercises} from './gym-exercises.ts';
 import {stretchExercises} from './stretch-exercises.ts';
@@ -24,7 +25,7 @@ const baseExercises = [
 
 export type Exercise={id:string;name:string;en:string;area:string;group:string;kind:string;level:string;symbol:string;dose:string;desc:string;cues:string[];injuries:string[];easier:string;harder:string;primary:string;secondary:string};
 const baseGroups:Record<string,string>={'bench':'חזה','chest-row':'גב','landmine':'כתפיים','band-er':'מסובבי כתף ושכמה','wall-slide':'מסובבי כתף ושכמה','hammer-curl':'יד קדמית','wrist-ext':'אמות ואחיזה','rdl':'רגליים · המסטרינג','goblet':'רגליים · ארבע־ראשי','split-squat':'רגליים · ארבע־ראשי','hip-bridge':'רגליים · ישבן','bird-dog':'ליבה','dead-bug':'ליבה','ecc-calf':'רגליים · שוקיים'};
-export const exercises:Exercise[]=[...baseExercises.map(e=>({...e,group:baseGroups[e.id]??e.area,primary:'',secondary:''})),...gymExercises,...rehabExercises,...stretchExercises];
+export const exercises:Exercise[]=[...baseExercises.map(e=>({...e,group:baseGroups[e.id]??e.area,primary:'',secondary:''})),...gymExercises,...rehabExercises,...stretchExercises,...generalMovements];
 
 export const guides=[
  {name:'אגן ומפשעה',icon:'◇',summary:'אפשרויות לחיזוק מקרבי הירך ושליטה באגן, עם התאמה אישית של הטווח והעומס.',avoid:'כאב חד לאחר חבלה או חוסר יכולת לדרוך מחייבים בדיקה לפני תרגול.',ids:['adductor-squeeze','clamshell','cossack-squat-stretch','copenhagen-short-lever','copenhagen-long-lever','hip-bridge']},

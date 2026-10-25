@@ -6,6 +6,7 @@ const normalize = (text: string) => text.trim().replace(/\s+/g, ' ');
 const dictionary = new Map(hebrew.map((text, index) => [normalize(text), english[index]]));
 // New privacy labels are kept explicit instead of partially translating consent text.
 for(const [he,en] of [
+ ['ציוד והערות לתרגיל (אופציונלי)','Equipment and exercise notes (optional)'],
  ["איך DoctorCoach עובד", "How DoctorCoach Works"],
  ["חימום ומוביליטי", "Warm-up & Mobility"],
  ["האימון המרכזי", "Main workout"],

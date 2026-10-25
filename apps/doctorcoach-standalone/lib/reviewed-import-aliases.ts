@@ -13,5 +13,6 @@ export const reviewedImportAliases=[
  {exerciseId:'bench',names:['dumbbell flat press']},
  {exerciseId:'adduction',names:['Hip addaction machine']},
  {exerciseId:'lying-curl',names:['leg curls בשכיבה']},
+ {exerciseId:'overhead-triceps',names:['triceps behind the head']},
 ] as const;
 export const importAliasReviewSource='Canonical names/descriptions in lib/content.ts and lib/gym-exercises.ts; three observed exercise names from authorized workbooks; literal equivalence review, 2026-10-25';
