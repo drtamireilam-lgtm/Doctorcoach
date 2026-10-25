@@ -1,4 +1,5 @@
-import {parseImportLoad} from './import-load.ts';
+import {parseImportLoad,importLoadUnit} from './import-load.ts';
+import {toKg} from './load-units.ts';
 import {exercises,type Exercise} from './content.ts';
 import {customId,type CustomExercise} from './custom-exercise-types.ts';
 import {parseAssignedItems} from './care.ts';
@@ -10,7 +11,7 @@ import {matchExerciseForImport} from './exercise-matching.ts';
 export const importFields=['exercise','sets','reps','weight','rpe','rir','tempo','notes','day','section','unit','warmupSets','side','weightUnit','loadBasis'] as const;
 export type ImportField=typeof importFields[number];
 export type ColumnMapping=Partial<Record<ImportField,number>>;
-export type ImportRow={sourceSheet?:string;sourceKey?:string;row:number;name:string;sourceDay:string;dayId:string;exerciseId:string;sets:string;reps:string;weight:string;weightUnit?:string;loadBasis?:string;rpe:string;rir:string;tempo:string;notes:string;unit:string;section:WorkoutSection;issues:string[];ignored:boolean;matchStatus?:ReturnType<typeof matchExerciseForImport>['status'];matchConfidence?:number;matchConfirmed?:boolean;warmupSets?:{amount:number;weight:number}[];side?:'left'|'right'|'both';sourcePrescription?:{sets:string;reps:string;unit:string;side:string;warmupSets:string};sourceLog?:string;sourceWeek?:string;sourceSets?:SourceSet[];sourceLogError?:string|null};
+export type ImportRow={sourceSheet?:string;sourceKey?:string;row:number;name:string;sourceDay:string;dayId:string;exerciseId:string;sets:string;reps:string;weight:string;weightUnit?:string;loadBasis?:string;rpe:string;rir:string;tempo:string;notes:string;unit:string;section:WorkoutSection;issues:string[];ignored:boolean;matchStatus?:ReturnType<typeof matchExerciseForImport>['status'];matchConfidence?:number;matchConfirmed?:boolean;warmupSets?:{amount:number;weight:number}[];warmupSetsEdited?:boolean;side?:'left'|'right'|'both';sourcePrescription?:{sets:string;reps:string;unit:string;side:string;warmupSets:string};sourceLog?:string;sourceWeek?:string;sourceSets?:SourceSet[];sourceLogError?:string|null};
 export type ImportOptions={lastRow?:number;weekColumn?:number;targetRpe?:string;catalog?:Exercise[]};
 const normalize=(s:string)=>s.trim().toLowerCase().replace(/[’'".,()]/g,'').replace(/[_-]/g,' ').replace(/\s+/g,' ');
 const aliases:Record<ImportField,string[]>={warmupSets:['warmup sets','warm up sets','warmup weight x reps','warmup weight/reps','חימום משקל חזרות','סטי חימום','סטים לחימום'],weightUnit:['weight unit','load unit','mass unit','יחידת משקל'],loadBasis:['load basis','weight basis','basis','אופן מדידת המשקל'],side:['side','צד'],exercise:['exercise','exercise name','movement','תרגיל','שם תרגיל','שם התנועה','תרגילים'],sets:['sets','סטים','מספר סטים'],reps:['reps','repetitions','חזרות','מספר חזרות'],weight:['weight','load','משקל','משקל עבודה','משקל פתיחה','משקל לעדכון'],rpe:['rpe','target rpe','מאמץ'],rir:['rir','target rir'],tempo:['tempo','טמפו'],notes:['notes','note','הערה','הערות','הנחיות','דגשים'],day:['day','workout','יום','אימון','יום אימון'],section:['section','חלק בתוכנית','קטגוריה'],unit:['unit','units','יחידת מידה']};
@@ -73,11 +74,23 @@ function parseDose(rawSets:string,rawReps:string,rawUnit:string,rawSide:string,i
  return {sets,reps,unit,side};
 }
 export const importWarmupHelp='סטי חימום: חזרות@משקל (10@20) או משקל×חזרות (20×10), מופרדים בנקודה פסיק.';
-function parseWarmups(raw:string,issues:string[]){
+function parseWarmups(raw:string,issues:string[],workWeight:string,weightUnit:string){
  if(!raw)return undefined;
  const parts=raw.split(/;|\n/).map(s=>s.trim());
- if(parts.length>20||parts.some(s=>!/^\d+(?:\.\d+)?\s*[@×x]\s*\d+(?:\.\d+)?$/.test(s))){issues.push(importWarmupHelp);return undefined;}
- return parts.map(s=>{const [first,second]=s.split(/[@×x]/).map(Number);return s.includes('@')?{amount:first,weight:second}:{amount:second,weight:first};});
+ if(parts.length>20||parts.some(s=>!/^\d+(?:\.\d+)?\s*[@×x]\s*\d+(?:\.\d+)?$/.test(s))){issues.push('סטי חימום: '+importWarmupHelp);return undefined;}
+ // Warmup editors and persisted prescriptions use kg, even when the source uses lb.
+ // Resolve units with the work-load parser so embedded/column conflicts fail closed.
+ try{
+  const unit=importLoadUnit(workWeight,weightUnit);
+  return parts.map(s=>{const [first,second]=s.split(/[@×x]/).map(Number);return s.includes('@')?{amount:first,weight:toKg(second,unit)}:{amount:second,weight:toKg(first,unit)};});
+ }catch(error){issues.push('סטי חימום: '+(error as Error).message);return undefined;}
+}
+/** Source corrections reparse untouched source warmups; manual editor values stay in kg. */
+export function reconcileImportWarmups(row:ImportRow):ImportRow{
+ if(row.warmupSetsEdited||!row.sourcePrescription?.warmupSets)return row;
+ const issues=row.issues.filter(issue=>!issue.startsWith('סטי חימום:'));
+ const warmupSets=parseWarmups(row.sourcePrescription.warmupSets,issues,row.weight,row.weightUnit??'');
+ return {...row,issues,warmupSets};
 }
 export function extractImportRows(sheet:ExcelSheet,header:number,mapping:ColumnMapping,options:ImportOptions={}):ImportRow[]{
  if(mapping.exercise===undefined)throw new Error('יש לבחור עמודת שם תרגיל. סטים או חזרות חסרים יישארו ריקים להשלמה בעורך.');
@@ -113,11 +126,12 @@ export function extractImportRows(sheet:ExcelSheet,header:number,mapping:ColumnM
   const part=value('section');let section:WorkoutSection=activeSection;if(part){const parsedSection=sectionOf(part);if(parsedSection)section=parsedSection;else issues.push('חלק בתוכנית אינו מוכר. יש לבחור בעורך.');}
   const rawUnit=value('unit');const sourceUnit=({'חזרות':'reps','שניות':'seconds','דקות':'minutes'} as Record<string,string>)[rawUnit]??rawUnit;
   const match=matchExerciseForImport(name,options.catalog);const matched=(options.catalog??exercises).find(e=>e.id===match.exerciseId);if(!part&&activeSection==='main'&&matched?.kind==='מתיחה')section='stretch';
-  const dose=parseDose(value('sets'),value('reps'),sourceUnit,value('side'),issues);const warmupSets=parseWarmups(value('warmupSets'),issues);
+  const weightUnit=massUnit(value('weightUnit')||((activeHeader[activeMapping.weight??-1]?.value??'').match(/(?:kg|lbs?|ק[״\"']?ג|פאונד)/i)?.[0]??''))||value('weightUnit');
+  const dose=parseDose(value('sets'),value('reps'),sourceUnit,value('side'),issues);const warmupSets=parseWarmups(value('warmupSets'),issues,value('weight'),weightUnit);
   const context=activeHeader.flatMap((cell,column)=>/^(קבוצה|קבוצת שרירים|muscle group|group|משקל נראה בתמונה)$/i.test(cell.value.trim())&&cells[column]?.value?[`${cell.value}: ${cells[column].value}`]:[]);
   const notes=[value('notes'),...context].filter(Boolean).join('\n');
   const log=activeWeekColumn===undefined?undefined:cells[activeWeekColumn];const parsed=log?.formula?{sets:[],error:'דיווח השבוע הוא נוסחה. יש לבדוק את הערך ידנית.'}:parseSourceSets(log?.value??'');
-  rows.push({row:index+1,sourcePrescription:{sets:value('sets'),reps:value('reps'),unit:rawUnit,side:value('side'),warmupSets:value('warmupSets')},name,sourceDay:day,dayId:dayId(day),exerciseId:match.exerciseId,matchStatus:match.status,matchConfidence:match.confidence,sets:dose.sets,reps:dose.reps,weight:value('weight'),weightUnit:massUnit(value('weightUnit')||((activeHeader[activeMapping.weight??-1]?.value??'').match(/(?:kg|lbs?|ק[״"']?ג|פאונד)/i)?.[0]??''))||value('weightUnit'),loadBasis:value('loadBasis')||(/per[ -]?side|each side|לכל צד/i.test(value('notes')+' '+value('weight'))?'per-side':'total'),rpe:options.targetRpe||value('rpe'),rir:options.targetRpe?'':value('rir'),tempo:value('tempo'),notes,unit:dose.unit,...(dose.side?{side:dose.side}:{}),...(warmupSets?{warmupSets}:{}),section,issues,ignored:false,...(options.weekColumn===undefined?{}:{sourceLog:log?.value??'',sourceWeek:weekLabel,sourceSets:parsed.sets,sourceLogError:parsed.error})});
+  rows.push({row:index+1,sourcePrescription:{sets:value('sets'),reps:value('reps'),unit:rawUnit,side:value('side'),warmupSets:value('warmupSets')},name,sourceDay:day,dayId:dayId(day),exerciseId:match.exerciseId,matchStatus:match.status,matchConfidence:match.confidence,sets:dose.sets,reps:dose.reps,weight:value('weight'),weightUnit,loadBasis:value('loadBasis')||(/per[ -]?side|each side|לכל צד/i.test(value('notes')+' '+value('weight'))?'per-side':'total'),rpe:options.targetRpe||value('rpe'),rir:options.targetRpe?'':value('rir'),tempo:value('tempo'),notes,unit:dose.unit,...(dose.side?{side:dose.side}:{}),...(warmupSets?{warmupSets}:{}),section,issues,ignored:false,...(options.weekColumn===undefined?{}:{sourceLog:log?.value??'',sourceWeek:weekLabel,sourceSets:parsed.sets,sourceLogError:parsed.error})});
  }
  if(!rows.length)throw new Error('לא נמצאו שורות תרגילים. בדקו את שורת הכותרות והעמודות.');
  if(rows.length>60||days.size>7)throw new Error('בחרו גיליון עם עד 60 שורות תרגילים ועד 7 ימי אימון.');
@@ -126,6 +140,7 @@ export function extractImportRows(sheet:ExcelSheet,header:number,mapping:ColumnM
 const numeric=(s:string,field='מספר')=>{const clean=s.trim().replace(',','.');if(!/^\d+(?:\.\d+)?$/.test(clean))throw new Error(field+': יש להזין מספר תקין.');return Number(clean);};
 export function importRowItem(row:ImportRow,catalog:Exercise[]=exercises):PlanItem{try{return rowToItem(row,catalog);}catch(e){throw new Error('שורה '+row.row+': '+(e as Error).message);}}
 function rowToItem(row:ImportRow,catalog:Exercise[]=exercises):PlanItem{
+ row=reconcileImportWarmups(row);
  const customs=catalog.filter(e=>customId(e.id)) as CustomExercise[];const custom=customs.find(e=>e.id===row.exerciseId);
  if(row.issues.length)throw new Error(row.issues.join(' '));
  if(!row.exerciseId)throw new Error('יש לבחור תרגיל מהספרייה.');

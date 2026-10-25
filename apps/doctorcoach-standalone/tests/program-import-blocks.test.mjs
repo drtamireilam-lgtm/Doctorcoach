@@ -43,3 +43,27 @@ test('missing manual or selected-week header identity blocks the changed block',
  const s=sheet([['Exercise','Sets','Reps','Week 1','Effort 1-10'],['Leg Press',3,8,'40x8',7],['Exercise','Sets','Reps','Other week','Intensity'],['Hip Thrust',4,10,'60x10',9]]);
  const rows=extractImportRows(s,0,{exercise:0,sets:1,reps:2,rpe:4},{weekColumn:3});assert.equal(rows[0].issues.length,0);assert.ok(rows[1].issues.length>=2);assert.equal(rows[1].sourceLog,'');assert.equal(rows[1].rpe,'');assert.throws(()=>finalizeImport(rows));
 });
+test('pound warmups convert to canonical kg before preview and finalization, including missing work weight',()=>{
+ for(const [weightHeader,weight,unitHeader,unit] of [['Weight',100,'Weight Unit','lb'],['Weight (lb)',100,'Notes',''],['Weight','100 lb','Notes',''],['Weight','','Weight Unit','lb']]){
+  const r=parse(sheet([['Exercise','Sets','Reps',weightHeader,unitHeader,'Warmup sets'],['Leg Press',3,8,weight,unit,'10@45; 65x5']]));
+  assert.equal(r[0].warmupSets[0].weight,45*.45359237);
+  assert.equal(r[0].warmupSets[1].weight,65*.45359237);
+  const item=finalizeImport(r)[0];assert.equal(item.warmupSets[0].weight,45*.45359237);
+  assert.equal(item.weightUnspecified,weight==='');
+ }
+});
+test('conflicting load units cannot silently assign warmup weights',()=>{
+ const r=parse(sheet([['Exercise','Sets','Reps','Weight','Weight Unit','Warmup sets'],['Leg Press',3,8,'100 kg','lb','10@45']]));
+ assert.ok(r[0].issues.length);assert.equal(r[0].warmupSets,undefined);assert.throws(()=>finalizeImport(r));
+});
+test('valid pound warmups survive an invalid work-weight value pending correction',()=>{
+ const r=parse(sheet([['Exercise','Sets','Reps','Weight','Weight Unit','Warmup sets'],['Leg Press',3,8,'TBD','lb','10@45']]));
+ assert.deepEqual(r[0].warmupSets,[{amount:10,weight:45*.45359237}]);
+ assert.throws(()=>finalizeImport(r));
+});
+test('correcting source load units reparses source warmups and preserves explicit kg edits',()=>{
+ const [row]=parse(sheet([['Exercise','Sets','Reps','Weight','Warmup sets'],['Leg Press',3,8,100,'10@45']]));
+ const corrected={...row,weightUnit:'lb'};assert.equal(finalizeImport([corrected])[0].warmupSets[0].weight,45*.45359237);
+ const edited={...corrected,warmupSetsEdited:true,warmupSets:[{amount:7,weight:12}]};
+ assert.deepEqual(finalizeImport([edited])[0].warmupSets,[{amount:7,weight:12}]);
+});
