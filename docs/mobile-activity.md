@@ -1,0 +1,41 @@
+# Native automatic steps — implementation and validation status
+
+These thin shells load the existing authenticated web application. They read **only steps**. They do not contain a new login flow, API credentials, health writes, sensor-generated substitutes, or a second training UI. This is native source scaffolding, not a signed or device-validated release.
+
+## Configure and build
+
+- iOS: macOS, Xcode with iOS SDK, XcodeGen and a signing team are required. Set `DOCTORCOACH_ORIGIN` in `mobile/ios/project.yml` to the reviewed HTTPS origin (scheme + host + optional port, no path). Run `xcodegen generate` there, then build/sign the generated project. Bundle identifier and team must be configured by the owner. XcodeGen generates Info.plist and HealthKit/background-delivery entitlements from the checked-in specification. Enable the HealthKit capability for the provisioning profile. The placeholder `.invalid` origin intentionally fails until configured.
+- Android: JDK 17, Android SDK 35 and Gradle 8.11.1 compatible with AGP 8.9.2 are required. Set the `APP_ORIGIN` build field to the reviewed HTTPS origin, then run `gradle :app:assembleDebug` from `mobile/android`. No Gradle wrapper binary is provided. Production signing is not configured. Health Connect provider installation/update and user permission are required. A WebView without `WEB_MESSAGE_LISTENER` support exposes no health bridge.
+- Store health-access declarations, published privacy policy, permissions rationale content, app identifiers and distribution review remain required. The Android permission-usage entry opens the web application; configure that application's privacy/rationale surface before store submission.
+
+## Web bridge contract
+
+On the pinned main frame only, send `{command, requestId, accountScope}` using `window.webkit.messageHandlers.doctorcoach.postMessage(message)` on iOS or `window.doctorcoach.postMessage(JSON.stringify(message))` on Android. Commands are `bind`, `invalidate`, `connect`, `sync`, `disconnect`. IDs and account scopes are nonempty strings of at most 128 characters. The scope is an ephemeral authenticated-page lifecycle nonce, **not** a bearer credential or server owner ID. The web client must change it when the authenticated account changes and invalidate *before* logout/account switching; reject responses for stale scopes or requests. An account transition in the same document cannot be detected independently by native code without that explicit notification.
+
+`bind` invalidates prior work and replies `available` or `unavailable`. `connect` explicitly requests steps permission then reads. `sync` reads without prompting. Results arrive as `CustomEvent('doctorcoach:native-result', {detail:{requestId,accountScope,platform,status,days?}})`. Platforms: `healthkit`, `health_connect`. Status: `available`, `unavailable`, `permission-required` (Android), `no-readable-data`, `ok`, `error`. Disconnect/invalidate clear scope and intentionally produce no callback. Disconnect revokes the app/server connection through web `/api/activity`; it does not revoke OS permission. OS revocation happens in system settings.
+
+Days contain `{date, timezone, startAt, endAt, steps, observedAt, partial, method, provenance}`. Windows are Gregorian local midnight to next local midnight represented in UTC, calculated with calendar/zone APIs rather than adding 86400 seconds; today's query ends at observation time but its window retains next midnight. Last seven dates are replacement aggregates; the web supplies connection ID, generation and monotonic revision to authenticated `/api/activity`. Never add daily snapshots or combine platform sources. Origins/credentials are never taken from the payload. Android uses an exact-origin AndroidX message listener with its main-frame flag, never `addJavascriptInterface`; iOS verifies message frame origin and main-frame flag. External navigation is blocked and invalidates pending work. Navigation/process destruction loses binding; the newly authenticated page must bind again. No health payload queue is persisted.
+
+## Missing, denied and partial data
+
+Apple deliberately does not reveal read denial. Successful authorization prompt completion does not establish read access. A missing cumulative sum remains `steps:null`; it is not zero or a claimed denial. Android checks granted `READ_STEPS`, reads `StepsRecord.COUNT_TOTAL` via an unfiltered Health Connect aggregate so platform source priorities deduplicate phone/watch inputs, and retains missing aggregates as null. An explicit returned numeric zero remains zero. Both mark `partial:true` conservatively because a platform aggregate does not prove completeness of every device/source or Apple's authorized history. Locked/unavailable store failures return error without overwriting totals with fake zeros. Provenance identifies the platform aggregate method; it does not falsely claim enumerated individual devices. No historical permission beyond the seven-day window is requested.
+
+## Background limitation
+
+`StepsReader.observe` supplies HealthKit observer/background-delivery primitives and completion handling, with hourly best-effort delivery. It is not activated by the shell: an account-bound native upload credential and revoke protocol have not been implemented, and WebView session cookies are not a durable background authorization design. Android intentionally requests no background/history permission and schedules no background worker for the same reason. Foreground app-open web sync is supported by the contract. **Autonomous background sync across app termination is BLOCKED**, not complete. Do not enable background reads/uploads until secure native account binding, revocation and device tests exist. Health payloads must never be logged or included in push notifications.
+
+## Evidence and required acceptance
+
+Executed on Windows: `node --test --test-isolation=none mobile/tests/bridge-policy.test.mjs`: 2 tests passed (origin/main-frame/command boundary and stale account callback). These are executable reference-policy tests, not native instrumentation tests or proof that Swift/Kotlin compile. Native compilers/Android SDK/device access were not established; no native build, signing, simulator/emulator or device validation was run.
+
+Required device checks before release:
+
+1. Compile each native target; configure identifiers, origin, signing, provisioning, privacy disclosures and Android rationale route.
+2. iPhone: available/unavailable HealthKit, grant/deny/partial access, empty store versus returned zero, read revocation, locked-store failures and corrections. Verify no false read-denied assertion.
+3. Android 13 provider and Android 14+ system Health Connect: install/update required, grant/deny/revoke READ_STEPS, empty store, explicit zero, phone/watch deduplication and post-June-2026 on-device source attribution.
+4. DST 23/25-hour days and timezone travel; verify exact API windows and no sum across window identities.
+5. Malicious subframe and external origin messages, redirects/new windows, invalid commands, unsupported WebView, logout/switch while permission prompt/query is pending, process destruction and rebind. Old results must never reach the new account.
+6. Real API connection consent, generation/revision conflicts, disconnect, reconnect, replacement/downward correction and coach visibility boundaries through the existing web UI.
+7. Background delivery remains a separate blocked integration; do not mark it passing based on observer source alone.
+
+Official references checked 2026-10-25: [Apple authorization and read privacy](https://developer.apple.com/documentation/HealthKit/authorizing-access-to-health-data), [HealthKit statistics](https://developer.apple.com/documentation/healthkit/hkstatisticsquery), [Android aggregate and deduplication](https://developer.android.com/health-and-fitness/health-connect/aggregate-data), [Android read restrictions and on-device source attribution](https://developer.android.com/health-and-fitness/health-connect/read-data).
