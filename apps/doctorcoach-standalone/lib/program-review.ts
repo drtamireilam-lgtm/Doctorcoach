@@ -9,6 +9,6 @@ export function prepareProgramReview(title:unknown,items:unknown,customs:import(
 export function programReviewDays(items:PlanItem[]){
  return assignedDays(items).map(id=>{
   const dayItems=items.filter(item=>workoutDayId(item)===id);
-  return {id,items:dayItems,sets:dayItems.reduce((sum,item)=>sum+item.sets,0)};
+  return {id,items:dayItems,sets:dayItems.reduce((sum,item)=>sum+(item.cardio?0:item.sets),0)};
  });
 }
