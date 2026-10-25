@@ -1,6 +1,6 @@
 # DoctorCoach cardio and automatic steps — repository audit and proposed design
 
-Date: 2026-10-25. Status: proposed; implementation has not started.
+Date: 2026-10-25. Status: approved by owner in this chat; implementation and local validation completed with native/device/background release blockers documented in ../../cardio-activity-implementation-he.md.
 Owner request: Cardio & Automatic Activity Tracking 1.0, supplied in this chat.
 Branch: `feature/cardio-automatic-steps-20261025`.
 Verified remote base: `818e4ce6a4b3b48084f12f1791b98832f4228214` (`origin/main`).

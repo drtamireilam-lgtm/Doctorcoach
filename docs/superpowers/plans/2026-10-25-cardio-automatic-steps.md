@@ -68,3 +68,7 @@ Files: new components/cardio-editor.tsx, cardio-player.tsx, activity-dashboard.t
 Ruling: Approval includes thin native wrapper and single authoritative source as proposed. Timer does not silently infer activity during uncertain refresh/process-death gaps; app-internal navigation preserves server state. Background scheduling remains best-effort and platform-specific. Product UI must label unavailable native capability accurately.
 
 Baseline: main 818e4ce; documentation commit d94ef8d; 24 targeted training/weekly/day tests pass with Node --test-isolation=none (default child-process spawning blocked by sandbox). No complete baseline build yet. All independent implementers share the isolated checkout with strict file ownership; commits may not stage unrelated files.
+
+## Final execution ledger
+
+Product code b7e6399; draft PR52. All feasible code tasks and local checks executed. Full suite1291:1290pass/1preexisting billing fail reproduced origin/main. Root16pass; mobile contracts6pass; Worker1pass; browser en/he390px pass; tsc pass. Lint62existing errors compared against main, zero introduced errors. Normal, standalone and explicit isolated staging builds pass. No deployment or remote migration. Independent review findings fixed and rechecked. Native compilation/device acceptance, terminated-app background credentials and live LAB release remain blocked/not tested; do not mark these release gates complete.
