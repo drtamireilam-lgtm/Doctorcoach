@@ -14,6 +14,8 @@ final class StepsReader {
         let zone = TimeZone.current
         var calendar = Calendar(identifier: .gregorian); calendar.timeZone = zone
         let now = Date(); let formatter = ISO8601DateFormatter()
+        formatter.formatOptions = [.withInternetDateTime, .withFractionalSeconds]
+        formatter.timeZone = TimeZone(secondsFromGMT: 0)
         let dateFormatter = DateFormatter(); dateFormatter.calendar = calendar; dateFormatter.timeZone = zone
         dateFormatter.locale = Locale(identifier: "en_US_POSIX"); dateFormatter.dateFormat = "yyyy-MM-dd"
         var days: [[String: Any]] = []
@@ -31,7 +33,7 @@ final class StepsReader {
             days.append(["date": dateFormatter.string(from: start), "timezone": zone.identifier,
                 "startAt": formatter.string(from: start), "endAt": formatter.string(from: end),
                 "steps": quantity.map { NSNumber(value: $0.doubleValue(for: .count())) as Any } ?? NSNull(),
-                "observedAt": formatter.string(from: now), "partial": true,
+                "observedAt": formatter.string(from: now), "partial": end > now,
                 "method": "healthkit_cumulative", "provenance": ["healthkit:platform-aggregate"]])
         }
         return days

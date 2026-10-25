@@ -9,6 +9,7 @@ import androidx.health.connect.client.time.TimeRangeFilter
 import java.time.ZoneId
 import java.time.LocalDate
 import java.time.Instant
+import java.time.format.DateTimeFormatterBuilder
 import org.json.JSONObject
 import org.json.JSONArray
 
@@ -20,6 +21,7 @@ class StepsReader(private val context: Context) {
     suspend fun readDays(): JSONArray {
         check(authorized())
         val zone = ZoneId.systemDefault(); val today = LocalDate.now(zone); val now = Instant.now()
+        val timestamp = DateTimeFormatterBuilder().appendInstant(3).toFormatter()
         val days = JSONArray()
         for (offset in -6L..0L) {
             val day = today.plusDays(offset); val start = day.atStartOfDay(zone).toInstant()
@@ -28,8 +30,8 @@ class StepsReader(private val context: Context) {
             val aggregate = client.aggregate(AggregateRequest(setOf(StepsRecord.COUNT_TOTAL), TimeRangeFilter.between(start, minOf(end, now))))
             val count = aggregate[StepsRecord.COUNT_TOTAL]
             days.put(JSONObject().put("date", day.toString()).put("timezone", zone.id)
-                .put("startAt", start.toString()).put("endAt", end.toString())
-                .put("steps", count ?: JSONObject.NULL).put("observedAt", now.toString()).put("partial", true)
+                .put("startAt", timestamp.format(start)).put("endAt", timestamp.format(end))
+                .put("steps", count ?: JSONObject.NULL).put("observedAt", timestamp.format(now)).put("partial", end > now)
                 .put("method", "health_connect_aggregate")
                 .put("provenance", JSONArray().put("health-connect:platform-aggregate")))
         }

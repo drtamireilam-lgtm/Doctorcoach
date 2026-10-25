@@ -18,7 +18,7 @@ Days contain `{date, timezone, startAt, endAt, steps, observedAt, partial, metho
 
 ## Missing, denied and partial data
 
-Apple deliberately does not reveal read denial. Successful authorization prompt completion does not establish read access. A missing cumulative sum remains `steps:null`; it is not zero or a claimed denial. Android checks granted `READ_STEPS`, reads `StepsRecord.COUNT_TOTAL` via an unfiltered Health Connect aggregate so platform source priorities deduplicate phone/watch inputs, and retains missing aggregates as null. An explicit returned numeric zero remains zero. Both mark `partial:true` conservatively because a platform aggregate does not prove completeness of every device/source or Apple's authorized history. Locked/unavailable store failures return error without overwriting totals with fake zeros. Provenance identifies the platform aggregate method; it does not falsely claim enumerated individual devices. No historical permission beyond the seven-day window is requested.
+Apple deliberately does not reveal read denial. Successful authorization prompt completion does not establish read access. A missing cumulative sum remains `steps:null`; it is not zero or a claimed denial. Android checks granted `READ_STEPS`, reads `StepsRecord.COUNT_TOTAL` via an unfiltered Health Connect aggregate so platform source priorities deduplicate phone/watch inputs, and retains missing aggregates as null. An explicit returned numeric zero remains zero. `partial` describes temporal query coverage: historical days use `false` with observation at or after their end; the current day uses `true` with observation inside its full local-day window. It does not assert sensor or permission completeness. UTC timestamps always include exactly three fractional digits (`YYYY-MM-DDTHH:mm:ss.SSSZ`). Locked/unavailable store failures return error without overwriting totals with fake zeros. Provenance identifies the platform aggregate method; it does not falsely claim enumerated individual devices. No historical permission beyond the seven-day window is requested.
 
 ## Background limitation
 
@@ -26,7 +26,7 @@ Apple deliberately does not reveal read denial. Successful authorization prompt 
 
 ## Evidence and required acceptance
 
-Executed on Windows: `node --test --test-isolation=none mobile/tests/bridge-policy.test.mjs`: 2 tests passed (origin/main-frame/command boundary and stale account callback). These are executable reference-policy tests, not native instrumentation tests or proof that Swift/Kotlin compile. Native compilers/Android SDK/device access were not established; no native build, signing, simulator/emulator or device validation was run.
+Executed on Windows: `node --experimental-strip-types --test --test-isolation=none mobile/tests/*.test.mjs`: 5 tests passed (origin/main-frame/command boundary, stale account callback, native serializer configuration, and actual backend parsing for both platforms including DST, historical/current coverage and missing-versus-zero). These are executable reference-policy tests, not native instrumentation tests or proof that Swift/Kotlin compile. Native compilers/Android SDK/device access were not established; no native build, signing, simulator/emulator or device validation was run.
 
 Required device checks before release:
 
