@@ -84,4 +84,3 @@ class MainActivity: ComponentActivity() {
     }
     override fun onDestroy() { invalidate(); web.destroy(); super.onDestroy() }
 }
-

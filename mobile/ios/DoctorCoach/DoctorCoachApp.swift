@@ -65,5 +65,3 @@ final class Bridge: NSObject, WKScriptMessageHandler, WKNavigationDelegate {
         web?.evaluateJavaScript("window.dispatchEvent(new CustomEvent('doctorcoach:native-result',{detail:\(json)}))")
     }
 }
-
-

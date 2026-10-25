@@ -49,4 +49,3 @@ final class StepsReader {
         store.disableBackgroundDelivery(for: steps) { _, _ in }
     }
 }
-
