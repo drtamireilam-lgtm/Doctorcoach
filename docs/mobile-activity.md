@@ -5,7 +5,7 @@ These thin shells load the existing authenticated web application. They read **o
 ## Configure and build
 
 - iOS: macOS, Xcode with iOS SDK, XcodeGen and a signing team are required. Set `DOCTORCOACH_ORIGIN` in `mobile/ios/project.yml` to the reviewed HTTPS origin (scheme + host + optional port, no path). Run `xcodegen generate` there, then build/sign the generated project. Bundle identifier and team must be configured by the owner. XcodeGen generates Info.plist and HealthKit/background-delivery entitlements from the checked-in specification. Enable the HealthKit capability for the provisioning profile. The placeholder `.invalid` origin intentionally fails until configured.
-- Android: JDK 17, Android SDK 35 and Gradle 8.11.1 compatible with AGP 8.9.2 are required. Set the `APP_ORIGIN` build field to the reviewed HTTPS origin, then run `gradle :app:assembleDebug` from `mobile/android`. No Gradle wrapper binary is provided. Production signing is not configured. Health Connect provider installation/update and user permission are required. A WebView without `WEB_MESSAGE_LISTENER` support exposes no health bridge.
+- Android: JDK 17, Android SDK 36 and Gradle 8.11.1 compatible with AGP 8.9.2 are required. Health Connect `connect-client:1.1.0` requires compile SDK 36 and AGP >=8.9.1; AndroidX is enabled in `gradle.properties`. Set the `APP_ORIGIN` build field to the reviewed HTTPS origin, then run `gradle :app:assembleDebug` from `mobile/android`. No Gradle wrapper binary is provided. Production signing is not configured. Health Connect provider installation/update and user permission are required. A WebView without `WEB_MESSAGE_LISTENER` support exposes no health bridge.
 - Store health-access declarations, published privacy policy, permissions rationale content, app identifiers and distribution review remain required. The Android permission-usage entry opens the web application; configure that application's privacy/rationale surface before store submission.
 
 ## Web bridge contract
@@ -26,7 +26,7 @@ Apple deliberately does not reveal read denial. Successful authorization prompt 
 
 ## Evidence and required acceptance
 
-Executed on Windows: `node --experimental-strip-types --test --test-isolation=none mobile/tests/*.test.mjs`: 5 tests passed (origin/main-frame/command boundary, stale account callback, native serializer configuration, and actual backend parsing for both platforms including DST, historical/current coverage and missing-versus-zero). These are executable reference-policy tests, not native instrumentation tests or proof that Swift/Kotlin compile. Native compilers/Android SDK/device access were not established; no native build, signing, simulator/emulator or device validation was run.
+Executed on Windows: `node --experimental-strip-types --test --test-isolation=none mobile/tests/*.test.mjs`: 6 tests passed (origin/main-frame/command boundary, stale account callback, native serializer configuration, Android build requirements, and actual backend parsing for both platforms including DST, historical/current coverage and missing-versus-zero). These are executable reference-policy tests, not native instrumentation tests or proof that Swift/Kotlin compile. Native compilers/Android SDK/device access were not established; no native build, signing, simulator/emulator or device validation was run.
 
 Required device checks before release:
 
@@ -39,3 +39,5 @@ Required device checks before release:
 7. Background delivery remains a separate blocked integration; do not mark it passing based on observer source alone.
 
 Official references checked 2026-10-25: [Apple authorization and read privacy](https://developer.apple.com/documentation/HealthKit/authorizing-access-to-health-data), [HealthKit statistics](https://developer.apple.com/documentation/healthkit/hkstatisticsquery), [Android aggregate and deduplication](https://developer.android.com/health-and-fitness/health-connect/aggregate-data), [Android read restrictions and on-device source attribution](https://developer.android.com/health-and-fitness/health-connect/read-data).
+
+Android dependency requirements verified against [official Health Connect setup](https://developer.android.com/health-and-fitness/health-connect/get-started): connect-client 1.1.0 and later require compile SDK 36 and AGP 8.9.1 or newer. This source check and configuration regression test do not replace a native Gradle build.
