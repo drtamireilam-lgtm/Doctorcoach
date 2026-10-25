@@ -63,15 +63,15 @@ jobs:
       - name: Anatomy viewer controls and bundled model smoke
         if: env.ANATOMY_BROWSER_CHECKS == 'true'
         run: node scripts/anatomy/viewer-controls-smoke.mjs
+      - name: Reusable joint movement library and atlas lifecycle
+        if: env.ANATOMY_BROWSER_CHECKS == 'true'
+        run: node scripts/anatomy/joint-motion-smoke.mjs
       - name: Full anatomy application browser smoke
         if: env.ANATOMY_BROWSER_CHECKS == 'true'
         run: node scripts/anatomy/browser-smoke.mjs
       - name: Anatomical exercise motion controls and lifecycle
         if: env.ANATOMY_BROWSER_CHECKS == 'true'
         run: node scripts/anatomy/exercise-motion-smoke.mjs
-      - name: Reusable joint movement library and atlas lifecycle
-        if: env.ANATOMY_BROWSER_CHECKS == 'true'
-        run: node scripts/anatomy/joint-motion-smoke.mjs
       - name: Build standalone without deployment
         env:
           DC_ISOLATED_STAGING_BUILD: "true"
@@ -95,4 +95,16 @@ jobs:
           name: isolated-lab-candidate-${{ github.sha }}
           path: apps/doctorcoach-standalone/.sites-runtime/lab-release/
           include-hidden-files: true
+          retention-days: 7
+      - name: Save anatomy browser evidence
+        if: always() && env.ANATOMY_BROWSER_CHECKS == 'true'
+        uses: actions/upload-artifact@v4
+        with:
+          name: anatomy-browser-evidence-${{ github.sha }}
+          path: |
+            /tmp/dc-anatomy-evidence/
+            /tmp/dc-joint-evidence/
+            /tmp/dc-exercise-motion-evidence/
+            /tmp/dc-viewer-evidence/
+          if-no-files-found: ignore
           retention-days: 7
