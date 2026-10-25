@@ -39,3 +39,17 @@ test('PDF text tables can repeat headers in a new column order without losing th
  const s=pdfPageTable([token('Exercise',20,700,50),token('Sets',210,700),token('Reps',270,700),token('Day A - Upper body',20,680,110),token('Leg Press',20,660,60),token(3,210,660,6),token('18-6',270,660),token('Workout B: Lower body',20,640,120),token('Reps',20,620),token('Exercise',210,620,50),token('Sets',270,620),token(10,20,600,12),token('Hip Thrust',210,600,55),token(4,270,600,6)],1);
  const items=finalizeImport(parse(s));assert.equal(items.length,2);assert.deepEqual(items.map(x=>x.dayId),['1','2']);assert.equal(items[0].repsMax,18);assert.equal(items[1].sets,4);assert.equal(items[1].reps,10);
 });
+
+test('observed mixed-language aliases retain canonical IDs and repeated occurrences through draft, assignment and reload',async t=>{
+ const sheet=readCsvWorkbook(bytes('Exercise,Sets,Reps,Weight\ndumbbell flat press,2,6-18,20\nלחיצת חזה עם משקולות,3,8,22\nHip addaction machine,2,10,30\nleg curls בשכיבה,2,12,25'))[0];
+ const items=finalizeImport(parse(sheet));assert.deepEqual(items.map(i=>i.exerciseId),['bench','bench','adduction','lying-curl']);
+ assert.equal(items[0].repsMax,18);assert.equal(new Set(items.map(i=>i.occurrenceId)).size,4);
+ const f=platform(t);await f.connect();const drafts=coachDraftStore(f.db,f.care);
+ await drafts.save(coach,client.userId,{action:'save',requestId:randomUUID(),version:0,title:'Synthetic alias journey',items,revisionOf:null});
+ const saved=(await drafts.get(coach,client.userId)).draft;await f.care.assign(coach,client.userId,{id:randomUUID(),title:saved.title,items:saved.items});
+ const session=await f.training.start(client.userId,{requestId:randomUUID(),dayId:'1',before:0});
+ const item=session.items[1];await f.training.patch(client.userId,{id:session.id,version:session.version,action:'set',exerciseId:item.exerciseId,occurrenceId:item.occurrenceId,setIndex:0,done:true,amount:8,weight:23,actualRpe:8});
+ const reopened=(await f.training.feed(client.userId)).active;
+ assert.deepEqual(reopened.items.map(i=>i.exerciseId),['bench','bench','adduction','lying-curl']);
+ assert.equal(reopened.items[1].results[0].weight,23);assert.equal(reopened.items[1].results[0].done,true);assert.equal(reopened.items[0].results[0].done,false);
+});
