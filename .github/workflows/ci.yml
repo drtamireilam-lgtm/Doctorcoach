@@ -2,9 +2,9 @@ name: DoctorCoach CI
 
 on:
   push:
-    branches: [main, "codex/application-audit-*", "stabilize/**", "fix/appearance-toggle-persistence-*", "feature/ui-ux-liad-followup-20261019", "feature/doctorcoach-2-smart-workout-20261020", "feature/anatomy-completion-*", "integration/anatomy-rehab-stretch-*"]
+    branches: [main, "codex/import-integration-lab-*", "codex/application-audit-*", "stabilize/**", "fix/appearance-toggle-persistence-*", "feature/ui-ux-liad-followup-20261019", "feature/doctorcoach-2-smart-workout-20261020", "feature/anatomy-completion-*", "integration/anatomy-rehab-stretch-*"]
   pull_request:
-    branches: [main, "codex/application-audit-*", "codex/import-structure-regressions-*", "codex/import-alias-precision-*", "codex/google-apple-signin-*", "feature/anatomy-*", "integration/anatomy-*", "codex/anatomy-*"]
+    branches: [main, "codex/generic-movement-import-*", "codex/application-audit-*", "codex/import-structure-regressions-*", "codex/import-alias-precision-*", "codex/google-apple-signin-*", "feature/anatomy-*", "integration/anatomy-*", "codex/anatomy-*"]
 
 permissions:
   contents: read
@@ -81,7 +81,7 @@ jobs:
       - name: Synthetic Worker authentication and authorization checks
         run: node --experimental-strip-types standalone/scripts/runtime-smoke.mjs
       - name: Package verified isolated LAB candidate
-        if: startsWith(github.ref_name, 'codex/application-audit-') || startsWith(github.head_ref, 'codex/application-audit-') || github.ref == 'refs/heads/feature/ui-ux-liad-followup-20261019' || github.head_ref == 'feature/lab-apple-anatomy-integration-20261020' || github.ref == 'refs/heads/feature/doctorcoach-2-smart-workout-20261020'
+        if: startsWith(github.ref_name, 'codex/import-integration-lab-') || startsWith(github.head_ref, 'codex/import-integration-lab-') || startsWith(github.ref_name, 'codex/application-audit-') || startsWith(github.head_ref, 'codex/application-audit-') || github.ref == 'refs/heads/feature/ui-ux-liad-followup-20261019' || github.head_ref == 'feature/lab-apple-anatomy-integration-20261020' || github.ref == 'refs/heads/feature/doctorcoach-2-smart-workout-20261020'
         run: |
           mkdir -p .sites-runtime/lab-release
           git rev-parse HEAD > .sites-runtime/lab-release/source-commit.txt
@@ -89,7 +89,7 @@ jobs:
           tar -czf .sites-runtime/lab-release/lab-candidate.tgz dist
           sha256sum .sites-runtime/lab-release/lab-candidate.tgz > .sites-runtime/lab-release/SHA256SUMS
       - name: Save verified LAB candidate without deployment
-        if: startsWith(github.ref_name, 'codex/application-audit-') || startsWith(github.head_ref, 'codex/application-audit-') || github.ref == 'refs/heads/feature/ui-ux-liad-followup-20261019' || github.head_ref == 'feature/lab-apple-anatomy-integration-20261020' || github.ref == 'refs/heads/feature/doctorcoach-2-smart-workout-20261020'
+        if: startsWith(github.ref_name, 'codex/import-integration-lab-') || startsWith(github.head_ref, 'codex/import-integration-lab-') || startsWith(github.ref_name, 'codex/application-audit-') || startsWith(github.head_ref, 'codex/application-audit-') || github.ref == 'refs/heads/feature/ui-ux-liad-followup-20261019' || github.head_ref == 'feature/lab-apple-anatomy-integration-20261020' || github.ref == 'refs/heads/feature/doctorcoach-2-smart-workout-20261020'
         uses: actions/upload-artifact@v4
         with:
           name: isolated-lab-candidate-${{ github.sha }}

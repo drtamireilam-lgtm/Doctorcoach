@@ -8,8 +8,22 @@ import {pdfPageTable} from '../lib/pdf-program-table.ts';
 import {detectImportColumns,extractImportRows,extractWorkbookImport,finalizeImport} from '../lib/program-import.ts';
 import {coachDraftStore} from '../lib/coach-drafts.ts';
 import {platform,client,coach} from './platform-db.mjs';
+import {verifyImportedWorkoutPersistence} from './import-journey-helper.mjs';
+import {matchExerciseForRow} from '../lib/program-import.ts';
 const parse=s=>{const d=detectImportColumns(s);return extractImportRows(s,d.header,d.mapping);};
 const bytes=s=>new TextEncoder().encode(s);
+
+test('preview correction resolves only the unknown row and keeps general, Hammer, Kelso and units through reload',async t=>{
+ const sheet=readCsvWorkbook(bytes('Exercise,Sets,Reps,Weight,Weight Unit,Warmup sets,Notes\nSquat,3,18-6,100,lb,10@45,\nwide grip hammer rows,2,10,40,kg,,machine\nKelso Shrug,2,12,15,kg,,\nUnlisted synthetic exercise,2,8,20,kg,,coach correction'))[0];
+ const rows=parse(sheet);assert.equal(rows.length,4);
+ assert.deepEqual(rows.slice(0,3).map(r=>r.exerciseId),['movement-squat','movement-hammer-row-wide','movement-kelso-shrug']);
+ assert.equal(rows[3].exerciseId,'');assert.throws(()=>finalizeImport(rows));
+ rows[3]={...rows[3],name:'Dumbbell Bench Press',...matchExerciseForRow('Dumbbell Bench Press')};
+ const items=finalizeImport(rows);assert.equal(items[3].exerciseId,'bench');
+ assert.equal(items[0].weight,100*.45359237);assert.equal(items[0].warmupSets[0].weight,45*.45359237);
+ assert.equal(items[0].reps,6);assert.equal(items[0].repsMax,18);assert.equal(items[3].notes,'coach correction');
+ await verifyImportedWorkoutPersistence(t,items);
+});
 
 test('CSV title, named days, repeated canonical exercises and pound warmups survive assignment and set reload',async t=>{
  const s=readCsvWorkbook(bytes('Training plan, week 1\nExercise;Sets;Reps;Weight;Weight Unit;Warmup sets;Notes\nDay A - Upper body\nLeg Press;3;18-6;100;lb;10@45;steady, controlled\nWorkout B: Lower body\nHip Thrust;4;8;40;kg;;pause\nLeg Press;2;8;80;lb;5@45;repeat deliberately'))[0];
@@ -29,9 +43,10 @@ function workbook(sheets){
  const files={'xl/workbook.xml':strToU8('<workbook><sheets>'+sheets.map((_,i)=>`<sheet name="Day ${i+1}" id="r${i+1}"/>`).join('')+'</sheets></workbook>'),'xl/_rels/workbook.xml.rels':strToU8('<Relationships>'+sheets.map((_,i)=>`<Relationship Id="r${i+1}" Target="worksheets/sheet${i+1}.xml"/>`).join('')+'</Relationships>')};
  sheets.forEach((rows,i)=>{files[`xl/worksheets/sheet${i+1}.xml`]=strToU8('<worksheet><sheetData>'+rows.map((r,y)=>`<row r="${y+1}">`+r.map((v,x)=>`<c r="${String.fromCharCode(65+x)}${y+1}" t="inlineStr"><is><t>${escape(v)}</t></is></c>`).join('')+'</row>').join('')+'</sheetData></worksheet>');});return zipSync(files);
 }
-test('real XLSX with mixed table widths and multiple sheets keeps all days and every repeated occurrence',()=>{
+test('real XLSX with mixed table widths persists all imported days and repeated occurrences through workouts',async t=>{
  const sheets=readExcelWorkbook(workbook([[['Exercise','Sets'],['Day A - Upper body'],['Leg Press','3x18-6'],['Workout B: Lower body'],['Exercise','Sets','Reps'],['Hip Thrust',4,10]],[['Exercise','Sets','Reps'],['Hip Thrust',2,8]]]));
  const items=finalizeImport(extractWorkbookImport(sheets,[1,0]));assert.equal(items.length,3);assert.deepEqual(items.map(x=>x.dayId),['1','2','3']);assert.deepEqual(items.map(x=>x.sets),[3,4,2]);assert.equal(items[0].repsMax,18);assert.equal(new Set(items.map(x=>x.occurrenceId)).size,3);
+ await verifyImportedWorkoutPersistence(t,items);
 });
 
 test('PDF text tables can repeat headers in a new column order without losing the first block',()=>{
