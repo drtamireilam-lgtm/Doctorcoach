@@ -30,3 +30,15 @@ test('repeated mixed-unit header blocks retain semantic unit mapping and changed
 test('missing prescriptions and invalid numeric fields never become zero or default sets',()=>{const s=sheet([['Exercise','Reps'],['Leg Press',10]]),d=detectImportColumns(s);assert.equal(d.mapping.sets,undefined);const incomplete=extractImportRows(s,d.header,d.mapping)[0];assert.equal(incomplete.sets,'');assert.throws(()=>importRowItem(incomplete));assert.equal(importRowItem({...incomplete,sets:'3'}).sets,3);const good=extractImportRows(sheet([['Exercise','Sets','Reps'],['Leg Press',2,10]]),0,{exercise:0,sets:1,reps:2})[0];for(const patch of [{sets:''},{sets:'2.5'},{sets:'-1'},{reps:'Leg Press'},{reps:''},{weight:'oops'},{rpe:'11'},{rir:'10'}])assert.throws(()=>importRowItem({...good,...patch}));assert.equal(importRowItem(good).targetRpe,null);});
 test('competing mass-unit columns require an explicit choice instead of kg fallback',()=>{const s=sheet([['Exercise','Sets','Reps','Weight','Unit','Weight Unit'],['Leg Press',2,10,105,'lb','kg']]),d=detectImportColumns(s);assert.equal(d.mapping.weightUnit,undefined);const row=extractImportRows(s,d.header,d.mapping)[0];assert.ok(row.issues.some(i=>i.includes('יחידת משקל')));assert.throws(()=>importRowItem(row));const explicit=extractImportRows(s,0,{exercise:0,sets:1,reps:2,weight:3,weightUnit:4})[0];assert.equal(importRowItem(explicit).load.sourceUnit,'lb');});
 test('duplicate load headers cannot silently discard available source weights',()=>{const s=sheet([['Exercise','Sets','Reps','Weight','Load'],['Leg Press',2,10,40,80]]),d=detectImportColumns(s);assert.equal(d.mapping.weight,undefined);const row=extractImportRows(s,d.header,d.mapping)[0];assert.ok(row.issues.some(i=>i.includes('weight')));assert.throws(()=>importRowItem(row));const fixed=extractImportRows(s,0,{exercise:0,sets:1,reps:2,weight:4})[0];assert.equal(importRowItem(fixed).weight,80);});
+test('later ambiguous repeated headers never hide an earlier complete workout block',()=>{
+ const s=sheet([['Exercise','Sets','Reps','Notes'],['Leg Press',3,8,'first block'],['Exercise','Sets','Reps','Notes','Notes'],['Hip Thrust',4,10,'second block','alternative note']]);
+ const d=detectImportColumns(s);assert.equal(d.header,0);
+ const r=extractImportRows(s,d.header,d.mapping);assert.equal(r.length,2);assert.equal(r[0].name,'Leg Press');assert.equal(r[0].notes,'first block');assert.equal(r[1].name,'Hip Thrust');
+ assert.ok(r[1].issues.length);assert.throws(()=>importRowItem(r[1]));
+});
+test('a later wider table does not replace an earlier combined-dose table',()=>{
+ const s=sheet([['Exercise','Sets'],['Leg Press','3x8'],['Exercise','Sets','Reps'],['Hip Thrust',4,10]]);
+ const d=detectImportColumns(s);assert.equal(d.header,0);
+ const r=extractImportRows(s,d.header,d.mapping);assert.deepEqual(r.map(x=>x.name),['Leg Press','Hip Thrust']);
+ assert.deepEqual(r.map(x=>[x.sets,x.reps]),[['3','8'],['4','10']]);r.forEach(x=>assert.doesNotThrow(()=>importRowItem(x)));
+});

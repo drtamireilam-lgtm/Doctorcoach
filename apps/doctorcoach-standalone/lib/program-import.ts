@@ -15,6 +15,11 @@ export type ImportRow={sourceSheet?:string;sourceKey?:string;row:number;name:str
 export type ImportOptions={lastRow?:number;weekColumn?:number;targetRpe?:string;catalog?:Exercise[]};
 const normalize=(s:string)=>s.trim().toLowerCase().replace(/[’'".,()]/g,'').replace(/[_-]/g,' ').replace(/\s+/g,' ');
 const aliases:Record<ImportField,string[]>={warmupSets:['warmup sets','warm up sets','warmup weight x reps','warmup weight/reps','חימום משקל חזרות','סטי חימום','סטים לחימום'],weightUnit:['weight unit','load unit','mass unit','יחידת משקל'],loadBasis:['load basis','weight basis','basis','אופן מדידת המשקל'],side:['side','צד'],exercise:['exercise','exercise name','movement','תרגיל','שם תרגיל','שם התנועה','תרגילים'],sets:['sets','סטים','מספר סטים'],reps:['reps','repetitions','חזרות','מספר חזרות'],weight:['weight','load','משקל','משקל עבודה','משקל פתיחה','משקל לעדכון'],rpe:['rpe','target rpe','מאמץ'],rir:['rir','target rir'],tempo:['tempo','טמפו'],notes:['notes','note','הערה','הערות','הנחיות','דגשים'],day:['day','workout','יום','אימון','יום אימון'],section:['section','חלק בתוכנית','קטגוריה'],unit:['unit','units','יחידת מידה']};
+/** Literal table-header evidence for CSV dialect selection; no exercise guessing. */
+export function scoreImportHeader(values:readonly string[]){
+ const fields=(['exercise','sets','reps'] as const).filter(field=>values.some(value=>aliases[field].includes(normalize(value))));
+ return fields.length<2?0:fields.reduce((score,field)=>score+(field==='exercise'?4:2),0);
+}
 export const massUnit=(raw:string):'kg'|'lb'|undefined=>/^(kg|kgs|kilograms?|ק[״"']?ג|קילוגרם)$/i.test(raw.trim())?'kg':/^(lb|lbs|pounds?|פאונד|ליברות)$/i.test(raw.trim())?'lb':undefined;
 export function detectImportColumns(sheet:ExcelSheet,headerLimit=30){let best={header:0,mapping:{} as ColumnMapping,score:0,issues:[] as string[]};const nameCache=new Map<string,boolean>();const recognized=(v:string)=>{if(!/[a-zא-ת]/i.test(v))return false;if(!nameCache.has(v))nameCache.set(v,!!matchImportExercise(v));return nameCache.get(v)!;};
  for(let header=0;header<Math.min(sheet.rows.length,headerLimit);header++){
@@ -31,7 +36,9 @@ export function detectImportColumns(sheet:ExcelSheet,headerLimit=30){let best={h
   }
   if(mapping.exercise!==undefined){const values=data.map(r=>r[mapping.exercise!]?.value?.trim()).filter((v):v is string=>!!v);if(values.length&&values.every(v=>/^\d+(?:[.,]\d+)?$/.test(v))){delete mapping.exercise;issues.push('עמודת התרגיל מכילה מספרים. בחרו את עמודת השם.');}}
   const score=(mapping.exercise!==undefined?4:0)+(mapping.sets!==undefined?2:0)+(mapping.reps!==undefined?2:0);
-  if(score>best.score||(score===best.score&&issues.length&&best.issues.length===0))best={header,mapping,score,issues};
+  // Keep the first plausible program table. Later blocks are parsed in place;
+  // choosing a wider or more ambiguous later header silently discards earlier exercises.
+  if(best.score<6&&score>best.score)best={header,mapping,score,issues};
  }return best;
 }
 export function importTableEnd(sheet:ExcelSheet,header:number,mapping:ColumnMapping){
@@ -113,7 +120,7 @@ export function extractImportRows(sheet:ExcelSheet,header:number,mapping:ColumnM
   }
   const value=(f:ImportField)=>activeMapping[f]===undefined?'':(cells[activeMapping[f]!]?.value??'').trim();const name=value('exercise');
   if(!name&&!cells.some(c=>c?.value||c?.formula))continue;
-  if(name&&!value('sets')&&!value('reps')&&cells.filter(c=>c?.value).length===1&&!cells.some(c=>c?.formula)){const heading=sectionOf(name);if(heading){activeSection=heading;continue;}if(/^(?:[A-G]|(?:day|workout|יום|אימון)\s*[A-Gא-ת1-7])$/i.test(name)){sourceDay=name;activeSection='main';continue;}}
+  if(name&&!value('sets')&&!value('reps')&&cells.filter(c=>c?.value).length===1&&!cells.some(c=>c?.formula)){const heading=sectionOf(name);if(heading){activeSection=heading;continue;}if(/^(?:[A-G]|(?:day|workout|יום|אימון)\s*[A-Gא-ת1-7](?:\s*[:–—-]\s*\S.{0,159})?)$/i.test(name)){sourceDay=name;activeSection='main';continue;}}
   const explicitDay=value('day');if(explicitDay&&explicitDay!==sourceDay){sourceDay=explicitDay;activeSection='main';}
   const day=explicitDay||sourceDay;const issues:string[]=[...mappingIssues];
   for(const field of importFields){if(activeMapping[field]!==undefined)continue;const duplicates=activeHeader.filter(cell=>aliases[field].includes(normalize(cell?.value??''))).length;if(duplicates>1)issues.push('מיפוי '+field+': כותרות כפולות. בחרו עמודה או הזינו ובדקו את הערכים ידנית.');}
