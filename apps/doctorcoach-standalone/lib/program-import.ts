@@ -58,8 +58,8 @@ export function importWeeks(sheet:ExcelSheet,header:number){
  return (sheet.rows[header]??[]).map((c,column)=>({label:c?.value??'',column})).filter(w=>/\bweek\s*\d+|שבוע\s*\d+/i.test(w.label));
 }
 export function weekTarget(label:string){const m=/\(?\s*\*\s*(\d+(?:\.\d+)?)\s*\)?/.exec(label);if(!m)return '';try{parseRpe(Number(m[1]));return m[1];}catch{return '';}}
-export function matchImportExercise(name:string,catalog:Exercise[]=exercises){return matchExerciseForImport(name,catalog).exerciseId;}
-export function suggestImportExercises(name:string,catalog:Exercise[]=exercises){return matchExerciseForImport(name,catalog).candidates.slice(0,3).map(c=>catalog.find(e=>e.id===c.exerciseId)).filter((e):e is Exercise=>!!e);}
+export function matchImportExercise(name:string,catalog:Exercise[]=exercises){return matchExerciseForImport(name,catalog,{allowGeneralMovement:true}).exerciseId;}
+export function suggestImportExercises(name:string,catalog:Exercise[]=exercises){return matchExerciseForImport(name,catalog,{allowGeneralMovement:true}).candidates.slice(0,3).map(c=>catalog.find(e=>e.id===c.exerciseId)).filter((e):e is Exercise=>!!e);}
 const sectionOf=(text:string):WorkoutSection|undefined=>{
  const n=normalize(text);
  if(/^(warm ?up|preparation|mobility|חימום|הכנה|מוביליטי|ניידות)$/.test(n))return 'warmup';
@@ -132,7 +132,7 @@ export function extractImportRows(sheet:ExcelSheet,header:number,mapping:ColumnM
   if(importFields.some(f=>f!=='reps'&&activeMapping[f]!==undefined&&cells[activeMapping[f]!]?.dateConverted))issues.push('Excel שמר תא כתאריך בעמודה שאינה חזרות. יש לבדוק ולהזין את הערך ידנית.');
   const part=value('section');let section:WorkoutSection=activeSection;if(part){const parsedSection=sectionOf(part);if(parsedSection)section=parsedSection;else issues.push('חלק בתוכנית אינו מוכר. יש לבחור בעורך.');}
   const rawUnit=value('unit');const sourceUnit=({'חזרות':'reps','שניות':'seconds','דקות':'minutes'} as Record<string,string>)[rawUnit]??rawUnit;
-  const match=matchExerciseForImport(name,options.catalog);const matched=(options.catalog??exercises).find(e=>e.id===match.exerciseId);if(!part&&activeSection==='main'&&matched?.kind==='מתיחה')section='stretch';
+  const match=matchExerciseForImport(name,options.catalog,{allowGeneralMovement:true});const matched=(options.catalog??exercises).find(e=>e.id===match.exerciseId);if(!part&&activeSection==='main'&&matched?.kind==='מתיחה')section='stretch';
   const weightUnit=massUnit(value('weightUnit')||((activeHeader[activeMapping.weight??-1]?.value??'').match(/(?:kg|lbs?|ק[״\"']?ג|פאונד)/i)?.[0]??''))||value('weightUnit');
   const dose=parseDose(value('sets'),value('reps'),sourceUnit,value('side'),issues);const warmupSets=parseWarmups(value('warmupSets'),issues,value('weight'),weightUnit);
   const context=activeHeader.flatMap((cell,column)=>/^(קבוצה|קבוצת שרירים|muscle group|group|משקל נראה בתמונה)$/i.test(cell.value.trim())&&cells[column]?.value?[`${cell.value}: ${cells[column].value}`]:[]);
@@ -162,7 +162,7 @@ function rowToItem(row:ImportRow,catalog:Exercise[]=exercises):PlanItem{
 }
 export function finalizeImport(rows:ImportRow[],catalog:Exercise[]=exercises){return parseAssignedItems(rows.filter(r=>!r.ignored).map(r=>({...importRowItem(r,catalog),occurrenceId:`import:${r.sourceKey??r.row}`})),catalog.filter(e=>customId(e.id)) as CustomExercise[]);}
 
-export function matchExerciseForRow(name:string,catalog:Exercise[]=exercises){const match=matchExerciseForImport(name,catalog);return {exerciseId:match.exerciseId,matchStatus:match.status,matchConfidence:match.confidence,matchConfirmed:false};}
+export function matchExerciseForRow(name:string,catalog:Exercise[]=exercises){const match=matchExerciseForImport(name,catalog,{allowGeneralMovement:true});return {exerciseId:match.exerciseId,matchStatus:match.status,matchConfidence:match.confidence,matchConfirmed:false};}
 export function duplicateImportRowNumbers(rows:ImportRow[]){const seen=new Map<string,number>(),duplicates=new Set<number>();for(const row of rows.filter(r=>!r.ignored)){const key=JSON.stringify([row.dayId,row.exerciseId||normalize(row.name),row.sets,row.reps,row.weight,row.weightUnit??'',row.loadBasis??'',row.rpe,row.rir,row.section,row.tempo,row.notes]);const old=seen.get(key);if(old!==undefined){duplicates.add(old);duplicates.add(row.row);}else seen.set(key,row.row);}return [...duplicates];}
 
 /** Combine explicitly selected worksheets without losing their source coordinates.

@@ -17,10 +17,12 @@ test('every curated alias references a real exercise and can be found in search'
  for(const [id,names] of Object.entries(exerciseAliases)){assert.ok(exercises.some(e=>e.id===id));for(const name of names)assert.ok(searchExerciseNames(exercises,name).some(e=>e.id===id),name);}
  for(const [name,id] of [['Pec Deck','chest-fly'],['RDL','rdl'],['RFESS','bulgarian-split-squat'],['Hex Bar Deadlift','trap-bar-deadlift'],['קרוס אובר','cable-fly'],['Scott Curl','preacher-curl']])assert.equal(matchImportExercise(name),id);
 });
-test('ambiguous alias never silently assigns a variant; suggestions include both matches',()=>{
- for(const name of ['Leg Curl','Hamstring Curl','כפיפת ברך','Bench Press']){assert.equal(matchImportExercise(name),'');const exact=exactExerciseNameMatches(exercises,name);assert.equal(exact.length,2);const suggested=suggestImportExercises(name);for(const e of exact)assert.ok(suggested.some(x=>x.id===e.id));}
+test('generic names import general movements while explicit variants remain selectable',()=>{
+ for(const [name,id] of [['Leg Curl','movement-leg-curl'],['Hamstring Curl','movement-leg-curl'],['כפיפת ברך','movement-leg-curl'],['Bench Press','movement-chest-press']]){
+  assert.equal(matchImportExercise(name),id);assert.ok(exactExerciseNameMatches(exercises,name).length>=2);assert.equal(suggestImportExercises(name)[0].id,id);
+ }
  assert.equal(matchImportExercise('Seated Hamstring Curl'),'seated-curl');assert.equal(matchImportExercise('Prone Leg Curl'),'lying-curl');
- const cell=value=>({value,formula:false});const sheet={name:'A',rows:[['Exercise','Sets','Reps','RPE'].map(cell),['Leg Curl','3','6-8','8'].map(cell)]};const d=detectImportColumns(sheet);const rows=extractImportRows(sheet,d.header,d.mapping);assert.equal(rows[0].exerciseId,'');assert.throws(()=>finalizeImport(rows));rows[0].exerciseId='seated-curl';assert.equal(finalizeImport(rows)[0].repsMax,8);
+ const cell=value=>({value,formula:false});const sheet={name:'A',rows:[['Exercise','Sets','Reps','RPE'].map(cell),['Leg Curl','3','6-8','8'].map(cell)]};const d=detectImportColumns(sheet);const rows=extractImportRows(sheet,d.header,d.mapping);assert.equal(rows[0].exerciseId,'movement-leg-curl');assert.equal(finalizeImport(rows)[0].repsMax,8);
 });
 test('library aliases respect category, favorites and video filters',()=>{
  const f={search:'Pec Deck',area:'all',kind:'all',level:'all',favoritesOnly:false,favorites:[],videosOnly:false,demoIds:null,category:'exercise'};

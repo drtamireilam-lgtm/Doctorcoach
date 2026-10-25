@@ -35,19 +35,25 @@ function similarity(a:string,b:string){
 }
 const empty=():ExerciseImportMatch=>({exerciseId:'',status:'unmatched',confidence:0,candidates:[]});
 /** Import-only index; exact verified equivalence can assign, fuzzy results cannot. */
-export function matchExerciseForImport(name:string,catalog:readonly NamedExercise[]=exercises):ExerciseImportMatch{
+export function matchExerciseForImport(name:string,catalog:readonly NamedExercise[]=exercises,options:{allowGeneralMovement?:boolean}={}):ExerciseImportMatch{
  const key=normalizeImportExerciseName(name);if(!key||key.length>240)return empty();
- const index=indexFor(catalog),entries=index.names.get(key);
+ const index=indexFor(catalog),rawEntries=index.names.get(key);
+ const eligible=rawEntries?.filter(e=>options.allowGeneralMovement||!e.exerciseId.startsWith('movement-'));
+ const entries=eligible?.length?eligible:undefined;
  if(entries){
-  const ids=[...new Set(entries.map(e=>e.exerciseId))];
+  // A literal general movement takes precedence only in the opted-in program
+  // import policy. Explicit equipment/angle names do not match these keys.
+  const general=options.allowGeneralMovement?entries.filter(e=>e.exerciseId.startsWith('movement-')):[];
+  const preferred=general.length?general:entries;
+  const ids=[...new Set(preferred.map(e=>e.exerciseId))];
   const candidates=ids.slice(0,3).map(exerciseId=>({exerciseId,score:1,reason:ids.length>1?'Name identifies multiple catalog variants':'Verified catalog name or alias'}));
   if(ids.length>1)return {exerciseId:'',status:'ambiguous',confidence:0,candidates};
-  const literal=entries.find(e=>e.source.trim().toLowerCase()===name.trim().toLowerCase());
+  const literal=preferred.find(e=>e.source.trim().toLowerCase()===name.trim().toLowerCase());
   return {exerciseId:ids[0],status:literal?(literal.canonical?'exact':'alias'):'normalized',confidence:1,candidates};
  }
  // Spelling similarity is evidence for review only, even at a very high score.
  const scores=new Map<string,number>();
- for(const candidateKey of index.keys){const words=key.split(' '),candidateWords=candidateKey.split(' ');const contained=words.length>=2&&words.every(w=>candidateWords.includes(w));const score=Math.max(similarity(key,candidateKey),contained?.74:0);if(score<.72)continue;for(const entry of index.names.get(candidateKey)??[])scores.set(entry.exerciseId,Math.max(scores.get(entry.exerciseId)??0,score));}
+ for(const candidateKey of index.keys){const words=key.split(' '),candidateWords=candidateKey.split(' ');const contained=words.length>=2&&words.every(w=>candidateWords.includes(w));const score=Math.max(similarity(key,candidateKey),contained?.74:0);if(score<.72)continue;for(const entry of index.names.get(candidateKey)??[])if(options.allowGeneralMovement||!entry.exerciseId.startsWith('movement-'))scores.set(entry.exerciseId,Math.max(scores.get(entry.exerciseId)??0,score));}
  const candidates=[...scores].sort((a,b)=>b[1]-a[1]||a[0].localeCompare(b[0])).slice(0,3).map(([exerciseId,score])=>({exerciseId,score,reason:'Similar spelling; verify equipment, angle and side manually'}));
  return candidates.length?{exerciseId:'',status:'suggested',confidence:candidates[0].score,candidates}:empty();
 }
