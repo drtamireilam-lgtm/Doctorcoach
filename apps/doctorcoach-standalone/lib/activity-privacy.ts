@@ -4,7 +4,7 @@ import type {StaffIdentity} from './staff.ts';
 export async function activityPrivacy(db:D1Database,user:StaffIdentity,owner:string){
  const store=activityStore(db),scopes=await store.sharedScopes(user,owner);
  function clean(value:unknown):unknown{
-  if(Array.isArray(value))return value.filter(v=>{if(!v||typeof v!=='object'||scopes.cardio)return true;if('exerciseId' in v&&String(v.exerciseId).startsWith('cardio:'))return false;if('items' in v&&'status' in v&&Array.isArray(v.items)&&v.items.length&&v.items.every(i=>i&&typeof i==='object'&&'exerciseId' in i&&String(i.exerciseId).startsWith('cardio:')))return false;return true;}).map(clean);
+  if(Array.isArray(value))return value.filter(v=>{if(!v||typeof v!=='object'||scopes.cardio)return true;if('exerciseId' in v&&String(v.exerciseId).startsWith('cardio:'))return false;if('items' in v&&'status' in v&&Array.isArray(v.items)&&v.items.length&&v.items.every((i:unknown)=>i&&typeof i==='object'&&'exerciseId' in i&&String(i.exerciseId).startsWith('cardio:')))return false;return true;}).map(clean);
   if(!value||typeof value!=='object')return value;
   const result:Record<string,unknown>={};for(const [key,v] of Object.entries(value)){if(user.userId!==owner&&['actionPayloads','actionIds'].includes(key))continue;if(!scopes.heartRate&&/heart.?rate/i.test(key))continue;if(!scopes.cardio&&key==='finishFeedback'&&'items' in value&&Array.isArray(value.items)&&value.items.some(i=>i?.exerciseId?.startsWith('cardio:')))continue;result[key]=clean(v);}
   if(!scopes.cardio&&Array.isArray(result.history)&&result.stats&&typeof result.stats==='object'){

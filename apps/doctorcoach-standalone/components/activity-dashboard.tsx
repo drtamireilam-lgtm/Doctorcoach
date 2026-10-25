@@ -1,0 +1,71 @@
+'use client';
+import {useCallback,useEffect,useRef,useState,useSyncExternalStore} from 'react';
+import type {ActivityFeed} from '../lib/activity';
+import {invalidateNativeActivity,nativeActivityRequest,nativeActivityTransport} from '../lib/native-activity-client';
+import {useLanguage} from './language-provider';
+
+const subscribeNativeAvailability=()=>()=>{};
+async function activityRequest(body?:unknown,clientId?:string,signal?:AbortSignal):Promise<ActivityFeed>{
+ const response=await fetch('/api/activity'+(clientId?'?clientId='+encodeURIComponent(clientId):''),{method:body?'POST':'GET',headers:body?{'Content-Type':'application/json'}:undefined,body:body?JSON.stringify(body):undefined,cache:'no-store',signal});
+ const result=await response.json().catch(()=>null) as (ActivityFeed&{error?:string})|null;if(!response.ok||!result)throw new Error(result?.error??'Activity data is unavailable.');return result;
+}
+const nativeLabels:Record<string,[string,string]>={unavailable:['פלטפורמת הבריאות אינה זמינה','Health platform unavailable'],'permission-required':['נדרשת הרשאה בהגדרות הבריאות','Health permission required'],'no-readable-data':['לא התקבלו נתונים קריאים; בדקו הרשאות ומקורות','No readable data; check permissions and sources'],error:['הסנכרון לא הצליח','Sync failed'],connected:['מחובר','Connected'],no_readable_data:['לא התקבלו נתונים','No readable data'],disconnected:['מנותק','Disconnected'],awaiting_permission:['ממתין להרשאה','Awaiting permission'],awaiting_native_permission:['ממתין להרשאת המכשיר','Awaiting device permission'],not_connected:['לא מחובר','Not connected']};
+
+export function ActivityDashboard({clientId,expanded=false}:{clientId?:string;expanded?:boolean}){
+ const {language}=useLanguage(),en=language==='en',t=(he:string,english:string)=>en?english:he;
+ const [feed,setFeed]=useState<ActivityFeed|null>(null),[error,setError]=useState(''),[busy,setBusy]=useState(false),[nativeState,setNativeState]=useState(''),[consent,setConsent]=useState(false);
+ const nativeAvailable=useSyncExternalStore(subscribeNativeAvailability,()=>!!nativeActivityTransport(),()=>false);
+ const current=useRef<ActivityFeed|null>(null),alive=useRef(true),lock=useRef(false),abort=useRef<AbortController|null>(null);
+ const accept=useCallback((next:ActivityFeed)=>{if(!alive.current)return;if(current.current&&current.current.accountScope!==next.accountScope)invalidateNativeActivity(current.current.accountScope);current.current=next;setFeed(next);},[]);
+ const reload=useCallback(async()=>{try{accept(await activityRequest(undefined,clientId));setError('');}catch(e){if(alive.current)setError((e as Error).message);}},[accept,clientId]);
+ const mutate=async(body:Record<string,unknown>)=>{
+  if(lock.current||!current.current)return false;lock.current=true;setBusy(true);setError('');
+  try{accept(await activityRequest({...body,...(clientId&&body.action==='goal'?{clientId}:{}),accountScope:current.current.accountScope}));return true;}catch(e){if(alive.current)setError((e as Error).message);return false;}finally{lock.current=false;if(alive.current)setBusy(false);}
+ };
+ const synchronize=useCallback(async(connect=false)=>{
+  const saved=current.current;if(!saved||clientId||lock.current||!nativeActivityTransport()||!connect&&(!saved.connection||saved.connection.status==='disconnected'))return;
+  lock.current=true;setBusy(true);setError('');abort.current?.abort();const controller=new AbortController();abort.current=controller;
+  try{
+   const fresh=await activityRequest(undefined,undefined,controller.signal);if(fresh.accountScope!==saved.accountScope){invalidateNativeActivity(saved.accountScope);accept(fresh);return;}
+   await nativeActivityRequest({command:'bind',accountScope:fresh.accountScope},undefined,window,60000,controller.signal);
+   const result=await nativeActivityRequest({command:connect?'connect':'sync',accountScope:fresh.accountScope,connection:fresh.connection?{id:fresh.connection.id,generation:fresh.connection.generation}:undefined,revision:(fresh.connection?.revision??0)+1},undefined,window,60000,controller.signal);
+   if(!alive.current||controller.signal.aborted)return;setNativeState(result.status);
+   if(!['ok','no-readable-data'].includes(result.status))return;
+   let connected=fresh;
+   if(connect){if(!result.platform)throw new Error('Health platform did not return its identity.');connected=await activityRequest({action:'connect',accountScope:fresh.accountScope,platform:result.platform,timezone:Intl.DateTimeFormat().resolvedOptions().timeZone,consent:true},undefined,controller.signal);accept(connected);}
+   if(!connected.connection)return;
+   if(result.days?.length){const updated=await activityRequest({action:'sync',accountScope:connected.accountScope,connectionId:connected.connection.id,generation:connected.connection.generation,revision:connected.connection.revision+1,timezone:Intl.DateTimeFormat().resolvedOptions().timeZone,days:result.days},undefined,controller.signal);accept(updated);}else accept(connected);
+  }catch(e){if(!controller.signal.aborted&&alive.current){setError((e as Error).message);setNativeState('error');}}
+  finally{lock.current=false;if(alive.current)setBusy(false);}
+ },[accept,clientId]);
+ useEffect(()=>{alive.current=true;const timer=setTimeout(()=>void reload(),0);return()=>{clearTimeout(timer);alive.current=false;abort.current?.abort();if(current.current)invalidateNativeActivity(current.current.accountScope);};},[reload]);
+ const scope=feed?.accountScope,connectionId=feed?.connection?.id;
+ useEffect(()=>{if(scope&&connectionId&&!clientId){const timer=setTimeout(()=>void synchronize(),0);return()=>clearTimeout(timer);}},[scope,connectionId,clientId,synchronize]);
+ useEffect(()=>{if(clientId)return;const open=()=>{if(document.visibilityState==='visible')void synchronize();};const timer=setInterval(open,300000);document.addEventListener('visibilitychange',open);return()=>{clearInterval(timer);document.removeEventListener('visibilitychange',open);};},[clientId,synchronize]);
+ const status=nativeState&&nativeState!=='ok'?nativeState:feed?.connection?.status??'not_connected',label=nativeLabels[status]?.[en?1:0]??status,steps=feed?.summary.today??null,target=feed?.goal?.dailyTarget??null;
+ const display=(n:number|null)=>n===null?'—':new Intl.NumberFormat(en?'en-US':'he-IL').format(n);
+ const days=feed?.days.slice().sort((a,b)=>b.date.localeCompare(a.date))??[];
+ return <section className="panel activity-card" data-no-translate dir={en?'ltr':'rtl'} aria-label={t('צעדים ופעילות יומית','Steps and daily activity')}>
+  <div className="section-heading compact"><h2>{t('הצעדים שלך','Your steps')}</h2><span className="care-pill" role="status">{label}</span></div>
+  <div className="activity-step-total"><strong>{display(steps)}</strong><span>{target!==null?` / ${display(target)}`:t(' ללא יעד שנקבע',' No goal set')}</span></div>
+  {steps!==null&&target!==null&&<><progress max={target} value={Math.min(steps,target)} aria-label={t('התקדמות ליעד הצעדים','Step goal progress')}/><p>{Math.round(steps/target*100)}% {t('מהיעד האישי','of your personal goal')}</p></>}
+  <p>{t('ממוצע בשבעת הימים האחרונים','Average over the last seven days')}: {display(feed?.summary.weeklyAverage??null)} · {feed?.summary.observedDays??0} {t('ימים עם נתונים','days with data')}{feed?.goal?.weeklyTarget!=null?` · ${t('יעד ממוצע','Average target')}: ${display(feed.goal.weeklyTarget)}`:''}</p>
+  <p className="care-muted">{t('הממוצע משתמש רק בימים עם נתונים ועשוי לכלול את היום החלקי. נתונים חסרים אינם אפס.','The average uses observed days only and may include today’s partial data. Missing data is not zero.')}</p>
+  <small>{t('סנכרון מוצלח אחרון','Last successful sync')}: {feed?.connection?.lastSyncAt?new Date(feed.connection.lastSyncAt).toLocaleString(en?'en-US':'he-IL'):'—'}</small>
+  {feed?.connection&&<p className="care-muted">{feed.connection.platform==='healthkit'?'Apple Health':'Health Connect'} · {feed.connection.timezone}</p>}
+  {clientId&&feed&&<ActivityGoals key={feed.goal?.version??0} feed={feed} busy={busy} onSave={mutate}/>}
+  {days.some(d=>d.boundaryChange)&&<p className="care-muted">{t('אזור הזמן השתנה. חלונות יום חופפים אינם מחוברים לסכום אחד.','Timezone changed. Overlapping day windows are not added together.')}</p>}
+  {!clientId&&<details className="activity-settings"><summary>{t('חיבור, יעד ושיתוף','Connection, goals and sharing')}</summary>
+   {!nativeAvailable&&<p>{t('סנכרון אוטומטי דורש את אפליקציית DoctorCoach למכשיר תומך. גרסת הדפדפן אינה יכולה לקרוא Apple Health או Health Connect.','Automatic sync requires the DoctorCoach mobile app on a supported device. The browser cannot read Apple Health or Health Connect.')}</p>}
+   <label className="activity-consent"><input type="checkbox" checked={consent} onChange={e=>setConsent(e.target.checked)}/>{t('אני מאשר/ת קריאת סכומי צעדים יומיים בלבד. שיתוף למאמן דורש אישור נפרד.','I authorize reading daily step totals only. Coach sharing requires separate consent.')}</label>
+   <div className="care-actions"><button type="button" className="button primary" disabled={!nativeAvailable||!consent||busy||!feed} onClick={()=>void synchronize(true)}>{t('חיבור פלטפורמת הבריאות','Connect health platform')}</button><button type="button" className="button secondary" disabled={!nativeAvailable||busy||!feed?.connection||feed.connection.status==='disconnected'} onClick={()=>void synchronize()}>{t('סנכרון עכשיו','Sync now')}</button>{feed?.connection&&feed.connection.status!=='disconnected'&&<button type="button" className="text-button danger-text" disabled={busy} onClick={async()=>{const c=current.current?.connection;if(c&&await mutate({action:'disconnect',connectionId:c.id,generation:c.generation})){invalidateNativeActivity(current.current!.accountScope);setNativeState('');}}}>{t('ניתוק מקור הצעדים','Disconnect steps source')}</button>}</div>
+   {feed&&<><ActivityGoals key={feed.goal?.version??0} feed={feed} busy={busy} onSave={mutate}/><ActivitySharing key={JSON.stringify(feed.shares)} feed={feed} busy={busy} onSave={mutate}/></>}
+  </details>}
+  {expanded&&<details open><summary>{t('מגמת 30 יום','30-day trend')}</summary>{!days.length?<p>{t('לא התקבלו נתונים','No data received')}</p>:<div className="table-scroll"><table className="weekly-table"><thead><tr><th>{t('תאריך','Date')}</th><th>{t('צעדים','Steps')}</th><th>{t('כיסוי','Coverage')}</th><th>{t('אזור זמן','Timezone')}</th></tr></thead><tbody>{days.map(d=><tr key={d.date+':'+d.timezone}><td>{d.date}</td><td>{display(d.steps)}</td><td>{d.partial?t('חלקי','Partial'):t('יום מלא','Full day')}</td><td>{d.timezone}</td></tr>)}</tbody></table></div>}</details>}
+  {error&&<p className="care-error" role="alert">{en?error:'לא ניתן להשלים את הפעולה. בדקו את החיבור, ההרשאות והערכים, ורעננו לפני ניסיון נוסף.'}</p>}<button type="button" className="text-button" disabled={busy} onClick={()=>void reload()}>{t('רענון נתונים','Refresh data')}</button>
+ </section>;
+}
+
+function ActivityGoals({feed,busy,onSave}:{feed:ActivityFeed;busy:boolean;onSave:(body:Record<string,unknown>)=>Promise<boolean>}){const {language}=useLanguage(),en=language==='en';const [daily,setDaily]=useState(feed.goal?.dailyTarget?.toString()??''),[weekly,setWeekly]=useState(feed.goal?.weeklyTarget?.toString()??'');return <div className="care-form activity-goals"><h3>{en?'Personal activity goal':'יעד פעילות אישי'}</h3><p>{en?'Choose a goal suited to your plan with professional guidance when needed. No automatic increases.':'בחרו יעד המתאים לתוכנית שלכם, בהכוונה מקצועית לפי הצורך. אין העלאה אוטומטית של היעד.'}</p><div className="cardio-fields"><label>{en?'Daily steps target (optional)':'יעד צעדים יומי (רשות)'}<input type="number" min={1} max={1000000} step={1} value={daily} onChange={e=>setDaily(e.target.value)}/></label><label>{en?'Weekly average target (optional)':'יעד ממוצע שבועי (רשות)'}<input type="number" min={1} max={1000000} step={1} value={weekly} onChange={e=>setWeekly(e.target.value)}/></label></div><button type="button" className="button secondary" disabled={busy} onClick={()=>void onSave({action:'goal',dailyTarget:daily===''?null:Number(daily),weeklyTarget:weekly===''?null:Number(weekly),version:feed.goal?.version??0})}>{en?'Save goal':'שמירת יעד'}</button></div>;}
+
+function ActivitySharing({feed,busy,onSave}:{feed:ActivityFeed;busy:boolean;onSave:(body:Record<string,unknown>)=>Promise<boolean>}){const {language}=useLanguage(),en=language==='en';const [email,setEmail]=useState(''),[steps,setSteps]=useState(false),[cardio,setCardio]=useState(false),[heartRate,setHeartRate]=useState(false);return <div className="care-form activity-sharing"><h3>{en?'Explicit coach sharing':'שיתוף מפורש למאמן'}</h3><p>{en?'Only an existing authorized coach can receive the scopes you select. Heart rate needs its own permission.':'רק מאמן מורשה שמקושר אליכם יכול לקבל את התחומים שבחרתם. דופק דורש הרשאה נפרדת.'}</p>{feed.shares.map(share=><div className="care-row" key={share.coachEmail}><span>{share.coachEmail} · {share.steps?(en?'steps ':'צעדים '):''}{share.cardio?(en?'cardio ':'אירובי '):''}{share.heartRate?(en?'heart rate':'דופק'):''}</span><button type="button" className="text-button danger-text" disabled={busy} onClick={()=>void onSave({action:'share',coachEmail:share.coachEmail,steps:false,cardio:false,heartRate:false,version:share.version})}>{en?'Revoke':'ביטול שיתוף'}</button></div>)}<label>{en?'Coach account email':'כתובת חשבון המאמן'}<input type="email" autoComplete="off" value={email} onChange={e=>setEmail(e.target.value)}/></label><div className="activity-scope-options">{[['steps',steps,setSteps,en?'Steps':'צעדים'],['cardio',cardio,setCardio,en?'Cardio summaries':'סיכומי אירובי'],['heart',heartRate,setHeartRate,en?'Heart rate':'דופק']].map(([key,checked,set,label])=><label key={String(key)}><input type="checkbox" checked={checked as boolean} onChange={e=>(set as (v:boolean)=>void)(e.target.checked)}/>{label as string}</label>)}</div><button type="button" className="button secondary" disabled={busy||!email||!steps&&!cardio&&!heartRate} onClick={()=>void onSave({action:'share',coachEmail:email,steps,cardio,heartRate,version:feed.shares.find(s=>s.coachEmail.toLowerCase()===email.trim().toLowerCase())?.version??0})}>{en?'Save sharing permissions':'שמירת הרשאות שיתוף'}</button></div>;}

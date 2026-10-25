@@ -1,4 +1,5 @@
 'use client';
+import {ActivityDashboard} from './activity-dashboard';
 import {Localize} from "../components/language-provider";
 import type {TrainingController} from '../hooks/use-training';
 
@@ -13,6 +14,6 @@ export function TraineeToday({controller,blocked,go}:{controller:TrainingControl
    <p>{active?`${active.completedSets} מתוך ${active.plannedSets} סטים סומנו.`:blocked?'אפשר לפנות לצוות ולעדכן איך מרגישים.':canTrain?'לפני שמתחילים אפשר לדווח על כאב, שינה ואנרגיה.':controller.access?.canBuild?'אפשר לבנות תוכנית במסלול העצמאי שלך.':'התוכנית שנדב יקצה לך תופיע כאן.'}</p>
    <button className="button primary wide" onClick={()=>go(blocked?'messages':'plan')}>{blocked?'להודעות לצוות':active?'להמשך האימון מתוך התוכנית':'לתוכנית שלי'}</button>
   </section>
-  <p className="care-muted">{controller.feed.stats.week} אימונים הושלמו בשבעת הימים האחרונים. <button className="text-button" onClick={()=>go('history')}>לצפייה בהתקדמות</button></p>
+  {controller.auth==='ready'&&<ActivityDashboard/>}<p className="care-muted">{controller.feed.stats.week} אימונים הושלמו בשבעת הימים האחרונים. <button className="text-button" onClick={()=>go('history')}>לצפייה בהתקדמות</button></p>
  </div>}</Localize>;
 }
