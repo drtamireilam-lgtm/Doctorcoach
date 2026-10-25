@@ -29,7 +29,7 @@ export function parseAssignedItems(value:unknown,customs:import('./custom-exerci
   const dayId=isRecord(v)?v.dayId:undefined;
   if(dayId!==undefined&&(typeof dayId!=='string'||!/^[1-7]$/.test(dayId)))throw new TrainingError('בחרו יום אימון בין 1 ל־7.');
   const key=item.occurrenceId;
-  if(!exercises.some(e=>e.id===item.exerciseId)&&!custom)throw new TrainingError('יש לבחור תרגיל מוכר מהספרייה.');
+  if(!item.cardio&&!exercises.some(e=>e.id===item.exerciseId)&&!custom)throw new TrainingError('יש לבחור תרגיל מוכר מהספרייה.');
   if(key!==undefined){if(ids.has(key))throw new TrainingError('מזהה הופעת תרגיל כפול בתוכנית.');ids.add(key);}
   const alternatives=isRecord(v)?v.approvedSubstitutions:undefined;
   if(alternatives!==undefined&&(!Array.isArray(alternatives)||alternatives.length>10||new Set(alternatives).size!==alternatives.length||alternatives.some(id=>typeof id!=='string'||id===item.exerciseId||!exercises.some(e=>e.id===id)||defaultPrescription(id).unit!==item.unit)))throw new TrainingError('בחרו עד 10 חלופות מוכרות ושונות, באותה יחידת מידה וללא כפילויות.');

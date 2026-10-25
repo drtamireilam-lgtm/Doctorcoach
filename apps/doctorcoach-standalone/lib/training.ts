@@ -1,14 +1,16 @@
+import {parseCardioPrescription,isCardioExerciseId,type CardioPrescription} from './cardio.ts';
+import type {CardioExecution} from './cardio-player.ts';
 import type {EffortScale} from './effort.ts';
 import type {CustomExercise} from './custom-exercise-types.ts';
 import {defaultWorkoutSection,workoutSection,type WorkoutSection} from './workout-sections.ts';
 import {duringPain} from './workout-context.ts';
 export type Unit = 'reps' | 'seconds' | 'minutes';
 export type ExerciseTempo={eccentric:number;bottom:number;concentric:number;top:number};
-export type PlanItem = { exerciseId: string; occurrenceId?:string; customExercise?:CustomExercise;sets: number; reps: number; repsMax?:number|null; unit: Unit; weight: number; weightUnspecified?:boolean; notes: string; tempo?:ExerciseTempo|null; targetRpe?: number|null; targetRpes?:(number|null)[]; effortScale?:EffortScale; approvedSubstitutions?:string[]; dayId?:string; workoutSection?:WorkoutSection };
+export type PlanItem = { exerciseId: string; cardio?:CardioPrescription; occurrenceId?:string; customExercise?:CustomExercise;sets: number; reps: number; repsMax?:number|null; unit: Unit; weight: number; weightUnspecified?:boolean; notes: string; tempo?:ExerciseTempo|null; targetRpe?: number|null; targetRpes?:(number|null)[]; effortScale?:EffortScale; approvedSubstitutions?:string[]; dayId?:string; workoutSection?:WorkoutSection };
 export type SetResult = { done: boolean; amount: number; weight: number; actualRpe?: number|null; painDuring?:number|null };
 export type ReadinessSnapshot={id:string;day:string;version:number;capturedAt:string;data:{sleep:number;energy:number;stress:number;note:string}};
 export type WorkoutFollowup={day:string;pain:number;recordedAt:string};
-export type SessionExercise = PlanItem & { name: string; results: SetResult[]; swappedFrom?:string };
+export type SessionExercise = PlanItem & { name: string; cardioResult?:CardioExecution; results: SetResult[]; swappedFrom?:string };
 export type TrainingSession = {
   id: string; planMode?:'legacy'|'self'|'coached'; programId?:string|null; status: 'active' | 'completed' | 'cancelled'; items: SessionExercise[];
   startedAt: string; finishedAt: string | null; before: number; after: number | null;
@@ -37,6 +39,7 @@ export function isScore(value: unknown): value is number {
   return typeof value === 'number' && Number.isInteger(value) && value >= 0 && value <= 10;
 }
 export function defaultPrescription(exerciseId: string): PlanItem {
+  if(isCardioExerciseId(exerciseId))return {exerciseId,sets:1,reps:1,unit:'seconds',weight:0,notes:'',cardio:{activityId:exerciseId.slice(7) as CardioPrescription['activityId'],mode:'steady',targets:{durationSeconds:600}}};
   if(exerciseId==='suitcase-carry')return {exerciseId,sets:2,reps:25,unit:'seconds',weight:0,notes:'זמן לכל צד; יש להחליף יד.',workoutSection:'main'};
   if(exerciseId==='assisted-pull-up')return {exerciseId,sets:2,reps:10,unit:'reps',weight:0,notes:'ציינו כאן את משקל הסיוע במכונה. שדה המשקל מיועד לעומס חיצוני, ולא למשקל הסיוע.',workoutSection:'main'};
   return { exerciseId, sets: exerciseId === 'walk' ? 1 : 2, reps: exerciseId === 'walk' ? 10 : exerciseId === 'balance' ? 25 : 10,
@@ -45,6 +48,8 @@ export function defaultPrescription(exerciseId: string): PlanItem {
 
 export function parsePlanItem(value: unknown, fallback?: PlanItem): PlanItem {
   if (!isRecord(value) || typeof value.exerciseId !== 'string') throw new TrainingError('פרטי התרגיל אינם תקינים.');
+  const cardio=value.cardio===undefined?fallback?.cardio:parseCardioPrescription(value.cardio);
+  if(value.exerciseId.startsWith('cardio:')&&(!cardio||!isCardioExerciseId(value.exerciseId)||value.exerciseId!==`cardio:${cardio.activityId}`)||cardio&&!value.exerciseId.startsWith('cardio:'))throw new TrainingError('פעילות אירובית לא תקינה.');
   const defaults = fallback ?? defaultPrescription(value.exerciseId);
   const unit = value.unit ?? defaults.unit;
   const sets = value.sets ?? defaults.sets;
@@ -81,18 +86,19 @@ export function parsePlanItem(value: unknown, fallback?: PlanItem): PlanItem {
   }
   const occurrenceId=value.occurrenceId??defaults.occurrenceId;
   if(occurrenceId!==undefined&&(typeof occurrenceId!=='string'||!/^[a-zA-Z0-9:_-]{1,160}$/.test(occurrenceId)))throw new TrainingError('מזהה הופעת התרגיל אינו תקין.');
-  return { exerciseId: value.exerciseId,...(occurrenceId===undefined?{}:{occurrenceId}),...(defaults.customExercise?{customExercise:defaults.customExercise}:{}),sets, reps, unit: unit as Unit, weight, notes: notes.trim(), targetRpe, effortScale,workoutSection:workoutSection as WorkoutSection,...(targetRpes?{targetRpes}:{}),...(tempo===undefined?{}:{tempo}),...(repsMax===undefined?{}:{repsMax:repsMax as number|null}),...(weightUnspecified===undefined?{}:{weightUnspecified:weightUnspecified as boolean}) };
+  return { exerciseId: value.exerciseId,...(cardio?{cardio}:{}),...(occurrenceId===undefined?{}:{occurrenceId}),...(defaults.customExercise?{customExercise:defaults.customExercise}:{}),sets, reps, unit: unit as Unit, weight, notes: notes.trim(), targetRpe, effortScale,workoutSection:workoutSection as WorkoutSection,...(targetRpes?{targetRpes}:{}),...(tempo===undefined?{}:{tempo}),...(repsMax===undefined?{}:{repsMax:repsMax as number|null}),...(weightUnspecified===undefined?{}:{weightUnspecified:weightUnspecified as boolean}) };
 }
 
 export const repetitionLabel=(item:Pick<PlanItem,'reps'|'repsMax'>)=>item.repsMax!=null&&item.repsMax!==item.reps?`${item.reps}–${item.repsMax}`:String(item.reps);
 
 export function completion(items: SessionExercise[]) {
-  return items.reduce((sum, item) => sum + item.results.filter(set => set.done).length, 0);
+  return items.reduce((sum, item) => sum + (item.cardio?0:item.results.filter(set => set.done).length), 0);
 }
 
 /** Patch exactly one saved set, never accept arbitrary snapshots from the browser. */
 export function updateSet(items: SessionExercise[], value: Record<string, unknown>): SessionExercise[] {
   const selected=resolveSessionExercise(items,value);
+  if(selected.cardio)throw new TrainingError('יש להשתמש בנגן האירובי.');
   const index = items.indexOf(selected);
   if (index < 0 || !Number.isInteger(value.setIndex) || Number(value.setIndex) < 0 || Number(value.setIndex) >= items[index].results.length) throw new TrainingError('הסט לא נמצא באימון.');
   if (typeof value.done !== 'boolean') throw new TrainingError('יש לציין אם הסט בוצע.');
@@ -127,6 +133,7 @@ export function estimated1RM(weight:number,reps:number):number|null {
   return Math.round((reps===1?weight:weight*(1+reps/30))*10)/10;
 }
 export function nextLoad(item:SessionExercise,session:TrainingSession):{weight:number|null;text:string} {
+  if(item.cardio)return {weight:null,text:'אירובי אינו כולל הצעות משקל.'};
   if(workoutSection(item)!=='main')return {weight:null,text:'הצעת משקל זמינה לתרגילי האימון בלבד, לא לחימום או למתיחות.'};
   const sets=item.results.filter(s=>s.done);
   if(session.before>0||(session.after??0)>0||(duringPain(session.items??[item])??0)>0||(session.followup?.pain??0)>0)return {weight:null,text:'דווח כאב. יש להתייעץ עם הצוות לפני שינוי עומס.'};
