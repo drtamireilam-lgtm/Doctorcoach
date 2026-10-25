@@ -1,3 +1,4 @@
+import {authHref} from './auth-language.ts';
 import hebrew from './locales/he.json';
 import english from './locales/en.json';
 import {stretchTranslations} from './stretch-exercises';
@@ -6,6 +7,10 @@ const normalize = (text: string) => text.trim().replace(/\s+/g, ' ');
 const dictionary = new Map(hebrew.map((text, index) => [normalize(text), english[index]]));
 // New privacy labels are kept explicit instead of partially translating consent text.
 for(const [he,en] of [
+ ['שמירת העיצוב נכשלה. נסו שוב בהגדרות המראה.','Appearance could not be saved. Try again in appearance settings.'],
+ ['העיצוב השתנה בחלון אחר. טענו אותו בהגדרות המראה.','Appearance changed in another window. Reload it in appearance settings.'],
+ ['העיצוב נשמר בחשבון.','Appearance saved to your account.'],
+ ['יש להתחבר לשמירת העיצוב.','Sign in to save your appearance.'],
  ["איך DoctorCoach עובד", "How DoctorCoach Works"],
  ["חימום ומוביליטי", "Warm-up & Mobility"],
  ["האימון המרכזי", "Main workout"],
@@ -590,6 +595,8 @@ export function displayLocale(): string {
   return typeof document !== 'undefined' && document.documentElement.lang === 'en' ? 'en-GB' : 'he-IL';
 }
 export function translateBookingHref(href:string,language:Language):string {
+  const auth=authHref(href,language);
+  if(auth!==href)return auth;
   if(language==='he'||!href.startsWith('https://wa.me/')) return href;
   const url=new URL(href),message=url.searchParams.get('text');
   if(!message) return href;

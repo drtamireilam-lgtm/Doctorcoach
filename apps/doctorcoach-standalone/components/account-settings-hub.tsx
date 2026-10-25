@@ -1,6 +1,7 @@
 'use client';
 import {useState} from 'react';
 import {ArrowLeft,ArrowRight,Bell,Palette,FolderHeart,HelpCircle,ShieldCheck,UserRound,CreditCard,Settings2} from 'lucide-react';
+import {authHref} from '../lib/auth-language';
 import {useLanguage,LanguageToggle} from './language-provider';
 import {AppearancePicker} from './theme-provider';
 import {NotificationSettings} from './notification-settings';
@@ -24,9 +25,9 @@ export function AccountSettingsHub({go,onTour,canAdmin=false}:{go:(section:strin
  {topic==='overview'&&<nav className="compact-menu" aria-label={t('נושאי הגדרות','Settings topics')}>{choices.map(([id,he,en,dh,de,Icon])=><button type="button" key={id} onClick={()=>choose(id)}><Icon size={26} aria-hidden="true"/><span><strong>{english?en:he}</strong><small>{english?de:dh}</small></span><Arrow size={18} aria-hidden="true"/></button>)}</nav>}
  {visited.includes('notifications')&&<div className="settings-topic" hidden={topic!=='notifications'}><NotificationSettings/></div>}
  {visited.includes('appearance')&&<div className="settings-topic panel care-form" hidden={topic!=='appearance'}><h2>{t('השפה שלך','Your language')}</h2><LanguageToggle/><AppearancePicker active={topic==='appearance'}/><p className="care-muted">{t('בחירת השפה נשמרת במכשיר הזה.','Language is saved on this device.')}</p></div>}
- {visited.includes('security')&&<section className="settings-topic panel care-form" hidden={topic!=='security'}><h2>{t('אבטחת החשבון','Account security')}</h2><p>{t('הכניסה מתבצעת דרך ספק הזהות המאובטח. אל תשתפו קודי כניסה עם אחרים.','Sign-in uses the secure identity provider. Never share sign-in codes.')}</p><a className="button secondary" href="/signin-with-chatgpt?return_to=%2F%23settings">{t('פתיחת מסך ההתחברות','Open sign-in')}</a></section>}
+ {visited.includes('security')&&<section className="settings-topic panel care-form" hidden={topic!=='security'}><h2>{t('אבטחת החשבון','Account security')}</h2><p>{t('הכניסה מתבצעת דרך ספק הזהות המאובטח. אל תשתפו קודי כניסה עם אחרים.','Sign-in uses the secure identity provider. Never share sign-in codes.')}</p><a className="button secondary" href={authHref('/signin-with-chatgpt?return_to=%2F%23settings',english?'en':'he')}>{t('פתיחת מסך ההתחברות','Open sign-in')}</a></section>}
  {visited.includes('help')&&<section className="settings-topic panel care-form" hidden={topic!=='help'}><h2>{t('היכרות עם האפליקציה','Find your way around')}</h2><button className="button primary" onClick={onTour}>{t('סיור באפליקציה','App tour')}</button><h2>{t('הוספה למסך הבית','Add to home screen')}</h2><AppInstall/><p className="care-muted">{t('אפשרויות ההתקנה תלויות במכשיר ובדפדפן.','Installation options depend on your device and browser.')}</p><a className="button secondary" href="/coaching">{t('סביבת מאמן והצטרפות למאמן','Coach workspace and joining a coach')}</a><button className="text-button" onClick={()=>go('contact')}>{t('יצירת קשר ותמיכה','Contact & support')}<Arrow size={16}/></button></section>}
  {visited.includes('admin')&&canAdmin&&<div className="settings-topic care-stack" hidden={topic!=='admin'}><DocumentRetention manage expanded/><BillingSandbox/></div>}
- <a className="button secondary settings-signout" href="/signout-with-chatgpt?return_to=%2F" target="_top">{t('התנתקות','Sign out')}</a>
+ <a className="button secondary settings-signout" href={authHref('/signout-with-chatgpt?return_to=%2F',english?'en':'he')} target="_top">{t('התנתקות','Sign out')}</a>
  {topic==='overview'&&<details className="panel browse-advanced"><summary>{t('בקשת מחיקת חשבון ונתונים','Request account and data deletion')}</summary><p>{t('פתחו את תהליך בקשת המחיקה כדי לעיין בפרטים ולהגיש בקשה.','Open the deletion request process to review the details and submit a request.')}</p><a className="button secondary" href="/account-deletion">{t('לתהליך בקשת המחיקה','Open deletion request process')}</a></details>}</section>;
 }

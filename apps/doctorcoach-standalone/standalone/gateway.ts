@@ -1,3 +1,4 @@
+import {returnWithLanguage} from '../lib/auth-language.ts';
 import {authStore,type AuthSettings} from './auth-store.ts';
 import {AuthFailure,type AuthProvider} from './provider.ts';
 import {authPage} from './page.ts';
@@ -19,8 +20,8 @@ export function authGateway(db:D1Database,provider:AuthProvider,settings:AuthSet
   if(url.origin!==origin)return reply(421,{error:'Wrong application origin'});
   if(url.pathname.startsWith('/api/')&&!['GET','HEAD','OPTIONS'].includes(req.method)&&req.headers.get('origin')!==origin)return reply(403,{error:'Same-origin mutation required'});
   if(url.pathname==='/mcp')return reply(503,{error:'Standalone MCP OAuth is not configured'});
-  if(['/signin-with-chatgpt','/signout-with-chatgpt'].includes(url.pathname)){const target=url.pathname.startsWith('/signout')?'/auth/signout':'/auth/signin';return Response.redirect(origin+target+'?return_to='+encodeURIComponent(safeReturn(url.searchParams.get('return_to'))),303);}
-  if(req.method==='GET'&&['/auth/signin','/auth/signout'].includes(url.pathname))return authPage({signout:url.pathname.endsWith('signout'),returnTo:safeReturn(url.searchParams.get('return_to')),english:url.searchParams.get('lang')==='en',isolatedStaging:settings.isolatedStaging});
+  if(['/signin-with-chatgpt','/signout-with-chatgpt'].includes(url.pathname)){const target=url.pathname.startsWith('/signout')?'/auth/signout':'/auth/signin',lang=url.searchParams.get('lang'),validLang=lang==='en'||lang==='he',returnTo=safeReturn(url.searchParams.get('return_to'));return Response.redirect(origin+target+'?'+(validLang?'lang='+lang+'&':'')+'return_to='+encodeURIComponent(validLang?returnWithLanguage(returnTo,lang):returnTo),303);}
+  if(req.method==='GET'&&['/auth/signin','/auth/signout'].includes(url.pathname))return authPage({signout:url.pathname.endsWith('signout'),returnTo:['en','he'].includes(url.searchParams.get('lang')??'')?returnWithLanguage(safeReturn(url.searchParams.get('return_to')),url.searchParams.get('lang')==='en'?'en':'he'):safeReturn(url.searchParams.get('return_to')),english:url.searchParams.get('lang')==='en',isolatedStaging:settings.isolatedStaging});
   if(url.pathname==='/auth/oauth/callback'){
    if(req.method!=='GET')return reply(405,{error:'GET required'});
    let target='/',english=false,problem='failed';
