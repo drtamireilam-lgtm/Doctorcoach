@@ -84,3 +84,12 @@ test('refresh restores code entry from the server challenge and does not send an
  assert.ok(!f.calls.some(([p])=>p==='/auth/send'));
  assert.equal(f.nodes.get('code-form').fields.code.value,'');
 });
+
+test('HE/EN sign-in offers Google, Apple and email with one submit per method',async()=>{
+ for(const english of [true,false]){
+  const html=await authPage({signout:false,returnTo:'/?lang='+ (english?'en':'he')+'#plan',english,isolatedStaging:true}).text();
+  for(const label of english?['Continue with Google','Continue with Apple','Continue with Email']:['המשך עם Google','המשך עם Apple','המשך עם דוא"ל'])assert.ok(html.includes(label),label);
+  assert.equal((html.match(/id="oauth-google"/g)||[]).length,1);assert.equal((html.match(/id="oauth-apple"/g)||[]).length,1);
+  assert.equal((html.match(/id="email-form"/g)||[]).length,1);
+ }
+});

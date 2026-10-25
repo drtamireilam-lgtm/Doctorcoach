@@ -4,7 +4,7 @@ on:
   push:
     branches: [main, "codex/application-audit-*", "stabilize/**", "fix/appearance-toggle-persistence-*", "feature/ui-ux-liad-followup-20261019", "feature/doctorcoach-2-smart-workout-20261020", "feature/anatomy-completion-*", "integration/anatomy-rehab-stretch-*"]
   pull_request:
-    branches: [main, "codex/application-audit-*", "codex/google-apple-signin-*", "feature/anatomy-*", "integration/anatomy-*", "codex/anatomy-*"]
+    branches: [main, "codex/application-audit-*", "codex/auth-language-continuity-*", "codex/google-apple-signin-*", "feature/anatomy-*", "integration/anatomy-*", "codex/anatomy-*"]
 
 permissions:
   contents: read
@@ -53,13 +53,24 @@ jobs:
         run: npm test
       - name: Standalone TypeScript
         run: npm run typecheck
-      - name: Select runner anatomy browser
-        if: env.ANATOMY_BROWSER_CHECKS == 'true'
+      - name: Select runner browser
         timeout-minutes: 1
         run: |
           browser_path="$(command -v google-chrome)"
           test -x "$browser_path"
           echo "ANATOMY_CHROMIUM=$browser_path" >> "$GITHUB_ENV"
+          echo "DC_OAUTH_CHROMIUM=$browser_path" >> "$GITHUB_ENV"
+      - name: OAuth login UI in Chrome with synthetic provider fixtures
+        env:
+          DC_OAUTH_EVIDENCE: artifacts/oauth
+        run: node --experimental-strip-types scripts/oauth-browser-smoke.mjs
+      - name: Save OAuth UI evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: oauth-ui-fixtures-${{ github.sha }}
+          path: apps/doctorcoach-standalone/artifacts/oauth
+          if-no-files-found: warn
       - name: Anatomy viewer controls and bundled model smoke
         if: env.ANATOMY_BROWSER_CHECKS == 'true'
         run: node scripts/anatomy/viewer-controls-smoke.mjs
