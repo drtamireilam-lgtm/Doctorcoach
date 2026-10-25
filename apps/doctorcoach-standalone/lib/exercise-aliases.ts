@@ -1,3 +1,4 @@
+import {reviewedImportAliases} from './reviewed-import-aliases.ts';
 // Aliases identify names only; equipment and execution variants stay distinct.
 // Repeated aliases intentionally require the coach to choose a variant.
 const baseAliases:Readonly<Record<string,readonly string[]>>={
@@ -215,6 +216,10 @@ const additionalAliases:Readonly<Record<string,readonly string[]>>={
  'stretch-calf-wall-straight-knee':['Straight Knee Calf Wall Stretch','מתיחת תאומים מול קיר בברך ישרה'],
  'stretch-soleus-wall-bent-knee':['Bent Knee Soleus Wall Stretch','מתיחת סולאוס מול קיר בברך כפופה'],
 };
-export const exerciseAliases:Readonly<Record<string,readonly string[]>>=Object.fromEntries(
+const existingAliases:Readonly<Record<string,readonly string[]>>=Object.fromEntries(
  [...new Set([...Object.keys(baseAliases),...Object.keys(additionalAliases)])].map(id=>[id,[...new Set([...baseAliases[id]??[],...additionalAliases[id]??[]])]])
+);
+
+export const exerciseAliases:Readonly<Record<string,readonly string[]>>=Object.fromEntries(
+ Object.entries(existingAliases).map(([id,names])=>[id,[...new Set([...names,...reviewedImportAliases.filter(r=>r.exerciseId===id).flatMap(r=>[...r.names])])]])
 );
