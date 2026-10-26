@@ -74,3 +74,21 @@ test('literal-only consumers can skip fuzzy suggestions without changing normal 
  assert.deepEqual(match(name,undefined,{allowGeneralMovement:true,suggestions:false}),{exerciseId:'',status:'unmatched',confidence:0,candidates:[]});
  assert.equal(match('DB Bench Press',undefined,{suggestions:false}).exerciseId,'bench');
 });
+
+test('general movement aliases cover established anatomical and gym wording without selecting implements',async()=>{
+ const {auditExerciseAliases}=await import('../scripts/audit-exercise-aliases.mjs');
+ const cases=[['כיפוף ברכיים','movement-leg-curl'],['Shoulder blade elevation','movement-shrug'],['חתירה לסנטר','movement-upright-row'],['Pectoral press','movement-chest-press'],['OHP','movement-overhead-press'],['הרחקת זרועות','movement-lateral-raise'],['Posterior shoulder fly','movement-rear-delt-fly'],['חתירה לדלתא אחורית','movement-rear-delt-row'],['חתירה בגו כפוף','movement-bent-over-row'],['כפיפות צד לבטן','movement-side-crunch'],['עליות על בהונות','movement-calf-raise']];
+ for(const [name,id] of cases)assert.equal(match(name,undefined,{allowGeneralMovement:true}).exerciseId,id,name);
+ const audit=auditExerciseAliases();for(const [,id] of cases)assert.ok(audit.rows.find(r=>r.exerciseId===id).aliasCount>=15,id);
+ assert.equal(match('BB OHP',undefined,{allowGeneralMovement:true}).exerciseId,'overhead-press');
+ assert.equal(match('OHP').exerciseId,'overhead-press');
+});
+
+test('all current catalog IDs meet the normalized bilingual alias target',async()=>{
+ const {auditExerciseAliases}=await import('../scripts/audit-exercise-aliases.mjs');const r=auditExerciseAliases();
+ assert.deepEqual(r.shortfalls,[]);assert.ok(r.rows.every(x=>x.hasHebrew&&x.hasEnglish));
+ for(const [name,id] of [['שפיפה','movement-squat'],['תרגילי שפיפה','movement-squat'],['סקוואטס','movement-squat'],['Lat pullover','movement-pullover'],['Chest pullover','movement-pullover'],['פולאובר לגב','movement-pullover']])assert.equal(match(name,undefined,{allowGeneralMovement:true}).exerciseId,id,name);
+ // The new generic names must not swallow named implements/positions.
+ assert.equal(match('Cable Pullover',undefined,{allowGeneralMovement:true}).exerciseId,'straight-arm-pulldown');
+ for(const name of ['כריעה','kneeling','deep knee bend','Hindu squat','decline barbell pullover'])assert.equal(match(name,undefined,{allowGeneralMovement:true}).exerciseId,'',name);
+});

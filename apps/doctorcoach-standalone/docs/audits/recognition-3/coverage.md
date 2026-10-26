@@ -161,19 +161,19 @@ Counts exclude canonical names/ID and deduplicate using the production normalize
 | stretch-lateral-hip-wall | Wall-Supported Lateral Hip Stretch | 16 | 16 | 15+ |
 | stretch-calf-wall-straight-knee | Straight-Knee Wall Calf Stretch | 17 | 12 | 15+ |
 | stretch-soleus-wall-bent-knee | Bent-Knee Wall Soleus Stretch | 17 | 13 | 15+ |
-| movement-squat | Squat | 9 | 9 | SHORTFALL |
-| movement-chest-press | Chest Press | 8 | 8 | SHORTFALL |
-| movement-leg-curl | Leg Curl | 13 | 13 | SHORTFALL |
-| movement-calf-raise | Calf Raise | 11 | 11 | SHORTFALL |
-| movement-shrug | Shrug | 11 | 11 | SHORTFALL |
-| movement-pullover | Pullover | 8 | 8 | SHORTFALL |
-| movement-upright-row | Upright Row | 9 | 9 | SHORTFALL |
-| movement-overhead-press | Overhead Press | 13 | 13 | SHORTFALL |
-| movement-bent-over-row | Bent Over Row | 10 | 10 | SHORTFALL |
-| movement-lateral-raise | Lateral Raise | 12 | 12 | SHORTFALL |
-| movement-rear-delt-fly | Rear Delt Fly | 11 | 11 | SHORTFALL |
-| movement-rear-delt-row | Rear Delt Row | 12 | 12 | SHORTFALL |
-| movement-side-crunch | Side Crunch | 13 | 13 | SHORTFALL |
+| movement-squat | Squat | 15 | 15 | 15+ |
+| movement-chest-press | Chest Press | 15 | 15 | 15+ |
+| movement-leg-curl | Leg Curl | 15 | 15 | 15+ |
+| movement-calf-raise | Calf Raise | 15 | 15 | 15+ |
+| movement-shrug | Shrug | 15 | 15 | 15+ |
+| movement-pullover | Pullover | 15 | 15 | 15+ |
+| movement-upright-row | Upright Row | 15 | 15 | 15+ |
+| movement-overhead-press | Overhead Press | 15 | 15 | 15+ |
+| movement-bent-over-row | Bent Over Row | 15 | 15 | 15+ |
+| movement-lateral-raise | Lateral Raise | 15 | 15 | 15+ |
+| movement-rear-delt-fly | Rear Delt Fly | 15 | 15 | 15+ |
+| movement-rear-delt-row | Rear Delt Row | 15 | 15 | 15+ |
+| movement-side-crunch | Side Crunch | 15 | 15 | 15+ |
 | movement-kelso-shrug | Kelso Shrug | 16 | 14 | 15+ |
 | movement-hammer-pulldown-narrow | Narrow Grip Hammer Pulldown | 17 | 16 | 15+ |
 | movement-hammer-row-wide | Wide Grip Hammer Row | 18 | 15 | 15+ |

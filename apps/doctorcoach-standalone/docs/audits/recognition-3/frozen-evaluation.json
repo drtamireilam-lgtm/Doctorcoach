@@ -79,6 +79,13 @@
         ]
       },
       {
+        "key": "ohp",
+        "ids": [
+          "movement-overhead-press",
+          "overhead-press"
+        ]
+      },
+      {
         "key": "overhead press",
         "ids": [
           "movement-overhead-press",
@@ -203,8 +210,8 @@
   },
   "catalogCount": 173,
   "canonicalNameAndIdKeys": 442,
-  "configuredAliasCount": 3051,
-  "uniqueAdditionalAliasKeys": 2938,
+  "configuredAliasCount": 3106,
+  "uniqueAdditionalAliasKeys": 2992,
   "aliasCatalogIds": 173,
   "total": 32,
   "resolvable": 21,

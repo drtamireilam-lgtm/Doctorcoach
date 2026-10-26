@@ -1,5 +1,5 @@
 {
-  "tokenDistinctAliases": 2820,
+  "tokenDistinctAliases": 2875,
   "tokenCollisions": [
     {
       "signature": "bench press",
@@ -117,6 +117,13 @@
       ]
     },
     {
+      "signature": "ohp",
+      "exerciseIds": [
+        "movement-overhead-press",
+        "overhead-press"
+      ]
+    },
+    {
       "signature": "overhead press",
       "exerciseIds": [
         "movement-overhead-press",
@@ -197,75 +204,9 @@
     }
   ],
   "exerciseCount": 173,
-  "totalAliases": 2986,
-  "meetsTarget": 160,
-  "shortfalls": [
-    {
-      "exerciseId": "movement-squat",
-      "aliasCount": 9,
-      "missing": 6
-    },
-    {
-      "exerciseId": "movement-chest-press",
-      "aliasCount": 8,
-      "missing": 7
-    },
-    {
-      "exerciseId": "movement-leg-curl",
-      "aliasCount": 13,
-      "missing": 2
-    },
-    {
-      "exerciseId": "movement-calf-raise",
-      "aliasCount": 11,
-      "missing": 4
-    },
-    {
-      "exerciseId": "movement-shrug",
-      "aliasCount": 11,
-      "missing": 4
-    },
-    {
-      "exerciseId": "movement-pullover",
-      "aliasCount": 8,
-      "missing": 7
-    },
-    {
-      "exerciseId": "movement-upright-row",
-      "aliasCount": 9,
-      "missing": 6
-    },
-    {
-      "exerciseId": "movement-overhead-press",
-      "aliasCount": 13,
-      "missing": 2
-    },
-    {
-      "exerciseId": "movement-bent-over-row",
-      "aliasCount": 10,
-      "missing": 5
-    },
-    {
-      "exerciseId": "movement-lateral-raise",
-      "aliasCount": 12,
-      "missing": 3
-    },
-    {
-      "exerciseId": "movement-rear-delt-fly",
-      "aliasCount": 11,
-      "missing": 4
-    },
-    {
-      "exerciseId": "movement-rear-delt-row",
-      "aliasCount": 12,
-      "missing": 3
-    },
-    {
-      "exerciseId": "movement-side-crunch",
-      "aliasCount": 13,
-      "missing": 2
-    }
-  ],
+  "totalAliases": 3041,
+  "meetsTarget": 173,
+  "shortfalls": [],
   "orphanIds": [],
   "rows": [
     {
@@ -13336,10 +13277,34 @@
       "exerciseId": "movement-squat",
       "hebrew": "סקוואט",
       "english": "Squat",
-      "aliasCount": 9,
-      "tokenDistinctAliasCount": 9,
-      "meetsTarget": false,
+      "aliasCount": 15,
+      "tokenDistinctAliasCount": 15,
+      "meetsTarget": true,
       "aliases": [
+        {
+          "name": "שפיפה",
+          "normalized": "שפיפה"
+        },
+        {
+          "name": "שפיפות",
+          "normalized": "שפיפות"
+        },
+        {
+          "name": "תרגיל שפיפה",
+          "normalized": "תרגיל שפיפה"
+        },
+        {
+          "name": "תרגילי שפיפה",
+          "normalized": "תרגילי שפיפה"
+        },
+        {
+          "name": "סקוואטס",
+          "normalized": "סקוואטס"
+        },
+        {
+          "name": "כריעת סקווט",
+          "normalized": "כריעת סקווט"
+        },
         {
           "name": "Squatting",
           "normalized": "squatting"
@@ -13384,10 +13349,38 @@
       "exerciseId": "movement-chest-press",
       "hebrew": "לחיצת חזה",
       "english": "Chest Press",
-      "aliasCount": 8,
-      "tokenDistinctAliasCount": 8,
-      "meetsTarget": false,
+      "aliasCount": 15,
+      "tokenDistinctAliasCount": 15,
+      "meetsTarget": true,
       "aliases": [
+        {
+          "name": "Pectoral press",
+          "normalized": "pectoral press"
+        },
+        {
+          "name": "Pec press",
+          "normalized": "pec press"
+        },
+        {
+          "name": "Horizontal chest press",
+          "normalized": "horizontal chest press"
+        },
+        {
+          "name": "לחיצה אופקית לחזה",
+          "normalized": "לחיצה אופקית לחזה"
+        },
+        {
+          "name": "לחיצות לחזה",
+          "normalized": "לחיצות לחזה"
+        },
+        {
+          "name": "פרס חזה",
+          "normalized": "פרס חזה"
+        },
+        {
+          "name": "צ׳סט פרס",
+          "normalized": "צ סט פרס"
+        },
         {
           "name": "Chest pressing",
           "normalized": "chest pressing"
@@ -13428,10 +13421,18 @@
       "exerciseId": "movement-leg-curl",
       "hebrew": "כפיפת ברכיים",
       "english": "Leg Curl",
-      "aliasCount": 13,
-      "tokenDistinctAliasCount": 13,
-      "meetsTarget": false,
+      "aliasCount": 15,
+      "tokenDistinctAliasCount": 15,
+      "meetsTarget": true,
       "aliases": [
+        {
+          "name": "כיפוף ברכיים",
+          "normalized": "כיפוף ברכיים"
+        },
+        {
+          "name": "כפיפה בברכיים",
+          "normalized": "כפיפה בברכיים"
+        },
         {
           "name": "Knee flexion curl",
           "normalized": "knee flexion curl"
@@ -13492,10 +13493,26 @@
       "exerciseId": "movement-calf-raise",
       "hebrew": "הרמת עקבים",
       "english": "Calf Raise",
-      "aliasCount": 11,
-      "tokenDistinctAliasCount": 11,
-      "meetsTarget": false,
+      "aliasCount": 15,
+      "tokenDistinctAliasCount": 15,
+      "meetsTarget": true,
       "aliases": [
+        {
+          "name": "Heel lifting",
+          "normalized": "heel lifting"
+        },
+        {
+          "name": "Calf heel raise",
+          "normalized": "calf heel raise"
+        },
+        {
+          "name": "Ankle heel raise",
+          "normalized": "ankle heel raise"
+        },
+        {
+          "name": "עליות על בהונות",
+          "normalized": "עליות על בהונות"
+        },
         {
           "name": "Heel raise",
           "normalized": "heel raise"
@@ -13548,10 +13565,26 @@
       "exerciseId": "movement-shrug",
       "hebrew": "משיכת כתפיים",
       "english": "Shrug",
-      "aliasCount": 11,
-      "tokenDistinctAliasCount": 11,
-      "meetsTarget": false,
+      "aliasCount": 15,
+      "tokenDistinctAliasCount": 15,
+      "meetsTarget": true,
       "aliases": [
+        {
+          "name": "Shoulder blade elevation",
+          "normalized": "shoulder blade elevation"
+        },
+        {
+          "name": "Scapular elevation shrug",
+          "normalized": "scapular elevation shrug"
+        },
+        {
+          "name": "משיכת טרפזים",
+          "normalized": "משיכת טרפזים"
+        },
+        {
+          "name": "הרמת כתפיים",
+          "normalized": "הרמת כתפיים"
+        },
         {
           "name": "Shoulder shrug",
           "normalized": "shoulder shrug"
@@ -13604,10 +13637,38 @@
       "exerciseId": "movement-pullover",
       "hebrew": "פולאובר",
       "english": "Pullover",
-      "aliasCount": 8,
-      "tokenDistinctAliasCount": 8,
-      "meetsTarget": false,
+      "aliasCount": 15,
+      "tokenDistinctAliasCount": 15,
+      "meetsTarget": true,
       "aliases": [
+        {
+          "name": "Lat pullover",
+          "normalized": "lat pullover"
+        },
+        {
+          "name": "Chest pullover",
+          "normalized": "chest pullover"
+        },
+        {
+          "name": "פולאוברס",
+          "normalized": "פולאוברס"
+        },
+        {
+          "name": "פול אוברס",
+          "normalized": "פול אוברס"
+        },
+        {
+          "name": "פולאובר לגב",
+          "normalized": "פולאובר לגב"
+        },
+        {
+          "name": "פולאובר לחזה",
+          "normalized": "פולאובר לחזה"
+        },
+        {
+          "name": "פולאובר לרחב גבי",
+          "normalized": "פולאובר לרחב גבי"
+        },
         {
           "name": "Pullovers",
           "normalized": "pullovers"
@@ -13648,10 +13709,34 @@
       "exerciseId": "movement-upright-row",
       "hebrew": "חתירה אנכית",
       "english": "Upright Row",
-      "aliasCount": 9,
-      "tokenDistinctAliasCount": 9,
-      "meetsTarget": false,
+      "aliasCount": 15,
+      "tokenDistinctAliasCount": 15,
+      "meetsTarget": true,
       "aliases": [
+        {
+          "name": "חתירה לסנטר",
+          "normalized": "חתירה לסנטר"
+        },
+        {
+          "name": "משיכה לסנטר",
+          "normalized": "משיכה לסנטר"
+        },
+        {
+          "name": "Chin row",
+          "normalized": "chin row"
+        },
+        {
+          "name": "Row to chin",
+          "normalized": "row to chin"
+        },
+        {
+          "name": "Vertical upright row",
+          "normalized": "vertical upright row"
+        },
+        {
+          "name": "Upright shoulder row",
+          "normalized": "upright shoulder row"
+        },
         {
           "name": "Upright rowing",
           "normalized": "upright rowing"
@@ -13696,10 +13781,18 @@
       "exerciseId": "movement-overhead-press",
       "hebrew": "לחיצת כתפיים",
       "english": "Overhead Press",
-      "aliasCount": 13,
-      "tokenDistinctAliasCount": 13,
-      "meetsTarget": false,
+      "aliasCount": 15,
+      "tokenDistinctAliasCount": 15,
+      "meetsTarget": true,
       "aliases": [
+        {
+          "name": "OHP",
+          "normalized": "ohp"
+        },
+        {
+          "name": "פרס כתפיים",
+          "normalized": "פרס כתפיים"
+        },
         {
           "name": "Overhead pressing",
           "normalized": "overhead pressing"
@@ -13760,10 +13853,30 @@
       "exerciseId": "movement-bent-over-row",
       "hebrew": "חתירה בהטיית גו",
       "english": "Bent Over Row",
-      "aliasCount": 10,
-      "tokenDistinctAliasCount": 10,
-      "meetsTarget": false,
+      "aliasCount": 15,
+      "tokenDistinctAliasCount": 15,
+      "meetsTarget": true,
       "aliases": [
+        {
+          "name": "Bent over back row",
+          "normalized": "bent over back row"
+        },
+        {
+          "name": "Torso inclined row",
+          "normalized": "torso inclined row"
+        },
+        {
+          "name": "Row with bent torso",
+          "normalized": "row with bent torso"
+        },
+        {
+          "name": "חתירת גב בהטיית גו",
+          "normalized": "חתירת גב בהטיית גו"
+        },
+        {
+          "name": "חתירה בגו כפוף",
+          "normalized": "חתירה בגו כפוף"
+        },
         {
           "name": "Bent over rowing",
           "normalized": "bent over rowing"
@@ -13812,10 +13925,22 @@
       "exerciseId": "movement-lateral-raise",
       "hebrew": "הרחקת כתפיים",
       "english": "Lateral Raise",
-      "aliasCount": 12,
-      "tokenDistinctAliasCount": 12,
-      "meetsTarget": false,
+      "aliasCount": 15,
+      "tokenDistinctAliasCount": 15,
+      "meetsTarget": true,
       "aliases": [
+        {
+          "name": "Lateral delt raise",
+          "normalized": "lateral delt raise"
+        },
+        {
+          "name": "Side deltoid raise",
+          "normalized": "side deltoid raise"
+        },
+        {
+          "name": "הרחקת זרועות",
+          "normalized": "הרחקת זרועות"
+        },
         {
           "name": "Side lateral raise",
           "normalized": "side lateral raise"
@@ -13872,10 +13997,26 @@
       "exerciseId": "movement-rear-delt-fly",
       "hebrew": "פרפר הפוך",
       "english": "Rear Delt Fly",
-      "aliasCount": 11,
-      "tokenDistinctAliasCount": 11,
-      "meetsTarget": false,
+      "aliasCount": 15,
+      "tokenDistinctAliasCount": 15,
+      "meetsTarget": true,
       "aliases": [
+        {
+          "name": "פרפר לדלתא אחורית",
+          "normalized": "פרפר לדלתא אחורית"
+        },
+        {
+          "name": "הרחקה אופקית של הזרועות",
+          "normalized": "הרחקה אופקית של הזרועות"
+        },
+        {
+          "name": "Posterior shoulder fly",
+          "normalized": "posterior shoulder fly"
+        },
+        {
+          "name": "Rear delt reverse fly",
+          "normalized": "rear delt reverse fly"
+        },
         {
           "name": "Rear deltoid fly",
           "normalized": "rear deltoid fly"
@@ -13928,10 +14069,22 @@
       "exerciseId": "movement-rear-delt-row",
       "hebrew": "חתירה לכתף אחורית",
       "english": "Rear Delt Row",
-      "aliasCount": 12,
-      "tokenDistinctAliasCount": 12,
-      "meetsTarget": false,
+      "aliasCount": 15,
+      "tokenDistinctAliasCount": 15,
+      "meetsTarget": true,
       "aliases": [
+        {
+          "name": "Posterior shoulder row",
+          "normalized": "posterior shoulder row"
+        },
+        {
+          "name": "חתירה לדלתא אחורית",
+          "normalized": "חתירה לדלתא אחורית"
+        },
+        {
+          "name": "חתירה לשריר הכתף האחורית",
+          "normalized": "חתירה לשריר הכתף האחורית"
+        },
         {
           "name": "Rear deltoid row",
           "normalized": "rear deltoid row"
@@ -13988,10 +14141,18 @@
       "exerciseId": "movement-side-crunch",
       "hebrew": "כפיפת גו צידית",
       "english": "Side Crunch",
-      "aliasCount": 13,
-      "tokenDistinctAliasCount": 13,
-      "meetsTarget": false,
+      "aliasCount": 15,
+      "tokenDistinctAliasCount": 15,
+      "meetsTarget": true,
       "aliases": [
+        {
+          "name": "כפיפות צד לבטן",
+          "normalized": "כפיפות צד לבטן"
+        },
+        {
+          "name": "Side bend crunch",
+          "normalized": "side bend crunch"
+        },
         {
           "name": "Lateral crunch",
           "normalized": "lateral crunch"
@@ -14364,6 +14525,13 @@
       ]
     },
     {
+      "normalized": "ohp",
+      "exerciseIds": [
+        "movement-overhead-press",
+        "overhead-press"
+      ]
+    },
+    {
       "normalized": "overhead press",
       "exerciseIds": [
         "movement-overhead-press",
@@ -14637,6 +14805,19 @@
       "candidates": [
         {
           "exerciseId": "movement-bent-over-row",
+          "score": 1,
+          "reason": "Verified catalog name or alias"
+        }
+      ]
+    },
+    {
+      "name": "OHP",
+      "expected": "overhead-press",
+      "status": "alias",
+      "actual": "movement-overhead-press",
+      "candidates": [
+        {
+          "exerciseId": "movement-overhead-press",
           "score": 1,
           "reason": "Verified catalog name or alias"
         }

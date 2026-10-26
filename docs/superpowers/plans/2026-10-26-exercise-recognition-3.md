@@ -22,4 +22,6 @@ Review focus: token order must not hide qualifier changes; named unilateral move
 - [x] Verify owner isolation, 250-entry bound, HE/EN component rendering and complete application suite.
 - [x] Independent follow-up review; correct collision/provenance findings.
 
-Remaining: 13 generic parent IDs below 15 meaningful alternatives; representative independently labeled evaluation; authenticated isolated LAB desktop/mobile acceptance; exact follow-up-head CI. No artificial quota padding.
+- [x] Complete all 173 IDs to 15+ normalized alternatives, with primary terminology evidence for the last generic squat/pullover names and explicit variant safety tests.
+
+Remaining: representative independently labeled evaluation; authenticated isolated LAB desktop/mobile acceptance; exact final-head CI. No artificial quota padding.
