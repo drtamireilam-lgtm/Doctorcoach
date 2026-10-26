@@ -1,0 +1,116 @@
+{
+  "scope": "Actual ProgramExcelImport in isolated local Vite harness. Synthetic catalog/memory GET fixtures and local onAccept callback; no authenticated save, assignment or live LAB.",
+  "checks": [
+    {
+      "width": 390,
+      "language": "he",
+      "format": "csv",
+      "acceptedIds": [
+        "barbell-bench",
+        "seated-curl"
+      ]
+    },
+    {
+      "width": 390,
+      "language": "he",
+      "format": "xlsx",
+      "acceptedIds": [
+        "barbell-bench",
+        "seated-curl"
+      ]
+    },
+    {
+      "width": 390,
+      "language": "he",
+      "format": "pdf",
+      "acceptedIds": [
+        "barbell-bench",
+        "seated-curl"
+      ]
+    },
+    {
+      "width": 390,
+      "language": "en",
+      "format": "csv",
+      "acceptedIds": [
+        "barbell-bench",
+        "seated-curl"
+      ]
+    },
+    {
+      "width": 390,
+      "language": "en",
+      "format": "xlsx",
+      "acceptedIds": [
+        "barbell-bench",
+        "seated-curl"
+      ]
+    },
+    {
+      "width": 390,
+      "language": "en",
+      "format": "pdf",
+      "acceptedIds": [
+        "barbell-bench",
+        "seated-curl"
+      ]
+    },
+    {
+      "width": 1440,
+      "language": "he",
+      "format": "csv",
+      "acceptedIds": [
+        "barbell-bench",
+        "seated-curl"
+      ]
+    },
+    {
+      "width": 1440,
+      "language": "he",
+      "format": "xlsx",
+      "acceptedIds": [
+        "barbell-bench",
+        "seated-curl"
+      ]
+    },
+    {
+      "width": 1440,
+      "language": "he",
+      "format": "pdf",
+      "acceptedIds": [
+        "barbell-bench",
+        "seated-curl"
+      ]
+    },
+    {
+      "width": 1440,
+      "language": "en",
+      "format": "csv",
+      "acceptedIds": [
+        "barbell-bench",
+        "seated-curl"
+      ]
+    },
+    {
+      "width": 1440,
+      "language": "en",
+      "format": "xlsx",
+      "acceptedIds": [
+        "barbell-bench",
+        "seated-curl"
+      ]
+    },
+    {
+      "width": 1440,
+      "language": "en",
+      "format": "pdf",
+      "acceptedIds": [
+        "barbell-bench",
+        "seated-curl"
+      ]
+    }
+  ],
+  "browserErrors": [],
+  "apiWrites": [],
+  "externalRequests": []
+}

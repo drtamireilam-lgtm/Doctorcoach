@@ -17,7 +17,7 @@ Date: 2026-10-26. Relates to Issue #51. PR #53 is stacked on #50; no main merge 
 
 | Check | Verified outcome / boundary |
 |---|---|
-| Full standalone suite | **1,493 passed**, 0 failed/skipped |
+| Full standalone suite | **1,502 passed**, 0 failed/skipped |
 | Root foundation/profile RLS | **10 + 6 passed** |
 | Recognition-specific suite | **15 passed**; every curated literal, deliberate nonmatches, variants, qualifiers, collisions and all-ID target |
 | Proposals | Seven helper tests, real persisted owner-scope DB test, two HE/EN server-rendered component tests pass |
@@ -52,6 +52,10 @@ node --experimental-strip-types standalone/scripts/runtime-smoke.mjs
 
 1. Human terminology review through this PR and independently labeled representative XLSX/CSV/text-PDF evaluation; report false positives, recall and coverage without treating development/self-consistency checks as held-out accuracy.
 2. Verify final exact-head remote CI.
-3. Authorized isolated LAB desktop/mobile acceptance: upload → preview → save → assign → trainee workout → refresh. Coordinate any LAB update so parallel work/user data are preserved. Actual browser/mobile proposal file download also remains unverified.
+3. Authorized isolated LAB desktop/mobile acceptance: upload → preview → save → assign → trainee workout → refresh. Coordinate any LAB update so parallel work/user data are preserved. Local Chromium desktop/mobile viewport proposal downloads passed; actual LAB and Safari/iOS downloads remain unverified.
 
 The numeric naming requirement is complete. Live acceptance and representative accuracy validation remain open; Issue #51 is not closed and PR #53 remains draft.
+
+## Unresolved-row follow-up
+
+See `UNRESOLVED_REVIEW.md` and `local-browser.json`: all 85 unassigned rows classified (46 missing names, 2 headings, 24 ambiguous variants, 9 without an established builtin match, 3 uncertainty/alternatives, 1 instruction). No new aliases approved or automatic targets changed. The real importer now gives HE/EN review guidance and conservative manual candidate buttons. Twelve local Chromium flows passed across CSV/XLSX/text-PDF, both languages and desktop/mobile widths, including explicit skip, draft callback and actual proposal downloads. This is not authenticated live LAB acceptance.
