@@ -2,9 +2,9 @@ name: DoctorCoach CI
 
 on:
   push:
-    branches: [main, "codex/import-integration-lab-*", "codex/application-audit-*", "stabilize/**", "fix/appearance-toggle-persistence-*", "feature/ui-ux-liad-followup-20261019", "feature/doctorcoach-2-smart-workout-20261020", "feature/anatomy-completion-*", "integration/anatomy-rehab-stretch-*"]
+    branches: [main, "codex/exercise-recognition-3-*", "codex/import-integration-lab-*", "codex/application-audit-*", "stabilize/**", "fix/appearance-toggle-persistence-*", "feature/ui-ux-liad-followup-20261019", "feature/doctorcoach-2-smart-workout-20261020", "feature/anatomy-completion-*", "integration/anatomy-rehab-stretch-*"]
   pull_request:
-    branches: [main, "codex/generic-movement-import-*", "codex/application-audit-*", "codex/import-structure-regressions-*", "codex/import-alias-precision-*", "codex/google-apple-signin-*", "feature/anatomy-*", "integration/anatomy-*", "codex/anatomy-*"]
+    branches: [main, "codex/import-integration-lab-*", "codex/generic-movement-import-*", "codex/application-audit-*", "codex/import-structure-regressions-*", "codex/import-alias-precision-*", "codex/google-apple-signin-*", "feature/anatomy-*", "integration/anatomy-*", "codex/anatomy-*"]
 
 permissions:
   contents: read
