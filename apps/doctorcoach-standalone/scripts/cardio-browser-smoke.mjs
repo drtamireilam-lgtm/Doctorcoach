@@ -7,7 +7,7 @@ import {fileURLToPath} from 'node:url';
 import assert from 'node:assert/strict';
 const require=createRequire(import.meta.url),workerRequire=createRequire(require.resolve('wrangler/package.json'));
 const {build}=workerRequire('esbuild');
-const root=fileURLToPath(new URL('../',import.meta.url)),evidence=fileURLToPath(new URL('../../../..//cardio-browser-evidence/',import.meta.url));
+const root=fileURLToPath(new URL('../',import.meta.url)),evidence=fileURLToPath(new URL('../.sites-runtime/cardio-browser-evidence/',import.meta.url));
 await mkdir(evidence,{recursive:true});
 await build({entryPoints:[root+'/tests/fixtures/cardio-browser.tsx'],outfile:evidence+'/fixture.js',bundle:true,platform:'browser',jsx:'automatic',define:{'process.env.NODE_ENV':'"production"'}});
 const html=(await readFile(root+'/tests/fixtures/cardio-browser.html','utf8')).replace('/tests/fixtures/cardio-browser.tsx','/fixture.js').replace('</head>','<link rel="stylesheet" href="/fixture.css"></head>');

@@ -1,3 +1,4 @@
+import {performedCardioSeconds} from './cardio.ts';
 import type {TrainingFeed} from './training.ts';
 import type {WellnessRecord} from './wellness.ts';
 import {israelDay,duringPain} from './workout-context.ts';
@@ -13,7 +14,7 @@ export function progressTimeline(feed:TrainingFeed,records:WellnessRecord[]):Pro
   const at=s.finishedAt??s.startedAt;if(!Number.isFinite(Date.parse(at)))continue;
   const cardio=s.items.filter(i=>i.cardio&&i.cardioResult?.status==='completed');
   events.push({id:'workout:'+s.id,day:israelDay(at),category:'training',title:'אימון הושלם',destination:'history',details:compact([
-   s.plannedSets?`${s.completedSets} מתוך ${s.plannedSets} סטים`:null,cardio.length?`${cardio.length} פעילויות אירובי · ${Math.round(cardio.reduce((n,i)=>n+i.cardioResult!.elapsedSeconds/60,0)*10)/10} דקות`:null,measurement('כאב לפני',s.before,'/10'),measurement('כאב במהלך — הגבוה שדווח',duringPain(s.items),'/10'),measurement('כאב אחרי',s.after,'/10'),
+   s.plannedSets?`${s.completedSets} מתוך ${s.plannedSets} סטים`:null,cardio.length?`${cardio.length} פעילויות אירובי · ${Math.round(cardio.reduce((n,i)=>n+performedCardioSeconds(i.cardioResult!)/60,0)*10)/10} דקות`:null,measurement('כאב לפני',s.before,'/10'),measurement('כאב במהלך — הגבוה שדווח',duringPain(s.items),'/10'),measurement('כאב אחרי',s.after,'/10'),
   ])});
   if(s.followup)events.push({id:'followup:'+s.id,day:s.followup.day,category:'recovery',title:'דיווח למחרת האימון',destination:'history',details:[`כאב: ${s.followup.pain}/10`,`האימון: ${israelDay(at)}`]});
  }
