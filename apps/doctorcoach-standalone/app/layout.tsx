@@ -1,3 +1,4 @@
+import './activity.css';
 import type { Metadata, Viewport } from 'next';
 import './globals.css';
 import './theme.css';
