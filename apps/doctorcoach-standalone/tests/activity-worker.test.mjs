@@ -16,10 +16,10 @@ test('activity sync runs in a real local Worker with disposable D1 and owner iso
    catch(error){return Response.json({error:error.message},{status:error.status??500});}
   }};`,resolveDir:root},bundle:true,write:false,format:'esm',platform:'browser'});
  // Installed local workerd supports dates through 2026-05-22. This does not change LAB configuration.
- const mf=new Miniflare({modules:true,script:bundle.outputFiles[0].text,compatibilityDate:'2026-05-22',d1Databases:{DB:'synthetic-activity-db'}});t.after(()=>mf.dispose());
+ const mf=new Miniflare({modules:true,script:bundle.outputFiles[0].text,compatibilityDate:'2026-05-22',cf:false,outboundService:()=>new Response('External requests disabled in local test',{status:502}),d1Databases:{DB:'synthetic-activity-db'}});t.after(()=>mf.dispose());
  const db=await mf.getD1Database('DB');
  // This smoke needs only the new activity schema; no remote or real-user database is opened.
- const migration=await readFile(new URL('../drizzle/0054_activity.sql',import.meta.url),'utf8');
+ const migration=await readFile(new URL('../drizzle/0056_activity.sql',import.meta.url),'utf8');
  for(const statement of migration.split(';').map(s=>s.trim()).filter(Boolean))await db.prepare(statement).run();
  const post=(payload,other=false)=>mf.dispatchFetch('https://fixture.local/'+(other?'?other=1':''),{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(payload)});
  let response=await post({action:'connect',accountScope:'synthetic-owner',consent:true,platform:'healthkit',timezone:'UTC'});assert.equal(response.status,200);const feed=await response.json();

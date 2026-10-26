@@ -1,0 +1,536 @@
+{
+  "status": "source fidelity and mapping checked",
+  "clinicalReview": "pending",
+  "structures": [
+    {
+      "model": "spine",
+      "structure": "cervical-1",
+      "elements": [
+        "FJ3176"
+      ],
+      "sourceCoordinatesAndTriangles": "exact float32 match",
+      "laterality": "midline",
+      "sideEvidence": true,
+      "uniqueMaterial": true
+    },
+    {
+      "model": "spine",
+      "structure": "cervical-2",
+      "elements": [
+        "FJ3177"
+      ],
+      "sourceCoordinatesAndTriangles": "exact float32 match",
+      "laterality": "midline",
+      "sideEvidence": true,
+      "uniqueMaterial": true
+    },
+    {
+      "model": "spine",
+      "structure": "cervical-3",
+      "elements": [
+        "FJ3161"
+      ],
+      "sourceCoordinatesAndTriangles": "exact float32 match",
+      "laterality": "midline",
+      "sideEvidence": true,
+      "uniqueMaterial": true
+    },
+    {
+      "model": "spine",
+      "structure": "cervical-4",
+      "elements": [
+        "FJ3164"
+      ],
+      "sourceCoordinatesAndTriangles": "exact float32 match",
+      "laterality": "midline",
+      "sideEvidence": true,
+      "uniqueMaterial": true
+    },
+    {
+      "model": "spine",
+      "structure": "cervical-5",
+      "elements": [
+        "FJ3167"
+      ],
+      "sourceCoordinatesAndTriangles": "exact float32 match",
+      "laterality": "midline",
+      "sideEvidence": true,
+      "uniqueMaterial": true
+    },
+    {
+      "model": "spine",
+      "structure": "cervical-6",
+      "elements": [
+        "FJ3170"
+      ],
+      "sourceCoordinatesAndTriangles": "exact float32 match",
+      "laterality": "midline",
+      "sideEvidence": true,
+      "uniqueMaterial": true
+    },
+    {
+      "model": "spine",
+      "structure": "cervical-7",
+      "elements": [
+        "FJ3172"
+      ],
+      "sourceCoordinatesAndTriangles": "exact float32 match",
+      "laterality": "midline",
+      "sideEvidence": true,
+      "uniqueMaterial": true
+    },
+    {
+      "model": "spine",
+      "structure": "thoracic-1",
+      "elements": [
+        "FJ3158"
+      ],
+      "sourceCoordinatesAndTriangles": "exact float32 match",
+      "laterality": "midline",
+      "sideEvidence": true,
+      "uniqueMaterial": true
+    },
+    {
+      "model": "spine",
+      "structure": "thoracic-2",
+      "elements": [
+        "FJ3160"
+      ],
+      "sourceCoordinatesAndTriangles": "exact float32 match",
+      "laterality": "midline",
+      "sideEvidence": true,
+      "uniqueMaterial": true
+    },
+    {
+      "model": "spine",
+      "structure": "thoracic-3",
+      "elements": [
+        "FJ3163"
+      ],
+      "sourceCoordinatesAndTriangles": "exact float32 match",
+      "laterality": "midline",
+      "sideEvidence": true,
+      "uniqueMaterial": true
+    },
+    {
+      "model": "spine",
+      "structure": "thoracic-4",
+      "elements": [
+        "FJ3166"
+      ],
+      "sourceCoordinatesAndTriangles": "exact float32 match",
+      "laterality": "midline",
+      "sideEvidence": true,
+      "uniqueMaterial": true
+    },
+    {
+      "model": "spine",
+      "structure": "thoracic-5",
+      "elements": [
+        "FJ3169"
+      ],
+      "sourceCoordinatesAndTriangles": "exact float32 match",
+      "laterality": "midline",
+      "sideEvidence": true,
+      "uniqueMaterial": true
+    },
+    {
+      "model": "spine",
+      "structure": "thoracic-6",
+      "elements": [
+        "FJ3171"
+      ],
+      "sourceCoordinatesAndTriangles": "exact float32 match",
+      "laterality": "midline",
+      "sideEvidence": true,
+      "uniqueMaterial": true
+    },
+    {
+      "model": "spine",
+      "structure": "thoracic-7",
+      "elements": [
+        "FJ3173"
+      ],
+      "sourceCoordinatesAndTriangles": "exact float32 match",
+      "laterality": "midline",
+      "sideEvidence": true,
+      "uniqueMaterial": true
+    },
+    {
+      "model": "spine",
+      "structure": "thoracic-8",
+      "elements": [
+        "FJ3174"
+      ],
+      "sourceCoordinatesAndTriangles": "exact float32 match",
+      "laterality": "midline",
+      "sideEvidence": true,
+      "uniqueMaterial": true
+    },
+    {
+      "model": "spine",
+      "structure": "thoracic-9",
+      "elements": [
+        "FJ3175"
+      ],
+      "sourceCoordinatesAndTriangles": "exact float32 match",
+      "laterality": "midline",
+      "sideEvidence": true,
+      "uniqueMaterial": true
+    },
+    {
+      "model": "spine",
+      "structure": "thoracic-10",
+      "elements": [
+        "FJ3154"
+      ],
+      "sourceCoordinatesAndTriangles": "exact float32 match",
+      "laterality": "midline",
+      "sideEvidence": true,
+      "uniqueMaterial": true
+    },
+    {
+      "model": "spine",
+      "structure": "thoracic-11",
+      "elements": [
+        "FJ3155"
+      ],
+      "sourceCoordinatesAndTriangles": "exact float32 match",
+      "laterality": "midline",
+      "sideEvidence": true,
+      "uniqueMaterial": true
+    },
+    {
+      "model": "spine",
+      "structure": "thoracic-12",
+      "elements": [
+        "FJ3156"
+      ],
+      "sourceCoordinatesAndTriangles": "exact float32 match",
+      "laterality": "midline",
+      "sideEvidence": true,
+      "uniqueMaterial": true
+    },
+    {
+      "model": "spine",
+      "structure": "lumbar-1",
+      "elements": [
+        "FJ3157"
+      ],
+      "sourceCoordinatesAndTriangles": "exact float32 match",
+      "laterality": "midline",
+      "sideEvidence": true,
+      "uniqueMaterial": true
+    },
+    {
+      "model": "spine",
+      "structure": "lumbar-2",
+      "elements": [
+        "FJ3159"
+      ],
+      "sourceCoordinatesAndTriangles": "exact float32 match",
+      "laterality": "midline",
+      "sideEvidence": true,
+      "uniqueMaterial": true
+    },
+    {
+      "model": "spine",
+      "structure": "lumbar-3",
+      "elements": [
+        "FJ3162"
+      ],
+      "sourceCoordinatesAndTriangles": "exact float32 match",
+      "laterality": "midline",
+      "sideEvidence": true,
+      "uniqueMaterial": true
+    },
+    {
+      "model": "spine",
+      "structure": "lumbar-4",
+      "elements": [
+        "FJ3165"
+      ],
+      "sourceCoordinatesAndTriangles": "exact float32 match",
+      "laterality": "midline",
+      "sideEvidence": true,
+      "uniqueMaterial": true
+    },
+    {
+      "model": "spine",
+      "structure": "lumbar-5",
+      "elements": [
+        "FJ3168"
+      ],
+      "sourceCoordinatesAndTriangles": "exact float32 match",
+      "laterality": "midline",
+      "sideEvidence": true,
+      "uniqueMaterial": true
+    },
+    {
+      "model": "spine",
+      "structure": "sacrum",
+      "elements": [
+        "FJ3393"
+      ],
+      "sourceCoordinatesAndTriangles": "exact float32 match",
+      "laterality": "midline",
+      "sideEvidence": true,
+      "uniqueMaterial": true
+    },
+    {
+      "model": "spine",
+      "structure": "hip-bone",
+      "elements": [
+        "FJ3152"
+      ],
+      "sourceCoordinatesAndTriangles": "exact float32 match",
+      "laterality": "right",
+      "sideEvidence": true,
+      "uniqueMaterial": true
+    },
+    {
+      "model": "spine",
+      "structure": "scapula",
+      "elements": [
+        "FJ3384"
+      ],
+      "sourceCoordinatesAndTriangles": "exact float32 match",
+      "laterality": "right",
+      "sideEvidence": true,
+      "uniqueMaterial": true
+    },
+    {
+      "model": "spine",
+      "structure": "clavicle",
+      "elements": [
+        "FJ3362"
+      ],
+      "sourceCoordinatesAndTriangles": "exact float32 match",
+      "laterality": "right",
+      "sideEvidence": true,
+      "uniqueMaterial": true
+    },
+    {
+      "model": "spine",
+      "structure": "rib-1",
+      "elements": [
+        "FJ3334"
+      ],
+      "sourceCoordinatesAndTriangles": "exact float32 match",
+      "laterality": "right",
+      "sideEvidence": true,
+      "uniqueMaterial": true
+    },
+    {
+      "model": "spine",
+      "structure": "rib-2",
+      "elements": [
+        "FJ3336"
+      ],
+      "sourceCoordinatesAndTriangles": "exact float32 match",
+      "laterality": "right",
+      "sideEvidence": true,
+      "uniqueMaterial": true
+    },
+    {
+      "model": "spine",
+      "structure": "rib-3",
+      "elements": [
+        "FJ3338"
+      ],
+      "sourceCoordinatesAndTriangles": "exact float32 match",
+      "laterality": "right",
+      "sideEvidence": true,
+      "uniqueMaterial": true
+    },
+    {
+      "model": "spine",
+      "structure": "rib-4",
+      "elements": [
+        "FJ3340"
+      ],
+      "sourceCoordinatesAndTriangles": "exact float32 match",
+      "laterality": "right",
+      "sideEvidence": true,
+      "uniqueMaterial": true
+    },
+    {
+      "model": "spine",
+      "structure": "rib-5",
+      "elements": [
+        "FJ3342"
+      ],
+      "sourceCoordinatesAndTriangles": "exact float32 match",
+      "laterality": "right",
+      "sideEvidence": true,
+      "uniqueMaterial": true
+    },
+    {
+      "model": "spine",
+      "structure": "rib-6",
+      "elements": [
+        "FJ3344"
+      ],
+      "sourceCoordinatesAndTriangles": "exact float32 match",
+      "laterality": "right",
+      "sideEvidence": true,
+      "uniqueMaterial": true
+    },
+    {
+      "model": "spine",
+      "structure": "rib-7",
+      "elements": [
+        "FJ3346"
+      ],
+      "sourceCoordinatesAndTriangles": "exact float32 match",
+      "laterality": "right",
+      "sideEvidence": true,
+      "uniqueMaterial": true
+    },
+    {
+      "model": "spine",
+      "structure": "rib-8",
+      "elements": [
+        "FJ3347"
+      ],
+      "sourceCoordinatesAndTriangles": "exact float32 match",
+      "laterality": "right",
+      "sideEvidence": true,
+      "uniqueMaterial": true
+    },
+    {
+      "model": "spine",
+      "structure": "rib-9",
+      "elements": [
+        "FJ3348"
+      ],
+      "sourceCoordinatesAndTriangles": "exact float32 match",
+      "laterality": "right",
+      "sideEvidence": true,
+      "uniqueMaterial": true
+    },
+    {
+      "model": "spine",
+      "structure": "rib-10",
+      "elements": [
+        "FJ3330"
+      ],
+      "sourceCoordinatesAndTriangles": "exact float32 match",
+      "laterality": "right",
+      "sideEvidence": true,
+      "uniqueMaterial": true
+    },
+    {
+      "model": "spine",
+      "structure": "rib-11",
+      "elements": [
+        "FJ3331"
+      ],
+      "sourceCoordinatesAndTriangles": "exact float32 match",
+      "laterality": "right",
+      "sideEvidence": true,
+      "uniqueMaterial": true
+    },
+    {
+      "model": "spine",
+      "structure": "rib-12",
+      "elements": [
+        "FJ3332"
+      ],
+      "sourceCoordinatesAndTriangles": "exact float32 match",
+      "laterality": "right",
+      "sideEvidence": true,
+      "uniqueMaterial": true
+    },
+    {
+      "model": "spine",
+      "structure": "trapezius",
+      "elements": [
+        "FJ1520",
+        "FJ1521",
+        "FJ1554"
+      ],
+      "sourceCoordinatesAndTriangles": "exact float32 match",
+      "laterality": "right",
+      "sideEvidence": true,
+      "uniqueMaterial": true
+    },
+    {
+      "model": "spine",
+      "structure": "rhomboid-major",
+      "elements": [
+        "FJ1536"
+      ],
+      "sourceCoordinatesAndTriangles": "exact float32 match",
+      "laterality": "right",
+      "sideEvidence": true,
+      "uniqueMaterial": true
+    },
+    {
+      "model": "spine",
+      "structure": "rhomboid-minor",
+      "elements": [
+        "FJ1537"
+      ],
+      "sourceCoordinatesAndTriangles": "exact float32 match",
+      "laterality": "right",
+      "sideEvidence": true,
+      "uniqueMaterial": true
+    },
+    {
+      "model": "spine",
+      "structure": "iliocostalis-lumborum",
+      "elements": [
+        "FJ1527"
+      ],
+      "sourceCoordinatesAndTriangles": "exact float32 match",
+      "laterality": "right",
+      "sideEvidence": true,
+      "uniqueMaterial": true
+    },
+    {
+      "model": "spine",
+      "structure": "iliocostalis-thoracis",
+      "elements": [
+        "FJ1528"
+      ],
+      "sourceCoordinatesAndTriangles": "exact float32 match",
+      "laterality": "right",
+      "sideEvidence": true,
+      "uniqueMaterial": true
+    },
+    {
+      "model": "spine",
+      "structure": "longissimus-thoracis",
+      "elements": [
+        "FJ1535"
+      ],
+      "sourceCoordinatesAndTriangles": "exact float32 match",
+      "laterality": "right",
+      "sideEvidence": true,
+      "uniqueMaterial": true
+    },
+    {
+      "model": "spine",
+      "structure": "spinalis-thoracis",
+      "elements": [
+        "FJ1544"
+      ],
+      "sourceCoordinatesAndTriangles": "exact float32 match",
+      "laterality": "right",
+      "sideEvidence": true,
+      "uniqueMaterial": true
+    },
+    {
+      "model": "spine",
+      "structure": "semispinalis-thoracis",
+      "elements": [
+        "FJ1540"
+      ],
+      "sourceCoordinatesAndTriangles": "exact float32 match",
+      "laterality": "right",
+      "sideEvidence": true,
+      "uniqueMaterial": true
+    }
+  ]
+}

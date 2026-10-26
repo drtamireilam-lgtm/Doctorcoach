@@ -1,6 +1,8 @@
 package com.doctorcoach.mobile
 
 import android.os.Bundle
+import android.content.Intent
+import android.content.ActivityNotFoundException
 import android.net.Uri
 import android.webkit.WebView
 import android.webkit.WebViewClient
@@ -29,6 +31,22 @@ class MainActivity: ComponentActivity() {
         val pin = Uri.parse(BuildConfig.APP_ORIGIN)
         return url.scheme == "https" && url.host == pin.host && (if (url.port == -1) 443 else url.port) == (if (pin.port == -1) 443 else pin.port)
     }
+    private fun entryUrl(launch: Intent?): String = when (launch?.action) {
+        "androidx.health.ACTION_SHOW_PERMISSIONS_RATIONALE", "android.intent.action.VIEW_PERMISSION_USAGE" ->
+            Uri.parse(BuildConfig.APP_ORIGIN).buildUpon().appendPath("privacy-policy").build().toString()
+        else -> BuildConfig.APP_ORIGIN
+    }
+    override fun onNewIntent(intent: Intent) {
+        super.onNewIntent(intent); setIntent(intent); invalidate()
+        web.loadUrl(entryUrl(intent))
+    }
+    private fun openProvider() {
+        try {
+            startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=com.google.android.apps.healthdata")))
+        } catch (_: ActivityNotFoundException) {
+            startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=com.google.android.apps.healthdata")))
+        }
+    }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         reader = StepsReader(this); web = WebView(this); setContentView(web)
@@ -49,7 +67,7 @@ class MainActivity: ComponentActivity() {
                 }
             }
         }
-        web.loadUrl(BuildConfig.APP_ORIGIN)
+        web.loadUrl(entryUrl(intent))
     }
     private fun receive(body: JSONObject) {
         val command = body.optString("command"); val id = body.optString("requestId"); val account = body.optString("accountScope")
@@ -64,7 +82,7 @@ class MainActivity: ComponentActivity() {
                 val result = JSONObject().put("requestId", id).put("accountScope", account).put("platform", "health_connect")
                 try {
                     when {
-                        !reader.available() -> result.put("status", "unavailable")
+                        !reader.available() -> result.put("status", reader.availability())
                         command == "bind" -> result.put("status", "available")
                         !reader.authorized() -> result.put("status", "permission-required")
                         else -> {
@@ -77,7 +95,11 @@ class MainActivity: ComponentActivity() {
                     web.evaluateJavascript("window.dispatchEvent(new CustomEvent('doctorcoach:native-result',{detail:$result}))", null)
             }
         }
-        if (command == "connect" && reader.available()) {
+        if (command == "connect" && reader.availability() == "provider-required") {
+            // A user-initiated connect opens installation/update; it never grants permission itself.
+            try { openProvider() } catch (_: ActivityNotFoundException) { /* Report provider-required below. */ }
+            perform()
+        } else if (command == "connect" && reader.available()) {
             // The callback retains ticket; account invalidation suppresses delivery.
             pendingPermission = perform; permissionLauncher.launch(reader.permissions)
         } else perform()

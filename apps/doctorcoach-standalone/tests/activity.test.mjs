@@ -35,3 +35,31 @@ test('queue and staff summary refuse revoked cardio grant during assembly',async
 test('goal history preserves effective time and targets without historical default',async t=>{const {s}=await connected(t);assert.deepEqual((await s.feed(client)).goals,[]);await s.mutate(client,{accountScope:'client',action:'goal',dailyTarget:7000,weeklyTarget:null,version:0});const feed=await s.mutate(client,{accountScope:'client',action:'goal',dailyTarget:6000,weeklyTarget:null,version:1});assert.deepEqual(feed.goals.map(g=>g.dailyTarget),[7000,6000]);assert.ok(feed.goals.every(g=>Number.isFinite(Date.parse(g.effectiveAt))));});
 
 test('staff projections remove replay fingerprints and mixed cardio feedback',async t=>{const f=await privateFixture(t);const r=f.sql.prepare('SELECT items_json FROM training_sessions WHERE id=?').get(f.session.id);const items=JSON.parse(r.items_json);items[1].cardioResult.actionPayloads={finish:JSON.stringify({heartRate:173,maxHeartRate:191})};items[1].cardioResult.actionIds=['finish'];f.sql.prepare('UPDATE training_sessions SET items_json=?,finish_feedback_json=? WHERE id=?').run(JSON.stringify(items),JSON.stringify({note:'PRIVATE-MIXED-CARDIO-NOTE'}),f.session.id);assert.equal(JSON.stringify(await f.care.bundle(coach,'client')).includes('PRIVATE-MIXED-CARDIO-NOTE'),false);assert.equal(JSON.stringify(await staffReviewQueueStore(f.db).list(coach)).includes('PRIVATE-MIXED-CARDIO-NOTE'),false);await activityStore(f.db).mutate(client,{accountScope:'client',action:'share',coachEmail:coach.email,steps:false,cardio:true,heartRate:false,version:0});const visible=JSON.stringify(await f.care.bundle(coach,'client'));assert.equal(visible.includes('actionPayloads'),false);assert.equal(visible.includes('actionIds'),false);assert.equal(visible.includes('173'),false);});
+
+test('read failure status persists for authorized coach without overwriting observations',async t=>{
+ const {s,c,connect}=await connected(t);await connect();
+ const synced=await s.mutate(client,{accountScope:client.userId,action:'sync',connectionId:c.id,generation:c.generation,revision:1,days:[day(120)]});
+ await s.mutate(client,{accountScope:client.userId,action:'share',coachEmail:coach.email,steps:true,cardio:false,heartRate:false,version:0});
+ const status={accountScope:client.userId,action:'read-status',connectionId:c.id,generation:c.generation,version:synced.connection.version,status:'permission-required'};
+ const failed=await s.mutate(client,status);
+ assert.equal(failed.connection.status,'permission-required');assert.equal(failed.days[0].steps,120);
+ assert.equal(failed.connection.lastSyncAt,synced.connection.lastSyncAt);assert.equal(failed.connection.revision,1);
+ assert.equal((await s.feed(coach,'client')).connection.status,'permission-required');
+ await assert.rejects(()=>s.mutate(client,status),/changed/i);
+ await assert.rejects(()=>s.mutate(stranger,{...status,accountScope:stranger.userId}),/changed/i);
+ await assert.rejects(()=>s.mutate(client,{...status,version:failed.connection.version,status:'connected'}),/status/i);
+ await s.mutate(client,{accountScope:client.userId,action:'disconnect',connectionId:c.id,generation:c.generation});
+ await assert.rejects(()=>s.mutate(client,{...status,version:failed.connection.version}),/changed/i);
+});
+test('unreadable/provider/error statuses retain historical values until a successful replacement',async t=>{
+ const {s,c}=await connected(t);
+ let feed=await s.mutate(client,{accountScope:client.userId,action:'sync',connectionId:c.id,generation:c.generation,revision:1,days:[day(320)]});
+ const lastSuccess=feed.connection.lastSyncAt;
+ for(const status of ['no-readable-data','provider-required','unavailable','error']){
+  feed=await s.mutate(client,{accountScope:client.userId,action:'read-status',connectionId:c.id,generation:c.generation,version:feed.connection.version,status});
+  assert.equal(feed.connection.status,status);assert.equal(feed.days[0].steps,320);
+  assert.equal(feed.connection.lastSyncAt,lastSuccess);assert.equal(feed.connection.revision,1);
+ }
+ feed=await s.mutate(client,{accountScope:client.userId,action:'sync',connectionId:c.id,generation:c.generation,revision:2,days:[day(0)]});
+ assert.equal(feed.connection.status,'connected');assert.equal(feed.days[0].steps,0);
+});

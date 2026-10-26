@@ -1,0 +1,438 @@
+{
+  "spine": [
+    [
+      "cervical-1",
+      "Cervical vertebra 1",
+      "חוליה צווארית 1",
+      "bone",
+      [
+        "FJ3176"
+      ]
+    ],
+    [
+      "cervical-2",
+      "Cervical vertebra 2",
+      "חוליה צווארית 2",
+      "bone",
+      [
+        "FJ3177"
+      ]
+    ],
+    [
+      "cervical-3",
+      "Cervical vertebra 3",
+      "חוליה צווארית 3",
+      "bone",
+      [
+        "FJ3161"
+      ]
+    ],
+    [
+      "cervical-4",
+      "Cervical vertebra 4",
+      "חוליה צווארית 4",
+      "bone",
+      [
+        "FJ3164"
+      ]
+    ],
+    [
+      "cervical-5",
+      "Cervical vertebra 5",
+      "חוליה צווארית 5",
+      "bone",
+      [
+        "FJ3167"
+      ]
+    ],
+    [
+      "cervical-6",
+      "Cervical vertebra 6",
+      "חוליה צווארית 6",
+      "bone",
+      [
+        "FJ3170"
+      ]
+    ],
+    [
+      "cervical-7",
+      "Cervical vertebra 7",
+      "חוליה צווארית 7",
+      "bone",
+      [
+        "FJ3172"
+      ]
+    ],
+    [
+      "thoracic-1",
+      "Thoracic vertebra 1",
+      "חוליה חזית 1",
+      "bone",
+      [
+        "FJ3158"
+      ]
+    ],
+    [
+      "thoracic-2",
+      "Thoracic vertebra 2",
+      "חוליה חזית 2",
+      "bone",
+      [
+        "FJ3160"
+      ]
+    ],
+    [
+      "thoracic-3",
+      "Thoracic vertebra 3",
+      "חוליה חזית 3",
+      "bone",
+      [
+        "FJ3163"
+      ]
+    ],
+    [
+      "thoracic-4",
+      "Thoracic vertebra 4",
+      "חוליה חזית 4",
+      "bone",
+      [
+        "FJ3166"
+      ]
+    ],
+    [
+      "thoracic-5",
+      "Thoracic vertebra 5",
+      "חוליה חזית 5",
+      "bone",
+      [
+        "FJ3169"
+      ]
+    ],
+    [
+      "thoracic-6",
+      "Thoracic vertebra 6",
+      "חוליה חזית 6",
+      "bone",
+      [
+        "FJ3171"
+      ]
+    ],
+    [
+      "thoracic-7",
+      "Thoracic vertebra 7",
+      "חוליה חזית 7",
+      "bone",
+      [
+        "FJ3173"
+      ]
+    ],
+    [
+      "thoracic-8",
+      "Thoracic vertebra 8",
+      "חוליה חזית 8",
+      "bone",
+      [
+        "FJ3174"
+      ]
+    ],
+    [
+      "thoracic-9",
+      "Thoracic vertebra 9",
+      "חוליה חזית 9",
+      "bone",
+      [
+        "FJ3175"
+      ]
+    ],
+    [
+      "thoracic-10",
+      "Thoracic vertebra 10",
+      "חוליה חזית 10",
+      "bone",
+      [
+        "FJ3154"
+      ]
+    ],
+    [
+      "thoracic-11",
+      "Thoracic vertebra 11",
+      "חוליה חזית 11",
+      "bone",
+      [
+        "FJ3155"
+      ]
+    ],
+    [
+      "thoracic-12",
+      "Thoracic vertebra 12",
+      "חוליה חזית 12",
+      "bone",
+      [
+        "FJ3156"
+      ]
+    ],
+    [
+      "lumbar-1",
+      "Lumbar vertebra 1",
+      "חוליה מותנית 1",
+      "bone",
+      [
+        "FJ3157"
+      ]
+    ],
+    [
+      "lumbar-2",
+      "Lumbar vertebra 2",
+      "חוליה מותנית 2",
+      "bone",
+      [
+        "FJ3159"
+      ]
+    ],
+    [
+      "lumbar-3",
+      "Lumbar vertebra 3",
+      "חוליה מותנית 3",
+      "bone",
+      [
+        "FJ3162"
+      ]
+    ],
+    [
+      "lumbar-4",
+      "Lumbar vertebra 4",
+      "חוליה מותנית 4",
+      "bone",
+      [
+        "FJ3165"
+      ]
+    ],
+    [
+      "lumbar-5",
+      "Lumbar vertebra 5",
+      "חוליה מותנית 5",
+      "bone",
+      [
+        "FJ3168"
+      ]
+    ],
+    [
+      "sacrum",
+      "Sacrum",
+      "עצם העצה",
+      "bone",
+      [
+        "FJ3393"
+      ]
+    ],
+    [
+      "hip-bone",
+      "Hip bone — attachment context",
+      "עצם האגן — הקשר לחיבורי השרירים",
+      "bone",
+      [
+        "FJ3152"
+      ]
+    ],
+    [
+      "scapula",
+      "Scapula",
+      "עצם השכמה",
+      "bone",
+      [
+        "FJ3384"
+      ]
+    ],
+    [
+      "clavicle",
+      "Clavicle",
+      "עצם הבריח",
+      "bone",
+      [
+        "FJ3362"
+      ]
+    ],
+    [
+      "rib-1",
+      "Rib 1",
+      "צלע 1",
+      "bone",
+      [
+        "FJ3334"
+      ]
+    ],
+    [
+      "rib-2",
+      "Rib 2",
+      "צלע 2",
+      "bone",
+      [
+        "FJ3336"
+      ]
+    ],
+    [
+      "rib-3",
+      "Rib 3",
+      "צלע 3",
+      "bone",
+      [
+        "FJ3338"
+      ]
+    ],
+    [
+      "rib-4",
+      "Rib 4",
+      "צלע 4",
+      "bone",
+      [
+        "FJ3340"
+      ]
+    ],
+    [
+      "rib-5",
+      "Rib 5",
+      "צלע 5",
+      "bone",
+      [
+        "FJ3342"
+      ]
+    ],
+    [
+      "rib-6",
+      "Rib 6",
+      "צלע 6",
+      "bone",
+      [
+        "FJ3344"
+      ]
+    ],
+    [
+      "rib-7",
+      "Rib 7",
+      "צלע 7",
+      "bone",
+      [
+        "FJ3346"
+      ]
+    ],
+    [
+      "rib-8",
+      "Rib 8",
+      "צלע 8",
+      "bone",
+      [
+        "FJ3347"
+      ]
+    ],
+    [
+      "rib-9",
+      "Rib 9",
+      "צלע 9",
+      "bone",
+      [
+        "FJ3348"
+      ]
+    ],
+    [
+      "rib-10",
+      "Rib 10",
+      "צלע 10",
+      "bone",
+      [
+        "FJ3330"
+      ]
+    ],
+    [
+      "rib-11",
+      "Rib 11",
+      "צלע 11",
+      "bone",
+      [
+        "FJ3331"
+      ]
+    ],
+    [
+      "rib-12",
+      "Rib 12",
+      "צלע 12",
+      "bone",
+      [
+        "FJ3332"
+      ]
+    ],
+    [
+      "trapezius",
+      "Trapezius",
+      "שריר הטרפז",
+      "muscle",
+      [
+        "FJ1520",
+        "FJ1521",
+        "FJ1554"
+      ]
+    ],
+    [
+      "rhomboid-major",
+      "Rhomboid major",
+      "השריר המעוין הגדול",
+      "muscle",
+      [
+        "FJ1536"
+      ]
+    ],
+    [
+      "rhomboid-minor",
+      "Rhomboid minor",
+      "השריר המעוין הקטן",
+      "muscle",
+      [
+        "FJ1537"
+      ]
+    ],
+    [
+      "iliocostalis-lumborum",
+      "Iliocostalis lumborum",
+      "איליוקוסטליס לומבורום",
+      "muscle",
+      [
+        "FJ1527"
+      ]
+    ],
+    [
+      "iliocostalis-thoracis",
+      "Iliocostalis thoracis",
+      "איליוקוסטליס תורציס",
+      "muscle",
+      [
+        "FJ1528"
+      ]
+    ],
+    [
+      "longissimus-thoracis",
+      "Longissimus thoracis",
+      "לונגיסימוס תורציס",
+      "muscle",
+      [
+        "FJ1535"
+      ]
+    ],
+    [
+      "spinalis-thoracis",
+      "Spinalis thoracis",
+      "ספינליס תורציס",
+      "muscle",
+      [
+        "FJ1544"
+      ]
+    ],
+    [
+      "semispinalis-thoracis",
+      "Semispinalis thoracis",
+      "סמיספינליס תורציס",
+      "muscle",
+      [
+        "FJ1540"
+      ]
+    ]
+  ]
+}

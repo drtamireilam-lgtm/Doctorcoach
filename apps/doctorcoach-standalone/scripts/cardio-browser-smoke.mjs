@@ -17,15 +17,20 @@ const executable=process.env.CARDIO_CHROMIUM_PATH;
 const browser=await chromium.launch({headless:true,...(executable?{executablePath:executable}:{})});
 const failures=[];let currentPage,observedErrors=[];
 try{
- for(const language of ['en','he']){
-  const page=await browser.newPage({viewport:{width:390,height:844}});currentPage=page;const errors=[];observedErrors=errors;page.on('pageerror',e=>errors.push(e.message));
-  await page.route('**/api/activity',route=>route.fulfill({contentType:'application/json',body:JSON.stringify({accountScope:'synthetic',connection:null,days:[],goal:null,shares:[],goals:[],summary:{today:null,weeklyAverage:null,observedDays:0}})}));
+ for(const language of ['en','he'])for(const width of [390,1440]){
+  const page=await browser.newPage({viewport:{width,height:width===390?844:1000}});currentPage=page;page.setDefaultTimeout(12000);const errors=[];observedErrors=errors;page.on('pageerror',e=>errors.push(e.message));
+  const externalRequests=[];await page.route('**/*',route=>{if(new URL(route.request().url()).origin!==origin){externalRequests.push(route.request().url());return route.abort();}return route.fallback();});
+  await page.route(origin+'/api/activity',route=>route.fulfill({contentType:'application/json',body:JSON.stringify({accountScope:'synthetic',connection:null,days:[],goal:null,shares:[],goals:[],summary:{today:null,weeklyAverage:null,observedDays:0}})}));
   await page.goto(origin+'/tests/fixtures/cardio-browser.html?lang='+language);
   await page.waitForFunction(lang=>document.documentElement.lang===lang,language);
   assert.equal(await page.locator('html').getAttribute('dir'),language==='en'?'ltr':'rtl');
   await page.getByLabel(language==='en'?'Activity':'סוג פעילות',{exact:true}).selectOption('rowing_machine');
-  await page.getByLabel(language==='en'?'Duration (seconds)':'משך (שניות)',{exact:true}).first().fill('60');
+  await page.getByLabel(language==='en'?'Workout format':'מבנה האימון',{exact:true}).selectOption('intervals');
+  await page.getByLabel(language==='en'?'Rounds of the complete sequence':'סבבים של הרצף המלא',{exact:true}).fill('3');
   await page.getByRole('button',{name:language==='en'?'Save cardio':'שמירת אירובי',exact:true}).click();
+  await page.getByText(language==='en'?'3 rounds of the complete sequence':'3 סבבים של הרצף המלא',{exact:true}).waitFor();
+  await page.getByText(language==='en'?'Prescribed total: 4:30 (270 seconds)':'משך כולל בתוכנית: 4:30 (270 שניות)',{exact:true}).waitFor();
+  const prescribed=page.locator('.cardio-target-summary');await prescribed.getByText(language==='en'?'Prescribed targets':'יעדים שנקבעו',{exact:true}).click();assert.ok((await prescribed.innerText()).includes(language==='en'?'Rest':'מנוחה'));assert.equal(/(?:work|recovery|warmup|cooldown) ·/.test(await prescribed.innerText()),false);
   await page.getByRole('button',{name:language==='en'?'Start cardio':'התחלת אירובי',exact:true}).click();
   await page.getByRole('button',{name:language==='en'?'Pause':'השהיה',exact:true}).click();
   const paused=await page.getByLabel(language==='en'?'Elapsed time':'זמן שחלף',{exact:true}).textContent();
@@ -34,17 +39,34 @@ try{
   assert.equal(await page.getByLabel(language==='en'?'Elapsed time':'זמן שחלף',{exact:true}).textContent(),paused);
   await page.getByRole('button',{name:language==='en'?'Resume':'המשך',exact:true}).click();
   await page.getByRole('button',{name:language==='en'?'Finish cardio and record results':'סיום אירובי ותיעוד ביצוע',exact:true}).click();
+  await page.getByLabel(language==='en'?'Duration (seconds)':'משך (שניות)',{exact:true}).fill('180');
   await page.getByLabel(language==='en'?'Distance (meters)':'מרחק (מטרים)',{exact:true}).fill('500');
   await page.getByLabel(language==='en'?'Pace (seconds/500m)':'קצב (שניות ל־500 מטר)',{exact:true}).fill('120');
+  await page.getByLabel(language==='en'?'Source: Distance (meters)':'מקור: מרחק (מטרים)',{exact:true}).selectOption('device_reported');
   await page.getByRole('button',{name:language==='en'?'Save results':'שמירת הביצוע',exact:true}).click();
+  const initial=await page.evaluate(()=>JSON.parse(sessionStorage.getItem('doctorcoach-synthetic-browser-session')).items[0].cardioResult);assert.equal(initial.metrics.durationSeconds,180);assert.equal(initial.metricSources.distanceMeters,'device_reported');
+  await page.getByRole('button',{name:language==='en'?'Edit results':'עריכת תוצאות',exact:true}).click();
+  await page.getByLabel(language==='en'?'Duration (seconds)':'משך (שניות)',{exact:true}).fill('240');
+  await page.getByLabel(language==='en'?'Distance (meters)':'מרחק (מטרים)',{exact:true}).fill('600');
+  await page.getByLabel(language==='en'?'Source: Distance (meters)':'מקור: מרחק (מטרים)',{exact:true}).selectOption('device_reported');
+  await page.getByRole('button',{name:language==='en'?'Save results':'שמירת הביצוע',exact:true}).click();
+  await page.reload();
+  await page.getByRole('button',{name:language==='en'?'Edit results':'עריכת תוצאות',exact:true}).waitFor();
+  const corrected=await page.evaluate(()=>JSON.parse(sessionStorage.getItem('doctorcoach-synthetic-browser-session')).items[0].cardioResult);assert.equal(corrected.status,'completed');assert.equal(corrected.metrics.durationSeconds,240);assert.equal(corrected.metrics.distanceMeters,600);assert.equal(corrected.metrics.paceSeconds,120);assert.equal(corrected.metricSources.durationSeconds,'manual');assert.equal(corrected.metricSources.distanceMeters,'device_reported');assert.equal(corrected.elapsedSeconds,initial.elapsedSeconds);
+  assert.ok((await page.locator('.cardio-results').innerText()).includes(language==='en'?'Reported from device':'מדווח ממכשיר'));
+  assert.ok((await page.locator('.cardio-results').innerText()).includes('4:00'));
+  await page.getByRole('button',{name:language==='en'?'Edit results':'עריכת תוצאות',exact:true}).click();
+  assert.equal(await page.getByLabel(language==='en'?'Duration (seconds)':'משך (שניות)',{exact:true}).inputValue(),'240');
+  assert.equal(await page.getByLabel(language==='en'?'Source: Distance (meters)':'מקור: מרחק (מטרים)',{exact:true}).inputValue(),'device_reported');
+  await page.getByRole('button',{name:language==='en'?'Back to workout':'חזרה לאימון',exact:true}).click();
   await page.getByRole('heading',{name:language==='en'?'Cardio progress':'התקדמות באירובי',exact:true}).waitFor();
   const total=page.locator('.activity-step-total strong');assert.equal(await total.textContent(),'—');
   await page.getByText(language==='en'?'Connection, goals and sharing':'חיבור, יעד ושיתוף',{exact:true}).click();
   assert.equal(await page.getByRole('button',{name:language==='en'?'Connect health platform':'חיבור פלטפורמת הבריאות',exact:true}).isDisabled(),true);
   assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth>innerWidth),false);
-  await page.screenshot({path:evidence+`/${language}-mobile.png`,fullPage:true});assert.deepEqual(errors,[]);
+  await page.screenshot({path:evidence+`/${language}-${width}.png`,fullPage:true});assert.deepEqual(errors,[]);assert.deepEqual(externalRequests,[]);
   await page.close();
  }
- await writeFile(evidence+'/result.json',JSON.stringify({status:'PASS',languages:['en','he'],width:390,checks:['compose rowing','pace/500m','start/pause/resume','refresh persists pause','finish actual results','missing steps not zero','PWA native requirement','RTL/LTR','no viewport overflow','no browser errors'],synthetic:true},null,2));
- process.stdout.write('PASS: English/Hebrew mobile cardio components, refresh, results and honest disconnected steps. Synthetic local fixture only.\n');
+ await writeFile(evidence+'/result.json',JSON.stringify({status:'PASS',languages:['en','he'],widths:[390,1440],checks:['compose rowing intervals with 3 complete rounds','localized phases and prescribed total','pace/500m','manual results edit and refresh preserve values, sources and original timer','no external requests','start/pause/resume','refresh persists pause','finish actual results','missing steps not zero','PWA native requirement','RTL/LTR','no viewport overflow','no browser errors'],synthetic:true},null,2));
+ process.stdout.write('PASS: English/Hebrew cardio at 390/1440, interval rounds, persisted result corrections/sources, no overflow/external requests. Synthetic local fixture only.\n');
 }catch(error){failures.push(error);if(currentPage&&!currentPage.isClosed()){await currentPage.screenshot({path:evidence+'/failure.png',fullPage:true});process.stderr.write(JSON.stringify({errors:observedErrors,body:await currentPage.locator('body').innerText()})+'\n');}throw error;}finally{await browser.close();await new Promise(resolve=>server.close(resolve));}

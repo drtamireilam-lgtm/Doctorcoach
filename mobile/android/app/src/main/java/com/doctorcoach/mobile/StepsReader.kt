@@ -15,7 +15,12 @@ import org.json.JSONArray
 
 class StepsReader(private val context: Context) {
     val permissions = setOf(HealthPermission.getReadPermission(StepsRecord::class))
-    fun available() = HealthConnectClient.getSdkStatus(context) == HealthConnectClient.SDK_AVAILABLE
+    fun availability(): String = when (HealthConnectClient.getSdkStatus(context)) {
+        HealthConnectClient.SDK_AVAILABLE -> "available"
+        HealthConnectClient.SDK_UNAVAILABLE_PROVIDER_UPDATE_REQUIRED -> "provider-required"
+        else -> "unavailable"
+    }
+    fun available() = availability() == "available"
     private val client by lazy { HealthConnectClient.getOrCreate(context) }
     suspend fun authorized() = client.permissionController.getGrantedPermissions().containsAll(permissions)
     suspend fun readDays(): JSONArray {

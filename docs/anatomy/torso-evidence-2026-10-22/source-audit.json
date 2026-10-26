@@ -1,0 +1,318 @@
+{
+  "status": "source fidelity and mapping checked",
+  "clinicalReview": "pending",
+  "structures": [
+    {
+      "model": "torso",
+      "structure": "sternum",
+      "elements": [
+        "FJ3290",
+        "FJ3178",
+        "FJ3153"
+      ],
+      "sourceCoordinatesAndTriangles": "exact float32 match",
+      "laterality": "midline",
+      "sideEvidence": true,
+      "uniqueMaterial": true
+    },
+    {
+      "model": "torso",
+      "structure": "hip-bone",
+      "elements": [
+        "FJ3152"
+      ],
+      "sourceCoordinatesAndTriangles": "exact float32 match",
+      "laterality": "right",
+      "sideEvidence": true,
+      "uniqueMaterial": true
+    },
+    {
+      "model": "torso",
+      "structure": "scapula",
+      "elements": [
+        "FJ3384"
+      ],
+      "sourceCoordinatesAndTriangles": "exact float32 match",
+      "laterality": "right",
+      "sideEvidence": true,
+      "uniqueMaterial": true
+    },
+    {
+      "model": "torso",
+      "structure": "clavicle",
+      "elements": [
+        "FJ3362"
+      ],
+      "sourceCoordinatesAndTriangles": "exact float32 match",
+      "laterality": "right",
+      "sideEvidence": true,
+      "uniqueMaterial": true
+    },
+    {
+      "model": "torso",
+      "structure": "rib-1",
+      "elements": [
+        "FJ3334"
+      ],
+      "sourceCoordinatesAndTriangles": "exact float32 match",
+      "laterality": "right",
+      "sideEvidence": true,
+      "uniqueMaterial": true
+    },
+    {
+      "model": "torso",
+      "structure": "rib-2",
+      "elements": [
+        "FJ3336"
+      ],
+      "sourceCoordinatesAndTriangles": "exact float32 match",
+      "laterality": "right",
+      "sideEvidence": true,
+      "uniqueMaterial": true
+    },
+    {
+      "model": "torso",
+      "structure": "rib-3",
+      "elements": [
+        "FJ3338"
+      ],
+      "sourceCoordinatesAndTriangles": "exact float32 match",
+      "laterality": "right",
+      "sideEvidence": true,
+      "uniqueMaterial": true
+    },
+    {
+      "model": "torso",
+      "structure": "rib-4",
+      "elements": [
+        "FJ3340"
+      ],
+      "sourceCoordinatesAndTriangles": "exact float32 match",
+      "laterality": "right",
+      "sideEvidence": true,
+      "uniqueMaterial": true
+    },
+    {
+      "model": "torso",
+      "structure": "rib-5",
+      "elements": [
+        "FJ3342"
+      ],
+      "sourceCoordinatesAndTriangles": "exact float32 match",
+      "laterality": "right",
+      "sideEvidence": true,
+      "uniqueMaterial": true
+    },
+    {
+      "model": "torso",
+      "structure": "rib-6",
+      "elements": [
+        "FJ3344"
+      ],
+      "sourceCoordinatesAndTriangles": "exact float32 match",
+      "laterality": "right",
+      "sideEvidence": true,
+      "uniqueMaterial": true
+    },
+    {
+      "model": "torso",
+      "structure": "rib-7",
+      "elements": [
+        "FJ3346"
+      ],
+      "sourceCoordinatesAndTriangles": "exact float32 match",
+      "laterality": "right",
+      "sideEvidence": true,
+      "uniqueMaterial": true
+    },
+    {
+      "model": "torso",
+      "structure": "rib-8",
+      "elements": [
+        "FJ3347"
+      ],
+      "sourceCoordinatesAndTriangles": "exact float32 match",
+      "laterality": "right",
+      "sideEvidence": true,
+      "uniqueMaterial": true
+    },
+    {
+      "model": "torso",
+      "structure": "rib-9",
+      "elements": [
+        "FJ3348"
+      ],
+      "sourceCoordinatesAndTriangles": "exact float32 match",
+      "laterality": "right",
+      "sideEvidence": true,
+      "uniqueMaterial": true
+    },
+    {
+      "model": "torso",
+      "structure": "rib-10",
+      "elements": [
+        "FJ3330"
+      ],
+      "sourceCoordinatesAndTriangles": "exact float32 match",
+      "laterality": "right",
+      "sideEvidence": true,
+      "uniqueMaterial": true
+    },
+    {
+      "model": "torso",
+      "structure": "rib-11",
+      "elements": [
+        "FJ3331"
+      ],
+      "sourceCoordinatesAndTriangles": "exact float32 match",
+      "laterality": "right",
+      "sideEvidence": true,
+      "uniqueMaterial": true
+    },
+    {
+      "model": "torso",
+      "structure": "rib-12",
+      "elements": [
+        "FJ3332"
+      ],
+      "sourceCoordinatesAndTriangles": "exact float32 match",
+      "laterality": "right",
+      "sideEvidence": true,
+      "uniqueMaterial": true
+    },
+    {
+      "model": "torso",
+      "structure": "humerus",
+      "elements": [
+        "FJ3368"
+      ],
+      "sourceCoordinatesAndTriangles": "exact float32 match",
+      "laterality": "right",
+      "sideEvidence": true,
+      "uniqueMaterial": true
+    },
+    {
+      "model": "torso",
+      "structure": "costal-cartilage-1",
+      "elements": [
+        "FJ3333"
+      ],
+      "sourceCoordinatesAndTriangles": "exact float32 match",
+      "laterality": "right",
+      "sideEvidence": true,
+      "uniqueMaterial": true
+    },
+    {
+      "model": "torso",
+      "structure": "costal-cartilage-2",
+      "elements": [
+        "FJ3335"
+      ],
+      "sourceCoordinatesAndTriangles": "exact float32 match",
+      "laterality": "right",
+      "sideEvidence": true,
+      "uniqueMaterial": true
+    },
+    {
+      "model": "torso",
+      "structure": "costal-cartilage-3",
+      "elements": [
+        "FJ3337"
+      ],
+      "sourceCoordinatesAndTriangles": "exact float32 match",
+      "laterality": "right",
+      "sideEvidence": true,
+      "uniqueMaterial": true
+    },
+    {
+      "model": "torso",
+      "structure": "costal-cartilage-4",
+      "elements": [
+        "FJ3339"
+      ],
+      "sourceCoordinatesAndTriangles": "exact float32 match",
+      "laterality": "right",
+      "sideEvidence": true,
+      "uniqueMaterial": true
+    },
+    {
+      "model": "torso",
+      "structure": "costal-cartilage-5",
+      "elements": [
+        "FJ3341"
+      ],
+      "sourceCoordinatesAndTriangles": "exact float32 match",
+      "laterality": "right",
+      "sideEvidence": true,
+      "uniqueMaterial": true
+    },
+    {
+      "model": "torso",
+      "structure": "costal-cartilage-6",
+      "elements": [
+        "FJ3343"
+      ],
+      "sourceCoordinatesAndTriangles": "exact float32 match",
+      "laterality": "right",
+      "sideEvidence": true,
+      "uniqueMaterial": true
+    },
+    {
+      "model": "torso",
+      "structure": "costal-cartilage-7",
+      "elements": [
+        "FJ3345"
+      ],
+      "sourceCoordinatesAndTriangles": "exact float32 match",
+      "laterality": "right",
+      "sideEvidence": true,
+      "uniqueMaterial": true
+    },
+    {
+      "model": "torso",
+      "structure": "pectoralis-major",
+      "elements": [
+        "FJ1447",
+        "FJ1464",
+        "FJ1446"
+      ],
+      "sourceCoordinatesAndTriangles": "exact float32 match",
+      "laterality": "right",
+      "sideEvidence": true,
+      "uniqueMaterial": true
+    },
+    {
+      "model": "torso",
+      "structure": "pectoralis-minor",
+      "elements": [
+        "FJ1456"
+      ],
+      "sourceCoordinatesAndTriangles": "exact float32 match",
+      "laterality": "right",
+      "sideEvidence": true,
+      "uniqueMaterial": true
+    },
+    {
+      "model": "torso",
+      "structure": "serratus-anterior",
+      "elements": [
+        "FJ1459"
+      ],
+      "sourceCoordinatesAndTriangles": "exact float32 match",
+      "laterality": "right",
+      "sideEvidence": true,
+      "uniqueMaterial": true
+    },
+    {
+      "model": "torso",
+      "structure": "external-oblique",
+      "elements": [
+        "FJ1452"
+      ],
+      "sourceCoordinatesAndTriangles": "exact float32 match",
+      "laterality": "right",
+      "sideEvidence": true,
+      "uniqueMaterial": true
+    }
+  ]
+}

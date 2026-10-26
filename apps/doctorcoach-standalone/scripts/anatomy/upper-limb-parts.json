@@ -1,0 +1,590 @@
+{
+  "arm": [
+    [
+      "scapula",
+      "Scapula",
+      "עצם השכמה",
+      "bone",
+      [
+        "FJ3384"
+      ]
+    ],
+    [
+      "humerus",
+      "Humerus",
+      "עצם הזרוע",
+      "bone",
+      [
+        "FJ3368"
+      ]
+    ],
+    [
+      "radius",
+      "Radius",
+      "עצם החישור",
+      "bone",
+      [
+        "FJ3349"
+      ]
+    ],
+    [
+      "ulna",
+      "Ulna",
+      "עצם הגומד",
+      "bone",
+      [
+        "FJ3391"
+      ]
+    ],
+    [
+      "biceps-brachii",
+      "Biceps brachii",
+      "השריר הדו־ראשי של הזרוע",
+      "muscle",
+      [
+        "FJ1512",
+        "FJ1478"
+      ]
+    ],
+    [
+      "triceps-brachii",
+      "Triceps brachii",
+      "השריר התלת־ראשי של הזרוע",
+      "muscle",
+      [
+        "FJ1477",
+        "FJ1479",
+        "FJ1480"
+      ]
+    ],
+    [
+      "brachialis",
+      "Brachialis",
+      "ברכיאליס",
+      "muscle",
+      [
+        "FJ1486"
+      ]
+    ],
+    [
+      "brachioradialis",
+      "Brachioradialis",
+      "ברכיורדיאליס",
+      "muscle",
+      [
+        "FJ1487"
+      ]
+    ],
+    [
+      "coracobrachialis",
+      "Coracobrachialis",
+      "קורקוברכיאליס",
+      "muscle",
+      [
+        "FJ1488"
+      ]
+    ]
+  ],
+  "forearm": [
+    [
+      "humerus",
+      "Humerus",
+      "עצם הזרוע",
+      "bone",
+      [
+        "FJ3368"
+      ]
+    ],
+    [
+      "radius",
+      "Radius",
+      "עצם החישור",
+      "bone",
+      [
+        "FJ3349"
+      ]
+    ],
+    [
+      "ulna",
+      "Ulna",
+      "עצם הגומד",
+      "bone",
+      [
+        "FJ3391"
+      ]
+    ],
+    [
+      "brachioradialis",
+      "Brachioradialis",
+      "ברכיורדיאליס",
+      "muscle",
+      [
+        "FJ1487"
+      ]
+    ],
+    [
+      "flexor-carpi-radialis",
+      "Flexor carpi radialis",
+      "פלקסור קרפי רדיאליס",
+      "muscle",
+      [
+        "FJ1496"
+      ]
+    ],
+    [
+      "flexor-carpi-ulnaris",
+      "Flexor carpi ulnaris",
+      "פלקסור קרפי אולנריס",
+      "muscle",
+      [
+        "FJ1473",
+        "FJ1518"
+      ]
+    ],
+    [
+      "extensor-carpi-radialis-brevis",
+      "Extensor carpi radialis brevis",
+      "אקסטנסור קרפי רדיאליס ברביס",
+      "muscle",
+      [
+        "FJ1489"
+      ]
+    ],
+    [
+      "extensor-carpi-radialis-longus",
+      "Extensor carpi radialis longus",
+      "אקסטנסור קרפי רדיאליס לונגוס",
+      "muscle",
+      [
+        "FJ1490"
+      ]
+    ],
+    [
+      "extensor-carpi-ulnaris",
+      "Extensor carpi ulnaris",
+      "אקסטנסור קרפי אולנריס",
+      "muscle",
+      [
+        "FJ1472",
+        "FJ1517"
+      ]
+    ],
+    [
+      "pronator-teres",
+      "Pronator teres",
+      "פרונטור טרס",
+      "muscle",
+      [
+        "FJ1474",
+        "FJ1516"
+      ]
+    ],
+    [
+      "pronator-quadratus",
+      "Pronator quadratus",
+      "פרונטור קוואדרטוס",
+      "muscle",
+      [
+        "FJ1503"
+      ]
+    ],
+    [
+      "supinator",
+      "Supinator",
+      "סופינטור",
+      "muscle",
+      [
+        "FJ1505"
+      ]
+    ]
+  ],
+  "hand": [
+    [
+      "scaphoid",
+      "Scaphoid",
+      "עצם הסירה",
+      "bone",
+      [
+        "FJ3383"
+      ]
+    ],
+    [
+      "lunate",
+      "Lunate",
+      "עצם הסהר",
+      "bone",
+      [
+        "FJ3374"
+      ]
+    ],
+    [
+      "triquetrum",
+      "Triquetrum",
+      "העצם המשולשת",
+      "bone",
+      [
+        "FJ3390"
+      ]
+    ],
+    [
+      "pisiform",
+      "Pisiform",
+      "עצם העדשה",
+      "bone",
+      [
+        "FJ3382"
+      ]
+    ],
+    [
+      "trapezium",
+      "Trapezium",
+      "עצם הטרפז",
+      "bone",
+      [
+        "FJ3388"
+      ]
+    ],
+    [
+      "trapezoid",
+      "Trapezoid",
+      "העצם דמוית הטרפז",
+      "bone",
+      [
+        "FJ3389"
+      ]
+    ],
+    [
+      "capitate",
+      "Capitate",
+      "העצם הגדולה",
+      "bone",
+      [
+        "FJ3361"
+      ]
+    ],
+    [
+      "hamate",
+      "Hamate",
+      "עצם האנקול",
+      "bone",
+      [
+        "FJ3367"
+      ]
+    ],
+    [
+      "metacarpal-1",
+      "Metacarpal 1",
+      "עצם מסרק 1",
+      "bone",
+      [
+        "FJ3350"
+      ]
+    ],
+    [
+      "metacarpal-2",
+      "Metacarpal 2",
+      "עצם מסרק 2",
+      "bone",
+      [
+        "FJ3352"
+      ]
+    ],
+    [
+      "metacarpal-3",
+      "Metacarpal 3",
+      "עצם מסרק 3",
+      "bone",
+      [
+        "FJ3354"
+      ]
+    ],
+    [
+      "metacarpal-4",
+      "Metacarpal 4",
+      "עצם מסרק 4",
+      "bone",
+      [
+        "FJ3356"
+      ]
+    ],
+    [
+      "metacarpal-5",
+      "Metacarpal 5",
+      "עצם מסרק 5",
+      "bone",
+      [
+        "FJ3358"
+      ]
+    ],
+    [
+      "proximal-phalanx-1",
+      "Proximal phalanx, digit 1",
+      "גליל מקורב, אצבע 1",
+      "bone",
+      [
+        "FJ3327"
+      ]
+    ],
+    [
+      "distal-phalanx-1",
+      "Distal phalanx, digit 1",
+      "גליל מרוחק, אצבע 1",
+      "bone",
+      [
+        "FJ3198"
+      ]
+    ],
+    [
+      "proximal-phalanx-2",
+      "Proximal phalanx, digit 2",
+      "גליל מקורב, אצבע 2",
+      "bone",
+      [
+        "FJ3322"
+      ]
+    ],
+    [
+      "middle-phalanx-2",
+      "Middle phalanx, digit 2",
+      "גליל אמצעי, אצבע 2",
+      "bone",
+      [
+        "FJ3303"
+      ]
+    ],
+    [
+      "distal-phalanx-2",
+      "Distal phalanx, digit 2",
+      "גליל מרוחק, אצבע 2",
+      "bone",
+      [
+        "FJ3193"
+      ]
+    ],
+    [
+      "proximal-phalanx-3",
+      "Proximal phalanx, digit 3",
+      "גליל מקורב, אצבע 3",
+      "bone",
+      [
+        "FJ3325"
+      ]
+    ],
+    [
+      "middle-phalanx-3",
+      "Middle phalanx, digit 3",
+      "גליל אמצעי, אצבע 3",
+      "bone",
+      [
+        "FJ3306"
+      ]
+    ],
+    [
+      "distal-phalanx-3",
+      "Distal phalanx, digit 3",
+      "גליל מרוחק, אצבע 3",
+      "bone",
+      [
+        "FJ3196"
+      ]
+    ],
+    [
+      "proximal-phalanx-4",
+      "Proximal phalanx, digit 4",
+      "גליל מקורב, אצבע 4",
+      "bone",
+      [
+        "FJ3326"
+      ]
+    ],
+    [
+      "middle-phalanx-4",
+      "Middle phalanx, digit 4",
+      "גליל אמצעי, אצבע 4",
+      "bone",
+      [
+        "FJ3292"
+      ]
+    ],
+    [
+      "distal-phalanx-4",
+      "Distal phalanx, digit 4",
+      "גליל מרוחק, אצבע 4",
+      "bone",
+      [
+        "FJ3197"
+      ]
+    ],
+    [
+      "proximal-phalanx-5",
+      "Proximal phalanx, digit 5",
+      "גליל מקורב, אצבע 5",
+      "bone",
+      [
+        "FJ3323"
+      ]
+    ],
+    [
+      "middle-phalanx-5",
+      "Middle phalanx, digit 5",
+      "גליל אמצעי, אצבע 5",
+      "bone",
+      [
+        "FJ3304"
+      ]
+    ],
+    [
+      "distal-phalanx-5",
+      "Distal phalanx, digit 5",
+      "גליל מרוחק, אצבע 5",
+      "bone",
+      [
+        "FJ3194"
+      ]
+    ],
+    [
+      "adductor-pollicis",
+      "Adductor pollicis",
+      "אדקטור פוליסיס",
+      "muscle",
+      [
+        "FJ1481",
+        "FJ1515"
+      ]
+    ],
+    [
+      "opponens-pollicis",
+      "Opponens pollicis",
+      "אופוננס פוליסיס",
+      "muscle",
+      [
+        "FJ1501"
+      ]
+    ],
+    [
+      "abductor-pollicis-brevis",
+      "Abductor pollicis brevis",
+      "אבדקטור פוליסיס ברביס",
+      "muscle",
+      [
+        "FJ1483"
+      ]
+    ]
+  ],
+  "shoulder": [
+    [
+      "clavicle",
+      "Clavicle",
+      "עצם הבריח",
+      "bone",
+      [
+        "FJ3362"
+      ]
+    ],
+    [
+      "scapula",
+      "Scapula",
+      "עצם השכמה",
+      "bone",
+      [
+        "FJ3384"
+      ]
+    ],
+    [
+      "humerus",
+      "Humerus",
+      "עצם הזרוע",
+      "bone",
+      [
+        "FJ3368"
+      ]
+    ],
+    [
+      "deltoid",
+      "Deltoid",
+      "דלתואיד",
+      "muscle",
+      [
+        "FJ1467",
+        "FJ1468",
+        "FJ1513"
+      ]
+    ],
+    [
+      "supraspinatus",
+      "Supraspinatus",
+      "סופרספינטוס",
+      "muscle",
+      [
+        "FJ1506"
+      ]
+    ],
+    [
+      "infraspinatus",
+      "Infraspinatus",
+      "אינפרספינטוס",
+      "muscle",
+      [
+        "FJ1500"
+      ]
+    ],
+    [
+      "subscapularis",
+      "Subscapularis",
+      "סאבסקפולריס",
+      "muscle",
+      [
+        "FJ1504"
+      ]
+    ],
+    [
+      "teres-minor",
+      "Teres minor",
+      "טרס מינור",
+      "muscle",
+      [
+        "FJ1508"
+      ]
+    ],
+    [
+      "teres-major",
+      "Teres major",
+      "טרס מייג׳ור",
+      "muscle",
+      [
+        "FJ1507"
+      ]
+    ],
+    [
+      "trapezius",
+      "Trapezius",
+      "טרפזיוס",
+      "muscle",
+      [
+        "FJ1520",
+        "FJ1521",
+        "FJ1554"
+      ]
+    ],
+    [
+      "serratus-anterior",
+      "Serratus anterior",
+      "סרטוס אנטריור",
+      "muscle",
+      [
+        "FJ1459"
+      ]
+    ],
+    [
+      "pectoralis-major",
+      "Pectoralis major",
+      "פקטורליס מייג׳ור",
+      "muscle",
+      [
+        "FJ1447",
+        "FJ1446",
+        "FJ1464"
+      ]
+    ]
+  ]
+}

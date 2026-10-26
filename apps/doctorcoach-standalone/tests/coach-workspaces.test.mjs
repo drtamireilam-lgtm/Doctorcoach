@@ -55,3 +55,21 @@ test('workspace overview stays within Worker query and bind limits for a full 50
 test('partially recorded assignments are not treated as successful or exposed as active programs',async t=>{
  const f=await fixture(t);await join(f);const p={id:randomUUID(),title:'תוכנית שלא הושלמה',items:[{...defaultPrescription('bench'),targetRpe:8}]},id='workspace-'+p.id;f.sql.prepare('INSERT INTO workspace_programs(id,workspace_id,client_id,author_name,title,items_json,created_at) VALUES(?,?,?,?,?,?,?)').run(id,f.w.id,client.userId,profile.name,p.title,JSON.stringify(p.items),new Date().toISOString());f.sql.prepare("UPDATE training_access SET mode='coached',program_id=? WHERE user_id=?").run(id,client.userId);assert.equal((await trainingAccess(f.db,client.userId,config)).canStart,false);assert.equal((await f.s.bundle(ext,f.w.id,client.userId)).programs.length,0);await assert.rejects(()=>f.s.assign(ext,f.w.id,client.userId,p),e=>e.status===409);
 });
+
+test('owner bundle work-set statistics exclude preparation, embedded warmups and unfinished sessions',async t=>{
+ const f=await fixture(t);await join(f);
+ await f.s.assign(ext,f.w.id,client.userId,{id:randomUUID(),title:'Work and preparation metrics',items:[
+  {...defaultPrescription('bench'),sets:1,warmupSets:[{amount:5,weight:10}]},
+  {...defaultPrescription('goblet'),sets:1,workoutSection:'warmup'},
+  {...defaultPrescription('wall-slide'),sets:1,workoutSection:'stretch'},
+ ]});
+ const training=trainingStore(f.db,config);let s=await training.start(client.userId,{requestId:randomUUID(),before:0});
+ s=await training.patch(client.userId,{id:s.id,version:s.version,action:'warmupSet',exerciseId:'bench',setIndex:0,done:true,amount:5,weight:10});
+ for(const exerciseId of ['bench','goblet','wall-slide'])s=await training.patch(client.userId,{id:s.id,version:s.version,action:'set',exerciseId,setIndex:0,done:true,amount:5,weight:20});
+ s=await training.patch(client.userId,{id:s.id,version:s.version,action:'finish',after:0});
+ let bundle=await f.s.bundle(ext,f.w.id,client.userId);assert.equal(bundle.training.history[0].completedSets,3);assert.equal(bundle.training.stats.sets,1);assert.equal(bundle.training.stats.total,1);
+ let active=await training.start(client.userId,{requestId:randomUUID(),before:0});active=await training.patch(client.userId,{id:active.id,version:active.version,action:'set',exerciseId:'bench',setIndex:0,done:true,amount:5,weight:20});
+ bundle=await f.s.bundle(ext,f.w.id,client.userId);assert.equal(bundle.training.active.completedSets,1);assert.equal(bundle.training.stats.sets,1);
+ await training.patch(client.userId,{id:active.id,version:active.version,action:'cancel'});bundle=await f.s.bundle(ext,f.w.id,client.userId);assert.equal(bundle.training.stats.sets,1);assert.equal(bundle.training.stats.total,1);
+ assert.equal(bundle.training.stats.sets,(await training.feed(client.userId)).stats.sets);
+});

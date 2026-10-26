@@ -1,0 +1,93 @@
+import {chromium} from '@playwright/test';
+import assert from 'node:assert/strict';
+import {mkdir,writeFile} from 'node:fs/promises';
+import {resolve} from 'node:path';
+const base=process.env.DC_TEST_URL??'http://localhost:5173';
+const evidence=resolve(process.env.DC_EVIDENCE_DIR??'../../../../outputs/clinical-learning');
+await mkdir(evidence,{recursive:true});
+const browser=await chromium.launch({executablePath:process.env.ANATOMY_CHROMIUM??'C:/Program Files/Google/Chrome/Application/chrome.exe',headless:true,args:['--no-sandbox','--enable-unsafe-swiftshader']});
+const checks=[],errors=[];
+try{
+ const page=await browser.newPage({viewport:{width:1440,height:1000}});
+ let fixtureAppearance={mode:'dark',palette:'neutral'},fixtureVersion=0;
+ const appearanceFixture=process.env.DC_TEST_APPEARANCE_FIXTURE==='true';
+ if(appearanceFixture)await page.route('**/api/preferences/appearance',async route=>{
+  if(route.request().method()==='POST'){const body=route.request().postDataJSON();assert.equal(body.expectedOwnerId,'clinical-browser-fixture');assert.equal(body.version,fixtureVersion);fixtureAppearance=body.appearance;fixtureVersion++;}
+  await route.fulfill({status:200,contentType:'application/json',body:JSON.stringify({ownerId:'clinical-browser-fixture',version:fixtureVersion,appearance:fixtureAppearance})});
+ });
+ page.setDefaultTimeout(45000);
+ page.setDefaultNavigationTimeout(120000);
+ page.on('pageerror',e=>errors.push(e.message));
+ await page.goto(base+'/?lang=en#learn?section=physiology',{waitUntil:'domcontentloaded'});
+ const nav=page.getByRole('navigation',{name:'Learning sections',exact:true});
+ await nav.getByRole('link',{name:'Physiology',exact:true}).waitFor();
+ assert.equal(await nav.getByRole('link').count(),3);
+ await page.getByRole('heading',{name:'ATP and energy systems',exact:true}).waitFor();
+ await page.locator('.dc-splash').waitFor({state:'hidden'});
+ await page.screenshot({path:resolve(evidence,'en-desktop-physiology.png'),fullPage:true});
+ checks.push('three internal sections; physiology direct route');
+ await page.getByRole('link',{name:'Read: ATP and energy systems',exact:true}).click();
+ await page.getByRole('heading',{name:'ATP and energy systems',level:2}).waitFor();
+ assert.equal(await page.locator(':focus').getAttribute('id'),'article-atp');
+ await page.getByRole('navigation',{name:'Related learning'}).getByRole('link',{name:'Creatine',exact:true}).click();
+ await page.getByRole('heading',{name:'Creatine',level:2}).waitFor();
+ assert.equal(await nav.getByRole('link',{name:'Supplements',exact:true}).getAttribute('aria-current'),'page');
+ await page.getByRole('heading',{name:'Risks and side effects'}).waitFor();
+ await page.getByRole('heading',{name:'Interactions'}).waitFor();
+ await page.reload();await page.getByRole('heading',{name:'Creatine',level:2}).waitFor();
+ await page.goBack();await page.getByRole('heading',{name:'ATP and energy systems',level:2}).waitFor();
+ checks.push('physiology/supplement cross-link, refresh and browser back');
+ await nav.getByRole('link',{name:'Supplements',exact:true}).click();
+ await page.getByRole('link',{name:'Read: Caffeine',exact:true}).click();
+ const details=page.locator('details.clinical-details');
+ await details.locator('summary').focus();await page.keyboard.press('Enter');
+ assert.equal(await details.getAttribute('open'),'');
+ checks.push('native details usable with keyboard');
+ await page.screenshot({path:resolve(evidence,'en-desktop-caffeine.png'),fullPage:true});
+ for(const [lang,width] of [['he',390],['en',390],['he',1440]]){
+  await page.setViewportSize({width,height:950});
+  await page.goto(base+'/?lang='+lang+'#learn?article=protein');
+  await page.getByRole('heading',{name:lang==='he'?'אבקת חלבון':'Protein powder',level:2}).waitFor();
+  assert.equal(await page.locator('html').getAttribute('dir'),lang==='he'?'rtl':'ltr');
+  assert.ok(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1),'horizontal overflow');
+  await page.screenshot({path:resolve(evidence,lang+'-'+width+'-protein.png'),fullPage:true});
+ }
+ checks.push('Hebrew RTL and English LTR, mobile/desktop, no horizontal overflow');
+ await page.setViewportSize({width:1440,height:1000});
+ await page.goto(base+'/?lang=en#learn?article=rpe');
+ await page.getByRole('heading',{name:/RPE, RIR/}).first().waitFor();
+ await page.goto(base+'/?lang=en#learn?region=shoulder&muscle=deltoid');
+ await page.locator('.anatomy-workspace').waitFor();
+ checks.push('legacy RPE and atlas deep link preserved');
+ await page.screenshot({path:resolve(evidence,'en-desktop-atlas.png'),fullPage:true});
+ await page.goto(base+'/?lang=en#nutrition');
+ await page.getByRole('heading',{name:'Nutrition care and medical coordination'}).first().waitFor();
+ await page.getByText('Future nutrition pathways',{exact:true}).first().click();
+ await page.getByText('Planned — not currently available', {exact:true}).first().waitFor();
+ checks.push('nutrition responsibilities and planned pathways visible before sign-in');
+ await page.screenshot({path:resolve(evidence,'en-desktop-nutrition.png'),fullPage:true});
+ assert.deepEqual(errors,[],'browser JavaScript errors');
+ checks.push('no browser JavaScript errors');
+ if(appearanceFixture){
+  await page.goto(base+'/?lang=en#learn?article=creatine',{waitUntil:'domcontentloaded'});
+  await page.getByRole('heading',{name:'Creatine',level:2}).waitFor();
+  await page.locator('.theme-toggle').click();
+  await page.waitForFunction(()=>document.documentElement.classList.contains('light')&&document.documentElement.dataset.palette==='neutral');
+  await page.reload({waitUntil:'domcontentloaded'});
+  await page.waitForFunction(()=>document.documentElement.classList.contains('light')&&document.documentElement.dataset.palette==='neutral');
+  assert.equal(fixtureAppearance.mode,'light');
+  assert.equal(await page.locator('html').getAttribute('data-palette'),'neutral');
+  await page.screenshot({path:resolve(evidence,'en-desktop-creatine-light.png'),fullPage:true});
+  await page.setViewportSize({width:390,height:950});
+  await page.goto(base+'/?lang=he#learn?section=physiology',{waitUntil:'domcontentloaded'});
+  await page.getByRole('heading',{name:'פיזיולוגיה',level:1}).waitFor();
+  await page.screenshot({path:resolve(evidence,'he-mobile-physiology-light.png'),fullPage:true});
+  await page.locator('.theme-toggle').click();
+  await page.waitForFunction(()=>document.documentElement.classList.contains('dark')&&document.documentElement.dataset.palette==='neutral');
+  await page.reload({waitUntil:'domcontentloaded'});
+  await page.waitForFunction(()=>document.documentElement.classList.contains('dark')&&document.documentElement.dataset.palette==='neutral');
+  checks.push('light/dark toggle and palette survive refresh using isolated appearance API fixture (no account writes)');
+ }
+ console.log(JSON.stringify({base,checks,errors},null,2));
+ await writeFile(resolve(evidence,'checks.json'),JSON.stringify({base,checks,errors},null,2));
+}finally{await browser.close();}

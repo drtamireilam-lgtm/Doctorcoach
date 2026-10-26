@@ -1,5 +1,5 @@
 import {activityStore} from './activity-store.ts';
-import {TrainingError} from './training.ts';
+import {TrainingError,workCompletion,type TrainingSession} from './training.ts';
 import type {StaffIdentity} from './staff.ts';
 export async function activityPrivacy(db:D1Database,user:StaffIdentity,owner:string){
  const store=activityStore(db),scopes=await store.sharedScopes(user,owner);
@@ -8,7 +8,7 @@ export async function activityPrivacy(db:D1Database,user:StaffIdentity,owner:str
   if(!value||typeof value!=='object')return value;
   const result:Record<string,unknown>={};for(const [key,v] of Object.entries(value)){if(user.userId!==owner&&['actionPayloads','actionIds'].includes(key))continue;if(!scopes.heartRate&&/heart.?rate/i.test(key))continue;if(!scopes.cardio&&key==='finishFeedback'&&'items' in value&&Array.isArray(value.items)&&value.items.some(i=>i?.exerciseId?.startsWith('cardio:')))continue;result[key]=clean(v);}
   if(!scopes.cardio&&Array.isArray(result.history)&&result.stats&&typeof result.stats==='object'){
-   const history=result.history as {status:string;finishedAt?:string;startedAt:string;completedSets:number}[];const completed=history.filter(s=>s.status==='completed');result.stats={total:completed.length,week:completed.filter(s=>(s.finishedAt??s.startedAt)>=new Date(Date.now()-7*86400000).toISOString()).length,sets:completed.reduce((n,s)=>n+s.completedSets,0)};
+   const history=result.history as TrainingSession[];const completed=history.filter(s=>s.status==='completed');result.stats={total:completed.length,week:completed.filter(s=>(s.finishedAt??s.startedAt)>=new Date(Date.now()-7*86400000).toISOString()).length,sets:completed.reduce((n,s)=>n+workCompletion(s.items),0)};
   }
   if(result.active&&typeof result.active==='object'&&'items' in result.active&&Array.isArray(result.active.items)&&!result.active.items.length)result.active=null;
   return result;

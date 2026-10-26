@@ -12,12 +12,12 @@ export function workoutNavigation(){
 }
 
 import type {TrainingSession,SessionExercise} from './training.ts';
-import {workoutGroups} from './workout-sections.ts';
+import {workoutSection} from './workout-sections.ts';
 import {planItemKey} from './workout-days.ts';
 export const workoutExerciseAnchor=(sessionId:string,item:SessionExercise)=>`workout-exercise-${encodeURIComponent(sessionId)}-${encodeURIComponent(planItemKey(item))}`;
 export const workoutSetAnchor=(sessionId:string,item:SessionExercise,index:number)=>`${workoutExerciseAnchor(sessionId,item)}-set-${index}`;
 export function workoutNavigationTargets(session:TrainingSession){
- const items=workoutGroups(session.items).flatMap(group=>group.items);
+ const items=[...session.items.filter(item=>workoutSection(item)!=='main'),...session.items.filter(item=>workoutSection(item)==='main')];
  const pending=items.map(item=>({item,index:item.results.findIndex(set=>!set.done)})).find(target=>target.index>=0)??null;
  return {items,pending};
 }

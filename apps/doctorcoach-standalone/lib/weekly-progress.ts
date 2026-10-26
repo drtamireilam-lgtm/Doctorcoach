@@ -1,3 +1,6 @@
+import {performedCardioSeconds} from './cardio.ts';
+import {hasTotalLoad} from './load-units.ts';
+import {workoutSection} from './workout-sections.ts';
 import {currentWeek} from './care.ts';
 import {estimated1RM,type TrainingSession} from './training.ts';
 import type {WellnessRecord} from './wellness.ts';
@@ -13,10 +16,10 @@ export function weeklyProgress(sessions:TrainingSession[],records:WellnessRecord
   // Readiness snapshots are immutable; use each day once, preferring an explicit report.
   const readinessDays=new Map(readiness.map(r=>[r.day,r.data]));
   for(const s of completed)if(s.readiness&&inWeek(s.readiness.day)&&!readinessDays.has(s.readiness.day))readinessDays.set(s.readiness.day,s.readiness.data);
-  const sets=completed.flatMap(s=>s.items.filter(i=>!i.cardio).flatMap(i=>i.results.filter(r=>r.done).map(r=>({r,i}))));
+  const sets=completed.flatMap(s=>s.items.filter(i=>!i.cardio&&workoutSection(i)==='main').flatMap(i=>i.results.filter(r=>r.done).map(r=>({r,i}))));
   const cardioItems=completed.flatMap(s=>s.items.filter(i=>i.cardio&&i.cardioResult?.status==='completed'));
-  const cardio={sessions:completed.filter(s=>s.items.some(i=>i.cardioResult?.status==='completed')).length,minutes:cardioItems.reduce((n,i)=>n+(i.cardioResult?.elapsedSeconds??0)/60,0),distanceMeters:cardioItems.some(i=>i.cardioResult?.metrics.distanceMeters!==undefined)?cardioItems.reduce((n,i)=>n+(i.cardioResult?.metrics.distanceMeters??0),0):null,averageRpe:average(cardioItems.map(i=>i.cardioResult?.metrics.rpe).filter(numeric)),activities:[...new Set(cardioItems.map(i=>i.cardio!.activityId))].map(activityId=>{const rows=cardioItems.filter(i=>i.cardio!.activityId===activityId);return {activityId,sessions:rows.length,minutes:rows.reduce((n,i)=>n+i.cardioResult!.elapsedSeconds/60,0),distanceMeters:rows.some(i=>i.cardioResult!.metrics.distanceMeters!==undefined)?rows.reduce((n,i)=>n+(i.cardioResult!.metrics.distanceMeters??0),0):null};})};
-  const loaded=sets.filter(({r,i})=>i.unit==='reps'&&numeric(r.weight)&&numeric(r.amount));
+  const cardio={sessions:completed.filter(s=>s.items.some(i=>i.cardioResult?.status==='completed')).length,minutes:cardioItems.reduce((n,i)=>n+(i.cardioResult?performedCardioSeconds(i.cardioResult):0)/60,0),distanceMeters:cardioItems.some(i=>i.cardioResult?.metrics.distanceMeters!==undefined)?cardioItems.reduce((n,i)=>n+(i.cardioResult?.metrics.distanceMeters??0),0):null,averageRpe:average(cardioItems.map(i=>i.cardioResult?.metrics.rpe).filter(numeric)),activities:[...new Set(cardioItems.map(i=>i.cardio!.activityId))].map(activityId=>{const rows=cardioItems.filter(i=>i.cardio!.activityId===activityId);return {activityId,sessions:rows.length,minutes:rows.reduce((n,i)=>n+performedCardioSeconds(i.cardioResult!)/60,0),distanceMeters:rows.some(i=>i.cardioResult!.metrics.distanceMeters!==undefined)?rows.reduce((n,i)=>n+(i.cardioResult!.metrics.distanceMeters??0),0):null};})};
+  const loaded=sets.filter(({r,i})=>hasTotalLoad(i)&&i.unit==='reps'&&numeric(r.weight)&&numeric(r.amount));
   const exercises=new Map<string,{id:string;name:string;weight:number;e1rm:number|null}>();
   for(const {r,i} of loaded){const old=exercises.get(i.exerciseId);const estimate=(r.painDuring??0)>0?null:estimated1RM(r.weight,r.amount);exercises.set(i.exerciseId,{id:i.exerciseId,name:i.name,weight:Math.max(old?.weight??0,r.weight),e1rm:estimate===null?old?.e1rm??null:Math.max(old?.e1rm??0,estimate)});}
   // Never merge different regions/sides/movements or measurement timings.
@@ -28,7 +31,7 @@ export function weeklyProgress(sessions:TrainingSession[],records:WellnessRecord
   // outweighing short workouts. Unfinished sets do not count as performed.
   const workoutPain={
    before:painSummary(completed.map(s=>s.before)),
-   during:painSummary(completed.map(s=>{const scores=s.items.filter(i=>!i.cardio).flatMap(i=>i.results.filter(r=>r.done).map(r=>r.painDuring)).filter(painScore);return scores.length?Math.max(...scores):null;})),
+   during:painSummary(completed.map(s=>{const scores=s.items.filter(i=>!i.cardio).flatMap(i=>[...i.results,...(i.warmupResults??[])].filter(r=>r.done).map(r=>r.painDuring)).filter(painScore);return scores.length?Math.max(...scores):null;})),
    after:painSummary(completed.map(s=>s.after)),
    nextDay:painSummary(completed.map(s=>s.followup?.pain)),
   };

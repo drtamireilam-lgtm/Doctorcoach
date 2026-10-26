@@ -1,0 +1,260 @@
+{
+  "torso": [
+    [
+      "sternum",
+      "Sternum",
+      "עצם החזה",
+      "bone",
+      [
+        "FJ3290",
+        "FJ3178",
+        "FJ3153"
+      ]
+    ],
+    [
+      "hip-bone",
+      "Hip bone — attachment context",
+      "עצם האגן — הקשר לחיבורי השרירים",
+      "bone",
+      [
+        "FJ3152"
+      ]
+    ],
+    [
+      "scapula",
+      "Scapula",
+      "עצם השכמה",
+      "bone",
+      [
+        "FJ3384"
+      ]
+    ],
+    [
+      "clavicle",
+      "Clavicle",
+      "עצם הבריח",
+      "bone",
+      [
+        "FJ3362"
+      ]
+    ],
+    [
+      "rib-1",
+      "Rib 1",
+      "צלע 1",
+      "bone",
+      [
+        "FJ3334"
+      ]
+    ],
+    [
+      "rib-2",
+      "Rib 2",
+      "צלע 2",
+      "bone",
+      [
+        "FJ3336"
+      ]
+    ],
+    [
+      "rib-3",
+      "Rib 3",
+      "צלע 3",
+      "bone",
+      [
+        "FJ3338"
+      ]
+    ],
+    [
+      "rib-4",
+      "Rib 4",
+      "צלע 4",
+      "bone",
+      [
+        "FJ3340"
+      ]
+    ],
+    [
+      "rib-5",
+      "Rib 5",
+      "צלע 5",
+      "bone",
+      [
+        "FJ3342"
+      ]
+    ],
+    [
+      "rib-6",
+      "Rib 6",
+      "צלע 6",
+      "bone",
+      [
+        "FJ3344"
+      ]
+    ],
+    [
+      "rib-7",
+      "Rib 7",
+      "צלע 7",
+      "bone",
+      [
+        "FJ3346"
+      ]
+    ],
+    [
+      "rib-8",
+      "Rib 8",
+      "צלע 8",
+      "bone",
+      [
+        "FJ3347"
+      ]
+    ],
+    [
+      "rib-9",
+      "Rib 9",
+      "צלע 9",
+      "bone",
+      [
+        "FJ3348"
+      ]
+    ],
+    [
+      "rib-10",
+      "Rib 10",
+      "צלע 10",
+      "bone",
+      [
+        "FJ3330"
+      ]
+    ],
+    [
+      "rib-11",
+      "Rib 11",
+      "צלע 11",
+      "bone",
+      [
+        "FJ3331"
+      ]
+    ],
+    [
+      "rib-12",
+      "Rib 12",
+      "צלע 12",
+      "bone",
+      [
+        "FJ3332"
+      ]
+    ],
+    [
+      "humerus",
+      "Humerus — attachment context",
+      "עצם הזרוע — הקשר לחיבורי השרירים",
+      "bone",
+      [
+        "FJ3368"
+      ]
+    ],
+    [
+      "costal-cartilage-1",
+      "Costal cartilage 1",
+      "סחוס צלע 1",
+      "cartilage",
+      [
+        "FJ3333"
+      ]
+    ],
+    [
+      "costal-cartilage-2",
+      "Costal cartilage 2",
+      "סחוס צלע 2",
+      "cartilage",
+      [
+        "FJ3335"
+      ]
+    ],
+    [
+      "costal-cartilage-3",
+      "Costal cartilage 3",
+      "סחוס צלע 3",
+      "cartilage",
+      [
+        "FJ3337"
+      ]
+    ],
+    [
+      "costal-cartilage-4",
+      "Costal cartilage 4",
+      "סחוס צלע 4",
+      "cartilage",
+      [
+        "FJ3339"
+      ]
+    ],
+    [
+      "costal-cartilage-5",
+      "Costal cartilage 5",
+      "סחוס צלע 5",
+      "cartilage",
+      [
+        "FJ3341"
+      ]
+    ],
+    [
+      "costal-cartilage-6",
+      "Costal cartilage 6",
+      "סחוס צלע 6",
+      "cartilage",
+      [
+        "FJ3343"
+      ]
+    ],
+    [
+      "costal-cartilage-7",
+      "Costal cartilage 7",
+      "סחוס צלע 7",
+      "cartilage",
+      [
+        "FJ3345"
+      ]
+    ],
+    [
+      "pectoralis-major",
+      "Pectoralis major",
+      "שריר החזה הגדול",
+      "muscle",
+      [
+        "FJ1447",
+        "FJ1464",
+        "FJ1446"
+      ]
+    ],
+    [
+      "pectoralis-minor",
+      "Pectoralis minor",
+      "שריר החזה הקטן",
+      "muscle",
+      [
+        "FJ1456"
+      ]
+    ],
+    [
+      "serratus-anterior",
+      "Serratus anterior",
+      "השריר המסור הקדמי",
+      "muscle",
+      [
+        "FJ1459"
+      ]
+    ],
+    [
+      "external-oblique",
+      "External oblique",
+      "השריר האלכסוני החיצוני",
+      "muscle",
+      [
+        "FJ1452"
+      ]
+    ]
+  ]
+}

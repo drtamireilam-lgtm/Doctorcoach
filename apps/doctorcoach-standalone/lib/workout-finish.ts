@@ -1,3 +1,5 @@
+import {performedCardioSeconds} from './cardio.ts';
+import {hasTotalLoad} from './load-units.ts';
 import {TrainingError,type TrainingSession,type SessionExercise} from './training.ts';
 import {setEstimated1RM} from './set-load.ts';
 import {workoutDayId} from './workout-days.ts';
@@ -13,6 +15,7 @@ export function finishFeedback(value:unknown):FinishFeedback|null{
 }
 function metrics(item:SessionExercise){
  const sets=item.results.filter(s=>s.done);
+ if(!hasTotalLoad(item))return {weight:null,reps:item.unit==='reps'&&sets.length?Math.max(...sets.map(s=>s.amount)):null,estimate:null};
  const estimates=sets.map(s=>setEstimated1RM(s,item.unit)).filter((n):n is number=>n!==null);
  return {weight:sets.length?Math.max(...sets.map(s=>s.weight)):null,reps:item.unit==='reps'&&sets.length?Math.max(...sets.map(s=>s.amount)):null,estimate:estimates.length?Math.max(...estimates):null};
 }
@@ -25,6 +28,6 @@ export function workoutFinishSummary(session:TrainingSession,history:TrainingSes
   return {name:item.name,current,prior,previousAt:match?.session.finishedAt??null};
  });
  const cardioItems=session.items.filter(i=>i.cardio&&i.cardioResult?.status==='completed');
- const cardio={completed:cardioItems.length,minutes:cardioItems.reduce((n,i)=>n+i.cardioResult!.elapsedSeconds/60,0),distanceMeters:cardioItems.some(i=>i.cardioResult!.metrics.distanceMeters!==undefined)?cardioItems.reduce((n,i)=>n+(i.cardioResult!.metrics.distanceMeters??0),0):null};
+ const cardio={completed:cardioItems.length,minutes:cardioItems.reduce((n,i)=>n+performedCardioSeconds(i.cardioResult!)/60,0),distanceMeters:cardioItems.some(i=>i.cardioResult!.metrics.distanceMeters!==undefined)?cardioItems.reduce((n,i)=>n+(i.cardioResult!.metrics.distanceMeters??0),0):null};
  return {exercises:completed.length+cardio.completed,strengthExercises:completed.length,cardio,sets:completed.reduce((sum,i)=>sum+i.results.filter(s=>s.done).length,0),comparisons};
 }

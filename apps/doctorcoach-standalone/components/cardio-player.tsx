@@ -2,9 +2,9 @@
 import {useCallback,useEffect,useRef,useState} from 'react';
 import type {SessionExercise,TrainingSession} from '../lib/training';
 import {cardioIntervalPosition} from '../lib/cardio-player';
-import type {CardioMetrics} from '../lib/cardio';
+import {cardioPrescribedSeconds,performedCardioSeconds,type CardioMetrics,type CardioMetricSources} from '../lib/cardio';
 import type {TrainingController} from '../hooks/use-training';
-import {CardioMetricFields,CardioPrescriptionSummary,cardioMetricLabels} from './cardio-editor';
+import {CardioMetricFields,CardioPrescriptionSummary,cardioMetricLabel,cardioSourceLabels} from './cardio-editor';
 import {useLanguage} from './language-provider';
 
 // Per-document continuity: application navigation keeps continuity; a new document requires recovery.
@@ -14,6 +14,7 @@ const clock=(seconds:number)=>`${Math.floor(Math.max(0,seconds)/60)}:${String(Ma
 export function CardioWorkoutPlayer({session,item,controller,blocked=false}:{session:TrainingSession;item:SessionExercise;controller:TrainingController;blocked?:boolean}){
  const {language}=useLanguage(),en=language==='en',t=(he:string,english:string)=>en?english:he;
  const result=item.cardioResult,key=`${session.id}:${item.occurrenceId??item.exerciseId}`;
+ const [sources,setSources]=useState<CardioMetricSources>(result?.metricSources??{});
  const [now,setNow]=useState(()=>Date.now()),[recovery,setRecovery]=useState(()=>result?.status==='running'&&!continuity.has(key)),[metrics,setMetrics]=useState<CardioMetrics>(result?.metrics??{}),[showResults,setShowResults]=useState(false);
  const current=useRef({session,item,controller});useEffect(()=>{current.current={session,item,controller};},[session,item,controller]);
  const action=useCallback(async(command:string,extra:Record<string,unknown>={})=>{
@@ -33,13 +34,14 @@ export function CardioWorkoutPlayer({session,item,controller,blocked=false}:{ses
  if(!item.cardio)return null;
  const gap=result?Math.max(0,(now-Date.parse(result.checkpointAt))/1000):0,interrupted=recovery||result?.status==='interrupted'||result?.status==='running'&&gap>120;
  const elapsed=(result?.elapsedSeconds??0)+(result?.status==='running'&&!interrupted?gap:0);
- const position=cardioIntervalPosition(item.cardio,elapsed),targetDuration=item.cardio.mode==='intervals'?item.cardio.intervals?.reduce((sum,i)=>sum+i.durationSeconds*(i.repeat??1),0):item.cardio.targets.durationSeconds;
+ const position=cardioIntervalPosition(item.cardio,elapsed),targetDuration=cardioPrescribedSeconds(item.cardio);
+ const phase=(value:string)=>({work:t('עבודה','Work'),recovery:t('מנוחה','Rest'),warmup:t('חימום','Warmup'),cooldown:t('שחרור','Cooldown')}[value]??value);
  const complete=result?.status==='completed',busy=controller.busy||blocked,otherRunning=session.items.some(other=>(other.occurrenceId??other.exerciseId)!==(item.occurrenceId??item.exerciseId)&&other.cardioResult?.status==='running');
  return <section className="panel cardio-player" data-no-translate dir={en?'ltr':'rtl'} aria-label={t('נגן אימון אירובי','Cardio workout player')}>
   <CardioPrescriptionSummary value={item.cardio}/>
   <div className="cardio-timer"><output aria-label={t('זמן שחלף','Elapsed time')}>{clock(elapsed)}</output>{targetDuration!=null&&<span>{t('נותר לפי התוכנית','Prescribed time remaining')}: {clock(targetDuration-elapsed)}</span>}</div>
   <p className="care-muted">{t('הטיימר מודד זמן שהתחלתם; הוא אינו חיישן המאמת פעילות. נעילת המסך משהה את האימון כשניתן לשמור את ההשהיה.','The timer measures time you start; it does not verify physical activity. Locking the screen pauses when the pause can be saved.')}</p>
-  {position.interval&&<div className="cardio-current-interval"><strong>{t('מקטע נוכחי','Current interval')} {position.index+1}: {position.interval.phase}</strong><span>{clock(position.remainingSeconds)}</span>{position.interval.targets&&<dl>{Object.entries(position.interval.targets).map(([metric,value])=><div key={metric}><dt>{cardioMetricLabels[metric as keyof CardioMetrics][en?1:0]}</dt><dd>{value}</dd></div>)}</dl>}{position.next&&<p>{t('הבא','Next')}: {position.next.phase} · {clock(position.next.durationSeconds)}</p>}</div>}
+  {position.interval&&<div className="cardio-current-interval"><strong>{t('מקטע נוכחי','Current interval')} {position.index+1}: {phase(position.interval.phase)}</strong><span>{clock(position.remainingSeconds)}</span>{position.interval.targets&&<dl>{Object.entries(position.interval.targets).map(([metric,value])=><div key={metric}><dt>{cardioMetricLabel(item.cardio!.activityId,metric as keyof CardioMetrics,en)}</dt><dd>{value}</dd></div>)}</dl>}{position.next&&<p>{t('הבא','Next')}: {phase(position.next.phase)} · {clock(position.next.durationSeconds)}</p>}</div>}
   {interrupted&&!complete?<div className="cardio-recovery" role="status"><h4>{t('האימון נקטע','Workout interrupted')}</h4><p>{t('הפער מאז השמירה האחרונה לא נספר אוטומטית. אפשר לאשר זמן שבוצע או להמשיך מהזמן השמור.','The gap since the last save was not counted automatically. Confirm only time actually performed, or continue from the saved time.')}</p><div className="care-actions"><button type="button" className="button primary" disabled={busy} onClick={()=>void action('recover',{recoverySeconds:0})}>{t('המשך ללא הפער','Exclude the gap')}</button><button type="button" className="button secondary" disabled={busy||gap>86400} onClick={()=>void action('recover',{recoverySeconds:Math.min(gap,86400)})}>{t('אני מאשר/ת שביצעתי את זמן הפער','Confirm I performed the gap')}</button></div></div>:<div className="care-actions">
    {!result&&<button type="button" className="button primary" disabled={busy||otherRunning} onClick={()=>void action('start')}>{t('התחלת אירובי','Start cardio')}</button>}
    {result?.status==='running'&&<button type="button" className="button secondary" disabled={busy} onClick={()=>void action('pause')}>{t('השהיה','Pause')}</button>}
@@ -47,9 +49,9 @@ export function CardioWorkoutPlayer({session,item,controller,blocked=false}:{ses
    {result&&!complete&&<button type="button" className="button primary" disabled={busy} onClick={()=>setShowResults(true)}>{t('סיום אירובי ותיעוד ביצוע','Finish cardio and record results')}</button>}
   </div>}
   {otherRunning&&(!result||result.status==='paused')&&<p>{t('יש להשהות או לסיים את פעילות האירובי הפעילה לפני התחלת פעילות נוספת.','Pause or finish the active cardio activity before starting another.')}</p>}
-  {showResults&&!complete&&!interrupted&&<div className="care-form"><h4>{t('ביצוע בפועל — שדות שלא נמדדו נשארים ריקים','Actual results — leave unmeasured fields empty')}</h4><CardioMetricFields advanced activityId={item.cardio.activityId} value={metrics} onChange={setMetrics}/><div className="care-actions"><button type="button" className="button primary" disabled={busy} onClick={async()=>{if(await action('finish',{metrics}))setShowResults(false);}}>{t('שמירת הביצוע','Save results')}</button><button type="button" className="button secondary" onClick={()=>setShowResults(false)}>{t('חזרה לאימון','Back to workout')}</button></div></div>}
-  {complete&&<CardioResultSummary item={item} withPrescription={false}/>}
+  {showResults&&!interrupted&&<div className="care-form"><h4>{t('ביצוע בפועל — שדות שלא נמדדו נשארים ריקים','Actual results — leave unmeasured fields empty')}</h4><CardioMetricFields advanced actual activityId={item.cardio.activityId} value={metrics} sources={sources} onSourcesChange={setSources} onChange={setMetrics}/><div className="care-actions"><button type="button" className="button primary" disabled={busy} onClick={async()=>{if(await action(complete?'edit-results':'finish',{metrics,metricSources:sources}))setShowResults(false);}}>{t('שמירת הביצוע','Save results')}</button><button type="button" className="button secondary" onClick={()=>setShowResults(false)}>{t('חזרה לאימון','Back to workout')}</button></div></div>}
+  {complete&&<><CardioResultSummary item={item} withPrescription={false}/><button type="button" className="button secondary" disabled={busy} onClick={()=>{setMetrics(result?.metrics??{});setSources(result?.metricSources??{});setShowResults(true);}}>{t('עריכת תוצאות','Edit results')}</button></>}
  </section>;
 }
 
-export function CardioResultSummary({item,withPrescription=true}:{item:SessionExercise;withPrescription?:boolean}){const {language}=useLanguage(),en=language==='en';if(!item.cardio)return null;const pace500=['rowing_machine','skierg'].includes(item.cardio.activityId);return <div className="cardio-results" data-no-translate>{withPrescription&&<CardioPrescriptionSummary value={item.cardio}/>}<p>{item.cardioResult?.status==='completed'?(en?'Completed cardio':'אירובי שהושלם'):(en?'Not completed':'לא הושלם')} · {clock(item.cardioResult?.elapsedSeconds??0)}</p><dl>{Object.entries(item.cardioResult?.metrics??{}).map(([key,value])=><div key={key}><dt>{key==='paceSeconds'&&pace500?(en?'Pace (seconds/500m)':'קצב (שניות ל־500 מטר)'):cardioMetricLabels[key as keyof CardioMetrics][en?1:0]}</dt><dd>{value}</dd></div>)}</dl></div>;}
+export function CardioResultSummary({item,withPrescription=true}:{item:SessionExercise;withPrescription?:boolean}){const {language}=useLanguage(),en=language==='en';if(!item.cardio)return null;return <div className="cardio-results" data-no-translate>{withPrescription&&<CardioPrescriptionSummary value={item.cardio}/>}<p>{item.cardioResult?.status==='completed'?(en?'Completed cardio':'אירובי שהושלם'):(en?'Not completed':'לא הושלם')} · {clock(item.cardioResult?performedCardioSeconds(item.cardioResult):0)}</p><dl>{Object.entries(item.cardioResult?.metrics??{}).map(([key,value])=><div key={key}><dt>{cardioMetricLabel(item.cardio!.activityId,key as keyof CardioMetrics,en)}</dt><dd>{value} <small>{cardioSourceLabels[item.cardioResult?.metricSources?.[key as keyof CardioMetrics]??'manual'][en?1:0]}</small></dd></div>)}</dl></div>;}

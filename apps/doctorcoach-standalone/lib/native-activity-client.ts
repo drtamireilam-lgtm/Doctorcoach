@@ -1,7 +1,7 @@
 import type {ActivityDay,ActivityPlatform} from './activity.ts';
 
 export type NativeActivityCommand={command:'bind'|'invalidate'|'connect'|'sync'|'disconnect';accountScope:string;connection?:{id:string;generation:string};revision?:number};
-export type NativeActivityResult={requestId:string;accountScope:string;status:'available'|'unavailable'|'permission-required'|'no-readable-data'|'ok'|'error';platform?:ActivityPlatform;days?:ActivityDay[];message?:string};
+export type NativeActivityResult={requestId:string;accountScope:string;status:'available'|'unavailable'|'permission-required'|'provider-required'|'no-readable-data'|'ok'|'error';platform?:ActivityPlatform;days?:ActivityDay[];message?:string};
 export type NativeActivityTransport={request:(payload:NativeActivityCommand&{requestId:string})=>void};
 type NativeWindow=Window&{webkit?:{messageHandlers?:{doctorcoach?:{postMessage:(message:unknown)=>void}}};doctorcoach?:{postMessage:(message:string)=>void}};
 
@@ -22,7 +22,7 @@ export function nativeActivityRequest(command:NativeActivityCommand,transport=na
   const receive=(event:Event)=>{
    const result=(event as CustomEvent<NativeActivityResult>).detail;
    if(!result||result.requestId!==requestId||result.accountScope!==command.accountScope)return;
-   if(!['available','unavailable','permission-required','no-readable-data','ok','error'].includes(result.status))return;
+   if(!['available','unavailable','permission-required','provider-required','no-readable-data','ok','error'].includes(result.status))return;
    cleanup();resolve(result);
   };
   const timeout=setTimeout(()=>{cleanup();reject(new Error('Native health request timed out.'));},timeoutMs);

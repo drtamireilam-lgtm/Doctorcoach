@@ -1,0 +1,20 @@
+{
+  "passed": [
+    "body neck opens 32 source structures with cervical focus and visible missing-structure note",
+    "atlas C1 has midline identity and neck bone isolation clears safely when hiding bone layer",
+    "deep neck flexor exercise Back retains source muscle and camera and canonical reverse link opens neck",
+    "SCM isometric rotation reverse link resolves and individual suboccipital isolates without invented exercise",
+    "new suboccipital Hebrew card renders in RTL and unavailable right longus colli never substitutes a mesh",
+    "leaving neck releases GPU context and restores one full-body scene",
+    "unmodeled muscle deep link preserves its learning card without highlighting another mesh",
+    "coracobrachialis deep link shows its full card and focuses the isolated source mesh",
+    "leaving a region releases its WebGL context and retains only one scene",
+    "unavailable region is clearly marked and never substitutes invented geometry",
+    "invalid GLB shows an accessible loading error and retry recovers a real scene",
+    "desktop viewport retains one responsive scene without horizontal overflow",
+    "migrated local app returns no HTTP 5xx responses",
+    "no uncaught browser errors"
+  ],
+  "browserErrors": [],
+  "serverErrors": []
+}

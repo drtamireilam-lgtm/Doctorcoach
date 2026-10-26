@@ -19,3 +19,8 @@ test('native request can abort and a late reply cannot resolve it',async()=>{
 test('native request times out without manufacturing a successful observation',async()=>{
  const f=surface();await assert.rejects(nativeActivityRequest({command:'sync',accountScope:'a'},f.transport,f.events,5),/timed out/i);
 });
+test('native client preserves actionable provider-required result',async()=>{
+ const f=surface(),p=nativeActivityRequest({command:'connect',accountScope:'a'},f.transport,f.events,1000);
+ f.reply({...f.messages[0],status:'provider-required',platform:'health_connect'});
+ assert.equal((await p).status,'provider-required');
+});

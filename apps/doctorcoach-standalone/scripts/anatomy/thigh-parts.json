@@ -1,0 +1,175 @@
+{
+  "thigh": [
+    [
+      "hip-bone",
+      "Hip bone — attachment context",
+      "עצם האגן — הקשר לחיבורי השרירים",
+      "bone",
+      [
+        "FJ3152"
+      ]
+    ],
+    [
+      "femur",
+      "Femur",
+      "עצם הירך",
+      "bone",
+      [
+        "FJ3365"
+      ]
+    ],
+    [
+      "patella",
+      "Patella",
+      "הפיקה",
+      "bone",
+      [
+        "FJ3381"
+      ]
+    ],
+    [
+      "tibia",
+      "Tibia",
+      "עצם השוקה",
+      "bone",
+      [
+        "FJ3387"
+      ]
+    ],
+    [
+      "fibula",
+      "Fibula",
+      "עצם השוקית",
+      "bone",
+      [
+        "FJ3366"
+      ]
+    ],
+    [
+      "rectus-femoris",
+      "Rectus Femoris",
+      "רקטוס פמוריס",
+      "muscle",
+      [
+        "FJ1433"
+      ]
+    ],
+    [
+      "vastus-lateralis",
+      "Vastus Lateralis",
+      "וסטוס לטרליס",
+      "muscle",
+      [
+        "FJ1442"
+      ]
+    ],
+    [
+      "vastus-medialis",
+      "Vastus Medialis",
+      "וסטוס מדיאליס",
+      "muscle",
+      [
+        "FJ1443"
+      ]
+    ],
+    [
+      "vastus-intermedius",
+      "Vastus Intermedius",
+      "וסטוס אינטרמדיוס",
+      "muscle",
+      [
+        "FJ1441"
+      ]
+    ],
+    [
+      "biceps-femoris-long-head",
+      "Biceps Femoris Long Head",
+      "בייספס פמוריס – ראש ארוך",
+      "muscle",
+      [
+        "FJ1395"
+      ]
+    ],
+    [
+      "biceps-femoris-short-head",
+      "Biceps Femoris Short Head",
+      "בייספס פמוריס – ראש קצר",
+      "muscle",
+      [
+        "FJ1444"
+      ]
+    ],
+    [
+      "semitendinosus",
+      "Semitendinosus",
+      "סמיטנדינוסוס",
+      "muscle",
+      [
+        "FJ1436"
+      ]
+    ],
+    [
+      "semimembranosus",
+      "Semimembranosus",
+      "סמיממברנוסוס",
+      "muscle",
+      [
+        "FJ1435"
+      ]
+    ],
+    [
+      "sartorius",
+      "Sartorius",
+      "סרטוריוס",
+      "muscle",
+      [
+        "FJ1434"
+      ]
+    ],
+    [
+      "pectineus",
+      "Pectineus",
+      "פקטינאוס",
+      "muscle",
+      [
+        "FJ1427"
+      ]
+    ],
+    [
+      "adductor-longus",
+      "Adductor longus",
+      "המקרב הארוך",
+      "muscle",
+      [
+        "FJ1402"
+      ]
+    ],
+    [
+      "adductor-brevis",
+      "Adductor brevis",
+      "המקרב הקצר",
+      "muscle",
+      [
+        "FJ1401"
+      ]
+    ],
+    [
+      "adductor-magnus",
+      "Adductor magnus",
+      "המקרב הגדול",
+      "muscle",
+      [
+        "FJ1403"
+      ]
+    ],
+    [
+      "gracilis",
+      "Gracilis",
+      "גרסיליס",
+      "muscle",
+      [
+        "FJ1421"
+      ]
+    ]
+  ]
+}

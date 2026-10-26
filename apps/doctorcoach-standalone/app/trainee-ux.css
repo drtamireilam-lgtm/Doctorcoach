@@ -1,0 +1,33 @@
+/* Shared navigation surfaces: account appearance remains owned by ThemeProvider. */
+.compact-menu{display:flex;flex-direction:column;gap:0;border:1px solid var(--line);border-radius:16px;overflow:hidden;background:var(--card);color:var(--text)}
+.compact-menu>button{display:grid;grid-template-columns:24px minmax(0,1fr) 20px;align-items:center;gap:14px;width:100%;min-height:64px;padding:14px 18px;border:0;border-block-end:1px solid var(--line);border-radius:0;background:transparent;color:inherit;text-align:start;font:inherit;cursor:pointer}
+.compact-menu>button:last-child{border-block-end:0}
+.compact-menu>button:hover{background:var(--dc-hover,var(--soft-red))}
+.compact-menu>button:focus-visible{outline:3px solid var(--dc-focus,var(--red));outline-offset:-4px}
+.compact-menu>button>span{display:grid;gap:3px;min-width:0}
+.compact-menu strong{font-size:16px;line-height:1.4;overflow-wrap:anywhere}
+.compact-menu small{font-size:13px;line-height:1.5;color:var(--muted)}
+.personal-greeting{font-size:18px;color:var(--text);margin-block:0 14px;overflow-wrap:anywhere}
+.navigation-hub{max-width:760px;margin-inline:auto}
+.account-settings-hub{max-width:900px;margin-inline:auto}
+.home-activity-summary{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px;margin-block:20px}
+.home-activity-summary>.panel{min-width:0}
+.settings-signout{align-self:flex-start}
+.account-shortcut{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:44px;min-width:44px;padding:10px;border:1px solid var(--line);border-radius:10px;background:var(--card);color:var(--text);font:inherit;cursor:pointer}
+.account-shortcut:hover,.account-shortcut[aria-current=page]{background:var(--dc-hover,var(--soft-red));border-color:var(--dc-focus,var(--red))}
+.account-shortcut:focus-visible{outline:3px solid var(--dc-focus,var(--red));outline-offset:3px}
+@media(max-width:760px){
+ .account-shortcut>span{display:none}
+ .compact-menu>button{min-height:60px;padding:14px;gap:12px}
+ .compact-menu small{font-size:14px}
+ .home-activity-summary{grid-template-columns:1fr}
+ .mobile-bottom-nav.streamlined-bottom{grid-template-columns:repeat(4,minmax(0,1fr))}
+ .mobile-bottom-nav.streamlined-bottom button{min-height:48px;min-width:0;font-size:12px;gap:5px;padding:5px 2px}
+ .trainee-start-actions{display:flex;flex-direction:column;align-items:stretch;gap:12px}
+ .content{padding-bottom:calc(148px + env(safe-area-inset-bottom))}
+ .whatsapp-booking{width:44px!important;height:44px!important;min-width:44px!important;padding:10px!important;bottom:calc(84px + env(safe-area-inset-bottom))!important;inset-inline-end:12px!important;inset-inline-start:auto!important}
+ .whatsapp-booking>span{display:none}
+ .view-workout~.whatsapp-booking,.app-shell:has(.view-workout) .whatsapp-booking{display:none!important}
+ .topbar-start{min-width:0}.topbar .breadcrumb{max-width:100%}
+}
+@media(prefers-reduced-motion:reduce){.compact-menu>button{transition:none}}

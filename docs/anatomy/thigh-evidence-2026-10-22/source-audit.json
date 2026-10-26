@@ -1,0 +1,215 @@
+{
+  "status": "source fidelity and mapping checked",
+  "clinicalReview": "pending",
+  "structures": [
+    {
+      "model": "thigh",
+      "structure": "hip-bone",
+      "elements": [
+        "FJ3152"
+      ],
+      "sourceCoordinatesAndTriangles": "exact float32 match",
+      "laterality": "right",
+      "sideEvidence": true,
+      "uniqueMaterial": true
+    },
+    {
+      "model": "thigh",
+      "structure": "femur",
+      "elements": [
+        "FJ3365"
+      ],
+      "sourceCoordinatesAndTriangles": "exact float32 match",
+      "laterality": "right",
+      "sideEvidence": true,
+      "uniqueMaterial": true
+    },
+    {
+      "model": "thigh",
+      "structure": "patella",
+      "elements": [
+        "FJ3381"
+      ],
+      "sourceCoordinatesAndTriangles": "exact float32 match",
+      "laterality": "right",
+      "sideEvidence": true,
+      "uniqueMaterial": true
+    },
+    {
+      "model": "thigh",
+      "structure": "tibia",
+      "elements": [
+        "FJ3387"
+      ],
+      "sourceCoordinatesAndTriangles": "exact float32 match",
+      "laterality": "right",
+      "sideEvidence": true,
+      "uniqueMaterial": true
+    },
+    {
+      "model": "thigh",
+      "structure": "fibula",
+      "elements": [
+        "FJ3366"
+      ],
+      "sourceCoordinatesAndTriangles": "exact float32 match",
+      "laterality": "right",
+      "sideEvidence": true,
+      "uniqueMaterial": true
+    },
+    {
+      "model": "thigh",
+      "structure": "rectus-femoris",
+      "elements": [
+        "FJ1433"
+      ],
+      "sourceCoordinatesAndTriangles": "exact float32 match",
+      "laterality": "right",
+      "sideEvidence": true,
+      "uniqueMaterial": true
+    },
+    {
+      "model": "thigh",
+      "structure": "vastus-lateralis",
+      "elements": [
+        "FJ1442"
+      ],
+      "sourceCoordinatesAndTriangles": "exact float32 match",
+      "laterality": "right",
+      "sideEvidence": true,
+      "uniqueMaterial": true
+    },
+    {
+      "model": "thigh",
+      "structure": "vastus-medialis",
+      "elements": [
+        "FJ1443"
+      ],
+      "sourceCoordinatesAndTriangles": "exact float32 match",
+      "laterality": "right",
+      "sideEvidence": true,
+      "uniqueMaterial": true
+    },
+    {
+      "model": "thigh",
+      "structure": "vastus-intermedius",
+      "elements": [
+        "FJ1441"
+      ],
+      "sourceCoordinatesAndTriangles": "exact float32 match",
+      "laterality": "right",
+      "sideEvidence": true,
+      "uniqueMaterial": true
+    },
+    {
+      "model": "thigh",
+      "structure": "biceps-femoris-long-head",
+      "elements": [
+        "FJ1395"
+      ],
+      "sourceCoordinatesAndTriangles": "exact float32 match",
+      "laterality": "right",
+      "sideEvidence": true,
+      "uniqueMaterial": true
+    },
+    {
+      "model": "thigh",
+      "structure": "biceps-femoris-short-head",
+      "elements": [
+        "FJ1444"
+      ],
+      "sourceCoordinatesAndTriangles": "exact float32 match",
+      "laterality": "right",
+      "sideEvidence": true,
+      "uniqueMaterial": true
+    },
+    {
+      "model": "thigh",
+      "structure": "semitendinosus",
+      "elements": [
+        "FJ1436"
+      ],
+      "sourceCoordinatesAndTriangles": "exact float32 match",
+      "laterality": "right",
+      "sideEvidence": true,
+      "uniqueMaterial": true
+    },
+    {
+      "model": "thigh",
+      "structure": "semimembranosus",
+      "elements": [
+        "FJ1435"
+      ],
+      "sourceCoordinatesAndTriangles": "exact float32 match",
+      "laterality": "right",
+      "sideEvidence": true,
+      "uniqueMaterial": true
+    },
+    {
+      "model": "thigh",
+      "structure": "sartorius",
+      "elements": [
+        "FJ1434"
+      ],
+      "sourceCoordinatesAndTriangles": "exact float32 match",
+      "laterality": "right",
+      "sideEvidence": true,
+      "uniqueMaterial": true
+    },
+    {
+      "model": "thigh",
+      "structure": "pectineus",
+      "elements": [
+        "FJ1427"
+      ],
+      "sourceCoordinatesAndTriangles": "exact float32 match",
+      "laterality": "right",
+      "sideEvidence": true,
+      "uniqueMaterial": true
+    },
+    {
+      "model": "thigh",
+      "structure": "adductor-longus",
+      "elements": [
+        "FJ1402"
+      ],
+      "sourceCoordinatesAndTriangles": "exact float32 match",
+      "laterality": "right",
+      "sideEvidence": true,
+      "uniqueMaterial": true
+    },
+    {
+      "model": "thigh",
+      "structure": "adductor-brevis",
+      "elements": [
+        "FJ1401"
+      ],
+      "sourceCoordinatesAndTriangles": "exact float32 match",
+      "laterality": "right",
+      "sideEvidence": true,
+      "uniqueMaterial": true
+    },
+    {
+      "model": "thigh",
+      "structure": "adductor-magnus",
+      "elements": [
+        "FJ1403"
+      ],
+      "sourceCoordinatesAndTriangles": "exact float32 match",
+      "laterality": "right",
+      "sideEvidence": true,
+      "uniqueMaterial": true
+    },
+    {
+      "model": "thigh",
+      "structure": "gracilis",
+      "elements": [
+        "FJ1421"
+      ],
+      "sourceCoordinatesAndTriangles": "exact float32 match",
+      "laterality": "right",
+      "sideEvidence": true,
+      "uniqueMaterial": true
+    }
+  ]
+}

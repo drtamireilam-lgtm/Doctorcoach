@@ -1,0 +1,523 @@
+{
+  "assetId": "bp3d-4-knee",
+  "sourceUrl": "https://dbarchive.biosciencedbc.jp/data/bodyparts3d/LATEST/isa_BP3D_4.0_obj_99.zip",
+  "creator": "The Database Center for Life Science",
+  "licenseId": "CC-BY-4.0",
+  "licenseUrl": "https://creativecommons.org/licenses/by/4.0/",
+  "licenseEvidence": "https://dbarchive.biosciencedbc.jp/en/bodyparts3d/lic.html",
+  "attribution": "BodyParts3D, © The Database Center for Life Science licensed under CC Attribution 4.0 International",
+  "modifications": "Original right knee bones and ten muscle structures with right hip bone and calcaneus for attachment context; gastrocnemius heads combined; original vertices/triangles retained, mm XYZ converted to metres X Z -Y; normals/materials added. Spatial laterality checked; no synthesized structures.",
+  "downloadedSubsetSha256": "32d9a5d50810475ae4ce95aa1c96ca89d8ff8c174d20e01b6af3226117fe6ba3",
+  "glbSha256": "e5c4188fab8c14b9b037a9188f426010db80cc28ab947ce667bdedf4765aa5bf",
+  "anatomicalReview": "pending",
+  "structures": [
+    {
+      "id": "hip-bone",
+      "en": "Hip bone — attachment context",
+      "he": "עצם האגן — הקשר לחיבורי השרירים",
+      "layer": "bone",
+      "side": "right",
+      "regionId": "knee",
+      "sources": [
+        {
+          "elementId": "FJ3152",
+          "sha256": "99de26e5435a8397b6f39b44ada75319d5e8fa1433e1ea38fdd8de9e079ed9a9",
+          "mappingRows": [
+            "FMA5018\tbone organ\tFJ3152",
+            "FMA7476\tflat bone\tFJ3152",
+            "FMA16585\thip bone\tFJ3152",
+            "FMA16586\tright hip bone\tFJ3152",
+            "FMA55671\tcavitated organ\tFJ3152",
+            "FMA55673\torgan with cavitated organ parts\tFJ3152",
+            "FMA61775\tphysical anatomical entity\tFJ3152",
+            "FMA62955\tanatomical entity\tFJ3152",
+            "FMA67135\tanatomical structure\tFJ3152",
+            "FMA67165\tmaterial anatomical entity\tFJ3152",
+            "FMA67498\torgan\tFJ3152"
+          ]
+        }
+      ],
+      "triangles": 2374,
+      "review": "pending"
+    },
+    {
+      "id": "femur",
+      "en": "Femur",
+      "he": "עצם הירך",
+      "layer": "bone",
+      "side": "right",
+      "regionId": "knee",
+      "sources": [
+        {
+          "elementId": "FJ3365",
+          "sha256": "5eff0f92905dd45bd0e79b1de0144dc15988c73c683468163255ba1452d58037",
+          "mappingRows": [
+            "FMA5018\tbone organ\tFJ3365",
+            "FMA7474\tlong bone\tFJ3365",
+            "FMA9611\tfemur\tFJ3365",
+            "FMA24474\tright femur\tFJ3365",
+            "FMA55671\tcavitated organ\tFJ3365",
+            "FMA55673\torgan with cavitated organ parts\tFJ3365",
+            "FMA61775\tphysical anatomical entity\tFJ3365",
+            "FMA62955\tanatomical entity\tFJ3365",
+            "FMA67135\tanatomical structure\tFJ3365",
+            "FMA67165\tmaterial anatomical entity\tFJ3365",
+            "FMA67498\torgan\tFJ3365"
+          ]
+        }
+      ],
+      "triangles": 3102,
+      "review": "pending"
+    },
+    {
+      "id": "patella",
+      "en": "Patella",
+      "he": "הפיקה",
+      "layer": "bone",
+      "side": "right",
+      "regionId": "knee",
+      "sources": [
+        {
+          "elementId": "FJ3381",
+          "sha256": "b513b8cb6b37e3eb4211fd35a4469efdf79de37887a0af8c582efc836a6f6307",
+          "mappingRows": [
+            "FMA5018\tbone organ\tFJ3381",
+            "FMA7475\tshort bone\tFJ3381",
+            "FMA24485\tpatella\tFJ3381",
+            "FMA24486\tright patella\tFJ3381",
+            "FMA32672\tsesamoid bone\tFJ3381",
+            "FMA55671\tcavitated organ\tFJ3381",
+            "FMA55673\torgan with cavitated organ parts\tFJ3381",
+            "FMA61775\tphysical anatomical entity\tFJ3381",
+            "FMA62955\tanatomical entity\tFJ3381",
+            "FMA67135\tanatomical structure\tFJ3381",
+            "FMA67165\tmaterial anatomical entity\tFJ3381",
+            "FMA67498\torgan\tFJ3381"
+          ]
+        }
+      ],
+      "triangles": 306,
+      "review": "pending"
+    },
+    {
+      "id": "tibia",
+      "en": "Tibia",
+      "he": "עצם השוקה",
+      "layer": "bone",
+      "side": "right",
+      "regionId": "knee",
+      "sources": [
+        {
+          "elementId": "FJ3387",
+          "sha256": "01879d7310938e82eecc02e1115332497e94085ff5cc1fa8eeee47ad1f5d3578",
+          "mappingRows": [
+            "FMA5018\tbone organ\tFJ3387",
+            "FMA7474\tlong bone\tFJ3387",
+            "FMA24476\ttibia\tFJ3387",
+            "FMA24477\tright tibia\tFJ3387",
+            "FMA55671\tcavitated organ\tFJ3387",
+            "FMA55673\torgan with cavitated organ parts\tFJ3387",
+            "FMA61775\tphysical anatomical entity\tFJ3387",
+            "FMA62955\tanatomical entity\tFJ3387",
+            "FMA67135\tanatomical structure\tFJ3387",
+            "FMA67165\tmaterial anatomical entity\tFJ3387",
+            "FMA67498\torgan\tFJ3387"
+          ]
+        }
+      ],
+      "triangles": 1664,
+      "review": "pending"
+    },
+    {
+      "id": "fibula",
+      "en": "Fibula",
+      "he": "עצם השוקית",
+      "layer": "bone",
+      "side": "right",
+      "regionId": "knee",
+      "sources": [
+        {
+          "elementId": "FJ3366",
+          "sha256": "d03fee02cf8eefad1ecfcb9246e3f43ad3c4615c21ce08dc5e2b6901c6395a86",
+          "mappingRows": [
+            "FMA5018\tbone organ\tFJ3366",
+            "FMA7474\tlong bone\tFJ3366",
+            "FMA24479\tfibula\tFJ3366",
+            "FMA24480\tright fibula\tFJ3366",
+            "FMA55671\tcavitated organ\tFJ3366",
+            "FMA55673\torgan with cavitated organ parts\tFJ3366",
+            "FMA61775\tphysical anatomical entity\tFJ3366",
+            "FMA62955\tanatomical entity\tFJ3366",
+            "FMA67135\tanatomical structure\tFJ3366",
+            "FMA67165\tmaterial anatomical entity\tFJ3366",
+            "FMA67498\torgan\tFJ3366"
+          ]
+        }
+      ],
+      "triangles": 1142,
+      "review": "pending"
+    },
+    {
+      "id": "calcaneus",
+      "en": "Calcaneus — attachment context",
+      "he": "עצם העקב — הקשר לחיבור השריר",
+      "layer": "bone",
+      "side": "right",
+      "regionId": "knee",
+      "sources": [
+        {
+          "elementId": "FJ3360",
+          "sha256": "b53e7970e822e997e1b05f94f42514d07a3f98edcc63ec7dd7219354ce1d8176",
+          "mappingRows": [
+            "FMA5018\tbone organ\tFJ3360",
+            "FMA7475\tshort bone\tFJ3360",
+            "FMA24491\ttarsal bone\tFJ3360",
+            "FMA24496\tcalcaneus\tFJ3360",
+            "FMA24497\tright calcaneus\tFJ3360",
+            "FMA55671\tcavitated organ\tFJ3360",
+            "FMA55673\torgan with cavitated organ parts\tFJ3360",
+            "FMA61775\tphysical anatomical entity\tFJ3360",
+            "FMA62955\tanatomical entity\tFJ3360",
+            "FMA67135\tanatomical structure\tFJ3360",
+            "FMA67165\tmaterial anatomical entity\tFJ3360",
+            "FMA67498\torgan\tFJ3360"
+          ]
+        }
+      ],
+      "triangles": 1262,
+      "review": "pending"
+    },
+    {
+      "id": "rectus-femoris",
+      "en": "Rectus Femoris",
+      "he": "רקטוס פמוריס",
+      "layer": "muscle",
+      "side": "right",
+      "regionId": "knee",
+      "sources": [
+        {
+          "elementId": "FJ1433",
+          "sha256": "a5f75907d784dd2a44d7efa96cb31009aba2afe43465336b105561751b19f8ef",
+          "mappingRows": [
+            "FMA10474\tzone of muscle organ\tFJ1433",
+            "FMA22429\tzone of quadriceps femoris\tFJ1433",
+            "FMA22430\trectus femoris\tFJ1433",
+            "FMA38928\tright rectus femoris\tFJ1433",
+            "FMA55268\torgan zone\tFJ1433",
+            "FMA61775\tphysical anatomical entity\tFJ1433",
+            "FMA62955\tanatomical entity\tFJ1433",
+            "FMA67135\tanatomical structure\tFJ1433",
+            "FMA67165\tmaterial anatomical entity\tFJ1433",
+            "FMA67619\torgan region\tFJ1433",
+            "FMA82472\tcardinal organ part\tFJ1433"
+          ]
+        }
+      ],
+      "triangles": 5688,
+      "review": "pending"
+    },
+    {
+      "id": "vastus-lateralis",
+      "en": "Vastus Lateralis",
+      "he": "וסטוס לטרליס",
+      "layer": "muscle",
+      "side": "right",
+      "regionId": "knee",
+      "sources": [
+        {
+          "elementId": "FJ1442",
+          "sha256": "f67be78d7d0ddc6e78c0683ce4bd5be7492e4137f8661bc54039cbf535a88880",
+          "mappingRows": [
+            "FMA10474\tzone of muscle organ\tFJ1442",
+            "FMA22429\tzone of quadriceps femoris\tFJ1442",
+            "FMA22431\tvastus lateralis\tFJ1442",
+            "FMA38930\tright vastus lateralis\tFJ1442",
+            "FMA55268\torgan zone\tFJ1442",
+            "FMA61775\tphysical anatomical entity\tFJ1442",
+            "FMA62955\tanatomical entity\tFJ1442",
+            "FMA67135\tanatomical structure\tFJ1442",
+            "FMA67165\tmaterial anatomical entity\tFJ1442",
+            "FMA67619\torgan region\tFJ1442",
+            "FMA82472\tcardinal organ part\tFJ1442"
+          ]
+        }
+      ],
+      "triangles": 6688,
+      "review": "pending"
+    },
+    {
+      "id": "vastus-medialis",
+      "en": "Vastus Medialis",
+      "he": "וסטוס מדיאליס",
+      "layer": "muscle",
+      "side": "right",
+      "regionId": "knee",
+      "sources": [
+        {
+          "elementId": "FJ1443",
+          "sha256": "5bdb79f52849241e20ff2280332f20efd38f1b4bda1fb1337e10a5c3e466002b",
+          "mappingRows": [
+            "FMA10474\tzone of muscle organ\tFJ1443",
+            "FMA22429\tzone of quadriceps femoris\tFJ1443",
+            "FMA22432\tvastus medialis\tFJ1443",
+            "FMA38932\tright vastus medialis\tFJ1443",
+            "FMA55268\torgan zone\tFJ1443",
+            "FMA61775\tphysical anatomical entity\tFJ1443",
+            "FMA62955\tanatomical entity\tFJ1443",
+            "FMA67135\tanatomical structure\tFJ1443",
+            "FMA67165\tmaterial anatomical entity\tFJ1443",
+            "FMA67619\torgan region\tFJ1443",
+            "FMA82472\tcardinal organ part\tFJ1443"
+          ]
+        }
+      ],
+      "triangles": 4552,
+      "review": "pending"
+    },
+    {
+      "id": "vastus-intermedius",
+      "en": "Vastus Intermedius",
+      "he": "וסטוס אינטרמדיוס",
+      "layer": "muscle",
+      "side": "right",
+      "regionId": "knee",
+      "sources": [
+        {
+          "elementId": "FJ1441",
+          "sha256": "c609da3e64f0fc6c295b66b575503e61cacc8bfd9a5e5ec9b79e4eb476da5bab",
+          "mappingRows": [
+            "FMA10474\tzone of muscle organ\tFJ1441",
+            "FMA22429\tzone of quadriceps femoris\tFJ1441",
+            "FMA22433\tvastus intermedius\tFJ1441",
+            "FMA38934\tright vastus intermedius\tFJ1441",
+            "FMA55268\torgan zone\tFJ1441",
+            "FMA61775\tphysical anatomical entity\tFJ1441",
+            "FMA62955\tanatomical entity\tFJ1441",
+            "FMA67135\tanatomical structure\tFJ1441",
+            "FMA67165\tmaterial anatomical entity\tFJ1441",
+            "FMA67619\torgan region\tFJ1441",
+            "FMA82472\tcardinal organ part\tFJ1441"
+          ]
+        }
+      ],
+      "triangles": 4260,
+      "review": "pending"
+    },
+    {
+      "id": "biceps-femoris-long-head",
+      "en": "Biceps Femoris Long Head",
+      "he": "בייספס פמוריס – ראש ארוך",
+      "layer": "muscle",
+      "side": "right",
+      "regionId": "knee",
+      "sources": [
+        {
+          "elementId": "FJ1395",
+          "sha256": "0c22806bfd2a0f8745023a7d438250411f9d013f3d966c5c75335f5b57f8e142",
+          "mappingRows": [
+            "FMA45729\thead of organ\tFJ1395",
+            "FMA45881\thead of biceps femoris\tFJ1395",
+            "FMA45887\tlong head of biceps femoris\tFJ1395",
+            "FMA45888\tlong head of right biceps femoris\tFJ1395",
+            "FMA55268\torgan zone\tFJ1395",
+            "FMA61775\tphysical anatomical entity\tFJ1395",
+            "FMA62955\tanatomical entity\tFJ1395",
+            "FMA67135\tanatomical structure\tFJ1395",
+            "FMA67165\tmaterial anatomical entity\tFJ1395",
+            "FMA67619\torgan region\tFJ1395",
+            "FMA82472\tcardinal organ part\tFJ1395",
+            "FMA85453\thead of muscle organ\tFJ1395"
+          ]
+        }
+      ],
+      "triangles": 5110,
+      "review": "pending"
+    },
+    {
+      "id": "biceps-femoris-short-head",
+      "en": "Biceps Femoris Short Head",
+      "he": "בייספס פמוריס – ראש קצר",
+      "layer": "muscle",
+      "side": "right",
+      "regionId": "knee",
+      "sources": [
+        {
+          "elementId": "FJ1444",
+          "sha256": "c071097501796cee5ff2a011b3d84c7bea4cb153241fce0f8b0a73d070bd990f",
+          "mappingRows": [
+            "FMA45729\thead of organ\tFJ1444",
+            "FMA45881\thead of biceps femoris\tFJ1444",
+            "FMA45890\tshort head of biceps femoris\tFJ1444",
+            "FMA45891\tshort head of right biceps femoris\tFJ1444",
+            "FMA55268\torgan zone\tFJ1444",
+            "FMA61775\tphysical anatomical entity\tFJ1444",
+            "FMA62955\tanatomical entity\tFJ1444",
+            "FMA67135\tanatomical structure\tFJ1444",
+            "FMA67165\tmaterial anatomical entity\tFJ1444",
+            "FMA67619\torgan region\tFJ1444",
+            "FMA82472\tcardinal organ part\tFJ1444",
+            "FMA85453\thead of muscle organ\tFJ1444"
+          ]
+        }
+      ],
+      "triangles": 1728,
+      "review": "pending"
+    },
+    {
+      "id": "semitendinosus",
+      "en": "Semitendinosus",
+      "he": "סמיטנדינוסוס",
+      "layer": "muscle",
+      "side": "right",
+      "regionId": "knee",
+      "sources": [
+        {
+          "elementId": "FJ1436",
+          "sha256": "a9351992df5093e761784b73ca3f4a7d09d0c997e3cef2f840a45b863eb7097d",
+          "mappingRows": [
+            "FMA5022\tmuscle organ\tFJ1436",
+            "FMA9622\tmuscle of lower limb\tFJ1436",
+            "FMA22357\tsemitendinosus\tFJ1436",
+            "FMA22358\tright semitendinosus\tFJ1436",
+            "FMA22427\tmuscle of posterior compartment of thigh\tFJ1436",
+            "FMA22470\tmuscle of thigh\tFJ1436",
+            "FMA37368\tmuscle of free lower limb\tFJ1436",
+            "FMA55665\tnonparenchymatous organ\tFJ1436",
+            "FMA55670\tsolid organ\tFJ1436",
+            "FMA61775\tphysical anatomical entity\tFJ1436",
+            "FMA62955\tanatomical entity\tFJ1436",
+            "FMA67135\tanatomical structure\tFJ1436",
+            "FMA67165\tmaterial anatomical entity\tFJ1436",
+            "FMA67498\torgan\tFJ1436"
+          ]
+        }
+      ],
+      "triangles": 2712,
+      "review": "pending"
+    },
+    {
+      "id": "semimembranosus",
+      "en": "Semimembranosus",
+      "he": "סמיממברנוסוס",
+      "layer": "muscle",
+      "side": "right",
+      "regionId": "knee",
+      "sources": [
+        {
+          "elementId": "FJ1435",
+          "sha256": "1fdce0f7db538e4731207af06a293e41037c2474192f61ca2cb5b0d663b16894",
+          "mappingRows": [
+            "FMA5022\tmuscle organ\tFJ1435",
+            "FMA9622\tmuscle of lower limb\tFJ1435",
+            "FMA22427\tmuscle of posterior compartment of thigh\tFJ1435",
+            "FMA22438\tsemimembranosus\tFJ1435",
+            "FMA22448\tright semimembranosus\tFJ1435",
+            "FMA22470\tmuscle of thigh\tFJ1435",
+            "FMA37368\tmuscle of free lower limb\tFJ1435",
+            "FMA55665\tnonparenchymatous organ\tFJ1435",
+            "FMA55670\tsolid organ\tFJ1435",
+            "FMA61775\tphysical anatomical entity\tFJ1435",
+            "FMA62955\tanatomical entity\tFJ1435",
+            "FMA67135\tanatomical structure\tFJ1435",
+            "FMA67165\tmaterial anatomical entity\tFJ1435",
+            "FMA67498\torgan\tFJ1435"
+          ]
+        }
+      ],
+      "triangles": 4612,
+      "review": "pending"
+    },
+    {
+      "id": "popliteus",
+      "en": "Popliteus",
+      "he": "פופליטאוס",
+      "layer": "muscle",
+      "side": "right",
+      "regionId": "knee",
+      "sources": [
+        {
+          "elementId": "FJ1430",
+          "sha256": "78f5d5b80867116a0bbf59575efb8de3ed681030875a577bc00d310012df80fd",
+          "mappingRows": [
+            "FMA5022\tmuscle organ\tFJ1430",
+            "FMA9622\tmuscle of lower limb\tFJ1430",
+            "FMA22471\tmuscle of leg\tFJ1430",
+            "FMA22474\tmuscle of posterior compartment of leg\tFJ1430",
+            "FMA22590\tpopliteus\tFJ1430",
+            "FMA22591\tright popliteus\tFJ1430",
+            "FMA37368\tmuscle of free lower limb\tFJ1430",
+            "FMA55665\tnonparenchymatous organ\tFJ1430",
+            "FMA55670\tsolid organ\tFJ1430",
+            "FMA61775\tphysical anatomical entity\tFJ1430",
+            "FMA62955\tanatomical entity\tFJ1430",
+            "FMA65008\tdeep muscle of posterior compartment of leg\tFJ1430",
+            "FMA67135\tanatomical structure\tFJ1430",
+            "FMA67165\tmaterial anatomical entity\tFJ1430",
+            "FMA67498\torgan\tFJ1430"
+          ]
+        }
+      ],
+      "triangles": 858,
+      "review": "pending"
+    },
+    {
+      "id": "gastrocnemius",
+      "en": "Gastrocnemius",
+      "he": "גסטרוקנמיוס",
+      "layer": "muscle",
+      "side": "right",
+      "regionId": "knee",
+      "sources": [
+        {
+          "elementId": "FJ1397",
+          "sha256": "d7f3aa44801171baade1a59c40a8f8bda72097bec07047f93f24ebaac4546cb4",
+          "mappingRows": [
+            "FMA45729\thead of organ\tFJ1397",
+            "FMA45950\thead of gastrocnemius\tFJ1397",
+            "FMA45956\tmedial head of gastrocnemius\tFJ1397",
+            "FMA45957\tmedial head of right gastrocnemius\tFJ1397",
+            "FMA55268\torgan zone\tFJ1397",
+            "FMA61775\tphysical anatomical entity\tFJ1397",
+            "FMA62955\tanatomical entity\tFJ1397",
+            "FMA67135\tanatomical structure\tFJ1397",
+            "FMA67165\tmaterial anatomical entity\tFJ1397",
+            "FMA67619\torgan region\tFJ1397",
+            "FMA82472\tcardinal organ part\tFJ1397",
+            "FMA85453\thead of muscle organ\tFJ1397"
+          ]
+        },
+        {
+          "elementId": "FJ1394",
+          "sha256": "621dc10e974bcc1c53a8843bf1db3a1c322c8327d279010c58533bd28952bf08",
+          "mappingRows": [
+            "FMA45729\thead of organ\tFJ1394",
+            "FMA45950\thead of gastrocnemius\tFJ1394",
+            "FMA45959\tlateral head of gastrocnemius\tFJ1394",
+            "FMA45960\tlateral head of right gastrocnemius\tFJ1394",
+            "FMA55268\torgan zone\tFJ1394",
+            "FMA61775\tphysical anatomical entity\tFJ1394",
+            "FMA62955\tanatomical entity\tFJ1394",
+            "FMA67135\tanatomical structure\tFJ1394",
+            "FMA67165\tmaterial anatomical entity\tFJ1394",
+            "FMA67619\torgan region\tFJ1394",
+            "FMA82472\tcardinal organ part\tFJ1394",
+            "FMA85453\thead of muscle organ\tFJ1394"
+          ]
+        }
+      ],
+      "triangles": 6894,
+      "review": "pending"
+    }
+  ],
+  "unavailable": [
+    "menisci",
+    "cruciate-ligaments",
+    "collateral-ligaments",
+    "cartilage",
+    "joint-capsule",
+    "separate-tendons",
+    "nerves",
+    "unlisted-muscles",
+    "remaining-foot-bones"
+  ]
+}
