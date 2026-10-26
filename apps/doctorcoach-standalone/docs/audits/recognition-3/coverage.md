@@ -24,7 +24,7 @@ Counts exclude canonical names/ID and deduplicate using the production normalize
 | walk | Graded walking | 16 | 16 | 15+ |
 | barbell-bench | Barbell Bench Press | 25 | 24 | 15+ |
 | incline-db | Incline Dumbbell Press | 18 | 17 | 15+ |
-| chest-fly | Machine Chest Fly | 25 | 23 | 15+ |
+| chest-fly | Machine Chest Fly | 26 | 24 | 15+ |
 | db-fly | Dumbbell Chest Fly | 17 | 17 | 15+ |
 | lat-pulldown | Lat Pulldown | 24 | 24 | 15+ |
 | pullup | Pull-Up | 19 | 19 | 15+ |
@@ -36,20 +36,20 @@ Counts exclude canonical names/ID and deduplicate using the production normalize
 | lateral-raise | Dumbbell Lateral Raise | 16 | 15 | 15+ |
 | rear-delt | Reverse Fly | 18 | 18 | 15+ |
 | face-pull | Face Pull | 20 | 20 | 15+ |
-| cable-er | Cable External Rotation | 16 | 15 | 15+ |
+| cable-er | Cable External Rotation | 17 | 16 | 15+ |
 | serratus-punch | Serratus Punch | 17 | 15 | 15+ |
 | barbell-curl | Barbell Curl | 19 | 19 | 15+ |
 | cable-curl | Cable Curl | 18 | 18 | 15+ |
-| triceps-pushdown | Triceps Pushdown | 24 | 24 | 15+ |
+| triceps-pushdown | Triceps Pushdown | 22 | 22 | 15+ |
 | overhead-triceps | Overhead Triceps Extension | 18 | 17 | 15+ |
 | wrist-curl | Wrist Curl | 16 | 16 | 15+ |
 | farmer-carry | Farmer Carry | 17 | 17 | 15+ |
 | back-squat | Barbell Back Squat | 18 | 18 | 15+ |
 | leg-press | Leg Press | 19 | 18 | 15+ |
-| leg-extension | Leg Extension | 21 | 20 | 15+ |
+| leg-extension | Leg Extension | 22 | 21 | 15+ |
 | seated-curl | Seated Leg Curl | 20 | 19 | 15+ |
 | lying-curl | Lying Leg Curl | 24 | 22 | 15+ |
-| hip-thrust | Hip Thrust | 20 | 19 | 15+ |
+| hip-thrust | Hip Thrust | 21 | 20 | 15+ |
 | cable-kickback | Cable Glute Kickback | 17 | 17 | 15+ |
 | adduction | Hip Adduction Machine | 23 | 20 | 15+ |
 | standing-calf | Standing Calf Raise | 17 | 15 | 15+ |
@@ -65,7 +65,7 @@ Counts exclude canonical names/ID and deduplicate using the production normalize
 | pallof | Pallof Press | 17 | 15 | 15+ |
 | shrug | Dumbbell Shrug | 15 | 15 | 15+ |
 | back-extension | Back Extension | 22 | 21 | 15+ |
-| cable-abduction | Standing Cable Hip Abduction | 17 | 14 | 15+ |
+| cable-abduction | Standing Cable Hip Abduction | 18 | 15 | 15+ |
 | side-abduction | Side-Lying Hip Abduction | 16 | 16 | 15+ |
 | push-up | Push-Up | 20 | 19 | 15+ |
 | machine-chest-press | Machine Chest Press | 18 | 16 | 15+ |
@@ -77,7 +77,7 @@ Counts exclude canonical names/ID and deduplicate using the production normalize
 | assisted-pull-up | Assisted Pull-Up | 19 | 17 | 15+ |
 | seated-db-shoulder-press | Seated Dumbbell Shoulder Press | 15 | 14 | 15+ |
 | cable-lateral-raise | Cable Lateral Raise | 18 | 18 | 15+ |
-| reverse-pec-deck | Reverse Pec Deck | 19 | 19 | 15+ |
+| reverse-pec-deck | Reverse Pec Deck | 20 | 20 | 15+ |
 | dumbbell-curl | Dumbbell Curl | 19 | 19 | 15+ |
 | incline-db-curl | Incline Dumbbell Curl | 16 | 16 | 15+ |
 | preacher-curl | Preacher Curl | 22 | 21 | 15+ |

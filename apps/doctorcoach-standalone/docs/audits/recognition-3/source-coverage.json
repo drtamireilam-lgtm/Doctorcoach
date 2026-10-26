@@ -1,0 +1,14 @@
+{
+  "corpus": "Five previously supplied development workbooks; private bytes and source metadata excluded",
+  "fileCount": 5,
+  "nonTableSheets": 2,
+  "extractedRows": 191,
+  "baselineAutomatic": 95,
+  "previousPrAutomatic": 100,
+  "currentAutomatic": 106,
+  "needsReview": 85,
+  "newlyAutomaticFromBaseline": 11,
+  "lostAutomaticFromBaseline": 0,
+  "changedExistingTarget": 0,
+  "accuracyLimit": "No independent labels for all rows. Development coverage only, not precision/recall or a held-out benchmark."
+}

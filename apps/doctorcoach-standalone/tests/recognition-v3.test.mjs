@@ -61,3 +61,16 @@ test('audit exposes token-equivalent counts separately from literal normalized c
  const r=auditExerciseAliases([{id:'x',name:'אחד',en:'DB curl',aliases:['curl dumbbell','Other phrase','phrase other']}],{});
  assert.equal(r.rows[0].aliasCount,3);assert.equal(r.rows[0].tokenDistinctAliasCount,1);
 });
+
+test('observed workbook names resolve only existing semantically identical variants',()=>{
+ for(const [name,id] of [['hip thurst','hip-thrust'],['הרחקת רגליים בעמידה נגד פולי','cable-abduction'],['כתף אחורית- הרחקה אופקית בישיבה במכונה','reverse-pec-deck'],['קירוב אופקי בישיבה במכונה','chest-fly'],['פשיטת רגליים','leg-extension'],['סיבוב כתף חיצוני כנגד פולי באחיזה נייטרלית','cable-er']])assert.equal(match(name,undefined,{allowGeneralMovement:true}).exerciseId,id,name);
+});
+test('unqualified cable triceps extensions cannot silently select pushdown over overhead',()=>{
+ for(const name of ['Pulley triceps extension','Cable elbow extension','יד אחורית בכבל','tricep extension pully','Tricep extension pulley with straight bar'])assert.equal(match(name,undefined,{allowGeneralMovement:true}).exerciseId,'',name);
+});
+
+test('literal-only consumers can skip fuzzy suggestions without changing normal import review',()=>{
+ const name='Dumbbel bench press';assert.ok(match(name).candidates.length>0);
+ assert.deepEqual(match(name,undefined,{allowGeneralMovement:true,suggestions:false}),{exerciseId:'',status:'unmatched',confidence:0,candidates:[]});
+ assert.equal(match('DB Bench Press',undefined,{suggestions:false}).exerciseId,'bench');
+});

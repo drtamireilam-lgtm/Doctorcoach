@@ -40,7 +40,7 @@ function similarity(a:string,b:string){
 }
 const empty=():ExerciseImportMatch=>({exerciseId:'',status:'unmatched',confidence:0,candidates:[]});
 /** Import-only index; exact verified equivalence can assign, fuzzy results cannot. */
-export function matchExerciseForImport(name:string,catalog:readonly NamedExercise[]=exercises,options:{allowGeneralMovement?:boolean}={}):ExerciseImportMatch{
+export function matchExerciseForImport(name:string,catalog:readonly NamedExercise[]=exercises,options:{allowGeneralMovement?:boolean;suggestions?:boolean}={}):ExerciseImportMatch{
  const key=normalizeImportExerciseName(name);if(!key||key.length>240)return empty();
  if(parseExerciseQualifiers(key).conflict)return empty();
  const index=indexFor(catalog);
@@ -60,6 +60,7 @@ export function matchExerciseForImport(name:string,catalog:readonly NamedExercis
   const literal=preferred.find(e=>e.source.trim().toLowerCase()===name.trim().toLowerCase());
   return {exerciseId:ids[0],status:literal?(literal.canonical?'exact':'alias'):'normalized',confidence:1,candidates};
  }
+ if(options.suggestions===false)return empty();
  // Spelling similarity is evidence for review only, even at a very high score.
  const scores=new Map<string,number>();
  for(const candidateKey of index.keys){const words=key.split(' '),candidateWords=candidateKey.split(' ');const contained=words.length>=2&&words.every(w=>candidateWords.includes(w));const score=Math.max(similarity(key,candidateKey),contained?.74:0);if(score<.72)continue;for(const entry of index.names.get(candidateKey)??[])if(options.allowGeneralMovement||!entry.exerciseId.startsWith('movement-'))scores.set(entry.exerciseId,Math.max(scores.get(entry.exerciseId)??0,score));}
