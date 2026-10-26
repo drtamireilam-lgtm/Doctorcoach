@@ -1,3 +1,4 @@
+import {recognitionAliases} from './exercise-recognition-aliases.ts';
 import {reviewedImportAliases} from './reviewed-import-aliases.ts';
 // Aliases identify names only; equipment and execution variants stay distinct.
 // Repeated aliases intentionally require the coach to choose a variant.
@@ -221,5 +222,5 @@ const existingAliases:Readonly<Record<string,readonly string[]>>=Object.fromEntr
 );
 
 export const exerciseAliases:Readonly<Record<string,readonly string[]>>=Object.fromEntries(
- Object.entries(existingAliases).map(([id,names])=>[id,[...new Set([...names,...reviewedImportAliases.filter(r=>r.exerciseId===id).flatMap(r=>[...r.names])])]])
+ [...new Set([...Object.keys(existingAliases),...Object.keys(recognitionAliases)])].map(id=>[id,[...new Set([...existingAliases[id]??[],...recognitionAliases[id]??[],...reviewedImportAliases.filter(r=>r.exerciseId===id).flatMap(r=>[...r.names])])]])
 );

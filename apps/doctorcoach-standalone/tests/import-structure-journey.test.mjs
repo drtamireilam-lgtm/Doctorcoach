@@ -68,3 +68,16 @@ test('observed mixed-language aliases retain canonical IDs and repeated occurren
  assert.deepEqual(reopened.items.map(i=>i.exerciseId),['bench','bench','adduction','lying-curl']);
  assert.equal(reopened.items[1].results[0].weight,23);assert.equal(reopened.items[1].results[0].done,true);assert.equal(reopened.items[0].results[0].done,false);
 });
+
+test('recognition 3 CSV names preserve equipment variants and every set through reload',async t=>{
+ const sheet=readCsvWorkbook(bytes('Exercise,Sets,Reps,Weight\nלחיצת חזה אופקית בדמבלים,3,6-10,20\nBarbell horizontal bench press,4,5,60\nכפיפת ברכיים במכונה במנח שכיבה על הבטן,2,12,25'))[0];
+ const items=finalizeImport(parse(sheet));
+ assert.deepEqual(items.map(i=>i.exerciseId),['bench','barbell-bench','lying-curl']);
+ await verifyImportedWorkoutPersistence(t,items);
+});
+test('recognition 3 XLSX names support reordered verified words without guessing equipment',async t=>{
+ const sheets=readExcelWorkbook(workbook([[['Exercise','Sets','Reps'],['press bench dumbbell flat',3,8],['curl leg seated',2,12],['Chest fly with cables',2,10]]]));
+ const items=finalizeImport(extractWorkbookImport(sheets,[0]));
+ assert.deepEqual(items.map(i=>i.exerciseId),['bench','seated-curl','cable-fly']);
+ await verifyImportedWorkoutPersistence(t,items);
+});
