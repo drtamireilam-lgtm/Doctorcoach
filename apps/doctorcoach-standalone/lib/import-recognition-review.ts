@@ -1,5 +1,5 @@
 import {exercises} from './content.ts';
-import {normalizeImportExerciseName} from './exercise-matching.ts';
+import {matchExerciseForImport,normalizeImportExerciseName} from './exercise-matching.ts';
 import type {NamedExercise} from './exercise-search.ts';
 
 export type ImportRecognitionCategory='missing-name'|'heading'|'instruction'|'uncertain'|'ambiguous-variant'|'missing-variant';
@@ -27,6 +27,7 @@ const key=(name:string)=>normalizeImportExerciseName(name).split(' ').sort().joi
 const byName=new Map(rules.flatMap(rule=>rule.names.map(name=>[key(name),rule] as const)));
 /** Null leaves unknown names on the existing suggestions/manual-search path. */
 export function reviewImportExerciseName(name:string,catalog:readonly NamedExercise[]=exercises):ImportRecognitionReview|null{
+ if(matchExerciseForImport(name,catalog,{allowGeneralMovement:true,suggestions:false}).exerciseId)return null;
  const normalized=normalizeImportExerciseName(name);
  if(!normalized)return {category:'missing-name',he:'שם התרגיל חסר. בדקו את מיפוי העמודות ואת שורת המקור. השורה נשמרת לבדיקה ואינה נמחקת אוטומטית.',en:'Exercise name is missing. Check the column mapping and source row. The row remains for review and is not silently removed.',candidateIds:[]};
  if(/^(?:legs?|רגליים) [12]$/.test(normalized))return {category:'heading',he:'זו עשויה להיות כותרת אימון. בדקו ודלגו במפורש אם אינה שורת תרגיל.',en:'This may be a workout heading. Review and explicitly skip it if it is not an exercise row.',candidateIds:[]};

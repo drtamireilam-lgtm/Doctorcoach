@@ -177,3 +177,13 @@ Counts exclude canonical names/ID and deduplicate using the production normalize
 | movement-kelso-shrug | Kelso Shrug | 16 | 14 | 15+ |
 | movement-hammer-pulldown-narrow | Narrow Grip Hammer Pulldown | 17 | 16 | 15+ |
 | movement-hammer-row-wide | Wide Grip Hammer Row | 18 | 15 | 15+ |
+| seated-leg-press | Seated Leg Press | 17 | 15 | 15+ |
+| incline-machine-chest-press | Incline Machine Chest Press | 19 | 16 | 15+ |
+| machine-lateral-raise | Machine Lateral Raise | 21 | 19 | 15+ |
+| machine-biceps-curl | Machine Biceps Curl | 21 | 17 | 15+ |
+| cable-straight-leg-hip-flexion | Straight-Leg Cable Hip Flexion | 16 | 15 | 15+ |
+| parallel-bar-dip | Parallel-Bar Dip | 20 | 20 | 15+ |
+| wide-grip-cable-pulldown | Wide-Grip Cable Lat Pulldown | 18 | 17 | 15+ |
+| narrow-grip-cable-pulldown | Narrow-Grip Cable Lat Pulldown | 19 | 18 | 15+ |
+| movement-wide-grip-pulldown | Wide-Grip Pulldown | 16 | 16 | 15+ |
+| movement-narrow-grip-pulldown | Narrow-Grip Pulldown | 16 | 16 | 15+ |

@@ -8,8 +8,8 @@ test('unresolved source classes expose an actionable review reason',()=>{
  const groups={
   'missing-name':['','  '],heading:['Legs 1','Legs 2'],instruction:['יד קדמית צריך שני תרגילים'],
   uncertain:['דדליפט רומני?','לחיצת כתפיים מוט?','מתח רחב או pulldown'],
-  'ambiguous-variant':['Hip Abduction','Hip Adduction','bicep curl bench lean 45° back','narrow grip pulldown','hammer strength narrow grip pulling machine','single hand pullover','tricep extension pully','leg curl machine','כסא רומי','פולי עליון צר','יד אחורי ת כבל','הרחקה בישיבה במכונה','kickback','Tricep extension pulley with straight bar','pronated shoulder flexion','wide grip pully'],
-  'missing-variant':['Seated Leg Press','incline machine press','Side lateral machine','biceps in machine','כפיפת ירך עם רגל ישרה כנגד פולי','מקבילים','wide grip pulldown'],
+  'ambiguous-variant':['Hip Abduction','Hip Adduction','bicep curl bench lean 45° back','hammer strength narrow grip pulling machine','single hand pullover','tricep extension pully','leg curl machine','כסא רומי','יד אחורי ת כבל','הרחקה בישיבה במכונה','kickback','Tricep extension pulley with straight bar','pronated shoulder flexion','wide grip pully'],
+
  };
  for(const [category,names] of Object.entries(groups))for(const name of names){const result=review(name);assert.equal(result.category,category,name);assert.ok(result.he.length>10);assert.ok(result.en.length>10);assert.equal(match(name,undefined,{allowGeneralMovement:true}).exerciseId,'',name);}
 });
@@ -18,7 +18,8 @@ test('machine leg curl suggests both postures and never leg extension',()=>{
  assert.deepEqual(review('tricep extension pully').candidateIds,['triceps-pushdown','cable-overhead-triceps']);
 });
 test('missing catalog variants and headings never offer an inappropriate near variant',()=>{
- for(const name of ['wide grip pulldown','incline machine press','Side lateral machine','Legs 1',''])assert.deepEqual(review(name).candidateIds,[]);
+ for(const name of ['wide grip pulldown','incline machine press','Side lateral machine'])assert.equal(review(name),null);
+ for(const name of ['Legs 1',''])assert.deepEqual(review(name).candidateIds,[]);
 });
 test('unknown phrases use the existing fallback and known assignments need no unresolved diagnostic',()=>{
  assert.equal(review('unseen exercise description'),null);assert.equal(review('Dumbbell bench press'),null);
@@ -35,5 +36,8 @@ test('unmatched source wording does not claim that an equivalent custom variant 
  const custom=[{id:'custom:synthetic',name:'לחיצת חזה במכונה בשיפוע',en:'Incline Machine Chest Press'}];
  const result=review('incline machine press',custom);
  assert.ok(result.en.includes('Search the catalog'));assert.ok(!result.en.includes('catalog has no'));
- assert.ok(!review('narrow grip pulldown').en.includes('absent'));
+ assert.ok(!review('narrow grip pulldown',[]).en.includes('absent'));
+});
+test('new supported variants no longer show unresolved-name diagnostics',()=>{
+ for(const name of ['incline machine press','wide grip pulldown','Seated Leg Press','Side lateral machine','biceps in machine','מקבילים','כפיפת ירך עם רגל ישרה כנגד פולי'])assert.equal(review(name),null,name);
 });

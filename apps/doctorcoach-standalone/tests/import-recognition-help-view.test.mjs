@@ -19,7 +19,7 @@ for(const language of ['he','en'])test('manual recognition guidance renders loca
  const render=name=>renderToStaticMarkup(createElement(Component,{name,catalog:exercises,onSelect:()=>selections++}));
  const curl=render('leg curl machine');assert.ok(curl.includes('data-recognition-review="ambiguous-variant"'));
  assert.ok(curl.includes(language==='en'?'seated or lying':'בישיבה או בשכיבה'));assert.ok(curl.includes('Seated Leg Curl'));assert.ok(curl.includes('Lying Leg Curl'));assert.ok(!curl.includes('Leg Extension'));
- const missing=render('incline machine press');assert.ok(missing.includes('data-recognition-review="missing-variant"'));assert.ok(!missing.includes('<button'));
+ const missing=render('incline machine press');assert.equal(missing,'');
  assert.ok(render('').includes('data-recognition-review="missing-name"'));assert.equal(selections,0);
  const fallback=render('Dumbell benh press');assert.ok(fallback.includes(exercises.find(e=>e.id==='bench').en));assert.ok(fallback.includes(language==='en'?'Suggestions for review':'הצעות לבדיקה'));
 });

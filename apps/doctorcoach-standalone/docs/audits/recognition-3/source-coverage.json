@@ -4,22 +4,22 @@
   "nonTableSheets": 2,
   "extractedRows": 191,
   "baselineAutomatic": 95,
-  "previousPrAutomatic": 100,
-  "currentAutomatic": 106,
-  "needsReview": 85,
-  "newlyAutomaticFromBaseline": 11,
+  "previousPrAutomatic": 106,
+  "currentAutomatic": 117,
+  "needsReview": 74,
+  "newlyAutomaticFromBaseline": 22,
   "lostAutomaticFromBaseline": 0,
   "changedExistingTarget": 0,
   "accuracyLimit": "No independent labels for all rows. Development coverage only, not precision/recall or a held-out benchmark.",
   "reviewCategories": {
+    "missing-name": 46,
     "heading": 2,
-    "ambiguous-variant": 24,
-    "missing-variant": 9,
+    "ambiguous-variant": 22,
     "uncertain": 3,
-    "instruction": 1,
-    "missing-name": 46
+    "instruction": 1
   },
   "namedSourceRows": 145,
-  "automaticAmongNamedRows": 106,
-  "note": "46 rows have no name and 2 are potential headings, not 48 confirmed missing exercises. All 85 rows retained for explicit coach review. No new aliases approved in this pass; remaining inputs lack an unambiguous existing variant."
+  "automaticAmongNamedRows": 117,
+  "note": "46 rows have no name and 2 are potential headings. Ten additive canonical records resolve nine formerly missing-variant rows and two narrow-grip rows; all 106 previous targets retained. Remaining 74 rows remain for explicit coach review. Development coverage only.",
+  "newlyAutomaticThisPass": 11
 }

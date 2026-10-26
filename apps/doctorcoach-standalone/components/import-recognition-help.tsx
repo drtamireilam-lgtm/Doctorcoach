@@ -6,6 +6,7 @@ import type {Exercise} from '../lib/content';
 
 export function ImportRecognitionHelp({name,catalog,onSelect}:{name:string;catalog:Exercise[];onSelect:(id:string)=>void}){
  const english=useLanguage().language==='en';
+ if(matchExerciseForImport(name,catalog,{allowGeneralMovement:true,suggestions:false}).exerciseId)return null;
  const review=reviewImportExerciseName(name,catalog);
  const ids=review?review.candidateIds:matchExerciseForImport(name,catalog,{allowGeneralMovement:true}).candidates.map(c=>c.exerciseId);
  const candidates=ids.flatMap(id=>{const entry=catalog.find(e=>e.id===id);return entry?[entry]:[];});

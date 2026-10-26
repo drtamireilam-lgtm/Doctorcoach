@@ -1,5 +1,5 @@
 {
-  "tokenDistinctAliases": 2875,
+  "tokenDistinctAliases": 3044,
   "tokenCollisions": [
     {
       "signature": "bench press",
@@ -203,9 +203,9 @@
       ]
     }
   ],
-  "exerciseCount": 173,
-  "totalAliases": 3041,
-  "meetsTarget": 173,
+  "exerciseCount": 183,
+  "totalAliases": 3224,
+  "meetsTarget": 183,
   "shortfalls": [],
   "orphanIds": [],
   "rows": [
@@ -14444,6 +14444,858 @@
         {
           "name": "חתירה בהאמר באחיזה רחבה",
           "normalized": "חתירה בהאמר באחיזה רחבה"
+        }
+      ],
+      "hasHebrew": true,
+      "hasEnglish": true
+    },
+    {
+      "exerciseId": "seated-leg-press",
+      "hebrew": "לחיצת רגליים בישיבה במכונה",
+      "english": "Seated Leg Press",
+      "aliasCount": 17,
+      "tokenDistinctAliasCount": 15,
+      "meetsTarget": true,
+      "aliases": [
+        {
+          "name": "Seated machine leg press",
+          "normalized": "seated machine leg press"
+        },
+        {
+          "name": "Sitting leg press",
+          "normalized": "sitting leg press"
+        },
+        {
+          "name": "Seated leg-pess",
+          "normalized": "seated leg pess"
+        },
+        {
+          "name": "Sitting machine leg press",
+          "normalized": "sitting machine leg press"
+        },
+        {
+          "name": "Leg press seated",
+          "normalized": "leg press seated"
+        },
+        {
+          "name": "Seated leg pressing",
+          "normalized": "seated leg pressing"
+        },
+        {
+          "name": "Seated leg press machine",
+          "normalized": "seated leg press machine"
+        },
+        {
+          "name": "לחיצת רגליים בישיבה",
+          "normalized": "לחיצת רגליים בישיבה"
+        },
+        {
+          "name": "לחיצה רגליים בישיבה",
+          "normalized": "לחיצה רגליים בישיבה"
+        },
+        {
+          "name": "לחיצות רגליים בישיבה",
+          "normalized": "לחיצות רגליים בישיבה"
+        },
+        {
+          "name": "לחיצת רגליים במכשיר בישיבה",
+          "normalized": "לחיצת רגליים במכשיר בישיבה"
+        },
+        {
+          "name": "מכונת לחיצת רגליים בישיבה",
+          "normalized": "מכונת לחיצת רגליים בישיבה"
+        },
+        {
+          "name": "לג פרס בישיבה",
+          "normalized": "לג פרס בישיבה"
+        },
+        {
+          "name": "לגפרס בישיבה",
+          "normalized": "לגפרס בישיבה"
+        },
+        {
+          "name": "לג פראס בישיבה",
+          "normalized": "לג פראס בישיבה"
+        },
+        {
+          "name": "לחיצת רגלים בישיבה",
+          "normalized": "לחיצת רגלים בישיבה"
+        },
+        {
+          "name": "לחיצת רגליים ישיבה",
+          "normalized": "לחיצת רגליים ישיבה"
+        }
+      ],
+      "hasHebrew": true,
+      "hasEnglish": true
+    },
+    {
+      "exerciseId": "incline-machine-chest-press",
+      "hebrew": "לחיצת חזה בשיפוע חיובי במכונה",
+      "english": "Incline Machine Chest Press",
+      "aliasCount": 19,
+      "tokenDistinctAliasCount": 16,
+      "meetsTarget": true,
+      "aliases": [
+        {
+          "name": "incline machine press",
+          "normalized": "incline machine press"
+        },
+        {
+          "name": "Incline chest press machine",
+          "normalized": "incline chest press machine"
+        },
+        {
+          "name": "Machine incline press",
+          "normalized": "machine incline press"
+        },
+        {
+          "name": "Inclined machine chest press",
+          "normalized": "inclined machine chest press"
+        },
+        {
+          "name": "Incline machine bench press",
+          "normalized": "incline machine bench press"
+        },
+        {
+          "name": "Upper chest machine press",
+          "normalized": "upper chest machine press"
+        },
+        {
+          "name": "Incline lever chest press",
+          "normalized": "incline lever chest press"
+        },
+        {
+          "name": "Incline chest pressing machine",
+          "normalized": "incline chest pressing machine"
+        },
+        {
+          "name": "לחיצת חזה בשיפוע במכונה",
+          "normalized": "לחיצת חזה בשיפוע במכונה"
+        },
+        {
+          "name": "לחיצת חזה עליון במכונה",
+          "normalized": "לחיצת חזה עליון במכונה"
+        },
+        {
+          "name": "לחיצת חזה במכונה בשיפוע חיובי",
+          "normalized": "לחיצת חזה במכונה בשיפוע חיובי"
+        },
+        {
+          "name": "לחיצת חזה שיפוע מכונה",
+          "normalized": "לחיצת חזה שיפוע מכונה"
+        },
+        {
+          "name": "לחיצות חזה עליון במכונה",
+          "normalized": "לחיצות חזה עליון במכונה"
+        },
+        {
+          "name": "לחיצה לחזה עליון במכונה",
+          "normalized": "לחיצה לחזה עליון במכונה"
+        },
+        {
+          "name": "מכונת לחיצת חזה עליון",
+          "normalized": "מכונת לחיצת חזה עליון"
+        },
+        {
+          "name": "אינקליין פרס במכונה",
+          "normalized": "אינקליין פרס במכונה"
+        },
+        {
+          "name": "אינקלין פרס במכונה",
+          "normalized": "אינקלין פרס במכונה"
+        },
+        {
+          "name": "לחיצת חזה באינקליין במכשיר",
+          "normalized": "לחיצת חזה באינקליין במכשיר"
+        },
+        {
+          "name": "לחיצת חזה עליון במכשיר",
+          "normalized": "לחיצת חזה עליון במכשיר"
+        }
+      ],
+      "hasHebrew": true,
+      "hasEnglish": true
+    },
+    {
+      "exerciseId": "machine-lateral-raise",
+      "hebrew": "הרחקת כתפיים במכונה",
+      "english": "Machine Lateral Raise",
+      "aliasCount": 21,
+      "tokenDistinctAliasCount": 19,
+      "meetsTarget": true,
+      "aliases": [
+        {
+          "name": "Side lateral machine",
+          "normalized": "side lateral machine"
+        },
+        {
+          "name": "Lateral raise machine",
+          "normalized": "lateral raise machine"
+        },
+        {
+          "name": "Machine side lateral raise",
+          "normalized": "machine side lateral raise"
+        },
+        {
+          "name": "Machine shoulder lateral raise",
+          "normalized": "machine shoulder lateral raise"
+        },
+        {
+          "name": "Machine side raise",
+          "normalized": "machine side raise"
+        },
+        {
+          "name": "Machine shoulder abduction",
+          "normalized": "machine shoulder abduction"
+        },
+        {
+          "name": "Lateral raises machine",
+          "normalized": "lateral raises machine"
+        },
+        {
+          "name": "Lateral delt raise machine",
+          "normalized": "lateral delt raise machine"
+        },
+        {
+          "name": "Side delt machine",
+          "normalized": "side delt machine"
+        },
+        {
+          "name": "Machine lateral raises",
+          "normalized": "machine lateral raises"
+        },
+        {
+          "name": "הרחקת כתף במכונה",
+          "normalized": "הרחקת כתף במכונה"
+        },
+        {
+          "name": "הרחקות כתפיים במכונה",
+          "normalized": "הרחקות כתפיים במכונה"
+        },
+        {
+          "name": "הרחקת כתפיים במכשיר",
+          "normalized": "הרחקת כתפיים במכשיר"
+        },
+        {
+          "name": "הרחקות כתף במכשיר",
+          "normalized": "הרחקות כתף במכשיר"
+        },
+        {
+          "name": "הרמת כתפיים לצדדים במכונה",
+          "normalized": "הרמת כתפיים לצדדים במכונה"
+        },
+        {
+          "name": "הרמת זרועות לצדדים במכונה",
+          "normalized": "הרמת זרועות לצדדים במכונה"
+        },
+        {
+          "name": "מכונת הרחקת כתפיים",
+          "normalized": "מכונת הרחקת כתפיים"
+        },
+        {
+          "name": "מכונת כתף אמצעית",
+          "normalized": "מכונת כתף אמצעית"
+        },
+        {
+          "name": "לטרל רייז במכונה",
+          "normalized": "לטרל רייז במכונה"
+        },
+        {
+          "name": "לאטרל רייז במכונה",
+          "normalized": "לאטרל רייז במכונה"
+        },
+        {
+          "name": "סייד לטרל במכונה",
+          "normalized": "סייד לטרל במכונה"
+        }
+      ],
+      "hasHebrew": true,
+      "hasEnglish": true
+    },
+    {
+      "exerciseId": "machine-biceps-curl",
+      "hebrew": "כפיפת מרפקים במכונה",
+      "english": "Machine Biceps Curl",
+      "aliasCount": 21,
+      "tokenDistinctAliasCount": 17,
+      "meetsTarget": true,
+      "aliases": [
+        {
+          "name": "biceps in machine",
+          "normalized": "biceps in machine"
+        },
+        {
+          "name": "Bicep curl machine",
+          "normalized": "bicep curl machine"
+        },
+        {
+          "name": "Biceps curl machine",
+          "normalized": "biceps curl machine"
+        },
+        {
+          "name": "Machine bicep curl",
+          "normalized": "machine bicep curl"
+        },
+        {
+          "name": "Machine arm curl",
+          "normalized": "machine arm curl"
+        },
+        {
+          "name": "Arm curl machine",
+          "normalized": "arm curl machine"
+        },
+        {
+          "name": "Biceps machine curl",
+          "normalized": "biceps machine curl"
+        },
+        {
+          "name": "Machine elbow flexion",
+          "normalized": "machine elbow flexion"
+        },
+        {
+          "name": "Biceps curls on machine",
+          "normalized": "biceps curls on machine"
+        },
+        {
+          "name": "Machine biceps curls",
+          "normalized": "machine biceps curls"
+        },
+        {
+          "name": "Bicep machine",
+          "normalized": "bicep machine"
+        },
+        {
+          "name": "כפיפת מרפק במכונה",
+          "normalized": "כפיפת מרפק במכונה"
+        },
+        {
+          "name": "כפיפות מרפקים במכונה",
+          "normalized": "כפיפות מרפקים במכונה"
+        },
+        {
+          "name": "כפיפת מרפקים במכשיר",
+          "normalized": "כפיפת מרפקים במכשיר"
+        },
+        {
+          "name": "כפיפות מרפקים במכשיר",
+          "normalized": "כפיפות מרפקים במכשיר"
+        },
+        {
+          "name": "יד קדמית במכונה",
+          "normalized": "יד קדמית במכונה"
+        },
+        {
+          "name": "כפיפת יד קדמית במכונה",
+          "normalized": "כפיפת יד קדמית במכונה"
+        },
+        {
+          "name": "מכונת יד קדמית",
+          "normalized": "מכונת יד קדמית"
+        },
+        {
+          "name": "מכונת כפיפת מרפקים",
+          "normalized": "מכונת כפיפת מרפקים"
+        },
+        {
+          "name": "בייספס קרל במכונה",
+          "normalized": "בייספס קרל במכונה"
+        },
+        {
+          "name": "בייספ קרל במכונה",
+          "normalized": "בייספ קרל במכונה"
+        }
+      ],
+      "hasHebrew": true,
+      "hasEnglish": true
+    },
+    {
+      "exerciseId": "cable-straight-leg-hip-flexion",
+      "hebrew": "כפיפת ירך ברגל ישרה בכבל",
+      "english": "Straight-Leg Cable Hip Flexion",
+      "aliasCount": 16,
+      "tokenDistinctAliasCount": 15,
+      "meetsTarget": true,
+      "aliases": [
+        {
+          "name": "Straight leg hip flexion cable",
+          "normalized": "straight leg hip flexion cable"
+        },
+        {
+          "name": "Straight knee cable hip flexion",
+          "normalized": "straight knee cable hip flexion"
+        },
+        {
+          "name": "Ankle strap cable straight-leg hip flexion",
+          "normalized": "ankle strap cable straight leg hip flexion"
+        },
+        {
+          "name": "Cable hip flexion knee extended",
+          "normalized": "cable hip flexion knee extended"
+        },
+        {
+          "name": "Straight-leg cable front leg raise",
+          "normalized": "straight leg cable front leg raise"
+        },
+        {
+          "name": "Cable straight-leg forward raise",
+          "normalized": "cable straight leg forward raise"
+        },
+        {
+          "name": "Cable hip flexion with straight knee",
+          "normalized": "cable hip flexion with straight knee"
+        },
+        {
+          "name": "כפיפת ירך עם רגל ישרה כנגד פולי",
+          "normalized": "כפיפת ירך עם רגל ישרה כנגד פולי"
+        },
+        {
+          "name": "כפיפת ירך ברגל ישרה בפולי",
+          "normalized": "כפיפת ירך ברגל ישרה בפולי"
+        },
+        {
+          "name": "כפיפת ירך עם ברך ישרה בכבל",
+          "normalized": "כפיפת ירך עם ברך ישרה בכבל"
+        },
+        {
+          "name": "כפיפת ירך ברגל ישרה כנגד כבל",
+          "normalized": "כפיפת ירך ברגל ישרה כנגד כבל"
+        },
+        {
+          "name": "הרמת רגל ישרה קדימה בפולי",
+          "normalized": "הרמת רגל ישרה קדימה בפולי"
+        },
+        {
+          "name": "הרמת רגל ישרה קדימה בכבל",
+          "normalized": "הרמת רגל ישרה קדימה בכבל"
+        },
+        {
+          "name": "כפיפת ירך כנגד פולי בברך ישרה",
+          "normalized": "כפיפת ירך כנגד פולי בברך ישרה"
+        },
+        {
+          "name": "כפיפת ירך בפולי עם רצועת קרסול וברך ישרה",
+          "normalized": "כפיפת ירך בפולי עם רצועת קרסול וברך ישרה"
+        },
+        {
+          "name": "כפיפת ירך ברגל ישרה עם רצועת קרסול בכבל",
+          "normalized": "כפיפת ירך ברגל ישרה עם רצועת קרסול בכבל"
+        }
+      ],
+      "hasHebrew": true,
+      "hasEnglish": true
+    },
+    {
+      "exerciseId": "parallel-bar-dip",
+      "hebrew": "מקבילים",
+      "english": "Parallel-Bar Dip",
+      "aliasCount": 20,
+      "tokenDistinctAliasCount": 20,
+      "meetsTarget": true,
+      "aliases": [
+        {
+          "name": "Parallel bar dips",
+          "normalized": "parallel bar dips"
+        },
+        {
+          "name": "Parallel bars dip",
+          "normalized": "parallel bars dip"
+        },
+        {
+          "name": "Parallel bars dips",
+          "normalized": "parallel bars dips"
+        },
+        {
+          "name": "Bodyweight parallel bar dip",
+          "normalized": "bodyweight parallel bar dip"
+        },
+        {
+          "name": "Bodyweight dip on parallel bars",
+          "normalized": "bodyweight dip on parallel bars"
+        },
+        {
+          "name": "Unassisted parallel bar dips",
+          "normalized": "unassisted parallel bar dips"
+        },
+        {
+          "name": "Dip on parallel bars",
+          "normalized": "dip on parallel bars"
+        },
+        {
+          "name": "Dips on parallel bars",
+          "normalized": "dips on parallel bars"
+        },
+        {
+          "name": "Parallel dip",
+          "normalized": "parallel dip"
+        },
+        {
+          "name": "מקבילים במשקל גוף",
+          "normalized": "מקבילים במשקל גוף"
+        },
+        {
+          "name": "דיפ במקבילים",
+          "normalized": "דיפ במקבילים"
+        },
+        {
+          "name": "דיפים במקבילים",
+          "normalized": "דיפים במקבילים"
+        },
+        {
+          "name": "דיפס במקבילים",
+          "normalized": "דיפס במקבילים"
+        },
+        {
+          "name": "תרגיל מקבילים",
+          "normalized": "תרגיל מקבילים"
+        },
+        {
+          "name": "כפיפת ופשיטת מרפקים במקבילים",
+          "normalized": "כפיפת ופשיטת מרפקים במקבילים"
+        },
+        {
+          "name": "עליות במקבילים",
+          "normalized": "עליות במקבילים"
+        },
+        {
+          "name": "ירידה ועלייה במקבילים",
+          "normalized": "ירידה ועלייה במקבילים"
+        },
+        {
+          "name": "פשיטת מרפקים על מקבילים",
+          "normalized": "פשיטת מרפקים על מקבילים"
+        },
+        {
+          "name": "מקבילים ללא סיוע",
+          "normalized": "מקבילים ללא סיוע"
+        },
+        {
+          "name": "מקביליים",
+          "normalized": "מקביליים"
+        }
+      ],
+      "hasHebrew": true,
+      "hasEnglish": true
+    },
+    {
+      "exerciseId": "wide-grip-cable-pulldown",
+      "hebrew": "פולי עליון באחיזה רחבה",
+      "english": "Wide-Grip Cable Lat Pulldown",
+      "aliasCount": 18,
+      "tokenDistinctAliasCount": 17,
+      "meetsTarget": true,
+      "aliases": [
+        {
+          "name": "Wide grip lat pull down cable",
+          "normalized": "wide grip lat pull down cable"
+        },
+        {
+          "name": "Cable wide grip pulldown",
+          "normalized": "cable wide grip pulldown"
+        },
+        {
+          "name": "Wide grip high pulley pulldown",
+          "normalized": "wide grip high pulley pulldown"
+        },
+        {
+          "name": "Wide grip lat pull on cable",
+          "normalized": "wide grip lat pull on cable"
+        },
+        {
+          "name": "Wide grip cable lat pull",
+          "normalized": "wide grip cable lat pull"
+        },
+        {
+          "name": "High pulley wide grip lat pull",
+          "normalized": "high pulley wide grip lat pull"
+        },
+        {
+          "name": "Wide grip pulley pulldown",
+          "normalized": "wide grip pulley pulldown"
+        },
+        {
+          "name": "פולי עליון רחב",
+          "normalized": "פולי עליון רחב"
+        },
+        {
+          "name": "פולי עליון באחיזה רחבה לגב",
+          "normalized": "פולי עליון באחיזה רחבה לגב"
+        },
+        {
+          "name": "משיכת פולי עליון באחיזה רחבה",
+          "normalized": "משיכת פולי עליון באחיזה רחבה"
+        },
+        {
+          "name": "משיכה עליונה בכבל באחיזה רחבה",
+          "normalized": "משיכה עליונה בכבל באחיזה רחבה"
+        },
+        {
+          "name": "משיכת כבל מלמעלה באחיזה רחבה",
+          "normalized": "משיכת כבל מלמעלה באחיזה רחבה"
+        },
+        {
+          "name": "משיכת פולי גבוה באחיזה רחבה",
+          "normalized": "משיכת פולי גבוה באחיזה רחבה"
+        },
+        {
+          "name": "פולי עליון אחיזה רחבה",
+          "normalized": "פולי עליון אחיזה רחבה"
+        },
+        {
+          "name": "פולי רחב לגב",
+          "normalized": "פולי רחב לגב"
+        },
+        {
+          "name": "לאט פולדאון רחב בכבל",
+          "normalized": "לאט פולדאון רחב בכבל"
+        },
+        {
+          "name": "פולי עליון בגריפ רחב",
+          "normalized": "פולי עליון בגריפ רחב"
+        },
+        {
+          "name": "משיכות פולי עליון רחבות",
+          "normalized": "משיכות פולי עליון רחבות"
+        }
+      ],
+      "hasHebrew": true,
+      "hasEnglish": true
+    },
+    {
+      "exerciseId": "narrow-grip-cable-pulldown",
+      "hebrew": "פולי עליון באחיזה צרה",
+      "english": "Narrow-Grip Cable Lat Pulldown",
+      "aliasCount": 19,
+      "tokenDistinctAliasCount": 18,
+      "meetsTarget": true,
+      "aliases": [
+        {
+          "name": "Close grip cable lat pulldown",
+          "normalized": "close grip cable lat pulldown"
+        },
+        {
+          "name": "Close grip cable pulldown",
+          "normalized": "close grip cable pulldown"
+        },
+        {
+          "name": "Cable narrow grip lat pulldown",
+          "normalized": "cable narrow grip lat pulldown"
+        },
+        {
+          "name": "Narrow grip high pulley pulldown",
+          "normalized": "narrow grip high pulley pulldown"
+        },
+        {
+          "name": "Close grip high pulley pulldown",
+          "normalized": "close grip high pulley pulldown"
+        },
+        {
+          "name": "Cable close grip lat pull down",
+          "normalized": "cable close grip lat pull down"
+        },
+        {
+          "name": "Narrow grip lat pull on cable",
+          "normalized": "narrow grip lat pull on cable"
+        },
+        {
+          "name": "Narrow grip pulley pulldown",
+          "normalized": "narrow grip pulley pulldown"
+        },
+        {
+          "name": "פולי עליון צר",
+          "normalized": "פולי עליון צר"
+        },
+        {
+          "name": "פולי עליון באחיזה צרה לגב",
+          "normalized": "פולי עליון באחיזה צרה לגב"
+        },
+        {
+          "name": "משיכת פולי עליון באחיזה צרה",
+          "normalized": "משיכת פולי עליון באחיזה צרה"
+        },
+        {
+          "name": "משיכה עליונה בכבל באחיזה צרה",
+          "normalized": "משיכה עליונה בכבל באחיזה צרה"
+        },
+        {
+          "name": "משיכת כבל מלמעלה באחיזה צרה",
+          "normalized": "משיכת כבל מלמעלה באחיזה צרה"
+        },
+        {
+          "name": "משיכת פולי גבוה באחיזה צרה",
+          "normalized": "משיכת פולי גבוה באחיזה צרה"
+        },
+        {
+          "name": "פולי עליון אחיזה צרה",
+          "normalized": "פולי עליון אחיזה צרה"
+        },
+        {
+          "name": "פולי צר לגב",
+          "normalized": "פולי צר לגב"
+        },
+        {
+          "name": "לאט פולדאון צר בכבל",
+          "normalized": "לאט פולדאון צר בכבל"
+        },
+        {
+          "name": "פולי עליון בגריפ צר",
+          "normalized": "פולי עליון בגריפ צר"
+        },
+        {
+          "name": "משיכות פולי עליון צרות",
+          "normalized": "משיכות פולי עליון צרות"
+        }
+      ],
+      "hasHebrew": true,
+      "hasEnglish": true
+    },
+    {
+      "exerciseId": "movement-wide-grip-pulldown",
+      "hebrew": "משיכה עליונה באחיזה רחבה",
+      "english": "Wide-Grip Pulldown",
+      "aliasCount": 16,
+      "tokenDistinctAliasCount": 16,
+      "meetsTarget": true,
+      "aliases": [
+        {
+          "name": "Wide grip lat pulldown",
+          "normalized": "wide grip lat pulldown"
+        },
+        {
+          "name": "Wide grip lat pull down",
+          "normalized": "wide grip lat pull down"
+        },
+        {
+          "name": "Wide grip pull down",
+          "normalized": "wide grip pull down"
+        },
+        {
+          "name": "Wide lat pull",
+          "normalized": "wide lat pull"
+        },
+        {
+          "name": "Wide lat pulldown",
+          "normalized": "wide lat pulldown"
+        },
+        {
+          "name": "Wide grip lat pulls",
+          "normalized": "wide grip lat pulls"
+        },
+        {
+          "name": "Wide grip pulldowns",
+          "normalized": "wide grip pulldowns"
+        },
+        {
+          "name": "משיכות עליונות באחיזה רחבה",
+          "normalized": "משיכות עליונות באחיזה רחבה"
+        },
+        {
+          "name": "משיכה עליונה רחבה",
+          "normalized": "משיכה עליונה רחבה"
+        },
+        {
+          "name": "משיכת גב מלמעלה באחיזה רחבה",
+          "normalized": "משיכת גב מלמעלה באחיזה רחבה"
+        },
+        {
+          "name": "משיכה עליונה בגריפ רחב",
+          "normalized": "משיכה עליונה בגריפ רחב"
+        },
+        {
+          "name": "משיכת לאט באחיזה רחבה",
+          "normalized": "משיכת לאט באחיזה רחבה"
+        },
+        {
+          "name": "לאט פולדאון באחיזה רחבה",
+          "normalized": "לאט פולדאון באחיזה רחבה"
+        },
+        {
+          "name": "לאט פול דאון באחיזה רחבה",
+          "normalized": "לאט פול דאון באחיזה רחבה"
+        },
+        {
+          "name": "לט פולדאון רחב",
+          "normalized": "לט פולדאון רחב"
+        },
+        {
+          "name": "משיכה עליונה באחיזה רחבה לגב",
+          "normalized": "משיכה עליונה באחיזה רחבה לגב"
+        }
+      ],
+      "hasHebrew": true,
+      "hasEnglish": true
+    },
+    {
+      "exerciseId": "movement-narrow-grip-pulldown",
+      "hebrew": "משיכה עליונה באחיזה צרה",
+      "english": "Narrow-Grip Pulldown",
+      "aliasCount": 16,
+      "tokenDistinctAliasCount": 16,
+      "meetsTarget": true,
+      "aliases": [
+        {
+          "name": "Close grip pulldown",
+          "normalized": "close grip pulldown"
+        },
+        {
+          "name": "Narrow grip lat pulldown",
+          "normalized": "narrow grip lat pulldown"
+        },
+        {
+          "name": "Narrow grip lat pull down",
+          "normalized": "narrow grip lat pull down"
+        },
+        {
+          "name": "Close grip lat pulldown",
+          "normalized": "close grip lat pulldown"
+        },
+        {
+          "name": "Close grip lat pull down",
+          "normalized": "close grip lat pull down"
+        },
+        {
+          "name": "Narrow grip pull down",
+          "normalized": "narrow grip pull down"
+        },
+        {
+          "name": "Narrow grip pulldowns",
+          "normalized": "narrow grip pulldowns"
+        },
+        {
+          "name": "משיכות עליונות באחיזה צרה",
+          "normalized": "משיכות עליונות באחיזה צרה"
+        },
+        {
+          "name": "משיכה עליונה צרה",
+          "normalized": "משיכה עליונה צרה"
+        },
+        {
+          "name": "משיכת גב מלמעלה באחיזה צרה",
+          "normalized": "משיכת גב מלמעלה באחיזה צרה"
+        },
+        {
+          "name": "משיכה עליונה בגריפ צר",
+          "normalized": "משיכה עליונה בגריפ צר"
+        },
+        {
+          "name": "משיכת לאט באחיזה צרה",
+          "normalized": "משיכת לאט באחיזה צרה"
+        },
+        {
+          "name": "לאט פולדאון באחיזה צרה",
+          "normalized": "לאט פולדאון באחיזה צרה"
+        },
+        {
+          "name": "לאט פול דאון באחיזה צרה",
+          "normalized": "לאט פול דאון באחיזה צרה"
+        },
+        {
+          "name": "לט פולדאון צר",
+          "normalized": "לט פולדאון צר"
+        },
+        {
+          "name": "משיכה עליונה באחיזה צרה לגב",
+          "normalized": "משיכה עליונה באחיזה צרה לגב"
         }
       ],
       "hasHebrew": true,
