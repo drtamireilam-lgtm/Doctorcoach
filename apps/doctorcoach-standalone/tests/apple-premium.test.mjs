@@ -29,7 +29,7 @@ function nodes(n,predicate){return !n||typeof n!=='object'?[]:[...(predicate(n)?
 test('each theme choice exposes a named miniature app and saves the exact preset on one tap',()=>{
  for(const language of ['he','en']){
   const {tree,calls}=picker(theme.themePresets[7].appearance,{language});
-  const buttons=nodes(tree,n=>n.type==='button');assert.equal(buttons.length,13);
+  const buttons=nodes(tree,n=>n.type==='button');assert.equal(buttons.length,theme.themePresets.length);
   for(const [i,b] of buttons.entries()){
    assert.equal(b.props['aria-label'],language==='en'?theme.themePresets[i].name:theme.themePresets[i].he);
    const preview=nodes(b,n=>n.props.className==='theme-miniature')[0];
@@ -44,7 +44,7 @@ test('unavailable account or pending synchronization disables all theme choices;
  const custom={mode:'dark',palette:'blue',custom:theme.fromPrimary('#123456','dark')};
  for(const options of [{busy:true},{signedIn:false}]){
   const {tree}=picker(custom,options),buttons=nodes(tree,n=>n.type==='button');
-  assert.equal(buttons.length,13);assert.ok(buttons.every(b=>b.props.disabled));
+  assert.equal(buttons.length,theme.themePresets.length);assert.ok(buttons.every(b=>b.props.disabled));
   assert.ok(buttons.every(b=>!b.props['aria-pressed']));
  }
  assert.deepEqual(theme.colorsFor(custom),custom.custom);

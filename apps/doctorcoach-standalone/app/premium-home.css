@@ -67,7 +67,7 @@
 html[dir=ltr] .dc-premium :is(.lucide-arrow-left,.lucide-arrow-right){transform:none}
 /* One appearance state: preserve the chosen hue, with layered premium surfaces. */
 html:is([data-palette],.light,[data-custom-theme]) .dc-premium{
- --dc-bg:var(--canvas);--dc-surface:var(--card);--dc-border:color-mix(in srgb,var(--line) 42%,transparent);--dc-gold:var(--accent-red);--dc-teal:var(--accent-red);--dc-text:var(--text);--dc-muted:var(--muted);
+ --dc-bg:var(--canvas);--dc-surface:var(--card);--dc-border:color-mix(in srgb,var(--line) 42%,transparent);--dc-gold:var(--dc-home-action,var(--accent-red));--dc-teal:var(--accent-red);--dc-text:var(--text);--dc-muted:var(--muted);
  background:radial-gradient(ellipse at 100% 0%,color-mix(in srgb,var(--accent-red) 8%,transparent),transparent 55%),var(--canvas);border-color:var(--dc-border)
 }
 html:is([data-palette],.light,[data-custom-theme]) .dc-premium :is(.dc-premium-card,.dc-premium-quick nav button){background:linear-gradient(145deg,color-mix(in srgb,var(--card) 94%,var(--accent-red)),var(--card));border-color:var(--dc-border);color:var(--dc-text)}

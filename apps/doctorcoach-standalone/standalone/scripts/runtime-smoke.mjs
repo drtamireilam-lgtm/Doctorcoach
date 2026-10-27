@@ -82,7 +82,7 @@ try{
   const loaded=await json('/api/preferences/appearance');assert.equal(loaded.ownerId,owner);assert.deepEqual(loaded.appearance,preset.appearance);
  }
  await json('/api/preferences/appearance',{appearance:{mode:'light',palette:'pink'},version:appearanceVersion,expectedOwnerId:owner});
- console.log('PASS: all thirteen premium themes persisted through built HTTP owner-scoped preferences. This is not browser visual QA.');
+ console.log('PASS: all configured premium themes persisted through built HTTP owner-scoped preferences. This is not browser visual QA.');
 
  const at=new Date().toISOString(),revision='2026-09-28.1';
  for(const id of ['terms','privacy','health','team','media'])await db.prepare('INSERT INTO user_consents(id,user_id,consent_id,revision,accepted,created_at) VALUES(?,?,?,?,1,?)').bind(randomUUID(),owner,id,revision,at).run();

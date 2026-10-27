@@ -36,6 +36,11 @@ export function appearanceWithMode(a:Appearance,mode:Appearance['mode']):Appeara
 export const themePresets:{id:string;name:string;he:string;appearance:Appearance}[]=[
 {id:"dark",name:"Dark",he:"שחור קלאסי",appearance:{"mode": "dark", "palette": "neutral", "custom": {"background": "#090c12", "primary": "#77869e", "secondary": "#171c26", "button": "#77869e", "navigation": "#090c12", "accent": "#c5d3eb"}}},
 {id:"light",name:"Light",he:"לבן נקי",appearance:{"mode": "light", "palette": "neutral", "custom": {"background": "#f5f7fb", "primary": "#344663", "secondary": "#ffffff", "button": "#344663", "navigation": "#f5f7fb", "accent": "#334f7c"}}},
+{"id": "medical-premium", "name": "Navy, Teal & Champagne", "he": "נייבי, טורקיז ושמפניה", "appearance": {"mode": "dark", "palette": "blue", "custom": {"background": "#0c1523", "primary": "#8dcac8", "secondary": "#1a2a3a", "button": "#edce97", "navigation": "#0c1523", "accent": "#8dcac8"}}},
+{"id": "ocean-slate", "name": "Ocean Slate", "he": "אוקיינוס וצפחה", "appearance": {"mode": "dark", "palette": "teal", "custom": {"background": "#0d1c25", "primary": "#9fc9d3", "secondary": "#172e3b", "button": "#9fc9d3", "navigation": "#0d1c25", "accent": "#98c9c1"}}},
+{"id": "sage-stone", "name": "Sage & Stone", "he": "מרווה ואבן", "appearance": {"mode": "light", "palette": "green", "custom": {"background": "#f1f3ee", "primary": "#527261", "secondary": "#fbfcf8", "button": "#375a48", "navigation": "#e6ebe3", "accent": "#456b60"}}},
+{"id": "ivory-champagne", "name": "Ivory & Champagne", "he": "שנהב ושמפניה", "appearance": {"mode": "light", "palette": "yellow", "custom": {"background": "#f6f1e9", "primary": "#755e3b", "secondary": "#fffcf7", "button": "#755e3b", "navigation": "#eee6d9", "accent": "#7b6240"}}},
+{"id": "midnight-lavender", "name": "Midnight Lavender", "he": "לבנדר לילי", "appearance": {"mode": "dark", "palette": "purple", "custom": {"background": "#161726", "primary": "#a49cc7", "secondary": "#24263b", "button": "#b7afd6", "navigation": "#161726", "accent": "#c2cae4"}}},
 {id:"gold",name:"Premium Gold",he:"זהב מטאלי",appearance:{"mode": "dark", "palette": "yellow", "custom": {"background": "#08090d", "primary": "#d4af37", "secondary": "#191715", "button": "#d4af37", "navigation": "#08090d", "accent": "#f5d77a"}}},
 {id:"silver",name:"Premium Silver",he:"כסף מטאלי",appearance:{"mode": "dark", "palette": "neutral", "custom": {"background": "#0d1117", "primary": "#c0c0c0", "secondary": "#20252d", "button": "#c0c0c0", "navigation": "#0d1117", "accent": "#e2e8f0"}}},
 {id:"coral",name:"Dark Coral",he:"אדום קורל",appearance:{"mode": "dark", "palette": "red", "custom": {"background": "#190e12", "primary": "#ee736c", "secondary": "#301b22", "button": "#ee736c", "navigation": "#190e12", "accent": "#ffb0a5"}}},
@@ -60,6 +65,7 @@ export function themeTokens(a:Appearance):Record<string,string>{
  const distance=(color:string)=>[1,3,5].reduce((sum,i)=>sum+(parseInt(color.slice(i,i+2),16)-parseInt(chart1.slice(i,i+2),16))**2,0);
  const chart2=['#75b9d4','#d6a675','#b195dd','#67c39b'].map(color=>readableAccent(color,card)).sort((a,b)=>distance(b)-distance(a))[0];
  return {
+ '--dc-home-action':readableAccent(c.button,bg),
  '--dc-raised':raised,'--dc-raised-text':textOn(raised),'--dc-raised-muted':mutedOn(raised),
  '--dc-hairline':mix(card,textOn(card),.18),'--dc-nav-line':mix(nav,textOn(nav),.16),'--dc-nav-surface':nav,
  '--dc-shadow-card':light?'0 2px 6px #10203805, 0 14px 36px #1020380b':'0 2px 6px #00000016, 0 16px 40px #00000030',

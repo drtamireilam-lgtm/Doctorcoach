@@ -32,11 +32,11 @@ test('toggle is disabled during preference synchronization and exposes save fail
  assert.equal(button.props.disabled,true);assert.equal(status.props.role,'status');assert.match(status.props.children,/נכשלה/);
 });
 
-test('all thirteen picker buttons immediately preview and save the exact chosen appearance',()=>{
+test('all preset picker buttons immediately preview and save the exact chosen appearance',()=>{
  const calls=[];
  const node=render({current:themePresets[0].appearance,busy:false,signedIn:true,message:null,edit:a=>calls.push(['edit',a]),save:a=>calls.push(['save',a])},'AppearancePicker');
  const buttons=node.props.children[2].props.children;
- assert.equal(buttons.length,13);
+ assert.equal(buttons.length,18);
  for(const [i,button] of buttons.entries()){
   button.props.onClick();assert.deepEqual(calls.at(-1),['save',themePresets[i].appearance]);
   assert.deepEqual(calls.at(-2),['edit',themePresets[i].appearance]);
