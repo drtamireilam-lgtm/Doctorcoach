@@ -241,6 +241,7 @@ try{
  console.log('PASS: actual local D1 registration/link storage failures roll back external identities and permit safe retries.');
  // Explicitly activate management only in this isolated synthetic runtime.
  await db.exec(sqlLine(await readFile(path.join(root,'standalone/migrations/0002_user_management.sql'),'utf8')));
+ await db.exec(sqlLine(await readFile(path.join(root,'standalone/migrations/0003_trainee_guidance.sql'),'utf8')));
  await db.prepare("INSERT INTO dc_management_grants(user_id,permission,granted_by,granted_at) VALUES('legacy-doctor','owner','legacy-doctor',0)").run();
  await mf.setOptions({...runtimeOptions,bindings:{...runtimeOptions.bindings,DC_USER_MANAGEMENT_ENABLED:'true'}});
  cookies=doctorCookies;const users=await json('/api/user-management');assert.equal(users.permission,'owner');
@@ -259,6 +260,17 @@ try{
  cookies=firstCookies;assert.equal((await request('/api/training')).status,403);assert.equal((await request('/api/media/'+video)).status,403);
  cookies=doctorCookies;await json('/api/user-management',managementChange(owner,3));
  cookies=firstCookies;assert.equal((await request('/api/training')).status,200);
+ // Built Worker HTTP guidance changes, independently of the component harness.
+ cookies=doctorCookies;
+ const guidanceDb=await mf.getD1Database('DB');
+ const entitlementBefore=await guidanceDb.prepare('SELECT self_until,program_id FROM training_access WHERE user_id=?').bind(owner).first();
+ const guidanceUpdate=async(mode,coachId=null)=>{const row=await guidanceDb.prepare('SELECT version FROM dc_managed_users WHERE user_id=?').bind(owner).first();return json('/api/user-management',managementChange(owner,row.version,{guidanceMode:mode,coachId}));};
+ await guidanceUpdate('independent');assert.deepEqual(await guidanceDb.prepare('SELECT self_until,program_id FROM training_access WHERE user_id=?').bind(owner).first(),entitlementBefore);
+ await guidanceUpdate('coached','legacy-coach-b');cookies=coachBCookies;assert.equal((await request('/api/care/team?client='+encodeURIComponent(owner))).status,200);
+ cookies=doctorCookies;await guidanceUpdate('awaiting_assignment');cookies=coachBCookies;assert.equal((await request('/api/care/team?client='+encodeURIComponent(owner))).status,403);
+ cookies=doctorCookies;await guidanceUpdate('independent');assert.deepEqual(await guidanceDb.prepare('SELECT self_until,program_id FROM training_access WHERE user_id=?').bind(owner).first(),entitlementBefore);
+ const mode=await guidanceDb.prepare('SELECT guidance_mode FROM dc_managed_users WHERE user_id=?').bind(owner).first();assert.equal(mode.guidance_mode,'independent');
+ console.log('PASS: built Worker HTTP all three guidance modes, preserved entitlement/program pointer and immediate derived coach revocation.');
  console.log('PASS: built management UID authority, assigned coach access and immediate removal, secretary grant/revoke and clinical denial, active-session disable/reenable. All identities and data synthetic.');
  cookies=firstCookies;assert.deepEqual((await json('/api/preferences/appearance')).appearance,{mode:'light',palette:'pink'});await json('/auth/refresh',{});const beforeLogout=cookies;await json('/auth/logout',{});cookies=beforeLogout;
  assert.equal((await request('/auth/status',{})).status,401);assert.equal((await json('/api/account')).signedIn,false);

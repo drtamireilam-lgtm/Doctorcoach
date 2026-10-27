@@ -13,7 +13,7 @@ import '../../app/full-color-themes.css';
 import '../../app/advanced-themes.css';
 import '../../app/trainee-ux.css';
 import '../../app/apple-premium.css';
-const appearance=themePresets.find(p=>p.appearance.mode==='light')!.appearance;
+const appearance=themePresets.find(p=>p.appearance.mode===(new URLSearchParams(location.search).get('theme')==='dark'?'dark':'light'))!.appearance;
 document.documentElement.dataset.customTheme='true';document.documentElement.dataset.palette=appearance.palette;
 for(const [key,value] of Object.entries(themeTokens(appearance)))document.documentElement.style.setProperty(key,value);
 createRoot(document.getElementById('root')!).render(<LanguageProvider><main style={{maxWidth:960,margin:'auto',padding:16}}><UserManagement/></main></LanguageProvider>);

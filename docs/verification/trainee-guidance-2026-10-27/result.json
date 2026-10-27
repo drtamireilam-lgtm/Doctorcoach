@@ -1,0 +1,53 @@
+{
+  "scope": "Synthetic local UI with real SQLite management store; auth gateway separately tested; not LAB",
+  "checks": [
+    {
+      "theme": "light",
+      "lang": "he",
+      "width": 390,
+      "passed": true
+    },
+    {
+      "theme": "light",
+      "lang": "he",
+      "width": 1440,
+      "passed": true
+    },
+    {
+      "theme": "light",
+      "lang": "en",
+      "width": 390,
+      "passed": true
+    },
+    {
+      "theme": "light",
+      "lang": "en",
+      "width": 1440,
+      "passed": true
+    },
+    {
+      "theme": "dark",
+      "lang": "he",
+      "width": 390,
+      "passed": true
+    },
+    {
+      "theme": "dark",
+      "lang": "he",
+      "width": 1440,
+      "passed": true
+    },
+    {
+      "theme": "dark",
+      "lang": "en",
+      "width": 390,
+      "passed": true
+    },
+    {
+      "theme": "dark",
+      "lang": "en",
+      "width": 1440,
+      "passed": true
+    }
+  ]
+}

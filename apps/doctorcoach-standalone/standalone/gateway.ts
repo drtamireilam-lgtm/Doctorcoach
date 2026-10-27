@@ -1,3 +1,4 @@
+import type {ProgramAuthorConfig} from '../lib/program-author.ts';
 import {userManagement} from './user-management.ts';
 import {authStore,type AuthSettings} from './auth-store.ts';
 import {AuthFailure,type AuthProvider} from './provider.ts';
@@ -9,7 +10,7 @@ export function cookie(request:Request,name:string){const matches=(request.heade
 export function safeReturn(value:string|null){if(!value||!value.startsWith('/')||value.startsWith('//'))return '/';try{const u=new URL(value,'https://app.local');if(u.origin!=='https://app.local'||/^\/(auth(?:\/|$)|sign(?:in|out)-with-chatgpt|callback)/.test(u.pathname))return '/';return u.pathname+u.search+u.hash;}catch{return '/';}}
 export function sanitize(request:Request){const h=new Headers(request.headers);for(const key of Array.from(h.keys()))if(key.toLowerCase().startsWith('oai-authenticated-')||key.toLowerCase().startsWith('x-dc-identity-'))h.delete(key);return new Request(request,{headers:h});}
 function setCookie(name:string,value:string,maxAge:number){return `${name}=${value}; Path=/; HttpOnly; Secure; SameSite=Strict; Max-Age=${maxAge}`;}
-export function authGateway(db:D1Database,provider:AuthProvider,settings:AuthSettings&{externalPrivateKey?:JsonWebKey;legacyLinkUrl?:string;isolatedStaging?:boolean;userManagementEnabled?:boolean}){
+export function authGateway(db:D1Database,provider:AuthProvider,settings:AuthSettings&{externalPrivateKey?:JsonWebKey;legacyLinkUrl?:string;isolatedStaging?:boolean;userManagementEnabled?:boolean;managementConfig?:ProgramAuthorConfig}){
  const store=authStore(db,provider,settings),origin=new URL(settings.origin).origin;
  const flow=oauthFlow(settings.encryptionKey,origin,settings.now??Date.now);
  const linkUrl=settings.legacyLinkUrl?new URL(settings.legacyLinkUrl):null;
@@ -62,7 +63,7 @@ export function authGateway(db:D1Database,provider:AuthProvider,settings:AuthSet
   }
   let user=null;try{if(sid){user=(await store.current(sid)).user;if(!user&&url.pathname.startsWith('/api/'))console.warn('DC_AUTH_DIAG account_unmapped');}}catch(e){if(url.pathname.startsWith('/api/'))console.warn('DC_AUTH_DIAG session_validation_denied');if((e as {status?:number}).status===503&&url.pathname.startsWith('/api/'))return reply(503,{error:'Sign-in service temporarily unavailable. Try again.'});/* Invalid sessions never fall back to browser headers. */}
   if(settings.userManagementEnabled){
-   const management=userManagement(db);
+   const management=userManagement(db,settings.managementConfig);
    const managementPath=url.pathname==='/api/user-management';
    try{
     if(user){await management.assertActive(user);}
@@ -98,7 +99,7 @@ export function authGateway(db:D1Database,provider:AuthProvider,settings:AuthSet
   }else if(url.pathname==='/api/user-management')return reply(503,{error:'User management is awaiting approved activation'});
   // This is the ONLY public Worker entrypoint. All request identity headers are
   // stripped above; the existing 51 APIs consume this server-verified principal.
-  if(user){const h=new Headers(req.headers);if(settings.userManagementEnabled){h.set('x-dc-identity-management-mode','uid');h.set('x-dc-identity-management-permission',(await userManagement(db).permission(user))??'none');}h.set('oai-authenticated-user-id',user.userId);h.set('oai-authenticated-user-email',user.email);h.set('oai-authenticated-user-full-name',encodeURIComponent(user.displayName));h.set('oai-authenticated-user-full-name-encoding','percent-encoded-utf-8');return next(new Request(req,{headers:h}));}
+  if(user){const h=new Headers(req.headers);if(settings.userManagementEnabled){h.set('x-dc-identity-management-mode','uid');h.set('x-dc-identity-management-permission',(await userManagement(db,settings.managementConfig).permission(user))??'none');}h.set('oai-authenticated-user-id',user.userId);h.set('oai-authenticated-user-email',user.email);h.set('oai-authenticated-user-full-name',encodeURIComponent(user.displayName));h.set('oai-authenticated-user-full-name-encoding','percent-encoded-utf-8');return next(new Request(req,{headers:h}));}
   return next(req);
  }};
 }
