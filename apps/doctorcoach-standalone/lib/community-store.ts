@@ -1,12 +1,12 @@
 import {feedbackCategories,feedbackSections,feedbackRegions,feedbackSection,feedbackRegion} from './feedback-topics.ts';
-import {isStaff} from './staff.ts';
+import {isStaff,isAdmin} from './staff.ts';
 import type {StaffIdentity} from './staff.ts';
 import {inputRecord,integerField,textField,validId} from './care.ts';
 import {TrainingError} from './training.ts';
 export type FeedbackItem={id:string;context:string;category:string;section:string;bodyRegion:string;content:string;state:string;response:string;version:number;createdAt:string};
 export type Story={id:string;displayName:string;content:string;consent:boolean;published:boolean;version:number;updatedAt:string};
 export function communityStore(db:D1Database,adminEmails?:string){
- const requireAdmin=(user:StaffIdentity)=>{if(!isStaff(user,adminEmails))throw new TrainingError('הפעולה זמינה למנהל הצוות.',403);};
+ const requireAdmin=(user:StaffIdentity)=>{if(!isAdmin(user,adminEmails))throw new TrainingError('הפעולה זמינה למנהל הצוות.',403);};
  const feedbackSelect='SELECT id,context,category,section,body_region AS bodyRegion,content,state,response,version,created_at AS createdAt FROM trainee_feedback';
  const storiesSelect='SELECT id,display_name AS displayName,content,consent,published,version,updated_at AS updatedAt FROM success_stories';
  async function requireCurrentStories(rows:{id:string;version:number}[],publicList:boolean){

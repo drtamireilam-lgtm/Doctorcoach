@@ -1,9 +1,9 @@
-import {isStaff,type StaffIdentity} from './staff.ts';
+import {isStaff,type StaffIdentity,isAdmin} from './staff.ts';
 import {TrainingError} from './training.ts';
 import {feedbackLabel,feedbackRegions,feedbackSections} from './feedback-topics.ts';
 const states:Record<string,string>={new:'התקבל',reviewing:'בבדיקה',resolved:'טופל'};
 export function csvCell(value:unknown){let s=String(value??'');if(/^[\s\uFEFF]*[=+@-]/.test(s))s="'"+s;return '"'+s.replaceAll('"','""')+'"';}
-export function feedbackReport(db:D1Database,admins?:string){const admin=(u:StaffIdentity)=>{if(!isStaff(u,admins))throw new TrainingError('הדוח זמין לצוות הניהול בלבד.',403);};return {
+export function feedbackReport(db:D1Database,admins?:string){const admin=(u:StaffIdentity)=>{if(!isAdmin(u,admins))throw new TrainingError('הדוח זמין לצוות הניהול בלבד.',403);};return {
  async csv(u:StaffIdentity,filters:{section?:string;bodyRegion?:string;state?:string}={}){admin(u);const where:string[]=[],args:string[]=[];for(const [key,column,values] of [['section','section',feedbackSections.map(o=>o.value)],['bodyRegion','body_region',feedbackRegions.map(o=>o.value)],['state','state',Object.keys(states)]] as const){const v=filters[key];if(v){if(!values.some(x=>x===v))throw new TrainingError('מסנן לא תקין.');where.push(column+'=?');args.push(v);}}
  const data=(await db.prepare(`SELECT id,created_at,section,body_region,category,context,content,state,response FROM trainee_feedback ${where.length?'WHERE '+where.join(' AND '):''} ORDER BY created_at DESC LIMIT 10000`).bind(...args).all<Record<string,unknown>>()).results;
  return '\uFEFF'+[['מזהה פנייה','תאריך','תחום','אזור בגוף','סוג בקשה','עמוד מקור','תוכן הבקשה','מצב טיפול','מענה הצוות'],...data.map(r=>[r.id,r.created_at,feedbackLabel(String(r.section)),feedbackLabel(String(r.body_region),feedbackRegions),r.category,r.context,r.content,states[String(r.state)],r.response])].map(row=>row.map(csvCell).join(',')).join('\r\n');},

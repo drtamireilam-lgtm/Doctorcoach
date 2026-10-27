@@ -2,10 +2,10 @@ import {privateDocumentStore} from './private-document-store.ts';
 import type {CareConfig} from './care-store.ts';
 import {inputRecord,integerField,validId} from './care.ts';
 import {TrainingError} from './training.ts';
-import {isStaff,type StaffIdentity} from './staff.ts';
+import {isStaff,type StaffIdentity,isAdmin} from './staff.ts';
 export function documentRetentionStore(db:D1Database,config:CareConfig={}){
  const docs=privateDocumentStore(db,config);
- function admin(u:StaffIdentity){if(!isStaff(u,config.adminEmails)||(config.exclusiveMedical&&!isStaff(u,config.clinicianEmails)))throw new TrainingError('הרשאת מנהל נדרשת.',403);}
+ function admin(u:StaffIdentity){if(!isAdmin(u,config.adminEmails)||(config.exclusiveMedical&&!isStaff(u,config.clinicianEmails)))throw new TrainingError('הרשאת מנהל נדרשת.',403);}
  return {
  async list(u:StaffIdentity,manage=false){if(manage){admin(u);return {requests:(await db.prepare("SELECT l.document_id AS id,d.client_id AS clientId,l.delete_status AS deleteStatus,l.requested_at AS requestedAt,l.reviewed_at AS reviewedAt,l.version FROM document_lifecycle l JOIN private_documents d ON d.id=l.document_id WHERE l.delete_status IN ('requested','reviewed') ORDER BY l.requested_at LIMIT 100").all()).results};}return {documents:(await db.prepare("SELECT d.id,d.filename,d.status,d.created_at AS createdAt,COALESCE(l.version,0) AS version,COALESCE(l.delete_status,'none') AS deleteStatus,l.requested_at AS requestedAt FROM private_documents d LEFT JOIN document_lifecycle l ON l.document_id=d.id WHERE d.client_id=? AND d.purpose='medical' AND d.status IN ('ready','archived') ORDER BY d.created_at DESC LIMIT 100").bind(u.userId).all()).results};},
  async change(u:StaffIdentity,payload:unknown){const p=inputRecord(payload),id=validId(p.id),version=integerField(p.version,'גרסה',0,1000000),action=p.action;

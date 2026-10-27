@@ -1,6 +1,6 @@
 import {TrainingError} from './training.ts';
 import {validId} from './care.ts';
-import {isStaff,type StaffIdentity} from './staff.ts';
+import {isStaff,type StaffIdentity,isAdmin} from './staff.ts';
 const prefix='privacy-deletion-journal/v1/';
 export type DeletionReceipt={version:1;userId:string;requestId:string;reviewerId:string;startedAt:string};
 type JournalBucket={
@@ -53,7 +53,7 @@ export async function restoreDeletionBarrier(db:D1Database,p:DeletionReceipt,reo
  if(reopen)await db.prepare("UPDATE account_deletions SET state='deleting',completed_at=NULL WHERE user_id=? AND request_id=?").bind(r.userId,r.requestId).run();
 }
 export async function reconcileDeletionPage(db:D1Database,journal:DeletionJournal,actor:StaffIdentity,adminEmails:string|undefined,payload:unknown){
- if(!isStaff(actor,adminEmails))throw new TrainingError('Administrator required.',403);
+ if(!isAdmin(actor,adminEmails))throw new TrainingError('Administrator required.',403);
  const p=payload as {confirmed?:boolean;cursor?:unknown};
  if(p?.confirmed!==true||p.cursor!==undefined&&(typeof p.cursor!=='string'||p.cursor.length>2048))throw new TrainingError('Confirm recovery reconciliation.',400);
  const page=await journal.page(p.cursor as string|undefined);
