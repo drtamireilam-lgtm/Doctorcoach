@@ -1,5 +1,6 @@
 'use client';
 import {HomeNavigationCards} from './home-navigation-cards';
+import {PremiumHome} from './premium-home';
 import {DocumentRetention} from './document-retention';
 import {BillingSandbox} from './billing-sandbox';
 import {NotificationSettings} from './notification-settings';
@@ -9,9 +10,8 @@ import {areaFor,areaLinks,mobileTabFor,traineeAreas} from '../lib/mobile-navigat
 import {InstagramLinks} from './instagram-links';
 import {TeamProfiles} from './team-profiles';
 type Go=(section:string)=>void;
-export function HomeIntroduction({go,completed,returning}:{go:Go;completed:boolean;returning:boolean}){
- const introduction=<Localize>{<><SiteIntroduction go={go} completed={completed}/></>}</Localize>;
- return returning?<Localize>{<><HomeNavigationCards go={go}/><button className="text-button" onClick={()=>go('pro')}>הצוות ואיך DoctorCoach עובד <ArrowLeft size={18}/></button></>}</Localize>:introduction;
+export function HomeIntroduction({go,completed,returning,weeklyWorkouts=null,activeWorkout=false,trainingBlocked=false}:{go:Go;completed:boolean;returning:boolean;weeklyWorkouts?:number|null;activeWorkout?:boolean;trainingBlocked?:boolean}){
+ return <PremiumHome go={go} completed={completed} returning={returning} weeklyWorkouts={weeklyWorkouts} activeWorkout={activeWorkout} trainingBlocked={trainingBlocked}/>;
 }
 export function AreaNavigation({section,go}:{section:string;go:Go}){
  const area=areaFor(section),links=area&&areaLinks[area];
