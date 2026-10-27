@@ -86,7 +86,7 @@ export function authGateway(db:D1Database,provider:AuthProvider,settings:AuthSet
      const grant=await management.permission(user);
      // Administrative delegation never implies clinical access, even if the
      // secretary also has a physician label or legacy email allowlist entry.
-     if(grant==='secretary')return reply(403,{error:'Administrative account: use user management'});
+     if(grant==='secretary'&&url.pathname!=='/api/appointments')return reply(403,{error:'Administrative account: use user management'});
      const protectedAdmin=['/api/admin/','/api/google-calendar','/api/nutrition-credentials'];
      if(grant!=='owner'&&protectedAdmin.some(p=>url.pathname.startsWith(p)))return reply(403,{error:'Owner permission required'});
      if(req.method==='POST'&&['/api/care/team','/api/care'].includes(url.pathname)){

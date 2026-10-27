@@ -6,6 +6,16 @@ const normalize = (text: string) => text.trim().replace(/\s+/g, ' ');
 const dictionary = new Map(hebrew.map((text, index) => [normalize(text), english[index]]));
 // New privacy labels are kept explicit instead of partially translating consent text.
 for(const [he,en] of [
+ ["הייעוץ אושר, אך הסנכרון ל-Google Calendar נכשל.", "The consultation was approved, but Google Calendar synchronization failed."],
+ ["הייעוץ נשמר וסונכרן ל־Google Calendar.", "The consultation was saved and synchronized with Google Calendar."],
+ ["הייעוץ בוטל והביטול אומת ב־Google Calendar.", "The consultation was cancelled and cancellation was verified in Google Calendar."],
+ ["הייעוץ נשמר. הסנכרון ל־Google Calendar עדיין ממתין.", "The consultation was saved. Google Calendar synchronization is still pending."],
+ ["הייעוץ בוטל, אך ביטול האירוע ב־Google Calendar נכשל.", "The consultation was cancelled, but Google Calendar cancellation failed."],
+ ["הסנכרון ל־Google Calendar לא הושלם. הייעוץ נשמר באפליקציה.", "Google Calendar synchronization did not complete. The consultation remains saved in the app."],
+ ["סנכרן שוב ליומן", "Retry Calendar sync"],
+ ["ניסיון סנכרון אחרון:", "Last sync attempt:"],
+ ["ניהול ייעוצים", "Consultation management"],
+ ["היומן כולל כותרת ייעוץ כללית ומועד לפי שעון ישראל, ללא שם המטופל.", "The calendar contains a generic consultation title and Israel time, without the patient name."],
  ["ממתינים לאישור", "Pending consultations"],
  ["ייעוצים קרובים", "Upcoming consultations"],
  ["דורשים טיפול", "Action required"],

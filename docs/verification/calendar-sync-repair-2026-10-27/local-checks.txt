@@ -1,0 +1,36 @@
+pnpm test (application)
+✔ moving to another coach does not share prior messages or allow cross-thread read markers (138.2212ms)
+ℹ tests 1684
+ℹ suites 0
+ℹ pass 1684
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 84192.392783
+
+pnpm typecheck
+$ tsc --noEmit
+
+Isolated build: completed
+Static isolated configuration passed. Remote resource ownership, empty stores, secrets, costs, domain and owner approval still require verification.
+
+Root npm test
+ℹ tests 10
+ℹ suites 0
+ℹ pass 10
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 19.279903
+ℹ tests 6
+ℹ suites 0
+ℹ pass 6
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 3936.68654
+Root npm run build: passed
+Public LAB read-only: sign-in HTTP200; unauthenticated appointment management HTTP401. No remote schema/version/credentials audit.

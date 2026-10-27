@@ -1,0 +1,40 @@
+✔ calendar receipt migration preserves legacy appointment/outbox data and baseline backup restores (208.774844ms)
+✔ calendar requests run in Workers and never forward credentials to redirects (252.329194ms)
+✔ owner-only configuration seals credentials and never returns secrets (133.511417ms)
+✔ AES purpose binding and same-origin checks reject substitution (4.577696ms)
+✔ OAuth is PKCE-bound, one-use, owner-bound and verifies Google identity and scope (84.174816ms)
+✔ approval, reschedule and cancellation maintain one private Google event with Israel times (148.847691ms)
+✔ provider failures stay pending for retry; foreign events are never overwritten (90.391145ms)
+✔ a newer appointment edit during a Google write remains queued (125.164975ms)
+✔ disconnect and concurrent worker lease stop writes without cancelling appointments (98.049868ms)
+✔ deleting an appointment retains a cancellation task and cancelled events are idempotent (91.937526ms)
+✔ unconfirmed and Nadav appointments are not exported; generic event titles omit clinical free text (84.408129ms)
+✔ LAB OAuth uses LAB redirect and explicit secondary test calendar, never primary (94.201713ms)
+✔ missing calendar configuration reports disabled without losing the appointment or making network calls (75.03371ms)
+✔ calendar sync never labels a past appointment delivered without a Google event (114.654319ms)
+✔ calendar delivery requires matching Google acknowledgement and persisted readback (194.874827ms)
+✔ calendar stable ID recovers Google success followed by local acknowledgement failure (122.656098ms)
+✔ calendar refreshes a rejected access token once without duplicating the event (130.787704ms)
+✔ calendar failures retain safe codes and attempt timestamps with no provider secrets (408.769753ms)
+✔ calendar rechecks administrative authorization immediately before a Google mutation (104.684978ms)
+✔ calendar approval title is fixed and omits patient name and custom clinical titles (0.343003ms)
+✔ UID secretary schedules and retries administratively without clinical or OAuth access; revoke is immediate (79.883738ms)
+✔ legacy acknowledgement without a verified receipt stays pending until Google readback (78.162812ms)
+✔ explicit retry verifies and repairs a previously acknowledged event without changing booking version (116.815481ms)
+✔ no-show preserves pending event synchronization and cancellation tombstones are verified (79.374754ms)
+✔ permission revoked during a rejected write prevents the token-refresh mutation retry (92.562586ms)
+✔ Israel wall times and existing consultation durations remain exact across summer and winter (104.869749ms)
+✔ already cancelled Google tombstone without private fields is a verified deletion (90.892969ms)
+✔ 200 response with wrong persisted time is never counted delivered and can retry (91.588132ms)
+✔ failed explicit verification wins over an older valid receipt and can recover (134.465728ms)
+✔ cancellation uses ETag and refuses deletion if Google changed after ownership read (133.723445ms)
+✔ global retry rotates past persistent failures so later appointments are not starved (134.874749ms)
+✔ failed or disabled Calendar result is an error notice rather than a success banner (1.617698ms)
+ℹ tests 32
+ℹ suites 0
+ℹ pass 32
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 3616.802758
