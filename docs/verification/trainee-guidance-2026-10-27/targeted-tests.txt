@@ -1,0 +1,45 @@
+✔ gateway rejects forged identity headers, unauthorized IDs, self-role updates and cross-origin mutations (162.226299ms)
+✔ disabled accounts are blocked on existing sessions, and secretary never forwards clinical or legacy admin API calls (141.62461ms)
+✔ legacy staff mutation endpoint cannot bypass the confirmed management workflow (90.762318ms)
+✔ management migration preserves populated legacy tables and a baseline backup restores exactly (388.620412ms)
+✔ new canonical registration appears pending without administrative or professional grants (116.57179ms)
+✔ only confirmed versioned owner/secretary edits persist, with atomic immutable audit and idempotent retries (93.48024ms)
+✔ transfer removes only derived coach link and preserves independently accepted access (96.396426ms)
+✔ disabled or pending coach cannot receive assignments; physician label creates no clinical grant (98.260166ms)
+✔ secretary cannot grant admin, edit self or owner, or access account after disablement (85.585201ms)
+✔ owner grants and revokes secretary only for canonical verified identities (85.841607ms)
+✔ failed audit insert rolls the account and care relationship back (115.966925ms)
+✔ management-enabled admin helpers require a canonical Owner grant, never email alone (5.174479ms)
+✔ revoking administrator between precheck and transactional update denies the entire mutation (123.309617ms)
+✔ two administrators editing the same version produce one winner and one audit event (174.364852ms)
+✔ search escapes SQL wildcard input and page boundaries do not repeat users (126.626515ms)
+✔ duplicate canonical emails cannot turn professional assignment into another account privilege (121.728775ms)
+✔ saving a physician label preserves separately existing clinical authorization (117.305478ms)
+✔ inactive independently revoked link cannot silently produce a successful administrative assignment (374.850086ms)
+✔ newly assigned trainee appears in coach roster before completing a care profile (476.832244ms)
+✔ a later independent consent update preserves the link after administrative transfer (106.031951ms)
+✔ role removal defeats legacy clinician email fallback even when no care_staff row existed (87.596123ms)
+✔ verified legacy account linking preserves prior professional status without granting administration (98.540176ms)
+✔ guidance: explicit coached requires approved coach and records prior/new mode in the same audit (84.541733ms)
+✔ guidance: independent with no entitlement cannot create trial, membership or training access rights (177.46467ms)
+✔ guidance: selecting independent preserves a valid entitlement and stored program pointer; awaiting preserves existing independent rights (99.525269ms)
+✔ guidance: independent and awaiting cannot retain a responsible coach; non-trainee cannot acquire guidance (125.794666ms)
+✔ guidance: all transitions reject an active session without altering session, access or audit success (82.507883ms)
+✔ guidance: existing users remain unclassified, older updates preserve classification, explicit constraints persist (89.606019ms)
+✔ guidance: audit failure rolls back the guidance selection, entitlement mode and derived links (93.684977ms)
+✔ guidance: concurrent entitlement change cannot be overwritten by an administrator draft (76.165135ms)
+✔ guidance: ordinary user and coach cannot set their own or another trainee mode (71.76076ms)
+✔ guidance: API cannot clear an explicit mode or submit entitlement fields or array-valued roles (105.609739ms)
+✔ guidance: expired self entitlement remains expired, while list eligibility matches actual self access (137.298496ms)
+✔ guidance: active workout appearing during the transaction guard rejects transition atomically (134.467621ms)
+✔ guidance: coached to independent and awaiting preserve programs, completed workouts, clinical data and independent consent (69.486195ms)
+✔ guidance: repeated successful request is idempotent and concurrent mode drafts have a single winner (83.460656ms)
+✔ guidance: explicit same-mode save reconciles execution mode changed by an independently valid workflow (86.68795ms)
+ℹ tests 37
+ℹ suites 0
+ℹ pass 37
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 4414.780257

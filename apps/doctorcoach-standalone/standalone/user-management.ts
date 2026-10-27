@@ -1,17 +1,20 @@
+import {staffPersonalManagementGuard} from '../lib/staff-personal-access.ts';
+import type {ProgramAuthorConfig} from '../lib/program-author.ts';
 import {TrainingError} from '../lib/training.ts';
 import type {StaffIdentity} from '../lib/staff.ts';
+export type GuidanceMode='coached'|'independent'|'awaiting_assignment';
 export type ManagedRole='trainee'|'coach'|'physician'|'dietitian';
-export type ManagedUser={user_id:string;role:ManagedRole|null;approval:'pending'|'approved'|'legacy';status:'active'|'inactive';coach_id:string|null;coach_name:string|null;version:number;joined_at:number;email:string;display_name:string;secretary:number;owner:number;can_edit?:boolean};
-type Change={userId:string;version:number;role:ManagedRole;approval:'pending'|'approved';status:'active'|'inactive';coachId:string|null;confirmed:true;operationId:string};
+export type ManagedUser={user_id:string;role:ManagedRole|null;approval:'pending'|'approved'|'legacy';status:'active'|'inactive';coach_id:string|null;coach_name:string|null;guidance_mode:GuidanceMode|null;independent_eligible?:number;version:number;joined_at:number;email:string;display_name:string;secretary:number;owner:number;can_edit?:boolean};
+type Change={guidanceMode?:GuidanceMode|null;userId:string;version:number;role:ManagedRole;approval:'pending'|'approved';status:'active'|'inactive';coachId:string|null;confirmed:true;operationId:string};
 const roles=['trainee','coach','physician','dietitian'];
-const fields=`u.user_id,u.role,u.approval,u.status,u.coach_id,u.version,u.joined_at,(SELECT display_name FROM dc_identity_details WHERE principal_id=u.coach_id) AS coach_name,d.email,COALESCE((SELECT NULLIF(name,'') FROM care_profiles WHERE user_id=u.user_id),d.display_name) AS display_name,EXISTS(SELECT 1 FROM dc_management_grants g WHERE g.user_id=u.user_id AND g.permission='secretary') AS secretary,EXISTS(SELECT 1 FROM dc_management_grants g WHERE g.user_id=u.user_id AND g.permission='owner') AS owner`;
+const fields=`u.user_id,u.guidance_mode,u.role,u.approval,u.status,u.coach_id,u.version,u.joined_at,(SELECT display_name FROM dc_identity_details WHERE principal_id=u.coach_id) AS coach_name,d.email,COALESCE((SELECT NULLIF(name,'') FROM care_profiles WHERE user_id=u.user_id),d.display_name) AS display_name,EXISTS(SELECT 1 FROM dc_management_grants g WHERE g.user_id=u.user_id AND g.permission='secretary') AS secretary,EXISTS(SELECT 1 FROM dc_management_grants g WHERE g.user_id=u.user_id AND g.permission='owner') AS owner`;
 const base='dc_managed_users u JOIN dc_identity_details d ON d.principal_id=u.user_id';
 const denied=()=>new TrainingError('Management permission required / נדרשת הרשאת ניהול',403);
 const conflict=()=>new TrainingError('Record changed. Reload and review / הנתונים השתנו, יש לרענן ולאשר מחדש',409);
 function record(value:unknown){if(!value||typeof value!=='object'||Array.isArray(value))throw new TrainingError('Invalid request',400);return value as Record<string,unknown>;}
 function identifier(value:unknown){if(typeof value!=='string'||!value||value.length>200||/[\x00-\x20]/.test(value))throw new TrainingError('Invalid identifier',400);return value;}
 function common(value:unknown,allowed:string[]){const p=record(value);if(Object.keys(p).some(k=>!allowed.includes(k))||p.confirmed!==true||!Number.isSafeInteger(p.version)||Number(p.version)<0||typeof p.operationId!=='string'||!/^[a-f0-9-]{36}$/i.test(p.operationId))throw new TrainingError('Confirmation and version required',400);return {p,userId:identifier(p.userId),version:Number(p.version),operationId:p.operationId};}
-export function userManagement(db:D1Database){
+export function userManagement(db:D1Database,config:ProgramAuthorConfig={}){
  const at=()=>Date.now();
  const get=(id:string)=>db.prepare(`SELECT ${fields} FROM ${base} WHERE u.user_id=?`).bind(id).first<ManagedUser>();
  async function assertActive(user:StaffIdentity){const row=await db.prepare("SELECT u.user_id FROM dc_managed_users u JOIN dc_identity_principals p ON p.id=u.user_id WHERE u.user_id=? AND u.status='active' AND p.state='active'").bind(user.userId).first();if(!row)throw denied();}
@@ -26,18 +29,33 @@ export function userManagement(db:D1Database){
   const where=filter==='pending'?"u.approval='pending'":filter==='inactive'?"u.status='inactive'":roles.includes(filter)?'u.role=?':'1=1';
   const q='%'+search.replace(/[\\%_]/g,'\\$&')+'%',args=[...(roles.includes(filter)?[filter]:[]),q,q];
   const condition=`${where} AND (d.display_name LIKE ? ESCAPE '\\' OR d.email LIKE ? ESCAPE '\\')`;
-  const rows=await db.prepare(`SELECT ${fields} FROM ${base} WHERE ${condition} ORDER BY u.joined_at DESC,u.user_id LIMIT 51 OFFSET ?`).bind(...args,page*50).all<ManagedUser>();
+  const personal=staffPersonalManagementGuard(config);
+  const rows=await db.prepare(`SELECT ${fields},CASE WHEN (SELECT self_until FROM training_access WHERE user_id=u.user_id)>? OR ${personal.sql} THEN 1 ELSE 0 END AS independent_eligible FROM ${base} WHERE ${condition} ORDER BY u.joined_at DESC,u.user_id LIMIT 51 OFFSET ?`).bind(new Date().toISOString(),...personal.args,...args,page*50).all<ManagedUser>();
   const coaches=await db.prepare(`SELECT u.user_id,d.display_name FROM ${base} JOIN dc_identity_principals p ON p.id=u.user_id WHERE u.role='coach' AND u.approval='approved' AND u.status='active' AND p.state='active' ORDER BY d.display_name,u.user_id LIMIT 1001`).all<{user_id:string;display_name:string}>();
   await admin(user);return {users:rows.results.slice(0,50).map(row=>({...row,can_edit:!row.owner&&row.user_id!==user.userId})),hasMore:rows.results.length>50,coaches:coaches.results.slice(0,1000),coachesTruncated:coaches.results.length>1000,permission:grant,viewerId:user.userId};
  }
- async function update(user:StaffIdentity,value:unknown){try{await admin(user);const {p,userId,version,operationId}=common(value,['userId','version','role','approval','status','coachId','confirmed','operationId']);if(!roles.includes(String(p.role))||!['pending','approved'].includes(String(p.approval))||!['active','inactive'].includes(String(p.status))||(p.coachId!==null&&typeof p.coachId!=='string'))throw new TrainingError('Invalid assignment',400);
+ async function update(user:StaffIdentity,value:unknown){try{await admin(user);const {p,userId,version,operationId}=common(value,['userId','version','role','approval','status','coachId','guidanceMode','confirmed','operationId']);if(typeof p.role!=='string'||!roles.includes(p.role)||typeof p.approval!=='string'||!['pending','approved'].includes(p.approval)||typeof p.status!=='string'||!['active','inactive'].includes(p.status)||(p.coachId!==null&&typeof p.coachId!=='string'))throw new TrainingError('Invalid assignment',400);
   const change:Change={userId,version,operationId,role:p.role as ManagedRole,approval:p.approval as Change['approval'],status:p.status as Change['status'],coachId:p.coachId===null?null:identifier(p.coachId),confirmed:true};
   if(change.coachId&&(change.role!=='trainee'||change.approval!=='approved'||change.status!=='active'||change.coachId===userId))throw new TrainingError('Invalid coach assignment',400);
+  if(p.guidanceMode!==undefined){if(p.guidanceMode!==null&&(typeof p.guidanceMode!=='string'||!['coached','independent','awaiting_assignment'].includes(p.guidanceMode)))throw new TrainingError('Invalid guidance mode',400);change.guidanceMode=p.guidanceMode as GuidanceMode|null;}
   const request=JSON.stringify(change);if(await retry(user,operationId,request))return {saved:true};const before=await protect(user,userId);if(before.version!==version)throw conflict();
+  const guidance=change.role==='trainee'?(change.guidanceMode===undefined?before.guidance_mode:change.guidanceMode):null;
+  if(change.role==='trainee'&&change.guidanceMode===null&&(before.guidance_mode!==null||before.role!=='trainee'))throw new TrainingError('Select a guidance mode',400);
+  if(change.role!=='trainee'&&change.guidanceMode!=null)throw new TrainingError('Guidance is for trainees only',400);
+  if(guidance==='coached'&&(!change.coachId||change.status!=='active'||change.approval!=='approved'))throw new TrainingError('Coached trainees require an active approved coach / יש לבחור מאמן פעיל ומאושר',400);
+  if(guidance&&guidance!=='coached'&&change.coachId)throw new TrainingError('This guidance mode cannot have a responsible coach',400);
+  const metadataTransition=guidance!==before.guidance_mode||change.coachId!==before.coach_id;
+  const explicitSelection=change.guidanceMode!==undefined&&(guidance==='coached'||guidance==='independent');
+  const checkAccess=metadataTransition||explicitSelection;
+  const access=checkAccess?await db.prepare('SELECT mode,program_id,self_until,updated_at FROM training_access WHERE user_id=?').bind(userId).first<{mode:string;program_id:string|null;self_until:string|null;updated_at:string}>():null;
+  const transition=metadataTransition||(explicitSelection&&access?.mode!==(guidance==='independent'?'self':'coached'));
+  if(transition&&await db.prepare("SELECT 1 FROM training_sessions WHERE owner_id=? AND status='active'").bind(userId).first())throw new TrainingError('Finish or cancel the active workout before changing guidance / יש לסיים או לבטל את האימון הפעיל לפני שינוי מסלול',409);
+  const accessGate=!checkAccess?'':`${transition?" AND NOT EXISTS(SELECT 1 FROM training_sessions WHERE owner_id=? AND status='active')":''} AND ${access?'EXISTS(SELECT 1 FROM training_access WHERE user_id=? AND mode=? AND program_id IS ? AND self_until IS ? AND updated_at=?)':'NOT EXISTS(SELECT 1 FROM training_access WHERE user_id=?)'}`;
+  const accessArgs=!checkAccess?[]:[...(transition?[userId]:[]),...(access?[userId,access.mode,access.program_id,access.self_until,access.updated_at]:[userId])];
   const writeId=crypto.randomUUID(),g=gate(user),operationGate='EXISTS(SELECT 1 FROM dc_managed_users WHERE user_id=? AND last_operation_id=?)',opArgs=[userId,writeId];
   const coachGate=change.coachId?" AND EXISTS(SELECT 1 FROM dc_managed_users c JOIN dc_identity_principals i ON i.id=c.user_id JOIN dc_identity_details cd ON cd.principal_id=c.user_id JOIN care_staff s ON s.email=cd.email WHERE c.user_id=? AND c.role='coach' AND c.approval='approved' AND c.status='active' AND i.state='active' AND s.active=1 AND s.role='coach' AND NOT EXISTS(SELECT 1 FROM care_connections old WHERE old.client_id=? AND old.staff_email=cd.email AND old.active=0 AND old.management_derived=0))":'';
-  const next={role:change.role,approval:change.approval,status:change.status,coach_id:change.coachId};const previous={role:before.role,approval:before.approval,status:before.status,coach_id:before.coach_id};
-  const statements=[db.prepare(`UPDATE dc_managed_users SET role=?,approval=?,status=?,coach_id=?,version=version+1,last_operation_id=? WHERE user_id=? AND version=? AND ${g.sql} AND (SELECT COUNT(*) FROM dc_identity_details WHERE lower(email)=lower(?))=1 AND NOT EXISTS(SELECT 1 FROM dc_management_grants WHERE user_id=? AND permission='owner')${coachGate}`).bind(change.role,change.approval,change.status,change.coachId,writeId,userId,version,...g.args,before.email,userId,...(change.coachId?[change.coachId,userId]:[])),
+  const next={guidance_mode:guidance,role:change.role,approval:change.approval,status:change.status,coach_id:change.coachId};const previous={guidance_mode:before.guidance_mode,role:before.role,approval:before.approval,status:before.status,coach_id:before.coach_id};
+  const statements=[db.prepare(`UPDATE dc_managed_users SET role=?,approval=?,status=?,coach_id=?,guidance_mode=?,version=version+1,last_operation_id=? WHERE user_id=? AND version=? AND ${g.sql} AND (SELECT COUNT(*) FROM dc_identity_details WHERE lower(email)=lower(?))=1 AND NOT EXISTS(SELECT 1 FROM dc_management_grants WHERE user_id=? AND permission='owner')${coachGate}${accessGate}`).bind(change.role,change.approval,change.status,change.coachId,guidance,writeId,userId,version,...g.args,before.email,userId,...(change.coachId?[change.coachId,userId]:[]),...accessArgs),
    db.prepare(`UPDATE care_connections SET active=0 WHERE client_id=? AND management_derived=1 AND ${operationGate}`).bind(userId,...opArgs),
    // Professional labels never create clinical credentials or medical/nutrition grants.
    // Existing clinician credentials require a separate approved clinical-access workflow.
@@ -45,6 +63,8 @@ export function userManagement(db:D1Database){
   ];
   if(change.status==='active'&&change.approval==='approved'&&['coach','dietitian'].includes(change.role))statements.push(db.prepare(`INSERT INTO care_staff(email,name,role,active,updated_at) SELECT ?,?,?,1,? WHERE ${operationGate} ON CONFLICT(email) DO UPDATE SET name=excluded.name,role=excluded.role,active=1,updated_at=excluded.updated_at`).bind(before.email,before.display_name,change.role,new Date().toISOString(),...opArgs));
   if(change.coachId)statements.push(db.prepare(`INSERT INTO care_connections(id,client_id,staff_email,medical_access,nutrition_access,active,created_at,scope,management_derived) SELECT ?,?,d.email,0,0,1,?,'care',1 FROM dc_identity_details d WHERE d.principal_id=? AND ${operationGate} ON CONFLICT(client_id,staff_email) DO UPDATE SET active=1 WHERE care_connections.management_derived=1`).bind(crypto.randomUUID(),userId,new Date().toISOString(),change.coachId,...opArgs));
+  // Selecting an execution mode never issues/extends self entitlement or replaces a program pointer.
+  if(transition&&(guidance==='coached'||guidance==='independent'))statements.push(db.prepare(`INSERT INTO training_access(user_id,mode,updated_at) SELECT ?,?,? WHERE ${operationGate} ON CONFLICT(user_id) DO UPDATE SET mode=excluded.mode,updated_at=excluded.updated_at`).bind(userId,guidance==='independent'?'self':'coached',new Date().toISOString(),...opArgs));
   statements.push(db.prepare(`INSERT INTO dc_management_audit(operation_id,actor_id,target_id,action,before_json,after_json,request_json,created_at,result) SELECT ?,?,?,'user_update',?,?,?,?,'success' WHERE ${operationGate}`).bind(operationId,user.userId,userId,JSON.stringify(previous),JSON.stringify(next),request,at(),...opArgs));
   await db.batch(statements);if(!await retry(user,operationId,request))throw conflict();return {saved:true};
  }catch(e){await failure(user);throw e;}}
