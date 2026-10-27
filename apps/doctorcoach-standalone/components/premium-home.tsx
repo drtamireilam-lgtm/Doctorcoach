@@ -1,5 +1,5 @@
 'use client';
-import {ArrowLeft,ArrowRight,Activity,CalendarDays,ChartNoAxesCombined,ChevronLeft,ClipboardList,Dumbbell,HeartPulse,MessageCircle,ShieldCheck,Smartphone,UserRound} from 'lucide-react';
+import {ArrowLeft,ArrowRight,Activity,ChartNoAxesCombined,ChevronLeft,Dumbbell,HeartPulse,MessageCircle,ShieldCheck,Smartphone,UserRound} from 'lucide-react';
 import {useLanguage} from './language-provider';
 type Go=(section:string)=>void;
 type DashboardProps={go:Go;completed:boolean;returning:boolean;weeklyWorkouts:number|null;activeWorkout:boolean;trainingBlocked:boolean};
