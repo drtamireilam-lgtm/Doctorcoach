@@ -56,3 +56,44 @@
 @media(max-width:760px){.dc-premium{border-radius:20px;padding:17px;gap:19px}.dc-premium-hero{min-height:265px;padding:25px}.dc-premium-hero-art{inset-inline-end:5%;opacity:.5}.dc-premium-metrics{grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}.dc-premium-metrics>.dc-premium-card{padding:12px;gap:8px;border-radius:16px}.dc-premium-metrics strong{font-size:.96rem;overflow-wrap:anywhere}.dc-premium-metrics button{font-size:.76rem}.dc-premium-quick nav{grid-template-columns:repeat(2,minmax(0,1fr))}.dc-premium-steps{grid-template-columns:1fr}.dc-premium-steps-visual{height:90px;order:2}}
 @media(max-width:380px){.dc-premium-metrics{grid-template-columns:1fr}.dc-premium-metrics>.dc-premium-card{grid-template-columns:40px 1fr;column-gap:12px}.dc-premium-metric-icon{grid-row:span 3}.dc-premium-metrics button{grid-column:2}.dc-premium-quick nav{grid-template-columns:1fr}}
 @media(prefers-reduced-motion:reduce){.dc-premium *, .dc-premium *:before, .dc-premium *:after{animation:none!important;transition:none!important}}
+
+/* Shared shell follows the home palette while preserving every header control. */
+.premium-home-shell .topbar{height:auto;min-height:76px;gap:16px;flex-wrap:wrap;padding-block:12px;padding-inline:max(20px,env(safe-area-inset-left)) max(20px,env(safe-area-inset-right));border-bottom-color:rgba(141,202,200,.18)}
+.premium-home-shell .topbar-start,.premium-home-shell .topbar-end{min-width:0}
+.premium-home-shell .topbar-end{flex-wrap:wrap;justify-content:flex-end}
+.premium-home-shell .topbar .avatar{display:grid;place-items:center;min-width:44px;min-height:44px;border-radius:14px}
+.premium-home-shell .header-language-toggle{display:inline-flex}
+.dc-premium button{touch-action:manipulation}
+.dc-premium-metrics button,.dc-premium-steps button,.dc-premium-further button{min-height:44px}
+.dc-premium-steps-visual{color:var(--dc-teal);align-items:center}
+@media(min-width:1000px){
+ .dc-premium{grid-template-columns:repeat(12,minmax(0,1fr))}
+ .dc-premium>div,.dc-premium>header,.dc-premium>section{grid-column:1/-1}
+ .dc-premium>.dc-premium-hero{grid-column:1/9;grid-row:4/6}
+ .dc-premium>.dc-premium-metrics{grid-column:9/-1;grid-row:4/6;grid-template-columns:1fr}
+ .dc-premium-metrics>.dc-premium-card{grid-template-columns:40px 1fr;column-gap:14px;padding:16px}
+ .dc-premium-metric-icon{grid-row:span 3}
+ .dc-premium-metrics button{grid-column:2}
+}
+@media(max-width:760px){
+ .premium-home-shell .topbar{padding-top:calc(10px + env(safe-area-inset-top));min-height:calc(64px + env(safe-area-inset-top));gap:8px}
+ .premium-home-shell .topbar-start{flex:1 1 130px}
+ .premium-home-shell .topbar-end{flex:1 1 auto;gap:6px}
+ .dc-premium{padding:16px;border-radius:22px}
+ .dc-premium-heading h1{font-size:clamp(1.65rem,6vw,2.1rem)}
+ .dc-premium-consult{padding:14px;gap:10px}
+ .dc-premium-consult-copy strong{font-size:.94rem}
+ .dc-premium-hero{padding:24px 20px}
+}
+@media(max-width:380px){.dc-premium-quick nav{grid-template-columns:repeat(2,minmax(0,1fr))}.dc-premium-quick nav button{padding:12px;gap:8px;flex-wrap:wrap}.dc-premium-tile-chevron{display:none}}
+@media(max-width:760px){
+ .premium-home-shell .topbar{display:grid;grid-template-columns:1fr;padding-inline:16px}
+ .premium-home-shell .topbar-start{justify-content:space-between}
+ .premium-home-shell .topbar .breadcrumb{font-size:13px}
+ .premium-home-shell .topbar-end{display:flex;justify-content:flex-start;position:relative;padding-bottom:20px;flex-wrap:nowrap}
+ .premium-home-shell .theme-toggle-status{position:absolute;inset-inline-start:0;bottom:0;font-size:11px;line-height:16px;max-width:100%;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+ .premium-home-shell .topbar .avatar{margin:0}
+ .premium-home-shell .topbar .theme-toggle{flex-shrink:0}
+}
+/* These arrows are selected by language in React; avoid a second global flip. */
+html[dir=ltr] .dc-premium :is(.lucide-arrow-left,.lucide-arrow-right){transform:none}
