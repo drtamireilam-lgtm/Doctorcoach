@@ -62,3 +62,24 @@ The staff workspace separates pending approval, upcoming and action required; ov
 Migration `0058_consultation_history.sql` only adds a transition audit table/index/triggers. Existing appointment rows are not rewritten or backfilled with invented transitions. Audit entries contain appointment IDs, states, versions and timestamps, without patient names or free-text medical content. Administrative responses remove free-text preferences, staff notes and consultation feedback. Completion/no-show/follow-up/feedback requests require configured clinical authorization. Coaches do not gain appointment management access.
 
 Verification uses real SQLite stores, fake Google responses, real Workers runtime requests, and bilingual desktop/mobile React browser flows. Live Google authorization/delivery and an authenticated hosted phone/doctor session remain manual acceptance checks.
+
+## Delivery receipt repair — 27 October 2026
+
+Consultations remain in D1. Supabase is identity-only. Additive migration0060 adds last_attempt_at, last_synced_at, last_error_code and the fixed Asia/Jerusalem time_zone to the existing outbox; it does not change bookings, issue receipts for old rows, or run remotely.
+
+A delivery now needs matching Google write acknowledgement and a subsequent GET of the same owned event, matching appointment marker, event ID, current start/end instants and timezone. Cancellation verifies absence or a cancelled tombstone. Both update and delete use the fetched ETag. A failed explicit verification overrides any older receipt. Old acknowledgements without receipts stay pending until explicitly verified; past appointments are no longer silently counted as delivered.
+
+Event title is exactly `DoctorCoach — ייעוץ רפואי`. Patient name, clinical text, free-form service title and documents are not exported. Start/end instants and the opaque appointment correlation ID are the only appointment-specific exported data. Existing Google events are sanitized only when explicitly synchronized, not through an unsolicited bulk change.
+
+The booking response and UI distinguish approval from delivery. Each administrative appointment offers a safe explicit retry, including a fresh check of an already acknowledged event. A retry does not change the booking/version. Deterministic event IDs recover from a lost local acknowledgement after Google success. A global connection lease serializes writes, and current administrative permission and connection lease/revision are rechecked before each provider mutation, including the bounded401 token-refresh retry. Provider errors are reduced to safe categories, without saving/logging raw responses or credentials. Manual batch retries rotate by last attempt so persistent failures do not starve later tasks. There is no background scheduler and no automatic retry loop on429/5xx.
+
+When UID management is enabled, authorized secretaries can use only the redacted consultation scheduling/retry API in addition to user management; they cannot configure Calendar OAuth, read clinical preference/notes/feedback or perform clinical completion/follow-up actions. The UID grant is checked against live D1 rows. No real secretary account is granted by this change.
+
+Read-only historical Calendar inspection found the18 October18:00 event and no event in the23 October window in the connected primary calendar. This does not prove the LAB Worker has Calendar authorization. Current remote D1/ledger, installed secrets, OAuth configuration and Worker version remain unverified because Cloudflare CLI is unauthenticated. LAB's secondary-calendar-only restriction remains intact. No new real event, OAuth permission change, remote migration or deployment was performed.
+
+Primary references checked during implementation:
+- https://developers.google.com/workspace/calendar/api/guides/create-events (client-specified IDs and duplicate prevention)
+- https://developers.google.com/workspace/calendar/api/guides/errors (401 refresh,403,404,429,5xx)
+- https://developers.google.com/identity/protocols/oauth2/web-server (server-side OAuth/refresh)
+
+Final Hebrew report: `docs/verification/2026-10-27-calendar-sync-repair-he.md` at repository root. Live acceptance requires authenticated remote audit, protected backup/restore, owner approval of the exact migration/deployment and an explicitly approved test-calendar event. Never use generic migration deployment to guess the remote ledger.
