@@ -33,8 +33,8 @@ test('feedback notification is private, stable, consent-controlled and disappear
  assert.equal((await n.list(client)).items.filter(i=>i.id===item.id).length,1);
  await f.appointments.update(client,{id:a.id,version:a.version,action:'submitFeedback',content:'תודה על ההסבר'});assert.ok(!(await n.list(client)).items.some(i=>i.id===item.id));
 });
-test('management grouping keeps unresolved payments visible and sorts scheduled appointments by time',()=>{
+test('management grouping keeps terminal payments in history and sorts scheduled appointments by time',()=>{
  const base={clientName:'Test',title:'Consult',provider:'tamir',state:'scheduled',paymentState:'unpaid'};
  const a={...base,id:'a',startsAt:'2090-01-02T10:00:00Z',endsAt:'2090-01-02T11:00:00Z'},b={...a,id:'b',startsAt:'2090-01-01T10:00:00Z'},c={...base,id:'c',state:'completed',paymentState:'reported'},d={...base,id:'d',state:'cancelled'};
- const g=appointmentGroups([a,b,c,d]);assert.deepEqual(g.attention.map(x=>x.id),['c']);assert.deepEqual(g.upcoming.map(x=>x.id),['b','a']);assert.deepEqual(g.past.map(x=>x.id),['d']);assert.equal(appointmentGroups([a],'test','nadav').upcoming.length,0);
+ const g=appointmentGroups([a,b,c,d]);assert.deepEqual(g.attention.map(x=>x.id),[]);assert.deepEqual(g.upcoming.map(x=>x.id),['b','a']);assert.deepEqual(g.past.map(x=>x.id),['c','d']);assert.equal(appointmentGroups([a],'test','nadav').upcoming.length,0);
 });
