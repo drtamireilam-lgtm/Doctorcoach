@@ -37,7 +37,7 @@ test('purge covers every owned table, removes dependent records and only exact o
  // Seed each direct scope not already populated; defaults are left to the schema.
  for(const [table,col] of deletionScopes){if(f.sql.prepare(`SELECT COUNT(*) n FROM ${table} WHERE ${col}=?`).get(client.userId).n)continue;
   const info=f.sql.prepare(`PRAGMA table_info(${table})`).all();const columns=info.filter(c=>c.name===col||c.notnull&&c.dflt_value===null);
-  const values=columns.map(c=>c.name===col?client.userId:table==='appearance_preferences'&&c.name==='mode'?'dark':table==='appearance_preferences'&&c.name==='palette'?'blue':table==='workspace_clients'&&c.name==='state'?'archived':table==='workspace_messages'&&c.name==='author_role'?'trainee':/integer|real/i.test(c.type)?12:crypto.randomUUID());
+  const values=columns.map(c=>c.name===col?client.userId:table==='appearance_preferences'&&c.name==='mode'?'dark':table==='appearance_preferences'&&c.name==='palette'?'blue':table==='workspace_clients'&&c.name==='state'?'archived':table==='workspace_messages'&&c.name==='author_role'?'trainee':table==='activity_cardio_weekly_goals'&&c.name==='author_role'?'owner':/integer|real/i.test(c.type)?12:crypto.randomUUID());
   f.sql.prepare(`INSERT INTO ${table}(${columns.map(c=>c.name).join(',')}) VALUES(${columns.map(()=>'?').join(',')})`).run(...values);
  }
  const other=f.sql.prepare('SELECT * FROM training_access WHERE user_id=?').get(stranger.userId);

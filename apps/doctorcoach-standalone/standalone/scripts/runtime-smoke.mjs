@@ -1,6 +1,7 @@
 // Built standalone Worker + local D1/R2. All provider traffic is synthetic.
 // This script cannot send email, access production or deploy anything.
 import {createRequire} from 'node:module';
+import {fileURLToPath} from 'node:url';
 import {realpathSync} from 'node:fs';
 import {readFile,readdir} from 'node:fs/promises';
 import {randomUUID} from 'node:crypto';
@@ -8,7 +9,7 @@ import path from 'node:path';
 import assert from 'node:assert/strict';
 import {signLink} from '../crypto.ts';
 import {themePresets} from '../../lib/advanced-theme.ts';
-const root=new URL('../../',import.meta.url).pathname;
+const root=fileURLToPath(new URL('../../',import.meta.url));
 const require=createRequire(realpathSync(path.join(root,'node_modules/@cloudflare/vite-plugin/package.json')));
 const {Miniflare}=require('miniflare');
 const origin='https://staging.example.test',project='https://auth.example.test';
@@ -199,6 +200,27 @@ try{
  cookies=firstCookies;assert.equal((await request('/api/media/'+video)).status,200);
  assert.equal((await json('/api/training')).history[0].id,session.id,'role/link tests preserve completed workout');
  console.log('PASS: built HTTP legacy account linking, replay denial, reserved staff registration denial, trainee/coach/doctor/admin roles, independent coach rosters, cross-coach read/write/progress denial, medical redaction, private media permissions and immediate revocation.');
+
+ // Consultation lifecycle through built HTTP; all records and Google traffic remain synthetic.
+ const makeConsultation=async()=>{cookies=firstCookies;return (await json('/api/appointments',{action:'create',id:randomUUID(),serviceId:'medical-video',expectedPrice:30000,clientName:'SYNTHETIC CONSULTATION',preference:'SYNTHETIC PRIVATE PREFERENCE'})).appointment;};
+ let consultation=await makeConsultation();assert.equal(consultation.state,'requested');
+ cookies=coachACookies;assert.equal((await request('/api/appointments?manage=1&view=history')).status,403);
+ cookies=doctorCookies;assert.equal((await json('/api/appointments?manage=1&view=active')).pendingCount,1);
+ const approve=async(a,days)=>{cookies=doctorCookies;return json('/api/appointments',{action:'schedule',id:a.id,version:a.version,startsAt:new Date(Date.now()+days*86400000).toISOString()});};
+ let approval=await approve(consultation,20);consultation=approval.appointment;assert.equal(approval.calendarSync.status,'disabled');assert.equal(consultation.state,'scheduled');
+ consultation=(await approve(consultation,21)).appointment;
+ consultation=(await json('/api/appointments',{action:'cancel',id:consultation.id,version:consultation.version})).appointment;
+ assert.equal(consultation.state,'cancelled');assert.equal((await json('/api/appointments?manage=1&view=history&status=cancelled&query=SYNTHETIC')).appointments.length,1);
+ for(const action of ['complete','noShow']){
+  let a=await makeConsultation();a=(await approve(a,22)).appointment;
+  await db.prepare("UPDATE care_appointments SET starts_at='2000-01-01T10:00:00Z',ends_at='2000-01-01T10:30:00Z',staff_note='SYNTHETIC PRIVATE NOTE' WHERE id=?").bind(a.id).run();
+  const before=await json('/api/appointments?manage=1&view=active');assert.equal(before.appointments.find(row=>row.id===a.id).state,'scheduled');
+  a=(await json('/api/appointments',{action,id:a.id,version:a.version})).appointment;assert.equal(a.state,action==='complete'?'completed':'no_show');
+  assert.ok(!(await json('/api/appointments?manage=1&view=active')).appointments.some(row=>row.id===a.id));
+  assert.ok((await json('/api/appointments?manage=1&view=history&from=2000-01-01&to=2000-01-01')).appointments.some(row=>row.id===a.id));
+ }
+ assert.equal((await db.prepare('SELECT COUNT(*) n FROM appointment_status_history').first()).n,9);
+ console.log('PASS: built HTTP consultations request, pending count, approval, disabled Calendar, reschedule, cancel, explicit completion/no-show, scoped history/date search, transition audit and coach denial.');
 
  // Exercise actual D1 rollback, not only the SQLite test adapter.
  cookies='';await json('/auth/send',{email:'rollback@example.test'});await json('/auth/verify',{code:'123456'});

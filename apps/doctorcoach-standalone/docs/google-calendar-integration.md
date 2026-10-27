@@ -39,3 +39,26 @@ them. The Workers runtime rejects `redirect: 'error'` before sending a request.
 `tests/google-calendar-worker.test.mjs` verifies token requests and redirect
 rejection in real workerd via Miniflare, with a mocked outbound Google service.
 This verifies runtime compatibility, not live OAuth authorization or delivery.
+
+## Consultation Management 2.0 — isolated LAB
+
+The appointment data resides in Cloudflare D1 (`care_appointments`), not Supabase. Supabase is the identity/session provider. Appointment authorization is enforced on the server and at the final D1 mutation statement, with coordinator scope and revocation checks. No consultation table or medical RLS policy is added to Supabase.
+
+LAB diagnosis on 27 October 2026: four appointments (one requested, three scheduled), zero Calendar connections, and only the identity/session secrets installed. The LAB policy deliberately denied Calendar credentials. OAuth callbacks and same-origin checks were hardcoded to the original Site. This is evidence for LAB only; production was not inspected or changed.
+
+Calendar defaults on the original Site remain unchanged. The standalone deployment uses its server-configured origin for both consent and code exchange. LAB can only enable Calendar with all of:
+
+- `DOCTORCOACH_CALENDAR_TEST_ENABLED=true`
+- `DOCTORCOACH_CALENDAR_ID=<secondary-test-calendar>@group.calendar.google.com`
+- Calendar client ID, owner email and a fresh LAB encryption key installed securely.
+- The LAB callback registered in the Google OAuth web client: `https://doctorcoach-isolated-staging.dr-tamireilam.workers.dev/api/google-calendar/callback`.
+
+`primary` and personal email calendar targets are rejected in LAB. No keys, client secrets or refresh tokens were copied or installed by this change. Complete consent through the existing owner-only secure setup UI. A new LAB connection is required; there is no stored LAB refresh token to reconnect. A personal-calendar test still requires the owner's explicit approval and is outside this test setup.
+
+Missing credentials/connection now return `disabled`, preserving the booking and transactional outbox. Provider failures retain safe errors and support the existing explicit retry (three pending appointments per click). No unattended scheduler is added. Existing deterministic event IDs, lease serialization, ETag checks, encrypted credentials, Google event ID persistence and version-aware delivery are reused.
+
+The staff workspace separates pending approval, upcoming and action required; overdue appointments never auto-complete. Completed, cancelled and no-show consultations remain in history even with payment or sync issues. History has server-side patient-name/date/status filters, pagination, detail disclosure and Israel-day boundaries. Completed records cannot be reopened by follow-up; request a new consultation instead. No-show reported payments can still be verified in history.
+
+Migration `0058_consultation_history.sql` only adds a transition audit table/index/triggers. Existing appointment rows are not rewritten or backfilled with invented transitions. Audit entries contain appointment IDs, states, versions and timestamps, without patient names or free-text medical content. Administrative responses remove free-text preferences, staff notes and consultation feedback. Completion/no-show/follow-up/feedback requests require configured clinical authorization. Coaches do not gain appointment management access.
+
+Verification uses real SQLite stores, fake Google responses, real Workers runtime requests, and bilingual desktop/mobile React browser flows. Live Google authorization/delivery and an authenticated hosted phone/doctor session remain manual acceptance checks.

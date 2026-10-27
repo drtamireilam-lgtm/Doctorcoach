@@ -7,6 +7,7 @@ const families:Record<string,string[]>={
  'הרחקת כתף':['lateral-raise','cable-lateral-raise','rear-delt','reverse-pec-deck'],
  'כפיפת מרפק':['hammer-curl','barbell-curl','cable-curl','dumbbell-curl','incline-db-curl','preacher-curl'],
  'פשיטת מרפק':['triceps-pushdown','overhead-triceps','cable-overhead-triceps','skull-crusher'],
+ 'לחיצת רגליים':['leg-press','seated-leg-press'],
  'סקוואט':['goblet','back-squat','front-squat','paused-squat','hack-squat','smith-squat'],
  'סקוואט מפוצל ומכרעים':['split-squat','bulgarian-split-squat','reverse-lunge','walking-lunge'],
  'דדליפט וציר ירך':['rdl','deadlift','single-leg-rdl','trap-bar-deadlift','sumo-deadlift'],

@@ -2,9 +2,9 @@ name: DoctorCoach CI
 
 on:
   push:
-    branches: [main, "codex/import-integration-lab-*", "codex/application-audit-*", "stabilize/**", "fix/appearance-toggle-persistence-*", "feature/ui-ux-liad-followup-20261019", "feature/doctorcoach-2-smart-workout-20261020", "feature/anatomy-completion-*", "integration/anatomy-rehab-stretch-*"]
+    branches: [main, "feature/cardio-automatic-steps-*", "codex/exercise-recognition-3-*", "codex/import-integration-lab-*", "codex/application-audit-*", "stabilize/**", "fix/appearance-toggle-persistence-*", "feature/ui-ux-liad-followup-20261019", "feature/doctorcoach-2-smart-workout-20261020", "feature/anatomy-completion-*", "integration/anatomy-rehab-stretch-*"]
   pull_request:
-    branches: [main, "codex/generic-movement-import-*", "codex/application-audit-*", "codex/import-structure-regressions-*", "codex/import-alias-precision-*", "codex/google-apple-signin-*", "feature/anatomy-*", "integration/anatomy-*", "codex/anatomy-*"]
+    branches: [main, "feature/cardio-automatic-steps-*", "codex/exercise-recognition-3-*", "codex/import-integration-lab-*", "codex/generic-movement-import-*", "codex/application-audit-*", "codex/import-structure-regressions-*", "codex/import-alias-precision-*", "codex/google-apple-signin-*", "feature/anatomy-*", "integration/anatomy-*", "codex/anatomy-*"]
 
 permissions:
   contents: read
@@ -35,6 +35,7 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 20
     env:
+      CARDIO_CHECKS: ${{ startsWith(github.ref_name, 'feature/cardio-automatic-steps-') || startsWith(github.head_ref, 'feature/cardio-automatic-steps-') }}
       # PR refs are synthetic merge refs; use the source and target branch names too.
       ANATOMY_BROWSER_CHECKS: ${{ startsWith(github.ref_name, 'codex/application-audit-') || startsWith(github.head_ref, 'codex/application-audit-') || startsWith(github.ref_name, 'feature/anatomy-') || startsWith(github.ref_name, 'integration/anatomy-') || startsWith(github.head_ref, 'feature/anatomy-') || startsWith(github.head_ref, 'integration/anatomy-') || startsWith(github.base_ref, 'feature/anatomy-') || startsWith(github.base_ref, 'integration/anatomy-') || startsWith(github.base_ref, 'codex/anatomy-') }}
     defaults:
@@ -51,8 +52,26 @@ jobs:
         run: pnpm install --frozen-lockfile
       - name: Standalone regression tests
         run: npm test
+      - name: Consultation desktop and mobile bilingual workflow
+        if: startsWith(github.head_ref, 'codex/consultation-management-')
+        env:
+          CONSULTATION_CHROMIUM_PATH: /usr/bin/google-chrome
+        run: node --experimental-strip-types scripts/consultation-browser-smoke.mjs
       - name: Standalone TypeScript
         run: npm run typecheck
+      - name: Offline cardio migration and native contracts
+        if: env.CARDIO_CHECKS == 'true'
+        run: node --experimental-strip-types --test tests/cardio-migration*.test.mjs tests/native-activity-client.test.mjs
+      - name: Select runner cardio browser
+        if: env.CARDIO_CHECKS == 'true'
+        timeout-minutes: 1
+        run: |
+          browser_path="$(command -v google-chrome)"
+          test -x "$browser_path"
+          echo "CARDIO_CHROMIUM_PATH=$browser_path" >> "$GITHUB_ENV"
+      - name: Cardio English and Hebrew mobile browser contracts
+        if: env.CARDIO_CHECKS == 'true'
+        run: node scripts/cardio-browser-smoke.mjs
       - name: Select runner anatomy browser
         if: env.ANATOMY_BROWSER_CHECKS == 'true'
         timeout-minutes: 1
@@ -81,20 +100,33 @@ jobs:
       - name: Synthetic Worker authentication and authorization checks
         run: node --experimental-strip-types standalone/scripts/runtime-smoke.mjs
       - name: Package verified isolated LAB candidate
-        if: startsWith(github.ref_name, 'codex/import-integration-lab-') || startsWith(github.head_ref, 'codex/import-integration-lab-') || startsWith(github.ref_name, 'codex/application-audit-') || startsWith(github.head_ref, 'codex/application-audit-') || github.ref == 'refs/heads/feature/ui-ux-liad-followup-20261019' || github.head_ref == 'feature/lab-apple-anatomy-integration-20261020' || github.ref == 'refs/heads/feature/doctorcoach-2-smart-workout-20261020'
+        if: env.CARDIO_CHECKS == 'true' || startsWith(github.ref_name, 'codex/import-integration-lab-') || startsWith(github.head_ref, 'codex/import-integration-lab-') || startsWith(github.ref_name, 'codex/application-audit-') || startsWith(github.head_ref, 'codex/application-audit-') || github.ref == 'refs/heads/feature/ui-ux-liad-followup-20261019' || github.head_ref == 'feature/lab-apple-anatomy-integration-20261020' || github.ref == 'refs/heads/feature/doctorcoach-2-smart-workout-20261020'
         run: |
           mkdir -p .sites-runtime/lab-release
           git rev-parse HEAD > .sites-runtime/lab-release/source-commit.txt
           node standalone/scripts/candidate-hash.mjs . > .sites-runtime/lab-release/source-hash.txt
+          node standalone/scripts/cardio-migration-preflight.mjs manifest > .sites-runtime/lab-release/migration-manifest.json
+          node standalone/scripts/cardio-migration-preflight.mjs rehearse > .sites-runtime/lab-release/migration-rehearsal.json
+          mkdir -p .sites-runtime/lab-release/migrations
+          cp drizzle/0053_embedded_warmup_sets.sql drizzle/0054_load_metadata.sql drizzle/0055_cardio.sql drizzle/0056_activity.sql drizzle/0057_cardio_weekly.sql .sites-runtime/lab-release/migrations/
           tar -czf .sites-runtime/lab-release/lab-candidate.tgz dist
-          sha256sum .sites-runtime/lab-release/lab-candidate.tgz > .sites-runtime/lab-release/SHA256SUMS
+          (cd .sites-runtime/lab-release && sha256sum lab-candidate.tgz source-commit.txt source-hash.txt migration-manifest.json migration-rehearsal.json migrations/*.sql > SHA256SUMS && sha256sum --check SHA256SUMS)
       - name: Save verified LAB candidate without deployment
-        if: startsWith(github.ref_name, 'codex/import-integration-lab-') || startsWith(github.head_ref, 'codex/import-integration-lab-') || startsWith(github.ref_name, 'codex/application-audit-') || startsWith(github.head_ref, 'codex/application-audit-') || github.ref == 'refs/heads/feature/ui-ux-liad-followup-20261019' || github.head_ref == 'feature/lab-apple-anatomy-integration-20261020' || github.ref == 'refs/heads/feature/doctorcoach-2-smart-workout-20261020'
+        if: env.CARDIO_CHECKS == 'true' || startsWith(github.ref_name, 'codex/import-integration-lab-') || startsWith(github.head_ref, 'codex/import-integration-lab-') || startsWith(github.ref_name, 'codex/application-audit-') || startsWith(github.head_ref, 'codex/application-audit-') || github.ref == 'refs/heads/feature/ui-ux-liad-followup-20261019' || github.head_ref == 'feature/lab-apple-anatomy-integration-20261020' || github.ref == 'refs/heads/feature/doctorcoach-2-smart-workout-20261020'
         uses: actions/upload-artifact@v4
         with:
           name: isolated-lab-candidate-${{ github.sha }}
           path: apps/doctorcoach-standalone/.sites-runtime/lab-release/
           include-hidden-files: true
+          retention-days: 7
+      - name: Save cardio browser evidence
+        if: always() && env.CARDIO_CHECKS == 'true'
+        uses: actions/upload-artifact@v4
+        with:
+          name: cardio-browser-evidence-${{ github.sha }}
+          path: apps/doctorcoach-standalone/.sites-runtime/cardio-browser-evidence/
+          include-hidden-files: true
+          if-no-files-found: ignore
           retention-days: 7
       - name: Save anatomy browser evidence
         if: always() && env.ANATOMY_BROWSER_CHECKS == 'true'

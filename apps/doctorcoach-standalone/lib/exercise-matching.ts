@@ -1,3 +1,4 @@
+import {parseExerciseQualifiers} from './exercise-qualifiers.ts';
 import {exercises} from './content.ts';
 import {exerciseAliases} from './exercise-aliases.ts';
 import type {NamedExercise} from './exercise-search.ts';
@@ -15,7 +16,9 @@ export function normalizeImportExerciseName(value:string){
   .replace(/\s+/g,' ').trim();
 }
 type Entry={exerciseId:string;source:string;canonical:boolean};
-type Index={names:Map<string,Entry[]>;keys:string[]};
+type Index={names:Map<string,Entry[]>;tokens:Map<string,Entry[]>;keys:string[]};
+// Sorted MULTISET: no stopword removal, stemming or dropping unknown tokens.
+const tokenKey=(key:string)=>key.split(' ').sort().join(' ');
 const cache=new WeakMap<readonly NamedExercise[],Index>();
 function indexFor(catalog:readonly NamedExercise[]):Index{
  const existing=cache.get(catalog);if(existing)return existing;
@@ -25,7 +28,9 @@ function indexFor(catalog:readonly NamedExercise[]):Index{
    for(const source of values){const key=normalizeImportExerciseName(source);if(!key)continue;const entries=names.get(key)??[];entries.push({exerciseId:item.id,source,canonical});names.set(key,entries);}
   }
  }
- const index={names,keys:[...names.keys()]};cache.set(catalog,index);return index;
+ const tokens=new Map<string,Entry[]>();
+ for(const [key,entries] of names){const signature=tokenKey(key);tokens.set(signature,[...tokens.get(signature)??[],...entries]);}
+ const index={names,tokens,keys:[...names.keys()]};cache.set(catalog,index);return index;
 }
 function similarity(a:string,b:string){
  if(Math.abs(a.length-b.length)>Math.max(a.length,b.length)*.4)return 0;
@@ -35,9 +40,13 @@ function similarity(a:string,b:string){
 }
 const empty=():ExerciseImportMatch=>({exerciseId:'',status:'unmatched',confidence:0,candidates:[]});
 /** Import-only index; exact verified equivalence can assign, fuzzy results cannot. */
-export function matchExerciseForImport(name:string,catalog:readonly NamedExercise[]=exercises,options:{allowGeneralMovement?:boolean}={}):ExerciseImportMatch{
+export function matchExerciseForImport(name:string,catalog:readonly NamedExercise[]=exercises,options:{allowGeneralMovement?:boolean;suggestions?:boolean}={}):ExerciseImportMatch{
  const key=normalizeImportExerciseName(name);if(!key||key.length>240)return empty();
- const index=indexFor(catalog),rawEntries=index.names.get(key);
+ if(parseExerciseQualifiers(key).conflict)return empty();
+ const index=indexFor(catalog);
+ // Union exact and reordered names: an exact spelling cannot hide a collision
+ // with another verified phrase containing the identical words.
+ const rawEntries=index.tokens.get(tokenKey(key));
  const eligible=rawEntries?.filter(e=>options.allowGeneralMovement||!e.exerciseId.startsWith('movement-'));
  const entries=eligible?.length?eligible:undefined;
  if(entries){
@@ -51,6 +60,7 @@ export function matchExerciseForImport(name:string,catalog:readonly NamedExercis
   const literal=preferred.find(e=>e.source.trim().toLowerCase()===name.trim().toLowerCase());
   return {exerciseId:ids[0],status:literal?(literal.canonical?'exact':'alias'):'normalized',confidence:1,candidates};
  }
+ if(options.suggestions===false)return empty();
  // Spelling similarity is evidence for review only, even at a very high score.
  const scores=new Map<string,number>();
  for(const candidateKey of index.keys){const words=key.split(' '),candidateWords=candidateKey.split(' ');const contained=words.length>=2&&words.every(w=>candidateWords.includes(w));const score=Math.max(similarity(key,candidateKey),contained?.74:0);if(score<.72)continue;for(const entry of index.names.get(candidateKey)??[])if(options.allowGeneralMovement||!entry.exerciseId.startsWith('movement-'))scores.set(entry.exerciseId,Math.max(scores.get(entry.exerciseId)??0,score));}

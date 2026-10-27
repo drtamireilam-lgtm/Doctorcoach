@@ -34,3 +34,13 @@ test('real text PDF persists through assignment and workout reload and rejects i
  await verifyImportedWorkoutPersistence(t,[item]);
  await assert.rejects(readProgramPdf(pdfFixture([]),worker),/לא נמצא טקסט/);await assert.rejects(readProgramPdf(new Uint8Array(5*1024*1024+1),worker));await assert.rejects(readProgramPdf(new TextEncoder().encode('bad'),worker));
 });
+
+test('recognition 3 real text PDF aliases retain specific equipment through workout persistence',async t=>{
+ const require=createRequire(import.meta.url),pdfRequire=createRequire(require.resolve('pdfjs-dist/package.json'));const canvas=pdfRequire('@napi-rs/canvas');globalThis.DOMMatrix=canvas.DOMMatrix;globalThis.Path2D=canvas.Path2D;globalThis.ImageData=canvas.ImageData;
+ const worker=pathToFileURL(require.resolve('pdfjs-dist/legacy/build/pdf.worker.mjs')).href;
+ const assets=pathToFileURL(dirname(require.resolve('pdfjs-dist/package.json'))+'/').href;
+ const sheets=await readProgramPdf(pdfFixture([['Exercise',20,700],['Sets',240,700],['Reps',310,700],['Barbell horizontal bench press',20,680],['3',240,680],['6-8',310,680]]),worker,assets);
+ const d=detectImportColumns(sheets[0]);const items=finalizeImport(extractImportRows(sheets[0],d.header,d.mapping));
+ assert.equal(items[0].exerciseId,'barbell-bench');assert.equal(items[0].repsMax,8);
+ await verifyImportedWorkoutPersistence(t,items);
+});

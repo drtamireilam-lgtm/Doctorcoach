@@ -14,5 +14,13 @@ export const reviewedImportAliases=[
  {exerciseId:'adduction',names:['Hip addaction machine']},
  {exerciseId:'lying-curl',names:['leg curls בשכיבה']},
  {exerciseId:'overhead-triceps',names:['triceps behind the head']},
+ // Additional literal names observed in five authorized workbooks, 2026-10-26.
+ // Source files and personal metadata are excluded; these are catalog-equivalent.
+ {exerciseId:'hip-thrust',names:['hip thurst']},
+ {exerciseId:'cable-abduction',names:['הרחקת רגליים בעמידה נגד פולי']},
+ {exerciseId:'reverse-pec-deck',names:['כתף אחורית- הרחקה אופקית בישיבה במכונה']},
+ {exerciseId:'chest-fly',names:['קירוב אופקי בישיבה במכונה']},
+ {exerciseId:'leg-extension',names:['פשיטת רגליים']},
+ {exerciseId:'cable-er',names:['סיבוב כתף חיצוני כנגד פולי באחיזה נייטרלית']},
 ] as const;
-export const importAliasReviewSource='Canonical names/descriptions in lib/content.ts and lib/gym-exercises.ts; three observed exercise names from authorized workbooks; literal equivalence review, 2026-10-25';
+export const importAliasReviewSource='Canonical names/descriptions in lib/content.ts and lib/gym-exercises.ts; observed exercise names from authorized workbooks; literal equivalence review, 2026-10-25 and 2026-10-26';

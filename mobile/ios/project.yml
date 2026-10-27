@@ -1,0 +1,25 @@
+name: DoctorCoach
+options:
+  deploymentTarget:
+    iOS: '16.0'
+settings:
+  base:
+    SWIFT_VERSION: '5.0'
+    PRODUCT_BUNDLE_IDENTIFIER: com.doctorcoach.mobile
+    DOCTORCOACH_ORIGIN: https://configure-before-build.invalid
+targets:
+  DoctorCoach:
+    type: application
+    platform: iOS
+    sources: [DoctorCoach]
+    info:
+      path: DoctorCoach/Info.plist
+      properties:
+        DoctorCoachOrigin: $(DOCTORCOACH_ORIGIN)
+        NSHealthShareUsageDescription: Read your daily steps to show your activity progress with your consent.
+        UILaunchScreen: {}
+    entitlements:
+      path: DoctorCoach/DoctorCoach.entitlements
+      properties:
+        com.apple.developer.healthkit: true
+        com.apple.developer.healthkit.background-delivery: true

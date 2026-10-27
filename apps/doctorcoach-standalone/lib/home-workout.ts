@@ -7,5 +7,5 @@ export function homeWorkoutPreview(plan:PlanItem[],history:TrainingSession[],mod
  const days=assignedDays(plan);
  const day=days.length===1?days[0]:mode==='coached'&&choice==='fixed'?nextAssignedWorkout(plan,history,programId):undefined;
  const items=day?plan.filter(item=>workoutDayId(item)===day):[];
- return {day,days:days.length,exercises:items.length,sets:items.reduce((sum,item)=>sum+item.sets,0)};
+ return {day,days:days.length,exercises:items.length,sets:items.reduce((sum,item)=>sum+(item.cardio?0:item.sets),0)};
 }
