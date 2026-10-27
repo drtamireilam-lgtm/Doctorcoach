@@ -21,6 +21,7 @@ try {
   for(const id of ['gold','silver']){const appearance=themePresets.find(p=>p.id===id).appearance;await page.evaluate(tokens=>{document.documentElement.classList.remove('light');document.documentElement.classList.add('dark');for(const [key,value]of Object.entries(tokens))document.documentElement.style.setProperty(key,value);},themeTokens(appearance));if(process.env.DC_PREMIUM_SCREENSHOT_DIR&&(width===390||width===1440))await page.screenshot({path:process.env.DC_PREMIUM_SCREENSHOT_DIR+'/premium-'+id+'-'+width+'.png',fullPage:true});console.log('PASS metallic',id,width);}
   if(await page.locator('.dc-premium').getAttribute('dir')!=='ltr')await page.locator('.header-language-toggle').click();await page.waitForTimeout(250);
   if(await page.locator('.dc-premium').getAttribute('dir')!=='ltr')throw Error('English direction');
+  const english=await page.evaluate(()=>({width:innerWidth,scroll:document.documentElement.scrollWidth,header:document.querySelector('.topbar').getBoundingClientRect().height}));if(english.scroll>width||(width<=760&&english.header>80))throw Error('English layout '+JSON.stringify(english));
   await page.locator('.dc-premium-consult button').click();await page.waitForTimeout(250);
   if(!await page.locator('.view-consult').count())throw Error('Consult navigation');
  }

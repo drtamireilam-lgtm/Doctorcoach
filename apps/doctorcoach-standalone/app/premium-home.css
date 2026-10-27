@@ -106,7 +106,7 @@ html:is([data-palette],.light,[data-custom-theme]) .dc-premium .dc-premium-quick
  .premium-home-shell .topbar-end button{min-width:40px;min-height:40px;padding:8px}
  .premium-home-shell .account-shortcut span{display:none}
  .premium-home-shell .theme-toggle-status{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip-path:inset(50%);white-space:nowrap}
- .premium-home-shell .content.view-home{padding:16px 12px calc(94px + env(safe-area-inset-bottom))}
+ .premium-home-shell .content.view-home{padding:16px max(12px,env(safe-area-inset-right)) calc(94px + env(safe-area-inset-bottom)) max(12px,env(safe-area-inset-left))}
  .dc-premium{padding:0;border:0;box-shadow:none;border-radius:0;gap:16px}
  .dc-premium-eyebrow{font-size:.75rem;gap:7px}
  .dc-premium-heading h1{font-size:1.65rem;margin:4px 0 6px}

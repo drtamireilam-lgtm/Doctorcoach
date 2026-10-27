@@ -7,3 +7,7 @@ The home shell now uses a compact single-row mobile header with safe-area paddin
 Verified: TypeScript, isolated LAB build, all 1626 tests. Local browser smoke passes nine palettes x two modes x 320/390/1440 widths, plus gold/silver visual captures, no horizontal overflow/page errors, English direction/consultation navigation, mobile header <=80px and desktop hero <=390px. Gold/teal light/dark screenshots inspected. Browser injects production themeTokens output; persistence is unchanged and is not re-claimed as live verified.
 
 Live deployment and fresh live visual measurements must be checked after Cloudflare auto-build. The user's screenshot alone cannot establish browser zoom or physical-device rendering; no zoom-related cause is claimed or forced. Native text scaling remains enabled.
+
+Independent static review found one important safe-area regression: fixed horizontal mobile content padding could enter landscape notch areas. Changed both sides to max(12px, env(safe-area-inset-left/right)); header and bottom inset handling retained. Rebuilt and reran browser checks, now including LTR overflow/header bounds. No other critical/important static findings.
+
+During rollout, fresh live anonymous desktop measurement at 1363px showed header 67px and hero 368.42px, confirming the compact design had reached LAB. The safe-area follow-up must also finish its automatic rollout. No authenticated live actions or preference mutations were performed by the agent.
