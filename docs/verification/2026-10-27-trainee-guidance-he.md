@@ -50,7 +50,7 @@ SHA256 של 0003: `9bfb70c68a6154bcd260724920562347262052d261e01d984a99b4c7ae899
 
 בדיקות הדפדפן הן **רכיב הניהול האמיתי עם חנות SQLite ונתונים סינתטיים**, ולא גלישה באפליקציה המלאה של ה־Worker. בנפרד נבדק ה־Worker הבנוי דרך HTTP עם הזדהות ספק מדומה. לא בוצעו Google Sign-In אמיתי, שליחת OTP אמיתית, מכשיר iOS/Android פיזי, בדיקה חזותית של כל 13 ערכות הנושא, או קבלה ב־LAB. נעשו בדיקות חזותיות של צילומים נבחרים; בדיקות יתר הצילומים אוטומטיות.
 
-אזהרות הבנייה על גודל chunks וסיווג routes של vinext אינן כשלי בדיקה. כשל בדיקת prototype ו־Miniflare stub שהתיישן לאחר setOptions תוקנו בחיווט הבדיקות; הרצות חוזרות עברו.
+אזהרות הבנייה על גודל chunks וסיווג routes של vinext אינן כשלי בדיקה. כשל בדיקת prototype ו־Miniflare stub שהתיישן לאחר setOptions תוקנו בחיווט הבדיקות; הרצות חוזרות עברו. בהרצה מלאה חוזרת הופיע גם כשל קיים ולא יציב ב־activity.test.mjs: חיפוש הספרות 173 בכל JSON זיהה אותן בחותמת זמן או במזהה אקראי, ללא דליפת דופק. שוחזר כשל דטרמיניסטי עם startedAt המסתיים ב־.173Z; הבדיקה תוקנה כדי לבדוק שדות דופק ונתוני replay שנמחקו, תוך שימור חותמת הזמן התמימה. זהו תיקון בדיקה בלבד, ללא שינוי בקוד אירובי. הראיות נשמרו ב־activity-flake-reproduction.txt.
 
 ## ראיות וקבצים
 
@@ -58,7 +58,7 @@ SHA256 של 0003: `9bfb70c68a6154bcd260724920562347262052d261e01d984a99b4c7ae899
 
 קבצי יישום: `app/globals.css`, `components/user-management.tsx`, `lib/staff-personal-access.ts`, `standalone/user-management.ts`, `standalone/gateway.ts`, `standalone/worker.ts`, והמיגרציה 0003. כולם בתוך `apps/doctorcoach-standalone/`.
 
-בדיקות וכלים: `tests/user-management.test.mjs`, `tests/user-management-gateway.test.mjs`, `tests/user-management-migration.test.mjs`, `tests/fixtures/user-management-browser.tsx`, `scripts/user-management-browser-smoke.mjs`, `standalone/scripts/runtime-smoke.mjs`. נוסף עדכון `.github/workflows/ci.yml` להפעלת CI על הענף החדש ולאריזת 0003, ללא פריסה; תוכנית הביצוע והדוח הנוכחי נשמרו בתיעוד.
+בדיקות וכלים: `tests/activity.test.mjs` (ייצוב בדיקת פרטיות קיימת), `tests/user-management.test.mjs`, `tests/user-management-gateway.test.mjs`, `tests/user-management-migration.test.mjs`, `tests/fixtures/user-management-browser.tsx`, `scripts/user-management-browser-smoke.mjs`, `standalone/scripts/runtime-smoke.mjs`. נוסף עדכון `.github/workflows/ci.yml` להפעלת CI על הענף החדש ולאריזת 0003, ללא פריסה; תוכנית הביצוע והדוח הנוכחי נשמרו בתיעוד.
 
 ## מה נשאר ומתי זמין
 

@@ -1,0 +1,31 @@
+MATCH173 [
+  '],"startedAt":"2026-10-27T11:53:00.173Z","finishedAt":"2026-10-27T11:55:2'
+]
+✖ staff projections remove replay fingerprints and mixed cardio feedback (121.083249ms)
+ℹ tests 1
+ℹ suites 0
+ℹ pass 0
+ℹ fail 1
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 455.859001
+
+✖ failing tests:
+
+test at tests/activity-diagnostic.mjs:37:1
+✖ staff projections remove replay fingerprints and mixed cardio feedback (121.083249ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  
+  true !== false
+  
+      at TestContext.<anonymous> (file:///workspace/scratch/685e9b37fc67/Doctorcoach/apps/doctorcoach-standalone/tests/activity-diagnostic.mjs:37:1311)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async startSubtestAfterBootstrap (node:internal/test_runner/harness:387:3) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: true,
+    expected: false,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
