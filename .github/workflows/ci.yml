@@ -52,6 +52,11 @@ jobs:
         run: pnpm install --frozen-lockfile
       - name: Standalone regression tests
         run: npm test
+      - name: Consultation desktop and mobile bilingual workflow
+        if: startsWith(github.head_ref, 'codex/consultation-management-')
+        env:
+          CONSULTATION_CHROMIUM_PATH: /usr/bin/google-chrome
+        run: node --experimental-strip-types scripts/consultation-browser-smoke.mjs
       - name: Standalone TypeScript
         run: npm run typecheck
       - name: Offline cardio migration and native contracts

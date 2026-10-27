@@ -11,3 +11,9 @@ test('staging identity transport denies other origins and endpoints before makin
  for(const u of ['https://production.supabase.co/auth/v1/user',STAGING_PROJECT+'/rest/v1/patients',STAGING_PROJECT+'/auth/v1/admin/users'])await assert.rejects(()=>f(u));
  assert.equal(calls.length,0);await f(STAGING_PROJECT+'/auth/v1/user');assert.equal(calls[0].init.redirect,'manual');
 });
+
+test('LAB Calendar requires explicit opt-in and secondary calendar; primary is always denied',()=>{
+ const calendar={DOCTORCOACH_CALENDAR_TEST_ENABLED:'true',DOCTORCOACH_CALENDAR_CLIENT_ID:'test-client',DOCTORCOACH_CALENDAR_ENCRYPTION_KEY:'test-encryption',DOCTORCOACH_CALENDAR_OWNER_EMAIL:'test@example.test',DOCTORCOACH_CALENDAR_ID:'synthetic@group.calendar.google.com'};
+ validateStaging({...config,...calendar});
+ for(const patch of [{DOCTORCOACH_CALENDAR_TEST_ENABLED:'false'},{DOCTORCOACH_CALENDAR_ID:'primary'},{DOCTORCOACH_CALENDAR_ID:'dr.tamireilam@gmail.com'},{DOCTORCOACH_CALENDAR_OWNER_EMAIL:undefined}])assert.throws(()=>validateStaging({...config,...calendar,...patch}));
+});

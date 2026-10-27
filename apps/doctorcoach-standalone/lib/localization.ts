@@ -6,6 +6,27 @@ const normalize = (text: string) => text.trim().replace(/\s+/g, ' ');
 const dictionary = new Map(hebrew.map((text, index) => [normalize(text), english[index]]));
 // New privacy labels are kept explicit instead of partially translating consent text.
 for(const [he,en] of [
+ ["ממתינים לאישור", "Pending consultations"],
+ ["ייעוצים קרובים", "Upcoming consultations"],
+ ["דורשים טיפול", "Action required"],
+ ["היסטוריית ייעוצים", "Consultation history"],
+ ["ייעוצים פעילים", "Active consultations"],
+ ["חיפוש לפי שם מטופל", "Search by patient name"],
+ ["סטטוס הייעוץ", "Consultation status"],
+ ["כל הסטטוסים", "All statuses"],
+ ["מתאריך", "From date"],
+ ["עד תאריך", "To date"],
+ ["טוענים היסטוריית ייעוצים…", "Loading consultation history…"],
+ ["לא נמצאו ייעוצים בסינון הזה.", "No consultations match these filters."],
+ ["אין ייעוצים בקטגוריה זו.", "No consultations in this category."],
+ ["בקשות חדשות הממתינות לאישור:", "New requests awaiting approval:"],
+ ["סימון אי הגעה", "Mark as no-show"],
+ ["לא התקיים", "No-show"],
+ ["ללא מועד", "No scheduled time"],
+ ["העמוד הקודם", "Previous page"],
+ ["העמוד הבא", "Next page"],
+ ["תצוגת ייעוצים", "Consultation view"],
+
  ['הליכה','Walking'],['ריצה בחוץ','Outdoor running'],['ריצה בהליכון','Treadmill running'],['רכיבה','Cycling'],['אופני כושר','Stationary bike'],['אליפטיקל','Elliptical'],['סקי ארג','SkiErg'],['סקי בחוץ','Outdoor skiing'],['חתירה במכשיר','Rowing machine'],['שחייה','Swimming'],['מדרגות','Stair climber'],['הליכה בשיפוע','Incline walking'],['אינטרוולים בעצימות גבוהה','HIIT'],['קפיצה בחבל','Jump rope'],['אירובי אחר','Other cardio'],
  ['הוספת אירובי לתוכנית','Add cardio to program'],['הסרת אירובי','Remove cardio'],['יעדי הפעילות נשמרים בנפרד מהביצוע.','Activity targets are saved separately from actual results.'],
  ['אימוני אירובי שהושלמו','Completed cardio sessions'],['דקות אירובי שבוצעו','Completed cardio minutes'],['מרחק אירובי שנמדד (מטרים)','Measured cardio distance (meters)'],['RPE אירובי ממוצע','Average cardio RPE'],

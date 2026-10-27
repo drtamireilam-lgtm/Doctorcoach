@@ -1,7 +1,7 @@
 export type Appointment={id:string;clientId:string;clientName:string;serviceId:string;title:string;provider:string;duration:number;priceAgorot:number;preference:string;state:string;startsAt:string|null;endsAt:string|null;meetingUrl:string;staffNote:string;paymentState:string;paymentReference:string;version:number;createdAt:string;updatedAt:string;feedbackMessage?:string;feedbackRequestedAt?:string|null;feedbackResponse?:string;feedbackRespondedAt?:string|null;calendarStatus?:string;bookingUrl?:string;paymentUrl?:string;paymentInstructions?:string};
-export const appointmentStates:Record<string,string>={requested:'ממתין לתיאום',scheduled:'נקבע',cancel_requested:'בקשת ביטול נשלחה',cancelled:'בוטל',completed:'בוצע',followup:'נדרש מעקב'};
+export const appointmentStates:Record<string,string>={requested:'ממתין לתיאום',scheduled:'נקבע',cancel_requested:'בקשת ביטול נשלחה',cancelled:'בוטל',completed:'בוצע',followup:'נדרש מעקב',no_show:'לא התקיים'};
 export const paymentStates:Record<string,string>={unpaid:'טרם אושר תשלום',reported:'התשלום דווח — בבדיקת הצוות',confirmed:'התשלום אומת על ידי הצוות',refund_pending:'ממתין לטיפול בהחזר',refunded:'ההחזר אומת על ידי הצוות'};
-export function appointmentDate(value:string):string{return new Intl.DateTimeFormat('he-IL',{timeZone:'Asia/Jerusalem',dateStyle:'medium',timeStyle:'short'}).format(new Date(value));}
+export function appointmentDate(value:string,language='he'):string{return new Intl.DateTimeFormat(language==='en'?'en-GB':'he-IL',{timeZone:'Asia/Jerusalem',dateStyle:'medium',timeStyle:'short'}).format(new Date(value));}
 // Resolve a wall-clock time in Israel without relying on the browser's time zone.
 // Reject skipped/repeated clock-change times so that no appointment is shifted silently.
 export function israelAppointmentTime(value:string):string{
