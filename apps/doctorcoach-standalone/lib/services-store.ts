@@ -1,6 +1,6 @@
 import { defaultServices, parseService, publicService, ServiceError } from './services.ts';
 import type { ConsultationService } from './services.ts';
-import { isStaff } from './staff.ts';
+import { isStaff ,isAdmin} from './staff.ts';
 import type { StaffIdentity } from './staff.ts';
 
 const columns = `id, title, description, provider, format, duration_minutes AS durationMinutes,
@@ -12,7 +12,7 @@ const fromRow = (row: Row): ConsultationService => ({ ...row, priceConfirmed: ro
 export function servicesStore(db: D1Database, adminEmails?: string,restricted?:{userId:string;provider:'lior';guard:{sql:string;args:(string|number)[]}}) {
   function requireStaff(user: StaffIdentity | null): StaffIdentity {
     if (!user) throw new ServiceError('יש להתחבר כדי לנהל שירותים.', 401);
-    if (!isStaff(user, adminEmails)&&user.userId!==restricted?.userId) throw new ServiceError('אזור זה זמין לחשבונות צוות מורשים בלבד.', 403);
+    if (!isAdmin(user,adminEmails)&&user.userId!==restricted?.userId) throw new ServiceError('אזור זה זמין לחשבונות צוות מורשים בלבד.', 403);
     return user;
   }
   async function all(): Promise<ConsultationService[]> {

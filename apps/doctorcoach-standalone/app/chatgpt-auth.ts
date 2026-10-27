@@ -8,6 +8,7 @@ import {deletionJournal,restoreDeletionBarrier} from '../lib/deletion-journal';
 export {chatGPTSignInPath,chatGPTSignOutPath} from "./chatgpt-auth-paths";
 
 export type ChatGPTUser = {
+  administration?: 'owner'|'secretary'|null;
   userId: string;
   displayName: string;
   email: string;
@@ -44,6 +45,7 @@ export async function getChatGPTUser(options:{allowDeleted?:boolean}={}): Promis
 
   return {
     userId,
+    ...((env as unknown as Record<string,string>).DC_USER_MANAGEMENT_ENABLED==='true'?{administration:requestHeaders.get('x-dc-identity-management-mode')==='uid'&&requestHeaders.get('x-dc-identity-management-permission')==='owner'?'owner' as const:requestHeaders.get('x-dc-identity-management-mode')==='uid'&&requestHeaders.get('x-dc-identity-management-permission')==='secretary'?'secretary' as const:null}:{}),
     displayName: fullName ?? email,
     email,
     fullName,

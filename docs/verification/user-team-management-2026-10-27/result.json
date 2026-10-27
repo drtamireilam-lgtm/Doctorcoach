@@ -1,0 +1,25 @@
+{
+  "scope": "Synthetic local UI with real SQLite management store; auth gateway separately tested; not LAB",
+  "checks": [
+    {
+      "lang": "he",
+      "width": 390,
+      "passed": true
+    },
+    {
+      "lang": "he",
+      "width": 1440,
+      "passed": true
+    },
+    {
+      "lang": "en",
+      "width": 390,
+      "passed": true
+    },
+    {
+      "lang": "en",
+      "width": 1440,
+      "passed": true
+    }
+  ]
+}

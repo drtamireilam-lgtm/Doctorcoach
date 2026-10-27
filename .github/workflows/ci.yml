@@ -2,9 +2,9 @@ name: DoctorCoach CI
 
 on:
   push:
-    branches: [main, "feature/cardio-automatic-steps-*", "codex/exercise-recognition-3-*", "codex/import-integration-lab-*", "codex/application-audit-*", "stabilize/**", "fix/appearance-toggle-persistence-*", "feature/ui-ux-liad-followup-20261019", "feature/doctorcoach-2-smart-workout-20261020", "feature/anatomy-completion-*", "integration/anatomy-rehab-stretch-*"]
+    branches: [main, "codex/user-team-management-*", "codex/consultation-management-*", "feature/cardio-automatic-steps-*", "codex/exercise-recognition-3-*", "codex/import-integration-lab-*", "codex/application-audit-*", "stabilize/**", "fix/appearance-toggle-persistence-*", "feature/ui-ux-liad-followup-20261019", "feature/doctorcoach-2-smart-workout-20261020", "feature/anatomy-completion-*", "integration/anatomy-rehab-stretch-*"]
   pull_request:
-    branches: [main, "feature/cardio-automatic-steps-*", "codex/exercise-recognition-3-*", "codex/import-integration-lab-*", "codex/generic-movement-import-*", "codex/application-audit-*", "codex/import-structure-regressions-*", "codex/import-alias-precision-*", "codex/google-apple-signin-*", "feature/anatomy-*", "integration/anatomy-*", "codex/anatomy-*"]
+    branches: [main, "codex/user-team-management-*", "codex/consultation-management-*", "feature/cardio-automatic-steps-*", "codex/exercise-recognition-3-*", "codex/import-integration-lab-*", "codex/generic-movement-import-*", "codex/application-audit-*", "codex/import-structure-regressions-*", "codex/import-alias-precision-*", "codex/google-apple-signin-*", "feature/anatomy-*", "integration/anatomy-*", "codex/anatomy-*"]
 
 permissions:
   contents: read
@@ -53,10 +53,15 @@ jobs:
       - name: Standalone regression tests
         run: npm test
       - name: Consultation desktop and mobile bilingual workflow
-        if: startsWith(github.head_ref, 'codex/consultation-management-')
+        if: startsWith(github.head_ref, 'codex/consultation-management-') || startsWith(github.head_ref, 'codex/user-team-management-')
         env:
           CONSULTATION_CHROMIUM_PATH: /usr/bin/google-chrome
         run: node --experimental-strip-types scripts/consultation-browser-smoke.mjs
+      - name: User management desktop and mobile bilingual workflow
+        if: startsWith(github.head_ref, 'codex/user-team-management-') || startsWith(github.ref_name, 'codex/user-team-management-')
+        env:
+          DC_MANAGEMENT_CHROMIUM: /usr/bin/google-chrome
+        run: node --experimental-strip-types scripts/user-management-browser-smoke.mjs
       - name: Standalone TypeScript
         run: npm run typecheck
       - name: Offline cardio migration and native contracts
@@ -99,6 +104,24 @@ jobs:
         run: node standalone/scripts/check-isolated-staging.mjs dist/server/wrangler.json
       - name: Synthetic Worker authentication and authorization checks
         run: node --experimental-strip-types standalone/scripts/runtime-smoke.mjs
+      - name: Package user management LAB candidate without deployment
+        if: startsWith(github.head_ref, 'codex/user-team-management-') || startsWith(github.ref_name, 'codex/user-team-management-')
+        run: |
+          mkdir -p .sites-runtime/user-management-release/migrations
+          git rev-parse HEAD > .sites-runtime/user-management-release/source-commit.txt
+          cp drizzle/0059_management_assignment_provenance.sql standalone/migrations/0002_user_management.sql .sites-runtime/user-management-release/migrations/
+          tar -czf .sites-runtime/user-management-release/lab-candidate.tgz dist
+          (cd .sites-runtime/user-management-release && sha256sum lab-candidate.tgz source-commit.txt migrations/*.sql > SHA256SUMS && sha256sum --check SHA256SUMS)
+      - name: Save management candidate and synthetic browser evidence
+        if: startsWith(github.head_ref, 'codex/user-team-management-') || startsWith(github.ref_name, 'codex/user-team-management-')
+        uses: actions/upload-artifact@v4
+        with:
+          name: user-management-lab-candidate-${{ github.sha }}
+          path: |
+            apps/doctorcoach-standalone/.sites-runtime/user-management-release/
+            apps/doctorcoach-standalone/.sites-runtime/user-management-evidence/
+          include-hidden-files: true
+          retention-days: 7
       - name: Package verified isolated LAB candidate
         if: env.CARDIO_CHECKS == 'true' || startsWith(github.ref_name, 'codex/import-integration-lab-') || startsWith(github.head_ref, 'codex/import-integration-lab-') || startsWith(github.ref_name, 'codex/application-audit-') || startsWith(github.head_ref, 'codex/application-audit-') || github.ref == 'refs/heads/feature/ui-ux-liad-followup-20261019' || github.head_ref == 'feature/lab-apple-anatomy-integration-20261020' || github.ref == 'refs/heads/feature/doctorcoach-2-smart-workout-20261020'
         run: |

@@ -28,7 +28,7 @@ function mint(email,first=false){
 async function modules(dir){const result=[];for(const entry of await readdir(dir,{withFileTypes:true})){const full=path.join(dir,entry.name);if(entry.isDirectory())result.push(...await modules(full));else if(/\.m?js$/.test(entry.name))result.push({type:'ESModule',path:full});}return result;}
 const entries=await modules(path.join(root,'dist/server'));
 entries.sort((a,b)=>a.path===path.join(root,'dist/server/index.js')?-1:b.path===path.join(root,'dist/server/index.js')?1:a.path.localeCompare(b.path));
-const mf=new Miniflare({modules:entries,modulesRoot:path.join(root,'dist/server'),compatibilityDate:'2026-05-15',compatibilityFlags:['nodejs_compat'],d1Databases:['DB'],r2Buckets:['BUCKET'],bindings:{DC_AUTH_ORIGIN:origin,DC_SUPABASE_URL:project,DC_SUPABASE_PUBLIC_KEY:'sb_publishable_synthetic',DC_SESSION_KEY:Buffer.alloc(32,7).toString('base64'),DC_LEGACY_ISSUER:'sites:synthetic-old',DC_NEW_ACCOUNTS_ENABLED:'true',DC_LEGACY_PUBLIC_JWK:JSON.stringify(legacyPublic),DOCTORCOACH_ADMIN_EMAILS:'doctor@example.test',DOCTORCOACH_CLINICIAN_EMAILS:'doctor@example.test'},outboundService:async req=>{
+const runtimeOptions={modules:entries,modulesRoot:path.join(root,'dist/server'),compatibilityDate:'2026-05-15',compatibilityFlags:['nodejs_compat'],d1Databases:['DB'],r2Buckets:['BUCKET'],bindings:{DC_AUTH_ORIGIN:origin,DC_SUPABASE_URL:project,DC_SUPABASE_PUBLIC_KEY:'sb_publishable_synthetic',DC_SESSION_KEY:Buffer.alloc(32,7).toString('base64'),DC_LEGACY_ISSUER:'sites:synthetic-old',DC_NEW_ACCOUNTS_ENABLED:'true',DC_LEGACY_PUBLIC_JWK:JSON.stringify(legacyPublic),DOCTORCOACH_ADMIN_EMAILS:'doctor@example.test',DOCTORCOACH_CLINICIAN_EMAILS:'doctor@example.test'},outboundService:async req=>{
  const url=new URL(req.url);assert.equal(url.origin,project);
  if(url.pathname==='/auth/v1/otp')return Response.json({});
  if(url.pathname==='/auth/v1/verify'){const body=await req.json();if(body.token!=='123456'||used.has(body.email))return Response.json({error:'invalid'},{status:401});used.add(body.email);return Response.json(mint(body.email,true));}
@@ -38,7 +38,8 @@ const mf=new Miniflare({modules:entries,modulesRoot:path.join(root,'dist/server'
  if(url.pathname.includes('/rpc/'))return Response.json(!!identity&&!revoked.has(identity.sid));
  if(url.pathname==='/auth/v1/logout'){if(identity)revoked.add(identity.sid);return Response.json({});}
  return Response.json({}, {status:404});
-}});
+}};
+const mf=new Miniflare(runtimeOptions);
 try{
  const db=await mf.getD1Database('DB'),bucket=await mf.getR2Bucket('BUCKET');
  const migrations=(await readdir(path.join(root,'drizzle'))).filter(x=>/^\d.*\.sql$/.test(x)).sort();
@@ -238,6 +239,27 @@ try{
  await db.exec('DROP TRIGGER runtime_fail_link;');
  await json('/auth/link',{proof:retryProof,confirmed:true});assert.equal((await json('/auth/status',{})).linked,true);
  console.log('PASS: actual local D1 registration/link storage failures roll back external identities and permit safe retries.');
+ // Explicitly activate management only in this isolated synthetic runtime.
+ await db.exec(sqlLine(await readFile(path.join(root,'standalone/migrations/0002_user_management.sql'),'utf8')));
+ await db.prepare("INSERT INTO dc_management_grants(user_id,permission,granted_by,granted_at) VALUES('legacy-doctor','owner','legacy-doctor',0)").run();
+ await mf.setOptions({...runtimeOptions,bindings:{...runtimeOptions.bindings,DC_USER_MANAGEMENT_ENABLED:'true'}});
+ cookies=doctorCookies;const users=await json('/api/user-management');assert.equal(users.permission,'owner');
+ const managementChange=(userId,version,extra={})=>({action:'update',userId,version,role:'trainee',approval:'approved',status:'active',coachId:null,confirmed:true,operationId:randomUUID(),...extra});
+ await json('/api/user-management',managementChange('legacy-coach-b',0,{role:'coach'}));
+ await json('/api/user-management',managementChange(owner,0,{coachId:'legacy-coach-b'}));
+ cookies=coachBCookies;assert.equal((await request('/api/care/team?client='+encodeURIComponent(owner))).status,200);
+ assert.equal((await request('/api/user-management',managementChange(owner,1,{coachId:'legacy-coach-b'}))).status,403);
+ cookies=doctorCookies;await json('/api/user-management',managementChange(owner,1));
+ cookies=coachBCookies;assert.equal((await request('/api/care/team?client='+encodeURIComponent(owner))).status,403);
+ cookies=doctorCookies;await json('/api/user-management',{action:'secretary',userId:'legacy-coach-b',version:1,secretary:true,confirmed:true,operationId:randomUUID()});
+ cookies=coachBCookies;assert.equal((await json('/api/user-management')).permission,'secretary');assert.equal((await request('/api/appointments?manage=1&view=history')).status,403);assert.equal((await request('/api/messages')).status,403);
+ cookies=doctorCookies;await json('/api/user-management',{action:'secretary',userId:'legacy-coach-b',version:2,secretary:false,confirmed:true,operationId:randomUUID()});
+ cookies=coachBCookies;assert.equal((await request('/api/user-management')).status,403);
+ cookies=doctorCookies;await json('/api/user-management',managementChange(owner,2,{status:'inactive'}));
+ cookies=firstCookies;assert.equal((await request('/api/training')).status,403);assert.equal((await request('/api/media/'+video)).status,403);
+ cookies=doctorCookies;await json('/api/user-management',managementChange(owner,3));
+ cookies=firstCookies;assert.equal((await request('/api/training')).status,200);
+ console.log('PASS: built management UID authority, assigned coach access and immediate removal, secretary grant/revoke and clinical denial, active-session disable/reenable. All identities and data synthetic.');
  cookies=firstCookies;assert.deepEqual((await json('/api/preferences/appearance')).appearance,{mode:'light',palette:'pink'});await json('/auth/refresh',{});const beforeLogout=cookies;await json('/auth/logout',{});cookies=beforeLogout;
  assert.equal((await request('/auth/status',{})).status,401);assert.equal((await json('/api/account')).signedIn,false);
  console.log('PASS: built workerd HTTP sign-in, wrong OTP, registration, provider token refresh, spoofed headers, first workout, RIR, next-set load, history, private PDF/video bytes, authenticated cross-user isolation and logout replay. Provider is SYNTHETIC, not real email delivery.');

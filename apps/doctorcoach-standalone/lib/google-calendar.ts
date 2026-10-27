@@ -1,6 +1,6 @@
 import {TrainingError} from './training.ts';
 import type {StaffIdentity} from './staff.ts';
-import {isStaff} from './staff.ts';
+import {isStaff,isAdmin} from './staff.ts';
 
 export const CALENDAR_ORIGIN='https://doctorcoach.dr-tamireilam.chatgpt.site';
 export const CALENDAR_CALLBACK=CALENDAR_ORIGIN+'/api/google-calendar/callback';
@@ -20,7 +20,7 @@ export async function calendarHash(value:string){return base64(new Uint8Array(aw
 export async function calendarEventId(id:string){const bytes=new Uint8Array(await crypto.subtle.digest('SHA-256',enc.encode('DoctorCoach:tamir:'+id)));return 'dc'+Array.from(bytes,b=>b.toString(16).padStart(2,'0')).join('');}
 export async function sealCalendar(value:string,key:string,purpose:string){const raw=unbase64(key);if(raw.length!==32)throw new TrainingError('מפתח חיבור היומן אינו מוגדר.',503);const iv=crypto.getRandomValues(new Uint8Array(12));const k=await crypto.subtle.importKey('raw',raw,'AES-GCM',false,['encrypt']);const cipher=await crypto.subtle.encrypt({name:'AES-GCM',iv,additionalData:enc.encode(purpose)},k,enc.encode(value));return base64(iv)+'.'+base64(new Uint8Array(cipher));}
 export async function openCalendar(value:string,key:string,purpose:string){try{const [iv,data,...extra]=value.split('.');if(extra.length||!iv||!data)throw new Error();const raw=unbase64(key);if(raw.length!==32)throw new Error();const k=await crypto.subtle.importKey('raw',raw,'AES-GCM',false,['decrypt']);return new TextDecoder().decode(await crypto.subtle.decrypt({name:'AES-GCM',iv:unbase64(iv),additionalData:enc.encode(purpose)},k,unbase64(data)));}catch{throw new TrainingError('לא ניתן לפתוח את חיבור היומן. נדרש חיבור מחדש.',503);}}
-export function calendarOwner(user:StaffIdentity|null,config:CalendarConfig){return !!user&&isStaff(user,config.adminEmails)&&!!config.ownerEmail&&user.email.trim().toLowerCase()===config.ownerEmail.trim().toLowerCase();}
+export function calendarOwner(user:StaffIdentity|null,config:CalendarConfig){return !!user&&isAdmin(user,config.adminEmails)&&!!config.ownerEmail&&user.email.trim().toLowerCase()===config.ownerEmail.trim().toLowerCase();}
 export function requireCalendarOwner(user:StaffIdentity|null,config:CalendarConfig):asserts user is StaffIdentity{if(!calendarOwner(user,config))throw new TrainingError('חיבור היומן האישי זמין לתמיר בלבד.',403);}
 export function calendarOrigin(config:CalendarConfig={}){const origin=config.origin??CALENDAR_ORIGIN;if(![CALENDAR_ORIGIN,'https://doctorcoach-isolated-staging.dr-tamireilam.workers.dev'].includes(origin))throw new TrainingError('כתובת חיבור היומן אינה מורשית.',503);return origin;}
 export const calendarCallback=(config:CalendarConfig={})=>calendarOrigin(config)+'/api/google-calendar/callback';
