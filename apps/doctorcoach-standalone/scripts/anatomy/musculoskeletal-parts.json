@@ -1,0 +1,2178 @@
+{
+  "mappingSha256": "a3de74423f943b0d724ae8f59b3a817f87c423a544f8db98113b1980817cbeaf",
+  "selection": "89 existing regional muscle groups and exact officially mapped contralateral ELEMENTs. Full trapezius replaces overlapping upper-trapezius. Scalenes retain existing grouping.",
+  "structures": [
+    {
+      "id": "left-abductor-hallucis",
+      "learningId": "abductor-hallucis",
+      "en": "Left Abductor Hallucis",
+      "he": "אבדקטור הלוסיס — שמאל",
+      "layer": "muscle",
+      "side": "left",
+      "regionId": "ankle_foot",
+      "sourceIds": [
+        "FJ1400M"
+      ]
+    },
+    {
+      "id": "right-abductor-hallucis",
+      "learningId": "abductor-hallucis",
+      "en": "Right Abductor Hallucis",
+      "he": "אבדקטור הלוסיס — ימין",
+      "layer": "muscle",
+      "side": "right",
+      "regionId": "ankle_foot",
+      "sourceIds": [
+        "FJ1400"
+      ]
+    },
+    {
+      "id": "left-abductor-pollicis-brevis",
+      "learningId": "abductor-pollicis-brevis",
+      "en": "Left Abductor pollicis brevis",
+      "he": "אבדקטור פוליסיס ברביס — שמאל",
+      "layer": "muscle",
+      "side": "left",
+      "regionId": "wrist_hand",
+      "sourceIds": [
+        "FJ1483M"
+      ]
+    },
+    {
+      "id": "right-abductor-pollicis-brevis",
+      "learningId": "abductor-pollicis-brevis",
+      "en": "Right Abductor pollicis brevis",
+      "he": "אבדקטור פוליסיס ברביס — ימין",
+      "layer": "muscle",
+      "side": "right",
+      "regionId": "wrist_hand",
+      "sourceIds": [
+        "FJ1483"
+      ]
+    },
+    {
+      "id": "left-adductor-brevis",
+      "learningId": "adductor-brevis",
+      "en": "Left Adductor brevis",
+      "he": "המקרב הקצר — שמאל",
+      "layer": "muscle",
+      "side": "left",
+      "regionId": "groin",
+      "sourceIds": [
+        "FJ1401M"
+      ]
+    },
+    {
+      "id": "right-adductor-brevis",
+      "learningId": "adductor-brevis",
+      "en": "Right Adductor brevis",
+      "he": "המקרב הקצר — ימין",
+      "layer": "muscle",
+      "side": "right",
+      "regionId": "groin",
+      "sourceIds": [
+        "FJ1401"
+      ]
+    },
+    {
+      "id": "left-adductor-hallucis",
+      "learningId": "adductor-hallucis",
+      "en": "Left Adductor Hallucis",
+      "he": "אדקטור הלוסיס — שמאל",
+      "layer": "muscle",
+      "side": "left",
+      "regionId": "ankle_foot",
+      "sourceIds": [
+        "FJ1398M",
+        "FJ1445M"
+      ]
+    },
+    {
+      "id": "right-adductor-hallucis",
+      "learningId": "adductor-hallucis",
+      "en": "Right Adductor Hallucis",
+      "he": "אדקטור הלוסיס — ימין",
+      "layer": "muscle",
+      "side": "right",
+      "regionId": "ankle_foot",
+      "sourceIds": [
+        "FJ1398",
+        "FJ1445"
+      ]
+    },
+    {
+      "id": "left-adductor-longus",
+      "learningId": "adductor-longus",
+      "en": "Left Adductor longus",
+      "he": "המקרב הארוך — שמאל",
+      "layer": "muscle",
+      "side": "left",
+      "regionId": "groin",
+      "sourceIds": [
+        "FJ1402M"
+      ]
+    },
+    {
+      "id": "right-adductor-longus",
+      "learningId": "adductor-longus",
+      "en": "Right Adductor longus",
+      "he": "המקרב הארוך — ימין",
+      "layer": "muscle",
+      "side": "right",
+      "regionId": "groin",
+      "sourceIds": [
+        "FJ1402"
+      ]
+    },
+    {
+      "id": "left-adductor-magnus",
+      "learningId": "adductor-magnus",
+      "en": "Left Adductor magnus",
+      "he": "המקרב הגדול — שמאל",
+      "layer": "muscle",
+      "side": "left",
+      "regionId": "groin",
+      "sourceIds": [
+        "FJ1403M"
+      ]
+    },
+    {
+      "id": "right-adductor-magnus",
+      "learningId": "adductor-magnus",
+      "en": "Right Adductor magnus",
+      "he": "המקרב הגדול — ימין",
+      "layer": "muscle",
+      "side": "right",
+      "regionId": "groin",
+      "sourceIds": [
+        "FJ1403"
+      ]
+    },
+    {
+      "id": "left-adductor-pollicis",
+      "learningId": "adductor-pollicis",
+      "en": "Left Adductor pollicis",
+      "he": "אדקטור פוליסיס — שמאל",
+      "layer": "muscle",
+      "side": "left",
+      "regionId": "wrist_hand",
+      "sourceIds": [
+        "FJ1481M",
+        "FJ1515M"
+      ]
+    },
+    {
+      "id": "right-adductor-pollicis",
+      "learningId": "adductor-pollicis",
+      "en": "Right Adductor pollicis",
+      "he": "אדקטור פוליסיס — ימין",
+      "layer": "muscle",
+      "side": "right",
+      "regionId": "wrist_hand",
+      "sourceIds": [
+        "FJ1481",
+        "FJ1515"
+      ]
+    },
+    {
+      "id": "left-biceps-brachii",
+      "learningId": "biceps-brachii",
+      "en": "Left Biceps brachii",
+      "he": "השריר הדו־ראשי של הזרוע — שמאל",
+      "layer": "muscle",
+      "side": "left",
+      "regionId": "elbow",
+      "sourceIds": [
+        "FJ1478M",
+        "FJ1512M"
+      ]
+    },
+    {
+      "id": "right-biceps-brachii",
+      "learningId": "biceps-brachii",
+      "en": "Right Biceps brachii",
+      "he": "השריר הדו־ראשי של הזרוע — ימין",
+      "layer": "muscle",
+      "side": "right",
+      "regionId": "elbow",
+      "sourceIds": [
+        "FJ1512",
+        "FJ1478"
+      ]
+    },
+    {
+      "id": "left-biceps-femoris-long-head",
+      "learningId": "biceps-femoris-long-head",
+      "en": "Left Biceps Femoris Long Head",
+      "he": "בייספס פמוריס – ראש ארוך — שמאל",
+      "layer": "muscle",
+      "side": "left",
+      "regionId": "thigh",
+      "sourceIds": [
+        "FJ1395M"
+      ]
+    },
+    {
+      "id": "right-biceps-femoris-long-head",
+      "learningId": "biceps-femoris-long-head",
+      "en": "Right Biceps Femoris Long Head",
+      "he": "בייספס פמוריס – ראש ארוך — ימין",
+      "layer": "muscle",
+      "side": "right",
+      "regionId": "thigh",
+      "sourceIds": [
+        "FJ1395"
+      ]
+    },
+    {
+      "id": "left-biceps-femoris-short-head",
+      "learningId": "biceps-femoris-short-head",
+      "en": "Left Biceps Femoris Short Head",
+      "he": "בייספס פמוריס – ראש קצר — שמאל",
+      "layer": "muscle",
+      "side": "left",
+      "regionId": "thigh",
+      "sourceIds": [
+        "FJ1444M"
+      ]
+    },
+    {
+      "id": "right-biceps-femoris-short-head",
+      "learningId": "biceps-femoris-short-head",
+      "en": "Right Biceps Femoris Short Head",
+      "he": "בייספס פמוריס – ראש קצר — ימין",
+      "layer": "muscle",
+      "side": "right",
+      "regionId": "thigh",
+      "sourceIds": [
+        "FJ1444"
+      ]
+    },
+    {
+      "id": "left-brachialis",
+      "learningId": "brachialis",
+      "en": "Left Brachialis",
+      "he": "ברכיאליס — שמאל",
+      "layer": "muscle",
+      "side": "left",
+      "regionId": "elbow",
+      "sourceIds": [
+        "FJ1486M"
+      ]
+    },
+    {
+      "id": "right-brachialis",
+      "learningId": "brachialis",
+      "en": "Right Brachialis",
+      "he": "ברכיאליס — ימין",
+      "layer": "muscle",
+      "side": "right",
+      "regionId": "elbow",
+      "sourceIds": [
+        "FJ1486"
+      ]
+    },
+    {
+      "id": "left-brachioradialis",
+      "learningId": "brachioradialis",
+      "en": "Left Brachioradialis",
+      "he": "ברכיורדיאליס — שמאל",
+      "layer": "muscle",
+      "side": "left",
+      "regionId": "forearm",
+      "sourceIds": [
+        "FJ1487M"
+      ]
+    },
+    {
+      "id": "right-brachioradialis",
+      "learningId": "brachioradialis",
+      "en": "Right Brachioradialis",
+      "he": "ברכיורדיאליס — ימין",
+      "layer": "muscle",
+      "side": "right",
+      "regionId": "forearm",
+      "sourceIds": [
+        "FJ1487"
+      ]
+    },
+    {
+      "id": "left-coracobrachialis",
+      "learningId": "coracobrachialis",
+      "en": "Left Coracobrachialis",
+      "he": "קורקוברכיאליס — שמאל",
+      "layer": "muscle",
+      "side": "left",
+      "regionId": "elbow",
+      "sourceIds": [
+        "FJ1488M"
+      ]
+    },
+    {
+      "id": "right-coracobrachialis",
+      "learningId": "coracobrachialis",
+      "en": "Right Coracobrachialis",
+      "he": "קורקוברכיאליס — ימין",
+      "layer": "muscle",
+      "side": "right",
+      "regionId": "elbow",
+      "sourceIds": [
+        "FJ1488"
+      ]
+    },
+    {
+      "id": "left-deltoid",
+      "learningId": "deltoid",
+      "en": "Left Deltoid",
+      "he": "דלתואיד — שמאל",
+      "layer": "muscle",
+      "side": "left",
+      "regionId": "shoulder",
+      "sourceIds": [
+        "FJ1467M",
+        "FJ1468M",
+        "FJ1513M"
+      ]
+    },
+    {
+      "id": "right-deltoid",
+      "learningId": "deltoid",
+      "en": "Right Deltoid",
+      "he": "דלתואיד — ימין",
+      "layer": "muscle",
+      "side": "right",
+      "regionId": "shoulder",
+      "sourceIds": [
+        "FJ1467",
+        "FJ1468",
+        "FJ1513"
+      ]
+    },
+    {
+      "id": "left-extensor-carpi-radialis-brevis",
+      "learningId": "extensor-carpi-radialis-brevis",
+      "en": "Left Extensor carpi radialis brevis",
+      "he": "אקסטנסור קרפי רדיאליס ברביס — שמאל",
+      "layer": "muscle",
+      "side": "left",
+      "regionId": "forearm",
+      "sourceIds": [
+        "FJ1489M"
+      ]
+    },
+    {
+      "id": "right-extensor-carpi-radialis-brevis",
+      "learningId": "extensor-carpi-radialis-brevis",
+      "en": "Right Extensor carpi radialis brevis",
+      "he": "אקסטנסור קרפי רדיאליס ברביס — ימין",
+      "layer": "muscle",
+      "side": "right",
+      "regionId": "forearm",
+      "sourceIds": [
+        "FJ1489"
+      ]
+    },
+    {
+      "id": "left-extensor-carpi-radialis-longus",
+      "learningId": "extensor-carpi-radialis-longus",
+      "en": "Left Extensor carpi radialis longus",
+      "he": "אקסטנסור קרפי רדיאליס לונגוס — שמאל",
+      "layer": "muscle",
+      "side": "left",
+      "regionId": "forearm",
+      "sourceIds": [
+        "FJ1490M"
+      ]
+    },
+    {
+      "id": "right-extensor-carpi-radialis-longus",
+      "learningId": "extensor-carpi-radialis-longus",
+      "en": "Right Extensor carpi radialis longus",
+      "he": "אקסטנסור קרפי רדיאליס לונגוס — ימין",
+      "layer": "muscle",
+      "side": "right",
+      "regionId": "forearm",
+      "sourceIds": [
+        "FJ1490"
+      ]
+    },
+    {
+      "id": "left-extensor-carpi-ulnaris",
+      "learningId": "extensor-carpi-ulnaris",
+      "en": "Left Extensor carpi ulnaris",
+      "he": "אקסטנסור קרפי אולנריס — שמאל",
+      "layer": "muscle",
+      "side": "left",
+      "regionId": "forearm",
+      "sourceIds": [
+        "FJ1472M",
+        "FJ1517M"
+      ]
+    },
+    {
+      "id": "right-extensor-carpi-ulnaris",
+      "learningId": "extensor-carpi-ulnaris",
+      "en": "Right Extensor carpi ulnaris",
+      "he": "אקסטנסור קרפי אולנריס — ימין",
+      "layer": "muscle",
+      "side": "right",
+      "regionId": "forearm",
+      "sourceIds": [
+        "FJ1472",
+        "FJ1517"
+      ]
+    },
+    {
+      "id": "left-extensor-digitorum-longus",
+      "learningId": "extensor-digitorum-longus",
+      "en": "Left Extensor Digitorum Longus",
+      "he": "אקסטנסור דיגיטורום לונגוס — שמאל",
+      "layer": "muscle",
+      "side": "left",
+      "regionId": "lower_leg",
+      "sourceIds": [
+        "FJ1406M"
+      ]
+    },
+    {
+      "id": "right-extensor-digitorum-longus",
+      "learningId": "extensor-digitorum-longus",
+      "en": "Right Extensor Digitorum Longus",
+      "he": "אקסטנסור דיגיטורום לונגוס — ימין",
+      "layer": "muscle",
+      "side": "right",
+      "regionId": "lower_leg",
+      "sourceIds": [
+        "FJ1406"
+      ]
+    },
+    {
+      "id": "left-extensor-hallucis-brevis",
+      "learningId": "extensor-hallucis-brevis",
+      "en": "Left Extensor Hallucis Brevis",
+      "he": "אקסטנסור הלוסיס ברביס — שמאל",
+      "layer": "muscle",
+      "side": "left",
+      "regionId": "ankle_foot",
+      "sourceIds": [
+        "FJ1407M"
+      ]
+    },
+    {
+      "id": "right-extensor-hallucis-brevis",
+      "learningId": "extensor-hallucis-brevis",
+      "en": "Right Extensor Hallucis Brevis",
+      "he": "אקסטנסור הלוסיס ברביס — ימין",
+      "layer": "muscle",
+      "side": "right",
+      "regionId": "ankle_foot",
+      "sourceIds": [
+        "FJ1407"
+      ]
+    },
+    {
+      "id": "left-extensor-hallucis-longus",
+      "learningId": "extensor-hallucis-longus",
+      "en": "Left Extensor Hallucis Longus",
+      "he": "אקסטנסור הלוסיס לונגוס — שמאל",
+      "layer": "muscle",
+      "side": "left",
+      "regionId": "lower_leg",
+      "sourceIds": [
+        "FJ1408M"
+      ]
+    },
+    {
+      "id": "right-extensor-hallucis-longus",
+      "learningId": "extensor-hallucis-longus",
+      "en": "Right Extensor Hallucis Longus",
+      "he": "אקסטנסור הלוסיס לונגוס — ימין",
+      "layer": "muscle",
+      "side": "right",
+      "regionId": "lower_leg",
+      "sourceIds": [
+        "FJ1408"
+      ]
+    },
+    {
+      "id": "left-external-oblique",
+      "learningId": "external-oblique",
+      "en": "Left External oblique",
+      "he": "השריר האלכסוני החיצוני — שמאל",
+      "layer": "muscle",
+      "side": "left",
+      "regionId": "core_abdomen",
+      "sourceIds": [
+        "FJ1452M"
+      ]
+    },
+    {
+      "id": "right-external-oblique",
+      "learningId": "external-oblique",
+      "en": "Right External oblique",
+      "he": "השריר האלכסוני החיצוני — ימין",
+      "layer": "muscle",
+      "side": "right",
+      "regionId": "core_abdomen",
+      "sourceIds": [
+        "FJ1452"
+      ]
+    },
+    {
+      "id": "left-fibularis-brevis",
+      "learningId": "fibularis-brevis",
+      "en": "Left Fibularis Brevis",
+      "he": "פיבולריס ברביס — שמאל",
+      "layer": "muscle",
+      "side": "left",
+      "regionId": "lower_leg",
+      "sourceIds": [
+        "FJ1409M"
+      ]
+    },
+    {
+      "id": "right-fibularis-brevis",
+      "learningId": "fibularis-brevis",
+      "en": "Right Fibularis Brevis",
+      "he": "פיבולריס ברביס — ימין",
+      "layer": "muscle",
+      "side": "right",
+      "regionId": "lower_leg",
+      "sourceIds": [
+        "FJ1409"
+      ]
+    },
+    {
+      "id": "left-fibularis-longus",
+      "learningId": "fibularis-longus",
+      "en": "Left Fibularis Longus",
+      "he": "פיבולריס לונגוס — שמאל",
+      "layer": "muscle",
+      "side": "left",
+      "regionId": "lower_leg",
+      "sourceIds": [
+        "FJ1410M"
+      ]
+    },
+    {
+      "id": "right-fibularis-longus",
+      "learningId": "fibularis-longus",
+      "en": "Right Fibularis Longus",
+      "he": "פיבולריס לונגוס — ימין",
+      "layer": "muscle",
+      "side": "right",
+      "regionId": "lower_leg",
+      "sourceIds": [
+        "FJ1410"
+      ]
+    },
+    {
+      "id": "left-fibularis-tertius",
+      "learningId": "fibularis-tertius",
+      "en": "Left Fibularis Tertius",
+      "he": "פיבולריס טרציוס — שמאל",
+      "layer": "muscle",
+      "side": "left",
+      "regionId": "lower_leg",
+      "sourceIds": [
+        "FJ1411M"
+      ]
+    },
+    {
+      "id": "right-fibularis-tertius",
+      "learningId": "fibularis-tertius",
+      "en": "Right Fibularis Tertius",
+      "he": "פיבולריס טרציוס — ימין",
+      "layer": "muscle",
+      "side": "right",
+      "regionId": "lower_leg",
+      "sourceIds": [
+        "FJ1411"
+      ]
+    },
+    {
+      "id": "left-flexor-carpi-radialis",
+      "learningId": "flexor-carpi-radialis",
+      "en": "Left Flexor carpi radialis",
+      "he": "פלקסור קרפי רדיאליס — שמאל",
+      "layer": "muscle",
+      "side": "left",
+      "regionId": "forearm",
+      "sourceIds": [
+        "FJ1496M"
+      ]
+    },
+    {
+      "id": "right-flexor-carpi-radialis",
+      "learningId": "flexor-carpi-radialis",
+      "en": "Right Flexor carpi radialis",
+      "he": "פלקסור קרפי רדיאליס — ימין",
+      "layer": "muscle",
+      "side": "right",
+      "regionId": "forearm",
+      "sourceIds": [
+        "FJ1496"
+      ]
+    },
+    {
+      "id": "left-flexor-carpi-ulnaris",
+      "learningId": "flexor-carpi-ulnaris",
+      "en": "Left Flexor carpi ulnaris",
+      "he": "פלקסור קרפי אולנריס — שמאל",
+      "layer": "muscle",
+      "side": "left",
+      "regionId": "forearm",
+      "sourceIds": [
+        "FJ1473M",
+        "FJ1518M"
+      ]
+    },
+    {
+      "id": "right-flexor-carpi-ulnaris",
+      "learningId": "flexor-carpi-ulnaris",
+      "en": "Right Flexor carpi ulnaris",
+      "he": "פלקסור קרפי אולנריס — ימין",
+      "layer": "muscle",
+      "side": "right",
+      "regionId": "forearm",
+      "sourceIds": [
+        "FJ1473",
+        "FJ1518"
+      ]
+    },
+    {
+      "id": "left-flexor-digitorum-brevis",
+      "learningId": "flexor-digitorum-brevis",
+      "en": "Left Flexor Digitorum Brevis",
+      "he": "פלקסור דיגיטורום ברביס — שמאל",
+      "layer": "muscle",
+      "side": "left",
+      "regionId": "ankle_foot",
+      "sourceIds": [
+        "FJ1413M"
+      ]
+    },
+    {
+      "id": "right-flexor-digitorum-brevis",
+      "learningId": "flexor-digitorum-brevis",
+      "en": "Right Flexor Digitorum Brevis",
+      "he": "פלקסור דיגיטורום ברביס — ימין",
+      "layer": "muscle",
+      "side": "right",
+      "regionId": "ankle_foot",
+      "sourceIds": [
+        "FJ1413"
+      ]
+    },
+    {
+      "id": "left-flexor-digitorum-longus",
+      "learningId": "flexor-digitorum-longus",
+      "en": "Left Flexor Digitorum Longus",
+      "he": "פלקסור דיגיטורום לונגוס — שמאל",
+      "layer": "muscle",
+      "side": "left",
+      "regionId": "lower_leg",
+      "sourceIds": [
+        "FJ1414M"
+      ]
+    },
+    {
+      "id": "right-flexor-digitorum-longus",
+      "learningId": "flexor-digitorum-longus",
+      "en": "Right Flexor Digitorum Longus",
+      "he": "פלקסור דיגיטורום לונגוס — ימין",
+      "layer": "muscle",
+      "side": "right",
+      "regionId": "lower_leg",
+      "sourceIds": [
+        "FJ1414"
+      ]
+    },
+    {
+      "id": "left-flexor-hallucis-brevis",
+      "learningId": "flexor-hallucis-brevis",
+      "en": "Left Flexor Hallucis Brevis",
+      "he": "פלקסור הלוסיס ברביס — שמאל",
+      "layer": "muscle",
+      "side": "left",
+      "regionId": "ankle_foot",
+      "sourceIds": [
+        "FJ1393M",
+        "FJ1396M"
+      ]
+    },
+    {
+      "id": "right-flexor-hallucis-brevis",
+      "learningId": "flexor-hallucis-brevis",
+      "en": "Right Flexor Hallucis Brevis",
+      "he": "פלקסור הלוסיס ברביס — ימין",
+      "layer": "muscle",
+      "side": "right",
+      "regionId": "ankle_foot",
+      "sourceIds": [
+        "FJ1396",
+        "FJ1393"
+      ]
+    },
+    {
+      "id": "left-flexor-hallucis-longus",
+      "learningId": "flexor-hallucis-longus",
+      "en": "Left Flexor Hallucis Longus",
+      "he": "פלקסור הלוסיס לונגוס — שמאל",
+      "layer": "muscle",
+      "side": "left",
+      "regionId": "lower_leg",
+      "sourceIds": [
+        "FJ1415M"
+      ]
+    },
+    {
+      "id": "right-flexor-hallucis-longus",
+      "learningId": "flexor-hallucis-longus",
+      "en": "Right Flexor Hallucis Longus",
+      "he": "פלקסור הלוסיס לונגוס — ימין",
+      "layer": "muscle",
+      "side": "right",
+      "regionId": "lower_leg",
+      "sourceIds": [
+        "FJ1415"
+      ]
+    },
+    {
+      "id": "left-gastrocnemius",
+      "learningId": "gastrocnemius",
+      "en": "Left Gastrocnemius",
+      "he": "גסטרוקנמיוס — שמאל",
+      "layer": "muscle",
+      "side": "left",
+      "regionId": "lower_leg",
+      "sourceIds": [
+        "FJ1394M",
+        "FJ1397M"
+      ]
+    },
+    {
+      "id": "right-gastrocnemius",
+      "learningId": "gastrocnemius",
+      "en": "Right Gastrocnemius",
+      "he": "גסטרוקנמיוס — ימין",
+      "layer": "muscle",
+      "side": "right",
+      "regionId": "lower_leg",
+      "sourceIds": [
+        "FJ1397",
+        "FJ1394"
+      ]
+    },
+    {
+      "id": "left-gluteus-maximus",
+      "learningId": "gluteus-maximus",
+      "en": "Left Gluteus maximus",
+      "he": "שריר העכוז הגדול — שמאל",
+      "layer": "muscle",
+      "side": "left",
+      "regionId": "hip_glute",
+      "sourceIds": [
+        "FJ1418M"
+      ]
+    },
+    {
+      "id": "right-gluteus-maximus",
+      "learningId": "gluteus-maximus",
+      "en": "Right Gluteus maximus",
+      "he": "שריר העכוז הגדול — ימין",
+      "layer": "muscle",
+      "side": "right",
+      "regionId": "hip_glute",
+      "sourceIds": [
+        "FJ1418"
+      ]
+    },
+    {
+      "id": "left-gluteus-medius",
+      "learningId": "gluteus-medius",
+      "en": "Left Gluteus medius",
+      "he": "שריר העכוז האמצעי — שמאל",
+      "layer": "muscle",
+      "side": "left",
+      "regionId": "hip_glute",
+      "sourceIds": [
+        "FJ1419M"
+      ]
+    },
+    {
+      "id": "right-gluteus-medius",
+      "learningId": "gluteus-medius",
+      "en": "Right Gluteus medius",
+      "he": "שריר העכוז האמצעי — ימין",
+      "layer": "muscle",
+      "side": "right",
+      "regionId": "hip_glute",
+      "sourceIds": [
+        "FJ1419"
+      ]
+    },
+    {
+      "id": "left-gluteus-minimus",
+      "learningId": "gluteus-minimus",
+      "en": "Left Gluteus minimus",
+      "he": "שריר העכוז הקטן — שמאל",
+      "layer": "muscle",
+      "side": "left",
+      "regionId": "hip_glute",
+      "sourceIds": [
+        "FJ1420M"
+      ]
+    },
+    {
+      "id": "right-gluteus-minimus",
+      "learningId": "gluteus-minimus",
+      "en": "Right Gluteus minimus",
+      "he": "שריר העכוז הקטן — ימין",
+      "layer": "muscle",
+      "side": "right",
+      "regionId": "hip_glute",
+      "sourceIds": [
+        "FJ1420"
+      ]
+    },
+    {
+      "id": "left-gracilis",
+      "learningId": "gracilis",
+      "en": "Left Gracilis",
+      "he": "גרסיליס — שמאל",
+      "layer": "muscle",
+      "side": "left",
+      "regionId": "groin",
+      "sourceIds": [
+        "FJ1421M"
+      ]
+    },
+    {
+      "id": "right-gracilis",
+      "learningId": "gracilis",
+      "en": "Right Gracilis",
+      "he": "גרסיליס — ימין",
+      "layer": "muscle",
+      "side": "right",
+      "regionId": "groin",
+      "sourceIds": [
+        "FJ1421"
+      ]
+    },
+    {
+      "id": "left-iliacus",
+      "learningId": "iliacus",
+      "en": "Left Iliacus",
+      "he": "שריר הכסל — שמאל",
+      "layer": "muscle",
+      "side": "left",
+      "regionId": "hip_glute",
+      "sourceIds": [
+        "FJ1422M"
+      ]
+    },
+    {
+      "id": "right-iliacus",
+      "learningId": "iliacus",
+      "en": "Right Iliacus",
+      "he": "שריר הכסל — ימין",
+      "layer": "muscle",
+      "side": "right",
+      "regionId": "hip_glute",
+      "sourceIds": [
+        "FJ1422"
+      ]
+    },
+    {
+      "id": "left-iliocostalis-lumborum",
+      "learningId": "iliocostalis-lumborum",
+      "en": "Left Iliocostalis lumborum",
+      "he": "איליוקוסטליס לומבורום — שמאל",
+      "layer": "muscle",
+      "side": "left",
+      "regionId": "lower_back_spine",
+      "sourceIds": [
+        "FJ1527M"
+      ]
+    },
+    {
+      "id": "right-iliocostalis-lumborum",
+      "learningId": "iliocostalis-lumborum",
+      "en": "Right Iliocostalis lumborum",
+      "he": "איליוקוסטליס לומבורום — ימין",
+      "layer": "muscle",
+      "side": "right",
+      "regionId": "lower_back_spine",
+      "sourceIds": [
+        "FJ1527"
+      ]
+    },
+    {
+      "id": "left-iliocostalis-thoracis",
+      "learningId": "iliocostalis-thoracis",
+      "en": "Left Iliocostalis thoracis",
+      "he": "איליוקוסטליס תורציס — שמאל",
+      "layer": "muscle",
+      "side": "left",
+      "regionId": "lower_back_spine",
+      "sourceIds": [
+        "FJ1528M"
+      ]
+    },
+    {
+      "id": "right-iliocostalis-thoracis",
+      "learningId": "iliocostalis-thoracis",
+      "en": "Right Iliocostalis thoracis",
+      "he": "איליוקוסטליס תורציס — ימין",
+      "layer": "muscle",
+      "side": "right",
+      "regionId": "lower_back_spine",
+      "sourceIds": [
+        "FJ1528"
+      ]
+    },
+    {
+      "id": "left-inferior-gemellus",
+      "learningId": "inferior-gemellus",
+      "en": "Left Inferior gemellus",
+      "he": "השריר התאום התחתון — שמאל",
+      "layer": "muscle",
+      "side": "left",
+      "regionId": "hip_glute",
+      "sourceIds": [
+        "FJ1416M"
+      ]
+    },
+    {
+      "id": "right-inferior-gemellus",
+      "learningId": "inferior-gemellus",
+      "en": "Right Inferior gemellus",
+      "he": "השריר התאום התחתון — ימין",
+      "layer": "muscle",
+      "side": "right",
+      "regionId": "hip_glute",
+      "sourceIds": [
+        "FJ1416"
+      ]
+    },
+    {
+      "id": "left-infraspinatus",
+      "learningId": "infraspinatus",
+      "en": "Left Infraspinatus",
+      "he": "אינפרספינטוס — שמאל",
+      "layer": "muscle",
+      "side": "left",
+      "regionId": "shoulder",
+      "sourceIds": [
+        "FJ1500M"
+      ]
+    },
+    {
+      "id": "right-infraspinatus",
+      "learningId": "infraspinatus",
+      "en": "Right Infraspinatus",
+      "he": "אינפרספינטוס — ימין",
+      "layer": "muscle",
+      "side": "right",
+      "regionId": "shoulder",
+      "sourceIds": [
+        "FJ1500"
+      ]
+    },
+    {
+      "id": "left-levator-scapulae",
+      "learningId": "levator-scapulae",
+      "en": "Left Levator scapulae",
+      "he": "מרים השכמה — שמאל",
+      "layer": "muscle",
+      "side": "left",
+      "regionId": "cervical_neck",
+      "sourceIds": [
+        "FJ1532M"
+      ]
+    },
+    {
+      "id": "right-levator-scapulae",
+      "learningId": "levator-scapulae",
+      "en": "Right Levator scapulae",
+      "he": "מרים השכמה — ימין",
+      "layer": "muscle",
+      "side": "right",
+      "regionId": "cervical_neck",
+      "sourceIds": [
+        "FJ1532"
+      ]
+    },
+    {
+      "id": "left-longissimus-thoracis",
+      "learningId": "longissimus-thoracis",
+      "en": "Left Longissimus thoracis",
+      "he": "לונגיסימוס תורציס — שמאל",
+      "layer": "muscle",
+      "side": "left",
+      "regionId": "lower_back_spine",
+      "sourceIds": [
+        "FJ1535M"
+      ]
+    },
+    {
+      "id": "right-longissimus-thoracis",
+      "learningId": "longissimus-thoracis",
+      "en": "Right Longissimus thoracis",
+      "he": "לונגיסימוס תורציס — ימין",
+      "layer": "muscle",
+      "side": "right",
+      "regionId": "lower_back_spine",
+      "sourceIds": [
+        "FJ1535"
+      ]
+    },
+    {
+      "id": "left-longus-capitis",
+      "learningId": "longus-capitis",
+      "en": "Left Longus capitis",
+      "he": "לונגוס קפיטיס — שמאל",
+      "layer": "muscle",
+      "side": "left",
+      "regionId": "cervical_neck",
+      "sourceIds": [
+        "FJ1561"
+      ]
+    },
+    {
+      "id": "right-longus-capitis",
+      "learningId": "longus-capitis",
+      "en": "Right Longus capitis",
+      "he": "לונגוס קפיטיס — ימין",
+      "layer": "muscle",
+      "side": "right",
+      "regionId": "cervical_neck",
+      "sourceIds": [
+        "FJ1582"
+      ]
+    },
+    {
+      "id": "left-obliquus-capitis-inferior",
+      "learningId": "obliquus-capitis-inferior",
+      "en": "Left Obliquus capitis inferior",
+      "he": "האלכסוני התחתון של הראש — שמאל",
+      "layer": "muscle",
+      "side": "left",
+      "regionId": "cervical_neck",
+      "sourceIds": [
+        "FJ1563"
+      ]
+    },
+    {
+      "id": "right-obliquus-capitis-inferior",
+      "learningId": "obliquus-capitis-inferior",
+      "en": "Right Obliquus capitis inferior",
+      "he": "האלכסוני התחתון של הראש — ימין",
+      "layer": "muscle",
+      "side": "right",
+      "regionId": "cervical_neck",
+      "sourceIds": [
+        "FJ1584"
+      ]
+    },
+    {
+      "id": "left-obliquus-capitis-superior",
+      "learningId": "obliquus-capitis-superior",
+      "en": "Left Obliquus capitis superior",
+      "he": "האלכסוני העליון של הראש — שמאל",
+      "layer": "muscle",
+      "side": "left",
+      "regionId": "cervical_neck",
+      "sourceIds": [
+        "FJ1564"
+      ]
+    },
+    {
+      "id": "right-obliquus-capitis-superior",
+      "learningId": "obliquus-capitis-superior",
+      "en": "Right Obliquus capitis superior",
+      "he": "האלכסוני העליון של הראש — ימין",
+      "layer": "muscle",
+      "side": "right",
+      "regionId": "cervical_neck",
+      "sourceIds": [
+        "FJ1585"
+      ]
+    },
+    {
+      "id": "left-obturator-externus",
+      "learningId": "obturator-externus",
+      "en": "Left Obturator externus",
+      "he": "השריר הסותם החיצוני — שמאל",
+      "layer": "muscle",
+      "side": "left",
+      "regionId": "hip_glute",
+      "sourceIds": [
+        "FJ1425M"
+      ]
+    },
+    {
+      "id": "right-obturator-externus",
+      "learningId": "obturator-externus",
+      "en": "Right Obturator externus",
+      "he": "השריר הסותם החיצוני — ימין",
+      "layer": "muscle",
+      "side": "right",
+      "regionId": "hip_glute",
+      "sourceIds": [
+        "FJ1425"
+      ]
+    },
+    {
+      "id": "left-obturator-internus",
+      "learningId": "obturator-internus",
+      "en": "Left Obturator internus",
+      "he": "השריר הסותם הפנימי — שמאל",
+      "layer": "muscle",
+      "side": "left",
+      "regionId": "hip_glute",
+      "sourceIds": [
+        "FJ1426M"
+      ]
+    },
+    {
+      "id": "right-obturator-internus",
+      "learningId": "obturator-internus",
+      "en": "Right Obturator internus",
+      "he": "השריר הסותם הפנימי — ימין",
+      "layer": "muscle",
+      "side": "right",
+      "regionId": "hip_glute",
+      "sourceIds": [
+        "FJ1426"
+      ]
+    },
+    {
+      "id": "left-opponens-pollicis",
+      "learningId": "opponens-pollicis",
+      "en": "Left Opponens pollicis",
+      "he": "אופוננס פוליסיס — שמאל",
+      "layer": "muscle",
+      "side": "left",
+      "regionId": "wrist_hand",
+      "sourceIds": [
+        "FJ1501M"
+      ]
+    },
+    {
+      "id": "right-opponens-pollicis",
+      "learningId": "opponens-pollicis",
+      "en": "Right Opponens pollicis",
+      "he": "אופוננס פוליסיס — ימין",
+      "layer": "muscle",
+      "side": "right",
+      "regionId": "wrist_hand",
+      "sourceIds": [
+        "FJ1501"
+      ]
+    },
+    {
+      "id": "left-pectineus",
+      "learningId": "pectineus",
+      "en": "Left Pectineus",
+      "he": "פקטינאוס — שמאל",
+      "layer": "muscle",
+      "side": "left",
+      "regionId": "groin",
+      "sourceIds": [
+        "FJ1427M"
+      ]
+    },
+    {
+      "id": "right-pectineus",
+      "learningId": "pectineus",
+      "en": "Right Pectineus",
+      "he": "פקטינאוס — ימין",
+      "layer": "muscle",
+      "side": "right",
+      "regionId": "groin",
+      "sourceIds": [
+        "FJ1427"
+      ]
+    },
+    {
+      "id": "left-pectoralis-major",
+      "learningId": "pectoralis-major",
+      "en": "Left Pectoralis major",
+      "he": "שריר החזה הגדול — שמאל",
+      "layer": "muscle",
+      "side": "left",
+      "regionId": "chest",
+      "sourceIds": [
+        "FJ1446M",
+        "FJ1447M",
+        "FJ1464M"
+      ]
+    },
+    {
+      "id": "right-pectoralis-major",
+      "learningId": "pectoralis-major",
+      "en": "Right Pectoralis major",
+      "he": "שריר החזה הגדול — ימין",
+      "layer": "muscle",
+      "side": "right",
+      "regionId": "chest",
+      "sourceIds": [
+        "FJ1447",
+        "FJ1464",
+        "FJ1446"
+      ]
+    },
+    {
+      "id": "left-pectoralis-minor",
+      "learningId": "pectoralis-minor",
+      "en": "Left Pectoralis minor",
+      "he": "שריר החזה הקטן — שמאל",
+      "layer": "muscle",
+      "side": "left",
+      "regionId": "chest",
+      "sourceIds": [
+        "FJ1456M"
+      ]
+    },
+    {
+      "id": "right-pectoralis-minor",
+      "learningId": "pectoralis-minor",
+      "en": "Right Pectoralis minor",
+      "he": "שריר החזה הקטן — ימין",
+      "layer": "muscle",
+      "side": "right",
+      "regionId": "chest",
+      "sourceIds": [
+        "FJ1456"
+      ]
+    },
+    {
+      "id": "left-piriformis",
+      "learningId": "piriformis",
+      "en": "Left Piriformis",
+      "he": "השריר האגסי — שמאל",
+      "layer": "muscle",
+      "side": "left",
+      "regionId": "hip_glute",
+      "sourceIds": [
+        "FJ1428M"
+      ]
+    },
+    {
+      "id": "right-piriformis",
+      "learningId": "piriformis",
+      "en": "Right Piriformis",
+      "he": "השריר האגסי — ימין",
+      "layer": "muscle",
+      "side": "right",
+      "regionId": "hip_glute",
+      "sourceIds": [
+        "FJ1428"
+      ]
+    },
+    {
+      "id": "left-plantaris",
+      "learningId": "plantaris",
+      "en": "Left Plantaris",
+      "he": "פלנטריס — שמאל",
+      "layer": "muscle",
+      "side": "left",
+      "regionId": "lower_leg",
+      "sourceIds": [
+        "FJ1429M"
+      ]
+    },
+    {
+      "id": "right-plantaris",
+      "learningId": "plantaris",
+      "en": "Right Plantaris",
+      "he": "פלנטריס — ימין",
+      "layer": "muscle",
+      "side": "right",
+      "regionId": "lower_leg",
+      "sourceIds": [
+        "FJ1429"
+      ]
+    },
+    {
+      "id": "left-popliteus",
+      "learningId": "popliteus",
+      "en": "Left Popliteus",
+      "he": "פופליטאוס — שמאל",
+      "layer": "muscle",
+      "side": "left",
+      "regionId": "knee",
+      "sourceIds": [
+        "FJ1430M"
+      ]
+    },
+    {
+      "id": "right-popliteus",
+      "learningId": "popliteus",
+      "en": "Right Popliteus",
+      "he": "פופליטאוס — ימין",
+      "layer": "muscle",
+      "side": "right",
+      "regionId": "knee",
+      "sourceIds": [
+        "FJ1430"
+      ]
+    },
+    {
+      "id": "left-pronator-quadratus",
+      "learningId": "pronator-quadratus",
+      "en": "Left Pronator quadratus",
+      "he": "פרונטור קוואדרטוס — שמאל",
+      "layer": "muscle",
+      "side": "left",
+      "regionId": "forearm",
+      "sourceIds": [
+        "FJ1503M"
+      ]
+    },
+    {
+      "id": "right-pronator-quadratus",
+      "learningId": "pronator-quadratus",
+      "en": "Right Pronator quadratus",
+      "he": "פרונטור קוואדרטוס — ימין",
+      "layer": "muscle",
+      "side": "right",
+      "regionId": "forearm",
+      "sourceIds": [
+        "FJ1503"
+      ]
+    },
+    {
+      "id": "left-pronator-teres",
+      "learningId": "pronator-teres",
+      "en": "Left Pronator teres",
+      "he": "פרונטור טרס — שמאל",
+      "layer": "muscle",
+      "side": "left",
+      "regionId": "forearm",
+      "sourceIds": [
+        "FJ1474M",
+        "FJ1516M"
+      ]
+    },
+    {
+      "id": "right-pronator-teres",
+      "learningId": "pronator-teres",
+      "en": "Right Pronator teres",
+      "he": "פרונטור טרס — ימין",
+      "layer": "muscle",
+      "side": "right",
+      "regionId": "forearm",
+      "sourceIds": [
+        "FJ1474",
+        "FJ1516"
+      ]
+    },
+    {
+      "id": "left-psoas-major",
+      "learningId": "psoas-major",
+      "en": "Left Psoas major",
+      "he": "שריר המותן הגדול — שמאל",
+      "layer": "muscle",
+      "side": "left",
+      "regionId": "hip_glute",
+      "sourceIds": [
+        "FJ1431M"
+      ]
+    },
+    {
+      "id": "right-psoas-major",
+      "learningId": "psoas-major",
+      "en": "Right Psoas major",
+      "he": "שריר המותן הגדול — ימין",
+      "layer": "muscle",
+      "side": "right",
+      "regionId": "hip_glute",
+      "sourceIds": [
+        "FJ1431"
+      ]
+    },
+    {
+      "id": "left-quadratus-femoris",
+      "learningId": "quadratus-femoris",
+      "en": "Left Quadratus femoris",
+      "he": "השריר המרובע של הירך — שמאל",
+      "layer": "muscle",
+      "side": "left",
+      "regionId": "hip_glute",
+      "sourceIds": [
+        "FJ1432M"
+      ]
+    },
+    {
+      "id": "right-quadratus-femoris",
+      "learningId": "quadratus-femoris",
+      "en": "Right Quadratus femoris",
+      "he": "השריר המרובע של הירך — ימין",
+      "layer": "muscle",
+      "side": "right",
+      "regionId": "hip_glute",
+      "sourceIds": [
+        "FJ1432"
+      ]
+    },
+    {
+      "id": "left-rectus-capitis-posterior-major",
+      "learningId": "rectus-capitis-posterior-major",
+      "en": "Left Rectus capitis posterior major",
+      "he": "הישר האחורי הגדול של הראש — שמאל",
+      "layer": "muscle",
+      "side": "left",
+      "regionId": "cervical_neck",
+      "sourceIds": [
+        "FJ1567"
+      ]
+    },
+    {
+      "id": "right-rectus-capitis-posterior-major",
+      "learningId": "rectus-capitis-posterior-major",
+      "en": "Right Rectus capitis posterior major",
+      "he": "הישר האחורי הגדול של הראש — ימין",
+      "layer": "muscle",
+      "side": "right",
+      "regionId": "cervical_neck",
+      "sourceIds": [
+        "FJ1589"
+      ]
+    },
+    {
+      "id": "left-rectus-capitis-posterior-minor",
+      "learningId": "rectus-capitis-posterior-minor",
+      "en": "Left Rectus capitis posterior minor",
+      "he": "הישר האחורי הקטן של הראש — שמאל",
+      "layer": "muscle",
+      "side": "left",
+      "regionId": "cervical_neck",
+      "sourceIds": [
+        "FJ1568"
+      ]
+    },
+    {
+      "id": "right-rectus-capitis-posterior-minor",
+      "learningId": "rectus-capitis-posterior-minor",
+      "en": "Right Rectus capitis posterior minor",
+      "he": "הישר האחורי הקטן של הראש — ימין",
+      "layer": "muscle",
+      "side": "right",
+      "regionId": "cervical_neck",
+      "sourceIds": [
+        "FJ1590"
+      ]
+    },
+    {
+      "id": "left-rectus-femoris",
+      "learningId": "rectus-femoris",
+      "en": "Left Rectus Femoris",
+      "he": "רקטוס פמוריס — שמאל",
+      "layer": "muscle",
+      "side": "left",
+      "regionId": "thigh",
+      "sourceIds": [
+        "FJ1433M"
+      ]
+    },
+    {
+      "id": "right-rectus-femoris",
+      "learningId": "rectus-femoris",
+      "en": "Right Rectus Femoris",
+      "he": "רקטוס פמוריס — ימין",
+      "layer": "muscle",
+      "side": "right",
+      "regionId": "thigh",
+      "sourceIds": [
+        "FJ1433"
+      ]
+    },
+    {
+      "id": "left-rhomboid-major",
+      "learningId": "rhomboid-major",
+      "en": "Left Rhomboid major",
+      "he": "השריר המעוין הגדול — שמאל",
+      "layer": "muscle",
+      "side": "left",
+      "regionId": "lower_back_spine",
+      "sourceIds": [
+        "FJ1536M"
+      ]
+    },
+    {
+      "id": "right-rhomboid-major",
+      "learningId": "rhomboid-major",
+      "en": "Right Rhomboid major",
+      "he": "השריר המעוין הגדול — ימין",
+      "layer": "muscle",
+      "side": "right",
+      "regionId": "lower_back_spine",
+      "sourceIds": [
+        "FJ1536"
+      ]
+    },
+    {
+      "id": "left-rhomboid-minor",
+      "learningId": "rhomboid-minor",
+      "en": "Left Rhomboid minor",
+      "he": "השריר המעוין הקטן — שמאל",
+      "layer": "muscle",
+      "side": "left",
+      "regionId": "lower_back_spine",
+      "sourceIds": [
+        "FJ1537M"
+      ]
+    },
+    {
+      "id": "right-rhomboid-minor",
+      "learningId": "rhomboid-minor",
+      "en": "Right Rhomboid minor",
+      "he": "השריר המעוין הקטן — ימין",
+      "layer": "muscle",
+      "side": "right",
+      "regionId": "lower_back_spine",
+      "sourceIds": [
+        "FJ1537"
+      ]
+    },
+    {
+      "id": "left-sartorius",
+      "learningId": "sartorius",
+      "en": "Left Sartorius",
+      "he": "סרטוריוס — שמאל",
+      "layer": "muscle",
+      "side": "left",
+      "regionId": "thigh",
+      "sourceIds": [
+        "FJ1434M"
+      ]
+    },
+    {
+      "id": "right-sartorius",
+      "learningId": "sartorius",
+      "en": "Right Sartorius",
+      "he": "סרטוריוס — ימין",
+      "layer": "muscle",
+      "side": "right",
+      "regionId": "thigh",
+      "sourceIds": [
+        "FJ1434"
+      ]
+    },
+    {
+      "id": "left-scalenes",
+      "learningId": "scalenes",
+      "en": "Left Scalenes — anterior, middle and posterior",
+      "he": "סקאלנים — קדמי, אמצעי ואחורי — שמאל",
+      "layer": "muscle",
+      "side": "left",
+      "regionId": "cervical_neck",
+      "sourceIds": [
+        "FJ1570",
+        "FJ1571",
+        "FJ1572"
+      ]
+    },
+    {
+      "id": "right-scalenes",
+      "learningId": "scalenes",
+      "en": "Right Scalenes — anterior, middle and posterior",
+      "he": "סקאלנים — קדמי, אמצעי ואחורי — ימין",
+      "layer": "muscle",
+      "side": "right",
+      "regionId": "cervical_neck",
+      "sourceIds": [
+        "FJ1592",
+        "FJ1593",
+        "FJ1594"
+      ]
+    },
+    {
+      "id": "left-semimembranosus",
+      "learningId": "semimembranosus",
+      "en": "Left Semimembranosus",
+      "he": "סמיממברנוסוס — שמאל",
+      "layer": "muscle",
+      "side": "left",
+      "regionId": "thigh",
+      "sourceIds": [
+        "FJ1435M"
+      ]
+    },
+    {
+      "id": "right-semimembranosus",
+      "learningId": "semimembranosus",
+      "en": "Right Semimembranosus",
+      "he": "סמיממברנוסוס — ימין",
+      "layer": "muscle",
+      "side": "right",
+      "regionId": "thigh",
+      "sourceIds": [
+        "FJ1435"
+      ]
+    },
+    {
+      "id": "left-semispinalis-capitis",
+      "learningId": "semispinalis-capitis",
+      "en": "Left Semispinalis capitis",
+      "he": "סמיספינאליס קפיטיס — שמאל",
+      "layer": "muscle",
+      "side": "left",
+      "regionId": "cervical_neck",
+      "sourceIds": [
+        "FJ1538M"
+      ]
+    },
+    {
+      "id": "right-semispinalis-capitis",
+      "learningId": "semispinalis-capitis",
+      "en": "Right Semispinalis capitis",
+      "he": "סמיספינאליס קפיטיס — ימין",
+      "layer": "muscle",
+      "side": "right",
+      "regionId": "cervical_neck",
+      "sourceIds": [
+        "FJ1538"
+      ]
+    },
+    {
+      "id": "left-semispinalis-thoracis",
+      "learningId": "semispinalis-thoracis",
+      "en": "Left Semispinalis thoracis",
+      "he": "סמיספינליס תורציס — שמאל",
+      "layer": "muscle",
+      "side": "left",
+      "regionId": "lower_back_spine",
+      "sourceIds": [
+        "FJ1540M"
+      ]
+    },
+    {
+      "id": "right-semispinalis-thoracis",
+      "learningId": "semispinalis-thoracis",
+      "en": "Right Semispinalis thoracis",
+      "he": "סמיספינליס תורציס — ימין",
+      "layer": "muscle",
+      "side": "right",
+      "regionId": "lower_back_spine",
+      "sourceIds": [
+        "FJ1540"
+      ]
+    },
+    {
+      "id": "left-semitendinosus",
+      "learningId": "semitendinosus",
+      "en": "Left Semitendinosus",
+      "he": "סמיטנדינוסוס — שמאל",
+      "layer": "muscle",
+      "side": "left",
+      "regionId": "thigh",
+      "sourceIds": [
+        "FJ1436M"
+      ]
+    },
+    {
+      "id": "right-semitendinosus",
+      "learningId": "semitendinosus",
+      "en": "Right Semitendinosus",
+      "he": "סמיטנדינוסוס — ימין",
+      "layer": "muscle",
+      "side": "right",
+      "regionId": "thigh",
+      "sourceIds": [
+        "FJ1436"
+      ]
+    },
+    {
+      "id": "left-serratus-anterior",
+      "learningId": "serratus-anterior",
+      "en": "Left Serratus anterior",
+      "he": "השריר המסור הקדמי — שמאל",
+      "layer": "muscle",
+      "side": "left",
+      "regionId": "chest",
+      "sourceIds": [
+        "FJ1459M"
+      ]
+    },
+    {
+      "id": "right-serratus-anterior",
+      "learningId": "serratus-anterior",
+      "en": "Right Serratus anterior",
+      "he": "השריר המסור הקדמי — ימין",
+      "layer": "muscle",
+      "side": "right",
+      "regionId": "chest",
+      "sourceIds": [
+        "FJ1459"
+      ]
+    },
+    {
+      "id": "left-soleus",
+      "learningId": "soleus",
+      "en": "Left Soleus",
+      "he": "סולאוס — שמאל",
+      "layer": "muscle",
+      "side": "left",
+      "regionId": "lower_leg",
+      "sourceIds": [
+        "FJ1437M"
+      ]
+    },
+    {
+      "id": "right-soleus",
+      "learningId": "soleus",
+      "en": "Right Soleus",
+      "he": "סולאוס — ימין",
+      "layer": "muscle",
+      "side": "right",
+      "regionId": "lower_leg",
+      "sourceIds": [
+        "FJ1437"
+      ]
+    },
+    {
+      "id": "left-spinalis-thoracis",
+      "learningId": "spinalis-thoracis",
+      "en": "Left Spinalis thoracis",
+      "he": "ספינליס תורציס — שמאל",
+      "layer": "muscle",
+      "side": "left",
+      "regionId": "lower_back_spine",
+      "sourceIds": [
+        "FJ1544M"
+      ]
+    },
+    {
+      "id": "right-spinalis-thoracis",
+      "learningId": "spinalis-thoracis",
+      "en": "Right Spinalis thoracis",
+      "he": "ספינליס תורציס — ימין",
+      "layer": "muscle",
+      "side": "right",
+      "regionId": "lower_back_spine",
+      "sourceIds": [
+        "FJ1544"
+      ]
+    },
+    {
+      "id": "left-splenius-capitis",
+      "learningId": "splenius-capitis",
+      "en": "Left Splenius capitis",
+      "he": "ספלניוס קפיטיס — שמאל",
+      "layer": "muscle",
+      "side": "left",
+      "regionId": "cervical_neck",
+      "sourceIds": [
+        "FJ1545M"
+      ]
+    },
+    {
+      "id": "right-splenius-capitis",
+      "learningId": "splenius-capitis",
+      "en": "Right Splenius capitis",
+      "he": "ספלניוס קפיטיס — ימין",
+      "layer": "muscle",
+      "side": "right",
+      "regionId": "cervical_neck",
+      "sourceIds": [
+        "FJ1545"
+      ]
+    },
+    {
+      "id": "left-splenius-cervicis",
+      "learningId": "splenius-cervicis",
+      "en": "Left Splenius cervicis",
+      "he": "ספלניוס סרוויסיס — שמאל",
+      "layer": "muscle",
+      "side": "left",
+      "regionId": "cervical_neck",
+      "sourceIds": [
+        "FJ1546M"
+      ]
+    },
+    {
+      "id": "right-splenius-cervicis",
+      "learningId": "splenius-cervicis",
+      "en": "Right Splenius cervicis",
+      "he": "ספלניוס סרוויסיס — ימין",
+      "layer": "muscle",
+      "side": "right",
+      "regionId": "cervical_neck",
+      "sourceIds": [
+        "FJ1546"
+      ]
+    },
+    {
+      "id": "left-sternocleidomastoid",
+      "learningId": "sternocleidomastoid",
+      "en": "Left Sternocleidomastoid",
+      "he": "סטרנוקליידומסטואיד — שמאל",
+      "layer": "muscle",
+      "side": "left",
+      "regionId": "cervical_neck",
+      "sourceIds": [
+        "FJ1573"
+      ]
+    },
+    {
+      "id": "right-sternocleidomastoid",
+      "learningId": "sternocleidomastoid",
+      "en": "Right Sternocleidomastoid",
+      "he": "סטרנוקליידומסטואיד — ימין",
+      "layer": "muscle",
+      "side": "right",
+      "regionId": "cervical_neck",
+      "sourceIds": [
+        "FJ1595"
+      ]
+    },
+    {
+      "id": "left-subscapularis",
+      "learningId": "subscapularis",
+      "en": "Left Subscapularis",
+      "he": "סאבסקפולריס — שמאל",
+      "layer": "muscle",
+      "side": "left",
+      "regionId": "shoulder",
+      "sourceIds": [
+        "FJ1504M"
+      ]
+    },
+    {
+      "id": "right-subscapularis",
+      "learningId": "subscapularis",
+      "en": "Right Subscapularis",
+      "he": "סאבסקפולריס — ימין",
+      "layer": "muscle",
+      "side": "right",
+      "regionId": "shoulder",
+      "sourceIds": [
+        "FJ1504"
+      ]
+    },
+    {
+      "id": "left-superior-gemellus",
+      "learningId": "superior-gemellus",
+      "en": "Left Superior gemellus",
+      "he": "השריר התאום העליון — שמאל",
+      "layer": "muscle",
+      "side": "left",
+      "regionId": "hip_glute",
+      "sourceIds": [
+        "FJ1417M"
+      ]
+    },
+    {
+      "id": "right-superior-gemellus",
+      "learningId": "superior-gemellus",
+      "en": "Right Superior gemellus",
+      "he": "השריר התאום העליון — ימין",
+      "layer": "muscle",
+      "side": "right",
+      "regionId": "hip_glute",
+      "sourceIds": [
+        "FJ1417"
+      ]
+    },
+    {
+      "id": "left-supinator",
+      "learningId": "supinator",
+      "en": "Left Supinator",
+      "he": "סופינטור — שמאל",
+      "layer": "muscle",
+      "side": "left",
+      "regionId": "forearm",
+      "sourceIds": [
+        "FJ1505M"
+      ]
+    },
+    {
+      "id": "right-supinator",
+      "learningId": "supinator",
+      "en": "Right Supinator",
+      "he": "סופינטור — ימין",
+      "layer": "muscle",
+      "side": "right",
+      "regionId": "forearm",
+      "sourceIds": [
+        "FJ1505"
+      ]
+    },
+    {
+      "id": "left-supraspinatus",
+      "learningId": "supraspinatus",
+      "en": "Left Supraspinatus",
+      "he": "סופרספינטוס — שמאל",
+      "layer": "muscle",
+      "side": "left",
+      "regionId": "shoulder",
+      "sourceIds": [
+        "FJ1506M"
+      ]
+    },
+    {
+      "id": "right-supraspinatus",
+      "learningId": "supraspinatus",
+      "en": "Right Supraspinatus",
+      "he": "סופרספינטוס — ימין",
+      "layer": "muscle",
+      "side": "right",
+      "regionId": "shoulder",
+      "sourceIds": [
+        "FJ1506"
+      ]
+    },
+    {
+      "id": "left-tensor-fasciae-latae",
+      "learningId": "tensor-fasciae-latae",
+      "en": "Left Tensor fasciae latae",
+      "he": "מותח המחתלה הרחבה — שמאל",
+      "layer": "muscle",
+      "side": "left",
+      "regionId": "hip_glute",
+      "sourceIds": [
+        "FJ1438M"
+      ]
+    },
+    {
+      "id": "right-tensor-fasciae-latae",
+      "learningId": "tensor-fasciae-latae",
+      "en": "Right Tensor fasciae latae",
+      "he": "מותח המחתלה הרחבה — ימין",
+      "layer": "muscle",
+      "side": "right",
+      "regionId": "hip_glute",
+      "sourceIds": [
+        "FJ1438"
+      ]
+    },
+    {
+      "id": "left-teres-major",
+      "learningId": "teres-major",
+      "en": "Left Teres major",
+      "he": "טרס מייג׳ור — שמאל",
+      "layer": "muscle",
+      "side": "left",
+      "regionId": "shoulder",
+      "sourceIds": [
+        "FJ1507M"
+      ]
+    },
+    {
+      "id": "right-teres-major",
+      "learningId": "teres-major",
+      "en": "Right Teres major",
+      "he": "טרס מייג׳ור — ימין",
+      "layer": "muscle",
+      "side": "right",
+      "regionId": "shoulder",
+      "sourceIds": [
+        "FJ1507"
+      ]
+    },
+    {
+      "id": "left-teres-minor",
+      "learningId": "teres-minor",
+      "en": "Left Teres minor",
+      "he": "טרס מינור — שמאל",
+      "layer": "muscle",
+      "side": "left",
+      "regionId": "shoulder",
+      "sourceIds": [
+        "FJ1508M"
+      ]
+    },
+    {
+      "id": "right-teres-minor",
+      "learningId": "teres-minor",
+      "en": "Right Teres minor",
+      "he": "טרס מינור — ימין",
+      "layer": "muscle",
+      "side": "right",
+      "regionId": "shoulder",
+      "sourceIds": [
+        "FJ1508"
+      ]
+    },
+    {
+      "id": "left-tibialis-anterior",
+      "learningId": "tibialis-anterior",
+      "en": "Left Tibialis Anterior",
+      "he": "טיביאליס אנטריור — שמאל",
+      "layer": "muscle",
+      "side": "left",
+      "regionId": "lower_leg",
+      "sourceIds": [
+        "FJ1439M"
+      ]
+    },
+    {
+      "id": "right-tibialis-anterior",
+      "learningId": "tibialis-anterior",
+      "en": "Right Tibialis Anterior",
+      "he": "טיביאליס אנטריור — ימין",
+      "layer": "muscle",
+      "side": "right",
+      "regionId": "lower_leg",
+      "sourceIds": [
+        "FJ1439"
+      ]
+    },
+    {
+      "id": "left-tibialis-posterior",
+      "learningId": "tibialis-posterior",
+      "en": "Left Tibialis Posterior",
+      "he": "טיביאליס פוסטריור — שמאל",
+      "layer": "muscle",
+      "side": "left",
+      "regionId": "lower_leg",
+      "sourceIds": [
+        "FJ1440M"
+      ]
+    },
+    {
+      "id": "right-tibialis-posterior",
+      "learningId": "tibialis-posterior",
+      "en": "Right Tibialis Posterior",
+      "he": "טיביאליס פוסטריור — ימין",
+      "layer": "muscle",
+      "side": "right",
+      "regionId": "lower_leg",
+      "sourceIds": [
+        "FJ1440"
+      ]
+    },
+    {
+      "id": "left-trapezius",
+      "learningId": "trapezius",
+      "en": "Left Trapezius",
+      "he": "שריר הטרפז — שמאל",
+      "layer": "muscle",
+      "side": "left",
+      "regionId": "lower_back_spine",
+      "sourceIds": [
+        "FJ1520M",
+        "FJ1521M",
+        "FJ1554M"
+      ]
+    },
+    {
+      "id": "right-trapezius",
+      "learningId": "trapezius",
+      "en": "Right Trapezius",
+      "he": "שריר הטרפז — ימין",
+      "layer": "muscle",
+      "side": "right",
+      "regionId": "lower_back_spine",
+      "sourceIds": [
+        "FJ1520",
+        "FJ1521",
+        "FJ1554"
+      ]
+    },
+    {
+      "id": "left-triceps-brachii",
+      "learningId": "triceps-brachii",
+      "en": "Left Triceps brachii",
+      "he": "השריר התלת־ראשי של הזרוע — שמאל",
+      "layer": "muscle",
+      "side": "left",
+      "regionId": "elbow",
+      "sourceIds": [
+        "FJ1477M",
+        "FJ1479M",
+        "FJ1480M"
+      ]
+    },
+    {
+      "id": "right-triceps-brachii",
+      "learningId": "triceps-brachii",
+      "en": "Right Triceps brachii",
+      "he": "השריר התלת־ראשי של הזרוע — ימין",
+      "layer": "muscle",
+      "side": "right",
+      "regionId": "elbow",
+      "sourceIds": [
+        "FJ1477",
+        "FJ1479",
+        "FJ1480"
+      ]
+    },
+    {
+      "id": "left-vastus-intermedius",
+      "learningId": "vastus-intermedius",
+      "en": "Left Vastus Intermedius",
+      "he": "וסטוס אינטרמדיוס — שמאל",
+      "layer": "muscle",
+      "side": "left",
+      "regionId": "thigh",
+      "sourceIds": [
+        "FJ1441M"
+      ]
+    },
+    {
+      "id": "right-vastus-intermedius",
+      "learningId": "vastus-intermedius",
+      "en": "Right Vastus Intermedius",
+      "he": "וסטוס אינטרמדיוס — ימין",
+      "layer": "muscle",
+      "side": "right",
+      "regionId": "thigh",
+      "sourceIds": [
+        "FJ1441"
+      ]
+    },
+    {
+      "id": "left-vastus-lateralis",
+      "learningId": "vastus-lateralis",
+      "en": "Left Vastus Lateralis",
+      "he": "וסטוס לטרליס — שמאל",
+      "layer": "muscle",
+      "side": "left",
+      "regionId": "thigh",
+      "sourceIds": [
+        "FJ1442M"
+      ]
+    },
+    {
+      "id": "right-vastus-lateralis",
+      "learningId": "vastus-lateralis",
+      "en": "Right Vastus Lateralis",
+      "he": "וסטוס לטרליס — ימין",
+      "layer": "muscle",
+      "side": "right",
+      "regionId": "thigh",
+      "sourceIds": [
+        "FJ1442"
+      ]
+    },
+    {
+      "id": "left-vastus-medialis",
+      "learningId": "vastus-medialis",
+      "en": "Left Vastus Medialis",
+      "he": "וסטוס מדיאליס — שמאל",
+      "layer": "muscle",
+      "side": "left",
+      "regionId": "thigh",
+      "sourceIds": [
+        "FJ1443M"
+      ]
+    },
+    {
+      "id": "right-vastus-medialis",
+      "learningId": "vastus-medialis",
+      "en": "Right Vastus Medialis",
+      "he": "וסטוס מדיאליס — ימין",
+      "layer": "muscle",
+      "side": "right",
+      "regionId": "thigh",
+      "sourceIds": [
+        "FJ1443"
+      ]
+    }
+  ]
+}

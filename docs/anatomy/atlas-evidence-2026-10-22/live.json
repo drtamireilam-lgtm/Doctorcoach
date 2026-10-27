@@ -1,0 +1,18 @@
+{
+  "origin": "https://doctorcoach-isolated-staging.dr-tamireilam.workers.dev",
+  "checkedAt": "2026-10-22T04:04:42.310Z",
+  "checks": [
+    "body live GLB matches reviewed asset checksum",
+    "arm live GLB matches reviewed asset checksum",
+    "live full body rendered on mobile viewport",
+    "live body-to-arm selection and English information",
+    "live exercise roundtrip restores arm selection",
+    "live Hebrew RTL and selected muscle",
+    "no uncaught errors in live acceptance flow"
+  ],
+  "errors": [],
+  "sourceCommit": "92afca086830613ff86ebbdde5d98de46108a06a",
+  "cloudflareBuildId": "44aaea37-73f6-4548-8a79-1a2a1ca8064a",
+  "workerVersion": "4bb5248e-7b57-4b23-abba-74687a1c75f4",
+  "environmentNote": "Bundled Chromium acceptance pinned the CA already trusted by the host proxy; application TLS settings were unchanged."
+}

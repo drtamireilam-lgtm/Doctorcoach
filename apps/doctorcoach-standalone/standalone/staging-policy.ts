@@ -1,6 +1,6 @@
 // Dedicated synthetic staging only. Never enable this policy on the pilot.
 export const STAGING_PROJECT='https://jbfkzkzcznfacsjdawmf.supabase.co';
-const authPaths=new Set(['/auth/v1/otp','/auth/v1/verify','/auth/v1/user','/auth/v1/token','/auth/v1/logout','/rest/v1/rpc/doctorcoach_staging_session_active']);
+const authPaths=new Set(['/auth/v1/otp','/auth/v1/verify','/auth/v1/user','/auth/v1/token','/auth/v1/settings','/auth/v1/logout','/rest/v1/rpc/doctorcoach_staging_session_active']);
 export function validateStaging(env:Cloudflare.Env){
  if(env.DC_DEPLOYMENT_ENV!=='isolated-staging')return;
  const origin=new URL(env.DC_AUTH_ORIGIN??'');

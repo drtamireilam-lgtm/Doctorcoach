@@ -19,3 +19,11 @@ test('ready home keeps its existing start dialog mounted while refreshing and sh
 test('medical hold and incomplete onboarding do not expose the home start action',()=>{
  for(const change of [p=>{p.data.trainingBlocked=true;},p=>{p.data.intake.completed=false;}]){const p=props();change(p);assert.equal(find(exports.TraineeStart(p),'StartButton'),null);}
 });
+
+test('personal greeting uses only the saved intake name and empty plans never offer workout start',()=>{
+ const p=props();p.data.intake.answers={name:'Synthetic trainee'};
+ assert.ok(JSON.stringify(exports.TraineeStart(p)).includes('Synthetic trainee'));
+ p.controller.plan=[];p.controller.access={mode:'coached',canStart:false,canBuild:false};
+ assert.equal(find(exports.TraineeStart(p),'StartButton'),null);
+ p.controller.auth='error';assert.equal(find(exports.TraineeStart(p),'HomeActivitySummary'),null);
+});

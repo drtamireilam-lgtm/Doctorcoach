@@ -1,0 +1,2206 @@
+{
+  "sourceUrl": "https://dbarchive.biosciencedbc.jp/data/bodyparts3d/LATEST/isa_element_parts.txt",
+  "mappingSha256": "a3de74423f943b0d724ae8f59b3a817f87c423a544f8db98113b1980817cbeaf",
+  "selection": "FMA5018 bone organ plus the three original sternum components",
+  "excludedElements": [
+    {
+      "elementId": "FJ2772",
+      "duplicateOf": "FJ3201",
+      "reason": "Identical vertex and face buffers; retain one hyoid geometry only"
+    }
+  ],
+  "structures": [
+    {
+      "id": "right-hip-bone",
+      "en": "Right hip bone",
+      "he": "עצם האגן — ימין",
+      "side": "right",
+      "conceptId": "FMA16586",
+      "sourceIds": [
+        "FJ3152"
+      ],
+      "regionId": "hip_glute"
+    },
+    {
+      "id": "thoracic-10",
+      "en": "Tenth thoracic vertebra",
+      "he": "חוליה חזית 10",
+      "side": "midline",
+      "conceptId": "FMA10037",
+      "sourceIds": [
+        "FJ3154"
+      ],
+      "regionId": "upper_back_scapula"
+    },
+    {
+      "id": "thoracic-11",
+      "en": "Eleventh thoracic vertebra",
+      "he": "חוליה חזית 11",
+      "side": "midline",
+      "conceptId": "FMA10059",
+      "sourceIds": [
+        "FJ3155"
+      ],
+      "regionId": "upper_back_scapula"
+    },
+    {
+      "id": "thoracic-12",
+      "en": "Twelfth thoracic vertebra",
+      "he": "חוליה חזית 12",
+      "side": "midline",
+      "conceptId": "FMA10081",
+      "sourceIds": [
+        "FJ3156"
+      ],
+      "regionId": "upper_back_scapula"
+    },
+    {
+      "id": "lumbar-1",
+      "en": "First lumbar vertebra",
+      "he": "חוליה מותנית 1",
+      "side": "midline",
+      "conceptId": "FMA13072",
+      "sourceIds": [
+        "FJ3157"
+      ],
+      "regionId": "lower_back_spine"
+    },
+    {
+      "id": "thoracic-1",
+      "en": "First thoracic vertebra",
+      "he": "חוליה חזית 1",
+      "side": "midline",
+      "conceptId": "FMA9165",
+      "sourceIds": [
+        "FJ3158"
+      ],
+      "regionId": "upper_back_scapula"
+    },
+    {
+      "id": "lumbar-2",
+      "en": "Second lumbar vertebra",
+      "he": "חוליה מותנית 2",
+      "side": "midline",
+      "conceptId": "FMA13073",
+      "sourceIds": [
+        "FJ3159"
+      ],
+      "regionId": "lower_back_spine"
+    },
+    {
+      "id": "thoracic-2",
+      "en": "Second thoracic vertebra",
+      "he": "חוליה חזית 2",
+      "side": "midline",
+      "conceptId": "FMA9187",
+      "sourceIds": [
+        "FJ3160"
+      ],
+      "regionId": "upper_back_scapula"
+    },
+    {
+      "id": "cervical-3",
+      "en": "Third cervical vertebra",
+      "he": "חוליה צווארית 3",
+      "side": "midline",
+      "conceptId": "FMA12521",
+      "sourceIds": [
+        "FJ3161"
+      ],
+      "regionId": "cervical_neck"
+    },
+    {
+      "id": "lumbar-3",
+      "en": "Third lumbar vertebra",
+      "he": "חוליה מותנית 3",
+      "side": "midline",
+      "conceptId": "FMA13074",
+      "sourceIds": [
+        "FJ3162"
+      ],
+      "regionId": "lower_back_spine"
+    },
+    {
+      "id": "thoracic-3",
+      "en": "Third thoracic vertebra",
+      "he": "חוליה חזית 3",
+      "side": "midline",
+      "conceptId": "FMA9209",
+      "sourceIds": [
+        "FJ3163"
+      ],
+      "regionId": "upper_back_scapula"
+    },
+    {
+      "id": "cervical-4",
+      "en": "Fourth cervical vertebra",
+      "he": "חוליה צווארית 4",
+      "side": "midline",
+      "conceptId": "FMA12522",
+      "sourceIds": [
+        "FJ3164"
+      ],
+      "regionId": "cervical_neck"
+    },
+    {
+      "id": "lumbar-4",
+      "en": "Fourth lumbar vertebra",
+      "he": "חוליה מותנית 4",
+      "side": "midline",
+      "conceptId": "FMA13075",
+      "sourceIds": [
+        "FJ3165"
+      ],
+      "regionId": "lower_back_spine"
+    },
+    {
+      "id": "thoracic-4",
+      "en": "Fourth thoracic vertebra",
+      "he": "חוליה חזית 4",
+      "side": "midline",
+      "conceptId": "FMA9248",
+      "sourceIds": [
+        "FJ3166"
+      ],
+      "regionId": "upper_back_scapula"
+    },
+    {
+      "id": "cervical-5",
+      "en": "Fifth cervical vertebra",
+      "he": "חוליה צווארית 5",
+      "side": "midline",
+      "conceptId": "FMA12523",
+      "sourceIds": [
+        "FJ3167"
+      ],
+      "regionId": "cervical_neck"
+    },
+    {
+      "id": "lumbar-5",
+      "en": "Fifth lumbar vertebra",
+      "he": "חוליה מותנית 5",
+      "side": "midline",
+      "conceptId": "FMA13076",
+      "sourceIds": [
+        "FJ3168"
+      ],
+      "regionId": "lower_back_spine"
+    },
+    {
+      "id": "thoracic-5",
+      "en": "Fifth thoracic vertebra",
+      "he": "חוליה חזית 5",
+      "side": "midline",
+      "conceptId": "FMA9922",
+      "sourceIds": [
+        "FJ3169"
+      ],
+      "regionId": "upper_back_scapula"
+    },
+    {
+      "id": "cervical-6",
+      "en": "Sixth cervical vertebra",
+      "he": "חוליה צווארית 6",
+      "side": "midline",
+      "conceptId": "FMA12524",
+      "sourceIds": [
+        "FJ3170"
+      ],
+      "regionId": "cervical_neck"
+    },
+    {
+      "id": "thoracic-6",
+      "en": "Sixth thoracic vertebra",
+      "he": "חוליה חזית 6",
+      "side": "midline",
+      "conceptId": "FMA9945",
+      "sourceIds": [
+        "FJ3171"
+      ],
+      "regionId": "upper_back_scapula"
+    },
+    {
+      "id": "cervical-7",
+      "en": "Seventh cervical vertebra",
+      "he": "חוליה צווארית 7",
+      "side": "midline",
+      "conceptId": "FMA12525",
+      "sourceIds": [
+        "FJ3172"
+      ],
+      "regionId": "cervical_neck"
+    },
+    {
+      "id": "thoracic-7",
+      "en": "Seventh thoracic vertebra",
+      "he": "חוליה חזית 7",
+      "side": "midline",
+      "conceptId": "FMA9968",
+      "sourceIds": [
+        "FJ3173"
+      ],
+      "regionId": "upper_back_scapula"
+    },
+    {
+      "id": "thoracic-8",
+      "en": "Eighth thoracic vertebra",
+      "he": "חוליה חזית 8",
+      "side": "midline",
+      "conceptId": "FMA9991",
+      "sourceIds": [
+        "FJ3174"
+      ],
+      "regionId": "upper_back_scapula"
+    },
+    {
+      "id": "thoracic-9",
+      "en": "Ninth thoracic vertebra",
+      "he": "חוליה חזית 9",
+      "side": "midline",
+      "conceptId": "FMA10014",
+      "sourceIds": [
+        "FJ3175"
+      ],
+      "regionId": "upper_back_scapula"
+    },
+    {
+      "id": "cervical-1",
+      "en": "Atlas",
+      "he": "חוליה צווארית 1",
+      "side": "midline",
+      "conceptId": "FMA12519",
+      "sourceIds": [
+        "FJ3176"
+      ],
+      "regionId": "cervical_neck"
+    },
+    {
+      "id": "cervical-2",
+      "en": "Axis",
+      "he": "חוליה צווארית 2",
+      "side": "midline",
+      "conceptId": "FMA12520",
+      "sourceIds": [
+        "FJ3177"
+      ],
+      "regionId": "cervical_neck"
+    },
+    {
+      "id": "distal-phalanx-of-left-second-toe",
+      "en": "Distal phalanx of left second toe",
+      "he": "גליל מרוחק באצבע 2 — שמאל",
+      "side": "left",
+      "conceptId": "FMA32653",
+      "sourceIds": [
+        "FJ3179"
+      ],
+      "regionId": "ankle_foot"
+    },
+    {
+      "id": "distal-phalanx-of-left-third-toe",
+      "en": "Distal phalanx of left third toe",
+      "he": "גליל מרוחק באצבע 3 — שמאל",
+      "side": "left",
+      "conceptId": "FMA32655",
+      "sourceIds": [
+        "FJ3180"
+      ],
+      "regionId": "ankle_foot"
+    },
+    {
+      "id": "distal-phalanx-of-left-fourth-toe",
+      "en": "Distal phalanx of left fourth toe",
+      "he": "גליל מרוחק באצבע 4 — שמאל",
+      "side": "left",
+      "conceptId": "FMA32657",
+      "sourceIds": [
+        "FJ3181"
+      ],
+      "regionId": "ankle_foot"
+    },
+    {
+      "id": "distal-phalanx-of-left-big-toe",
+      "en": "Distal phalanx of left big toe",
+      "he": "גליל מרוחק באצבע 1 — שמאל",
+      "side": "left",
+      "conceptId": "FMA32651",
+      "sourceIds": [
+        "FJ3182"
+      ],
+      "regionId": "ankle_foot"
+    },
+    {
+      "id": "distal-phalanx-of-left-index-finger",
+      "en": "Distal phalanx of left index finger",
+      "he": "גליל מרוחק, אצבע 2 — שמאל",
+      "side": "left",
+      "conceptId": "FMA23953",
+      "sourceIds": [
+        "FJ3183"
+      ],
+      "regionId": "wrist_hand"
+    },
+    {
+      "id": "distal-phalanx-of-left-little-finger",
+      "en": "Distal phalanx of left little finger",
+      "he": "גליל מרוחק, אצבע 5 — שמאל",
+      "side": "left",
+      "conceptId": "FMA23959",
+      "sourceIds": [
+        "FJ3184"
+      ],
+      "regionId": "wrist_hand"
+    },
+    {
+      "id": "distal-phalanx-of-left-little-toe",
+      "en": "Distal phalanx of left little toe",
+      "he": "גליל מרוחק באצבע 5 — שמאל",
+      "side": "left",
+      "conceptId": "FMA32659",
+      "sourceIds": [
+        "FJ3185"
+      ],
+      "regionId": "ankle_foot"
+    },
+    {
+      "id": "distal-phalanx-of-left-middle-finger",
+      "en": "Distal phalanx of left middle finger",
+      "he": "גליל מרוחק, אצבע 3 — שמאל",
+      "side": "left",
+      "conceptId": "FMA23955",
+      "sourceIds": [
+        "FJ3186"
+      ],
+      "regionId": "wrist_hand"
+    },
+    {
+      "id": "distal-phalanx-of-left-ring-finger",
+      "en": "Distal phalanx of left ring finger",
+      "he": "גליל מרוחק, אצבע 4 — שמאל",
+      "side": "left",
+      "conceptId": "FMA23957",
+      "sourceIds": [
+        "FJ3187"
+      ],
+      "regionId": "wrist_hand"
+    },
+    {
+      "id": "distal-phalanx-of-left-thumb",
+      "en": "Distal phalanx of left thumb",
+      "he": "גליל מרוחק, אצבע 1 — שמאל",
+      "side": "left",
+      "conceptId": "FMA23951",
+      "sourceIds": [
+        "FJ3188"
+      ],
+      "regionId": "wrist_hand"
+    },
+    {
+      "id": "distal-phalanx-of-right-second-toe",
+      "en": "Distal phalanx of right second toe",
+      "he": "גליל מרוחק באצבע 2 — ימין",
+      "side": "right",
+      "conceptId": "FMA32652",
+      "sourceIds": [
+        "FJ3189"
+      ],
+      "regionId": "ankle_foot"
+    },
+    {
+      "id": "distal-phalanx-of-right-third-toe",
+      "en": "Distal phalanx of right third toe",
+      "he": "גליל מרוחק באצבע 3 — ימין",
+      "side": "right",
+      "conceptId": "FMA32654",
+      "sourceIds": [
+        "FJ3190"
+      ],
+      "regionId": "ankle_foot"
+    },
+    {
+      "id": "distal-phalanx-of-right-fourth-toe",
+      "en": "Distal phalanx of right fourth toe",
+      "he": "גליל מרוחק באצבע 4 — ימין",
+      "side": "right",
+      "conceptId": "FMA32656",
+      "sourceIds": [
+        "FJ3191"
+      ],
+      "regionId": "ankle_foot"
+    },
+    {
+      "id": "distal-phalanx-of-right-big-toe",
+      "en": "Distal phalanx of right big toe",
+      "he": "גליל מרוחק באצבע 1 — ימין",
+      "side": "right",
+      "conceptId": "FMA32650",
+      "sourceIds": [
+        "FJ3192"
+      ],
+      "regionId": "ankle_foot"
+    },
+    {
+      "id": "distal-phalanx-of-right-index-finger",
+      "en": "Distal phalanx of right index finger",
+      "he": "גליל מרוחק, אצבע 2 — ימין",
+      "side": "right",
+      "conceptId": "FMA24460",
+      "sourceIds": [
+        "FJ3193"
+      ],
+      "regionId": "wrist_hand"
+    },
+    {
+      "id": "distal-phalanx-of-right-little-finger",
+      "en": "Distal phalanx of right little finger",
+      "he": "גליל מרוחק, אצבע 5 — ימין",
+      "side": "right",
+      "conceptId": "FMA24463",
+      "sourceIds": [
+        "FJ3194"
+      ],
+      "regionId": "wrist_hand"
+    },
+    {
+      "id": "distal-phalanx-of-right-little-toe",
+      "en": "Distal phalanx of right little toe",
+      "he": "גליל מרוחק באצבע 5 — ימין",
+      "side": "right",
+      "conceptId": "FMA32658",
+      "sourceIds": [
+        "FJ3195"
+      ],
+      "regionId": "ankle_foot"
+    },
+    {
+      "id": "distal-phalanx-of-right-middle-finger",
+      "en": "Distal phalanx of right middle finger",
+      "he": "גליל מרוחק, אצבע 3 — ימין",
+      "side": "right",
+      "conceptId": "FMA24461",
+      "sourceIds": [
+        "FJ3196"
+      ],
+      "regionId": "wrist_hand"
+    },
+    {
+      "id": "distal-phalanx-of-right-ring-finger",
+      "en": "Distal phalanx of right ring finger",
+      "he": "גליל מרוחק, אצבע 4 — ימין",
+      "side": "right",
+      "conceptId": "FMA24462",
+      "sourceIds": [
+        "FJ3197"
+      ],
+      "regionId": "wrist_hand"
+    },
+    {
+      "id": "distal-phalanx-of-right-thumb",
+      "en": "Distal phalanx of right thumb",
+      "he": "גליל מרוחק, אצבע 1 — ימין",
+      "side": "right",
+      "conceptId": "FMA24459",
+      "sourceIds": [
+        "FJ3198"
+      ],
+      "regionId": "wrist_hand"
+    },
+    {
+      "id": "ethmoid",
+      "en": "Ethmoid",
+      "he": "עצם הכברה",
+      "side": "midline",
+      "conceptId": "FMA52740",
+      "sourceIds": [
+        "FJ3199"
+      ]
+    },
+    {
+      "id": "frontal-bone",
+      "en": "Frontal bone",
+      "he": "עצם המצח",
+      "side": "midline",
+      "conceptId": "FMA52734",
+      "sourceIds": [
+        "FJ3200"
+      ]
+    },
+    {
+      "id": "left-tenth-rib",
+      "en": "Left tenth rib",
+      "he": "צלע 10 — שמאל",
+      "side": "left",
+      "conceptId": "FMA8472",
+      "sourceIds": [
+        "FJ3225"
+      ],
+      "regionId": "chest"
+    },
+    {
+      "id": "left-eleventh-rib",
+      "en": "Left eleventh rib",
+      "he": "צלע 11 — שמאל",
+      "side": "left",
+      "conceptId": "FMA8532",
+      "sourceIds": [
+        "FJ3226"
+      ],
+      "regionId": "chest"
+    },
+    {
+      "id": "left-twelfth-rib",
+      "en": "Left twelfth rib",
+      "he": "צלע 12 — שמאל",
+      "side": "left",
+      "conceptId": "FMA8534",
+      "sourceIds": [
+        "FJ3227"
+      ],
+      "regionId": "chest"
+    },
+    {
+      "id": "left-first-rib",
+      "en": "Left first rib",
+      "he": "צלע 1 — שמאל",
+      "side": "left",
+      "conceptId": "FMA7987",
+      "sourceIds": [
+        "FJ3228"
+      ],
+      "regionId": "chest"
+    },
+    {
+      "id": "left-second-rib",
+      "en": "Left second rib",
+      "he": "צלע 2 — שמאל",
+      "side": "left",
+      "conceptId": "FMA8012",
+      "sourceIds": [
+        "FJ3229"
+      ],
+      "regionId": "chest"
+    },
+    {
+      "id": "left-third-rib",
+      "en": "Left third rib",
+      "he": "צלע 3 — שמאל",
+      "side": "left",
+      "conceptId": "FMA8039",
+      "sourceIds": [
+        "FJ3230"
+      ],
+      "regionId": "chest"
+    },
+    {
+      "id": "left-fourth-rib",
+      "en": "Left fourth rib",
+      "he": "צלע 4 — שמאל",
+      "side": "left",
+      "conceptId": "FMA8148",
+      "sourceIds": [
+        "FJ3231"
+      ],
+      "regionId": "chest"
+    },
+    {
+      "id": "left-fifth-rib",
+      "en": "Left fifth rib",
+      "he": "צלע 5 — שמאל",
+      "side": "left",
+      "conceptId": "FMA8093",
+      "sourceIds": [
+        "FJ3232"
+      ],
+      "regionId": "chest"
+    },
+    {
+      "id": "left-sixth-rib",
+      "en": "Left sixth rib",
+      "he": "צלע 6 — שמאל",
+      "side": "left",
+      "conceptId": "FMA8202",
+      "sourceIds": [
+        "FJ3233"
+      ],
+      "regionId": "chest"
+    },
+    {
+      "id": "left-seventh-rib",
+      "en": "Left seventh rib",
+      "he": "צלע 7 — שמאל",
+      "side": "left",
+      "conceptId": "FMA8256",
+      "sourceIds": [
+        "FJ3234"
+      ],
+      "regionId": "chest"
+    },
+    {
+      "id": "left-eighth-rib",
+      "en": "Left eighth rib",
+      "he": "צלע 8 — שמאל",
+      "side": "left",
+      "conceptId": "FMA8310",
+      "sourceIds": [
+        "FJ3235"
+      ],
+      "regionId": "chest"
+    },
+    {
+      "id": "left-ninth-rib",
+      "en": "Left ninth rib",
+      "he": "צלע 9 — שמאל",
+      "side": "left",
+      "conceptId": "FMA8391",
+      "sourceIds": [
+        "FJ3236"
+      ],
+      "regionId": "chest"
+    },
+    {
+      "id": "left-clavicle",
+      "en": "Left clavicle",
+      "he": "עצם הבריח — שמאל",
+      "side": "left",
+      "conceptId": "FMA13323",
+      "sourceIds": [
+        "FJ3237"
+      ],
+      "regionId": "shoulder"
+    },
+    {
+      "id": "left-first-metacarpal-bone",
+      "en": "Left first metacarpal bone",
+      "he": "עצם מסרק 1 — שמאל",
+      "side": "left",
+      "conceptId": "FMA24465",
+      "sourceIds": [
+        "FJ3240"
+      ],
+      "regionId": "wrist_hand"
+    },
+    {
+      "id": "left-first-metatarsal-bone",
+      "en": "Left first metatarsal bone",
+      "he": "עצם מסרק 1 — שמאל",
+      "side": "left",
+      "conceptId": "FMA24508",
+      "sourceIds": [
+        "FJ3241"
+      ],
+      "regionId": "ankle_foot"
+    },
+    {
+      "id": "left-second-metacarpal-bone",
+      "en": "Left second metacarpal bone",
+      "he": "עצם מסרק 2 — שמאל",
+      "side": "left",
+      "conceptId": "FMA24467",
+      "sourceIds": [
+        "FJ3243"
+      ],
+      "regionId": "wrist_hand"
+    },
+    {
+      "id": "left-second-metatarsal-bone",
+      "en": "Left second metatarsal bone",
+      "he": "עצם מסרק 2 — שמאל",
+      "side": "left",
+      "conceptId": "FMA24510",
+      "sourceIds": [
+        "FJ3244"
+      ],
+      "regionId": "ankle_foot"
+    },
+    {
+      "id": "left-third-metacarpal-bone",
+      "en": "Left third metacarpal bone",
+      "he": "עצם מסרק 3 — שמאל",
+      "side": "left",
+      "conceptId": "FMA24469",
+      "sourceIds": [
+        "FJ3246"
+      ],
+      "regionId": "wrist_hand"
+    },
+    {
+      "id": "left-third-metatarsal-bone",
+      "en": "Left third metatarsal bone",
+      "he": "עצם מסרק 3 — שמאל",
+      "side": "left",
+      "conceptId": "FMA24512",
+      "sourceIds": [
+        "FJ3247"
+      ],
+      "regionId": "ankle_foot"
+    },
+    {
+      "id": "left-fourth-metacarpal-bone",
+      "en": "Left fourth metacarpal bone",
+      "he": "עצם מסרק 4 — שמאל",
+      "side": "left",
+      "conceptId": "FMA24471",
+      "sourceIds": [
+        "FJ3249"
+      ],
+      "regionId": "wrist_hand"
+    },
+    {
+      "id": "left-fourth-metatarsal-bone",
+      "en": "Left fourth metatarsal bone",
+      "he": "עצם מסרק 4 — שמאל",
+      "side": "left",
+      "conceptId": "FMA24514",
+      "sourceIds": [
+        "FJ3250"
+      ],
+      "regionId": "ankle_foot"
+    },
+    {
+      "id": "left-fifth-metacarpal-bone",
+      "en": "Left fifth metacarpal bone",
+      "he": "עצם מסרק 5 — שמאל",
+      "side": "left",
+      "conceptId": "FMA24473",
+      "sourceIds": [
+        "FJ3252"
+      ],
+      "regionId": "wrist_hand"
+    },
+    {
+      "id": "left-fifth-metatarsal-bone",
+      "en": "Left fifth metatarsal bone",
+      "he": "עצם מסרק 5 — שמאל",
+      "side": "left",
+      "conceptId": "FMA24516",
+      "sourceIds": [
+        "FJ3253"
+      ],
+      "regionId": "ankle_foot"
+    },
+    {
+      "id": "left-calcaneus",
+      "en": "Left calcaneus",
+      "he": "עצם העקב — שמאל",
+      "side": "left",
+      "conceptId": "FMA24498",
+      "sourceIds": [
+        "FJ3256"
+      ],
+      "regionId": "ankle_foot"
+    },
+    {
+      "id": "left-capitate",
+      "en": "Left capitate",
+      "he": "העצם הגדולה — שמאל",
+      "side": "left",
+      "conceptId": "FMA24447",
+      "sourceIds": [
+        "FJ3257"
+      ],
+      "regionId": "wrist_hand"
+    },
+    {
+      "id": "left-cuboid-bone",
+      "en": "Left cuboid bone",
+      "he": "עצם הקובייה — שמאל",
+      "side": "left",
+      "conceptId": "FMA24529",
+      "sourceIds": [
+        "FJ3258"
+      ],
+      "regionId": "ankle_foot"
+    },
+    {
+      "id": "left-femur",
+      "en": "Left femur",
+      "he": "עצם הירך — שמאל",
+      "side": "left",
+      "conceptId": "FMA24475",
+      "sourceIds": [
+        "FJ3259"
+      ],
+      "regionId": "thigh"
+    },
+    {
+      "id": "left-fibula",
+      "en": "Left fibula",
+      "he": "עצם השוקית — שמאל",
+      "side": "left",
+      "conceptId": "FMA24481",
+      "sourceIds": [
+        "FJ3260"
+      ],
+      "regionId": "lower_leg"
+    },
+    {
+      "id": "left-hamate",
+      "en": "Left hamate",
+      "he": "עצם האנקול — שמאל",
+      "side": "left",
+      "conceptId": "FMA24449",
+      "sourceIds": [
+        "FJ3261"
+      ],
+      "regionId": "wrist_hand"
+    },
+    {
+      "id": "left-humerus",
+      "en": "Left humerus",
+      "he": "עצם הזרוע — שמאל",
+      "side": "left",
+      "conceptId": "FMA23131",
+      "sourceIds": [
+        "FJ3262"
+      ],
+      "regionId": "elbow"
+    },
+    {
+      "id": "left-inferior-nasal-concha",
+      "en": "Left inferior nasal concha",
+      "he": "קונכיית האף התחתונה — שמאל",
+      "side": "left",
+      "conceptId": "FMA54738",
+      "sourceIds": [
+        "FJ3263"
+      ]
+    },
+    {
+      "id": "left-intermediate-cuneiform-bone",
+      "en": "Left intermediate cuneiform bone",
+      "he": "עצם היתד האמצעית — שמאל",
+      "side": "left",
+      "conceptId": "FMA24524",
+      "sourceIds": [
+        "FJ3264"
+      ],
+      "regionId": "ankle_foot"
+    },
+    {
+      "id": "left-lacrimal-bone",
+      "en": "Left lacrimal bone",
+      "he": "עצם הדמע — שמאל",
+      "side": "left",
+      "conceptId": "FMA53646",
+      "sourceIds": [
+        "FJ3265"
+      ]
+    },
+    {
+      "id": "left-lateral-cuneiform-bone",
+      "en": "Left lateral cuneiform bone",
+      "he": "עצם היתד הלטרלית — שמאל",
+      "side": "left",
+      "conceptId": "FMA24526",
+      "sourceIds": [
+        "FJ3267"
+      ],
+      "regionId": "ankle_foot"
+    },
+    {
+      "id": "left-lunate",
+      "en": "Left lunate",
+      "he": "עצם הסהר — שמאל",
+      "side": "left",
+      "conceptId": "FMA24438",
+      "sourceIds": [
+        "FJ3268"
+      ],
+      "regionId": "wrist_hand"
+    },
+    {
+      "id": "left-maxilla",
+      "en": "Left maxilla",
+      "he": "הלסת העליונה — שמאל",
+      "side": "left",
+      "conceptId": "FMA53650",
+      "sourceIds": [
+        "FJ3269"
+      ]
+    },
+    {
+      "id": "left-medial-cuneiform-bone",
+      "en": "Left medial cuneiform bone",
+      "he": "עצם היתד המדיאלית — שמאל",
+      "side": "left",
+      "conceptId": "FMA24522",
+      "sourceIds": [
+        "FJ3271"
+      ],
+      "regionId": "ankle_foot"
+    },
+    {
+      "id": "left-nasal-bone",
+      "en": "Left nasal bone",
+      "he": "עצם האף — שמאל",
+      "side": "left",
+      "conceptId": "FMA53648",
+      "sourceIds": [
+        "FJ3272"
+      ]
+    },
+    {
+      "id": "left-palatine-bone",
+      "en": "Left palatine bone",
+      "he": "עצם החך — שמאל",
+      "side": "left",
+      "conceptId": "FMA53656",
+      "sourceIds": [
+        "FJ3273"
+      ]
+    },
+    {
+      "id": "left-parietal-bone",
+      "en": "Left parietal bone",
+      "he": "עצם הקודקוד — שמאל",
+      "side": "left",
+      "conceptId": "FMA52789",
+      "sourceIds": [
+        "FJ3274"
+      ]
+    },
+    {
+      "id": "left-patella",
+      "en": "Left patella",
+      "he": "הפיקה — שמאל",
+      "side": "left",
+      "conceptId": "FMA24487",
+      "sourceIds": [
+        "FJ3275"
+      ],
+      "regionId": "knee"
+    },
+    {
+      "id": "left-pisiform",
+      "en": "Left pisiform",
+      "he": "עצם העדשה — שמאל",
+      "side": "left",
+      "conceptId": "FMA24442",
+      "sourceIds": [
+        "FJ3276"
+      ],
+      "regionId": "wrist_hand"
+    },
+    {
+      "id": "left-radius",
+      "en": "Left radius",
+      "he": "עצם החישור — שמאל",
+      "side": "left",
+      "conceptId": "FMA23465",
+      "sourceIds": [
+        "FJ3277"
+      ],
+      "regionId": "forearm"
+    },
+    {
+      "id": "left-scaphoid",
+      "en": "Left scaphoid",
+      "he": "עצם הסירה — שמאל",
+      "side": "left",
+      "conceptId": "FMA24436",
+      "sourceIds": [
+        "FJ3278"
+      ],
+      "regionId": "wrist_hand"
+    },
+    {
+      "id": "left-scapula",
+      "en": "Left scapula",
+      "he": "עצם השכמה — שמאל",
+      "side": "left",
+      "conceptId": "FMA13396",
+      "sourceIds": [
+        "FJ3279"
+      ],
+      "regionId": "shoulder"
+    },
+    {
+      "id": "left-talus",
+      "en": "Left talus",
+      "he": "עצם הערקום — שמאל",
+      "side": "left",
+      "conceptId": "FMA24483",
+      "sourceIds": [
+        "FJ3280"
+      ],
+      "regionId": "ankle_foot"
+    },
+    {
+      "id": "left-temporal-bone",
+      "en": "Left temporal bone",
+      "he": "עצם הרקה — שמאל",
+      "side": "left",
+      "conceptId": "FMA52739",
+      "sourceIds": [
+        "FJ3281"
+      ]
+    },
+    {
+      "id": "left-tibia",
+      "en": "Left tibia",
+      "he": "עצם השוקה — שמאל",
+      "side": "left",
+      "conceptId": "FMA24478",
+      "sourceIds": [
+        "FJ3282"
+      ],
+      "regionId": "lower_leg"
+    },
+    {
+      "id": "left-trapezium",
+      "en": "Left trapezium",
+      "he": "עצם הטרפז — שמאל",
+      "side": "left",
+      "conceptId": "FMA24444",
+      "sourceIds": [
+        "FJ3283"
+      ],
+      "regionId": "wrist_hand"
+    },
+    {
+      "id": "left-trapezoid",
+      "en": "Left trapezoid",
+      "he": "העצם דמוית הטרפז — שמאל",
+      "side": "left",
+      "conceptId": "FMA24445",
+      "sourceIds": [
+        "FJ3284"
+      ],
+      "regionId": "wrist_hand"
+    },
+    {
+      "id": "left-triquetral",
+      "en": "Left triquetral",
+      "he": "העצם המשולשת — שמאל",
+      "side": "left",
+      "conceptId": "FMA24440",
+      "sourceIds": [
+        "FJ3285"
+      ],
+      "regionId": "wrist_hand"
+    },
+    {
+      "id": "left-ulna",
+      "en": "Left ulna",
+      "he": "עצם הגומד — שמאל",
+      "side": "left",
+      "conceptId": "FMA23468",
+      "sourceIds": [
+        "FJ3286"
+      ],
+      "regionId": "forearm"
+    },
+    {
+      "id": "left-zygomatic-bone",
+      "en": "Left zygomatic bone",
+      "he": "עצם הלחי — שמאל",
+      "side": "left",
+      "conceptId": "FMA52893",
+      "sourceIds": [
+        "FJ3287"
+      ]
+    },
+    {
+      "id": "left-hip-bone",
+      "en": "Left hip bone",
+      "he": "עצם האגן — שמאל",
+      "side": "left",
+      "conceptId": "FMA16587",
+      "sourceIds": [
+        "FJ3288"
+      ],
+      "regionId": "hip_glute"
+    },
+    {
+      "id": "mandible",
+      "en": "Mandible",
+      "he": "הלסת התחתונה",
+      "side": "midline",
+      "conceptId": "FMA52748",
+      "sourceIds": [
+        "FJ3289"
+      ]
+    },
+    {
+      "id": "middle-phalanx-of-left-ring-finger",
+      "en": "Middle phalanx of left ring finger",
+      "he": "גליל אמצעי, אצבע 4 — שמאל",
+      "side": "left",
+      "conceptId": "FMA23942",
+      "sourceIds": [
+        "FJ3291"
+      ],
+      "regionId": "wrist_hand"
+    },
+    {
+      "id": "middle-phalanx-of-right-ring-finger",
+      "en": "Middle phalanx of right ring finger",
+      "he": "גליל אמצעי, אצבע 4 — ימין",
+      "side": "right",
+      "conceptId": "FMA24457",
+      "sourceIds": [
+        "FJ3292"
+      ],
+      "regionId": "wrist_hand"
+    },
+    {
+      "id": "middle-phalanx-of-left-second-toe",
+      "en": "Middle phalanx of left second toe",
+      "he": "גליל אמצעי באצבע 2 — שמאל",
+      "side": "left",
+      "conceptId": "FMA32643",
+      "sourceIds": [
+        "FJ3293"
+      ],
+      "regionId": "ankle_foot"
+    },
+    {
+      "id": "middle-phalanx-of-left-third-toe",
+      "en": "Middle phalanx of left third toe",
+      "he": "גליל אמצעי באצבע 3 — שמאל",
+      "side": "left",
+      "conceptId": "FMA32645",
+      "sourceIds": [
+        "FJ3294"
+      ],
+      "regionId": "ankle_foot"
+    },
+    {
+      "id": "middle-phalanx-of-left-fourth-toe",
+      "en": "Middle phalanx of left fourth toe",
+      "he": "גליל אמצעי באצבע 4 — שמאל",
+      "side": "left",
+      "conceptId": "FMA32647",
+      "sourceIds": [
+        "FJ3295"
+      ],
+      "regionId": "ankle_foot"
+    },
+    {
+      "id": "middle-phalanx-of-left-index-finger",
+      "en": "Middle phalanx of left index finger",
+      "he": "גליל אמצעי, אצבע 2 — שמאל",
+      "side": "left",
+      "conceptId": "FMA23938",
+      "sourceIds": [
+        "FJ3296"
+      ],
+      "regionId": "wrist_hand"
+    },
+    {
+      "id": "middle-phalanx-of-left-little-finger",
+      "en": "Middle phalanx of left little finger",
+      "he": "גליל אמצעי, אצבע 5 — שמאל",
+      "side": "left",
+      "conceptId": "FMA23944",
+      "sourceIds": [
+        "FJ3297"
+      ],
+      "regionId": "wrist_hand"
+    },
+    {
+      "id": "middle-phalanx-of-left-little-toe",
+      "en": "Middle phalanx of left little toe",
+      "he": "גליל אמצעי באצבע 5 — שמאל",
+      "side": "left",
+      "conceptId": "FMA230988",
+      "sourceIds": [
+        "FJ3298"
+      ],
+      "regionId": "ankle_foot"
+    },
+    {
+      "id": "middle-phalanx-of-left-middle-finger",
+      "en": "Middle phalanx of left middle finger",
+      "he": "גליל אמצעי, אצבע 3 — שמאל",
+      "side": "left",
+      "conceptId": "FMA23940",
+      "sourceIds": [
+        "FJ3299"
+      ],
+      "regionId": "wrist_hand"
+    },
+    {
+      "id": "middle-phalanx-of-right-second-toe",
+      "en": "Middle phalanx of right second toe",
+      "he": "גליל אמצעי באצבע 2 — ימין",
+      "side": "right",
+      "conceptId": "FMA32642",
+      "sourceIds": [
+        "FJ3300"
+      ],
+      "regionId": "ankle_foot"
+    },
+    {
+      "id": "middle-phalanx-of-right-third-toe",
+      "en": "Middle phalanx of right third toe",
+      "he": "גליל אמצעי באצבע 3 — ימין",
+      "side": "right",
+      "conceptId": "FMA32644",
+      "sourceIds": [
+        "FJ3301"
+      ],
+      "regionId": "ankle_foot"
+    },
+    {
+      "id": "middle-phalanx-of-right-fourth-toe",
+      "en": "Middle phalanx of right fourth toe",
+      "he": "גליל אמצעי באצבע 4 — ימין",
+      "side": "right",
+      "conceptId": "FMA32646",
+      "sourceIds": [
+        "FJ3302"
+      ],
+      "regionId": "ankle_foot"
+    },
+    {
+      "id": "middle-phalanx-of-right-index-finger",
+      "en": "Middle phalanx of right index finger",
+      "he": "גליל אמצעי, אצבע 2 — ימין",
+      "side": "right",
+      "conceptId": "FMA24455",
+      "sourceIds": [
+        "FJ3303"
+      ],
+      "regionId": "wrist_hand"
+    },
+    {
+      "id": "middle-phalanx-of-right-little-finger",
+      "en": "Middle phalanx of right little finger",
+      "he": "גליל אמצעי, אצבע 5 — ימין",
+      "side": "right",
+      "conceptId": "FMA24458",
+      "sourceIds": [
+        "FJ3304"
+      ],
+      "regionId": "wrist_hand"
+    },
+    {
+      "id": "middle-phalanx-of-right-little-toe",
+      "en": "Middle phalanx of right little toe",
+      "he": "גליל אמצעי באצבע 5 — ימין",
+      "side": "right",
+      "conceptId": "FMA230986",
+      "sourceIds": [
+        "FJ3305"
+      ],
+      "regionId": "ankle_foot"
+    },
+    {
+      "id": "middle-phalanx-of-right-middle-finger",
+      "en": "Middle phalanx of right middle finger",
+      "he": "גליל אמצעי, אצבע 3 — ימין",
+      "side": "right",
+      "conceptId": "FMA24456",
+      "sourceIds": [
+        "FJ3306"
+      ],
+      "regionId": "wrist_hand"
+    },
+    {
+      "id": "navicular-bone-of-left-foot",
+      "en": "Navicular bone of left foot",
+      "he": "עצם הסירה בכף הרגל — שמאל",
+      "side": "left",
+      "conceptId": "FMA24501",
+      "sourceIds": [
+        "FJ3307"
+      ],
+      "regionId": "ankle_foot"
+    },
+    {
+      "id": "navicular-bone-of-right-foot",
+      "en": "Navicular bone of right foot",
+      "he": "עצם הסירה בכף הרגל — ימין",
+      "side": "right",
+      "conceptId": "FMA24500",
+      "sourceIds": [
+        "FJ3308"
+      ],
+      "regionId": "ankle_foot"
+    },
+    {
+      "id": "occipital-bone",
+      "en": "Occipital bone",
+      "he": "עצם העורף",
+      "side": "midline",
+      "conceptId": "FMA52735",
+      "sourceIds": [
+        "FJ3309"
+      ]
+    },
+    {
+      "id": "proximal-phalanx-of-right-big-toe",
+      "en": "Proximal phalanx of right big toe",
+      "he": "גליל מקורב באצבע 1 — ימין",
+      "side": "right",
+      "conceptId": "FMA43253",
+      "sourceIds": [
+        "FJ3310"
+      ],
+      "regionId": "ankle_foot"
+    },
+    {
+      "id": "proximal-phalanx-of-left-third-toe",
+      "en": "Proximal phalanx of left third toe",
+      "he": "גליל מקורב באצבע 3 — שמאל",
+      "side": "left",
+      "conceptId": "FMA32637",
+      "sourceIds": [
+        "FJ3311"
+      ],
+      "regionId": "ankle_foot"
+    },
+    {
+      "id": "proximal-phalanx-of-left-fourth-toe",
+      "en": "Proximal phalanx of left fourth toe",
+      "he": "גליל מקורב באצבע 4 — שמאל",
+      "side": "left",
+      "conceptId": "FMA32639",
+      "sourceIds": [
+        "FJ3312"
+      ],
+      "regionId": "ankle_foot"
+    },
+    {
+      "id": "proximal-phalanx-of-left-index-finger",
+      "en": "Proximal phalanx of left index finger",
+      "he": "גליל מקורב, אצבע 2 — שמאל",
+      "side": "left",
+      "conceptId": "FMA71915",
+      "sourceIds": [
+        "FJ3313"
+      ],
+      "regionId": "wrist_hand"
+    },
+    {
+      "id": "proximal-phalanx-of-left-little-finger",
+      "en": "Proximal phalanx of left little finger",
+      "he": "גליל מקורב, אצבע 5 — שמאל",
+      "side": "left",
+      "conceptId": "FMA66791",
+      "sourceIds": [
+        "FJ3314"
+      ],
+      "regionId": "wrist_hand"
+    },
+    {
+      "id": "proximal-phalanx-of-left-little-toe",
+      "en": "Proximal phalanx of left little toe",
+      "he": "גליל מקורב באצבע 5 — שמאל",
+      "side": "left",
+      "conceptId": "FMA32641",
+      "sourceIds": [
+        "FJ3315"
+      ],
+      "regionId": "ankle_foot"
+    },
+    {
+      "id": "proximal-phalanx-of-left-middle-finger",
+      "en": "Proximal phalanx of left middle finger",
+      "he": "גליל מקורב, אצבע 3 — שמאל",
+      "side": "left",
+      "conceptId": "FMA71908",
+      "sourceIds": [
+        "FJ3316"
+      ],
+      "regionId": "wrist_hand"
+    },
+    {
+      "id": "proximal-phalanx-of-left-ring-finger",
+      "en": "Proximal phalanx of left ring finger",
+      "he": "גליל מקורב, אצבע 4 — שמאל",
+      "side": "left",
+      "conceptId": "FMA71916",
+      "sourceIds": [
+        "FJ3317"
+      ],
+      "regionId": "wrist_hand"
+    },
+    {
+      "id": "proximal-phalanx-of-left-thumb",
+      "en": "Proximal phalanx of left thumb",
+      "he": "גליל מקורב, אצבע 1 — שמאל",
+      "side": "left",
+      "conceptId": "FMA65470",
+      "sourceIds": [
+        "FJ3318"
+      ],
+      "regionId": "wrist_hand"
+    },
+    {
+      "id": "proximal-phalanx-of-right-second-toe",
+      "en": "Proximal phalanx of right second toe",
+      "he": "גליל מקורב באצבע 2 — ימין",
+      "side": "right",
+      "conceptId": "FMA32634",
+      "sourceIds": [
+        "FJ3319"
+      ],
+      "regionId": "ankle_foot"
+    },
+    {
+      "id": "proximal-phalanx-of-right-third-toe",
+      "en": "Proximal phalanx of right third toe",
+      "he": "גליל מקורב באצבע 3 — ימין",
+      "side": "right",
+      "conceptId": "FMA32636",
+      "sourceIds": [
+        "FJ3320"
+      ],
+      "regionId": "ankle_foot"
+    },
+    {
+      "id": "proximal-phalanx-of-right-fourth-toe",
+      "en": "Proximal phalanx of right fourth toe",
+      "he": "גליל מקורב באצבע 4 — ימין",
+      "side": "right",
+      "conceptId": "FMA32638",
+      "sourceIds": [
+        "FJ3321"
+      ],
+      "regionId": "ankle_foot"
+    },
+    {
+      "id": "proximal-phalanx-of-right-index-finger",
+      "en": "Proximal phalanx of right index finger",
+      "he": "גליל מקורב, אצבע 2 — ימין",
+      "side": "right",
+      "conceptId": "FMA24451",
+      "sourceIds": [
+        "FJ3322"
+      ],
+      "regionId": "wrist_hand"
+    },
+    {
+      "id": "proximal-phalanx-of-right-little-finger",
+      "en": "Proximal phalanx of right little finger",
+      "he": "גליל מקורב, אצבע 5 — ימין",
+      "side": "right",
+      "conceptId": "FMA24454",
+      "sourceIds": [
+        "FJ3323"
+      ],
+      "regionId": "wrist_hand"
+    },
+    {
+      "id": "proximal-phalanx-of-right-little-toe",
+      "en": "Proximal phalanx of right little toe",
+      "he": "גליל מקורב באצבע 5 — ימין",
+      "side": "right",
+      "conceptId": "FMA32640",
+      "sourceIds": [
+        "FJ3324"
+      ],
+      "regionId": "ankle_foot"
+    },
+    {
+      "id": "proximal-phalanx-of-right-middle-finger",
+      "en": "Proximal phalanx of right middle finger",
+      "he": "גליל מקורב, אצבע 3 — ימין",
+      "side": "right",
+      "conceptId": "FMA24452",
+      "sourceIds": [
+        "FJ3325"
+      ],
+      "regionId": "wrist_hand"
+    },
+    {
+      "id": "proximal-phalanx-of-right-ring-finger",
+      "en": "Proximal phalanx of right ring finger",
+      "he": "גליל מקורב, אצבע 4 — ימין",
+      "side": "right",
+      "conceptId": "FMA24453",
+      "sourceIds": [
+        "FJ3326"
+      ],
+      "regionId": "wrist_hand"
+    },
+    {
+      "id": "proximal-phalanx-of-right-thumb",
+      "en": "Proximal phalanx of right thumb",
+      "he": "גליל מקורב, אצבע 1 — ימין",
+      "side": "right",
+      "conceptId": "FMA24450",
+      "sourceIds": [
+        "FJ3327"
+      ],
+      "regionId": "wrist_hand"
+    },
+    {
+      "id": "proximal-phalanx-of-left-second-toe",
+      "en": "Proximal phalanx of left second toe",
+      "he": "גליל מקורב באצבע 2 — שמאל",
+      "side": "left",
+      "conceptId": "FMA32635",
+      "sourceIds": [
+        "FJ3328"
+      ],
+      "regionId": "ankle_foot"
+    },
+    {
+      "id": "proximal-phalanx-of-left-big-toe",
+      "en": "Proximal phalanx of left big toe",
+      "he": "גליל מקורב באצבע 1 — שמאל",
+      "side": "left",
+      "conceptId": "FMA43254",
+      "sourceIds": [
+        "FJ3329"
+      ],
+      "regionId": "ankle_foot"
+    },
+    {
+      "id": "right-tenth-rib",
+      "en": "Right tenth rib",
+      "he": "צלע 10 — ימין",
+      "side": "right",
+      "conceptId": "FMA8445",
+      "sourceIds": [
+        "FJ3330"
+      ],
+      "regionId": "chest"
+    },
+    {
+      "id": "right-eleventh-rib",
+      "en": "Right eleventh rib",
+      "he": "צלע 11 — ימין",
+      "side": "right",
+      "conceptId": "FMA8531",
+      "sourceIds": [
+        "FJ3331"
+      ],
+      "regionId": "chest"
+    },
+    {
+      "id": "right-twelfth-rib",
+      "en": "Right twelfth rib",
+      "he": "צלע 12 — ימין",
+      "side": "right",
+      "conceptId": "FMA8533",
+      "sourceIds": [
+        "FJ3332"
+      ],
+      "regionId": "chest"
+    },
+    {
+      "id": "right-first-rib",
+      "en": "Right first rib",
+      "he": "צלע 1 — ימין",
+      "side": "right",
+      "conceptId": "FMA7857",
+      "sourceIds": [
+        "FJ3334"
+      ],
+      "regionId": "chest"
+    },
+    {
+      "id": "right-second-rib",
+      "en": "Right second rib",
+      "he": "צלע 2 — ימין",
+      "side": "right",
+      "conceptId": "FMA7882",
+      "sourceIds": [
+        "FJ3336"
+      ],
+      "regionId": "chest"
+    },
+    {
+      "id": "right-third-rib",
+      "en": "Right third rib",
+      "he": "צלע 3 — ימין",
+      "side": "right",
+      "conceptId": "FMA7909",
+      "sourceIds": [
+        "FJ3338"
+      ],
+      "regionId": "chest"
+    },
+    {
+      "id": "right-fourth-rib",
+      "en": "Right fourth rib",
+      "he": "צלע 4 — ימין",
+      "side": "right",
+      "conceptId": "FMA7957",
+      "sourceIds": [
+        "FJ3340"
+      ],
+      "regionId": "chest"
+    },
+    {
+      "id": "right-fifth-rib",
+      "en": "Right fifth rib",
+      "he": "צלע 5 — ימין",
+      "side": "right",
+      "conceptId": "FMA8066",
+      "sourceIds": [
+        "FJ3342"
+      ],
+      "regionId": "chest"
+    },
+    {
+      "id": "right-sixth-rib",
+      "en": "Right sixth rib",
+      "he": "צלע 6 — ימין",
+      "side": "right",
+      "conceptId": "FMA8175",
+      "sourceIds": [
+        "FJ3344"
+      ],
+      "regionId": "chest"
+    },
+    {
+      "id": "right-seventh-rib",
+      "en": "Right seventh rib",
+      "he": "צלע 7 — ימין",
+      "side": "right",
+      "conceptId": "FMA8229",
+      "sourceIds": [
+        "FJ3346"
+      ],
+      "regionId": "chest"
+    },
+    {
+      "id": "right-eighth-rib",
+      "en": "Right eighth rib",
+      "he": "צלע 8 — ימין",
+      "side": "right",
+      "conceptId": "FMA8283",
+      "sourceIds": [
+        "FJ3347"
+      ],
+      "regionId": "chest"
+    },
+    {
+      "id": "right-ninth-rib",
+      "en": "Right ninth rib",
+      "he": "צלע 9 — ימין",
+      "side": "right",
+      "conceptId": "FMA8364",
+      "sourceIds": [
+        "FJ3348"
+      ],
+      "regionId": "chest"
+    },
+    {
+      "id": "right-radius",
+      "en": "Right radius",
+      "he": "עצם החישור — ימין",
+      "side": "right",
+      "conceptId": "FMA23464",
+      "sourceIds": [
+        "FJ3349"
+      ],
+      "regionId": "forearm"
+    },
+    {
+      "id": "right-first-metacarpal-bone",
+      "en": "Right first metacarpal bone",
+      "he": "עצם מסרק 1 — ימין",
+      "side": "right",
+      "conceptId": "FMA24464",
+      "sourceIds": [
+        "FJ3350"
+      ],
+      "regionId": "wrist_hand"
+    },
+    {
+      "id": "right-first-metatarsal-bone",
+      "en": "Right first metatarsal bone",
+      "he": "עצם מסרק 1 — ימין",
+      "side": "right",
+      "conceptId": "FMA24507",
+      "sourceIds": [
+        "FJ3351"
+      ],
+      "regionId": "ankle_foot"
+    },
+    {
+      "id": "right-second-metacarpal-bone",
+      "en": "Right second metacarpal bone",
+      "he": "עצם מסרק 2 — ימין",
+      "side": "right",
+      "conceptId": "FMA24466",
+      "sourceIds": [
+        "FJ3352"
+      ],
+      "regionId": "wrist_hand"
+    },
+    {
+      "id": "right-second-metatarsal-bone",
+      "en": "Right second metatarsal bone",
+      "he": "עצם מסרק 2 — ימין",
+      "side": "right",
+      "conceptId": "FMA24509",
+      "sourceIds": [
+        "FJ3353"
+      ],
+      "regionId": "ankle_foot"
+    },
+    {
+      "id": "right-third-metacarpal-bone",
+      "en": "Right third metacarpal bone",
+      "he": "עצם מסרק 3 — ימין",
+      "side": "right",
+      "conceptId": "FMA24468",
+      "sourceIds": [
+        "FJ3354"
+      ],
+      "regionId": "wrist_hand"
+    },
+    {
+      "id": "right-third-metatarsal-bone",
+      "en": "Right third metatarsal bone",
+      "he": "עצם מסרק 3 — ימין",
+      "side": "right",
+      "conceptId": "FMA24511",
+      "sourceIds": [
+        "FJ3355"
+      ],
+      "regionId": "ankle_foot"
+    },
+    {
+      "id": "right-fourth-metacarpal-bone",
+      "en": "Right fourth metacarpal bone",
+      "he": "עצם מסרק 4 — ימין",
+      "side": "right",
+      "conceptId": "FMA24470",
+      "sourceIds": [
+        "FJ3356"
+      ],
+      "regionId": "wrist_hand"
+    },
+    {
+      "id": "right-fourth-metatarsal-bone",
+      "en": "Right fourth metatarsal bone",
+      "he": "עצם מסרק 4 — ימין",
+      "side": "right",
+      "conceptId": "FMA24513",
+      "sourceIds": [
+        "FJ3357"
+      ],
+      "regionId": "ankle_foot"
+    },
+    {
+      "id": "right-fifth-metacarpal-bone",
+      "en": "Right fifth metacarpal bone",
+      "he": "עצם מסרק 5 — ימין",
+      "side": "right",
+      "conceptId": "FMA24472",
+      "sourceIds": [
+        "FJ3358"
+      ],
+      "regionId": "wrist_hand"
+    },
+    {
+      "id": "right-fifth-metatarsal-bone",
+      "en": "Right fifth metatarsal bone",
+      "he": "עצם מסרק 5 — ימין",
+      "side": "right",
+      "conceptId": "FMA24515",
+      "sourceIds": [
+        "FJ3359"
+      ],
+      "regionId": "ankle_foot"
+    },
+    {
+      "id": "right-calcaneus",
+      "en": "Right calcaneus",
+      "he": "עצם העקב — ימין",
+      "side": "right",
+      "conceptId": "FMA24497",
+      "sourceIds": [
+        "FJ3360"
+      ],
+      "regionId": "ankle_foot"
+    },
+    {
+      "id": "right-capitate",
+      "en": "Right capitate",
+      "he": "העצם הגדולה — ימין",
+      "side": "right",
+      "conceptId": "FMA24446",
+      "sourceIds": [
+        "FJ3361"
+      ],
+      "regionId": "wrist_hand"
+    },
+    {
+      "id": "right-clavicle",
+      "en": "Right clavicle",
+      "he": "עצם הבריח — ימין",
+      "side": "right",
+      "conceptId": "FMA13322",
+      "sourceIds": [
+        "FJ3362"
+      ],
+      "regionId": "shoulder"
+    },
+    {
+      "id": "right-cuboid-bone",
+      "en": "Right cuboid bone",
+      "he": "עצם הקובייה — ימין",
+      "side": "right",
+      "conceptId": "FMA24528",
+      "sourceIds": [
+        "FJ3364"
+      ],
+      "regionId": "ankle_foot"
+    },
+    {
+      "id": "right-femur",
+      "en": "Right femur",
+      "he": "עצם הירך — ימין",
+      "side": "right",
+      "conceptId": "FMA24474",
+      "sourceIds": [
+        "FJ3365"
+      ],
+      "regionId": "thigh"
+    },
+    {
+      "id": "right-fibula",
+      "en": "Right fibula",
+      "he": "עצם השוקית — ימין",
+      "side": "right",
+      "conceptId": "FMA24480",
+      "sourceIds": [
+        "FJ3366"
+      ],
+      "regionId": "lower_leg"
+    },
+    {
+      "id": "right-hamate",
+      "en": "Right hamate",
+      "he": "עצם האנקול — ימין",
+      "side": "right",
+      "conceptId": "FMA24448",
+      "sourceIds": [
+        "FJ3367"
+      ],
+      "regionId": "wrist_hand"
+    },
+    {
+      "id": "right-humerus",
+      "en": "Right humerus",
+      "he": "עצם הזרוע — ימין",
+      "side": "right",
+      "conceptId": "FMA23130",
+      "sourceIds": [
+        "FJ3368"
+      ],
+      "regionId": "elbow"
+    },
+    {
+      "id": "right-inferior-nasal-concha",
+      "en": "Right inferior nasal concha",
+      "he": "קונכיית האף התחתונה — ימין",
+      "side": "right",
+      "conceptId": "FMA54737",
+      "sourceIds": [
+        "FJ3369"
+      ]
+    },
+    {
+      "id": "right-intermediate-cuneiform-bone",
+      "en": "Right intermediate cuneiform bone",
+      "he": "עצם היתד האמצעית — ימין",
+      "side": "right",
+      "conceptId": "FMA24523",
+      "sourceIds": [
+        "FJ3370"
+      ],
+      "regionId": "ankle_foot"
+    },
+    {
+      "id": "right-lacrimal-bone",
+      "en": "Right lacrimal bone",
+      "he": "עצם הדמע — ימין",
+      "side": "right",
+      "conceptId": "FMA53645",
+      "sourceIds": [
+        "FJ3371"
+      ]
+    },
+    {
+      "id": "right-lateral-cuneiform-bone",
+      "en": "Right lateral cuneiform bone",
+      "he": "עצם היתד הלטרלית — ימין",
+      "side": "right",
+      "conceptId": "FMA24525",
+      "sourceIds": [
+        "FJ3373"
+      ],
+      "regionId": "ankle_foot"
+    },
+    {
+      "id": "right-lunate",
+      "en": "Right lunate",
+      "he": "עצם הסהר — ימין",
+      "side": "right",
+      "conceptId": "FMA24437",
+      "sourceIds": [
+        "FJ3374"
+      ],
+      "regionId": "wrist_hand"
+    },
+    {
+      "id": "right-maxilla",
+      "en": "Right maxilla",
+      "he": "הלסת העליונה — ימין",
+      "side": "right",
+      "conceptId": "FMA53649",
+      "sourceIds": [
+        "FJ3375"
+      ]
+    },
+    {
+      "id": "right-medial-cuneiform-bone",
+      "en": "Right medial cuneiform bone",
+      "he": "עצם היתד המדיאלית — ימין",
+      "side": "right",
+      "conceptId": "FMA24521",
+      "sourceIds": [
+        "FJ3377"
+      ],
+      "regionId": "ankle_foot"
+    },
+    {
+      "id": "right-nasal-bone",
+      "en": "Right nasal bone",
+      "he": "עצם האף — ימין",
+      "side": "right",
+      "conceptId": "FMA53647",
+      "sourceIds": [
+        "FJ3378"
+      ]
+    },
+    {
+      "id": "right-palatine-bone",
+      "en": "Right palatine bone",
+      "he": "עצם החך — ימין",
+      "side": "right",
+      "conceptId": "FMA53655",
+      "sourceIds": [
+        "FJ3379"
+      ]
+    },
+    {
+      "id": "right-parietal-bone",
+      "en": "Right parietal bone",
+      "he": "עצם הקודקוד — ימין",
+      "side": "right",
+      "conceptId": "FMA52788",
+      "sourceIds": [
+        "FJ3380"
+      ]
+    },
+    {
+      "id": "right-patella",
+      "en": "Right patella",
+      "he": "הפיקה — ימין",
+      "side": "right",
+      "conceptId": "FMA24486",
+      "sourceIds": [
+        "FJ3381"
+      ],
+      "regionId": "knee"
+    },
+    {
+      "id": "right-pisiform",
+      "en": "Right pisiform",
+      "he": "עצם העדשה — ימין",
+      "side": "right",
+      "conceptId": "FMA24441",
+      "sourceIds": [
+        "FJ3382"
+      ],
+      "regionId": "wrist_hand"
+    },
+    {
+      "id": "right-scaphoid",
+      "en": "Right scaphoid",
+      "he": "עצם הסירה — ימין",
+      "side": "right",
+      "conceptId": "FMA24435",
+      "sourceIds": [
+        "FJ3383"
+      ],
+      "regionId": "wrist_hand"
+    },
+    {
+      "id": "right-scapula",
+      "en": "Right scapula",
+      "he": "עצם השכמה — ימין",
+      "side": "right",
+      "conceptId": "FMA13395",
+      "sourceIds": [
+        "FJ3384"
+      ],
+      "regionId": "shoulder"
+    },
+    {
+      "id": "right-talus",
+      "en": "Right talus",
+      "he": "עצם הערקום — ימין",
+      "side": "right",
+      "conceptId": "FMA24482",
+      "sourceIds": [
+        "FJ3385"
+      ],
+      "regionId": "ankle_foot"
+    },
+    {
+      "id": "right-temporal-bone",
+      "en": "Right temporal bone",
+      "he": "עצם הרקה — ימין",
+      "side": "right",
+      "conceptId": "FMA52738",
+      "sourceIds": [
+        "FJ3386"
+      ]
+    },
+    {
+      "id": "right-tibia",
+      "en": "Right tibia",
+      "he": "עצם השוקה — ימין",
+      "side": "right",
+      "conceptId": "FMA24477",
+      "sourceIds": [
+        "FJ3387"
+      ],
+      "regionId": "lower_leg"
+    },
+    {
+      "id": "right-trapezium",
+      "en": "Right trapezium",
+      "he": "עצם הטרפז — ימין",
+      "side": "right",
+      "conceptId": "FMA24443",
+      "sourceIds": [
+        "FJ3388"
+      ],
+      "regionId": "wrist_hand"
+    },
+    {
+      "id": "right-trapezoid",
+      "en": "Right trapezoid",
+      "he": "העצם דמוית הטרפז — ימין",
+      "side": "right",
+      "conceptId": "FMA23725",
+      "sourceIds": [
+        "FJ3389"
+      ],
+      "regionId": "wrist_hand"
+    },
+    {
+      "id": "right-triquetral",
+      "en": "Right triquetral",
+      "he": "העצם המשולשת — ימין",
+      "side": "right",
+      "conceptId": "FMA24439",
+      "sourceIds": [
+        "FJ3390"
+      ],
+      "regionId": "wrist_hand"
+    },
+    {
+      "id": "right-ulna",
+      "en": "Right ulna",
+      "he": "עצם הגומד — ימין",
+      "side": "right",
+      "conceptId": "FMA23467",
+      "sourceIds": [
+        "FJ3391"
+      ],
+      "regionId": "forearm"
+    },
+    {
+      "id": "right-zygomatic-bone",
+      "en": "Right zygomatic bone",
+      "he": "עצם הלחי — ימין",
+      "side": "right",
+      "conceptId": "FMA52892",
+      "sourceIds": [
+        "FJ3392"
+      ]
+    },
+    {
+      "id": "sacrum",
+      "en": "Sacrum",
+      "he": "עצם העצה",
+      "side": "midline",
+      "conceptId": "FMA16202",
+      "sourceIds": [
+        "FJ3393"
+      ],
+      "regionId": "lower_back_spine"
+    },
+    {
+      "id": "sphenoid-bone",
+      "en": "Sphenoid bone",
+      "he": "עצם היתד",
+      "side": "midline",
+      "conceptId": "FMA52736",
+      "sourceIds": [
+        "FJ3394"
+      ]
+    },
+    {
+      "id": "vomer",
+      "en": "Vomer",
+      "he": "עצם המחרשה",
+      "side": "midline",
+      "conceptId": "FMA9710",
+      "sourceIds": [
+        "FJ3395"
+      ]
+    },
+    {
+      "id": "hyoid",
+      "en": "Hyoid bone",
+      "he": "עצם הלשון",
+      "side": "midline",
+      "conceptId": "FMA52749",
+      "sourceIds": [
+        "FJ3201"
+      ]
+    },
+    {
+      "id": "sternum",
+      "en": "Sternum",
+      "he": "עצם החזה",
+      "side": "midline",
+      "conceptId": "FMA7485",
+      "regionId": "chest",
+      "sourceIds": [
+        "FJ3290",
+        "FJ3178",
+        "FJ3153"
+      ]
+    },
+    {
+      "id": "left-foot-sesamoids",
+      "en": "Left foot sesamoid bones",
+      "he": "עצמות ססמואידיות בכף רגל שמאל",
+      "side": "left",
+      "conceptId": "FMA45098",
+      "regionId": "ankle_foot",
+      "sourceIds": [
+        "FJ3266",
+        "FJ3270"
+      ]
+    },
+    {
+      "id": "right-foot-sesamoids",
+      "en": "Right foot sesamoid bones",
+      "he": "עצמות ססמואידיות בכף רגל ימין",
+      "side": "right",
+      "conceptId": "FMA45097",
+      "regionId": "ankle_foot",
+      "sourceIds": [
+        "FJ3372",
+        "FJ3376"
+      ]
+    }
+  ]
+}

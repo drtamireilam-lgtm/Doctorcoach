@@ -97,3 +97,23 @@
 }
 /* These arrows are selected by language in React; avoid a second global flip. */
 html[dir=ltr] .dc-premium :is(.lucide-arrow-left,.lucide-arrow-right){transform:none}
+/* Reuse the persisted appearance tokens rather than maintaining another theme state. */
+html[data-palette] .dc-premium,html.light .dc-premium,html[data-custom-theme] .dc-premium{
+ --dc-bg:var(--canvas);--dc-surface:var(--card);--dc-border:var(--line);--dc-gold:var(--accent-red);--dc-teal:var(--accent-red);--dc-text:var(--text);--dc-muted:var(--muted);
+ background:linear-gradient(145deg,var(--canvas),var(--card));border-color:var(--dc-border)
+}
+html:is([data-palette],.light,[data-custom-theme]) .dc-premium :is(.dc-premium-card,.dc-premium-quick nav button){background:var(--dc-surface);border-color:var(--dc-border);color:var(--dc-text)}
+html:is([data-palette],.light,[data-custom-theme]) .dc-premium :is(h1,h2,strong,.dc-premium-steps-heading>span:first-child){color:var(--dc-text)}
+html:is([data-palette],.light,[data-custom-theme]) .dc-premium :is(.dc-premium-hero p,.dc-premium-status){color:var(--dc-muted)}
+html:is([data-palette],.light,[data-custom-theme]) .dc-premium .dc-premium-hero{background:linear-gradient(135deg,var(--card),var(--raised,var(--card)))}
+html:is([data-palette],.light,[data-custom-theme]) .dc-premium .dc-premium-action.is-primary{background:var(--dc-button,var(--red));border-color:var(--dc-button,var(--red));color:var(--dc-button-text,#fff)}
+html:is([data-palette],.light,[data-custom-theme]) .dc-premium .dc-premium-consult>button{color:var(--dc-teal);border-color:var(--dc-border);background:var(--dc-surface)}
+html:is([data-palette],.light,[data-custom-theme]) .dc-premium .dc-premium-quick nav button:hover{background:var(--raised,var(--card));border-color:var(--dc-gold)}
+html:is([data-palette],.light,[data-custom-theme]) .dc-premium-eyebrow span:first-of-type{color:var(--dc-text)}
+@media(max-width:480px){
+ .dc-premium-metrics{grid-template-columns:1fr}
+ .dc-premium-metrics>.dc-premium-card{grid-template-columns:40px minmax(0,1fr);column-gap:12px}
+ .dc-premium-metric-icon{grid-row:span 3}
+ .dc-premium-metrics button{grid-column:2}
+ .dc-premium-metrics strong{overflow-wrap:normal}
+}

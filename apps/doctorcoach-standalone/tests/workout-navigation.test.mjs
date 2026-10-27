@@ -29,15 +29,15 @@ test('cancelled hash or browser-back change keeps exact previous route for resto
 });
 
 import {workoutNavigationTargets,workoutSetAnchor,revealWorkoutTarget} from '../lib/workout-navigation.ts';
-test('next set follows visible warmup/main/stretch order and advances only on saved done values',()=>{
+test('next set follows visible preparation/main order and advances only on saved done values',()=>{
  const main={exerciseId:'main',workoutSection:'main',results:[{done:true},{done:false}]};
  const warm={exerciseId:'warm',workoutSection:'warmup',results:[{done:false}]};
  const stretch={exerciseId:'stretch',workoutSection:'stretch',results:[{done:false}]};
  const session={items:[main,stretch,warm]};const before=JSON.stringify(session);
- assert.equal(workoutNavigationTargets(session).pending.item,warm);assert.equal(JSON.stringify(session),before);
+ assert.equal(workoutNavigationTargets(session).pending.item,stretch);assert.equal(JSON.stringify(session),before);
+ stretch.results[0].done=true;assert.equal(workoutNavigationTargets(session).pending.item,warm);
  warm.results[0].done=true;assert.equal(workoutNavigationTargets(session).pending.item,main);assert.equal(workoutNavigationTargets(session).pending.index,1);
- main.results[1].done=true;assert.equal(workoutNavigationTargets(session).pending.item,stretch);
- stretch.results[0].done=true;assert.equal(workoutNavigationTargets(session).pending,null);
+ main.results[1].done=true;assert.equal(workoutNavigationTargets(session).pending,null);
 });
 test('set anchors separate sessions, workout days and set positions',()=>{
  const item={exerciseId:'a:b',dayId:'1'};const anchor=workoutSetAnchor('session',item,0);
@@ -51,4 +51,15 @@ test('explicit set navigation opens a collapsed exercise then focuses and scroll
 test('navigation leaves open disclosures open and ignores a removed target',()=>{
  let clicks=0,queued;const target={isConnected:false,closest:()=>({querySelector:()=>({getAttribute:()=> 'true',click:()=>clicks++})}),focus:()=>{throw Error('removed');}};
  revealWorkoutTarget('target',{getElementById:()=>target},fn=>{queued=fn;});queued();assert.equal(clicks,0);
+});
+
+test('next workout target follows unified preparation in source order before main work',()=>{
+ const main={exerciseId:'main',workoutSection:'main',results:[{done:false}]};
+ const warm={exerciseId:'warm',workoutSection:'warmup',results:[{done:false}]};
+ const stretch={exerciseId:'stretch',workoutSection:'stretch',results:[{done:false}]};
+ const session={items:[main,stretch,warm]};
+ assert.deepEqual(workoutNavigationTargets(session).items,[stretch,warm,main]);
+ assert.equal(workoutNavigationTargets(session).pending.item,stretch);
+ stretch.results[0].done=true;assert.equal(workoutNavigationTargets(session).pending.item,warm);
+ warm.results[0].done=true;assert.equal(workoutNavigationTargets(session).pending.item,main);
 });

@@ -1,0 +1,940 @@
+{
+  "assetId": "bp3d-4-torso",
+  "sourceUrl": "https://dbarchive.biosciencedbc.jp/data/bodyparts3d/LATEST/isa_BP3D_4.0_obj_99.zip",
+  "creator": "The Database Center for Life Science",
+  "licenseId": "CC-BY-4.0",
+  "licenseUrl": "https://creativecommons.org/licenses/by/4.0/",
+  "licenseEvidence": "https://dbarchive.biosciencedbc.jp/en/bodyparts3d/lic.html",
+  "attribution": "BodyParts3D, © The Database Center for Life Science licensed under CC Attribution 4.0 International",
+  "modifications": "Original right ribs, attachment-context bones, seven costal cartilages and four muscles; midline manubrium, body of sternum and xiphoid combined as sternum; three original pectoralis major parts combined. All source vertices/triangles retained, mm XYZ converted to metres X Z -Y; normals/unique materials added. No mirroring, cropping or fabricated abdominal muscles.",
+  "downloadedSubsetSha256": "235b32b9524e2fa1c001fb86af459e78dcd6a901e88108b076134ca6c3eac0d2",
+  "glbSha256": "d7d9498afc054409db122d3c0164af88f938a5fd35b7914eb5adbb56cd922f92",
+  "anatomicalReview": "pending",
+  "structures": [
+    {
+      "id": "sternum",
+      "en": "Sternum",
+      "he": "עצם החזה",
+      "layer": "bone",
+      "side": "midline",
+      "regionId": "chest",
+      "sources": [
+        {
+          "elementId": "FJ3290",
+          "sha256": "e94f731d044131260947146ab79fa7c4712865e1aac36a1410003358b96e0692",
+          "mappingRows": [
+            "FMA7486\tmanubrium\tFJ3290",
+            "FMA10483\tzone of bone organ\tFJ3290",
+            "FMA12215\tzone of sternum\tFJ3290",
+            "FMA55268\torgan zone\tFJ3290",
+            "FMA61775\tphysical anatomical entity\tFJ3290",
+            "FMA62955\tanatomical entity\tFJ3290",
+            "FMA67135\tanatomical structure\tFJ3290",
+            "FMA67165\tmaterial anatomical entity\tFJ3290",
+            "FMA67619\torgan region\tFJ3290",
+            "FMA82472\tcardinal organ part\tFJ3290"
+          ]
+        },
+        {
+          "elementId": "FJ3178",
+          "sha256": "ec90f03f2ce1edebc8793a9e9973229b198d6367eb5eab1dff6e238110e94d9d",
+          "mappingRows": [
+            "FMA7487\tbody of sternum\tFJ3178",
+            "FMA45734\tbody of organ\tFJ3178",
+            "FMA55268\torgan zone\tFJ3178",
+            "FMA61775\tphysical anatomical entity\tFJ3178",
+            "FMA62955\tanatomical entity\tFJ3178",
+            "FMA67135\tanatomical structure\tFJ3178",
+            "FMA67165\tmaterial anatomical entity\tFJ3178",
+            "FMA67619\torgan region\tFJ3178",
+            "FMA82472\tcardinal organ part\tFJ3178"
+          ]
+        },
+        {
+          "elementId": "FJ3153",
+          "sha256": "371573a43e28506d674bf4999ee4c50c0497014aa8d69865f450a078d493a495",
+          "mappingRows": [
+            "FMA7488\txiphoid process\tFJ3153",
+            "FMA61775\tphysical anatomical entity\tFJ3153",
+            "FMA62955\tanatomical entity\tFJ3153",
+            "FMA67135\tanatomical structure\tFJ3153",
+            "FMA67165\tmaterial anatomical entity\tFJ3153",
+            "FMA67601\tprocess of organ\tFJ3153",
+            "FMA67619\torgan region\tFJ3153",
+            "FMA82472\tcardinal organ part\tFJ3153",
+            "FMA86140\torgan segment\tFJ3153"
+          ]
+        }
+      ],
+      "triangles": 8114,
+      "review": "pending"
+    },
+    {
+      "id": "hip-bone",
+      "en": "Hip bone — attachment context",
+      "he": "עצם האגן — הקשר לחיבורי השרירים",
+      "layer": "bone",
+      "side": "right",
+      "regionId": "chest",
+      "sources": [
+        {
+          "elementId": "FJ3152",
+          "sha256": "99de26e5435a8397b6f39b44ada75319d5e8fa1433e1ea38fdd8de9e079ed9a9",
+          "mappingRows": [
+            "FMA5018\tbone organ\tFJ3152",
+            "FMA7476\tflat bone\tFJ3152",
+            "FMA16585\thip bone\tFJ3152",
+            "FMA16586\tright hip bone\tFJ3152",
+            "FMA55671\tcavitated organ\tFJ3152",
+            "FMA55673\torgan with cavitated organ parts\tFJ3152",
+            "FMA61775\tphysical anatomical entity\tFJ3152",
+            "FMA62955\tanatomical entity\tFJ3152",
+            "FMA67135\tanatomical structure\tFJ3152",
+            "FMA67165\tmaterial anatomical entity\tFJ3152",
+            "FMA67498\torgan\tFJ3152"
+          ]
+        }
+      ],
+      "triangles": 2374,
+      "review": "pending"
+    },
+    {
+      "id": "scapula",
+      "en": "Scapula",
+      "he": "עצם השכמה",
+      "layer": "bone",
+      "side": "right",
+      "regionId": "chest",
+      "sources": [
+        {
+          "elementId": "FJ3384",
+          "sha256": "1641b04e55f9d75bdd6f1f4f07ea596e5dea0a8cb6b348bff47281b8a0bc6e5d",
+          "mappingRows": [
+            "FMA5018\tbone organ\tFJ3384",
+            "FMA7476\tflat bone\tFJ3384",
+            "FMA13394\tscapula\tFJ3384",
+            "FMA13395\tright scapula\tFJ3384",
+            "FMA55671\tcavitated organ\tFJ3384",
+            "FMA55673\torgan with cavitated organ parts\tFJ3384",
+            "FMA61775\tphysical anatomical entity\tFJ3384",
+            "FMA62955\tanatomical entity\tFJ3384",
+            "FMA67135\tanatomical structure\tFJ3384",
+            "FMA67165\tmaterial anatomical entity\tFJ3384",
+            "FMA67498\torgan\tFJ3384"
+          ]
+        }
+      ],
+      "triangles": 26172,
+      "review": "pending"
+    },
+    {
+      "id": "clavicle",
+      "en": "Clavicle",
+      "he": "עצם הבריח",
+      "layer": "bone",
+      "side": "right",
+      "regionId": "chest",
+      "sources": [
+        {
+          "elementId": "FJ3362",
+          "sha256": "9a111cac8351e79dd1315aea90108fe56f78e4bf0159473e6ad727ba91b60e6d",
+          "mappingRows": [
+            "FMA5018\tbone organ\tFJ3362",
+            "FMA7474\tlong bone\tFJ3362",
+            "FMA13321\tclavicle\tFJ3362",
+            "FMA13322\tright clavicle\tFJ3362",
+            "FMA55671\tcavitated organ\tFJ3362",
+            "FMA55673\torgan with cavitated organ parts\tFJ3362",
+            "FMA61775\tphysical anatomical entity\tFJ3362",
+            "FMA62955\tanatomical entity\tFJ3362",
+            "FMA67135\tanatomical structure\tFJ3362",
+            "FMA67165\tmaterial anatomical entity\tFJ3362",
+            "FMA67498\torgan\tFJ3362"
+          ]
+        }
+      ],
+      "triangles": 1146,
+      "review": "pending"
+    },
+    {
+      "id": "rib-1",
+      "en": "Rib 1",
+      "he": "צלע 1",
+      "layer": "bone",
+      "side": "right",
+      "regionId": "chest",
+      "sources": [
+        {
+          "elementId": "FJ3334",
+          "sha256": "3831c5c578d45fc491e7e72417cc436e04a1a3a1916138e51528ad0b0b212a54",
+          "mappingRows": [
+            "FMA5018\tbone organ\tFJ3334",
+            "FMA7474\tlong bone\tFJ3334",
+            "FMA7574\trib\tFJ3334",
+            "FMA7592\ttrue rib\tFJ3334",
+            "FMA7596\tatypical rib\tFJ3334",
+            "FMA7597\tfirst rib\tFJ3334",
+            "FMA7857\tright first rib\tFJ3334",
+            "FMA55671\tcavitated organ\tFJ3334",
+            "FMA55673\torgan with cavitated organ parts\tFJ3334",
+            "FMA61775\tphysical anatomical entity\tFJ3334",
+            "FMA62955\tanatomical entity\tFJ3334",
+            "FMA67135\tanatomical structure\tFJ3334",
+            "FMA67165\tmaterial anatomical entity\tFJ3334",
+            "FMA67498\torgan\tFJ3334"
+          ]
+        }
+      ],
+      "triangles": 3276,
+      "review": "pending"
+    },
+    {
+      "id": "rib-2",
+      "en": "Rib 2",
+      "he": "צלע 2",
+      "layer": "bone",
+      "side": "right",
+      "regionId": "chest",
+      "sources": [
+        {
+          "elementId": "FJ3336",
+          "sha256": "57084a626a91aa88782f2e836c75450cd90bf19717dfd3f31602b4c674b70c0c",
+          "mappingRows": [
+            "FMA5018\tbone organ\tFJ3336",
+            "FMA7474\tlong bone\tFJ3336",
+            "FMA7574\trib\tFJ3336",
+            "FMA7592\ttrue rib\tFJ3336",
+            "FMA7596\tatypical rib\tFJ3336",
+            "FMA7620\tsecond rib\tFJ3336",
+            "FMA7882\tright second rib\tFJ3336",
+            "FMA55671\tcavitated organ\tFJ3336",
+            "FMA55673\torgan with cavitated organ parts\tFJ3336",
+            "FMA61775\tphysical anatomical entity\tFJ3336",
+            "FMA62955\tanatomical entity\tFJ3336",
+            "FMA67135\tanatomical structure\tFJ3336",
+            "FMA67165\tmaterial anatomical entity\tFJ3336",
+            "FMA67498\torgan\tFJ3336"
+          ]
+        }
+      ],
+      "triangles": 5594,
+      "review": "pending"
+    },
+    {
+      "id": "rib-3",
+      "en": "Rib 3",
+      "he": "צלע 3",
+      "layer": "bone",
+      "side": "right",
+      "regionId": "chest",
+      "sources": [
+        {
+          "elementId": "FJ3338",
+          "sha256": "b239419743f7320b8b1d4f4d96ab41c1ff7fccdc921fa3a99c700a9d6dbd2a6c",
+          "mappingRows": [
+            "FMA5018\tbone organ\tFJ3338",
+            "FMA7474\tlong bone\tFJ3338",
+            "FMA7574\trib\tFJ3338",
+            "FMA7592\ttrue rib\tFJ3338",
+            "FMA7593\ttypical rib\tFJ3338",
+            "FMA7638\tthird rib\tFJ3338",
+            "FMA7909\tright third rib\tFJ3338",
+            "FMA55671\tcavitated organ\tFJ3338",
+            "FMA55673\torgan with cavitated organ parts\tFJ3338",
+            "FMA61775\tphysical anatomical entity\tFJ3338",
+            "FMA62955\tanatomical entity\tFJ3338",
+            "FMA67135\tanatomical structure\tFJ3338",
+            "FMA67165\tmaterial anatomical entity\tFJ3338",
+            "FMA67498\torgan\tFJ3338"
+          ]
+        }
+      ],
+      "triangles": 7254,
+      "review": "pending"
+    },
+    {
+      "id": "rib-4",
+      "en": "Rib 4",
+      "he": "צלע 4",
+      "layer": "bone",
+      "side": "right",
+      "regionId": "chest",
+      "sources": [
+        {
+          "elementId": "FJ3340",
+          "sha256": "ffca17251de4f457c4952e9d913070eb7a6f767493925ac3d8c3c744941b5dbd",
+          "mappingRows": [
+            "FMA5018\tbone organ\tFJ3340",
+            "FMA7474\tlong bone\tFJ3340",
+            "FMA7574\trib\tFJ3340",
+            "FMA7592\ttrue rib\tFJ3340",
+            "FMA7593\ttypical rib\tFJ3340",
+            "FMA7749\tfourth rib\tFJ3340",
+            "FMA7957\tright fourth rib\tFJ3340",
+            "FMA55671\tcavitated organ\tFJ3340",
+            "FMA55673\torgan with cavitated organ parts\tFJ3340",
+            "FMA61775\tphysical anatomical entity\tFJ3340",
+            "FMA62955\tanatomical entity\tFJ3340",
+            "FMA67135\tanatomical structure\tFJ3340",
+            "FMA67165\tmaterial anatomical entity\tFJ3340",
+            "FMA67498\torgan\tFJ3340"
+          ]
+        }
+      ],
+      "triangles": 8832,
+      "review": "pending"
+    },
+    {
+      "id": "rib-5",
+      "en": "Rib 5",
+      "he": "צלע 5",
+      "layer": "bone",
+      "side": "right",
+      "regionId": "chest",
+      "sources": [
+        {
+          "elementId": "FJ3342",
+          "sha256": "b2d1f3bc9478c51524628f4e79524290add55800ae85b06ff657f17f4c0c6f1f",
+          "mappingRows": [
+            "FMA5018\tbone organ\tFJ3342",
+            "FMA7474\tlong bone\tFJ3342",
+            "FMA7574\trib\tFJ3342",
+            "FMA7592\ttrue rib\tFJ3342",
+            "FMA7593\ttypical rib\tFJ3342",
+            "FMA7776\tfifth rib\tFJ3342",
+            "FMA8066\tright fifth rib\tFJ3342",
+            "FMA55671\tcavitated organ\tFJ3342",
+            "FMA55673\torgan with cavitated organ parts\tFJ3342",
+            "FMA61775\tphysical anatomical entity\tFJ3342",
+            "FMA62955\tanatomical entity\tFJ3342",
+            "FMA67135\tanatomical structure\tFJ3342",
+            "FMA67165\tmaterial anatomical entity\tFJ3342",
+            "FMA67498\torgan\tFJ3342"
+          ]
+        }
+      ],
+      "triangles": 9710,
+      "review": "pending"
+    },
+    {
+      "id": "rib-6",
+      "en": "Rib 6",
+      "he": "צלע 6",
+      "layer": "bone",
+      "side": "right",
+      "regionId": "chest",
+      "sources": [
+        {
+          "elementId": "FJ3344",
+          "sha256": "5e45ea5a527d3b7df56c508213020265ed1c8a0d9a99f31454b92059f4f1a95f",
+          "mappingRows": [
+            "FMA5018\tbone organ\tFJ3344",
+            "FMA7474\tlong bone\tFJ3344",
+            "FMA7574\trib\tFJ3344",
+            "FMA7592\ttrue rib\tFJ3344",
+            "FMA7593\ttypical rib\tFJ3344",
+            "FMA8147\tsixth rib\tFJ3344",
+            "FMA8175\tright sixth rib\tFJ3344",
+            "FMA55671\tcavitated organ\tFJ3344",
+            "FMA55673\torgan with cavitated organ parts\tFJ3344",
+            "FMA61775\tphysical anatomical entity\tFJ3344",
+            "FMA62955\tanatomical entity\tFJ3344",
+            "FMA67135\tanatomical structure\tFJ3344",
+            "FMA67165\tmaterial anatomical entity\tFJ3344",
+            "FMA67498\torgan\tFJ3344"
+          ]
+        }
+      ],
+      "triangles": 10246,
+      "review": "pending"
+    },
+    {
+      "id": "rib-7",
+      "en": "Rib 7",
+      "he": "צלע 7",
+      "layer": "bone",
+      "side": "right",
+      "regionId": "chest",
+      "sources": [
+        {
+          "elementId": "FJ3346",
+          "sha256": "86cc62c1a0a754f2e01a30b5d7179c745f3c2404ef4031ae43568667c4041996",
+          "mappingRows": [
+            "FMA5018\tbone organ\tFJ3346",
+            "FMA7474\tlong bone\tFJ3346",
+            "FMA7574\trib\tFJ3346",
+            "FMA7592\ttrue rib\tFJ3346",
+            "FMA7593\ttypical rib\tFJ3346",
+            "FMA7830\tseventh rib\tFJ3346",
+            "FMA8229\tright seventh rib\tFJ3346",
+            "FMA55671\tcavitated organ\tFJ3346",
+            "FMA55673\torgan with cavitated organ parts\tFJ3346",
+            "FMA61775\tphysical anatomical entity\tFJ3346",
+            "FMA62955\tanatomical entity\tFJ3346",
+            "FMA67135\tanatomical structure\tFJ3346",
+            "FMA67165\tmaterial anatomical entity\tFJ3346",
+            "FMA67498\torgan\tFJ3346"
+          ]
+        }
+      ],
+      "triangles": 10032,
+      "review": "pending"
+    },
+    {
+      "id": "rib-8",
+      "en": "Rib 8",
+      "he": "צלע 8",
+      "layer": "bone",
+      "side": "right",
+      "regionId": "chest",
+      "sources": [
+        {
+          "elementId": "FJ3347",
+          "sha256": "388e8f3dd5c308fe1454daed2aa3a2fced280d4ec60f97b547b476ca6b0da930",
+          "mappingRows": [
+            "FMA5018\tbone organ\tFJ3347",
+            "FMA7474\tlong bone\tFJ3347",
+            "FMA7574\trib\tFJ3347",
+            "FMA7594\tfalse rib\tFJ3347",
+            "FMA8120\teighth rib\tFJ3347",
+            "FMA8283\tright eighth rib\tFJ3347",
+            "FMA55671\tcavitated organ\tFJ3347",
+            "FMA55673\torgan with cavitated organ parts\tFJ3347",
+            "FMA61775\tphysical anatomical entity\tFJ3347",
+            "FMA62955\tanatomical entity\tFJ3347",
+            "FMA67135\tanatomical structure\tFJ3347",
+            "FMA67165\tmaterial anatomical entity\tFJ3347",
+            "FMA67498\torgan\tFJ3347"
+          ]
+        }
+      ],
+      "triangles": 8336,
+      "review": "pending"
+    },
+    {
+      "id": "rib-9",
+      "en": "Rib 9",
+      "he": "צלע 9",
+      "layer": "bone",
+      "side": "right",
+      "regionId": "chest",
+      "sources": [
+        {
+          "elementId": "FJ3348",
+          "sha256": "4ef4af4eb8a7ea76479b2d4a1b2973c7d950f6e3aa5593eca4377258222bdaf6",
+          "mappingRows": [
+            "FMA5018\tbone organ\tFJ3348",
+            "FMA7474\tlong bone\tFJ3348",
+            "FMA7574\trib\tFJ3348",
+            "FMA7594\tfalse rib\tFJ3348",
+            "FMA8337\tninth rib\tFJ3348",
+            "FMA8364\tright ninth rib\tFJ3348",
+            "FMA55671\tcavitated organ\tFJ3348",
+            "FMA55673\torgan with cavitated organ parts\tFJ3348",
+            "FMA61775\tphysical anatomical entity\tFJ3348",
+            "FMA62955\tanatomical entity\tFJ3348",
+            "FMA67135\tanatomical structure\tFJ3348",
+            "FMA67165\tmaterial anatomical entity\tFJ3348",
+            "FMA67498\torgan\tFJ3348"
+          ]
+        }
+      ],
+      "triangles": 7576,
+      "review": "pending"
+    },
+    {
+      "id": "rib-10",
+      "en": "Rib 10",
+      "he": "צלע 10",
+      "layer": "bone",
+      "side": "right",
+      "regionId": "chest",
+      "sources": [
+        {
+          "elementId": "FJ3330",
+          "sha256": "9e62a17a2ea9dc16797beec97bd0925c9692c2a4764391cbc1e289b0120e7aa4",
+          "mappingRows": [
+            "FMA5018\tbone organ\tFJ3330",
+            "FMA7474\tlong bone\tFJ3330",
+            "FMA7574\trib\tFJ3330",
+            "FMA7594\tfalse rib\tFJ3330",
+            "FMA8418\ttenth rib\tFJ3330",
+            "FMA8445\tright tenth rib\tFJ3330",
+            "FMA55671\tcavitated organ\tFJ3330",
+            "FMA55673\torgan with cavitated organ parts\tFJ3330",
+            "FMA61775\tphysical anatomical entity\tFJ3330",
+            "FMA62955\tanatomical entity\tFJ3330",
+            "FMA67135\tanatomical structure\tFJ3330",
+            "FMA67165\tmaterial anatomical entity\tFJ3330",
+            "FMA67498\torgan\tFJ3330"
+          ]
+        }
+      ],
+      "triangles": 6820,
+      "review": "pending"
+    },
+    {
+      "id": "rib-11",
+      "en": "Rib 11",
+      "he": "צלע 11",
+      "layer": "bone",
+      "side": "right",
+      "regionId": "chest",
+      "sources": [
+        {
+          "elementId": "FJ3331",
+          "sha256": "1fdce776ea65919bf9aa418ec91c872b3eb835daca57dc69a7caa40bb02707d7",
+          "mappingRows": [
+            "FMA5018\tbone organ\tFJ3331",
+            "FMA7474\tlong bone\tFJ3331",
+            "FMA7574\trib\tFJ3331",
+            "FMA7594\tfalse rib\tFJ3331",
+            "FMA7595\tfloating rib\tFJ3331",
+            "FMA8499\televenth rib\tFJ3331",
+            "FMA8531\tright eleventh rib\tFJ3331",
+            "FMA55671\tcavitated organ\tFJ3331",
+            "FMA55673\torgan with cavitated organ parts\tFJ3331",
+            "FMA61775\tphysical anatomical entity\tFJ3331",
+            "FMA62955\tanatomical entity\tFJ3331",
+            "FMA67135\tanatomical structure\tFJ3331",
+            "FMA67165\tmaterial anatomical entity\tFJ3331",
+            "FMA67498\torgan\tFJ3331"
+          ]
+        }
+      ],
+      "triangles": 4866,
+      "review": "pending"
+    },
+    {
+      "id": "rib-12",
+      "en": "Rib 12",
+      "he": "צלע 12",
+      "layer": "bone",
+      "side": "right",
+      "regionId": "chest",
+      "sources": [
+        {
+          "elementId": "FJ3332",
+          "sha256": "50dd4dac4ebb45fa245d700f7ceac89edd7503cb4caab154b644b0a808da2ecc",
+          "mappingRows": [
+            "FMA5018\tbone organ\tFJ3332",
+            "FMA7474\tlong bone\tFJ3332",
+            "FMA7574\trib\tFJ3332",
+            "FMA7594\tfalse rib\tFJ3332",
+            "FMA7595\tfloating rib\tFJ3332",
+            "FMA8515\ttwelfth rib\tFJ3332",
+            "FMA8533\tright twelfth rib\tFJ3332",
+            "FMA55671\tcavitated organ\tFJ3332",
+            "FMA55673\torgan with cavitated organ parts\tFJ3332",
+            "FMA61775\tphysical anatomical entity\tFJ3332",
+            "FMA62955\tanatomical entity\tFJ3332",
+            "FMA67135\tanatomical structure\tFJ3332",
+            "FMA67165\tmaterial anatomical entity\tFJ3332",
+            "FMA67498\torgan\tFJ3332"
+          ]
+        }
+      ],
+      "triangles": 2818,
+      "review": "pending"
+    },
+    {
+      "id": "humerus",
+      "en": "Humerus — attachment context",
+      "he": "עצם הזרוע — הקשר לחיבורי השרירים",
+      "layer": "bone",
+      "side": "right",
+      "regionId": "chest",
+      "sources": [
+        {
+          "elementId": "FJ3368",
+          "sha256": "85f5445a11ecb029b027db0b9b34933982836d442b19ff531d1ca35a3bc3a237",
+          "mappingRows": [
+            "FMA5018\tbone organ\tFJ3368",
+            "FMA7474\tlong bone\tFJ3368",
+            "FMA13303\thumerus\tFJ3368",
+            "FMA23130\tright humerus\tFJ3368",
+            "FMA55671\tcavitated organ\tFJ3368",
+            "FMA55673\torgan with cavitated organ parts\tFJ3368",
+            "FMA61775\tphysical anatomical entity\tFJ3368",
+            "FMA62955\tanatomical entity\tFJ3368",
+            "FMA67135\tanatomical structure\tFJ3368",
+            "FMA67165\tmaterial anatomical entity\tFJ3368",
+            "FMA67498\torgan\tFJ3368"
+          ]
+        }
+      ],
+      "triangles": 3784,
+      "review": "pending"
+    },
+    {
+      "id": "costal-cartilage-1",
+      "en": "Costal cartilage 1",
+      "he": "סחוס צלע 1",
+      "layer": "cartilage",
+      "side": "right",
+      "regionId": "chest",
+      "sources": [
+        {
+          "elementId": "FJ3333",
+          "sha256": "3d5d3e082d8125f35f1d13ee18db57260d81b692e7a4ab22c076b17421f6d1ac",
+          "mappingRows": [
+            "FMA7538\tcartilage organ component\tFJ3333",
+            "FMA7591\tcostal cartilage\tFJ3333",
+            "FMA7603\tfirst costal cartilage\tFJ3333",
+            "FMA7875\tright first costal cartilage\tFJ3333",
+            "FMA14065\torgan component\tFJ3333",
+            "FMA61775\tphysical anatomical entity\tFJ3333",
+            "FMA62955\tanatomical entity\tFJ3333",
+            "FMA67135\tanatomical structure\tFJ3333",
+            "FMA67165\tmaterial anatomical entity\tFJ3333",
+            "FMA82472\tcardinal organ part\tFJ3333"
+          ]
+        }
+      ],
+      "triangles": 676,
+      "review": "pending"
+    },
+    {
+      "id": "costal-cartilage-2",
+      "en": "Costal cartilage 2",
+      "he": "סחוס צלע 2",
+      "layer": "cartilage",
+      "side": "right",
+      "regionId": "chest",
+      "sources": [
+        {
+          "elementId": "FJ3335",
+          "sha256": "75c0c3b0164c789a27f2a72872e5ce5f958b82b732606be820b68f5f8330964d",
+          "mappingRows": [
+            "FMA7538\tcartilage organ component\tFJ3335",
+            "FMA7591\tcostal cartilage\tFJ3335",
+            "FMA7703\tsecond costal cartilage\tFJ3335",
+            "FMA7886\tright second costal cartilage\tFJ3335",
+            "FMA14065\torgan component\tFJ3335",
+            "FMA61775\tphysical anatomical entity\tFJ3335",
+            "FMA62955\tanatomical entity\tFJ3335",
+            "FMA67135\tanatomical structure\tFJ3335",
+            "FMA67165\tmaterial anatomical entity\tFJ3335",
+            "FMA82472\tcardinal organ part\tFJ3335"
+          ]
+        }
+      ],
+      "triangles": 658,
+      "review": "pending"
+    },
+    {
+      "id": "costal-cartilage-3",
+      "en": "Costal cartilage 3",
+      "he": "סחוס צלע 3",
+      "layer": "cartilage",
+      "side": "right",
+      "regionId": "chest",
+      "sources": [
+        {
+          "elementId": "FJ3337",
+          "sha256": "0dc64f1b1e8abd86ce8c345dae47ae9f14c9e3d3addee7a9e4fb07755033fff7",
+          "mappingRows": [
+            "FMA7538\tcartilage organ component\tFJ3337",
+            "FMA7591\tcostal cartilage\tFJ3337",
+            "FMA7741\tthird costal cartilage\tFJ3337",
+            "FMA7913\tright third costal cartilage\tFJ3337",
+            "FMA14065\torgan component\tFJ3337",
+            "FMA61775\tphysical anatomical entity\tFJ3337",
+            "FMA62955\tanatomical entity\tFJ3337",
+            "FMA67135\tanatomical structure\tFJ3337",
+            "FMA67165\tmaterial anatomical entity\tFJ3337",
+            "FMA82472\tcardinal organ part\tFJ3337"
+          ]
+        }
+      ],
+      "triangles": 652,
+      "review": "pending"
+    },
+    {
+      "id": "costal-cartilage-4",
+      "en": "Costal cartilage 4",
+      "he": "סחוס צלע 4",
+      "layer": "cartilage",
+      "side": "right",
+      "regionId": "chest",
+      "sources": [
+        {
+          "elementId": "FJ3339",
+          "sha256": "8b023d2e8ff32ef995b6f4e3db2423787a8255fc994c5260b663b2145290d4c2",
+          "mappingRows": [
+            "FMA7538\tcartilage organ component\tFJ3339",
+            "FMA7591\tcostal cartilage\tFJ3339",
+            "FMA7768\tfourth costal cartilage\tFJ3339",
+            "FMA7976\tright fourth costal cartilage\tFJ3339",
+            "FMA14065\torgan component\tFJ3339",
+            "FMA61775\tphysical anatomical entity\tFJ3339",
+            "FMA62955\tanatomical entity\tFJ3339",
+            "FMA67135\tanatomical structure\tFJ3339",
+            "FMA67165\tmaterial anatomical entity\tFJ3339",
+            "FMA82472\tcardinal organ part\tFJ3339"
+          ]
+        }
+      ],
+      "triangles": 694,
+      "review": "pending"
+    },
+    {
+      "id": "costal-cartilage-5",
+      "en": "Costal cartilage 5",
+      "he": "סחוס צלע 5",
+      "layer": "cartilage",
+      "side": "right",
+      "regionId": "chest",
+      "sources": [
+        {
+          "elementId": "FJ3341",
+          "sha256": "78e34af57195fbade25925e556c858629c67e31213b75778252a4b000cc620d7",
+          "mappingRows": [
+            "FMA7538\tcartilage organ component\tFJ3341",
+            "FMA7591\tcostal cartilage\tFJ3341",
+            "FMA7795\tfifth costal cartilage\tFJ3341",
+            "FMA8070\tright fifth costal cartilage\tFJ3341",
+            "FMA14065\torgan component\tFJ3341",
+            "FMA61775\tphysical anatomical entity\tFJ3341",
+            "FMA62955\tanatomical entity\tFJ3341",
+            "FMA67135\tanatomical structure\tFJ3341",
+            "FMA67165\tmaterial anatomical entity\tFJ3341",
+            "FMA82472\tcardinal organ part\tFJ3341"
+          ]
+        }
+      ],
+      "triangles": 1168,
+      "review": "pending"
+    },
+    {
+      "id": "costal-cartilage-6",
+      "en": "Costal cartilage 6",
+      "he": "סחוס צלע 6",
+      "layer": "cartilage",
+      "side": "right",
+      "regionId": "chest",
+      "sources": [
+        {
+          "elementId": "FJ3343",
+          "sha256": "22079c9ebfef0aafd27a366416e3e4a1a4c190a25ea5c6beac844eda78cbb42d",
+          "mappingRows": [
+            "FMA7538\tcartilage organ component\tFJ3343",
+            "FMA7591\tcostal cartilage\tFJ3343",
+            "FMA7822\tsixth costal cartilage\tFJ3343",
+            "FMA8194\tright sixth costal cartilage\tFJ3343",
+            "FMA14065\torgan component\tFJ3343",
+            "FMA61775\tphysical anatomical entity\tFJ3343",
+            "FMA62955\tanatomical entity\tFJ3343",
+            "FMA67135\tanatomical structure\tFJ3343",
+            "FMA67165\tmaterial anatomical entity\tFJ3343",
+            "FMA82472\tcardinal organ part\tFJ3343"
+          ]
+        }
+      ],
+      "triangles": 1546,
+      "review": "pending"
+    },
+    {
+      "id": "costal-cartilage-7",
+      "en": "Costal cartilage 7",
+      "he": "סחוס צלע 7",
+      "layer": "cartilage",
+      "side": "right",
+      "regionId": "chest",
+      "sources": [
+        {
+          "elementId": "FJ3345",
+          "sha256": "0bce64747fc720452920d6aa9061cba35430e31074ca35c655a310466a3c30a7",
+          "mappingRows": [
+            "FMA7538\tcartilage organ component\tFJ3345",
+            "FMA7591\tcostal cartilage\tFJ3345",
+            "FMA7849\tseventh costal cartilage\tFJ3345",
+            "FMA8248\tright seventh costal cartilage\tFJ3345",
+            "FMA14065\torgan component\tFJ3345",
+            "FMA61775\tphysical anatomical entity\tFJ3345",
+            "FMA62955\tanatomical entity\tFJ3345",
+            "FMA67135\tanatomical structure\tFJ3345",
+            "FMA67165\tmaterial anatomical entity\tFJ3345",
+            "FMA82472\tcardinal organ part\tFJ3345"
+          ]
+        }
+      ],
+      "triangles": 2450,
+      "review": "pending"
+    },
+    {
+      "id": "pectoralis-major",
+      "en": "Pectoralis major",
+      "he": "שריר החזה הגדול",
+      "layer": "muscle",
+      "side": "right",
+      "regionId": "chest",
+      "sources": [
+        {
+          "elementId": "FJ1447",
+          "sha256": "e239a63adf99dfc094ece7efcd91ec7cd9ac802e9d7581141b311a7842fbbbe6",
+          "mappingRows": [
+            "FMA34687\tclavicular part of pectoralis major\tFJ1447",
+            "FMA34690\tclavicular part of right pectoralis major\tFJ1447",
+            "FMA45729\thead of organ\tFJ1447",
+            "FMA55268\torgan zone\tFJ1447",
+            "FMA61775\tphysical anatomical entity\tFJ1447",
+            "FMA62955\tanatomical entity\tFJ1447",
+            "FMA67135\tanatomical structure\tFJ1447",
+            "FMA67165\tmaterial anatomical entity\tFJ1447",
+            "FMA67619\torgan region\tFJ1447",
+            "FMA82472\tcardinal organ part\tFJ1447",
+            "FMA85453\thead of muscle organ\tFJ1447"
+          ]
+        },
+        {
+          "elementId": "FJ1464",
+          "sha256": "f446df845d19385cdbd5b86457c8690981cbc914f8f9595b50bdc4a44505aab7",
+          "mappingRows": [
+            "FMA10474\tzone of muscle organ\tFJ1464",
+            "FMA34686\tzone of pectoralis major\tFJ1464",
+            "FMA34696\tsternocostal part of pectoralis major\tFJ1464",
+            "FMA55268\torgan zone\tFJ1464",
+            "FMA61775\tphysical anatomical entity\tFJ1464",
+            "FMA62955\tanatomical entity\tFJ1464",
+            "FMA67135\tanatomical structure\tFJ1464",
+            "FMA67165\tmaterial anatomical entity\tFJ1464",
+            "FMA67619\torgan region\tFJ1464",
+            "FMA79979\tsternocostal part of right pectoralis major\tFJ1464",
+            "FMA82472\tcardinal organ part\tFJ1464"
+          ]
+        },
+        {
+          "elementId": "FJ1446",
+          "sha256": "7a0d77a63b06d4212998bec86f84853287c3a21696ec7afc92c7767c987a726d",
+          "mappingRows": [
+            "FMA10474\tzone of muscle organ\tFJ1446",
+            "FMA34686\tzone of pectoralis major\tFJ1446",
+            "FMA34699\tabdominal part of pectoralis major\tFJ1446",
+            "FMA45874\tabdominal part of right pectoralis major\tFJ1446",
+            "FMA55268\torgan zone\tFJ1446",
+            "FMA61775\tphysical anatomical entity\tFJ1446",
+            "FMA62955\tanatomical entity\tFJ1446",
+            "FMA67135\tanatomical structure\tFJ1446",
+            "FMA67165\tmaterial anatomical entity\tFJ1446",
+            "FMA67619\torgan region\tFJ1446",
+            "FMA82472\tcardinal organ part\tFJ1446"
+          ]
+        }
+      ],
+      "triangles": 10496,
+      "review": "pending"
+    },
+    {
+      "id": "pectoralis-minor",
+      "en": "Pectoralis minor",
+      "he": "שריר החזה הקטן",
+      "layer": "muscle",
+      "side": "right",
+      "regionId": "chest",
+      "sources": [
+        {
+          "elementId": "FJ1456",
+          "sha256": "65831afdc2f80bf5fca581f196de727aa30c3adcc682ac4506a4a5d6cc71db05",
+          "mappingRows": [
+            "FMA5022\tmuscle organ\tFJ1456",
+            "FMA9621\tmuscle of upper limb\tFJ1456",
+            "FMA13109\tpectoralis minor\tFJ1456",
+            "FMA13375\tright pectoralis minor\tFJ1456",
+            "FMA37347\tmuscle of pectoral girdle\tFJ1456",
+            "FMA37349\tpectoral muscle\tFJ1456",
+            "FMA55665\tnonparenchymatous organ\tFJ1456",
+            "FMA55670\tsolid organ\tFJ1456",
+            "FMA61775\tphysical anatomical entity\tFJ1456",
+            "FMA62955\tanatomical entity\tFJ1456",
+            "FMA67135\tanatomical structure\tFJ1456",
+            "FMA67165\tmaterial anatomical entity\tFJ1456",
+            "FMA67498\torgan\tFJ1456"
+          ]
+        }
+      ],
+      "triangles": 9468,
+      "review": "pending"
+    },
+    {
+      "id": "serratus-anterior",
+      "en": "Serratus anterior",
+      "he": "השריר המסור הקדמי",
+      "layer": "muscle",
+      "side": "right",
+      "regionId": "chest",
+      "sources": [
+        {
+          "elementId": "FJ1459",
+          "sha256": "33f4ae8c7a84785e2bc5f4f21432d13de0805e485a29f3e6762bac6f85cb61d5",
+          "mappingRows": [
+            "FMA5022\tmuscle organ\tFJ1459",
+            "FMA9621\tmuscle of upper limb\tFJ1459",
+            "FMA13397\tserratus anterior\tFJ1459",
+            "FMA13398\tright serratus anterior\tFJ1459",
+            "FMA32516\textrinsic muscle of shoulder\tFJ1459",
+            "FMA32518\tdeep extrinsic muscle of shoulder\tFJ1459",
+            "FMA33531\tmuscle of shoulder\tFJ1459",
+            "FMA37347\tmuscle of pectoral girdle\tFJ1459",
+            "FMA55665\tnonparenchymatous organ\tFJ1459",
+            "FMA55670\tsolid organ\tFJ1459",
+            "FMA61775\tphysical anatomical entity\tFJ1459",
+            "FMA62955\tanatomical entity\tFJ1459",
+            "FMA67135\tanatomical structure\tFJ1459",
+            "FMA67165\tmaterial anatomical entity\tFJ1459",
+            "FMA67498\torgan\tFJ1459"
+          ]
+        }
+      ],
+      "triangles": 49212,
+      "review": "pending"
+    },
+    {
+      "id": "external-oblique",
+      "en": "External oblique",
+      "he": "השריר האלכסוני החיצוני",
+      "layer": "muscle",
+      "side": "right",
+      "regionId": "core_abdomen",
+      "sources": [
+        {
+          "elementId": "FJ1452",
+          "sha256": "8fb254f196b1e249b1aea667d195f00c355f901f5fa89e37f586a8316c2fcdcd",
+          "mappingRows": [
+            "FMA5022\tmuscle organ\tFJ1452",
+            "FMA9620\tmuscle of abdomen\tFJ1452",
+            "FMA13335\texternal oblique\tFJ1452",
+            "FMA13336\tright external oblique\tFJ1452",
+            "FMA20278\tmuscle of anterior abdominal wall\tFJ1452",
+            "FMA55665\tnonparenchymatous organ\tFJ1452",
+            "FMA55670\tsolid organ\tFJ1452",
+            "FMA58274\tmuscle of trunk\tFJ1452",
+            "FMA61775\tphysical anatomical entity\tFJ1452",
+            "FMA62955\tanatomical entity\tFJ1452",
+            "FMA67135\tanatomical structure\tFJ1452",
+            "FMA67165\tmaterial anatomical entity\tFJ1452",
+            "FMA67498\torgan\tFJ1452"
+          ]
+        }
+      ],
+      "triangles": 111826,
+      "review": "pending"
+    }
+  ],
+  "unavailable": [
+    "rectus-abdominis",
+    "internal-oblique",
+    "transversus-abdominis",
+    "intercostal-muscles",
+    "diaphragm",
+    "internal-organs",
+    "nerves",
+    "vessels",
+    "ligaments",
+    "joint-capsules",
+    "separate-tendons",
+    "contralateral-paired-structures",
+    "unlisted-muscles",
+    "costal-cartilages-8-10"
+  ]
+}

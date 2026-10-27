@@ -1,0 +1,282 @@
+{
+  "assetId": "bp3d-4-right-shoulder",
+  "sourceUrl": "https://dbarchive.biosciencedbc.jp/data/bodyparts3d/LATEST/isa_BP3D_4.0_obj_99.zip",
+  "creator": "The Database Center for Life Science",
+  "licenseId": "CC-BY-4.0",
+  "licenseUrl": "https://creativecommons.org/licenses/by/4.0/",
+  "licenseEvidence": "https://dbarchive.biosciencedbc.jp/en/bodyparts3d/lic.html",
+  "attribution": "BodyParts3D, © The Database Center for Life Science licensed under CC Attribution 4.0 International",
+  "modifications": "Right shoulder subset; combined ELEMENT parts, millimetres converted to metres, coordinate basis rotated, vertex normals generated, GLB materials added. No invented geometry.",
+  "downloadedSubsetSha256": "c5c070c8a2b9d3ca7ac372bf18807126c20c44066147eaf945d261d1d7bd084b",
+  "glbSha256": "d69bbcb5c0cabc280b9bdb0bb60b7134001983c3225bbe1de6850836fee09ada",
+  "anatomicalReview": "pending",
+  "structures": [
+    {
+      "id": "clavicle",
+      "en": "Clavicle",
+      "he": "עצם הבריח",
+      "layer": "bone",
+      "side": "right",
+      "sources": [
+        {
+          "elementId": "FJ3362",
+          "sha256": "9a111cac8351e79dd1315aea90108fe56f78e4bf0159473e6ad727ba91b60e6d",
+          "mappingRows": [
+            "FMA13322\tright clavicle\tFJ3362"
+          ]
+        }
+      ],
+      "triangles": 1146,
+      "review": "pending"
+    },
+    {
+      "id": "scapula",
+      "en": "Scapula",
+      "he": "עצם השכמה",
+      "layer": "bone",
+      "side": "right",
+      "sources": [
+        {
+          "elementId": "FJ3384",
+          "sha256": "1641b04e55f9d75bdd6f1f4f07ea596e5dea0a8cb6b348bff47281b8a0bc6e5d",
+          "mappingRows": [
+            "FMA13395\tright scapula\tFJ3384"
+          ]
+        }
+      ],
+      "triangles": 26172,
+      "review": "pending"
+    },
+    {
+      "id": "humerus",
+      "en": "Humerus",
+      "he": "עצם הזרוע",
+      "layer": "bone",
+      "side": "right",
+      "sources": [
+        {
+          "elementId": "FJ3368",
+          "sha256": "85f5445a11ecb029b027db0b9b34933982836d442b19ff531d1ca35a3bc3a237",
+          "mappingRows": [
+            "FMA23130\tright humerus\tFJ3368"
+          ]
+        }
+      ],
+      "triangles": 3784,
+      "review": "pending"
+    },
+    {
+      "id": "deltoid",
+      "en": "Deltoid",
+      "he": "דלתואיד",
+      "layer": "muscle",
+      "side": "right",
+      "sources": [
+        {
+          "elementId": "FJ1467",
+          "sha256": "2f69f1a13c836539abca85d9b77f55f96319ad3fdd75c62f498eabe49b266bfe",
+          "mappingRows": [
+            "FMA34682\tacromial part of right deltoid\tFJ1467"
+          ]
+        },
+        {
+          "elementId": "FJ1468",
+          "sha256": "09eebb4a8d72c91936b0bfde7f35829a58f56103ac158f559186698458bcc616",
+          "mappingRows": [
+            "FMA34680\tclavicular part of right deltoid\tFJ1468"
+          ]
+        },
+        {
+          "elementId": "FJ1513",
+          "sha256": "ef8308c92fd0d01d8c0d7ffd9238305eefc2f28710d7bb58f451512abdc08e99",
+          "mappingRows": [
+            "FMA34684\tspinal part of right deltoid\tFJ1513"
+          ]
+        }
+      ],
+      "triangles": 5406,
+      "review": "pending"
+    },
+    {
+      "id": "supraspinatus",
+      "en": "Supraspinatus",
+      "he": "סופרספינטוס",
+      "layer": "muscle",
+      "side": "right",
+      "sources": [
+        {
+          "elementId": "FJ1506",
+          "sha256": "793771eceb64385269ddeeb09245e8c53b67499194f6fa98049b5e17aafa8e0c",
+          "mappingRows": [
+            "FMA32544\tright supraspinatus\tFJ1506"
+          ]
+        }
+      ],
+      "triangles": 878,
+      "review": "pending"
+    },
+    {
+      "id": "infraspinatus",
+      "en": "Infraspinatus",
+      "he": "אינפרספינטוס",
+      "layer": "muscle",
+      "side": "right",
+      "sources": [
+        {
+          "elementId": "FJ1500",
+          "sha256": "28f61376a3a88a28d14c44e1c20e9b7a34129772c130afa003daceac801455b1",
+          "mappingRows": [
+            "FMA32547\tright infraspinatus muscle\tFJ1500"
+          ]
+        }
+      ],
+      "triangles": 866,
+      "review": "pending"
+    },
+    {
+      "id": "subscapularis",
+      "en": "Subscapularis",
+      "he": "סאבסקפולריס",
+      "layer": "muscle",
+      "side": "right",
+      "sources": [
+        {
+          "elementId": "FJ1504",
+          "sha256": "fdcbfd01f93e2d24bd73f5cb259a311c9f9e90de08c41573439844eef5f605dd",
+          "mappingRows": [
+            "FMA13414\tright subscapularis\tFJ1504"
+          ]
+        }
+      ],
+      "triangles": 2092,
+      "review": "pending"
+    },
+    {
+      "id": "teres-minor",
+      "en": "Teres minor",
+      "he": "טרס מינור",
+      "layer": "muscle",
+      "side": "right",
+      "sources": [
+        {
+          "elementId": "FJ1508",
+          "sha256": "f56e595b86cea659891664706cd4443acddd8dc69e4e5bb3855445eef302641a",
+          "mappingRows": [
+            "FMA32553\tright teres minor\tFJ1508"
+          ]
+        }
+      ],
+      "triangles": 506,
+      "review": "pending"
+    },
+    {
+      "id": "teres-major",
+      "en": "Teres major",
+      "he": "טרס מייג׳ור",
+      "layer": "muscle",
+      "side": "right",
+      "sources": [
+        {
+          "elementId": "FJ1507",
+          "sha256": "217aa2d39fdaa682998c8a1a1ffe9c8b37fed881edbbeb8ed5c633fa1541eaac",
+          "mappingRows": [
+            "FMA32551\tright teres major\tFJ1507"
+          ]
+        }
+      ],
+      "triangles": 1042,
+      "review": "pending"
+    },
+    {
+      "id": "trapezius",
+      "en": "Trapezius",
+      "he": "טרפזיוס",
+      "layer": "muscle",
+      "side": "right",
+      "sources": [
+        {
+          "elementId": "FJ1520",
+          "sha256": "6bb3d13198991bda4d0aae27561976b9ba53b0d21d817f180098307c7b99deb1",
+          "mappingRows": [
+            "FMA33581\tascending part of right trapezius\tFJ1520"
+          ]
+        },
+        {
+          "elementId": "FJ1521",
+          "sha256": "19bd9d1cbbb84e10826eb770068f6e271cd79dde960bca62ac71da24120fc354",
+          "mappingRows": [
+            "FMA33586\tdescending part of right trapezius\tFJ1521"
+          ]
+        },
+        {
+          "elementId": "FJ1554",
+          "sha256": "f7683d77a5bfe9ac6d07fdc913c46cf41db20298c087e71df73fab18192e90a4",
+          "mappingRows": [
+            "FMA33584\ttransverse part of right trapezius\tFJ1554"
+          ]
+        }
+      ],
+      "triangles": 22098,
+      "review": "pending"
+    },
+    {
+      "id": "serratus-anterior",
+      "en": "Serratus anterior",
+      "he": "סרטוס אנטריור",
+      "layer": "muscle",
+      "side": "right",
+      "sources": [
+        {
+          "elementId": "FJ1459",
+          "sha256": "33f4ae8c7a84785e2bc5f4f21432d13de0805e485a29f3e6762bac6f85cb61d5",
+          "mappingRows": [
+            "FMA13398\tright serratus anterior\tFJ1459"
+          ]
+        }
+      ],
+      "triangles": 49212,
+      "review": "pending"
+    },
+    {
+      "id": "pectoralis-major",
+      "en": "Pectoralis major",
+      "he": "פקטורליס מייג׳ור",
+      "layer": "muscle",
+      "side": "right",
+      "sources": [
+        {
+          "elementId": "FJ1447",
+          "sha256": "e239a63adf99dfc094ece7efcd91ec7cd9ac802e9d7581141b311a7842fbbbe6",
+          "mappingRows": [
+            "FMA34690\tclavicular part of right pectoralis major\tFJ1447"
+          ]
+        },
+        {
+          "elementId": "FJ1446",
+          "sha256": "7a0d77a63b06d4212998bec86f84853287c3a21696ec7afc92c7767c987a726d",
+          "mappingRows": [
+            "FMA45874\tabdominal part of right pectoralis major\tFJ1446"
+          ]
+        },
+        {
+          "elementId": "FJ1464",
+          "sha256": "f446df845d19385cdbd5b86457c8690981cbc914f8f9595b50bdc4a44505aab7",
+          "mappingRows": [
+            "FMA79979\tsternocostal part of right pectoralis major\tFJ1464"
+          ]
+        }
+      ],
+      "triangles": 10496,
+      "review": "pending"
+    }
+  ],
+  "unavailable": [
+    "latissimus-dorsi",
+    "glenohumeral-joint",
+    "acromioclavicular-joint",
+    "sternoclavicular-joint",
+    "separate-tendons",
+    "ligaments",
+    "nerves"
+  ]
+}

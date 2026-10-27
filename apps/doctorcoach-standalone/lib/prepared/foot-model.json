@@ -1,0 +1,1204 @@
+{
+  "assetId": "bp3d-4-foot",
+  "sourceUrl": "https://dbarchive.biosciencedbc.jp/data/bodyparts3d/LATEST/isa_BP3D_4.0_obj_99.zip",
+  "creator": "The Database Center for Life Science",
+  "licenseId": "CC-BY-4.0",
+  "licenseUrl": "https://creativecommons.org/licenses/by/4.0/",
+  "licenseEvidence": "https://dbarchive.biosciencedbc.jp/en/bodyparts3d/lic.html",
+  "attribution": "BodyParts3D, © The Database Center for Life Science licensed under CC Attribution 4.0 International",
+  "modifications": "Original right calf/foot subset including 26 major foot bones and context leg bones; explicitly cataloged muscle heads combined; original vertices/triangles retained, mm XYZ converted to metres X Z -Y; normals and unique materials added; spatial laterality checked. No synthesized or mirrored structures.",
+  "downloadedSubsetSha256": "ec656117e51b613a517f75bebf29879a080750246f12627db83d06e2a818996e",
+  "glbSha256": "7c1ca5b6e50cbec4dd184ad899dca6238b694e86d5ce90ed0fd4b285b82d5128",
+  "anatomicalReview": "pending",
+  "structures": [
+    {
+      "id": "tibia",
+      "en": "Tibia",
+      "he": "עצם השוקה",
+      "layer": "bone",
+      "side": "right",
+      "regionId": "ankle_foot",
+      "sources": [
+        {
+          "elementId": "FJ3387",
+          "sha256": "01879d7310938e82eecc02e1115332497e94085ff5cc1fa8eeee47ad1f5d3578",
+          "mappingRows": [
+            "FMA5018\tbone organ\tFJ3387",
+            "FMA7474\tlong bone\tFJ3387",
+            "FMA24476\ttibia\tFJ3387",
+            "FMA24477\tright tibia\tFJ3387",
+            "FMA55671\tcavitated organ\tFJ3387",
+            "FMA55673\torgan with cavitated organ parts\tFJ3387",
+            "FMA61775\tphysical anatomical entity\tFJ3387",
+            "FMA62955\tanatomical entity\tFJ3387",
+            "FMA67135\tanatomical structure\tFJ3387",
+            "FMA67165\tmaterial anatomical entity\tFJ3387",
+            "FMA67498\torgan\tFJ3387"
+          ]
+        }
+      ],
+      "triangles": 1664,
+      "review": "pending"
+    },
+    {
+      "id": "fibula",
+      "en": "Fibula",
+      "he": "עצם השוקית",
+      "layer": "bone",
+      "side": "right",
+      "regionId": "ankle_foot",
+      "sources": [
+        {
+          "elementId": "FJ3366",
+          "sha256": "d03fee02cf8eefad1ecfcb9246e3f43ad3c4615c21ce08dc5e2b6901c6395a86",
+          "mappingRows": [
+            "FMA5018\tbone organ\tFJ3366",
+            "FMA7474\tlong bone\tFJ3366",
+            "FMA24479\tfibula\tFJ3366",
+            "FMA24480\tright fibula\tFJ3366",
+            "FMA55671\tcavitated organ\tFJ3366",
+            "FMA55673\torgan with cavitated organ parts\tFJ3366",
+            "FMA61775\tphysical anatomical entity\tFJ3366",
+            "FMA62955\tanatomical entity\tFJ3366",
+            "FMA67135\tanatomical structure\tFJ3366",
+            "FMA67165\tmaterial anatomical entity\tFJ3366",
+            "FMA67498\torgan\tFJ3366"
+          ]
+        }
+      ],
+      "triangles": 1142,
+      "review": "pending"
+    },
+    {
+      "id": "talus",
+      "en": "Talus",
+      "he": "עצם הערקום",
+      "layer": "bone",
+      "side": "right",
+      "regionId": "ankle_foot",
+      "sources": [
+        {
+          "elementId": "FJ3385",
+          "sha256": "8b35f0132c1a05b64f26746fdd0496a2495280cd0c2ac90dbf637fd74f79f54f",
+          "mappingRows": [
+            "FMA5018\tbone organ\tFJ3385",
+            "FMA7475\tshort bone\tFJ3385",
+            "FMA9708\ttalus\tFJ3385",
+            "FMA24482\tright talus\tFJ3385",
+            "FMA24491\ttarsal bone\tFJ3385",
+            "FMA55671\tcavitated organ\tFJ3385",
+            "FMA55673\torgan with cavitated organ parts\tFJ3385",
+            "FMA61775\tphysical anatomical entity\tFJ3385",
+            "FMA62955\tanatomical entity\tFJ3385",
+            "FMA67135\tanatomical structure\tFJ3385",
+            "FMA67165\tmaterial anatomical entity\tFJ3385",
+            "FMA67498\torgan\tFJ3385"
+          ]
+        }
+      ],
+      "triangles": 1380,
+      "review": "pending"
+    },
+    {
+      "id": "calcaneus",
+      "en": "Calcaneus",
+      "he": "עצם העקב",
+      "layer": "bone",
+      "side": "right",
+      "regionId": "ankle_foot",
+      "sources": [
+        {
+          "elementId": "FJ3360",
+          "sha256": "b53e7970e822e997e1b05f94f42514d07a3f98edcc63ec7dd7219354ce1d8176",
+          "mappingRows": [
+            "FMA5018\tbone organ\tFJ3360",
+            "FMA7475\tshort bone\tFJ3360",
+            "FMA24491\ttarsal bone\tFJ3360",
+            "FMA24496\tcalcaneus\tFJ3360",
+            "FMA24497\tright calcaneus\tFJ3360",
+            "FMA55671\tcavitated organ\tFJ3360",
+            "FMA55673\torgan with cavitated organ parts\tFJ3360",
+            "FMA61775\tphysical anatomical entity\tFJ3360",
+            "FMA62955\tanatomical entity\tFJ3360",
+            "FMA67135\tanatomical structure\tFJ3360",
+            "FMA67165\tmaterial anatomical entity\tFJ3360",
+            "FMA67498\torgan\tFJ3360"
+          ]
+        }
+      ],
+      "triangles": 1262,
+      "review": "pending"
+    },
+    {
+      "id": "navicular",
+      "en": "Navicular",
+      "he": "עצם הסירה בכף הרגל",
+      "layer": "bone",
+      "side": "right",
+      "regionId": "ankle_foot",
+      "sources": [
+        {
+          "elementId": "FJ3308",
+          "sha256": "0e08f1570755a9675e2556013eda861f00f31fe7ae2139e24584129dfe78d2c2",
+          "mappingRows": [
+            "FMA5018\tbone organ\tFJ3308",
+            "FMA7475\tshort bone\tFJ3308",
+            "FMA24491\ttarsal bone\tFJ3308",
+            "FMA24499\tnavicular bone of foot\tFJ3308",
+            "FMA24500\tnavicular bone of right foot\tFJ3308",
+            "FMA55671\tcavitated organ\tFJ3308",
+            "FMA55673\torgan with cavitated organ parts\tFJ3308",
+            "FMA61775\tphysical anatomical entity\tFJ3308",
+            "FMA62955\tanatomical entity\tFJ3308",
+            "FMA67135\tanatomical structure\tFJ3308",
+            "FMA67165\tmaterial anatomical entity\tFJ3308",
+            "FMA67498\torgan\tFJ3308"
+          ]
+        }
+      ],
+      "triangles": 716,
+      "review": "pending"
+    },
+    {
+      "id": "cuboid",
+      "en": "Cuboid",
+      "he": "עצם הקובייה",
+      "layer": "bone",
+      "side": "right",
+      "regionId": "ankle_foot",
+      "sources": [
+        {
+          "elementId": "FJ3364",
+          "sha256": "d5ac55e9aa466b0e14d8d7760f7ef2a6edb0d95cfea56205557f647c451a8079",
+          "mappingRows": [
+            "FMA5018\tbone organ\tFJ3364",
+            "FMA7475\tshort bone\tFJ3364",
+            "FMA24491\ttarsal bone\tFJ3364",
+            "FMA24527\tcuboid bone\tFJ3364",
+            "FMA24528\tright cuboid bone\tFJ3364",
+            "FMA55671\tcavitated organ\tFJ3364",
+            "FMA55673\torgan with cavitated organ parts\tFJ3364",
+            "FMA61775\tphysical anatomical entity\tFJ3364",
+            "FMA62955\tanatomical entity\tFJ3364",
+            "FMA67135\tanatomical structure\tFJ3364",
+            "FMA67165\tmaterial anatomical entity\tFJ3364",
+            "FMA67498\torgan\tFJ3364"
+          ]
+        }
+      ],
+      "triangles": 932,
+      "review": "pending"
+    },
+    {
+      "id": "medial-cuneiform",
+      "en": "Medial cuneiform",
+      "he": "עצם היתד המדיאלית",
+      "layer": "bone",
+      "side": "right",
+      "regionId": "ankle_foot",
+      "sources": [
+        {
+          "elementId": "FJ3377",
+          "sha256": "7ae757be0a8a55129816045c2e92b32576e2c96fe3b047f7841807092b5bf8f4",
+          "mappingRows": [
+            "FMA5018\tbone organ\tFJ3377",
+            "FMA7475\tshort bone\tFJ3377",
+            "FMA24491\ttarsal bone\tFJ3377",
+            "FMA24517\tcuneiform bone\tFJ3377",
+            "FMA24518\tmedial cuneiform bone\tFJ3377",
+            "FMA24521\tright medial cuneiform bone\tFJ3377",
+            "FMA55671\tcavitated organ\tFJ3377",
+            "FMA55673\torgan with cavitated organ parts\tFJ3377",
+            "FMA61775\tphysical anatomical entity\tFJ3377",
+            "FMA62955\tanatomical entity\tFJ3377",
+            "FMA67135\tanatomical structure\tFJ3377",
+            "FMA67165\tmaterial anatomical entity\tFJ3377",
+            "FMA67498\torgan\tFJ3377"
+          ]
+        }
+      ],
+      "triangles": 952,
+      "review": "pending"
+    },
+    {
+      "id": "intermediate-cuneiform",
+      "en": "Intermediate cuneiform",
+      "he": "עצם היתד האמצעית",
+      "layer": "bone",
+      "side": "right",
+      "regionId": "ankle_foot",
+      "sources": [
+        {
+          "elementId": "FJ3370",
+          "sha256": "3501e34aec7f81bd12b237c9bdccf2c8185d05895637427a92b210edc8423c33",
+          "mappingRows": [
+            "FMA5018\tbone organ\tFJ3370",
+            "FMA7475\tshort bone\tFJ3370",
+            "FMA24491\ttarsal bone\tFJ3370",
+            "FMA24517\tcuneiform bone\tFJ3370",
+            "FMA24519\tintermediate cuneiform bone\tFJ3370",
+            "FMA24523\tright intermediate cuneiform bone\tFJ3370",
+            "FMA55671\tcavitated organ\tFJ3370",
+            "FMA55673\torgan with cavitated organ parts\tFJ3370",
+            "FMA61775\tphysical anatomical entity\tFJ3370",
+            "FMA62955\tanatomical entity\tFJ3370",
+            "FMA67135\tanatomical structure\tFJ3370",
+            "FMA67165\tmaterial anatomical entity\tFJ3370",
+            "FMA67498\torgan\tFJ3370"
+          ]
+        }
+      ],
+      "triangles": 450,
+      "review": "pending"
+    },
+    {
+      "id": "lateral-cuneiform",
+      "en": "Lateral cuneiform",
+      "he": "עצם היתד הלטרלית",
+      "layer": "bone",
+      "side": "right",
+      "regionId": "ankle_foot",
+      "sources": [
+        {
+          "elementId": "FJ3373",
+          "sha256": "628c8da7294f477a1c8c50d6445159bbff0ecda91d35dde48f780eec9eb9657c",
+          "mappingRows": [
+            "FMA5018\tbone organ\tFJ3373",
+            "FMA7475\tshort bone\tFJ3373",
+            "FMA24491\ttarsal bone\tFJ3373",
+            "FMA24517\tcuneiform bone\tFJ3373",
+            "FMA24520\tlateral cuneiform bone\tFJ3373",
+            "FMA24525\tright lateral cuneiform bone\tFJ3373",
+            "FMA55671\tcavitated organ\tFJ3373",
+            "FMA55673\torgan with cavitated organ parts\tFJ3373",
+            "FMA61775\tphysical anatomical entity\tFJ3373",
+            "FMA62955\tanatomical entity\tFJ3373",
+            "FMA67135\tanatomical structure\tFJ3373",
+            "FMA67165\tmaterial anatomical entity\tFJ3373",
+            "FMA67498\torgan\tFJ3373"
+          ]
+        }
+      ],
+      "triangles": 626,
+      "review": "pending"
+    },
+    {
+      "id": "metatarsal-1",
+      "en": "Metatarsal 1",
+      "he": "עצם מסרק 1",
+      "layer": "bone",
+      "side": "right",
+      "regionId": "ankle_foot",
+      "sources": [
+        {
+          "elementId": "FJ3351",
+          "sha256": "b70e565ec8ad8c09264ae66159415ca4f0cf639598812aac6fcf7b761c3758d3",
+          "mappingRows": [
+            "FMA5018\tbone organ\tFJ3351",
+            "FMA7474\tlong bone\tFJ3351",
+            "FMA24492\tmetatarsal bone\tFJ3351",
+            "FMA24502\tfirst metatarsal bone\tFJ3351",
+            "FMA24507\tright first metatarsal bone\tFJ3351",
+            "FMA55671\tcavitated organ\tFJ3351",
+            "FMA55673\torgan with cavitated organ parts\tFJ3351",
+            "FMA61775\tphysical anatomical entity\tFJ3351",
+            "FMA62955\tanatomical entity\tFJ3351",
+            "FMA67135\tanatomical structure\tFJ3351",
+            "FMA67165\tmaterial anatomical entity\tFJ3351",
+            "FMA67498\torgan\tFJ3351"
+          ]
+        }
+      ],
+      "triangles": 1122,
+      "review": "pending"
+    },
+    {
+      "id": "metatarsal-2",
+      "en": "Metatarsal 2",
+      "he": "עצם מסרק 2",
+      "layer": "bone",
+      "side": "right",
+      "regionId": "ankle_foot",
+      "sources": [
+        {
+          "elementId": "FJ3353",
+          "sha256": "f6c034b6b18aee623f510ee40e4171346c084e8bdd092354d634c87fc9af6acf",
+          "mappingRows": [
+            "FMA5018\tbone organ\tFJ3353",
+            "FMA7474\tlong bone\tFJ3353",
+            "FMA24492\tmetatarsal bone\tFJ3353",
+            "FMA24503\tsecond metatarsal bone\tFJ3353",
+            "FMA24509\tright second metatarsal bone\tFJ3353",
+            "FMA55671\tcavitated organ\tFJ3353",
+            "FMA55673\torgan with cavitated organ parts\tFJ3353",
+            "FMA61775\tphysical anatomical entity\tFJ3353",
+            "FMA62955\tanatomical entity\tFJ3353",
+            "FMA67135\tanatomical structure\tFJ3353",
+            "FMA67165\tmaterial anatomical entity\tFJ3353",
+            "FMA67498\torgan\tFJ3353"
+          ]
+        }
+      ],
+      "triangles": 752,
+      "review": "pending"
+    },
+    {
+      "id": "metatarsal-3",
+      "en": "Metatarsal 3",
+      "he": "עצם מסרק 3",
+      "layer": "bone",
+      "side": "right",
+      "regionId": "ankle_foot",
+      "sources": [
+        {
+          "elementId": "FJ3355",
+          "sha256": "90b28dbcd11e3d3a6f253adb1ddaa33f30040a08c71bb3a86242372ea9b6170e",
+          "mappingRows": [
+            "FMA5018\tbone organ\tFJ3355",
+            "FMA7474\tlong bone\tFJ3355",
+            "FMA24492\tmetatarsal bone\tFJ3355",
+            "FMA24504\tthird metatarsal bone\tFJ3355",
+            "FMA24511\tright third metatarsal bone\tFJ3355",
+            "FMA55671\tcavitated organ\tFJ3355",
+            "FMA55673\torgan with cavitated organ parts\tFJ3355",
+            "FMA61775\tphysical anatomical entity\tFJ3355",
+            "FMA62955\tanatomical entity\tFJ3355",
+            "FMA67135\tanatomical structure\tFJ3355",
+            "FMA67165\tmaterial anatomical entity\tFJ3355",
+            "FMA67498\torgan\tFJ3355"
+          ]
+        }
+      ],
+      "triangles": 700,
+      "review": "pending"
+    },
+    {
+      "id": "metatarsal-4",
+      "en": "Metatarsal 4",
+      "he": "עצם מסרק 4",
+      "layer": "bone",
+      "side": "right",
+      "regionId": "ankle_foot",
+      "sources": [
+        {
+          "elementId": "FJ3357",
+          "sha256": "a5fd57a36b7525de383809bbbb37ff6a56a08ed0fb25af1684085418cc6e8202",
+          "mappingRows": [
+            "FMA5018\tbone organ\tFJ3357",
+            "FMA7474\tlong bone\tFJ3357",
+            "FMA24492\tmetatarsal bone\tFJ3357",
+            "FMA24505\tfourth metatarsal bone\tFJ3357",
+            "FMA24513\tright fourth metatarsal bone\tFJ3357",
+            "FMA55671\tcavitated organ\tFJ3357",
+            "FMA55673\torgan with cavitated organ parts\tFJ3357",
+            "FMA61775\tphysical anatomical entity\tFJ3357",
+            "FMA62955\tanatomical entity\tFJ3357",
+            "FMA67135\tanatomical structure\tFJ3357",
+            "FMA67165\tmaterial anatomical entity\tFJ3357",
+            "FMA67498\torgan\tFJ3357"
+          ]
+        }
+      ],
+      "triangles": 674,
+      "review": "pending"
+    },
+    {
+      "id": "metatarsal-5",
+      "en": "Metatarsal 5",
+      "he": "עצם מסרק 5",
+      "layer": "bone",
+      "side": "right",
+      "regionId": "ankle_foot",
+      "sources": [
+        {
+          "elementId": "FJ3359",
+          "sha256": "cc75b866a2d5ac0317eb3a1d64cef41a65231fab975613d108a4fcdcbc2c58b1",
+          "mappingRows": [
+            "FMA5018\tbone organ\tFJ3359",
+            "FMA7474\tlong bone\tFJ3359",
+            "FMA24492\tmetatarsal bone\tFJ3359",
+            "FMA24506\tfifth metatarsal bone\tFJ3359",
+            "FMA24515\tright fifth metatarsal bone\tFJ3359",
+            "FMA55671\tcavitated organ\tFJ3359",
+            "FMA55673\torgan with cavitated organ parts\tFJ3359",
+            "FMA61775\tphysical anatomical entity\tFJ3359",
+            "FMA62955\tanatomical entity\tFJ3359",
+            "FMA67135\tanatomical structure\tFJ3359",
+            "FMA67165\tmaterial anatomical entity\tFJ3359",
+            "FMA67498\torgan\tFJ3359"
+          ]
+        }
+      ],
+      "triangles": 794,
+      "review": "pending"
+    },
+    {
+      "id": "proximal-phalanx-1",
+      "en": "Proximal phalanx of toe 1",
+      "he": "גליל מקורב באצבע 1",
+      "layer": "bone",
+      "side": "right",
+      "regionId": "ankle_foot",
+      "sources": [
+        {
+          "elementId": "FJ3310",
+          "sha256": "bb72eb8ed4cedf8ad2ab9a0ee2de9c80232ab6bd0e8840259beb59b8bac3bd07",
+          "mappingRows": [
+            "FMA5018\tbone organ\tFJ3310",
+            "FMA7474\tlong bone\tFJ3310",
+            "FMA24493\tphalanx of toe\tFJ3310",
+            "FMA32884\tphalanx of big toe\tFJ3310",
+            "FMA43252\tproximal phalanx of big toe\tFJ3310",
+            "FMA43253\tproximal phalanx of right big toe\tFJ3310",
+            "FMA55671\tcavitated organ\tFJ3310",
+            "FMA55673\torgan with cavitated organ parts\tFJ3310",
+            "FMA61775\tphysical anatomical entity\tFJ3310",
+            "FMA62955\tanatomical entity\tFJ3310",
+            "FMA67135\tanatomical structure\tFJ3310",
+            "FMA67165\tmaterial anatomical entity\tFJ3310",
+            "FMA67498\torgan\tFJ3310"
+          ]
+        }
+      ],
+      "triangles": 486,
+      "review": "pending"
+    },
+    {
+      "id": "proximal-phalanx-2",
+      "en": "Proximal phalanx of toe 2",
+      "he": "גליל מקורב באצבע 2",
+      "layer": "bone",
+      "side": "right",
+      "regionId": "ankle_foot",
+      "sources": [
+        {
+          "elementId": "FJ3319",
+          "sha256": "f8f7d8f026953233fd9412b80ba897fdd329a48108cbfd11578b56dcf9edcc1e",
+          "mappingRows": [
+            "FMA5018\tbone organ\tFJ3319",
+            "FMA7474\tlong bone\tFJ3319",
+            "FMA24493\tphalanx of toe\tFJ3319",
+            "FMA32618\tproximal phalanx of second toe\tFJ3319",
+            "FMA32634\tproximal phalanx of right second toe\tFJ3319",
+            "FMA32899\tphalanx of second toe\tFJ3319",
+            "FMA55671\tcavitated organ\tFJ3319",
+            "FMA55673\torgan with cavitated organ parts\tFJ3319",
+            "FMA61775\tphysical anatomical entity\tFJ3319",
+            "FMA62955\tanatomical entity\tFJ3319",
+            "FMA67135\tanatomical structure\tFJ3319",
+            "FMA67165\tmaterial anatomical entity\tFJ3319",
+            "FMA67498\torgan\tFJ3319"
+          ]
+        }
+      ],
+      "triangles": 414,
+      "review": "pending"
+    },
+    {
+      "id": "proximal-phalanx-3",
+      "en": "Proximal phalanx of toe 3",
+      "he": "גליל מקורב באצבע 3",
+      "layer": "bone",
+      "side": "right",
+      "regionId": "ankle_foot",
+      "sources": [
+        {
+          "elementId": "FJ3320",
+          "sha256": "49b6fc5fe03ba23422e852d1fcd419b94bafbdf69fd20552eca0620e1ed62e6e",
+          "mappingRows": [
+            "FMA5018\tbone organ\tFJ3320",
+            "FMA7474\tlong bone\tFJ3320",
+            "FMA24493\tphalanx of toe\tFJ3320",
+            "FMA32619\tproximal phalanx of third toe\tFJ3320",
+            "FMA32636\tproximal phalanx of right third toe\tFJ3320",
+            "FMA32900\tphalanx of third toe\tFJ3320",
+            "FMA55671\tcavitated organ\tFJ3320",
+            "FMA55673\torgan with cavitated organ parts\tFJ3320",
+            "FMA61775\tphysical anatomical entity\tFJ3320",
+            "FMA62955\tanatomical entity\tFJ3320",
+            "FMA67135\tanatomical structure\tFJ3320",
+            "FMA67165\tmaterial anatomical entity\tFJ3320",
+            "FMA67498\torgan\tFJ3320"
+          ]
+        }
+      ],
+      "triangles": 422,
+      "review": "pending"
+    },
+    {
+      "id": "proximal-phalanx-4",
+      "en": "Proximal phalanx of toe 4",
+      "he": "גליל מקורב באצבע 4",
+      "layer": "bone",
+      "side": "right",
+      "regionId": "ankle_foot",
+      "sources": [
+        {
+          "elementId": "FJ3321",
+          "sha256": "87949e88d498df13a376db05c0b094bae55ade09d5dec4ebd1557a5022d4f8ea",
+          "mappingRows": [
+            "FMA5018\tbone organ\tFJ3321",
+            "FMA7474\tlong bone\tFJ3321",
+            "FMA24493\tphalanx of toe\tFJ3321",
+            "FMA32620\tproximal phalanx of fourth toe\tFJ3321",
+            "FMA32638\tproximal phalanx of right fourth toe\tFJ3321",
+            "FMA32901\tphalanx of fourth toe\tFJ3321",
+            "FMA55671\tcavitated organ\tFJ3321",
+            "FMA55673\torgan with cavitated organ parts\tFJ3321",
+            "FMA61775\tphysical anatomical entity\tFJ3321",
+            "FMA62955\tanatomical entity\tFJ3321",
+            "FMA67135\tanatomical structure\tFJ3321",
+            "FMA67165\tmaterial anatomical entity\tFJ3321",
+            "FMA67498\torgan\tFJ3321"
+          ]
+        }
+      ],
+      "triangles": 438,
+      "review": "pending"
+    },
+    {
+      "id": "proximal-phalanx-5",
+      "en": "Proximal phalanx of toe 5",
+      "he": "גליל מקורב באצבע 5",
+      "layer": "bone",
+      "side": "right",
+      "regionId": "ankle_foot",
+      "sources": [
+        {
+          "elementId": "FJ3324",
+          "sha256": "deeabcf2bf83d7b9f77acf1c1634650805d467188f05505a6898aa3cbbdcea2b",
+          "mappingRows": [
+            "FMA5018\tbone organ\tFJ3324",
+            "FMA7474\tlong bone\tFJ3324",
+            "FMA24493\tphalanx of toe\tFJ3324",
+            "FMA32621\tproximal phalanx of little toe\tFJ3324",
+            "FMA32640\tproximal phalanx of right little toe\tFJ3324",
+            "FMA32902\tphalanx of little toe\tFJ3324",
+            "FMA55671\tcavitated organ\tFJ3324",
+            "FMA55673\torgan with cavitated organ parts\tFJ3324",
+            "FMA61775\tphysical anatomical entity\tFJ3324",
+            "FMA62955\tanatomical entity\tFJ3324",
+            "FMA67135\tanatomical structure\tFJ3324",
+            "FMA67165\tmaterial anatomical entity\tFJ3324",
+            "FMA67498\torgan\tFJ3324"
+          ]
+        }
+      ],
+      "triangles": 406,
+      "review": "pending"
+    },
+    {
+      "id": "middle-phalanx-2",
+      "en": "Middle phalanx of toe 2",
+      "he": "גליל אמצעי באצבע 2",
+      "layer": "bone",
+      "side": "right",
+      "regionId": "ankle_foot",
+      "sources": [
+        {
+          "elementId": "FJ3300",
+          "sha256": "505ff6d5185c0cec018be5a18206a2ccbcc8822f09b9282b9ad2586716d3a3d9",
+          "mappingRows": [
+            "FMA5018\tbone organ\tFJ3300",
+            "FMA7474\tlong bone\tFJ3300",
+            "FMA24493\tphalanx of toe\tFJ3300",
+            "FMA32623\tmiddle phalanx of second toe\tFJ3300",
+            "FMA32642\tmiddle phalanx of right second toe\tFJ3300",
+            "FMA32899\tphalanx of second toe\tFJ3300",
+            "FMA55671\tcavitated organ\tFJ3300",
+            "FMA55673\torgan with cavitated organ parts\tFJ3300",
+            "FMA61775\tphysical anatomical entity\tFJ3300",
+            "FMA62955\tanatomical entity\tFJ3300",
+            "FMA67135\tanatomical structure\tFJ3300",
+            "FMA67165\tmaterial anatomical entity\tFJ3300",
+            "FMA67498\torgan\tFJ3300"
+          ]
+        }
+      ],
+      "triangles": 264,
+      "review": "pending"
+    },
+    {
+      "id": "middle-phalanx-3",
+      "en": "Middle phalanx of toe 3",
+      "he": "גליל אמצעי באצבע 3",
+      "layer": "bone",
+      "side": "right",
+      "regionId": "ankle_foot",
+      "sources": [
+        {
+          "elementId": "FJ3301",
+          "sha256": "1da31f6465a4767ab9dc18df433e5e0df0da4e9578d2864b02e5a71e785b5d8c",
+          "mappingRows": [
+            "FMA5018\tbone organ\tFJ3301",
+            "FMA7474\tlong bone\tFJ3301",
+            "FMA24493\tphalanx of toe\tFJ3301",
+            "FMA32624\tmiddle phalanx of third toe\tFJ3301",
+            "FMA32644\tmiddle phalanx of right third toe\tFJ3301",
+            "FMA32900\tphalanx of third toe\tFJ3301",
+            "FMA55671\tcavitated organ\tFJ3301",
+            "FMA55673\torgan with cavitated organ parts\tFJ3301",
+            "FMA61775\tphysical anatomical entity\tFJ3301",
+            "FMA62955\tanatomical entity\tFJ3301",
+            "FMA67135\tanatomical structure\tFJ3301",
+            "FMA67165\tmaterial anatomical entity\tFJ3301",
+            "FMA67498\torgan\tFJ3301"
+          ]
+        }
+      ],
+      "triangles": 292,
+      "review": "pending"
+    },
+    {
+      "id": "middle-phalanx-4",
+      "en": "Middle phalanx of toe 4",
+      "he": "גליל אמצעי באצבע 4",
+      "layer": "bone",
+      "side": "right",
+      "regionId": "ankle_foot",
+      "sources": [
+        {
+          "elementId": "FJ3302",
+          "sha256": "dd69a8df55e8ff34f55fe2b906507aac2659be0d2784833b6a0c2046258929e3",
+          "mappingRows": [
+            "FMA5018\tbone organ\tFJ3302",
+            "FMA7474\tlong bone\tFJ3302",
+            "FMA24493\tphalanx of toe\tFJ3302",
+            "FMA32625\tmiddle phalanx of fourth toe\tFJ3302",
+            "FMA32646\tmiddle phalanx of right fourth toe\tFJ3302",
+            "FMA32901\tphalanx of fourth toe\tFJ3302",
+            "FMA55671\tcavitated organ\tFJ3302",
+            "FMA55673\torgan with cavitated organ parts\tFJ3302",
+            "FMA61775\tphysical anatomical entity\tFJ3302",
+            "FMA62955\tanatomical entity\tFJ3302",
+            "FMA67135\tanatomical structure\tFJ3302",
+            "FMA67165\tmaterial anatomical entity\tFJ3302",
+            "FMA67498\torgan\tFJ3302"
+          ]
+        }
+      ],
+      "triangles": 350,
+      "review": "pending"
+    },
+    {
+      "id": "middle-phalanx-5",
+      "en": "Middle phalanx of toe 5",
+      "he": "גליל אמצעי באצבע 5",
+      "layer": "bone",
+      "side": "right",
+      "regionId": "ankle_foot",
+      "sources": [
+        {
+          "elementId": "FJ3305",
+          "sha256": "e1a4698c0de159b1851711084ddb96ccaf85022d941f305d670789444d6395bf",
+          "mappingRows": [
+            "FMA5018\tbone organ\tFJ3305",
+            "FMA7474\tlong bone\tFJ3305",
+            "FMA24493\tphalanx of toe\tFJ3305",
+            "FMA32902\tphalanx of little toe\tFJ3305",
+            "FMA55671\tcavitated organ\tFJ3305",
+            "FMA55673\torgan with cavitated organ parts\tFJ3305",
+            "FMA61775\tphysical anatomical entity\tFJ3305",
+            "FMA62955\tanatomical entity\tFJ3305",
+            "FMA67135\tanatomical structure\tFJ3305",
+            "FMA67165\tmaterial anatomical entity\tFJ3305",
+            "FMA67498\torgan\tFJ3305",
+            "FMA230984\tmiddle phalanx of little toe\tFJ3305",
+            "FMA230986\tmiddle phalanx of right little toe\tFJ3305"
+          ]
+        }
+      ],
+      "triangles": 136,
+      "review": "pending"
+    },
+    {
+      "id": "distal-phalanx-1",
+      "en": "Distal phalanx of toe 1",
+      "he": "גליל מרוחק באצבע 1",
+      "layer": "bone",
+      "side": "right",
+      "regionId": "ankle_foot",
+      "sources": [
+        {
+          "elementId": "FJ3192",
+          "sha256": "aa15fa88eb0a4643efca0763a8088091f970ae510003dcc78c63e9a3dece5b03",
+          "mappingRows": [
+            "FMA5018\tbone organ\tFJ3192",
+            "FMA7474\tlong bone\tFJ3192",
+            "FMA24493\tphalanx of toe\tFJ3192",
+            "FMA32627\tdistal phalanx of big toe\tFJ3192",
+            "FMA32650\tdistal phalanx of right big toe\tFJ3192",
+            "FMA32884\tphalanx of big toe\tFJ3192",
+            "FMA55671\tcavitated organ\tFJ3192",
+            "FMA55673\torgan with cavitated organ parts\tFJ3192",
+            "FMA61775\tphysical anatomical entity\tFJ3192",
+            "FMA62955\tanatomical entity\tFJ3192",
+            "FMA67135\tanatomical structure\tFJ3192",
+            "FMA67165\tmaterial anatomical entity\tFJ3192",
+            "FMA67498\torgan\tFJ3192"
+          ]
+        }
+      ],
+      "triangles": 440,
+      "review": "pending"
+    },
+    {
+      "id": "distal-phalanx-2",
+      "en": "Distal phalanx of toe 2",
+      "he": "גליל מרוחק באצבע 2",
+      "layer": "bone",
+      "side": "right",
+      "regionId": "ankle_foot",
+      "sources": [
+        {
+          "elementId": "FJ3189",
+          "sha256": "82657ea63694cff41a774da0ad28110e80ea4951e0ddaafcb2e2646275a22702",
+          "mappingRows": [
+            "FMA5018\tbone organ\tFJ3189",
+            "FMA7474\tlong bone\tFJ3189",
+            "FMA24493\tphalanx of toe\tFJ3189",
+            "FMA32628\tdistal phalanx of second toe\tFJ3189",
+            "FMA32652\tdistal phalanx of right second toe\tFJ3189",
+            "FMA32899\tphalanx of second toe\tFJ3189",
+            "FMA55671\tcavitated organ\tFJ3189",
+            "FMA55673\torgan with cavitated organ parts\tFJ3189",
+            "FMA61775\tphysical anatomical entity\tFJ3189",
+            "FMA62955\tanatomical entity\tFJ3189",
+            "FMA67135\tanatomical structure\tFJ3189",
+            "FMA67165\tmaterial anatomical entity\tFJ3189",
+            "FMA67498\torgan\tFJ3189"
+          ]
+        }
+      ],
+      "triangles": 200,
+      "review": "pending"
+    },
+    {
+      "id": "distal-phalanx-3",
+      "en": "Distal phalanx of toe 3",
+      "he": "גליל מרוחק באצבע 3",
+      "layer": "bone",
+      "side": "right",
+      "regionId": "ankle_foot",
+      "sources": [
+        {
+          "elementId": "FJ3190",
+          "sha256": "b31499b63bc1798909b2c8cec77b7ebbb422cf2e0f715381601aa7c136b32aa9",
+          "mappingRows": [
+            "FMA5018\tbone organ\tFJ3190",
+            "FMA7474\tlong bone\tFJ3190",
+            "FMA24493\tphalanx of toe\tFJ3190",
+            "FMA32629\tdistal phalanx of third toe\tFJ3190",
+            "FMA32654\tdistal phalanx of right third toe\tFJ3190",
+            "FMA32900\tphalanx of third toe\tFJ3190",
+            "FMA55671\tcavitated organ\tFJ3190",
+            "FMA55673\torgan with cavitated organ parts\tFJ3190",
+            "FMA61775\tphysical anatomical entity\tFJ3190",
+            "FMA62955\tanatomical entity\tFJ3190",
+            "FMA67135\tanatomical structure\tFJ3190",
+            "FMA67165\tmaterial anatomical entity\tFJ3190",
+            "FMA67498\torgan\tFJ3190"
+          ]
+        }
+      ],
+      "triangles": 260,
+      "review": "pending"
+    },
+    {
+      "id": "distal-phalanx-4",
+      "en": "Distal phalanx of toe 4",
+      "he": "גליל מרוחק באצבע 4",
+      "layer": "bone",
+      "side": "right",
+      "regionId": "ankle_foot",
+      "sources": [
+        {
+          "elementId": "FJ3191",
+          "sha256": "24a38431aa67546c25d938f7c5a572fb1206ffcf6bb6a14281c0322fc3d03bac",
+          "mappingRows": [
+            "FMA5018\tbone organ\tFJ3191",
+            "FMA7474\tlong bone\tFJ3191",
+            "FMA24493\tphalanx of toe\tFJ3191",
+            "FMA32630\tdistal phalanx of fourth toe\tFJ3191",
+            "FMA32656\tdistal phalanx of right fourth toe\tFJ3191",
+            "FMA32901\tphalanx of fourth toe\tFJ3191",
+            "FMA55671\tcavitated organ\tFJ3191",
+            "FMA55673\torgan with cavitated organ parts\tFJ3191",
+            "FMA61775\tphysical anatomical entity\tFJ3191",
+            "FMA62955\tanatomical entity\tFJ3191",
+            "FMA67135\tanatomical structure\tFJ3191",
+            "FMA67165\tmaterial anatomical entity\tFJ3191",
+            "FMA67498\torgan\tFJ3191"
+          ]
+        }
+      ],
+      "triangles": 244,
+      "review": "pending"
+    },
+    {
+      "id": "distal-phalanx-5",
+      "en": "Distal phalanx of toe 5",
+      "he": "גליל מרוחק באצבע 5",
+      "layer": "bone",
+      "side": "right",
+      "regionId": "ankle_foot",
+      "sources": [
+        {
+          "elementId": "FJ3195",
+          "sha256": "8053dcba2724d596cd66546934df05d04e5019b3b95ed6ec46795dff1b9abfde",
+          "mappingRows": [
+            "FMA5018\tbone organ\tFJ3195",
+            "FMA7474\tlong bone\tFJ3195",
+            "FMA24493\tphalanx of toe\tFJ3195",
+            "FMA32631\tdistal phalanx of little toe\tFJ3195",
+            "FMA32658\tdistal phalanx of right little toe\tFJ3195",
+            "FMA32902\tphalanx of little toe\tFJ3195",
+            "FMA55671\tcavitated organ\tFJ3195",
+            "FMA55673\torgan with cavitated organ parts\tFJ3195",
+            "FMA61775\tphysical anatomical entity\tFJ3195",
+            "FMA62955\tanatomical entity\tFJ3195",
+            "FMA67135\tanatomical structure\tFJ3195",
+            "FMA67165\tmaterial anatomical entity\tFJ3195",
+            "FMA67498\torgan\tFJ3195"
+          ]
+        }
+      ],
+      "triangles": 210,
+      "review": "pending"
+    },
+    {
+      "id": "tibialis-anterior",
+      "en": "Tibialis Anterior",
+      "he": "טיביאליס אנטריור",
+      "layer": "muscle",
+      "side": "right",
+      "regionId": "ankle_foot",
+      "sources": [
+        {
+          "elementId": "FJ1439",
+          "sha256": "b03d2f54644969d153d3dfe4025ee629858e72c1e5ee3b0e7d5f16f54dc505b3",
+          "mappingRows": [
+            "FMA5022\tmuscle organ\tFJ1439",
+            "FMA9622\tmuscle of lower limb\tFJ1439",
+            "FMA22471\tmuscle of leg\tFJ1439",
+            "FMA22472\tmuscle of anterior compartment of leg\tFJ1439",
+            "FMA22532\ttibialis anterior\tFJ1439",
+            "FMA22544\tright tibialis anterior\tFJ1439",
+            "FMA37368\tmuscle of free lower limb\tFJ1439",
+            "FMA55665\tnonparenchymatous organ\tFJ1439",
+            "FMA55670\tsolid organ\tFJ1439",
+            "FMA61775\tphysical anatomical entity\tFJ1439",
+            "FMA62955\tanatomical entity\tFJ1439",
+            "FMA67135\tanatomical structure\tFJ1439",
+            "FMA67165\tmaterial anatomical entity\tFJ1439",
+            "FMA67498\torgan\tFJ1439"
+          ]
+        }
+      ],
+      "triangles": 2510,
+      "review": "pending"
+    },
+    {
+      "id": "tibialis-posterior",
+      "en": "Tibialis Posterior",
+      "he": "טיביאליס פוסטריור",
+      "layer": "muscle",
+      "side": "right",
+      "regionId": "ankle_foot",
+      "sources": [
+        {
+          "elementId": "FJ1440",
+          "sha256": "6fc367885524fc416139372b55c64d8e1e4bc9010bee64020a72ad8e6f34a57d",
+          "mappingRows": [
+            "FMA5022\tmuscle organ\tFJ1440",
+            "FMA9622\tmuscle of lower limb\tFJ1440",
+            "FMA22471\tmuscle of leg\tFJ1440",
+            "FMA22474\tmuscle of posterior compartment of leg\tFJ1440",
+            "FMA37368\tmuscle of free lower limb\tFJ1440",
+            "FMA51099\ttibialis posterior\tFJ1440",
+            "FMA55665\tnonparenchymatous organ\tFJ1440",
+            "FMA55670\tsolid organ\tFJ1440",
+            "FMA61775\tphysical anatomical entity\tFJ1440",
+            "FMA62955\tanatomical entity\tFJ1440",
+            "FMA65008\tdeep muscle of posterior compartment of leg\tFJ1440",
+            "FMA65018\tright tibialis posterior\tFJ1440",
+            "FMA67135\tanatomical structure\tFJ1440",
+            "FMA67165\tmaterial anatomical entity\tFJ1440",
+            "FMA67498\torgan\tFJ1440"
+          ]
+        }
+      ],
+      "triangles": 5136,
+      "review": "pending"
+    },
+    {
+      "id": "fibularis-longus",
+      "en": "Fibularis Longus",
+      "he": "פיבולריס לונגוס",
+      "layer": "muscle",
+      "side": "right",
+      "regionId": "ankle_foot",
+      "sources": [
+        {
+          "elementId": "FJ1410",
+          "sha256": "40c36bc4dc24e161c84daf6e96017f9d78b4cf964579a873e267d2619be4aa2c",
+          "mappingRows": [
+            "FMA5022\tmuscle organ\tFJ1410",
+            "FMA9622\tmuscle of lower limb\tFJ1410",
+            "FMA22471\tmuscle of leg\tFJ1410",
+            "FMA22473\tmuscle of lateral compartment of leg\tFJ1410",
+            "FMA22539\tfibularis longus\tFJ1410",
+            "FMA22552\tright fibularis longus\tFJ1410",
+            "FMA37368\tmuscle of free lower limb\tFJ1410",
+            "FMA55665\tnonparenchymatous organ\tFJ1410",
+            "FMA55670\tsolid organ\tFJ1410",
+            "FMA61775\tphysical anatomical entity\tFJ1410",
+            "FMA62955\tanatomical entity\tFJ1410",
+            "FMA67135\tanatomical structure\tFJ1410",
+            "FMA67165\tmaterial anatomical entity\tFJ1410",
+            "FMA67498\torgan\tFJ1410"
+          ]
+        }
+      ],
+      "triangles": 3860,
+      "review": "pending"
+    },
+    {
+      "id": "fibularis-brevis",
+      "en": "Fibularis Brevis",
+      "he": "פיבולריס ברביס",
+      "layer": "muscle",
+      "side": "right",
+      "regionId": "ankle_foot",
+      "sources": [
+        {
+          "elementId": "FJ1409",
+          "sha256": "ba330adc0128b26a50b4a5bd0a0cedcd3f32dbf09ae25f4e0587949dbd9d3d11",
+          "mappingRows": [
+            "FMA5022\tmuscle organ\tFJ1409",
+            "FMA9622\tmuscle of lower limb\tFJ1409",
+            "FMA22471\tmuscle of leg\tFJ1409",
+            "FMA22473\tmuscle of lateral compartment of leg\tFJ1409",
+            "FMA22540\tfibularis brevis\tFJ1409",
+            "FMA22554\tright fibularis brevis\tFJ1409",
+            "FMA37368\tmuscle of free lower limb\tFJ1409",
+            "FMA55665\tnonparenchymatous organ\tFJ1409",
+            "FMA55670\tsolid organ\tFJ1409",
+            "FMA61775\tphysical anatomical entity\tFJ1409",
+            "FMA62955\tanatomical entity\tFJ1409",
+            "FMA67135\tanatomical structure\tFJ1409",
+            "FMA67165\tmaterial anatomical entity\tFJ1409",
+            "FMA67498\torgan\tFJ1409"
+          ]
+        }
+      ],
+      "triangles": 1766,
+      "review": "pending"
+    },
+    {
+      "id": "abductor-hallucis",
+      "en": "Abductor Hallucis",
+      "he": "אבדקטור הלוסיס",
+      "layer": "muscle",
+      "side": "right",
+      "regionId": "ankle_foot",
+      "sources": [
+        {
+          "elementId": "FJ1400",
+          "sha256": "e09959b4180b40e4272430e9cd7bd1fbfce954cd9c39236a3acca1a4fc495553",
+          "mappingRows": [
+            "FMA5022\tmuscle organ\tFJ1400",
+            "FMA9622\tmuscle of lower limb\tFJ1400",
+            "FMA37368\tmuscle of free lower limb\tFJ1400",
+            "FMA37369\tmuscle of foot\tFJ1400",
+            "FMA37448\tabductor hallucis\tFJ1400",
+            "FMA37459\tright abductor hallucis\tFJ1400",
+            "FMA55665\tnonparenchymatous organ\tFJ1400",
+            "FMA55670\tsolid organ\tFJ1400",
+            "FMA61775\tphysical anatomical entity\tFJ1400",
+            "FMA62955\tanatomical entity\tFJ1400",
+            "FMA65020\tintrinsic muscle of foot\tFJ1400",
+            "FMA65046\tintrinsic muscle of plantar part of foot\tFJ1400",
+            "FMA67135\tanatomical structure\tFJ1400",
+            "FMA67165\tmaterial anatomical entity\tFJ1400",
+            "FMA67498\torgan\tFJ1400"
+          ]
+        }
+      ],
+      "triangles": 1068,
+      "review": "pending"
+    },
+    {
+      "id": "flexor-digitorum-brevis",
+      "en": "Flexor Digitorum Brevis",
+      "he": "פלקסור דיגיטורום ברביס",
+      "layer": "muscle",
+      "side": "right",
+      "regionId": "ankle_foot",
+      "sources": [
+        {
+          "elementId": "FJ1413",
+          "sha256": "4910cc83a0e1558971c95ce4b73a4845e3ab63a19cd3e92769aaf46f0bd41333",
+          "mappingRows": [
+            "FMA5022\tmuscle organ\tFJ1413",
+            "FMA9622\tmuscle of lower limb\tFJ1413",
+            "FMA37368\tmuscle of free lower limb\tFJ1413",
+            "FMA37369\tmuscle of foot\tFJ1413",
+            "FMA37450\tflexor digitorum brevis\tFJ1413",
+            "FMA37461\tright flexor digitorum brevis\tFJ1413",
+            "FMA55665\tnonparenchymatous organ\tFJ1413",
+            "FMA55670\tsolid organ\tFJ1413",
+            "FMA61775\tphysical anatomical entity\tFJ1413",
+            "FMA62955\tanatomical entity\tFJ1413",
+            "FMA65020\tintrinsic muscle of foot\tFJ1413",
+            "FMA65046\tintrinsic muscle of plantar part of foot\tFJ1413",
+            "FMA67135\tanatomical structure\tFJ1413",
+            "FMA67165\tmaterial anatomical entity\tFJ1413",
+            "FMA67498\torgan\tFJ1413"
+          ]
+        }
+      ],
+      "triangles": 2436,
+      "review": "pending"
+    },
+    {
+      "id": "extensor-hallucis-brevis",
+      "en": "Extensor Hallucis Brevis",
+      "he": "אקסטנסור הלוסיס ברביס",
+      "layer": "muscle",
+      "side": "right",
+      "regionId": "ankle_foot",
+      "sources": [
+        {
+          "elementId": "FJ1407",
+          "sha256": "cbef129a1fd217b80efe9688ec6b4e0dbf7471d81b5f15a20e12ef7f04f42d17",
+          "mappingRows": [
+            "FMA5022\tmuscle organ\tFJ1407",
+            "FMA9622\tmuscle of lower limb\tFJ1407",
+            "FMA37368\tmuscle of free lower limb\tFJ1407",
+            "FMA37369\tmuscle of foot\tFJ1407",
+            "FMA51141\textensor hallucis brevis\tFJ1407",
+            "FMA51144\tright extensor hallucis brevis\tFJ1407",
+            "FMA55665\tnonparenchymatous organ\tFJ1407",
+            "FMA55670\tsolid organ\tFJ1407",
+            "FMA61775\tphysical anatomical entity\tFJ1407",
+            "FMA62955\tanatomical entity\tFJ1407",
+            "FMA65020\tintrinsic muscle of foot\tFJ1407",
+            "FMA65045\tintrinsic muscle of dorsum of foot\tFJ1407",
+            "FMA67135\tanatomical structure\tFJ1407",
+            "FMA67165\tmaterial anatomical entity\tFJ1407",
+            "FMA67498\torgan\tFJ1407"
+          ]
+        }
+      ],
+      "triangles": 1230,
+      "review": "pending"
+    },
+    {
+      "id": "flexor-hallucis-brevis",
+      "en": "Flexor Hallucis Brevis",
+      "he": "פלקסור הלוסיס ברביס",
+      "layer": "muscle",
+      "side": "right",
+      "regionId": "ankle_foot",
+      "sources": [
+        {
+          "elementId": "FJ1396",
+          "sha256": "778a43d6a1540626e4e13f29c75a4ec75d335abd37ee9c7fdee4eea8188116e1",
+          "mappingRows": [
+            "FMA45729\thead of organ\tFJ1396",
+            "FMA45963\thead of flexor hallucis brevis\tFJ1396",
+            "FMA45969\tmedial head of flexor hallucis brevis\tFJ1396",
+            "FMA45971\tmedial head of right flexor hallucis brevis\tFJ1396",
+            "FMA55268\torgan zone\tFJ1396",
+            "FMA61775\tphysical anatomical entity\tFJ1396",
+            "FMA62955\tanatomical entity\tFJ1396",
+            "FMA67135\tanatomical structure\tFJ1396",
+            "FMA67165\tmaterial anatomical entity\tFJ1396",
+            "FMA67619\torgan region\tFJ1396",
+            "FMA82472\tcardinal organ part\tFJ1396",
+            "FMA85453\thead of muscle organ\tFJ1396"
+          ]
+        },
+        {
+          "elementId": "FJ1393",
+          "sha256": "4403ddd8a9fffab7fdf1cbb28fd9b90f461913bd9c28cfea23fc512844668985",
+          "mappingRows": [
+            "FMA45729\thead of organ\tFJ1393",
+            "FMA45963\thead of flexor hallucis brevis\tFJ1393",
+            "FMA45970\tlateral head of flexor hallucis brevis\tFJ1393",
+            "FMA45973\tlateral head of right flexor hallucis brevis\tFJ1393",
+            "FMA55268\torgan zone\tFJ1393",
+            "FMA61775\tphysical anatomical entity\tFJ1393",
+            "FMA62955\tanatomical entity\tFJ1393",
+            "FMA67135\tanatomical structure\tFJ1393",
+            "FMA67165\tmaterial anatomical entity\tFJ1393",
+            "FMA67619\torgan region\tFJ1393",
+            "FMA82472\tcardinal organ part\tFJ1393",
+            "FMA85453\thead of muscle organ\tFJ1393"
+          ]
+        }
+      ],
+      "triangles": 2734,
+      "review": "pending"
+    },
+    {
+      "id": "adductor-hallucis",
+      "en": "Adductor Hallucis",
+      "he": "אדקטור הלוסיס",
+      "layer": "muscle",
+      "side": "right",
+      "regionId": "ankle_foot",
+      "sources": [
+        {
+          "elementId": "FJ1398",
+          "sha256": "346020de3eb54e85a76fed52b2742fb86c596db4a413a717ce93d55a6d589b34",
+          "mappingRows": [
+            "FMA45729\thead of organ\tFJ1398",
+            "FMA46012\thead of adductor hallucis\tFJ1398",
+            "FMA46014\toblique head of adductor hallucis\tFJ1398",
+            "FMA46018\toblique head of right adductor hallucis\tFJ1398",
+            "FMA55268\torgan zone\tFJ1398",
+            "FMA61775\tphysical anatomical entity\tFJ1398",
+            "FMA62955\tanatomical entity\tFJ1398",
+            "FMA67135\tanatomical structure\tFJ1398",
+            "FMA67165\tmaterial anatomical entity\tFJ1398",
+            "FMA67619\torgan region\tFJ1398",
+            "FMA82472\tcardinal organ part\tFJ1398",
+            "FMA85453\thead of muscle organ\tFJ1398"
+          ]
+        },
+        {
+          "elementId": "FJ1445",
+          "sha256": "b62f353790db0c2b504f502e6fadd1be4f951290dc76bd39a8019fe202ef36c9",
+          "mappingRows": [
+            "FMA45729\thead of organ\tFJ1445",
+            "FMA46012\thead of adductor hallucis\tFJ1445",
+            "FMA46015\ttransverse head of adductor hallucis\tFJ1445",
+            "FMA46020\ttransverse head of right adductor hallucis\tFJ1445",
+            "FMA55268\torgan zone\tFJ1445",
+            "FMA61775\tphysical anatomical entity\tFJ1445",
+            "FMA62955\tanatomical entity\tFJ1445",
+            "FMA67135\tanatomical structure\tFJ1445",
+            "FMA67165\tmaterial anatomical entity\tFJ1445",
+            "FMA67619\torgan region\tFJ1445",
+            "FMA82472\tcardinal organ part\tFJ1445",
+            "FMA85453\thead of muscle organ\tFJ1445"
+          ]
+        }
+      ],
+      "triangles": 1872,
+      "review": "pending"
+    }
+  ],
+  "unavailable": [
+    "ligaments",
+    "cartilage",
+    "joint-capsules",
+    "separate-tendons",
+    "nerves",
+    "unlisted-muscles",
+    "sesamoids",
+    "unlisted-intrinsic-foot-muscles"
+  ]
+}

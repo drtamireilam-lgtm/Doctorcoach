@@ -1,0 +1,22 @@
+{
+  "passed": [
+    "real GLB loaded and WebGL canvas rendered",
+    "Hebrew selection, content and RTL",
+    "mouse orbit changes rendered pixels",
+    "camera preset changes pixels",
+    "hidden layer cannot be selected",
+    "language switch keeps selection and LTR",
+    "existing exercise links displayed with roles",
+    "390px mobile layout has no horizontal overflow",
+    "reset and clear selection",
+    "direct geometry picking resolves a real mapped structure",
+    "viewer restores after reload",
+    "scene unmount and remount without page errors",
+    "integrated app opens canonical exercise from shoulder",
+    "browser back restores integrated anatomy and selection",
+    "migrated local app returns no HTTP 5xx responses",
+    "no uncaught browser errors"
+  ],
+  "browserErrors": [],
+  "serverErrors": []
+}

@@ -1,0 +1,458 @@
+{
+  "assetId": "bp3d-4-hip",
+  "sourceUrl": "https://dbarchive.biosciencedbc.jp/data/bodyparts3d/LATEST/isa_BP3D_4.0_obj_99.zip",
+  "creator": "The Database Center for Life Science",
+  "licenseId": "CC-BY-4.0",
+  "licenseUrl": "https://creativecommons.org/licenses/by/4.0/",
+  "licenseEvidence": "https://dbarchive.biosciencedbc.jp/en/bodyparts3d/lic.html",
+  "attribution": "BodyParts3D, © The Database Center for Life Science licensed under CC Attribution 4.0 International",
+  "modifications": "Original right hip bone, femur and twelve source-mapped hip muscles; all vertices/triangles retained, mm XYZ converted to metres X Z -Y; normals/materials added; no mirrored or synthesized structures. Source names and spatial laterality checked.",
+  "downloadedSubsetSha256": "67b0e906217f0951ba017de20be84e58ccec1c28a5bddab7641f223f97b65de1",
+  "glbSha256": "d46613d4b6326ddc096a5016abf13cd2ce64102c906ffb239b370727d64356d4",
+  "anatomicalReview": "pending",
+  "structures": [
+    {
+      "id": "hip-bone",
+      "en": "Hip bone",
+      "he": "עצם האגן",
+      "layer": "bone",
+      "side": "right",
+      "regionId": "hip_glute",
+      "sources": [
+        {
+          "elementId": "FJ3152",
+          "sha256": "99de26e5435a8397b6f39b44ada75319d5e8fa1433e1ea38fdd8de9e079ed9a9",
+          "mappingRows": [
+            "FMA5018\tbone organ\tFJ3152",
+            "FMA7476\tflat bone\tFJ3152",
+            "FMA16585\thip bone\tFJ3152",
+            "FMA16586\tright hip bone\tFJ3152",
+            "FMA55671\tcavitated organ\tFJ3152",
+            "FMA55673\torgan with cavitated organ parts\tFJ3152",
+            "FMA61775\tphysical anatomical entity\tFJ3152",
+            "FMA62955\tanatomical entity\tFJ3152",
+            "FMA67135\tanatomical structure\tFJ3152",
+            "FMA67165\tmaterial anatomical entity\tFJ3152",
+            "FMA67498\torgan\tFJ3152"
+          ]
+        }
+      ],
+      "triangles": 2374,
+      "review": "pending"
+    },
+    {
+      "id": "femur",
+      "en": "Femur",
+      "he": "עצם הירך",
+      "layer": "bone",
+      "side": "right",
+      "regionId": "hip_glute",
+      "sources": [
+        {
+          "elementId": "FJ3365",
+          "sha256": "5eff0f92905dd45bd0e79b1de0144dc15988c73c683468163255ba1452d58037",
+          "mappingRows": [
+            "FMA5018\tbone organ\tFJ3365",
+            "FMA7474\tlong bone\tFJ3365",
+            "FMA9611\tfemur\tFJ3365",
+            "FMA24474\tright femur\tFJ3365",
+            "FMA55671\tcavitated organ\tFJ3365",
+            "FMA55673\torgan with cavitated organ parts\tFJ3365",
+            "FMA61775\tphysical anatomical entity\tFJ3365",
+            "FMA62955\tanatomical entity\tFJ3365",
+            "FMA67135\tanatomical structure\tFJ3365",
+            "FMA67165\tmaterial anatomical entity\tFJ3365",
+            "FMA67498\torgan\tFJ3365"
+          ]
+        }
+      ],
+      "triangles": 3102,
+      "review": "pending"
+    },
+    {
+      "id": "gluteus-maximus",
+      "en": "Gluteus maximus",
+      "he": "שריר העכוז הגדול",
+      "layer": "muscle",
+      "side": "right",
+      "regionId": "hip_glute",
+      "sources": [
+        {
+          "elementId": "FJ1418",
+          "sha256": "e576dd907b8bb9b373beda7ba9cb14cce4c958def4b782ad6563b6e2fbe71d46",
+          "mappingRows": [
+            "FMA5022\tmuscle organ\tFJ1418",
+            "FMA9622\tmuscle of lower limb\tFJ1418",
+            "FMA22314\tgluteus maximus\tFJ1418",
+            "FMA22328\tright gluteus maximus\tFJ1418",
+            "FMA37367\tmuscle of pelvic girdle\tFJ1418",
+            "FMA55665\tnonparenchymatous organ\tFJ1418",
+            "FMA55670\tsolid organ\tFJ1418",
+            "FMA61775\tphysical anatomical entity\tFJ1418",
+            "FMA62955\tanatomical entity\tFJ1418",
+            "FMA64922\tgluteal muscle\tFJ1418",
+            "FMA67135\tanatomical structure\tFJ1418",
+            "FMA67165\tmaterial anatomical entity\tFJ1418",
+            "FMA67498\torgan\tFJ1418"
+          ]
+        }
+      ],
+      "triangles": 2376,
+      "review": "pending"
+    },
+    {
+      "id": "gluteus-medius",
+      "en": "Gluteus medius",
+      "he": "שריר העכוז האמצעי",
+      "layer": "muscle",
+      "side": "right",
+      "regionId": "hip_glute",
+      "sources": [
+        {
+          "elementId": "FJ1419",
+          "sha256": "e2e06899b8a61640b32086432ec4b577b2bf2db6f044d469c01bdceb38bd3831",
+          "mappingRows": [
+            "FMA5022\tmuscle organ\tFJ1419",
+            "FMA9622\tmuscle of lower limb\tFJ1419",
+            "FMA22315\tgluteus medius\tFJ1419",
+            "FMA22330\tright gluteus medius\tFJ1419",
+            "FMA37367\tmuscle of pelvic girdle\tFJ1419",
+            "FMA55665\tnonparenchymatous organ\tFJ1419",
+            "FMA55670\tsolid organ\tFJ1419",
+            "FMA61775\tphysical anatomical entity\tFJ1419",
+            "FMA62955\tanatomical entity\tFJ1419",
+            "FMA64922\tgluteal muscle\tFJ1419",
+            "FMA67135\tanatomical structure\tFJ1419",
+            "FMA67165\tmaterial anatomical entity\tFJ1419",
+            "FMA67498\torgan\tFJ1419"
+          ]
+        }
+      ],
+      "triangles": 3356,
+      "review": "pending"
+    },
+    {
+      "id": "gluteus-minimus",
+      "en": "Gluteus minimus",
+      "he": "שריר העכוז הקטן",
+      "layer": "muscle",
+      "side": "right",
+      "regionId": "hip_glute",
+      "sources": [
+        {
+          "elementId": "FJ1420",
+          "sha256": "61ebd1c4cd97adb69324aa74325c05425dbf37f83862a34c6a2f7400c3c017cd",
+          "mappingRows": [
+            "FMA5022\tmuscle organ\tFJ1420",
+            "FMA9622\tmuscle of lower limb\tFJ1420",
+            "FMA22317\tgluteus minimus\tFJ1420",
+            "FMA22332\tright gluteus minimus\tFJ1420",
+            "FMA37367\tmuscle of pelvic girdle\tFJ1420",
+            "FMA55665\tnonparenchymatous organ\tFJ1420",
+            "FMA55670\tsolid organ\tFJ1420",
+            "FMA61775\tphysical anatomical entity\tFJ1420",
+            "FMA62955\tanatomical entity\tFJ1420",
+            "FMA64922\tgluteal muscle\tFJ1420",
+            "FMA67135\tanatomical structure\tFJ1420",
+            "FMA67165\tmaterial anatomical entity\tFJ1420",
+            "FMA67498\torgan\tFJ1420"
+          ]
+        }
+      ],
+      "triangles": 4208,
+      "review": "pending"
+    },
+    {
+      "id": "tensor-fasciae-latae",
+      "en": "Tensor fasciae latae",
+      "he": "מותח המחתלה הרחבה",
+      "layer": "muscle",
+      "side": "right",
+      "regionId": "hip_glute",
+      "sources": [
+        {
+          "elementId": "FJ1438",
+          "sha256": "181553f080c8fad285e54ebca81432a691442a44d2e23d2dde6c21e000bc9ab0",
+          "mappingRows": [
+            "FMA5022\tmuscle organ\tFJ1438",
+            "FMA9622\tmuscle of lower limb\tFJ1438",
+            "FMA22423\ttensor fasciae latae\tFJ1438",
+            "FMA22425\tright tensor fasciae latae\tFJ1438",
+            "FMA37367\tmuscle of pelvic girdle\tFJ1438",
+            "FMA55665\tnonparenchymatous organ\tFJ1438",
+            "FMA55670\tsolid organ\tFJ1438",
+            "FMA61775\tphysical anatomical entity\tFJ1438",
+            "FMA62955\tanatomical entity\tFJ1438",
+            "FMA64922\tgluteal muscle\tFJ1438",
+            "FMA67135\tanatomical structure\tFJ1438",
+            "FMA67165\tmaterial anatomical entity\tFJ1438",
+            "FMA67498\torgan\tFJ1438"
+          ]
+        }
+      ],
+      "triangles": 1254,
+      "review": "pending"
+    },
+    {
+      "id": "piriformis",
+      "en": "Piriformis",
+      "he": "השריר האגסי",
+      "layer": "muscle",
+      "side": "right",
+      "regionId": "hip_glute",
+      "sources": [
+        {
+          "elementId": "FJ1428",
+          "sha256": "b5420d081245d8f0dd276625a3c96fb5180dd2fcc4c0dc6a3f7990869090a23f",
+          "mappingRows": [
+            "FMA5022\tmuscle organ\tFJ1428",
+            "FMA9622\tmuscle of lower limb\tFJ1428",
+            "FMA19082\tpiriformis\tFJ1428",
+            "FMA22340\tright piriformis\tFJ1428",
+            "FMA37367\tmuscle of pelvic girdle\tFJ1428",
+            "FMA55665\tnonparenchymatous organ\tFJ1428",
+            "FMA55670\tsolid organ\tFJ1428",
+            "FMA61775\tphysical anatomical entity\tFJ1428",
+            "FMA62955\tanatomical entity\tFJ1428",
+            "FMA64922\tgluteal muscle\tFJ1428",
+            "FMA67135\tanatomical structure\tFJ1428",
+            "FMA67165\tmaterial anatomical entity\tFJ1428",
+            "FMA67498\torgan\tFJ1428"
+          ]
+        }
+      ],
+      "triangles": 1092,
+      "review": "pending"
+    },
+    {
+      "id": "obturator-internus",
+      "en": "Obturator internus",
+      "he": "השריר הסותם הפנימי",
+      "layer": "muscle",
+      "side": "right",
+      "regionId": "hip_glute",
+      "sources": [
+        {
+          "elementId": "FJ1426",
+          "sha256": "977a261dc98ce11a53282b2400b4b1f89160000c5e254bbd1755b26bbbab8ed4",
+          "mappingRows": [
+            "FMA5022\tmuscle organ\tFJ1426",
+            "FMA9622\tmuscle of lower limb\tFJ1426",
+            "FMA19083\tobturator muscle\tFJ1426",
+            "FMA22298\tobturator internus\tFJ1426",
+            "FMA22324\tright obturator internus\tFJ1426",
+            "FMA37367\tmuscle of pelvic girdle\tFJ1426",
+            "FMA55665\tnonparenchymatous organ\tFJ1426",
+            "FMA55670\tsolid organ\tFJ1426",
+            "FMA61775\tphysical anatomical entity\tFJ1426",
+            "FMA62955\tanatomical entity\tFJ1426",
+            "FMA64922\tgluteal muscle\tFJ1426",
+            "FMA67135\tanatomical structure\tFJ1426",
+            "FMA67165\tmaterial anatomical entity\tFJ1426",
+            "FMA67498\torgan\tFJ1426"
+          ]
+        }
+      ],
+      "triangles": 2466,
+      "review": "pending"
+    },
+    {
+      "id": "obturator-externus",
+      "en": "Obturator externus",
+      "he": "השריר הסותם החיצוני",
+      "layer": "muscle",
+      "side": "right",
+      "regionId": "hip_glute",
+      "sources": [
+        {
+          "elementId": "FJ1425",
+          "sha256": "ccf94b03dc0f4c669c2ac96441127c17ad9287edc0001b5923879df99c75f3ae",
+          "mappingRows": [
+            "FMA5022\tmuscle organ\tFJ1425",
+            "FMA9622\tmuscle of lower limb\tFJ1425",
+            "FMA19083\tobturator muscle\tFJ1425",
+            "FMA22299\tobturator externus\tFJ1425",
+            "FMA22326\tright obturator externus\tFJ1425",
+            "FMA37367\tmuscle of pelvic girdle\tFJ1425",
+            "FMA55665\tnonparenchymatous organ\tFJ1425",
+            "FMA55670\tsolid organ\tFJ1425",
+            "FMA61775\tphysical anatomical entity\tFJ1425",
+            "FMA62955\tanatomical entity\tFJ1425",
+            "FMA64922\tgluteal muscle\tFJ1425",
+            "FMA67135\tanatomical structure\tFJ1425",
+            "FMA67165\tmaterial anatomical entity\tFJ1425",
+            "FMA67498\torgan\tFJ1425"
+          ]
+        }
+      ],
+      "triangles": 784,
+      "review": "pending"
+    },
+    {
+      "id": "superior-gemellus",
+      "en": "Superior gemellus",
+      "he": "השריר התאום העליון",
+      "layer": "muscle",
+      "side": "right",
+      "regionId": "hip_glute",
+      "sources": [
+        {
+          "elementId": "FJ1417",
+          "sha256": "57a2cec17f38fe60323d68942a7458512f0fe836a6e9ace69cf5fe6535e64365",
+          "mappingRows": [
+            "FMA5022\tmuscle organ\tFJ1417",
+            "FMA9622\tmuscle of lower limb\tFJ1417",
+            "FMA22318\tgemellus superior\tFJ1417",
+            "FMA22319\tgemellus\tFJ1417",
+            "FMA22334\tright gemellus superior\tFJ1417",
+            "FMA37367\tmuscle of pelvic girdle\tFJ1417",
+            "FMA55665\tnonparenchymatous organ\tFJ1417",
+            "FMA55670\tsolid organ\tFJ1417",
+            "FMA61775\tphysical anatomical entity\tFJ1417",
+            "FMA62955\tanatomical entity\tFJ1417",
+            "FMA64922\tgluteal muscle\tFJ1417",
+            "FMA67135\tanatomical structure\tFJ1417",
+            "FMA67165\tmaterial anatomical entity\tFJ1417",
+            "FMA67498\torgan\tFJ1417"
+          ]
+        }
+      ],
+      "triangles": 402,
+      "review": "pending"
+    },
+    {
+      "id": "inferior-gemellus",
+      "en": "Inferior gemellus",
+      "he": "השריר התאום התחתון",
+      "layer": "muscle",
+      "side": "right",
+      "regionId": "hip_glute",
+      "sources": [
+        {
+          "elementId": "FJ1416",
+          "sha256": "4479931f789d919fe352532a1b377f88c48914d461d5bd68ffd008082e7e92c7",
+          "mappingRows": [
+            "FMA5022\tmuscle organ\tFJ1416",
+            "FMA9622\tmuscle of lower limb\tFJ1416",
+            "FMA22319\tgemellus\tFJ1416",
+            "FMA22320\tgemellus inferior\tFJ1416",
+            "FMA22336\tright gemellus inferior\tFJ1416",
+            "FMA37367\tmuscle of pelvic girdle\tFJ1416",
+            "FMA55665\tnonparenchymatous organ\tFJ1416",
+            "FMA55670\tsolid organ\tFJ1416",
+            "FMA61775\tphysical anatomical entity\tFJ1416",
+            "FMA62955\tanatomical entity\tFJ1416",
+            "FMA64922\tgluteal muscle\tFJ1416",
+            "FMA67135\tanatomical structure\tFJ1416",
+            "FMA67165\tmaterial anatomical entity\tFJ1416",
+            "FMA67498\torgan\tFJ1416"
+          ]
+        }
+      ],
+      "triangles": 642,
+      "review": "pending"
+    },
+    {
+      "id": "quadratus-femoris",
+      "en": "Quadratus femoris",
+      "he": "השריר המרובע של הירך",
+      "layer": "muscle",
+      "side": "right",
+      "regionId": "hip_glute",
+      "sources": [
+        {
+          "elementId": "FJ1432",
+          "sha256": "3c1121d358ea50cfb88fe829c5128ecc3470309e3de5d7f642bc8cf35555fdb1",
+          "mappingRows": [
+            "FMA5022\tmuscle organ\tFJ1432",
+            "FMA9622\tmuscle of lower limb\tFJ1432",
+            "FMA22321\tquadratus femoris\tFJ1432",
+            "FMA22338\tright quadratus femoris\tFJ1432",
+            "FMA37367\tmuscle of pelvic girdle\tFJ1432",
+            "FMA55665\tnonparenchymatous organ\tFJ1432",
+            "FMA55670\tsolid organ\tFJ1432",
+            "FMA61775\tphysical anatomical entity\tFJ1432",
+            "FMA62955\tanatomical entity\tFJ1432",
+            "FMA64922\tgluteal muscle\tFJ1432",
+            "FMA67135\tanatomical structure\tFJ1432",
+            "FMA67165\tmaterial anatomical entity\tFJ1432",
+            "FMA67498\torgan\tFJ1432"
+          ]
+        }
+      ],
+      "triangles": 1196,
+      "review": "pending"
+    },
+    {
+      "id": "iliacus",
+      "en": "Iliacus",
+      "he": "שריר הכסל",
+      "layer": "muscle",
+      "side": "right",
+      "regionId": "hip_glute",
+      "sources": [
+        {
+          "elementId": "FJ1422",
+          "sha256": "e7201ed4264a06a3689592625a20abcc9aed26435f0797a1e8e41b68335d1e24",
+          "mappingRows": [
+            "FMA5022\tmuscle organ\tFJ1422",
+            "FMA9622\tmuscle of lower limb\tFJ1422",
+            "FMA22310\tiliacus\tFJ1422",
+            "FMA22322\tright iliacus\tFJ1422",
+            "FMA37367\tmuscle of pelvic girdle\tFJ1422",
+            "FMA55665\tnonparenchymatous organ\tFJ1422",
+            "FMA55670\tsolid organ\tFJ1422",
+            "FMA61775\tphysical anatomical entity\tFJ1422",
+            "FMA62955\tanatomical entity\tFJ1422",
+            "FMA67135\tanatomical structure\tFJ1422",
+            "FMA67165\tmaterial anatomical entity\tFJ1422",
+            "FMA67498\torgan\tFJ1422"
+          ]
+        }
+      ],
+      "triangles": 2862,
+      "review": "pending"
+    },
+    {
+      "id": "psoas-major",
+      "en": "Psoas major",
+      "he": "שריר המותן הגדול",
+      "layer": "muscle",
+      "side": "right",
+      "regionId": "hip_glute",
+      "sources": [
+        {
+          "elementId": "FJ1431",
+          "sha256": "b66009da13d6241d66de3c0242288abfe0c90ce1c76b38000f9a92b02e2f1e0f",
+          "mappingRows": [
+            "FMA5022\tmuscle organ\tFJ1431",
+            "FMA18060\tpsoas major\tFJ1431",
+            "FMA22342\tright psoas major\tFJ1431",
+            "FMA22594\tmuscle of vertebral column\tFJ1431",
+            "FMA32514\tprevertebral muscle\tFJ1431",
+            "FMA55665\tnonparenchymatous organ\tFJ1431",
+            "FMA55670\tsolid organ\tFJ1431",
+            "FMA61775\tphysical anatomical entity\tFJ1431",
+            "FMA62955\tanatomical entity\tFJ1431",
+            "FMA67135\tanatomical structure\tFJ1431",
+            "FMA67165\tmaterial anatomical entity\tFJ1431",
+            "FMA67498\torgan\tFJ1431"
+          ]
+        }
+      ],
+      "triangles": 4900,
+      "review": "pending"
+    }
+  ],
+  "unavailable": [
+    "cartilage",
+    "joint-capsule",
+    "ligaments",
+    "nerves",
+    "separate-tendons",
+    "iliotibial-tract",
+    "sacrum-and-lumbar-context-bones",
+    "contralateral-pelvis",
+    "unlisted-muscles"
+  ]
+}

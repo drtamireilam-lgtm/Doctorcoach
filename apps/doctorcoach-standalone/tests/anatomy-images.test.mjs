@@ -24,8 +24,8 @@ test('every selected illustration retains exact source, credit, license and intr
   assert.equal(image.license,'Public domain');assert.ok(image.credit&&image.alt&&image.title&&image.verifiedOn);
   assert.ok(image.width>0&&image.height>0);assert.ok(image.url.endsWith('.png'));
  }
- assert.equal(anatomyImageFor('deltoid').id,'gray-deltoid');
- assert.equal(anatomyImageFor('biceps-brachii').id,'gray414');
+ assert.equal(anatomyImageFor('deltoid').id,'gray410');
+ assert.equal(anatomyImageFor('biceps-brachii').id,'gray411');
 });
 test('thigh plates cover matched records without assuming every quadriceps or hamstring is depicted',()=>{
  for(const slug of ['rectus-femoris','vastus-lateralis','vastus-medialis','sartorius'])assert.equal(anatomyImageFor(slug).id,'gray430');

@@ -2,6 +2,10 @@
 
 _Last consolidated: 2026-09-30_
 
+## Anatomy integration — 2026-10-19
+
+The current standalone app now has a prepared integrated anatomy atlas: 129 preserved muscle/group records, 42 bilingual main-muscle attachment articles, 122 bidirectional canonical exercise links, front/back/side SVG navigation, schematic elbow/knee movement and contextual feedback. See `docs/anatomy/INTEGRATED_ATLAS_2026-10-19.md` for exact scope and verification. This is not a claim that all 129 articles or a medically accurate 3D atlas are complete. Cloudflare deployment and phone/browser acceptance remain unverified; no Production deployment is claimed.
+
 ## Current verification — 2026-10-04
 
 Published baseline: `94c7fc1185baa441435659cbea6f23def932fcad`; CI run `37175781770` passed all seven foundation tests and the build. The previous P0 access-boundary batch is uploaded.

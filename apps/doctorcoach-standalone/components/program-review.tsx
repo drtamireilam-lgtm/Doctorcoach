@@ -1,4 +1,5 @@
 'use client';
+import {fromKg} from '../lib/load-units';
 import {planExerciseName} from '../lib/custom-exercise-types';
 import {CustomExerciseInstructions} from './custom-exercise-instructions';
 import {repetitionLabel} from '../lib/training';
@@ -27,7 +28,9 @@ export function ProgramReview({title,items,clientName,replaces,busy,error,stale,
    <div className="care-row"><div><h3>{workoutDayLabel(day.id)}</h3><p className="care-muted">{day.items.length} תרגילים · {day.sets} סטים</p></div><button type="button" className="text-button" disabled={busy} onClick={()=>onEditDay(day.id)}>עריכת היום</button></div>
    <div className="care-dose-list"><WorkoutSections items={day.items}>{item=><article key={planItemKey(item)}>
     <strong>{planExerciseName(item,nameOf(item.exerciseId))}</strong>
-    <p>{item.sets} סטים × {repetitionLabel(item)} {unitLabels[item.unit]} · {effortTarget(item)} · משקל פתיחה: {item.weightUnspecified?'לא הוגדר משקל':`${item.weight} ק״ג`}</p>
+    {item.side&&<p>צד: {{left:'שמאל',right:'ימין',both:'שני הצדדים'}[item.side]}</p>}
+    {!!item.warmupSets?.length&&<div className="care-dose-list"><strong>סטים לחימום</strong>{item.warmupSets.map((set,index)=><p key={index}>חימום {index+1}: {set.weight} ק״ג × {set.amount} {unitLabels[item.unit]}</p>)}</div>}
+    <p>{item.sets} סטים × {repetitionLabel(item)} {unitLabels[item.unit]} · {effortTarget(item)} · משקל פתיחה: {item.weightUnspecified?'לא הוגדר משקל':`${new Intl.NumberFormat('he-IL',{maximumFractionDigits:2}).format(fromKg(item.weight,item.load?.sourceUnit??'kg'))} ${item.load?.sourceUnit??'kg'}${item.load?.basis==='per-side'?' לכל צד':''}`}</p>
     {item.targetRpe==null&&<p className="care-muted">לא הוגדר יעד מאמץ לתרגיל הזה.</p>}
     {item.weightUnspecified&&<p className="care-muted">המשקל חסר במקור. המתאמן יתעד את המשקל בפועל.</p>}
     <TempoDetails item={item}/><CustomExerciseInstructions item={item}/>{item.notes&&<p className="care-preserve">הערת המאמן: {item.notes}</p>}

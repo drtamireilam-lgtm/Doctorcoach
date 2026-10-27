@@ -6,10 +6,11 @@ import {useServiceCatalog} from '../hooks/use-services';
 import {CareGate} from './care-ui';
 import {ServiceCard,ServiceEditor,NutritionRevenuePreview} from './service-workspace';
 import {AppointmentsWorkspace} from './appointments-workspace';
+import {NutritionScope} from './nutrition-scope';
 import type {ConsultationService} from '../lib/services';
-export function NutritionServiceCatalog(){
+export function NutritionServiceCatalog({includeScope=true}:{includeScope?:boolean}){
  const catalog=useServiceCatalog(),services=catalog.services.filter(service=>service.provider==='lior'),[selected,setSelected]=useState('');
- return <Localize><section className="nutrition-pricing"><h2>תזונה עם ליאור זליקסון</h2><p>פגישת תזונה, ייעוץ או חבילת ליווי בהתאם להצעות של ליאור. הוא קובע את המחיר, התכולה ומשך השירות. שליחת בקשה אינה אישור תור.</p>{catalog.state==='loading'?<p role="status">טוענים שירותי תזונה…</p>:catalog.state==='error'?<p role="alert">{catalog.error}</p>:services.length?<div className="service-grid">{services.map(service=><ServiceCard key={service.id} service={service} onRequest={setSelected}/>)}</div>:<p className="care-muted">שירותי התזונה והמחירים יופיעו לאחר שליאור יגדיר אותם. אין כרגע חבילות או מחירים מאושרים להצגה.</p>}{selected&&<AppointmentsWorkspace initialServiceId={selected}/>}</section></Localize>;
+ return <><Localize><section className="nutrition-pricing"><h2>תזונה עם ליאור זליקסון</h2><p>פגישת תזונה, ייעוץ או חבילת ליווי בהתאם להצעות של ליאור. הוא קובע את המחיר, התכולה ומשך השירות. שליחת בקשה אינה אישור תור.</p>{catalog.state==='loading'?<p role="status">טוענים שירותי תזונה…</p>:catalog.state==='error'?<p role="alert">{catalog.error}</p>:services.length?<div className="service-grid">{services.map(service=><ServiceCard key={service.id} service={service} onRequest={setSelected}/>)}</div>:<p className="care-muted">שירותי התזונה והמחירים יופיעו לאחר שליאור יגדיר אותם. אין כרגע חבילות או מחירים מאושרים להצגה.</p>}{selected&&<AppointmentsWorkspace initialServiceId={selected}/>}</section></Localize>{includeScope&&<NutritionScope/>}</>;
 }
 export function NutritionServiceManager(){
  const resource=useCareResource<{services:ConsultationService[]}>('/api/nutrition-services'),[editing,setEditing]=useState<ConsultationService|null>(null);
