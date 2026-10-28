@@ -1,0 +1,1 @@
+Static isolated configuration passed. Remote resource ownership, empty stores, secrets, costs, domain and owner approval still require verification.
