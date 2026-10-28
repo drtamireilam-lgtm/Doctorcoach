@@ -1,0 +1,10 @@
+Warning: UnknownErrorException: Unable to load font data at: file:///workspace/scratch/75d2260f2e88/audit-repo/apps/doctorcoach-standalone/node_modules/.pnpm/pdfjs-dist@6.4.299/node_modules/pdfjs-dist/standard_fonts/LiberationSans-Regular.ttf
+✔ recognition 3 real text PDF aliases retain specific equipment through workout persistence (66.85268ms)
+ℹ tests 25
+ℹ suites 0
+ℹ pass 25
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 1133.210658
