@@ -8,11 +8,12 @@ import {randomUUID} from 'node:crypto';
 import path from 'node:path';
 import assert from 'node:assert/strict';
 import {signLink} from '../crypto.ts';
+import {googleCalendarStore,CALENDAR_SCOPE} from '../../lib/google-calendar.ts';
 import {themePresets} from '../../lib/advanced-theme.ts';
 const root=fileURLToPath(new URL('../../',import.meta.url));
 const require=createRequire(realpathSync(path.join(root,'node_modules/@cloudflare/vite-plugin/package.json')));
 const {Miniflare}=require('miniflare');
-const origin='https://staging.example.test',project='https://auth.example.test';
+const origin='https://doctorcoach-isolated-staging.dr-tamireilam.workers.dev',project='https://auth.example.test';
 const identities=new Map(),tokens=new Map(),refreshTokens=new Map(),used=new Set(),revoked=new Set();
 let serial=0,refreshCount=0;
 const legacyKeys=await crypto.subtle.generateKey('Ed25519',true,['sign','verify']);
@@ -28,8 +29,11 @@ function mint(email,first=false){
 async function modules(dir){const result=[];for(const entry of await readdir(dir,{withFileTypes:true})){const full=path.join(dir,entry.name);if(entry.isDirectory())result.push(...await modules(full));else if(/\.m?js$/.test(entry.name))result.push({type:'ESModule',path:full});}return result;}
 const entries=await modules(path.join(root,'dist/server'));
 entries.sort((a,b)=>a.path===path.join(root,'dist/server/index.js')?-1:b.path===path.join(root,'dist/server/index.js')?1:a.path.localeCompare(b.path));
-const mf=new Miniflare({modules:entries,modulesRoot:path.join(root,'dist/server'),compatibilityDate:'2026-05-15',compatibilityFlags:['nodejs_compat'],d1Databases:['DB'],r2Buckets:['BUCKET'],bindings:{DC_AUTH_ORIGIN:origin,DC_SUPABASE_URL:project,DC_SUPABASE_PUBLIC_KEY:'sb_publishable_synthetic',DC_SESSION_KEY:Buffer.alloc(32,7).toString('base64'),DC_LEGACY_ISSUER:'sites:synthetic-old',DC_NEW_ACCOUNTS_ENABLED:'true',DC_LEGACY_PUBLIC_JWK:JSON.stringify(legacyPublic),DOCTORCOACH_ADMIN_EMAILS:'doctor@example.test',DOCTORCOACH_CLINICIAN_EMAILS:'doctor@example.test'},outboundService:async req=>{
- const url=new URL(req.url);assert.equal(url.origin,project);
+// Google is always synthetic; Miniflare intercepts every outbound request.
+const googleEvents=new Map();let googleFailure=false,googleCreates=0;
+async function googleResponse(req){const url=new URL(req.url);if(url.hostname==='oauth2.googleapis.com')return Response.json({access_token:'SYNTHETIC-GOOGLE-ACCESS',refresh_token:'SYNTHETIC-GOOGLE-REFRESH',scope:CALENDAR_SCOPE});if(url.pathname.endsWith('/userinfo'))return Response.json({email:'doctor@example.test',verified_email:true});if(googleFailure)return Response.json({error:'synthetic provider failure'},{status:503});const id=url.pathname.split('/').at(-1);if(['POST','PUT'].includes(req.method)){const body=await req.json();if(req.method==='POST'){if(googleEvents.has(body.id))return Response.json({}, {status:409});googleCreates++;}googleEvents.set(body.id,{...body,etag:'"synthetic"'});return Response.json({id:body.id});}if(req.method==='DELETE'){googleEvents.delete(id);return new Response(null,{status:204});}return googleEvents.has(id)?Response.json(googleEvents.get(id)):Response.json({}, {status:404});}
+const runtimeOptions={modules:entries,modulesRoot:path.join(root,'dist/server'),compatibilityDate:'2026-05-15',compatibilityFlags:['nodejs_compat'],d1Databases:['DB'],r2Buckets:['BUCKET'],bindings:{DC_AUTH_ORIGIN:origin,DC_SUPABASE_URL:project,DC_SUPABASE_PUBLIC_KEY:'sb_publishable_synthetic',DC_SESSION_KEY:Buffer.alloc(32,7).toString('base64'),DC_LEGACY_ISSUER:'sites:synthetic-old',DC_NEW_ACCOUNTS_ENABLED:'true',DC_LEGACY_PUBLIC_JWK:JSON.stringify(legacyPublic),DOCTORCOACH_ADMIN_EMAILS:'doctor@example.test',DOCTORCOACH_CLINICIAN_EMAILS:'doctor@example.test'},outboundService:async req=>{
+ const url=new URL(req.url);if(['oauth2.googleapis.com','www.googleapis.com'].includes(url.hostname))return googleResponse(req);assert.equal(url.origin,project);
  if(url.pathname==='/auth/v1/otp')return Response.json({});
  if(url.pathname==='/auth/v1/verify'){const body=await req.json();if(body.token!=='123456'||used.has(body.email))return Response.json({error:'invalid'},{status:401});used.add(body.email);return Response.json(mint(body.email,true));}
  if(url.pathname==='/auth/v1/token'){const body=await req.json(),email=refreshTokens.get(body.refresh_token);if(!email)return Response.json({}, {status:401});refreshCount++;refreshTokens.delete(body.refresh_token);return Response.json(mint(email));}
@@ -38,7 +42,8 @@ const mf=new Miniflare({modules:entries,modulesRoot:path.join(root,'dist/server'
  if(url.pathname.includes('/rpc/'))return Response.json(!!identity&&!revoked.has(identity.sid));
  if(url.pathname==='/auth/v1/logout'){if(identity)revoked.add(identity.sid);return Response.json({});}
  return Response.json({}, {status:404});
-}});
+}};
+const mf=new Miniflare(runtimeOptions);
 try{
  const db=await mf.getD1Database('DB'),bucket=await mf.getR2Bucket('BUCKET');
  const migrations=(await readdir(path.join(root,'drizzle'))).filter(x=>/^\d.*\.sql$/.test(x)).sort();
@@ -238,6 +243,51 @@ try{
  await db.exec('DROP TRIGGER runtime_fail_link;');
  await json('/auth/link',{proof:retryProof,confirmed:true});assert.equal((await json('/auth/status',{})).linked,true);
  console.log('PASS: actual local D1 registration/link storage failures roll back external identities and permit safe retries.');
+ // Explicitly activate management only in this isolated synthetic runtime.
+ await db.exec(sqlLine(await readFile(path.join(root,'standalone/migrations/0002_user_management.sql'),'utf8')));
+ await db.exec(sqlLine(await readFile(path.join(root,'standalone/migrations/0003_trainee_guidance.sql'),'utf8')));
+ await db.prepare("INSERT INTO dc_management_grants(user_id,permission,granted_by,granted_at) VALUES('legacy-doctor','owner','legacy-doctor',0)").run();
+ await mf.setOptions({...runtimeOptions,bindings:{...runtimeOptions.bindings,DC_USER_MANAGEMENT_ENABLED:'true'}});
+ cookies=doctorCookies;const users=await json('/api/user-management');assert.equal(users.permission,'owner');
+ const managementChange=(userId,version,extra={})=>({action:'update',userId,version,role:'trainee',approval:'approved',status:'active',coachId:null,confirmed:true,operationId:randomUUID(),...extra});
+ await json('/api/user-management',managementChange('legacy-coach-b',0,{role:'coach'}));
+ await json('/api/user-management',managementChange(owner,0,{coachId:'legacy-coach-b'}));
+ cookies=coachBCookies;assert.equal((await request('/api/care/team?client='+encodeURIComponent(owner))).status,200);
+ assert.equal((await request('/api/user-management',managementChange(owner,1,{coachId:'legacy-coach-b'}))).status,403);
+ cookies=doctorCookies;await json('/api/user-management',managementChange(owner,1));
+ cookies=coachBCookies;assert.equal((await request('/api/care/team?client='+encodeURIComponent(owner))).status,403);
+ cookies=doctorCookies;await json('/api/user-management',{action:'secretary',userId:'legacy-coach-b',version:1,secretary:true,confirmed:true,operationId:randomUUID()});
+ cookies=coachBCookies;assert.equal((await json('/api/user-management')).permission,'secretary');const administrativeHistory=await json('/api/appointments?manage=1&view=history');assert.equal(administrativeHistory.canComplete,false);assert.ok(administrativeHistory.appointments.every(a=>!a.preference&&!a.staffNote&&!a.feedbackMessage&&!a.feedbackResponse));assert.equal((await request('/api/messages')).status,403);
+ cookies=doctorCookies;await json('/api/user-management',{action:'secretary',userId:'legacy-coach-b',version:2,secretary:false,confirmed:true,operationId:randomUUID()});
+ cookies=coachBCookies;assert.equal((await request('/api/user-management')).status,403);
+ cookies=doctorCookies;await json('/api/user-management',managementChange(owner,2,{status:'inactive'}));
+ cookies=firstCookies;assert.equal((await request('/api/training')).status,403);assert.equal((await request('/api/media/'+video)).status,403);
+ cookies=doctorCookies;await json('/api/user-management',managementChange(owner,3));
+ cookies=firstCookies;assert.equal((await request('/api/training')).status,200);
+ // Built Worker HTTP guidance changes, independently of the component harness.
+ cookies=doctorCookies;
+ const guidanceDb=await mf.getD1Database('DB');
+ const entitlementBefore=await guidanceDb.prepare('SELECT self_until,program_id FROM training_access WHERE user_id=?').bind(owner).first();
+ const guidanceUpdate=async(mode,coachId=null)=>{const row=await guidanceDb.prepare('SELECT version FROM dc_managed_users WHERE user_id=?').bind(owner).first();return json('/api/user-management',managementChange(owner,row.version,{guidanceMode:mode,coachId}));};
+ await guidanceUpdate('independent');assert.deepEqual(await guidanceDb.prepare('SELECT self_until,program_id FROM training_access WHERE user_id=?').bind(owner).first(),entitlementBefore);
+ await guidanceUpdate('coached','legacy-coach-b');cookies=coachBCookies;assert.equal((await request('/api/care/team?client='+encodeURIComponent(owner))).status,200);
+ cookies=doctorCookies;await guidanceUpdate('awaiting_assignment');cookies=coachBCookies;assert.equal((await request('/api/care/team?client='+encodeURIComponent(owner))).status,403);
+ cookies=doctorCookies;await guidanceUpdate('independent');assert.deepEqual(await guidanceDb.prepare('SELECT self_until,program_id FROM training_access WHERE user_id=?').bind(owner).first(),entitlementBefore);
+ const mode=await guidanceDb.prepare('SELECT guidance_mode FROM dc_managed_users WHERE user_id=?').bind(owner).first();assert.equal(mode.guidance_mode,'independent');
+ console.log('PASS: built Worker HTTP all three guidance modes, preserved entitlement/program pointer and immediate derived coach revocation.');
+ console.log('PASS: built management UID authority, assigned coach access and immediate removal, secretary grant/revoke and clinical denial, active-session disable/reenable. All identities and data synthetic.');
+ // Actual built HTTP routes + real local D1 + synthetic Google failure/retry/readback.
+ const calendarBindings={DOCTORCOACH_CALENDAR_TEST_ENABLED:'true',DOCTORCOACH_CALENDAR_ID:'synthetic@group.calendar.google.com',DOCTORCOACH_CALENDAR_CLIENT_ID:'synthetic-client',DOCTORCOACH_CALENDAR_OWNER_EMAIL:'doctor@example.test',DOCTORCOACH_CALENDAR_ENCRYPTION_KEY:Buffer.alloc(32,19).toString('base64url')};
+ await mf.setOptions({...runtimeOptions,bindings:{...runtimeOptions.bindings,DC_USER_MANAGEMENT_ENABLED:'true',...calendarBindings}});
+ const calendarDb=await mf.getD1Database('DB'),calendar=googleCalendarStore(calendarDb,{clientId:'synthetic-client',ownerEmail:'doctor@example.test',adminEmails:'doctor@example.test',encryptionKey:calendarBindings.DOCTORCOACH_CALENDAR_ENCRYPTION_KEY,origin,calendarId:calendarBindings.DOCTORCOACH_CALENDAR_ID},(url,init)=>googleResponse(new Request(url,init)));
+ const calendarOwner={userId:'legacy-doctor',email:'doctor@example.test'};await calendar.credentials(calendarOwner,'SYNTHETIC-CLIENT-SECRET',0);const begin=await calendar.begin(calendarOwner);await calendar.finish(calendarOwner,begin.state,begin.state,'SYNTHETIC-CODE');
+ let live=await makeConsultation();cookies=doctorCookies;googleFailure=true;let outcome=await json('/api/appointments',{action:'schedule',id:live.id,version:live.version,startsAt:new Date(Date.now()+40*86400000).toISOString()});live=outcome.appointment;assert.equal(live.state,'scheduled');assert.equal(outcome.calendarSync.status,'error');
+ assert.equal((await request('/api/appointments',{action:'retryCalendar',id:live.id,version:[live.version]})).status,400);const beforeRetry=googleCreates;googleFailure=false;outcome=await json('/api/appointments',{action:'retryCalendar',id:live.id,version:live.version});assert.equal(outcome.calendarSync.status,'synced');assert.equal(googleCreates-beforeRetry,1);await json('/api/appointments',{action:'retryCalendar',id:live.id,version:live.version});assert.equal(googleCreates-beforeRetry,1);
+ const receipt=await calendarDb.prepare('SELECT event_id,last_synced_at,last_attempt_at FROM google_calendar_sync WHERE appointment_id=?').bind(live.id).first();assert.ok(receipt.event_id);assert.ok(receipt.last_synced_at);assert.ok(receipt.last_attempt_at);const event=googleEvents.get(receipt.event_id);assert.equal(event.summary,'DoctorCoach — ייעוץ רפואי');assert.equal(event.start.timeZone,'Asia/Jerusalem');assert.ok(!JSON.stringify(event).includes('SYNTHETIC PRIVATE'));
+ outcome=await json('/api/appointments',{action:'schedule',id:live.id,version:live.version,startsAt:new Date(Date.now()+41*86400000).toISOString()});live=outcome.appointment;assert.equal(outcome.calendarSync.status,'synced');assert.equal(googleEvents.get(receipt.event_id).start.dateTime,live.startsAt);assert.equal(googleCreates-beforeRetry,1);
+ cookies=coachBCookies;assert.equal((await request('/api/appointments',{action:'retryCalendar',id:live.id,version:live.version})).status,403);cookies=firstCookies;assert.equal((await request('/api/appointments',{action:'retryCalendar',id:live.id,version:live.version})).status,403);
+ cookies=doctorCookies;outcome=await json('/api/appointments',{action:'cancel',id:live.id,version:live.version});assert.equal(outcome.calendarSync.status,'synced');assert.equal(googleEvents.has(receipt.event_id),false);
+ console.log('PASS: built Worker Calendar approval failure, explicit retry and readback receipt, repeated retry without duplicate, reschedule same event, cancellation, coach/client denial. Google and every identity are SYNTHETIC; no live event created.');
  cookies=firstCookies;assert.deepEqual((await json('/api/preferences/appearance')).appearance,{mode:'light',palette:'pink'});await json('/auth/refresh',{});const beforeLogout=cookies;await json('/auth/logout',{});cookies=beforeLogout;
  assert.equal((await request('/auth/status',{})).status,401);assert.equal((await json('/api/account')).signedIn,false);
  console.log('PASS: built workerd HTTP sign-in, wrong OTP, registration, provider token refresh, spoofed headers, first workout, RIR, next-set load, history, private PDF/video bytes, authenticated cross-user isolation and logout replay. Provider is SYNTHETIC, not real email delivery.');

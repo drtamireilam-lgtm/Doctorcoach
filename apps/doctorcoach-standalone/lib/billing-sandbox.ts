@@ -1,13 +1,13 @@
 import {TrainingError} from './training.ts';
 import {inputRecord,integerField,textField,validId} from './care.ts';
-import {isStaff,type StaffIdentity} from './staff.ts';
+import {isStaff,type StaffIdentity,isAdmin} from './staff.ts';
 export type SandboxProduct={id:string;title:string;priceAgorot:number;months:number;feature:'self_training'|'coaching'|'consultation';version:number};
 type Order={id:string;user_id:string;product_json:string;state:string;paid_until:string|null;cancel_at_end:number;version:number};
 export function billingPeriod(start:string,months:number){const d=new Date(start),day=d.getUTCDate();d.setUTCDate(1);d.setUTCMonth(d.getUTCMonth()+months);const last=new Date(Date.UTC(d.getUTCFullYear(),d.getUTCMonth()+1,0)).getUTCDate();d.setUTCDate(Math.min(day,last));return d.toISOString();}
 /** Isolated simulation ledger. Never read by real training/clinical authorization. */
 export function billingSandbox(db:D1Database,config:{mode?:string;adminEmails?:string}={}){
  const enabled=()=>{if(config.mode!=='mock')throw new TrainingError('מערכת בדיקות התשלום כבויה.',503);};
- const admin=(u:StaffIdentity)=>{enabled();if(!isStaff(u,config.adminEmails))throw new TrainingError('הרשאת מנהל נדרשת.',403);};
+ const admin=(u:StaffIdentity)=>{enabled();if(!isAdmin(u,config.adminEmails))throw new TrainingError('הרשאת מנהל נדרשת.',403);};
  const order=(id:string)=>db.prepare('SELECT * FROM billing_sandbox_orders WHERE id=?').bind(id).first<Order>();
  return {
  async list(u:StaffIdentity,manage=false){enabled();if(manage)admin(u);return {mode:'mock',realCheckoutSupported:false,products:(await db.prepare('SELECT content_json FROM billing_sandbox_products ORDER BY id').all<{content_json:string}>()).results.map(r=>JSON.parse(r.content_json) as SandboxProduct),orders:(await db.prepare(`SELECT id,product_json,state,paid_until,cancel_at_end,version FROM billing_sandbox_orders ${manage?'':'WHERE user_id=?'} ORDER BY created_at DESC LIMIT 100`).bind(...(manage?[]:[u.userId])).all()).results,transactions:(await db.prepare(`SELECT t.id,t.order_id,t.kind,t.amount_agorot,t.created_at FROM billing_sandbox_transactions t JOIN billing_sandbox_orders o ON o.id=t.order_id ${manage?'':'WHERE o.user_id=?'} ORDER BY t.created_at DESC LIMIT 100`).bind(...(manage?[]:[u.userId])).all()).results};},

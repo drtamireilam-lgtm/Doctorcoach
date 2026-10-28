@@ -1,4 +1,4 @@
-import {isStaff,type StaffIdentity} from './staff.ts';
+import {isStaff,type StaffIdentity,isAdmin} from './staff.ts';
 import {inputRecord,validId} from './care.ts';
 import {TrainingError} from './training.ts';
 import {type DeletionJournal} from './deletion-journal.ts';
@@ -24,7 +24,7 @@ export const deletionScopes=[
 export async function deletionStatus(db:D1Database,userId:string){return db.prepare('SELECT request_id AS requestId,state,started_at AS startedAt,completed_at AS completedAt FROM account_deletions WHERE user_id=?').bind(userId).first<{requestId:string;state:string;startedAt:string;completedAt:string|null}>();}
 export function accountDeletionStore(db:D1Database,bucket:Bucket|null,adminEmails?:string,enabled=false,journal:DeletionJournal|null=null){
  async function resolve(actor:StaffIdentity,id:string){
-  if(!isStaff(actor,adminEmails))throw new TrainingError('הרשאת מנהל נדרשת.',403);
+  if(!isAdmin(actor,adminEmails))throw new TrainingError('הרשאת מנהל נדרשת.',403);
   const job=await db.prepare('SELECT * FROM account_deletions WHERE request_id=?').bind(id).first<Job>();
   const r=await db.prepare('SELECT id,user_id,requester_email,kind,state FROM account_requests WHERE id=?').bind(id).first<RequestRow>();
   if(job){if(r&&r.user_id!==job.user_id)throw new TrainingError('מזהה הבקשה אינו זמין. רעננו ונסו שוב.',409);return {job,r,target:job.user_id};}
@@ -40,7 +40,7 @@ export function accountDeletionStore(db:D1Database,bucket:Bucket|null,adminEmail
   async preview(actor:StaffIdentity,id:string){const {job,target}=await resolve(actor,validId(id));const counts:Record<string,number>={};for(const [table,col] of deletionScopes)counts[table]=(await db.prepare(`SELECT COUNT(*) AS n FROM ${table} WHERE ${col}=?`).bind(target).first<{n:number}>())?.n??0;
    const rows=await fileRows(target);return {requestId:id,state:job?.state??'pending',enabled,counts,fileCount:rows.length};},
   async execute(actor:StaffIdentity,payload:unknown){
-   if(!isStaff(actor,adminEmails))throw new TrainingError('הרשאת מנהל נדרשת.',403);
+   if(!isAdmin(actor,adminEmails))throw new TrainingError('הרשאת מנהל נדרשת.',403);
    if(!enabled)throw new TrainingError('מחיקה בפועל חסומה עד לאישור מדיניות השמירה והפעלת השירות.',503);
    const p=inputRecord(payload),id=validId(p.id);
    if(p.confirmed!==true||p.retentionReviewed!==true||p.externalReviewed!==true||p.confirmation!==id||p.retentionDecision!=='no_hold')throw new TrainingError('נדרשים אישור מפורש, בדיקת חובות שמירה ובדיקת ספקים חיצוניים. אם נדרשת שמירה, אין לבצע מחיקה במסלול זה.',400);

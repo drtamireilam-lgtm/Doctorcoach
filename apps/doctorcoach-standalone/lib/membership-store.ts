@@ -4,12 +4,12 @@ import type {ProgramAuthorConfig} from './program-author.ts';
 import {TrainingError} from './training.ts';
 import {inputRecord,integerField,textField,validId} from './care.ts';
 import {externalLink} from './services.ts';
-import {isStaff} from './staff.ts';
+import {isStaff,isAdmin} from './staff.ts';
 import type {StaffIdentity} from './staff.ts';
 import {trainingAccess,noActiveWorkout} from './training-access.ts';
 const now=()=>new Date().toISOString();
 // Owner's personal access only; never inferred from client payload or staff role alone.
-const ownerSelf=(u:StaffIdentity,admins?:string)=>!!u.userId&&u.email.trim().toLowerCase()==='dr.tamireilam@gmail.com'&&isStaff(u,admins);
+const ownerSelf=(u:StaffIdentity,admins?:string)=>!!u.userId&&u.email.trim().toLowerCase()==='dr.tamireilam@gmail.com'&&isAdmin(u,admins);
 export function oneMonthAfter(value:string){const d=new Date(value),day=d.getUTCDate();d.setUTCDate(1);d.setUTCMonth(d.getUTCMonth()+1);const last=new Date(Date.UTC(d.getUTCFullYear(),d.getUTCMonth()+1,0)).getUTCDate();d.setUTCDate(Math.min(day,last));return d.toISOString();}
 const orderColumns='id,user_id AS userId,email,price_agorot AS priceAgorot,payment_url AS paymentUrl,instructions,state,reference,starts_at AS startsAt,ends_at AS endsAt,created_at AS createdAt,version';
 export type MembershipOrder={id:string;userId:string;email:string;priceAgorot:number;paymentUrl:string;instructions:string;state:string;reference:string;startsAt:string|null;endsAt:string|null;createdAt:string;version:number};
@@ -17,7 +17,7 @@ export type MembershipCatalog={priceAgorot:number|null;enabled:number;paymentUrl
 export function membershipStore(db:D1Database,adminEmails?:string,config:ProgramAuthorConfig&{personalSelfEmails?:string;operationsEmails?:string}={}){
  const staffFor=(u:StaffIdentity)=>careStore(db,config).staffFor(u.email);
  async function personalAvailable(u:StaffIdentity){return !!await staffFor(u)||ownerSelf(u,adminEmails);}
- const admin=(u:StaffIdentity)=>{if(!isStaff(u,adminEmails))throw new TrainingError('הרשאת מנהל נדרשת.',403);};
+ const admin=(u:StaffIdentity)=>{if(!isAdmin(u,adminEmails))throw new TrainingError('הרשאת מנהל נדרשת.',403);};
  async function catalog():Promise<MembershipCatalog>{return await db.prepare("SELECT price_agorot AS priceAgorot,enabled,payment_url AS paymentUrl,instructions,version FROM membership_catalog WHERE id='self_monthly'").first<MembershipCatalog>()??{priceAgorot:null,enabled:0,paymentUrl:'',instructions:'',version:0};}
  return {
  async get(user:StaffIdentity,manage=false){if(manage)admin(user);const c=await catalog();return {staffPermanentAvailable:!!await staffFor(user),personalSelfAvailable:await personalAvailable(user),ownerSelfAvailable:ownerSelf(user,adminEmails),catalog:manage||c.enabled?c:{...c,paymentUrl:'',instructions:''},access:await trainingAccess(db,user.userId,config),orders:(await db.prepare(`SELECT ${orderColumns} FROM membership_orders ${manage?'': 'WHERE user_id=?'} ORDER BY created_at DESC LIMIT 100`).bind(...(manage?[]:[user.userId])).all<MembershipOrder>()).results};},

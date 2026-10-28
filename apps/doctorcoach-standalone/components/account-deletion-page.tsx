@@ -2,6 +2,7 @@
 import {useState} from 'react';
 import {LanguageToggle,useLanguage} from './language-provider';
 import {ThemeToggle} from './theme-provider';
+import {authHref} from '../lib/auth-language';
 import {chatGPTSignInPath} from '../app/chatgpt-auth-paths';
 import {careRequest,useCareResource} from '../hooks/use-care';
 import {requestId} from '../lib/request-id';
@@ -30,7 +31,7 @@ export function AccountDeletionPage(){
     <header className="care-actions"><a href="/" className="brand"><img src="/branding/doctorcoach-drc-v1.webp" width="64" height="64" alt="DoctorCoach"/></a><LanguageToggle/><ThemeToggle/></header>
     <section className="panel care-form"><h1>{t.title}</h1><p>{t.intro}</p><h2>{t.scopeTitle}</h2><p>{t.scope}</p><p>{t.process}</p><p>{t.billing}</p></section>
     <section className="panel care-form"><h2>{t.formTitle}</h2>
-      {resource.loading&&!resource.data?<p role="status">{t.loading}</p>:resource.status===401?<><p>{t.signinfo}</p><a className="button primary" target="_top" href={chatGPTSignInPath('/account-deletion')}>{t.signin}</a></>:!resource.data?<><p role="alert">{t.error}</p><button className="button secondary" onClick={()=>void resource.reload()}>{t.retry}</button></>:<>
+      {resource.loading&&!resource.data?<p role="status">{t.loading}</p>:resource.status===401?<><p>{t.signinfo}</p><a className="button primary" target="_top" href={authHref(chatGPTSignInPath('/account-deletion'),language)}>{t.signin}</a></>:!resource.data?<><p role="alert">{t.error}</p><button className="button secondary" onClick={()=>void resource.reload()}>{t.retry}</button></>:<>
         {resource.data.deletion?<p role="status">{deletionMessage}</p>:saved||pending?<p role="status">{t.saved}</p>:<form onSubmit={submit} className="care-form"><label className="care-check"><input type="checkbox" checked={confirmed} disabled={busy} onChange={e=>setConfirmed(e.target.checked)}/><span>{t.confirm}</span></label><button className="button primary" type="submit" disabled={!confirmed||busy}>{busy?t.busy:t.send}</button></form>}
         {error&&<p role="alert">{error}</p>}
         {resource.data.requests.some(r=>r.kind==='deletion')&&<div><h3>{t.history}</h3>{resource.data.requests.filter(r=>r.kind==='deletion').map(r=><article key={r.id}><p>{r.state==='pending'?t.pending:r.state==='deleted'?(language==='he'?'נמחק':'Deleted'):r.state==='deleting'?(language==='he'?'מחיקה בתהליך':'Deletion in progress'):t.handled} · <time dateTime={r.createdAt}>{new Date(r.createdAt).toLocaleDateString(language==='he'?'he-IL':'en-GB')}</time></p><p>{t.receipt}: <span dir="ltr">{r.id}</span></p></article>)}</div>}

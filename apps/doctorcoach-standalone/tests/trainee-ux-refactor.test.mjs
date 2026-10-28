@@ -4,10 +4,11 @@ import vm from 'node:vm';
 import {readFileSync} from 'node:fs';
 import ts from 'typescript';
 import * as jsx from 'react/jsx-runtime';
+import * as authLanguage from '../lib/auth-language.ts';
 import * as navigation from '../lib/mobile-navigation.ts';
 function component(file,language='he',overrides={}){
  const exports={},icons=new Proxy({},{get:(_,key)=>String(key)});
- const modules={'react/jsx-runtime':jsx,'react':{useState:v=>[typeof v==='function'?v():v,()=>{}]},'lucide-react':icons,...overrides,'../lib/mobile-navigation':navigation,'./language-provider':{Localize:'Localize',useLanguage:()=>({language})},'../components/language-provider':{Localize:'Localize',useLanguage:()=>({language})}};
+ const modules={'react/jsx-runtime':jsx,'react':{useState:v=>[typeof v==='function'?v():v,()=>{}]},'lucide-react':icons,...overrides,'../lib/auth-language':authLanguage,'../lib/mobile-navigation':navigation,'./language-provider':{Localize:'Localize',useLanguage:()=>({language})},'../components/language-provider':{Localize:'Localize',useLanguage:()=>({language})}};
  vm.runInNewContext(ts.transpileModule(readFileSync(new URL('../components/'+file,import.meta.url),'utf8'),{compilerOptions:{module:ts.ModuleKind.CommonJS,target:ts.ScriptTarget.ES2022,jsx:ts.JsxEmit.ReactJSX}}).outputText,{exports,require:k=>modules[k]??{}});
  return exports;
 }
@@ -49,7 +50,8 @@ test('settings separate technical/account controls from the personal file',()=>{
   const text=JSON.stringify(tree);
   assert.ok(!text.includes('Profile & questionnaires'));assert.ok(!text.includes('פרופיל ושאלונים'));
   assert.ok(!text.includes('Manage my documents'));assert.ok(!text.includes('ניהול המסמכים שלי'));
-  assert.equal(nodes(tree,n=>n.type==='a'&&n.props.href?.includes('signout')).length,1);
+  const signout=nodes(tree,n=>n.type==='a'&&n.props.href?.includes('signout'));assert.equal(signout.length,1);
+  assert.equal(new URL(signout[0].props.href,'https://app.test').searchParams.get('lang'),language);
  }
 });
 test('progress belongs to My file; account and staff pages select no unrelated main tab',()=>{

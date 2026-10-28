@@ -1,5 +1,5 @@
 import {inputRecord,integerField,textField,validId} from './care.ts';
-import {isStaff} from './staff.ts';
+import {isStaff,isAdmin} from './staff.ts';
 import type {StaffIdentity} from './staff.ts';
 import {TrainingError} from './training.ts';
 import {defaultServices,externalLink} from './services.ts';
@@ -11,22 +11,25 @@ export type AppointmentFilters={view?:string;query?:string;dateFrom?:string;date
 const columns=`id,client_id AS clientId,client_name AS clientName,service_id AS serviceId,title,provider,duration,price_agorot AS priceAgorot,preference,state,starts_at AS startsAt,ends_at AS endsAt,meeting_url AS meetingUrl,staff_note AS staffNote,payment_state AS paymentState,payment_reference AS paymentReference,version,created_at AS createdAt,updated_at AS updatedAt,feedback_message AS feedbackMessage,feedback_requested_at AS feedbackRequestedAt,feedback_response AS feedbackResponse,feedback_responded_at AS feedbackRespondedAt`;
 const now=()=>new Date().toISOString();
 export function appointmentsStore(db:D1Database,adminEmails?:string,options:{clinicalEmails?:string;operationsEmails?:string;rootAdminEmails?:string}={}){
- const clinical=(user:StaffIdentity)=>isStaff(user,options.clinicalEmails??adminEmails);
+ const clinical=(user:StaffIdentity)=>user.administration!=='secretary'&&isStaff(user,options.clinicalEmails??adminEmails);
+ const globalManager=(user:StaffIdentity)=>isAdmin(user,adminEmails)||user.administration==='secretary';
+ const secretaryGuard=(user:StaffIdentity)=>({sql:"EXISTS(SELECT 1 FROM dc_management_grants g JOIN dc_managed_users u ON u.user_id=g.user_id JOIN dc_identity_principals p ON p.id=g.user_id WHERE g.user_id=? AND g.permission=? AND u.status='active' AND u.approval<>'pending' AND p.state='active')",args:[user.userId,user.administration!]});
  const project=(a:Appointment,user:StaffIdentity,manage:boolean):Appointment=>manage&&!clinical(user)?{...a,preference:'',staffNote:'',feedbackMessage:'',feedbackResponse:'',feedbackRequestedAt:null,feedbackRespondedAt:null}:a;
- const globalGuard=(user:StaffIdentity)=>clinical(user)?(options.rootAdminEmails===undefined||isStaff(user,options.rootAdminEmails)?{sql:'1=1',args:[] as string[]}:staffRoleGuard(user.email,'clinician',{clinicianEmails:options.clinicalEmails})):staffRoleGuard(user.email,'coordinator',{operationsEmails:options.operationsEmails});
- function manageGuard(user:StaffIdentity,clientId:string){return isStaff(user,adminEmails)?globalGuard(user):careConnectionGuard({clientId,email:user.email,role:'coordinator',scope:'coordinator'},{});}
- async function canManage(user:StaffIdentity,clientId?:string){if(isStaff(user,adminEmails)){const guard=globalGuard(user);const allowed=await db.prepare(`SELECT CASE WHEN ${guard.sql} THEN 1 ELSE 0 END allowed`).bind(...guard.args).first<{allowed:number}>();return !!allowed?.allowed;}const staff=await db.prepare("SELECT email FROM care_staff WHERE email=? AND active=1 AND role='coordinator'").bind(user.email.toLowerCase()).first();if(!staff)return false;if(!clientId)return true;return !!await db.prepare("SELECT id FROM care_connections WHERE client_id=? AND staff_email=? AND active=1 AND scope='coordinator'").bind(clientId,user.email.toLowerCase()).first();}
+ const globalGuard=(user:StaffIdentity)=>(user.administration==='secretary'||user.administration==='owner')?secretaryGuard(user):clinical(user)?(options.rootAdminEmails===undefined||isStaff(user,options.rootAdminEmails)?{sql:'1=1',args:[] as string[]}:staffRoleGuard(user.email,'clinician',{clinicianEmails:options.clinicalEmails})):staffRoleGuard(user.email,'coordinator',{operationsEmails:options.operationsEmails});
+ function manageGuard(user:StaffIdentity,clientId:string){return globalManager(user)?globalGuard(user):careConnectionGuard({clientId,email:user.email,role:'coordinator',scope:'coordinator'},{});}
+ async function canManage(user:StaffIdentity,clientId?:string){if(globalManager(user)){const guard=globalGuard(user);const allowed=await db.prepare(`SELECT CASE WHEN ${guard.sql} THEN 1 ELSE 0 END allowed`).bind(...guard.args).first<{allowed:number}>();return !!allowed?.allowed;}const staff=await db.prepare("SELECT email FROM care_staff WHERE email=? AND active=1 AND role='coordinator'").bind(user.email.toLowerCase()).first();if(!staff)return false;if(!clientId)return true;return !!await db.prepare("SELECT id FROM care_connections WHERE client_id=? AND staff_email=? AND active=1 AND scope='coordinator'").bind(clientId,user.email.toLowerCase()).first();}
  async function requireAdmin(user:StaffIdentity,clientId?:string){if(!await canManage(user,clientId))throw new TrainingError('ניהול תורים זמין לתיאום מורשה בלבד.',403);}
  const get=(id:string)=>db.prepare(`SELECT ${columns} FROM care_appointments WHERE id=?`).bind(id).first<Appointment>();
  async function currentService(id:string){const s=(await servicesStore(db,adminEmails).listPublic()).find(s=>s.id===id);if(!s)throw new TrainingError('השירות אינו זמין כעת.',404);return s;}
  return {
+  async calendarTarget(user:StaffIdentity,id:string,version?:number){validId(id);const row=await get(id);if(!row)throw new TrainingError('הבקשה לא נמצאה.',404);await requireAdmin(user,row.clientId);if(row.provider!=='tamir')throw new TrainingError('הבקשה אינה ייעוץ רפואי.',400);if(version!==undefined&&version!==row.version)throw new TrainingError('הבקשה עודכנה. רעננו לפני ניסיון נוסף.',409);const guard=manageGuard(user,row.clientId);if(!await db.prepare(`SELECT id FROM care_appointments WHERE id=? AND ${guard.sql}`).bind(id,...guard.args).first())throw new TrainingError('הרשאת התיאום השתנתה.',403);return project(row,user,true);},
   async pendingCount(user:StaffIdentity){
-   await requireAdmin(user);const coordinator=!isStaff(user,adminEmails);const role=staffRoleGuard(user.email,'coordinator',{});const global=globalGuard(user);
+   await requireAdmin(user);const coordinator=!globalManager(user);const role=staffRoleGuard(user.email,'coordinator',{});const global=globalGuard(user);
    const row=await db.prepare(`SELECT COUNT(*) n FROM care_appointments WHERE state='requested' ${coordinator?`AND ${role.sql} AND EXISTS(SELECT 1 FROM care_connections c WHERE c.client_id=care_appointments.client_id AND c.staff_email=? AND c.active=1 AND c.scope='coordinator')`:`AND ${global.sql}`}`).bind(...(coordinator?[...role.args,user.email.toLowerCase()]:global.args)).first<{n:number}>();return row?.n??0;
   },
   async list(user:StaffIdentity,manage=false,filters:AppointmentFilters={}){
    if(manage)await requireAdmin(user);
-   const coordinator=manage&&!isStaff(user,adminEmails);
+   const coordinator=manage&&!globalManager(user);
    const role=staffRoleGuard(user.email,'coordinator',{});
    const clauses:string[]=[],args:(string|number)[]=[];
    if(coordinator){clauses.push(`${role.sql} AND EXISTS(SELECT 1 FROM care_connections c WHERE c.client_id=care_appointments.client_id AND c.staff_email=? AND c.active=1 AND c.scope='coordinator')`);args.push(...role.args,user.email.toLowerCase());}

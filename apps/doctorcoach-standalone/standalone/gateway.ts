@@ -1,3 +1,6 @@
+import type {ProgramAuthorConfig} from '../lib/program-author.ts';
+import {userManagement} from './user-management.ts';
+import {returnWithLanguage} from '../lib/auth-language.ts';
 import {authStore,type AuthSettings} from './auth-store.ts';
 import {AuthFailure,type AuthProvider} from './provider.ts';
 import {authPage} from './page.ts';
@@ -8,7 +11,7 @@ export function cookie(request:Request,name:string){const matches=(request.heade
 export function safeReturn(value:string|null){if(!value||!value.startsWith('/')||value.startsWith('//'))return '/';try{const u=new URL(value,'https://app.local');if(u.origin!=='https://app.local'||/^\/(auth(?:\/|$)|sign(?:in|out)-with-chatgpt|callback)/.test(u.pathname))return '/';return u.pathname+u.search+u.hash;}catch{return '/';}}
 export function sanitize(request:Request){const h=new Headers(request.headers);for(const key of Array.from(h.keys()))if(key.toLowerCase().startsWith('oai-authenticated-')||key.toLowerCase().startsWith('x-dc-identity-'))h.delete(key);return new Request(request,{headers:h});}
 function setCookie(name:string,value:string,maxAge:number){return `${name}=${value}; Path=/; HttpOnly; Secure; SameSite=Strict; Max-Age=${maxAge}`;}
-export function authGateway(db:D1Database,provider:AuthProvider,settings:AuthSettings&{externalPrivateKey?:JsonWebKey;legacyLinkUrl?:string;isolatedStaging?:boolean}){
+export function authGateway(db:D1Database,provider:AuthProvider,settings:AuthSettings&{externalPrivateKey?:JsonWebKey;legacyLinkUrl?:string;isolatedStaging?:boolean;userManagementEnabled?:boolean;managementConfig?:ProgramAuthorConfig}){
  const store=authStore(db,provider,settings),origin=new URL(settings.origin).origin;
  const flow=oauthFlow(settings.encryptionKey,origin,settings.now??Date.now);
  const linkUrl=settings.legacyLinkUrl?new URL(settings.legacyLinkUrl):null;
@@ -19,8 +22,8 @@ export function authGateway(db:D1Database,provider:AuthProvider,settings:AuthSet
   if(url.origin!==origin)return reply(421,{error:'Wrong application origin'});
   if(url.pathname.startsWith('/api/')&&!['GET','HEAD','OPTIONS'].includes(req.method)&&req.headers.get('origin')!==origin)return reply(403,{error:'Same-origin mutation required'});
   if(url.pathname==='/mcp')return reply(503,{error:'Standalone MCP OAuth is not configured'});
-  if(['/signin-with-chatgpt','/signout-with-chatgpt'].includes(url.pathname)){const target=url.pathname.startsWith('/signout')?'/auth/signout':'/auth/signin';return Response.redirect(origin+target+'?return_to='+encodeURIComponent(safeReturn(url.searchParams.get('return_to'))),303);}
-  if(req.method==='GET'&&['/auth/signin','/auth/signout'].includes(url.pathname))return authPage({signout:url.pathname.endsWith('signout'),returnTo:safeReturn(url.searchParams.get('return_to')),english:url.searchParams.get('lang')==='en',isolatedStaging:settings.isolatedStaging});
+  if(['/signin-with-chatgpt','/signout-with-chatgpt'].includes(url.pathname)){const target=url.pathname.startsWith('/signout')?'/auth/signout':'/auth/signin',lang=url.searchParams.get('lang'),validLang=lang==='en'||lang==='he',returnTo=safeReturn(url.searchParams.get('return_to'));return Response.redirect(origin+target+'?'+(validLang?'lang='+lang+'&':'')+'return_to='+encodeURIComponent(validLang?returnWithLanguage(returnTo,lang):returnTo),303);}
+  if(req.method==='GET'&&['/auth/signin','/auth/signout'].includes(url.pathname))return authPage({signout:url.pathname.endsWith('signout'),returnTo:['en','he'].includes(url.searchParams.get('lang')??'')?returnWithLanguage(safeReturn(url.searchParams.get('return_to')),url.searchParams.get('lang')==='en'?'en':'he'):safeReturn(url.searchParams.get('return_to')),english:url.searchParams.get('lang')==='en',isolatedStaging:settings.isolatedStaging});
   if(url.pathname==='/auth/oauth/callback'){
    if(req.method!=='GET')return reply(405,{error:'GET required'});
    let target='/',english=false,problem='failed';
@@ -60,9 +63,44 @@ export function authGateway(db:D1Database,provider:AuthProvider,settings:AuthSet
    }catch(e){const status=e instanceof AuthFailure?e.status:(e as {status?:number}).status??401;return reply(status>=400&&status<=599?status:401,{error:status===429?'Too many attempts. Try later.':status===409?'Existing account needs ownership verification.':status===503?'Sign-in configuration is incomplete.':'Sign-in failed. Check the code or sign in again.'});}
   }
   let user=null;try{if(sid){user=(await store.current(sid)).user;if(!user&&url.pathname.startsWith('/api/'))console.warn('DC_AUTH_DIAG account_unmapped');}}catch(e){if(url.pathname.startsWith('/api/'))console.warn('DC_AUTH_DIAG session_validation_denied');if((e as {status?:number}).status===503&&url.pathname.startsWith('/api/'))return reply(503,{error:'Sign-in service temporarily unavailable. Try again.'});/* Invalid sessions never fall back to browser headers. */}
+  if(settings.userManagementEnabled){
+   const management=userManagement(db,settings.managementConfig);
+   const managementPath=url.pathname==='/api/user-management';
+   try{
+    if(user){await management.assertActive(user);}
+    if(managementPath){
+     if(!user)return reply(401,{error:'Sign in required'});
+     if(req.method==='GET'){
+      if(url.searchParams.has('history'))return reply(200,await management.history(user,url.searchParams.get('history')!,Number(url.searchParams.get('page')??0)));
+      return reply(200,await management.list(user,{search:url.searchParams.get('search')??'',filter:url.searchParams.get('filter')??'all',page:url.searchParams.get('page')??0}));
+     }
+     if(req.method!=='POST')return reply(405,{error:'GET or POST required'});
+     if(!/^application\/json(?:;|$)/i.test(req.headers.get('content-type')??''))return reply(400,{error:'JSON required'});
+     const raw=await req.text();if(raw.length>8000)return reply(413,{error:'Request too large'});
+     let payload;try{payload=JSON.parse(raw);}catch{return reply(400,{error:'Invalid JSON'});}
+     const {action,...change}=payload??{};
+     if(action==='update')return reply(200,await management.update(user,change));
+     if(action==='secretary')return reply(200,await management.grant(user,change));
+     return reply(400,{error:'Unknown action'});
+    }
+    if(user&&url.pathname.startsWith('/api/')){
+     const grant=await management.permission(user);
+     // Administrative delegation never implies clinical access, even if the
+     // secretary also has a physician label or legacy email allowlist entry.
+     if(grant==='secretary'&&url.pathname!=='/api/appointments')return reply(403,{error:'Administrative account: use user management'});
+     const protectedAdmin=['/api/admin/','/api/google-calendar','/api/nutrition-credentials'];
+     if(grant!=='owner'&&protectedAdmin.some(p=>url.pathname.startsWith(p)))return reply(403,{error:'Owner permission required'});
+     if(req.method==='POST'&&['/api/care/team','/api/care'].includes(url.pathname)){
+      const raw=await req.clone().text();if(raw.length>64000)return reply(413,{error:'Request too large'});
+      let body;try{body=JSON.parse(raw);}catch{return reply(400,{error:'Invalid JSON'});}
+      if(body?.action==='staff'||body?.action==='teamAssignment')return reply(403,{error:'Use confirmed user management'});
+     }
+    }
+   }catch(e){const status=(e as {status?:number}).status??503;return reply(status,{error:status===503?'Management service unavailable':(e as Error).message});}
+  }else if(url.pathname==='/api/user-management')return reply(503,{error:'User management is awaiting approved activation'});
   // This is the ONLY public Worker entrypoint. All request identity headers are
   // stripped above; the existing 51 APIs consume this server-verified principal.
-  if(user){const h=new Headers(req.headers);h.set('oai-authenticated-user-id',user.userId);h.set('oai-authenticated-user-email',user.email);h.set('oai-authenticated-user-full-name',encodeURIComponent(user.displayName));h.set('oai-authenticated-user-full-name-encoding','percent-encoded-utf-8');return next(new Request(req,{headers:h}));}
+  if(user){const h=new Headers(req.headers);if(settings.userManagementEnabled){h.set('x-dc-identity-management-mode','uid');h.set('x-dc-identity-management-permission',(await userManagement(db,settings.managementConfig).permission(user))??'none');}h.set('oai-authenticated-user-id',user.userId);h.set('oai-authenticated-user-email',user.email);h.set('oai-authenticated-user-full-name',encodeURIComponent(user.displayName));h.set('oai-authenticated-user-full-name-encoding','percent-encoded-utf-8');return next(new Request(req,{headers:h}));}
   return next(req);
  }};
 }

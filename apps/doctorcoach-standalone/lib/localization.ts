@@ -1,3 +1,4 @@
+import {authHref} from './auth-language.ts';
 import hebrew from './locales/he.json';
 import english from './locales/en.json';
 import {stretchTranslations} from './stretch-exercises';
@@ -6,6 +7,16 @@ const normalize = (text: string) => text.trim().replace(/\s+/g, ' ');
 const dictionary = new Map(hebrew.map((text, index) => [normalize(text), english[index]]));
 // New privacy labels are kept explicit instead of partially translating consent text.
 for(const [he,en] of [
+ ["הייעוץ אושר, אך הסנכרון ל-Google Calendar נכשל.", "The consultation was approved, but Google Calendar synchronization failed."],
+ ["הייעוץ נשמר וסונכרן ל־Google Calendar.", "The consultation was saved and synchronized with Google Calendar."],
+ ["הייעוץ בוטל והביטול אומת ב־Google Calendar.", "The consultation was cancelled and cancellation was verified in Google Calendar."],
+ ["הייעוץ נשמר. הסנכרון ל־Google Calendar עדיין ממתין.", "The consultation was saved. Google Calendar synchronization is still pending."],
+ ["הייעוץ בוטל, אך ביטול האירוע ב־Google Calendar נכשל.", "The consultation was cancelled, but Google Calendar cancellation failed."],
+ ["הסנכרון ל־Google Calendar לא הושלם. הייעוץ נשמר באפליקציה.", "Google Calendar synchronization did not complete. The consultation remains saved in the app."],
+ ["סנכרן שוב ליומן", "Retry Calendar sync"],
+ ["ניסיון סנכרון אחרון:", "Last sync attempt:"],
+ ["ניהול ייעוצים", "Consultation management"],
+ ["היומן כולל כותרת ייעוץ כללית ומועד לפי שעון ישראל, ללא שם המטופל.", "The calendar contains a generic consultation title and Israel time, without the patient name."],
  ["ממתינים לאישור", "Pending consultations"],
  ["ייעוצים קרובים", "Upcoming consultations"],
  ["דורשים טיפול", "Action required"],
@@ -31,6 +42,10 @@ for(const [he,en] of [
  ['הוספת אירובי לתוכנית','Add cardio to program'],['הסרת אירובי','Remove cardio'],['יעדי הפעילות נשמרים בנפרד מהביצוע.','Activity targets are saved separately from actual results.'],
  ['אימוני אירובי שהושלמו','Completed cardio sessions'],['דקות אירובי שבוצעו','Completed cardio minutes'],['מרחק אירובי שנמדד (מטרים)','Measured cardio distance (meters)'],['RPE אירובי ממוצע','Average cardio RPE'],
  ['ציוד והערות לתרגיל (אופציונלי)','Equipment and exercise notes (optional)'],
+ ['שמירת העיצוב נכשלה. נסו שוב בהגדרות המראה.','Appearance could not be saved. Try again in appearance settings.'],
+ ['העיצוב השתנה בחלון אחר. טענו אותו בהגדרות המראה.','Appearance changed in another window. Reload it in appearance settings.'],
+ ['העיצוב נשמר בחשבון.','Appearance saved to your account.'],
+ ['יש להתחבר לשמירת העיצוב.','Sign in to save your appearance.'],
  ["איך DoctorCoach עובד", "How DoctorCoach Works"],
  ["חימום ומוביליטי", "Warm-up & Mobility"],
  ["האימון המרכזי", "Main workout"],
@@ -615,6 +630,8 @@ export function displayLocale(): string {
   return typeof document !== 'undefined' && document.documentElement.lang === 'en' ? 'en-GB' : 'he-IL';
 }
 export function translateBookingHref(href:string,language:Language):string {
+  const auth=authHref(href,language);
+  if(auth!==href)return auth;
   if(language==='he'||!href.startsWith('https://wa.me/')) return href;
   const url=new URL(href),message=url.searchParams.get('text');
   if(!message) return href;

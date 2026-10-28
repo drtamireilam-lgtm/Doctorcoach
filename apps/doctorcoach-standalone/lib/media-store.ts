@@ -11,7 +11,7 @@ import type {StaffIdentity} from './staff.ts';
 import {inputRecord,integerField,textField,validId} from './care.ts';
 import {resolveSessionExercise,withOccurrenceIds,TrainingError} from './training.ts';
 import {exercises} from './content.ts';
-import {isStaff} from './staff.ts';
+import {isStaff,isAdmin} from './staff.ts';
 export const MAX_VIDEO_BYTES=25*1024*1024;
 export type VideoFeedback={id:string;authorName:string;content:string;createdAt:string};
 export type VideoAsset={exerciseName?:string;id:string;exerciseId:string;caption:string;sessionId:string|null;setIndex:number|null;occurrenceId?:string|null;mime:string;bytes:number;kind:'demo'|'review';status:string;published:boolean;canDelete:boolean;createdAt:string;feedback:VideoFeedback[]};
@@ -20,7 +20,7 @@ export function mediaStore(db:D1Database,config:CareConfig={}){
  const care=careStore(db,config);
  const get=(id:string)=>db.prepare('SELECT * FROM media_assets WHERE id=?').bind(id).first<AssetRow>();
  async function uploadGuard(user:StaffIdentity,kind:string){
-  if(kind==='demo'){if(!isStaff(user,config.adminEmails))throw new TrainingError('ניהול סרטוני הדרכה זמין למנהל מערכת בלבד.',403);const staff=await care.requireStaff(user);return staffRoleGuard(staff.email,staff.role,config);}
+  if(kind==='demo'){if(!isAdmin(user,config.adminEmails))throw new TrainingError('ניהול סרטוני הדרכה זמין למנהל מערכת בלבד.',403);const staff=await care.requireStaff(user);return staffRoleGuard(staff.email,staff.role,config);}
   return combineCareGuards(careConnectionGuard({clientId:user.userId},config),healthConsentGuard(user.userId),{sql:"COALESCE((SELECT accepted<>0 AND revision=? FROM user_consents WHERE user_id=? AND consent_id='media' ORDER BY created_at DESC,rowid DESC LIMIT 1),0)",args:[CONSENT_REVISION,user.userId]});
  }
  async function requireGuard(guard:{sql:string;args:(string|number)[]}){const r=await db.prepare(`SELECT CASE WHEN ${guard.sql} THEN 1 ELSE 0 END allowed`).bind(...guard.args).first<{allowed:number}>();if(!r?.allowed)throw new TrainingError('הרשאות ההעלאה או ההסכמות השתנו. רעננו לפני המשך.',403);}
@@ -50,7 +50,7 @@ export function mediaStore(db:D1Database,config:CareConfig={}){
    const availability={sql:`NOT EXISTS(SELECT 1 FROM json_each(?) captured WHERE NOT EXISTS(SELECT 1 FROM media_assets m WHERE m.id=captured.value AND m.kind=? AND m.status='ready' ${kind==='review'?'AND m.owner_id=?':manage?'':'AND m.published=1'}))`,args:[JSON.stringify(rows.results.map(r=>r.id)),kind,...(kind==='review'?[owner]:[])]};
    await requireReadGuard(combineCareGuards(permission,availability));
    const customIds=rows.results.map(r=>r.exercise_id).filter(customId);const names=customIds.length?(await db.prepare('SELECT id,definition_json FROM custom_exercises WHERE id IN (SELECT value FROM json_each(?))').bind(JSON.stringify(customIds)).all<{id:string;definition_json:string}>()).results:[];const customNames=new Map(names.map(r=>[r.id,JSON.parse(r.definition_json).name as string]));if(customIds.length)await requireReadGuard(combineCareGuards(permission,availability));
-   return rows.results.map(r=>({...customNames.has(r.exercise_id)?{exerciseName:customNames.get(r.exercise_id)}:{},id:r.id,exerciseId:r.exercise_id,caption:r.caption,sessionId:r.session_id,setIndex:r.set_index,occurrenceId:r.occurrence_id,mime:r.mime,bytes:r.bytes,kind:r.kind as 'demo'|'review',status:r.status,published:!!r.published,canDelete:r.kind==='demo'?isStaff(user,config.adminEmails):user?.userId===r.owner_id,createdAt:r.created_at,feedback:feedback.results.filter(f=>f.asset_id===r.id).map(({asset_id,...f})=>f)}));
+   return rows.results.map(r=>({...customNames.has(r.exercise_id)?{exerciseName:customNames.get(r.exercise_id)}:{},id:r.id,exerciseId:r.exercise_id,caption:r.caption,sessionId:r.session_id,setIndex:r.set_index,occurrenceId:r.occurrence_id,mime:r.mime,bytes:r.bytes,kind:r.kind as 'demo'|'review',status:r.status,published:!!r.published,canDelete:r.kind==='demo'?isAdmin(user,config.adminEmails):user?.userId===r.owner_id,createdAt:r.created_at,feedback:feedback.results.filter(f=>f.asset_id===r.id).map(({asset_id,...f})=>f)}));
   },
   async initialize(user:StaffIdentity,payload:unknown){
    const p=inputRecord(payload),id=validId(p.id);
