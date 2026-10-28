@@ -1,3 +1,4 @@
+import {hasTotalLoad} from './load-units.ts';
 import {nextLoad} from './training.ts';
 import type {PlanItem,TrainingFeed} from './training.ts';
 import {planItemKey,workoutDayId} from './workout-days.ts';
@@ -6,6 +7,7 @@ import {workoutSection} from './workout-sections.ts';
 /** Proposals edit only a coach's draft; publication remains the existing revision flow. */
 export function progressionProposal(item:PlanItem,programId:string,feed:TrainingFeed){
  const none=(reason:string)=>({weight:null as number|null,reason,sourceId:null as string|null,finishedAt:null as string|null});
+ if(!hasTotalLoad(item))return none('נדרש משקל כולל מפורש לפני הצעת התקדמות.');
  if(workoutSection(item)!=='main')return none('הצעת משקל זמינה לתרגילי האימון בלבד, לא לחימום או למתיחות.');
  if(feed.active)return none('יש אימון פעיל. יש לסיים או לבטל אותו ולרענן את התיק לפני הצעה להמשך.');
  const session=feed.history.filter(s=>s.status==='completed'&&s.programId===programId&&s.items.some(i=>workoutDayId(i)===workoutDayId(item))).slice().sort((a,b)=>(b.finishedAt??b.startedAt).localeCompare(a.finishedAt??a.startedAt))[0];

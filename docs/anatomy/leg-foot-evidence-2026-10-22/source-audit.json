@@ -1,0 +1,789 @@
+{
+  "status": "source fidelity and mapping checked",
+  "clinicalReview": "pending",
+  "structures": [
+    {
+      "model": "lowerleg",
+      "structure": "femur",
+      "elements": [
+        "FJ3365"
+      ],
+      "sourceCoordinatesAndTriangles": "exact float32 match",
+      "rightSideEvidence": true,
+      "uniqueMaterial": true
+    },
+    {
+      "model": "lowerleg",
+      "structure": "tibia",
+      "elements": [
+        "FJ3387"
+      ],
+      "sourceCoordinatesAndTriangles": "exact float32 match",
+      "rightSideEvidence": true,
+      "uniqueMaterial": true
+    },
+    {
+      "model": "lowerleg",
+      "structure": "fibula",
+      "elements": [
+        "FJ3366"
+      ],
+      "sourceCoordinatesAndTriangles": "exact float32 match",
+      "rightSideEvidence": true,
+      "uniqueMaterial": true
+    },
+    {
+      "model": "lowerleg",
+      "structure": "talus",
+      "elements": [
+        "FJ3385"
+      ],
+      "sourceCoordinatesAndTriangles": "exact float32 match",
+      "rightSideEvidence": true,
+      "uniqueMaterial": true
+    },
+    {
+      "model": "lowerleg",
+      "structure": "calcaneus",
+      "elements": [
+        "FJ3360"
+      ],
+      "sourceCoordinatesAndTriangles": "exact float32 match",
+      "rightSideEvidence": true,
+      "uniqueMaterial": true
+    },
+    {
+      "model": "lowerleg",
+      "structure": "navicular",
+      "elements": [
+        "FJ3308"
+      ],
+      "sourceCoordinatesAndTriangles": "exact float32 match",
+      "rightSideEvidence": true,
+      "uniqueMaterial": true
+    },
+    {
+      "model": "lowerleg",
+      "structure": "cuboid",
+      "elements": [
+        "FJ3364"
+      ],
+      "sourceCoordinatesAndTriangles": "exact float32 match",
+      "rightSideEvidence": true,
+      "uniqueMaterial": true
+    },
+    {
+      "model": "lowerleg",
+      "structure": "medial-cuneiform",
+      "elements": [
+        "FJ3377"
+      ],
+      "sourceCoordinatesAndTriangles": "exact float32 match",
+      "rightSideEvidence": true,
+      "uniqueMaterial": true
+    },
+    {
+      "model": "lowerleg",
+      "structure": "intermediate-cuneiform",
+      "elements": [
+        "FJ3370"
+      ],
+      "sourceCoordinatesAndTriangles": "exact float32 match",
+      "rightSideEvidence": true,
+      "uniqueMaterial": true
+    },
+    {
+      "model": "lowerleg",
+      "structure": "lateral-cuneiform",
+      "elements": [
+        "FJ3373"
+      ],
+      "sourceCoordinatesAndTriangles": "exact float32 match",
+      "rightSideEvidence": true,
+      "uniqueMaterial": true
+    },
+    {
+      "model": "lowerleg",
+      "structure": "metatarsal-1",
+      "elements": [
+        "FJ3351"
+      ],
+      "sourceCoordinatesAndTriangles": "exact float32 match",
+      "rightSideEvidence": true,
+      "uniqueMaterial": true
+    },
+    {
+      "model": "lowerleg",
+      "structure": "metatarsal-2",
+      "elements": [
+        "FJ3353"
+      ],
+      "sourceCoordinatesAndTriangles": "exact float32 match",
+      "rightSideEvidence": true,
+      "uniqueMaterial": true
+    },
+    {
+      "model": "lowerleg",
+      "structure": "metatarsal-3",
+      "elements": [
+        "FJ3355"
+      ],
+      "sourceCoordinatesAndTriangles": "exact float32 match",
+      "rightSideEvidence": true,
+      "uniqueMaterial": true
+    },
+    {
+      "model": "lowerleg",
+      "structure": "metatarsal-4",
+      "elements": [
+        "FJ3357"
+      ],
+      "sourceCoordinatesAndTriangles": "exact float32 match",
+      "rightSideEvidence": true,
+      "uniqueMaterial": true
+    },
+    {
+      "model": "lowerleg",
+      "structure": "metatarsal-5",
+      "elements": [
+        "FJ3359"
+      ],
+      "sourceCoordinatesAndTriangles": "exact float32 match",
+      "rightSideEvidence": true,
+      "uniqueMaterial": true
+    },
+    {
+      "model": "lowerleg",
+      "structure": "proximal-phalanx-1",
+      "elements": [
+        "FJ3310"
+      ],
+      "sourceCoordinatesAndTriangles": "exact float32 match",
+      "rightSideEvidence": true,
+      "uniqueMaterial": true
+    },
+    {
+      "model": "lowerleg",
+      "structure": "proximal-phalanx-2",
+      "elements": [
+        "FJ3319"
+      ],
+      "sourceCoordinatesAndTriangles": "exact float32 match",
+      "rightSideEvidence": true,
+      "uniqueMaterial": true
+    },
+    {
+      "model": "lowerleg",
+      "structure": "proximal-phalanx-3",
+      "elements": [
+        "FJ3320"
+      ],
+      "sourceCoordinatesAndTriangles": "exact float32 match",
+      "rightSideEvidence": true,
+      "uniqueMaterial": true
+    },
+    {
+      "model": "lowerleg",
+      "structure": "proximal-phalanx-4",
+      "elements": [
+        "FJ3321"
+      ],
+      "sourceCoordinatesAndTriangles": "exact float32 match",
+      "rightSideEvidence": true,
+      "uniqueMaterial": true
+    },
+    {
+      "model": "lowerleg",
+      "structure": "proximal-phalanx-5",
+      "elements": [
+        "FJ3324"
+      ],
+      "sourceCoordinatesAndTriangles": "exact float32 match",
+      "rightSideEvidence": true,
+      "uniqueMaterial": true
+    },
+    {
+      "model": "lowerleg",
+      "structure": "middle-phalanx-2",
+      "elements": [
+        "FJ3300"
+      ],
+      "sourceCoordinatesAndTriangles": "exact float32 match",
+      "rightSideEvidence": true,
+      "uniqueMaterial": true
+    },
+    {
+      "model": "lowerleg",
+      "structure": "middle-phalanx-3",
+      "elements": [
+        "FJ3301"
+      ],
+      "sourceCoordinatesAndTriangles": "exact float32 match",
+      "rightSideEvidence": true,
+      "uniqueMaterial": true
+    },
+    {
+      "model": "lowerleg",
+      "structure": "middle-phalanx-4",
+      "elements": [
+        "FJ3302"
+      ],
+      "sourceCoordinatesAndTriangles": "exact float32 match",
+      "rightSideEvidence": true,
+      "uniqueMaterial": true
+    },
+    {
+      "model": "lowerleg",
+      "structure": "middle-phalanx-5",
+      "elements": [
+        "FJ3305"
+      ],
+      "sourceCoordinatesAndTriangles": "exact float32 match",
+      "rightSideEvidence": true,
+      "uniqueMaterial": true
+    },
+    {
+      "model": "lowerleg",
+      "structure": "distal-phalanx-1",
+      "elements": [
+        "FJ3192"
+      ],
+      "sourceCoordinatesAndTriangles": "exact float32 match",
+      "rightSideEvidence": true,
+      "uniqueMaterial": true
+    },
+    {
+      "model": "lowerleg",
+      "structure": "distal-phalanx-2",
+      "elements": [
+        "FJ3189"
+      ],
+      "sourceCoordinatesAndTriangles": "exact float32 match",
+      "rightSideEvidence": true,
+      "uniqueMaterial": true
+    },
+    {
+      "model": "lowerleg",
+      "structure": "distal-phalanx-3",
+      "elements": [
+        "FJ3190"
+      ],
+      "sourceCoordinatesAndTriangles": "exact float32 match",
+      "rightSideEvidence": true,
+      "uniqueMaterial": true
+    },
+    {
+      "model": "lowerleg",
+      "structure": "distal-phalanx-4",
+      "elements": [
+        "FJ3191"
+      ],
+      "sourceCoordinatesAndTriangles": "exact float32 match",
+      "rightSideEvidence": true,
+      "uniqueMaterial": true
+    },
+    {
+      "model": "lowerleg",
+      "structure": "distal-phalanx-5",
+      "elements": [
+        "FJ3195"
+      ],
+      "sourceCoordinatesAndTriangles": "exact float32 match",
+      "rightSideEvidence": true,
+      "uniqueMaterial": true
+    },
+    {
+      "model": "lowerleg",
+      "structure": "tibialis-anterior",
+      "elements": [
+        "FJ1439"
+      ],
+      "sourceCoordinatesAndTriangles": "exact float32 match",
+      "rightSideEvidence": true,
+      "uniqueMaterial": true
+    },
+    {
+      "model": "lowerleg",
+      "structure": "tibialis-posterior",
+      "elements": [
+        "FJ1440"
+      ],
+      "sourceCoordinatesAndTriangles": "exact float32 match",
+      "rightSideEvidence": true,
+      "uniqueMaterial": true
+    },
+    {
+      "model": "lowerleg",
+      "structure": "extensor-hallucis-longus",
+      "elements": [
+        "FJ1408"
+      ],
+      "sourceCoordinatesAndTriangles": "exact float32 match",
+      "rightSideEvidence": true,
+      "uniqueMaterial": true
+    },
+    {
+      "model": "lowerleg",
+      "structure": "extensor-digitorum-longus",
+      "elements": [
+        "FJ1406"
+      ],
+      "sourceCoordinatesAndTriangles": "exact float32 match",
+      "rightSideEvidence": true,
+      "uniqueMaterial": true
+    },
+    {
+      "model": "lowerleg",
+      "structure": "fibularis-tertius",
+      "elements": [
+        "FJ1411"
+      ],
+      "sourceCoordinatesAndTriangles": "exact float32 match",
+      "rightSideEvidence": true,
+      "uniqueMaterial": true
+    },
+    {
+      "model": "lowerleg",
+      "structure": "fibularis-longus",
+      "elements": [
+        "FJ1410"
+      ],
+      "sourceCoordinatesAndTriangles": "exact float32 match",
+      "rightSideEvidence": true,
+      "uniqueMaterial": true
+    },
+    {
+      "model": "lowerleg",
+      "structure": "fibularis-brevis",
+      "elements": [
+        "FJ1409"
+      ],
+      "sourceCoordinatesAndTriangles": "exact float32 match",
+      "rightSideEvidence": true,
+      "uniqueMaterial": true
+    },
+    {
+      "model": "lowerleg",
+      "structure": "gastrocnemius",
+      "elements": [
+        "FJ1397",
+        "FJ1394"
+      ],
+      "sourceCoordinatesAndTriangles": "exact float32 match",
+      "rightSideEvidence": true,
+      "uniqueMaterial": true
+    },
+    {
+      "model": "lowerleg",
+      "structure": "soleus",
+      "elements": [
+        "FJ1437"
+      ],
+      "sourceCoordinatesAndTriangles": "exact float32 match",
+      "rightSideEvidence": true,
+      "uniqueMaterial": true
+    },
+    {
+      "model": "lowerleg",
+      "structure": "plantaris",
+      "elements": [
+        "FJ1429"
+      ],
+      "sourceCoordinatesAndTriangles": "exact float32 match",
+      "rightSideEvidence": true,
+      "uniqueMaterial": true
+    },
+    {
+      "model": "lowerleg",
+      "structure": "flexor-hallucis-longus",
+      "elements": [
+        "FJ1415"
+      ],
+      "sourceCoordinatesAndTriangles": "exact float32 match",
+      "rightSideEvidence": true,
+      "uniqueMaterial": true
+    },
+    {
+      "model": "lowerleg",
+      "structure": "flexor-digitorum-longus",
+      "elements": [
+        "FJ1414"
+      ],
+      "sourceCoordinatesAndTriangles": "exact float32 match",
+      "rightSideEvidence": true,
+      "uniqueMaterial": true
+    },
+    {
+      "model": "foot",
+      "structure": "tibia",
+      "elements": [
+        "FJ3387"
+      ],
+      "sourceCoordinatesAndTriangles": "exact float32 match",
+      "rightSideEvidence": true,
+      "uniqueMaterial": true
+    },
+    {
+      "model": "foot",
+      "structure": "fibula",
+      "elements": [
+        "FJ3366"
+      ],
+      "sourceCoordinatesAndTriangles": "exact float32 match",
+      "rightSideEvidence": true,
+      "uniqueMaterial": true
+    },
+    {
+      "model": "foot",
+      "structure": "talus",
+      "elements": [
+        "FJ3385"
+      ],
+      "sourceCoordinatesAndTriangles": "exact float32 match",
+      "rightSideEvidence": true,
+      "uniqueMaterial": true
+    },
+    {
+      "model": "foot",
+      "structure": "calcaneus",
+      "elements": [
+        "FJ3360"
+      ],
+      "sourceCoordinatesAndTriangles": "exact float32 match",
+      "rightSideEvidence": true,
+      "uniqueMaterial": true
+    },
+    {
+      "model": "foot",
+      "structure": "navicular",
+      "elements": [
+        "FJ3308"
+      ],
+      "sourceCoordinatesAndTriangles": "exact float32 match",
+      "rightSideEvidence": true,
+      "uniqueMaterial": true
+    },
+    {
+      "model": "foot",
+      "structure": "cuboid",
+      "elements": [
+        "FJ3364"
+      ],
+      "sourceCoordinatesAndTriangles": "exact float32 match",
+      "rightSideEvidence": true,
+      "uniqueMaterial": true
+    },
+    {
+      "model": "foot",
+      "structure": "medial-cuneiform",
+      "elements": [
+        "FJ3377"
+      ],
+      "sourceCoordinatesAndTriangles": "exact float32 match",
+      "rightSideEvidence": true,
+      "uniqueMaterial": true
+    },
+    {
+      "model": "foot",
+      "structure": "intermediate-cuneiform",
+      "elements": [
+        "FJ3370"
+      ],
+      "sourceCoordinatesAndTriangles": "exact float32 match",
+      "rightSideEvidence": true,
+      "uniqueMaterial": true
+    },
+    {
+      "model": "foot",
+      "structure": "lateral-cuneiform",
+      "elements": [
+        "FJ3373"
+      ],
+      "sourceCoordinatesAndTriangles": "exact float32 match",
+      "rightSideEvidence": true,
+      "uniqueMaterial": true
+    },
+    {
+      "model": "foot",
+      "structure": "metatarsal-1",
+      "elements": [
+        "FJ3351"
+      ],
+      "sourceCoordinatesAndTriangles": "exact float32 match",
+      "rightSideEvidence": true,
+      "uniqueMaterial": true
+    },
+    {
+      "model": "foot",
+      "structure": "metatarsal-2",
+      "elements": [
+        "FJ3353"
+      ],
+      "sourceCoordinatesAndTriangles": "exact float32 match",
+      "rightSideEvidence": true,
+      "uniqueMaterial": true
+    },
+    {
+      "model": "foot",
+      "structure": "metatarsal-3",
+      "elements": [
+        "FJ3355"
+      ],
+      "sourceCoordinatesAndTriangles": "exact float32 match",
+      "rightSideEvidence": true,
+      "uniqueMaterial": true
+    },
+    {
+      "model": "foot",
+      "structure": "metatarsal-4",
+      "elements": [
+        "FJ3357"
+      ],
+      "sourceCoordinatesAndTriangles": "exact float32 match",
+      "rightSideEvidence": true,
+      "uniqueMaterial": true
+    },
+    {
+      "model": "foot",
+      "structure": "metatarsal-5",
+      "elements": [
+        "FJ3359"
+      ],
+      "sourceCoordinatesAndTriangles": "exact float32 match",
+      "rightSideEvidence": true,
+      "uniqueMaterial": true
+    },
+    {
+      "model": "foot",
+      "structure": "proximal-phalanx-1",
+      "elements": [
+        "FJ3310"
+      ],
+      "sourceCoordinatesAndTriangles": "exact float32 match",
+      "rightSideEvidence": true,
+      "uniqueMaterial": true
+    },
+    {
+      "model": "foot",
+      "structure": "proximal-phalanx-2",
+      "elements": [
+        "FJ3319"
+      ],
+      "sourceCoordinatesAndTriangles": "exact float32 match",
+      "rightSideEvidence": true,
+      "uniqueMaterial": true
+    },
+    {
+      "model": "foot",
+      "structure": "proximal-phalanx-3",
+      "elements": [
+        "FJ3320"
+      ],
+      "sourceCoordinatesAndTriangles": "exact float32 match",
+      "rightSideEvidence": true,
+      "uniqueMaterial": true
+    },
+    {
+      "model": "foot",
+      "structure": "proximal-phalanx-4",
+      "elements": [
+        "FJ3321"
+      ],
+      "sourceCoordinatesAndTriangles": "exact float32 match",
+      "rightSideEvidence": true,
+      "uniqueMaterial": true
+    },
+    {
+      "model": "foot",
+      "structure": "proximal-phalanx-5",
+      "elements": [
+        "FJ3324"
+      ],
+      "sourceCoordinatesAndTriangles": "exact float32 match",
+      "rightSideEvidence": true,
+      "uniqueMaterial": true
+    },
+    {
+      "model": "foot",
+      "structure": "middle-phalanx-2",
+      "elements": [
+        "FJ3300"
+      ],
+      "sourceCoordinatesAndTriangles": "exact float32 match",
+      "rightSideEvidence": true,
+      "uniqueMaterial": true
+    },
+    {
+      "model": "foot",
+      "structure": "middle-phalanx-3",
+      "elements": [
+        "FJ3301"
+      ],
+      "sourceCoordinatesAndTriangles": "exact float32 match",
+      "rightSideEvidence": true,
+      "uniqueMaterial": true
+    },
+    {
+      "model": "foot",
+      "structure": "middle-phalanx-4",
+      "elements": [
+        "FJ3302"
+      ],
+      "sourceCoordinatesAndTriangles": "exact float32 match",
+      "rightSideEvidence": true,
+      "uniqueMaterial": true
+    },
+    {
+      "model": "foot",
+      "structure": "middle-phalanx-5",
+      "elements": [
+        "FJ3305"
+      ],
+      "sourceCoordinatesAndTriangles": "exact float32 match",
+      "rightSideEvidence": true,
+      "uniqueMaterial": true
+    },
+    {
+      "model": "foot",
+      "structure": "distal-phalanx-1",
+      "elements": [
+        "FJ3192"
+      ],
+      "sourceCoordinatesAndTriangles": "exact float32 match",
+      "rightSideEvidence": true,
+      "uniqueMaterial": true
+    },
+    {
+      "model": "foot",
+      "structure": "distal-phalanx-2",
+      "elements": [
+        "FJ3189"
+      ],
+      "sourceCoordinatesAndTriangles": "exact float32 match",
+      "rightSideEvidence": true,
+      "uniqueMaterial": true
+    },
+    {
+      "model": "foot",
+      "structure": "distal-phalanx-3",
+      "elements": [
+        "FJ3190"
+      ],
+      "sourceCoordinatesAndTriangles": "exact float32 match",
+      "rightSideEvidence": true,
+      "uniqueMaterial": true
+    },
+    {
+      "model": "foot",
+      "structure": "distal-phalanx-4",
+      "elements": [
+        "FJ3191"
+      ],
+      "sourceCoordinatesAndTriangles": "exact float32 match",
+      "rightSideEvidence": true,
+      "uniqueMaterial": true
+    },
+    {
+      "model": "foot",
+      "structure": "distal-phalanx-5",
+      "elements": [
+        "FJ3195"
+      ],
+      "sourceCoordinatesAndTriangles": "exact float32 match",
+      "rightSideEvidence": true,
+      "uniqueMaterial": true
+    },
+    {
+      "model": "foot",
+      "structure": "tibialis-anterior",
+      "elements": [
+        "FJ1439"
+      ],
+      "sourceCoordinatesAndTriangles": "exact float32 match",
+      "rightSideEvidence": true,
+      "uniqueMaterial": true
+    },
+    {
+      "model": "foot",
+      "structure": "tibialis-posterior",
+      "elements": [
+        "FJ1440"
+      ],
+      "sourceCoordinatesAndTriangles": "exact float32 match",
+      "rightSideEvidence": true,
+      "uniqueMaterial": true
+    },
+    {
+      "model": "foot",
+      "structure": "fibularis-longus",
+      "elements": [
+        "FJ1410"
+      ],
+      "sourceCoordinatesAndTriangles": "exact float32 match",
+      "rightSideEvidence": true,
+      "uniqueMaterial": true
+    },
+    {
+      "model": "foot",
+      "structure": "fibularis-brevis",
+      "elements": [
+        "FJ1409"
+      ],
+      "sourceCoordinatesAndTriangles": "exact float32 match",
+      "rightSideEvidence": true,
+      "uniqueMaterial": true
+    },
+    {
+      "model": "foot",
+      "structure": "abductor-hallucis",
+      "elements": [
+        "FJ1400"
+      ],
+      "sourceCoordinatesAndTriangles": "exact float32 match",
+      "rightSideEvidence": true,
+      "uniqueMaterial": true
+    },
+    {
+      "model": "foot",
+      "structure": "flexor-digitorum-brevis",
+      "elements": [
+        "FJ1413"
+      ],
+      "sourceCoordinatesAndTriangles": "exact float32 match",
+      "rightSideEvidence": true,
+      "uniqueMaterial": true
+    },
+    {
+      "model": "foot",
+      "structure": "extensor-hallucis-brevis",
+      "elements": [
+        "FJ1407"
+      ],
+      "sourceCoordinatesAndTriangles": "exact float32 match",
+      "rightSideEvidence": true,
+      "uniqueMaterial": true
+    },
+    {
+      "model": "foot",
+      "structure": "flexor-hallucis-brevis",
+      "elements": [
+        "FJ1396",
+        "FJ1393"
+      ],
+      "sourceCoordinatesAndTriangles": "exact float32 match",
+      "rightSideEvidence": true,
+      "uniqueMaterial": true
+    },
+    {
+      "model": "foot",
+      "structure": "adductor-hallucis",
+      "elements": [
+        "FJ1398",
+        "FJ1445"
+      ],
+      "sourceCoordinatesAndTriangles": "exact float32 match",
+      "rightSideEvidence": true,
+      "uniqueMaterial": true
+    }
+  ]
+}

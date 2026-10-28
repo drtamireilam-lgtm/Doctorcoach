@@ -17,3 +17,20 @@ test('a newer appointment edit during a Google write remains queued',async t=>{c
 test('disconnect and concurrent worker lease stop writes without cancelling appointments',async t=>{const p=platform(t),{s,g}=await linked(p),a=await scheduled(p);p.sql.prepare("UPDATE google_calendar_connection SET lease_id='other',lease_until=?").run(new Date(Date.now()+60000).toISOString());assert.equal((await s.sync(a.id)).status,'pending');await assert.rejects(()=>s.disconnect(doctor),e=>e.status===409);assert.equal(g.events.size,0);p.sql.prepare('UPDATE google_calendar_connection SET lease_id=NULL,lease_until=NULL').run();await s.disconnect(doctor);await s.sync(a.id);assert.equal(g.events.size,0);assert.equal(p.sql.prepare('SELECT state FROM care_appointments WHERE id=?').get(a.id).state,'scheduled');});
 test('deleting an appointment retains a cancellation task and cancelled events are idempotent',async t=>{const p=platform(t),{s,g}=await linked(p),a=await scheduled(p);await s.sync(a.id);p.sql.prepare('DELETE FROM care_appointments WHERE id=?').run(a.id);const q=p.sql.prepare('SELECT * FROM google_calendar_sync WHERE appointment_id=?').get(a.id);assert.equal(q.operation,'delete');assert.equal((await s.sync(a.id)).status,'synced');assert.equal(g.events.size,0);assert.equal((await s.sync(a.id)).status,'unchanged');});
 test('unconfirmed and Nadav appointments are not exported; generic event titles omit clinical free text',async t=>{const p=platform(t);const id=randomUUID();await p.appointments.create(client,{id,clientName:'Test Name',serviceId:'medical-video',expectedPrice:30000,preference:'Private'});assert.equal(p.sql.prepare('SELECT COUNT(*) n FROM google_calendar_sync').get().n,0);assert.throws(()=>calendarPayload({provider:'nadav'},'id'));const body=calendarPayload({id,provider:'tamir',clientName:'Test\nName',serviceId:'custom',state:'scheduled',startsAt:'2026-12-01T12:00:00Z',endsAt:'2026-12-01T12:30:00Z',title:'PRIVATE DIAGNOSIS',staffNote:'PRIVATE DIAGNOSIS'},'id');assert.ok(!JSON.stringify(body).includes('PRIVATE DIAGNOSIS'));assert.equal(body.summary,'DoctorCoach · מפגש · Test Name');});
+
+test('LAB OAuth uses LAB redirect and explicit secondary test calendar, never primary',async t=>{
+ const p=platform(t),g=provider(),lab='https://doctorcoach-isolated-staging.dr-tamireilam.workers.dev';
+ const cfg={...config,origin:lab,calendarId:'synthetic@group.calendar.google.com'};
+ const s=googleCalendarStore(p.db,cfg,g.f);await s.credentials(doctor,'TEST-CLIENT-SECRET',0);const b=await s.begin(doctor);
+ assert.equal(new URL(b.url).searchParams.get('redirect_uri'),lab+'/api/google-calendar/callback');
+ await s.finish(doctor,b.state,b.state,'TEST-CODE');const a=await scheduled(p);await s.sync(a.id);
+ assert.ok(g.calls.some(c=>c.url.includes('/calendars/synthetic%40group.calendar.google.com/events')));
+ assert.ok(!g.calls.some(c=>c.url.includes('/calendars/primary/')));
+ calendarSameOrigin(new Request(lab,{headers:{Origin:lab}}),cfg);
+ assert.throws(()=>calendarSameOrigin(new Request(lab,{headers:{Origin:CALENDAR_ORIGIN}}),cfg),e=>e.status===403);
+ await assert.rejects(()=>googleCalendarStore(p.db,{...config,origin:lab},g.f).credentials(doctor,'TEST-CLIENT-SECRET',0));
+});
+test('missing calendar configuration reports disabled without losing the appointment or making network calls',async t=>{
+ const p=platform(t),a=await scheduled(p);let calls=0;const s=googleCalendarStore(p.db,{},async()=>{calls++;throw new Error('must not call');});
+ assert.equal((await s.sync(a.id)).status,'disabled');assert.equal(calls,0);assert.equal((await p.appointments.list(client))[0].state,'scheduled');
+});

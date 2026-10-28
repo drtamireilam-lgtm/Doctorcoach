@@ -1,3 +1,5 @@
+import {hasTotalLoad} from './load-units.ts';
+import {workoutSection} from './workout-sections.ts';
 import {estimated1RM} from './training.ts';
 import type {TrainingSession} from './training.ts';
 import {setEstimated1RM} from './set-load.ts';
@@ -5,7 +7,7 @@ import {setEstimated1RM} from './set-load.ts';
 export type EstimateMethod='effort'|'reps';
 export function performancePoints(history:TrainingSession[],exerciseId:string,method:EstimateMethod='effort'){
  return history.filter(s=>s.status==='completed').slice().sort((a,b)=>(a.finishedAt??a.startedAt).localeCompare(b.finishedAt??b.startedAt)).flatMap(session=>{
-  const items=session.items.filter(item=>item.exerciseId===exerciseId&&item.unit==='reps');
+  const items=session.items.filter(item=>!item.cardio&&hasTotalLoad(item)&&item.exerciseId===exerciseId&&item.unit==='reps'&&workoutSection(item)==='main');
   if(!items.length)return [];
   const sets=items.flatMap(item=>item.results).filter(set=>set.done);
   const estimates=sets.map(set=>method==='effort'?setEstimated1RM(set,'reps'):estimated1RM(set.weight,set.amount)).filter((value):value is number=>value!==null);

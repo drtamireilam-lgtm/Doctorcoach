@@ -1,0 +1,34 @@
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import {platform,client,coach} from './platform-db.mjs';
+import {activityPrivacy} from '../lib/activity-privacy.ts';
+import {activityStore} from '../lib/activity-store.ts';
+import {defaultPrescription,workCompletion} from '../lib/training.ts';
+const done={done:true,amount:5,weight:10};
+const strength=(id,workoutSection='main')=>({...defaultPrescription(id),name:id,workoutSection,results:[{...done}],warmupResults:[{...done}]});
+const cardio=()=>({...defaultPrescription('goblet'),exerciseId:'cardio:walking',name:'Walking',results:[],cardio:{activityId:'walking',mode:'steady',targets:{durationSeconds:60,heartRate:120,heartRateZone:2}},cardioResult:{status:'completed',elapsedSeconds:60,metrics:{durationSeconds:60,heartRate:130,maxHeartRate:160,heartRateZone:3},metricSources:{durationSeconds:'timer',heartRate:'device_reported',maxHeartRate:'manual',heartRateZone:'manual'},actionPayloads:{finish:'private HR 130'},actionIds:['finish']}});
+const session=(id,items,status='completed')=>({id,items,status,startedAt:new Date().toISOString(),finishedAt:new Date().toISOString(),completedSets:3,finishFeedback:{note:'mixed private feedback'}});
+test('unshared mixed history derives work-set stats from visible items and excludes preparation/unfinished sessions',async t=>{
+ const f=platform(t);await f.connect();
+ const items=[strength('bench'),strength('goblet','warmup'),strength('wall-slide','stretch'),cardio()];
+ const history=[session('mixed',items),session('cardio-only',[cardio()]),session('cancelled',[strength('bench')],'cancelled')];
+ const input={history,active:session('active-cardio',[cardio()],'active'),stats:{sets:99,total:99,week:99}};
+ const safe=(await activityPrivacy(f.db,coach,client.userId)).sanitize(input);
+ assert.equal(safe.history.length,2);assert.equal(safe.history[0].items.length,3);
+ assert.equal(safe.stats.sets,workCompletion(safe.history[0].items));assert.equal(safe.stats.sets,1);
+ assert.equal(safe.stats.total,1);assert.equal(safe.stats.week,1);assert.equal(safe.active,null);
+ assert.equal('finishFeedback' in safe.history[0],false);assert.equal(input.history[0].items.length,4);
+});
+test('cardio grant preserves actual duration provenance while redacting unshared HR values and provenance',async t=>{
+ const f=platform(t);await f.connect();
+ await activityStore(f.db).mutate(client,{accountScope:client.userId,action:'share',coachEmail:coach.email,steps:false,cardio:true,heartRate:false,version:0});
+ const input={history:[session('mixed',[strength('bench'),cardio()])],stats:{sets:1,total:1,week:1}};
+ const safe=(await activityPrivacy(f.db,coach,client.userId)).sanitize(input);
+ assert.equal(safe.history[0].items.length,2);
+ assert.deepEqual(safe.history[0].items[1].cardioResult.metricSources,{durationSeconds:'timer'});
+ assert.deepEqual(safe.history[0].items[1].cardioResult.metrics,{durationSeconds:60});
+ assert.equal(/heart.?rate|actionPayloads|actionIds/i.test(JSON.stringify(safe)),false);
+ const owner=(await activityPrivacy(f.db,client,client.userId)).sanitize(input);
+ assert.equal(owner.history[0].items[1].cardioResult.metrics.heartRate,130);
+ assert.equal(input.history[0].items[1].cardioResult.metricSources.heartRate,'device_reported');
+});

@@ -1,6 +1,7 @@
 // Built standalone Worker + local D1/R2. All provider traffic is synthetic.
 // This script cannot send email, access production or deploy anything.
 import {createRequire} from 'node:module';
+import {fileURLToPath} from 'node:url';
 import {realpathSync} from 'node:fs';
 import {readFile,readdir} from 'node:fs/promises';
 import {randomUUID} from 'node:crypto';
@@ -8,7 +9,7 @@ import path from 'node:path';
 import assert from 'node:assert/strict';
 import {signLink} from '../crypto.ts';
 import {themePresets} from '../../lib/advanced-theme.ts';
-const root=new URL('../../',import.meta.url).pathname;
+const root=fileURLToPath(new URL('../../',import.meta.url));
 const require=createRequire(realpathSync(path.join(root,'node_modules/@cloudflare/vite-plugin/package.json')));
 const {Miniflare}=require('miniflare');
 const origin='https://staging.example.test',project='https://auth.example.test';
@@ -55,8 +56,12 @@ try{
  assert.equal((await (await request('/api/account',undefined,{'oai-authenticated-user-id':'doctor','oai-authenticated-user-email':'doctor@example.test'})).json()).signedIn,false);
  assert.equal((await request('/api/preferences/appearance')).status,401);
  await json('/auth/send',{email:'first@example.test'});
+ const pending=await json('/auth/pending',{});
+ assert.equal(pending.pending,true);assert.equal(pending.email,'first@example.test');
+ assert.ok(pending.resendAt>Date.now());
  assert.equal((await request('/auth/verify',{code:'999999'})).status,401);
  assert.equal((await json('/auth/verify',{code:'123456'})).linked,false);
+ assert.deepEqual(await json('/auth/pending',{}),{pending:false});
  await json('/auth/register',{confirmed:true});
  const firstCookies=cookies,account=await json('/api/account');
  const initialAppearance=await json('/api/preferences/appearance');
@@ -77,19 +82,27 @@ try{
   const loaded=await json('/api/preferences/appearance');assert.equal(loaded.ownerId,owner);assert.deepEqual(loaded.appearance,preset.appearance);
  }
  await json('/api/preferences/appearance',{appearance:{mode:'light',palette:'pink'},version:appearanceVersion,expectedOwnerId:owner});
- console.log('PASS: all thirteen premium themes persisted through built HTTP owner-scoped preferences. This is not browser visual QA.');
+ console.log('PASS: all configured premium themes persisted through built HTTP owner-scoped preferences. This is not browser visual QA.');
 
  const at=new Date().toISOString(),revision='2026-09-28.1';
  for(const id of ['terms','privacy','health','team','media'])await db.prepare('INSERT INTO user_consents(id,user_id,consent_id,revision,accepted,created_at) VALUES(?,?,?,?,1,?)').bind(randomUUID(),owner,id,revision,at).run();
  await db.prepare("INSERT INTO user_intakes(user_id,answers_json,completed,created_at,updated_at) VALUES(?,'{}',1,?,?)").bind(owner,at,at).run();
  await db.prepare("INSERT INTO training_access(user_id,mode,self_until,updated_at) VALUES(?,'self',?,?)").bind(owner,new Date(Date.now()+86400000).toISOString(),at).run();
  const firstOccurrence=randomUUID(),secondOccurrence=randomUUID();
- await json('/api/program',{occurrenceId:firstOccurrence,exerciseId:'goblet',sets:2,reps:5,weight:100,targetRpe:8,effortScale:'rir',unit:'reps',notes:''});
+ await json('/api/program',{occurrenceId:firstOccurrence,exerciseId:'goblet',sets:2,reps:5,weight:100,targetRpe:8,effortScale:'rir',unit:'reps',notes:'',side:'left',warmupSets:[{amount:10,weight:20},{amount:5,weight:60}]});
  await json('/api/program',{occurrenceId:secondOccurrence,exerciseId:'goblet',sets:3,reps:6,weight:80,targetRpe:9,effortScale:'rpe',unit:'reps',notes:''});
- assert.equal((await json('/api/program')).items.length,2);
+ await json('/api/program',{occurrenceId:randomUUID(),exerciseId:'leg-press',sets:2,reps:10,weight:105*.45359237,load:{sourceValue:105,sourceUnit:'lb',basis:'total'},unit:'reps',notes:''});
+ await json('/api/program',{occurrenceId:randomUUID(),exerciseId:'adduction',sets:2,reps:10,weight:135*.45359237,load:{sourceValue:135,sourceUnit:'lb',basis:'per-side'},unit:'reps',notes:''});
+ const loadProgram=await json('/api/program');assert.equal(loadProgram.items.length,4);assert.equal(loadProgram.items[2].load.sourceValue,105);assert.equal(loadProgram.items[2].weight,105*.45359237);
+ await json('/api/program',loadProgram.items[2]);assert.equal((await json('/api/program')).items[2].weight,105*.45359237);
  let session=(await json('/api/training',{requestId:randomUUID(),before:0})).session;
- assert.equal(session.plannedSets,5);
+ assert.equal(session.plannedSets,9);assert.equal(session.items[2].load.sourceUnit,'lb');assert.equal(session.items[3].load.basis,'per-side');
  assert.notEqual(session.items[0].occurrenceId,session.items[1].occurrenceId);
+ assert.equal(session.items[0].side,'left');assert.equal(session.items[0].warmupResults.length,2);assert.equal(session.items[1].warmupResults?.length??0,0);
+ const warmupVersion=session.version;
+ session=(await json('/api/training',{action:'warmupSet',id:session.id,version:session.version,exerciseId:'goblet',occurrenceId:firstOccurrence,setIndex:0,done:true,amount:10,weight:20},'PATCH')).session;
+ assert.equal(session.completedSets,0);assert.equal(session.items[0].results[0].done,false);assert.equal(session.items[0].warmupResults[0].done,true);
+ assert.equal((await request('/api/training',{action:'warmupSet',id:session.id,version:warmupVersion,exerciseId:'goblet',occurrenceId:firstOccurrence,setIndex:0,done:true,amount:10,weight:30},{},'PATCH')).status,409);
  session=(await json('/api/training',{action:'set',id:session.id,version:session.version,exerciseId:'goblet',occurrenceId:firstOccurrence,setIndex:0,done:true,amount:5,weight:100,actualRpe:6},'PATCH')).session;
  session=(await json('/api/training',{action:'nextLoad',id:session.id,version:session.version,exerciseId:'goblet',occurrenceId:firstOccurrence,setIndex:0,step:2.5},'PATCH')).session;
  assert.equal(session.items[0].results[1].weight,105);
@@ -97,6 +110,8 @@ try{
  session=(await json('/api/training',{action:'set',id:session.id,version:session.version,exerciseId:'goblet',occurrenceId:firstOccurrence,setIndex:1,done:true,amount:5,weight:105,actualRpe:8},'PATCH')).session;
  session=(await json('/api/training',{action:'finish',id:session.id,version:session.version,after:0},'PATCH')).session;
  assert.equal((await json('/api/training')).history[0].id,session.id);
+ assert.equal((await json('/api/training')).history[0].items[0].warmupResults[0].weight,20);
+ assert.equal((await json('/api/training')).stats.sets,2,'Embedded warmups do not count as work sets');
  assert.equal((await json('/api/program')).items[0].effortScale,'rir');
  const video=randomUUID(),videoKey='preserved/private/video',videoBytes=new Uint8Array([0,255,1,2,3,0,4]);
  await db.prepare("INSERT INTO media_assets(id,owner_id,kind,exercise_id,caption,mime,bytes,object_key,status,published,created_at) VALUES(?,?,'review','goblet','','video/mp4',?,?,'ready',0,?)").bind(video,owner,videoBytes.length,videoKey,at).run();
@@ -135,13 +150,29 @@ try{
  const coachACookies=await linkedLogin('coach-a@example.test','legacy-coach-a');
  const coachBCookies=await linkedLogin('coach-b@example.test','legacy-coach-b');
  const doctorCookies=await linkedLogin('doctor@example.test','legacy-doctor');
+ await db.prepare("INSERT INTO care_staff(email,name,role,active,updated_at) VALUES('dietitian@example.test','Synthetic dietitian','dietitian',1,?)").bind(at).run();
+ const dietitianCookies=await linkedLogin('dietitian@example.test','legacy-dietitian');
  const connect=async(clientId,email,medical=0)=>db.prepare("INSERT INTO care_connections(id,client_id,staff_email,medical_access,nutrition_access,created_at,scope) VALUES(?,?,?,?,0,?,'care')").bind(randomUUID(),clientId,email,medical,at).run();
  await connect(owner,'coach-a@example.test');await connect(secondOwner,'coach-b@example.test');await connect(owner,'doctor@example.test',1);
+ await connect(owner,'dietitian@example.test');
+ await db.prepare("UPDATE care_connections SET nutrition_access=1 WHERE client_id=? AND staff_email='dietitian@example.test'").bind(owner).run();
  await db.prepare("INSERT INTO care_notes(id,client_id,author_id,author_name,kind,content,shared,created_at) VALUES(?,?,'legacy-doctor','Synthetic doctor','medical','SYNTHETIC PRIVATE NOTE',0,?)").bind(randomUUID(),owner,at).run();
  cookies=doctorCookies;
  assert.equal((await json('/api/account')).canManageServices,true);
  assert.equal((await json('/api/care/team?client='+encodeURIComponent(owner))).canViewMedical,true);
  assert.equal((await request('/api/documents/'+document)).status,200);
+ cookies=dietitianCookies;
+ assert.equal((await json('/api/account')).careRole,'dietitian');
+ const nutritionView=await json('/api/care/team?client='+encodeURIComponent(owner));
+ assert.equal(nutritionView.canViewNutrition,true);assert.equal(nutritionView.canViewMedical,false);
+ assert.ok(!JSON.stringify(nutritionView).includes('SYNTHETIC MEDICAL SECRET'));
+ assert.ok(!JSON.stringify(nutritionView).includes('SYNTHETIC PRIVATE NOTE'));
+ assert.equal((await request('/api/wellness?client='+encodeURIComponent(owner))).status,200);
+ assert.equal((await request('/api/wellness?client='+encodeURIComponent(secondOwner))).status,403);
+ assert.equal((await request('/api/documents/'+document)).status,403);
+ await db.prepare("UPDATE care_connections SET active=0 WHERE client_id=? AND staff_email='dietitian@example.test'").bind(owner).run();
+ assert.equal((await request('/api/wellness?client='+encodeURIComponent(owner))).status,403);
+ console.log('PASS: built HTTP dietitian nutrition scope, medical redaction, cross-trainee denial and immediate revocation.');
  cookies=coachACookies;
  assert.equal((await json('/api/account')).careRole,'coach');
  const roster=await json('/api/care/team');assert.deepEqual(roster.clients.map(c=>c.userId),[owner]);
@@ -169,6 +200,27 @@ try{
  cookies=firstCookies;assert.equal((await request('/api/media/'+video)).status,200);
  assert.equal((await json('/api/training')).history[0].id,session.id,'role/link tests preserve completed workout');
  console.log('PASS: built HTTP legacy account linking, replay denial, reserved staff registration denial, trainee/coach/doctor/admin roles, independent coach rosters, cross-coach read/write/progress denial, medical redaction, private media permissions and immediate revocation.');
+
+ // Consultation lifecycle through built HTTP; all records and Google traffic remain synthetic.
+ const makeConsultation=async()=>{cookies=firstCookies;return (await json('/api/appointments',{action:'create',id:randomUUID(),serviceId:'medical-video',expectedPrice:30000,clientName:'SYNTHETIC CONSULTATION',preference:'SYNTHETIC PRIVATE PREFERENCE'})).appointment;};
+ let consultation=await makeConsultation();assert.equal(consultation.state,'requested');
+ cookies=coachACookies;assert.equal((await request('/api/appointments?manage=1&view=history')).status,403);
+ cookies=doctorCookies;assert.equal((await json('/api/appointments?manage=1&view=active')).pendingCount,1);
+ const approve=async(a,days)=>{cookies=doctorCookies;return json('/api/appointments',{action:'schedule',id:a.id,version:a.version,startsAt:new Date(Date.now()+days*86400000).toISOString()});};
+ let approval=await approve(consultation,20);consultation=approval.appointment;assert.equal(approval.calendarSync.status,'disabled');assert.equal(consultation.state,'scheduled');
+ consultation=(await approve(consultation,21)).appointment;
+ consultation=(await json('/api/appointments',{action:'cancel',id:consultation.id,version:consultation.version})).appointment;
+ assert.equal(consultation.state,'cancelled');assert.equal((await json('/api/appointments?manage=1&view=history&status=cancelled&query=SYNTHETIC')).appointments.length,1);
+ for(const action of ['complete','noShow']){
+  let a=await makeConsultation();a=(await approve(a,22)).appointment;
+  await db.prepare("UPDATE care_appointments SET starts_at='2000-01-01T10:00:00Z',ends_at='2000-01-01T10:30:00Z',staff_note='SYNTHETIC PRIVATE NOTE' WHERE id=?").bind(a.id).run();
+  const before=await json('/api/appointments?manage=1&view=active');assert.equal(before.appointments.find(row=>row.id===a.id).state,'scheduled');
+  a=(await json('/api/appointments',{action,id:a.id,version:a.version})).appointment;assert.equal(a.state,action==='complete'?'completed':'no_show');
+  assert.ok(!(await json('/api/appointments?manage=1&view=active')).appointments.some(row=>row.id===a.id));
+  assert.ok((await json('/api/appointments?manage=1&view=history&from=2000-01-01&to=2000-01-01')).appointments.some(row=>row.id===a.id));
+ }
+ assert.equal((await db.prepare('SELECT COUNT(*) n FROM appointment_status_history').first()).n,9);
+ console.log('PASS: built HTTP consultations request, pending count, approval, disabled Calendar, reschedule, cancel, explicit completion/no-show, scoped history/date search, transition audit and coach denial.');
 
  // Exercise actual D1 rollback, not only the SQLite test adapter.
  cookies='';await json('/auth/send',{email:'rollback@example.test'});await json('/auth/verify',{code:'123456'});

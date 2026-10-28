@@ -183,3 +183,36 @@ test('concurrent registration returns one complete principal and matching detail
  assert.equal(f.sql.prepare('SELECT COUNT(*) n FROM dc_identity_principals').get().n,1);
  assert.equal(f.sql.prepare('SELECT COUNT(*) n FROM dc_identity_details').get().n,1);
 });
+
+test('refresh can resume only the current unconsumed OTP challenge without creating a session',async t=>{
+ const f=await setup(t),sent=await f.api('/auth/send',{email:'resume@example.test'}),challenge=sent.headers.get('set-cookie').split(';')[0];
+ const pending=await f.api('/auth/pending',{},challenge);
+ assert.equal(pending.status,200);assert.match(pending.headers.get('cache-control'),/no-store/);
+ assert.deepEqual(await pending.json(),{pending:true,email:'resume@example.test',resendAt:f.now()+60000});
+ assert.deepEqual(await (await f.api('/auth/pending')).json(),{pending:false});
+ assert.deepEqual(await (await f.api('/auth/pending',{},challengeCookie+'=forged')).json(),{pending:false});
+ assert.equal(f.sql.prepare('SELECT COUNT(*) n FROM dc_auth_sessions').get().n,0);
+ await f.api('/auth/verify',{code:'123456'},challenge);
+ assert.deepEqual(await (await f.api('/auth/pending',{},challenge)).json(),{pending:false});
+});
+test('expired or exhausted OTP challenges cannot restore the code screen',async t=>{
+ const f=await setup(t),c=await f.store.send('expired-resume@example.test','ip');
+ for(let n=0;n<5;n++)await assert.rejects(f.store.verify(c.challenge,'999999'));
+ assert.deepEqual(await (await f.api('/auth/pending',{},challengeCookie+'='+c.challenge)).json(),{pending:false});
+ const fresh=await f.store.send('fresh-resume@example.test','ip');f.advance(600001);
+ assert.deepEqual(await (await f.api('/auth/pending',{},challengeCookie+'='+fresh.challenge)).json(),{pending:false});
+ assert.equal((await f.api('/auth/pending',{},'',{origin:'https://other.test'})).status,403);
+});
+
+test('legacy auth redirects and sign-in language switches retain language and safe return routes',async t=>{
+ const f=await setup(t),next=async()=>new Response('missing');
+ for(const lang of ['en','he'])for(const action of ['signin','signout']){
+  const r=await f.gateway.handle(new Request(origin+'/'+action+'-with-chatgpt?lang='+lang+'&return_to=%2F%23settings'),next);
+  const url=new URL(r.headers.get('location'));
+  assert.equal(url.pathname,'/auth/'+action);assert.equal(url.searchParams.get('lang'),lang);assert.equal(url.searchParams.get('return_to'),'/?lang='+lang+'#settings');
+  const page=await f.gateway.handle(new Request(origin+'/auth/'+action+'?lang='+lang+'&return_to='+encodeURIComponent('/?lang='+(lang==='en'?'he':'en')+'#settings')),next);
+  const html=await page.text();assert.ok(html.includes('lang="'+lang+'"'));assert.ok(html.includes('/?lang='+lang+'#settings'));
+ }
+ const unsafe=await f.gateway.handle(new Request(origin+'/signin-with-chatgpt?lang=en&return_to=https%3A%2F%2Fevil.test'),next);
+ assert.equal(new URL(unsafe.headers.get('location')).searchParams.get('return_to'),'/?lang=en');
+});

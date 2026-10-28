@@ -41,6 +41,9 @@ export const programItems = sqliteTable('program_items', {
   effortScale: text('effort_scale').notNull().default('rpe'),
   notes: text('notes').notNull().default(''),
   tempoJson:text('tempo_json'),
+  loadJson:text('load_json'),
+  warmupSetsJson:text('warmup_sets_json'),
+  side:text('side'),
   repsMax:integer('reps_max'),
   weightUnspecified:integer('weight_unspecified').notNull().default(0),
   customExerciseJson:text('custom_exercise_json'),
@@ -155,6 +158,10 @@ export const careAppointments = sqliteTable('care_appointments', {
   feedbackMessage:text('feedback_message').notNull().default(''), feedbackRequestedAt:text('feedback_requested_at'), feedbackResponse:text('feedback_response').notNull().default(''), feedbackRespondedAt:text('feedback_responded_at'),
   version:integer('version').notNull().default(1), createdAt:text('created_at').notNull(), updatedAt:text('updated_at').notNull(),
 },t=>[index('appointments_client_created').on(t.clientId,t.createdAt),index('appointments_provider_time').on(t.provider,t.state,t.startsAt)]);
+
+export const appointmentStatusHistory = sqliteTable('appointment_status_history', {
+ id:integer('id').primaryKey({autoIncrement:true}),appointmentId:text('appointment_id').notNull(),fromState:text('from_state'),toState:text('to_state').notNull(),version:integer('version').notNull(),changedAt:text('changed_at').notNull(),
+},t=>[index('appointment_history_record').on(t.appointmentId,t.version)]);
 
 export const wellnessRecords = sqliteTable('wellness_records', {
   id:text('id').primaryKey(), clientId:text('client_id').notNull(), kind:text('kind').notNull(), slot:text('slot').notNull(),

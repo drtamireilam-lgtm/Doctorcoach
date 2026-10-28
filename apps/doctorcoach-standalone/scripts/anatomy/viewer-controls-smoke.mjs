@@ -1,0 +1,111 @@
+/** Real viewer and bundled GLBs; no remote database, credentials or medical records. */
+import {createServer} from 'vite';
+import react from '@vitejs/plugin-react';
+import {chromium} from '@playwright/test';
+import {mkdtemp,mkdir,writeFile} from 'node:fs/promises';
+import {tmpdir} from 'node:os';
+import {resolve,join} from 'node:path';
+import assert from 'node:assert/strict';
+const root=process.cwd(),fixture=await mkdtemp(join(tmpdir(),'dc-viewer-'));
+const evidence=resolve(process.env.ANATOMY_EVIDENCE_DIR??join(tmpdir(),'dc-viewer-evidence'));
+await mkdir(evidence,{recursive:true});
+const source=root.replaceAll('\\','/');
+await writeFile(join(fixture,'index.html'),'<html><meta name="viewport" content="width=device-width,initial-scale=1"><div id="root"></div><script type="module" src="/main.tsx"></script></html>');
+// Delayed mounts reproduce the transition where camera controls do not exist yet.
+await writeFile(join(fixture,'main.tsx'),`import React,{useState} from 'react';import {createRoot} from 'react-dom/client';
+import {AnatomyModelViewer} from '/@fs/${source}/components/anatomy-model-viewer.tsx';
+import {anatomyModels} from '/@fs/${source}/lib/anatomy-models.ts';
+function App(){const [id,setId]=useState(()=>location.hash.slice(1)||'shoulder'),[language,setLanguage]=useState('en'),[mounted,setMounted]=useState(true);const changeModel=id=>{location.hash=id;setMounted(false);setId(id);setTimeout(()=>setMounted(true),100);};return <><button onClick={()=>setLanguage(language==='en'?'he':'en')}>Switch language</button><select aria-label="Model" value={id} onChange={e=>changeModel(e.target.value)}>{anatomyModels.map(m=><option key={m.id}>{m.id}</option>)}</select>{mounted&&<AnatomyModelViewer key={id} initialSelection={id==='shoulder'?'deltoid':undefined} autoOpen model={anatomyModels.find(m=>m.id===id)} language={language} onExercise={()=>{}} onMuscle={()=>{}}/>}</>};createRoot(document.getElementById('root')).render(<App/>);`);
+const server=await createServer({configFile:false,root:fixture,publicDir:resolve('public'),plugins:[react()],resolve:{alias:{react:resolve('node_modules/react'),'react-dom':resolve('node_modules/react-dom')}},server:{host:'127.0.0.1',port:37852,strictPort:true,fs:{allow:[root,fixture]}}});
+await server.listen();let browser,page;const errors=[],checks=[];
+try{
+ browser=await chromium.launch({executablePath:process.env.ANATOMY_CHROMIUM||undefined,headless:true,args:['--enable-unsafe-swiftshader','--use-gl=angle','--use-angle=swiftshader']});
+ page=await browser.newPage({viewport:{width:390,height:844},isMobile:true,hasTouch:true});page.setDefaultTimeout(30000);page.setDefaultNavigationTimeout(90000);
+ async function ready(modelId){
+  await page.locator('[data-model-id="'+modelId+'"] canvas').waitFor();
+  await page.waitForFunction(id=>{
+   const button=document.querySelector('[data-model-id="'+id+'"] [aria-label="Camera"] button');
+   return !!button&&!button.disabled;
+  },modelId);
+ }
+ page.on('pageerror',e=>errors.push(e.message));
+ await page.goto('http://127.0.0.1:37852',{waitUntil:'domcontentloaded'});
+ const viewer=page.locator('[data-model-id]');
+ await viewer.getByRole('button',{name:'Front view',exact:true}).waitFor();
+ await ready('shoulder');
+ await viewer.getByRole('combobox').selectOption('deltoid');
+ await viewer.getByRole('button',{name:'Hide structure',exact:true}).click();
+ assert.equal(await viewer.getByRole('combobox').locator('option[value="deltoid"]').count(),0);
+ await page.reload();await ready('shoulder');
+ assert.equal(await viewer.getByRole('combobox').locator('option[value="deltoid"]').count(),0);
+ await viewer.getByRole('button',{name:/Restore hidden structures/}).click();
+ await viewer.getByRole('combobox').selectOption('deltoid');
+ await viewer.getByRole('button',{name:'Isolate structure',exact:true}).click();
+ await viewer.getByRole('button',{name:'Hide structure',exact:true}).click();
+ assert.equal(await viewer.getByRole('combobox').inputValue(),'');
+ await viewer.getByRole('button',{name:/Restore hidden structures/}).click();checks.push('individual hide, persistence, restore and isolation');
+ await viewer.getByLabel('Search structures in model').fill('humerus');assert.equal(await viewer.getByRole('combobox').locator('option').count(),2);
+ await viewer.getByLabel('Search structures in model').fill('זרוע');assert.equal(await viewer.getByRole('combobox').locator('option[value="humerus"]').count(),1);
+ await viewer.getByLabel('Search structures in model').fill('');checks.push('English and Hebrew structure search');
+ await viewer.getByRole('button',{name:'Front view',exact:true}).click();
+ const before=await page.evaluate(()=>JSON.parse(sessionStorage.getItem('dc-shoulder-view')).camera);
+ await viewer.getByRole('button',{name:'Pan model →',exact:true}).click();
+ const after=await page.evaluate(()=>JSON.parse(sessionStorage.getItem('dc-shoulder-view')).camera);
+ assert.ok(after.target[0]<before.target[0],'Pan model right moves camera left in the front view');
+ assert.ok(Math.abs(Math.hypot(...before.position.map((n,i)=>n-before.target[i]))-Math.hypot(...after.position.map((n,i)=>n-after.target[i])))<1e-8);checks.push('pan moves target and camera without changing zoom');
+ await viewer.getByRole('button',{name:'Reset',exact:true}).click();
+ await viewer.getByRole('combobox').selectOption('deltoid');
+ await page.getByRole('button',{name:'Switch language'}).click();assert.equal(await viewer.getAttribute('dir'),'rtl');assert.equal(await viewer.getByRole('combobox').inputValue(),'deltoid');
+ await page.screenshot({path:join(evidence,'viewer-he-mobile.png'),fullPage:true});checks.push('Hebrew RTL retains selection');
+ await page.getByRole('button',{name:'Switch language'}).click();
+ for(const id of ['body','skeleton','musculoskeletal','arm','forearm','hand','hip','knee','lowerleg','foot','spine','torso','neck','thigh']){
+  await page.getByLabel('Model',{exact:true}).selectOption(id);
+  await ready(id);
+  assert.equal(await page.locator('canvas').count(),1,id);assert.equal(await page.getByRole('alert').count(),0,id);
+  assert.ok(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth),id+' overflow');checks.push(id+' real GLB renders and previous scene disposes');
+ }
+ await page.screenshot({path:join(evidence,'viewer-en-mobile.png'),fullPage:true});
+ await page.getByLabel('Model',{exact:true}).selectOption('skeleton');await ready('skeleton');
+ assert.equal(await viewer.getByRole('combobox').locator('option').count(),202);
+ await viewer.getByRole('combobox').selectOption('left-humerus');await viewer.getByText('Left side',{exact:true}).waitFor();
+ assert.equal(await viewer.getByRole('button',{name:'Open region',exact:true}).count(),0);
+ await viewer.getByRole('button',{name:'Hide structure',exact:true}).click();
+ assert.equal(await viewer.getByRole('combobox').locator('option[value="left-humerus"]').count(),0);
+ assert.equal(await viewer.getByRole('combobox').locator('option[value="right-humerus"]').count(),1);
+ await viewer.getByRole('button',{name:/Restore hidden structures/}).click();
+ await viewer.getByRole('combobox').selectOption('right-humerus');await viewer.getByText('Right side',{exact:true}).waitFor();
+ await viewer.getByRole('button',{name:'Open region',exact:true}).waitFor();
+ await viewer.getByRole('button',{name:'Reset',exact:true}).click();
+ await viewer.locator('canvas').screenshot({path:join(evidence,'skeleton-front.png')});
+ await viewer.getByRole('button',{name:'Back view',exact:true}).click();
+ await viewer.locator('canvas').screenshot({path:join(evidence,'skeleton-back.png')});
+ await page.getByRole('button',{name:'Switch language'}).click();
+ await viewer.getByRole('combobox').selectOption('left-femur');await viewer.getByText('צד שמאל',{exact:true}).waitFor();
+ await viewer.getByRole('button',{name:'בידוד המבנה',exact:true}).click();await viewer.getByRole('button',{name:'התמקדות במבנה',exact:true}).click();
+ assert.equal(await viewer.getAttribute('dir'),'rtl');assert.equal(await page.locator('canvas').count(),1);
+ checks.push('whole-body skeleton preserves 201 structures, real bilateral side labels, independent hiding and Hebrew isolation');
+ await page.getByRole('button',{name:'Switch language'}).click();
+ await page.getByLabel('Model',{exact:true}).selectOption('musculoskeletal');await ready('musculoskeletal');
+ assert.equal(await viewer.getByRole('combobox').locator('option').count(),380);
+ await viewer.getByRole('button',{name:'Reset',exact:true}).click();
+ await viewer.locator('canvas').screenshot({path:join(evidence,'muscles-front.png')});
+ await viewer.getByRole('button',{name:'Back view',exact:true}).click();await viewer.locator('canvas').screenshot({path:join(evidence,'muscles-back.png')});
+ await viewer.getByRole('button',{name:'Front view',exact:true}).click();
+ const combinedPixels=await viewer.locator('canvas').screenshot();
+ await viewer.getByRole('button',{name:'Muscles',exact:true}).click();assert.equal(await viewer.getByRole('combobox').locator('option').count(),202);
+ const bonePixels=await viewer.locator('canvas').screenshot({path:join(evidence,'muscles-layer-hidden.png')});assert.notDeepEqual(bonePixels,combinedPixels,'Layer switch changes actual rendered geometry');
+ await viewer.getByRole('button',{name:'Muscles',exact:true}).click();await viewer.getByRole('button',{name:'Bones',exact:true}).click();assert.equal(await viewer.getByRole('combobox').locator('option').count(),179);
+ await viewer.getByRole('combobox').selectOption('left-biceps-brachii');await viewer.getByText('Left side',{exact:true}).waitFor();assert.ok(await viewer.locator('.atlas-exercises button').count()>0);assert.equal(await viewer.getByRole('button',{name:'Open region',exact:true}).count(),0);
+ await viewer.getByRole('button',{name:'Hide structure',exact:true}).click();await page.reload();await ready('musculoskeletal');
+ assert.equal(await viewer.getByRole('button',{name:'Bones',exact:true}).getAttribute('aria-pressed'),'false');assert.equal(await viewer.getByRole('combobox').locator('option[value="left-biceps-brachii"]').count(),0);assert.equal(await viewer.getByRole('combobox').locator('option[value="right-biceps-brachii"]').count(),1);
+ await viewer.getByRole('button',{name:/Restore hidden structures/}).click();await viewer.getByRole('combobox').selectOption('right-biceps-brachii');await viewer.getByRole('button',{name:'Open region',exact:true}).waitFor();
+ await page.getByRole('button',{name:'Switch language'}).click();await viewer.getByRole('combobox').selectOption('left-deltoid');await viewer.getByText('צד שמאל',{exact:true}).waitFor();await viewer.getByRole('button',{name:'בידוד המבנה',exact:true}).click();await viewer.getByRole('button',{name:'התמקדות במבנה',exact:true}).click();assert.equal(await page.locator('canvas').count(),1);assert.equal(await viewer.getAttribute('dir'),'rtl');
+ checks.push('combined 379-structure model renders distinct bone/muscle layers, bilateral canonical learning, hidden-layer reload and Hebrew muscle isolation');
+ assert.deepEqual(errors,[]);await writeFile(join(evidence,'viewer-checks.json'),JSON.stringify({checks,errors,scope:'Chromium software WebGL, simulated 390px mobile; viewer harness, no authenticated application regression'},null,2));
+ console.log(JSON.stringify({checks,errors},null,2));
+}catch(error){
+ console.error('Viewer browser errors:',errors);
+ if(page){console.error((await page.locator('body').innerText()).slice(-2500));
+  console.error('Combined asset diagnostic:',await page.evaluate(async source=>{try{const module=await import('/@fs/'+source+'/lib/anatomy-models.ts');const m=module.anatomyModels.find(m=>m.id==='musculoskeletal'),r=await fetch(m.src),b=await r.arrayBuffer();const detail={status:r.status,encoding:r.headers.get('content-encoding'),bytes:b.byteLength,magic:[...new Uint8Array(b,0,4)]};try{const d=await module.decodeAnatomyAsset(b,m);await module.validateAnatomyAsset(d,m);return {...detail,decoded:d.byteLength};}catch(e){return {...detail,error:String(e)};}}catch(e){return {error:String(e)};}},source));}
+ throw error;
+}finally{await browser?.close();await server.close();}

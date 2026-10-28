@@ -1,0 +1,9 @@
+# Google and Apple sign-in — LAB
+
+User confirmed Google/Apple account sign-in, not calendar/health integration. Extend the existing standalone email-OTP gateway. Keep its opaque HttpOnly session, verified Supabase subject mapping, explicit registration and reserved-account protections. Never resolve application ownership by matching email or accept browser-supplied tokens.
+
+Use server-side PKCE through the pinned LAB Supabase project. Same-origin POST starts the flow; a short-lived encrypted HttpOnly/Secure/SameSite=Lax cookie carries the verifier, return target and prior session. The fixed callback redeems the single-use code server-side, validates the live Supabase user/session, establishes the existing Strict session cookie and removes flow state. Supabase manages upstream OAuth state; the verifier binds the application callback to its originating browser. Invalid, expired, canceled or replayed flows return a generic localized error without credential disclosure. Existing sessions are revoked only after successful replacement.
+
+Expose provider availability through the server using Supabase's public settings endpoint, not a frontend secret. Show two accessible bilingual buttons, enabled only when their provider is configured. Email OTP remains available. Provider setup is separate from application implementation: current LAB dashboard shows both disabled, Apple empty and Google missing a valid OAuth client ID. No fake credentials, weakened nonce checks or unverified live-login claims.
+
+LAB only; preserve the clinical-learning release and original checkout. No main merge, Production deploy, schema changes or patient-data access. External provider credentials and final security-sensitive console changes require the account owner's participation under browser confirmation policy.

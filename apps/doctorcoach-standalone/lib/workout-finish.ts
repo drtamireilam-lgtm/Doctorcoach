@@ -1,3 +1,5 @@
+import {performedCardioSeconds} from './cardio.ts';
+import {hasTotalLoad} from './load-units.ts';
 import {TrainingError,type TrainingSession,type SessionExercise} from './training.ts';
 import {setEstimated1RM} from './set-load.ts';
 import {workoutDayId} from './workout-days.ts';
@@ -13,16 +15,19 @@ export function finishFeedback(value:unknown):FinishFeedback|null{
 }
 function metrics(item:SessionExercise){
  const sets=item.results.filter(s=>s.done);
+ if(!hasTotalLoad(item))return {weight:null,reps:item.unit==='reps'&&sets.length?Math.max(...sets.map(s=>s.amount)):null,estimate:null};
  const estimates=sets.map(s=>setEstimated1RM(s,item.unit)).filter((n):n is number=>n!==null);
  return {weight:sets.length?Math.max(...sets.map(s=>s.weight)):null,reps:item.unit==='reps'&&sets.length?Math.max(...sets.map(s=>s.amount)):null,estimate:estimates.length?Math.max(...estimates):null};
 }
 export function workoutFinishSummary(session:TrainingSession,history:TrainingSession[]){
- const completed=session.items.filter(i=>i.results.some(s=>s.done));
+ const completed=session.items.filter(i=>!i.cardio&&i.results.some(s=>s.done));
  const previous=[...history].filter(s=>s.id!==session.id&&s.status==='completed'&&s.planMode===session.planMode&&s.programId===session.programId&&s.finishedAt&&s.finishedAt<=session.startedAt).sort((a,b)=>b.finishedAt!.localeCompare(a.finishedAt!));
  const comparisons=completed.filter(item=>workoutSection(item)==='main').map(item=>{
-  const match=previous.map(s=>({session:s,item:s.items.find(i=>i.exerciseId===item.exerciseId&&(i.occurrenceId??`${i.dayId??'1'}:${i.exerciseId}`)===(item.occurrenceId??`${item.dayId??'1'}:${item.exerciseId}`)&&i.unit===item.unit&&workoutDayId(i)===workoutDayId(item)&&workoutSection(i)==='main'&&i.results.some(r=>r.done))})).find(m=>m.item);
+  const match=previous.map(s=>({session:s,item:s.items.find(i=>!i.cardio&&i.exerciseId===item.exerciseId&&(i.occurrenceId??`${i.dayId??'1'}:${i.exerciseId}`)===(item.occurrenceId??`${item.dayId??'1'}:${item.exerciseId}`)&&i.unit===item.unit&&workoutDayId(i)===workoutDayId(item)&&workoutSection(i)==='main'&&i.results.some(r=>r.done))})).find(m=>m.item);
   const current=metrics(item),prior=match?.item?metrics(match.item):null;
   return {name:item.name,current,prior,previousAt:match?.session.finishedAt??null};
  });
- return {exercises:completed.length,sets:session.items.reduce((sum,i)=>sum+i.results.filter(s=>s.done).length,0),comparisons};
+ const cardioItems=session.items.filter(i=>i.cardio&&i.cardioResult?.status==='completed');
+ const cardio={completed:cardioItems.length,minutes:cardioItems.reduce((n,i)=>n+performedCardioSeconds(i.cardioResult!)/60,0),distanceMeters:cardioItems.some(i=>i.cardioResult!.metrics.distanceMeters!==undefined)?cardioItems.reduce((n,i)=>n+(i.cardioResult!.metrics.distanceMeters??0),0):null};
+ return {exercises:completed.length+cardio.completed,strengthExercises:completed.length,cardio,sets:completed.reduce((sum,i)=>sum+i.results.filter(s=>s.done).length,0),comparisons};
 }

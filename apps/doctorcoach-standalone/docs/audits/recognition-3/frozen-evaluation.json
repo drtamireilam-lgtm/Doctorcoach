@@ -1,0 +1,659 @@
+{
+  "provenance": "Authored bilingual challenge corpus, frozen after the initial alias implementation. Not extracted from customer workbooks and not a representative population sample. First run revealed one annotation error: single leg RDL already has canonical ID single-leg-rdl; its expected label was corrected, without changing the dictionary or matcher. No alias additions may be based on these rows; future tuning requires a new holdout.",
+  "aliasProvenance": "Legacy curated aliases plus manually reviewed literal paraphrases, transliterations and conventional gym abbreviations, bound to names and descriptions in lib/content.ts, gym-exercises.ts, rehab-exercises.ts and stretch-exercises.ts. Three observed names from authorized workbooks were checked against canonical entries; other additions are literal catalog paraphrases. No external terminology dataset or holdout-derived tuning.",
+  "catalogAudit": {
+    "duplicateIds": [],
+    "orphanAliasIds": [],
+    "collisions": [
+      {
+        "key": "bench press",
+        "ids": [
+          "barbell-bench",
+          "bench",
+          "movement-chest-press"
+        ]
+      },
+      {
+        "key": "bent over row",
+        "ids": [
+          "barbell-row",
+          "movement-bent-over-row"
+        ]
+      },
+      {
+        "key": "calf raise",
+        "ids": [
+          "ecc-calf",
+          "movement-calf-raise"
+        ]
+      },
+      {
+        "key": "calf raises",
+        "ids": [
+          "ecc-calf",
+          "movement-calf-raise"
+        ]
+      },
+      {
+        "key": "calf raising",
+        "ids": [
+          "ecc-calf",
+          "movement-calf-raise"
+        ]
+      },
+      {
+        "key": "hamstring curl",
+        "ids": [
+          "lying-curl",
+          "movement-leg-curl",
+          "seated-curl"
+        ]
+      },
+      {
+        "key": "heel raise",
+        "ids": [
+          "ecc-calf",
+          "movement-calf-raise"
+        ]
+      },
+      {
+        "key": "heel raises",
+        "ids": [
+          "ecc-calf",
+          "movement-calf-raise"
+        ]
+      },
+      {
+        "key": "lateral raise",
+        "ids": [
+          "lateral-raise",
+          "movement-lateral-raise"
+        ]
+      },
+      {
+        "key": "leg curl",
+        "ids": [
+          "lying-curl",
+          "movement-leg-curl",
+          "seated-curl"
+        ]
+      },
+      {
+        "key": "ohp",
+        "ids": [
+          "movement-overhead-press",
+          "overhead-press"
+        ]
+      },
+      {
+        "key": "overhead press",
+        "ids": [
+          "movement-overhead-press",
+          "overhead-press"
+        ]
+      },
+      {
+        "key": "posterior deltoid fly",
+        "ids": [
+          "movement-rear-delt-fly",
+          "rear-delt"
+        ]
+      },
+      {
+        "key": "rear delt fly",
+        "ids": [
+          "movement-rear-delt-fly",
+          "rear-delt"
+        ]
+      },
+      {
+        "key": "rear delt flyes",
+        "ids": [
+          "movement-rear-delt-fly",
+          "rear-delt"
+        ]
+      },
+      {
+        "key": "rear deltoid fly",
+        "ids": [
+          "movement-rear-delt-fly",
+          "rear-delt"
+        ]
+      },
+      {
+        "key": "rear shoulder fly",
+        "ids": [
+          "movement-rear-delt-fly",
+          "rear-delt"
+        ]
+      },
+      {
+        "key": "reverse fly",
+        "ids": [
+          "movement-rear-delt-fly",
+          "rear-delt"
+        ]
+      },
+      {
+        "key": "shrug",
+        "ids": [
+          "movement-shrug",
+          "shrug"
+        ]
+      },
+      {
+        "key": "הרחקה אופקית לכתף אחורית",
+        "ids": [
+          "movement-rear-delt-fly",
+          "rear-delt"
+        ]
+      },
+      {
+        "key": "הרמות עקבים",
+        "ids": [
+          "ecc-calf",
+          "movement-calf-raise"
+        ]
+      },
+      {
+        "key": "הרמת עקב",
+        "ids": [
+          "ecc-calf",
+          "movement-calf-raise"
+        ]
+      },
+      {
+        "key": "כפיפת ברך",
+        "ids": [
+          "lying-curl",
+          "movement-leg-curl",
+          "seated-curl"
+        ]
+      },
+      {
+        "key": "כפיפת ברכיים",
+        "ids": [
+          "lying-curl",
+          "movement-leg-curl",
+          "seated-curl"
+        ]
+      },
+      {
+        "key": "עליות עקב",
+        "ids": [
+          "ecc-calf",
+          "movement-calf-raise"
+        ]
+      },
+      {
+        "key": "עלייה על בהונות",
+        "ids": [
+          "ecc-calf",
+          "movement-calf-raise"
+        ]
+      },
+      {
+        "key": "קאלף רייז",
+        "ids": [
+          "ecc-calf",
+          "movement-calf-raise"
+        ]
+      },
+      {
+        "key": "ריר דלט פליי",
+        "ids": [
+          "movement-rear-delt-fly",
+          "rear-delt"
+        ]
+      }
+    ]
+  },
+  "catalogCount": 173,
+  "canonicalNameAndIdKeys": 442,
+  "configuredAliasCount": 3106,
+  "uniqueAdditionalAliasKeys": 2992,
+  "aliasCatalogIds": 173,
+  "total": 32,
+  "resolvable": 21,
+  "accepted": 15,
+  "correct": 15,
+  "wrongMatches": 0,
+  "precision": 1,
+  "automaticCoverage": 0.7142857142857143,
+  "review": 10,
+  "unmatched": 7,
+  "abstained": 17,
+  "rows": [
+    {
+      "name": "  DUMBBELLS—BENCH—PRESS  ",
+      "expected": "bench",
+      "exerciseId": "bench",
+      "status": "normalized",
+      "confidence": 1,
+      "candidates": [
+        {
+          "exerciseId": "bench",
+          "score": 1,
+          "reason": "Verified catalog name or alias"
+        }
+      ]
+    },
+    {
+      "name": "BB. Bench Press",
+      "expected": "barbell-bench",
+      "exerciseId": "barbell-bench",
+      "status": "normalized",
+      "confidence": 1,
+      "candidates": [
+        {
+          "exerciseId": "barbell-bench",
+          "score": 1,
+          "reason": "Verified catalog name or alias"
+        }
+      ]
+    },
+    {
+      "name": "Incline DB. Press",
+      "expected": "incline-db",
+      "exerciseId": "incline-db",
+      "status": "normalized",
+      "confidence": 1,
+      "candidates": [
+        {
+          "exerciseId": "incline-db",
+          "score": 1,
+          "reason": "Verified catalog name or alias"
+        }
+      ]
+    },
+    {
+      "name": "Seated Cable-Row",
+      "expected": "cable-row",
+      "exerciseId": "cable-row",
+      "status": "normalized",
+      "confidence": 1,
+      "candidates": [
+        {
+          "exerciseId": "cable-row",
+          "score": 1,
+          "reason": "Verified catalog name or alias"
+        }
+      ]
+    },
+    {
+      "name": "Pec.Deck",
+      "expected": "chest-fly",
+      "exerciseId": "chest-fly",
+      "status": "normalized",
+      "confidence": 1,
+      "candidates": [
+        {
+          "exerciseId": "chest-fly",
+          "score": 1,
+          "reason": "Verified catalog name or alias"
+        }
+      ]
+    },
+    {
+      "name": "  LAT PULL DOWN ",
+      "expected": "lat-pulldown",
+      "exerciseId": "lat-pulldown",
+      "status": "alias",
+      "confidence": 1,
+      "candidates": [
+        {
+          "exerciseId": "lat-pulldown",
+          "score": 1,
+          "reason": "Verified catalog name or alias"
+        }
+      ]
+    },
+    {
+      "name": "ROMANIAN DEAD-LIFT",
+      "expected": "rdl",
+      "exerciseId": "rdl",
+      "status": "normalized",
+      "confidence": 1,
+      "candidates": [
+        {
+          "exerciseId": "rdl",
+          "score": 1,
+          "reason": "Verified catalog name or alias"
+        }
+      ]
+    },
+    {
+      "name": "לחיצת חזה דאמבלים.",
+      "expected": "bench",
+      "exerciseId": "bench",
+      "status": "normalized",
+      "confidence": 1,
+      "candidates": [
+        {
+          "exerciseId": "bench",
+          "score": 1,
+          "reason": "Verified catalog name or alias"
+        }
+      ]
+    },
+    {
+      "name": "פייספול!",
+      "expected": "face-pull",
+      "exerciseId": "",
+      "status": "suggested",
+      "confidence": 0.875,
+      "candidates": [
+        {
+          "exerciseId": "face-pull",
+          "score": 0.875,
+          "reason": "Similar spelling; verify equipment, angle and side manually"
+        }
+      ]
+    },
+    {
+      "name": "לחיצת רגליים במכונה (איטית)",
+      "expected": "leg-press",
+      "exerciseId": "",
+      "status": "suggested",
+      "confidence": 0.76,
+      "candidates": [
+        {
+          "exerciseId": "leg-press",
+          "score": 0.76,
+          "reason": "Similar spelling; verify equipment, angle and side manually"
+        }
+      ]
+    },
+    {
+      "name": "Overhed press",
+      "expected": "overhead-press",
+      "exerciseId": "",
+      "status": "suggested",
+      "confidence": 0.9285714285714286,
+      "candidates": [
+        {
+          "exerciseId": "overhead-press",
+          "score": 0.9285714285714286,
+          "reason": "Similar spelling; verify equipment, angle and side manually"
+        }
+      ]
+    },
+    {
+      "name": "Dumbell bench press",
+      "expected": "bench",
+      "exerciseId": "bench",
+      "status": "alias",
+      "confidence": 1,
+      "candidates": [
+        {
+          "exerciseId": "bench",
+          "score": 1,
+          "reason": "Verified catalog name or alias"
+        }
+      ]
+    },
+    {
+      "name": "Leg Extention",
+      "expected": "leg-extension",
+      "exerciseId": "",
+      "status": "suggested",
+      "confidence": 0.9230769230769231,
+      "candidates": [
+        {
+          "exerciseId": "leg-extension",
+          "score": 0.9230769230769231,
+          "reason": "Similar spelling; verify equipment, angle and side manually"
+        }
+      ]
+    },
+    {
+      "name": "פולי עלון",
+      "expected": "lat-pulldown",
+      "exerciseId": "",
+      "status": "suggested",
+      "confidence": 0.9,
+      "candidates": [
+        {
+          "exerciseId": "lat-pulldown",
+          "score": 0.9,
+          "reason": "Similar spelling; verify equipment, angle and side manually"
+        }
+      ]
+    },
+    {
+      "name": "מכונת פשיטת ברכיים",
+      "expected": "leg-extension",
+      "exerciseId": "leg-extension",
+      "status": "alias",
+      "confidence": 1,
+      "candidates": [
+        {
+          "exerciseId": "leg-extension",
+          "score": 1,
+          "reason": "Verified catalog name or alias"
+        }
+      ]
+    },
+    {
+      "name": "חתירה ישיבה כבל",
+      "expected": "cable-row",
+      "exerciseId": "",
+      "status": "suggested",
+      "confidence": 0.8823529411764706,
+      "candidates": [
+        {
+          "exerciseId": "cable-row",
+          "score": 0.8823529411764706,
+          "reason": "Similar spelling; verify equipment, angle and side manually"
+        }
+      ]
+    },
+    {
+      "name": "בנץ' פרס מוט",
+      "expected": "barbell-bench",
+      "exerciseId": "barbell-bench",
+      "status": "normalized",
+      "confidence": 1,
+      "candidates": [
+        {
+          "exerciseId": "barbell-bench",
+          "score": 1,
+          "reason": "Verified catalog name or alias"
+        }
+      ]
+    },
+    {
+      "name": "Hammer-Curls",
+      "expected": "hammer-curl",
+      "exerciseId": "hammer-curl",
+      "status": "normalized",
+      "confidence": 1,
+      "candidates": [
+        {
+          "exerciseId": "hammer-curl",
+          "score": 1,
+          "reason": "Verified catalog name or alias"
+        }
+      ]
+    },
+    {
+      "name": "Trap Bar Dead Lift",
+      "expected": "trap-bar-deadlift",
+      "exerciseId": "trap-bar-deadlift",
+      "status": "alias",
+      "confidence": 1,
+      "candidates": [
+        {
+          "exerciseId": "trap-bar-deadlift",
+          "score": 1,
+          "reason": "Verified catalog name or alias"
+        }
+      ]
+    },
+    {
+      "name": "מכרע בולגרי.",
+      "expected": "bulgarian-split-squat",
+      "exerciseId": "bulgarian-split-squat",
+      "status": "normalized",
+      "confidence": 1,
+      "candidates": [
+        {
+          "exerciseId": "bulgarian-split-squat",
+          "score": 1,
+          "reason": "Verified catalog name or alias"
+        }
+      ]
+    },
+    {
+      "name": "Bench Press",
+      "expected": null,
+      "exerciseId": "",
+      "status": "ambiguous",
+      "confidence": 0,
+      "candidates": [
+        {
+          "exerciseId": "bench",
+          "score": 1,
+          "reason": "Name identifies multiple catalog variants"
+        },
+        {
+          "exerciseId": "barbell-bench",
+          "score": 1,
+          "reason": "Name identifies multiple catalog variants"
+        }
+      ]
+    },
+    {
+      "name": "Leg curl",
+      "expected": null,
+      "exerciseId": "",
+      "status": "ambiguous",
+      "confidence": 0,
+      "candidates": [
+        {
+          "exerciseId": "seated-curl",
+          "score": 1,
+          "reason": "Name identifies multiple catalog variants"
+        },
+        {
+          "exerciseId": "lying-curl",
+          "score": 1,
+          "reason": "Name identifies multiple catalog variants"
+        }
+      ]
+    },
+    {
+      "name": "Hamstring curl",
+      "expected": null,
+      "exerciseId": "",
+      "status": "ambiguous",
+      "confidence": 0,
+      "candidates": [
+        {
+          "exerciseId": "seated-curl",
+          "score": 1,
+          "reason": "Name identifies multiple catalog variants"
+        },
+        {
+          "exerciseId": "lying-curl",
+          "score": 1,
+          "reason": "Name identifies multiple catalog variants"
+        }
+      ]
+    },
+    {
+      "name": "Decline DB Bench Press",
+      "expected": null,
+      "exerciseId": "",
+      "status": "suggested",
+      "confidence": 0.9285714285714286,
+      "candidates": [
+        {
+          "exerciseId": "incline-db",
+          "score": 0.9285714285714286,
+          "reason": "Similar spelling; verify equipment, angle and side manually"
+        },
+        {
+          "exerciseId": "bench",
+          "score": 0.7857142857142857,
+          "reason": "Similar spelling; verify equipment, angle and side manually"
+        },
+        {
+          "exerciseId": "incline-barbell-bench",
+          "score": 0.7857142857142857,
+          "reason": "Similar spelling; verify equipment, angle and side manually"
+        }
+      ]
+    },
+    {
+      "name": "Dumbbell bench press left right",
+      "expected": null,
+      "exerciseId": "",
+      "status": "unmatched",
+      "confidence": 0,
+      "candidates": []
+    },
+    {
+      "name": "Cable barbell row",
+      "expected": null,
+      "exerciseId": "",
+      "status": "unmatched",
+      "confidence": 0,
+      "candidates": []
+    },
+    {
+      "name": "single leg RDL",
+      "expected": "single-leg-rdl",
+      "exerciseId": "single-leg-rdl",
+      "status": "normalized",
+      "confidence": 1,
+      "candidates": [
+        {
+          "exerciseId": "single-leg-rdl",
+          "score": 1,
+          "reason": "Verified catalog name or alias"
+        }
+      ]
+    },
+    {
+      "name": "Incline flat dumbbell bench press",
+      "expected": null,
+      "exerciseId": "",
+      "status": "unmatched",
+      "confidence": 0,
+      "candidates": []
+    },
+    {
+      "name": "Bike sprint 40 seconds",
+      "expected": null,
+      "exerciseId": "",
+      "status": "unmatched",
+      "confidence": 0,
+      "candidates": []
+    },
+    {
+      "name": "תרגיל אישי חדש של המאמן",
+      "expected": null,
+      "exerciseId": "",
+      "status": "unmatched",
+      "confidence": 0,
+      "candidates": []
+    },
+    {
+      "name": "Landmine lateral squat",
+      "expected": null,
+      "exerciseId": "",
+      "status": "unmatched",
+      "confidence": 0,
+      "candidates": []
+    },
+    {
+      "name": "",
+      "expected": null,
+      "exerciseId": "",
+      "status": "unmatched",
+      "confidence": 0,
+      "candidates": []
+    }
+  ]
+}

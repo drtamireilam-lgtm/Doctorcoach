@@ -27,7 +27,7 @@ test('headers, days, ranges, effort, tempo, notes and blank weights preserve sou
  const items=finalizeImport(r);assert.equal(items[0].reps,6);assert.equal(items[0].repsMax,8);assert.equal(repetitionLabel(items[0]),'6–8');assert.equal(items[0].weightUnspecified,true);assert.equal(items[0].targetRpe,7);assert.equal(items[1].weight,30);assert.deepEqual(items[0].tempo,{eccentric:3,bottom:0,concentric:2,top:0});assert.equal(items[0].notes,'Keep control');
 });
 test('ambiguous names, formulas, duplicate rows and invalid values cannot silently publish',()=>{
- assert.equal(matchImportExercise('squats'),'');assert.equal(matchImportExercise('overheard press'),'');
+ assert.equal(matchImportExercise('squats'),'movement-squat');assert.equal(matchImportExercise('overheard press'),'movement-overhead-press');
  const r=rows();assert.throws(()=>finalizeImport([{...r[0],exerciseId:''}]));
  assert.throws(()=>finalizeImport([{...r[0],issues:['Formula requires manual values']}]));
  assert.throws(()=>finalizeImport([r[0],r[0]]));
@@ -59,4 +59,20 @@ test('independent range and unset weight survive storage and can be cleared expl
  const f=platform(t);await f.connect();const item=finalizeImport(rows())[0];await f.training.savePlan(client.userId,item);
  let saved=(await f.training.getPlan(client.userId))[0];assert.equal(saved.repsMax,8);assert.equal(saved.weightUnspecified,true);
  await f.training.savePlan(client.userId,{exerciseId:item.exerciseId,repsMax:null,weight:20});saved=(await f.training.getPlan(client.userId))[0];assert.equal(saved.repsMax,undefined);assert.equal(saved.weightUnspecified,undefined);assert.equal(saved.weight,20);
+});
+
+test('imported pound warmups persist through coach draft, assignment and trainee workout reopening',async t=>{
+ const f=platform(t);await f.connect();
+ const s={name:'Day A',rows:[['Exercise','Sets','Reps','Weight','Weight Unit','Warmup sets'],['Leg Press',3,'18-6',100,'lb','10@45;65x5']].map(r=>r.map(v=>cell(v)))};
+ const d=detectImportColumns(s),items=finalizeImport(extractImportRows(s,d.header,d.mapping));
+ const drafts=coachDraftStore(f.db,f.care);
+ await drafts.save(coach,client.userId,{action:'save',version:0,requestId:randomUUID(),title:'Pound source',items,revisionOf:null});
+ const saved=(await coachDraftStore(f.db,f.care).get(coach,client.userId)).draft;
+ assert.equal(saved.items[0].warmupSets[0].weight,45*.45359237);
+ await f.care.assign(coach,client.userId,{id:randomUUID(),title:saved.title,items:saved.items});
+ const session=await f.training.start(client.userId,{requestId:randomUUID(),dayId:'1',before:0});
+ const item=session.items[0];assert.equal(item.weight,100*.45359237);assert.equal(item.reps,6);assert.equal(item.repsMax,18);
+ assert.equal(item.warmupResults[0].weight,45*.45359237);assert.equal(item.warmupResults[1].weight,65*.45359237);
+ const reopened=await f.training.feed(client.userId);assert.equal(reopened.active.id,session.id);
+ assert.deepEqual(reopened.active.items[0].warmupResults,item.warmupResults);
 });

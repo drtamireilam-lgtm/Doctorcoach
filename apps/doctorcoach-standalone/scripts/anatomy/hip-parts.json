@@ -1,0 +1,130 @@
+{
+  "hip": [
+    [
+      "hip-bone",
+      "Hip bone",
+      "עצם האגן",
+      "bone",
+      [
+        "FJ3152"
+      ]
+    ],
+    [
+      "femur",
+      "Femur",
+      "עצם הירך",
+      "bone",
+      [
+        "FJ3365"
+      ]
+    ],
+    [
+      "gluteus-maximus",
+      "Gluteus maximus",
+      "שריר העכוז הגדול",
+      "muscle",
+      [
+        "FJ1418"
+      ]
+    ],
+    [
+      "gluteus-medius",
+      "Gluteus medius",
+      "שריר העכוז האמצעי",
+      "muscle",
+      [
+        "FJ1419"
+      ]
+    ],
+    [
+      "gluteus-minimus",
+      "Gluteus minimus",
+      "שריר העכוז הקטן",
+      "muscle",
+      [
+        "FJ1420"
+      ]
+    ],
+    [
+      "tensor-fasciae-latae",
+      "Tensor fasciae latae",
+      "מותח המחתלה הרחבה",
+      "muscle",
+      [
+        "FJ1438"
+      ]
+    ],
+    [
+      "piriformis",
+      "Piriformis",
+      "השריר האגסי",
+      "muscle",
+      [
+        "FJ1428"
+      ]
+    ],
+    [
+      "obturator-internus",
+      "Obturator internus",
+      "השריר הסותם הפנימי",
+      "muscle",
+      [
+        "FJ1426"
+      ]
+    ],
+    [
+      "obturator-externus",
+      "Obturator externus",
+      "השריר הסותם החיצוני",
+      "muscle",
+      [
+        "FJ1425"
+      ]
+    ],
+    [
+      "superior-gemellus",
+      "Superior gemellus",
+      "השריר התאום העליון",
+      "muscle",
+      [
+        "FJ1417"
+      ]
+    ],
+    [
+      "inferior-gemellus",
+      "Inferior gemellus",
+      "השריר התאום התחתון",
+      "muscle",
+      [
+        "FJ1416"
+      ]
+    ],
+    [
+      "quadratus-femoris",
+      "Quadratus femoris",
+      "השריר המרובע של הירך",
+      "muscle",
+      [
+        "FJ1432"
+      ]
+    ],
+    [
+      "iliacus",
+      "Iliacus",
+      "שריר הכסל",
+      "muscle",
+      [
+        "FJ1422"
+      ]
+    ],
+    [
+      "psoas-major",
+      "Psoas major",
+      "שריר המותן הגדול",
+      "muscle",
+      [
+        "FJ1431"
+      ]
+    ]
+  ]
+}

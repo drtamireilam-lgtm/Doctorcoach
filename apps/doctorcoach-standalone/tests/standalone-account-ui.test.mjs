@@ -75,3 +75,21 @@ test('isolated staging offers a separate test account without legacy links or pr
  f.nodes.get('new-form').fields.confirmed.checked=true;await f.event('new-form','submit');
  assert.deepEqual(f.redirects,['/#program']);
 });
+
+test('refresh restores code entry from the server challenge and does not send another email',async()=>{
+ const f=await ui({responses:{'/auth/pending':{pending:true,email:'resume@example.test',resendAt:Date.now()+30000}}});
+ assert.equal(f.nodes.get('code-form').hidden,false);
+ assert.equal(f.nodes.get('email-form').hidden,true);
+ assert.equal(f.nodes.get('resend').disabled,true);
+ assert.ok(!f.calls.some(([p])=>p==='/auth/send'));
+ assert.equal(f.nodes.get('code-form').fields.code.value,'');
+});
+
+test('HE/EN sign-in offers Google, Apple and email with one submit per method',async()=>{
+ for(const english of [true,false]){
+  const html=await authPage({signout:false,returnTo:'/?lang='+ (english?'en':'he')+'#plan',english,isolatedStaging:true}).text();
+  for(const label of english?['Continue with Google','Continue with Apple','Continue with Email']:['המשך עם Google','המשך עם Apple','המשך עם דוא"ל'])assert.ok(html.includes(label),label);
+  assert.equal((html.match(/id="oauth-google"/g)||[]).length,1);assert.equal((html.match(/id="oauth-apple"/g)||[]).length,1);
+  assert.equal((html.match(/id="email-form"/g)||[]).length,1);
+ }
+});

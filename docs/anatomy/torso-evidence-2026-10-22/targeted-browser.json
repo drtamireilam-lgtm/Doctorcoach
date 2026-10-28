@@ -1,0 +1,20 @@
+{
+  "passed": [
+    "body chest opens 28 real torso structures with anterior default and explicit partial coverage",
+    "sternum is midline and costal cartilage has independent accessible hide isolate and focus controls",
+    "combined original pectoral parts select as one muscle and bench Back and reverse links retain camera",
+    "body abdomen opens available oblique geometry and side-plank stabilizer Back retains abdominal context",
+    "torso Hebrew RTL names cartilage correctly and missing rectus stays unhighlighted with learning card",
+    "leaving torso releases GPU memory and returns to exactly one body scene",
+    "unmodeled muscle deep link preserves its learning card without highlighting another mesh",
+    "coracobrachialis deep link shows its full card and focuses the isolated source mesh",
+    "leaving a region releases its WebGL context and retains only one scene",
+    "unavailable region is clearly marked and never substitutes invented geometry",
+    "invalid GLB shows an accessible loading error and retry recovers a real scene",
+    "desktop viewport retains one responsive scene without horizontal overflow",
+    "migrated local app returns no HTTP 5xx responses",
+    "no uncaught browser errors"
+  ],
+  "browserErrors": [],
+  "serverErrors": []
+}

@@ -1,0 +1,167 @@
+{
+  "status": "source fidelity and mapping checked",
+  "clinicalReview": "pending",
+  "structures": [
+    {
+      "model": "knee",
+      "structure": "hip-bone",
+      "elements": [
+        "FJ3152"
+      ],
+      "sourceCoordinatesAndTriangles": "exact float32 match",
+      "rightSideEvidence": true,
+      "uniqueMaterial": true
+    },
+    {
+      "model": "knee",
+      "structure": "femur",
+      "elements": [
+        "FJ3365"
+      ],
+      "sourceCoordinatesAndTriangles": "exact float32 match",
+      "rightSideEvidence": true,
+      "uniqueMaterial": true
+    },
+    {
+      "model": "knee",
+      "structure": "patella",
+      "elements": [
+        "FJ3381"
+      ],
+      "sourceCoordinatesAndTriangles": "exact float32 match",
+      "rightSideEvidence": true,
+      "uniqueMaterial": true
+    },
+    {
+      "model": "knee",
+      "structure": "tibia",
+      "elements": [
+        "FJ3387"
+      ],
+      "sourceCoordinatesAndTriangles": "exact float32 match",
+      "rightSideEvidence": true,
+      "uniqueMaterial": true
+    },
+    {
+      "model": "knee",
+      "structure": "fibula",
+      "elements": [
+        "FJ3366"
+      ],
+      "sourceCoordinatesAndTriangles": "exact float32 match",
+      "rightSideEvidence": true,
+      "uniqueMaterial": true
+    },
+    {
+      "model": "knee",
+      "structure": "calcaneus",
+      "elements": [
+        "FJ3360"
+      ],
+      "sourceCoordinatesAndTriangles": "exact float32 match",
+      "rightSideEvidence": true,
+      "uniqueMaterial": true
+    },
+    {
+      "model": "knee",
+      "structure": "rectus-femoris",
+      "elements": [
+        "FJ1433"
+      ],
+      "sourceCoordinatesAndTriangles": "exact float32 match",
+      "rightSideEvidence": true,
+      "uniqueMaterial": true
+    },
+    {
+      "model": "knee",
+      "structure": "vastus-lateralis",
+      "elements": [
+        "FJ1442"
+      ],
+      "sourceCoordinatesAndTriangles": "exact float32 match",
+      "rightSideEvidence": true,
+      "uniqueMaterial": true
+    },
+    {
+      "model": "knee",
+      "structure": "vastus-medialis",
+      "elements": [
+        "FJ1443"
+      ],
+      "sourceCoordinatesAndTriangles": "exact float32 match",
+      "rightSideEvidence": true,
+      "uniqueMaterial": true
+    },
+    {
+      "model": "knee",
+      "structure": "vastus-intermedius",
+      "elements": [
+        "FJ1441"
+      ],
+      "sourceCoordinatesAndTriangles": "exact float32 match",
+      "rightSideEvidence": true,
+      "uniqueMaterial": true
+    },
+    {
+      "model": "knee",
+      "structure": "biceps-femoris-long-head",
+      "elements": [
+        "FJ1395"
+      ],
+      "sourceCoordinatesAndTriangles": "exact float32 match",
+      "rightSideEvidence": true,
+      "uniqueMaterial": true
+    },
+    {
+      "model": "knee",
+      "structure": "biceps-femoris-short-head",
+      "elements": [
+        "FJ1444"
+      ],
+      "sourceCoordinatesAndTriangles": "exact float32 match",
+      "rightSideEvidence": true,
+      "uniqueMaterial": true
+    },
+    {
+      "model": "knee",
+      "structure": "semitendinosus",
+      "elements": [
+        "FJ1436"
+      ],
+      "sourceCoordinatesAndTriangles": "exact float32 match",
+      "rightSideEvidence": true,
+      "uniqueMaterial": true
+    },
+    {
+      "model": "knee",
+      "structure": "semimembranosus",
+      "elements": [
+        "FJ1435"
+      ],
+      "sourceCoordinatesAndTriangles": "exact float32 match",
+      "rightSideEvidence": true,
+      "uniqueMaterial": true
+    },
+    {
+      "model": "knee",
+      "structure": "popliteus",
+      "elements": [
+        "FJ1430"
+      ],
+      "sourceCoordinatesAndTriangles": "exact float32 match",
+      "rightSideEvidence": true,
+      "uniqueMaterial": true
+    },
+    {
+      "model": "knee",
+      "structure": "gastrocnemius",
+      "elements": [
+        "FJ1397",
+        "FJ1394"
+      ],
+      "sourceCoordinatesAndTriangles": "exact float32 match",
+      "rightSideEvidence": true,
+      "uniqueMaterial": true
+    }
+  ]
+}

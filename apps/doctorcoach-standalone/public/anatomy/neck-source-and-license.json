@@ -1,0 +1,1067 @@
+{
+  "assetId": "bp3d-4-neck",
+  "sourceUrl": "https://dbarchive.biosciencedbc.jp/data/bodyparts3d/LATEST/isa_BP3D_4.0_obj_99.zip",
+  "creator": "The Database Center for Life Science",
+  "licenseId": "CC-BY-4.0",
+  "licenseUrl": "https://creativecommons.org/licenses/by/4.0/",
+  "licenseEvidence": "https://dbarchive.biosciencedbc.jp/en/bodyparts3d/lic.html",
+  "attribution": "BodyParts3D, © The Database Center for Life Science licensed under CC Attribution 4.0 International",
+  "modifications": "Original C1-C7, T1-T6, occipital bone and combined sternal components at midline; right temporal bone, shoulder/rib attachment context and twelve selectable muscle entries. Three source scalene muscles combined as the named scalenes group; descending trapezius portion labeled upper trapezius. Four suboccipital muscles remain individually selectable. Original positions/triangles retained, mm XYZ converted to metres X Z -Y, normals/unique materials added. No mirroring, cropping or fabricated right longus colli.",
+  "downloadedSubsetSha256": "7bb72085f290ec3b0500273467903e8ca6d4eb649dc4f65d63c8cd0fd7ea9b38",
+  "glbSha256": "a543f31d79026d59b5b60ce222bf5223f79fc2bb9a35364d9594c9008f2bae7f",
+  "anatomicalReview": "pending",
+  "structures": [
+    {
+      "id": "cervical-1",
+      "en": "Cervical vertebra 1",
+      "he": "חוליה צווארית 1",
+      "layer": "bone",
+      "side": "midline",
+      "regionId": "cervical_neck",
+      "sources": [
+        {
+          "elementId": "FJ3176",
+          "sha256": "8ac9ee6d7631edc066a322af278ed508eab4d9c0919e9a77657ead17c14c8a79",
+          "mappingRows": [
+            "FMA5018\tbone organ\tFJ3176",
+            "FMA7477\tirregular bone\tFJ3176",
+            "FMA9914\tvertebra\tFJ3176",
+            "FMA9915\tcervical vertebra\tFJ3176",
+            "FMA12519\tatlas\tFJ3176",
+            "FMA55671\tcavitated organ\tFJ3176",
+            "FMA55673\torgan with cavitated organ parts\tFJ3176",
+            "FMA61775\tphysical anatomical entity\tFJ3176",
+            "FMA62955\tanatomical entity\tFJ3176",
+            "FMA67135\tanatomical structure\tFJ3176",
+            "FMA67165\tmaterial anatomical entity\tFJ3176",
+            "FMA67498\torgan\tFJ3176"
+          ]
+        }
+      ],
+      "triangles": 2094,
+      "review": "pending"
+    },
+    {
+      "id": "cervical-2",
+      "en": "Cervical vertebra 2",
+      "he": "חוליה צווארית 2",
+      "layer": "bone",
+      "side": "midline",
+      "regionId": "cervical_neck",
+      "sources": [
+        {
+          "elementId": "FJ3177",
+          "sha256": "ae446bbf47561c5ff2a2c0a03bfb158ba2581477ae5078ac89cc95b92637adab",
+          "mappingRows": [
+            "FMA5018\tbone organ\tFJ3177",
+            "FMA7477\tirregular bone\tFJ3177",
+            "FMA9914\tvertebra\tFJ3177",
+            "FMA9915\tcervical vertebra\tFJ3177",
+            "FMA12520\taxis\tFJ3177",
+            "FMA55671\tcavitated organ\tFJ3177",
+            "FMA55673\torgan with cavitated organ parts\tFJ3177",
+            "FMA61775\tphysical anatomical entity\tFJ3177",
+            "FMA62955\tanatomical entity\tFJ3177",
+            "FMA67135\tanatomical structure\tFJ3177",
+            "FMA67165\tmaterial anatomical entity\tFJ3177",
+            "FMA67498\torgan\tFJ3177"
+          ]
+        }
+      ],
+      "triangles": 2288,
+      "review": "pending"
+    },
+    {
+      "id": "cervical-3",
+      "en": "Cervical vertebra 3",
+      "he": "חוליה צווארית 3",
+      "layer": "bone",
+      "side": "midline",
+      "regionId": "cervical_neck",
+      "sources": [
+        {
+          "elementId": "FJ3161",
+          "sha256": "8f0de55a4feef85c256501a8afff7bb5aa3f77f4681af4c91801da87b54db103",
+          "mappingRows": [
+            "FMA5018\tbone organ\tFJ3161",
+            "FMA7477\tirregular bone\tFJ3161",
+            "FMA9914\tvertebra\tFJ3161",
+            "FMA9915\tcervical vertebra\tFJ3161",
+            "FMA12521\tthird cervical vertebra\tFJ3161",
+            "FMA55671\tcavitated organ\tFJ3161",
+            "FMA55673\torgan with cavitated organ parts\tFJ3161",
+            "FMA61775\tphysical anatomical entity\tFJ3161",
+            "FMA62955\tanatomical entity\tFJ3161",
+            "FMA67135\tanatomical structure\tFJ3161",
+            "FMA67165\tmaterial anatomical entity\tFJ3161",
+            "FMA67498\torgan\tFJ3161"
+          ]
+        }
+      ],
+      "triangles": 2030,
+      "review": "pending"
+    },
+    {
+      "id": "cervical-4",
+      "en": "Cervical vertebra 4",
+      "he": "חוליה צווארית 4",
+      "layer": "bone",
+      "side": "midline",
+      "regionId": "cervical_neck",
+      "sources": [
+        {
+          "elementId": "FJ3164",
+          "sha256": "a883dd5929817f87eb366a32ca9d82463fd0db40286c49b8adc9e9d1a8cecc34",
+          "mappingRows": [
+            "FMA5018\tbone organ\tFJ3164",
+            "FMA7477\tirregular bone\tFJ3164",
+            "FMA9914\tvertebra\tFJ3164",
+            "FMA9915\tcervical vertebra\tFJ3164",
+            "FMA12522\tfourth cervical vertebra\tFJ3164",
+            "FMA55671\tcavitated organ\tFJ3164",
+            "FMA55673\torgan with cavitated organ parts\tFJ3164",
+            "FMA61775\tphysical anatomical entity\tFJ3164",
+            "FMA62955\tanatomical entity\tFJ3164",
+            "FMA67135\tanatomical structure\tFJ3164",
+            "FMA67165\tmaterial anatomical entity\tFJ3164",
+            "FMA67498\torgan\tFJ3164"
+          ]
+        }
+      ],
+      "triangles": 2410,
+      "review": "pending"
+    },
+    {
+      "id": "cervical-5",
+      "en": "Cervical vertebra 5",
+      "he": "חוליה צווארית 5",
+      "layer": "bone",
+      "side": "midline",
+      "regionId": "cervical_neck",
+      "sources": [
+        {
+          "elementId": "FJ3167",
+          "sha256": "b2485c3707b04f1fd455ee4d3a7b69670ec9c85d4ef9a54463e5c6089f1a69a7",
+          "mappingRows": [
+            "FMA5018\tbone organ\tFJ3167",
+            "FMA7477\tirregular bone\tFJ3167",
+            "FMA9914\tvertebra\tFJ3167",
+            "FMA9915\tcervical vertebra\tFJ3167",
+            "FMA12523\tfifth cervical vertebra\tFJ3167",
+            "FMA55671\tcavitated organ\tFJ3167",
+            "FMA55673\torgan with cavitated organ parts\tFJ3167",
+            "FMA61775\tphysical anatomical entity\tFJ3167",
+            "FMA62955\tanatomical entity\tFJ3167",
+            "FMA67135\tanatomical structure\tFJ3167",
+            "FMA67165\tmaterial anatomical entity\tFJ3167",
+            "FMA67498\torgan\tFJ3167"
+          ]
+        }
+      ],
+      "triangles": 2196,
+      "review": "pending"
+    },
+    {
+      "id": "cervical-6",
+      "en": "Cervical vertebra 6",
+      "he": "חוליה צווארית 6",
+      "layer": "bone",
+      "side": "midline",
+      "regionId": "cervical_neck",
+      "sources": [
+        {
+          "elementId": "FJ3170",
+          "sha256": "ac100888f7e271851c138e8d41a52168070e4fe5c63e8876a4bcfba08f3b59aa",
+          "mappingRows": [
+            "FMA5018\tbone organ\tFJ3170",
+            "FMA7477\tirregular bone\tFJ3170",
+            "FMA9914\tvertebra\tFJ3170",
+            "FMA9915\tcervical vertebra\tFJ3170",
+            "FMA12524\tsixth cervical vertebra\tFJ3170",
+            "FMA55671\tcavitated organ\tFJ3170",
+            "FMA55673\torgan with cavitated organ parts\tFJ3170",
+            "FMA61775\tphysical anatomical entity\tFJ3170",
+            "FMA62955\tanatomical entity\tFJ3170",
+            "FMA67135\tanatomical structure\tFJ3170",
+            "FMA67165\tmaterial anatomical entity\tFJ3170",
+            "FMA67498\torgan\tFJ3170"
+          ]
+        }
+      ],
+      "triangles": 2374,
+      "review": "pending"
+    },
+    {
+      "id": "cervical-7",
+      "en": "Cervical vertebra 7",
+      "he": "חוליה צווארית 7",
+      "layer": "bone",
+      "side": "midline",
+      "regionId": "cervical_neck",
+      "sources": [
+        {
+          "elementId": "FJ3172",
+          "sha256": "43bc0a1f9b3adffd5f45256b61f75affa15b56c85b387fa733b59de310216104",
+          "mappingRows": [
+            "FMA5018\tbone organ\tFJ3172",
+            "FMA7477\tirregular bone\tFJ3172",
+            "FMA9914\tvertebra\tFJ3172",
+            "FMA9915\tcervical vertebra\tFJ3172",
+            "FMA12525\tseventh cervical vertebra\tFJ3172",
+            "FMA55671\tcavitated organ\tFJ3172",
+            "FMA55673\torgan with cavitated organ parts\tFJ3172",
+            "FMA61775\tphysical anatomical entity\tFJ3172",
+            "FMA62955\tanatomical entity\tFJ3172",
+            "FMA67135\tanatomical structure\tFJ3172",
+            "FMA67165\tmaterial anatomical entity\tFJ3172",
+            "FMA67498\torgan\tFJ3172"
+          ]
+        }
+      ],
+      "triangles": 1820,
+      "review": "pending"
+    },
+    {
+      "id": "thoracic-1",
+      "en": "Thoracic vertebra 1",
+      "he": "חוליה חזית 1",
+      "layer": "bone",
+      "side": "midline",
+      "regionId": "cervical_neck",
+      "sources": [
+        {
+          "elementId": "FJ3158",
+          "sha256": "aa69c48def3434d6a3e1c56fc78af45f01545931fde5422af17d5f98ce9ed8a3",
+          "mappingRows": [
+            "FMA5018\tbone organ\tFJ3158",
+            "FMA7477\tirregular bone\tFJ3158",
+            "FMA9139\tthoracic vertebra\tFJ3158",
+            "FMA9165\tfirst thoracic vertebra\tFJ3158",
+            "FMA9914\tvertebra\tFJ3158",
+            "FMA55671\tcavitated organ\tFJ3158",
+            "FMA55673\torgan with cavitated organ parts\tFJ3158",
+            "FMA61775\tphysical anatomical entity\tFJ3158",
+            "FMA62955\tanatomical entity\tFJ3158",
+            "FMA67135\tanatomical structure\tFJ3158",
+            "FMA67165\tmaterial anatomical entity\tFJ3158",
+            "FMA67498\torgan\tFJ3158"
+          ]
+        }
+      ],
+      "triangles": 1700,
+      "review": "pending"
+    },
+    {
+      "id": "thoracic-2",
+      "en": "Thoracic vertebra 2",
+      "he": "חוליה חזית 2",
+      "layer": "bone",
+      "side": "midline",
+      "regionId": "cervical_neck",
+      "sources": [
+        {
+          "elementId": "FJ3160",
+          "sha256": "20c1322be138314f42bbd1be3e69f3f6b590bbca7a8a3cd3414476f207721300",
+          "mappingRows": [
+            "FMA5018\tbone organ\tFJ3160",
+            "FMA7477\tirregular bone\tFJ3160",
+            "FMA9139\tthoracic vertebra\tFJ3160",
+            "FMA9187\tsecond thoracic vertebra\tFJ3160",
+            "FMA9914\tvertebra\tFJ3160",
+            "FMA55671\tcavitated organ\tFJ3160",
+            "FMA55673\torgan with cavitated organ parts\tFJ3160",
+            "FMA61775\tphysical anatomical entity\tFJ3160",
+            "FMA62955\tanatomical entity\tFJ3160",
+            "FMA67135\tanatomical structure\tFJ3160",
+            "FMA67165\tmaterial anatomical entity\tFJ3160",
+            "FMA67498\torgan\tFJ3160"
+          ]
+        }
+      ],
+      "triangles": 1938,
+      "review": "pending"
+    },
+    {
+      "id": "thoracic-3",
+      "en": "Thoracic vertebra 3",
+      "he": "חוליה חזית 3",
+      "layer": "bone",
+      "side": "midline",
+      "regionId": "cervical_neck",
+      "sources": [
+        {
+          "elementId": "FJ3163",
+          "sha256": "3080ed603c54120fa5201816d77695354c81ea57275c599e68543bfb6ecb89c1",
+          "mappingRows": [
+            "FMA5018\tbone organ\tFJ3163",
+            "FMA7477\tirregular bone\tFJ3163",
+            "FMA9139\tthoracic vertebra\tFJ3163",
+            "FMA9209\tthird thoracic vertebra\tFJ3163",
+            "FMA9914\tvertebra\tFJ3163",
+            "FMA55671\tcavitated organ\tFJ3163",
+            "FMA55673\torgan with cavitated organ parts\tFJ3163",
+            "FMA61775\tphysical anatomical entity\tFJ3163",
+            "FMA62955\tanatomical entity\tFJ3163",
+            "FMA67135\tanatomical structure\tFJ3163",
+            "FMA67165\tmaterial anatomical entity\tFJ3163",
+            "FMA67498\torgan\tFJ3163"
+          ]
+        }
+      ],
+      "triangles": 2038,
+      "review": "pending"
+    },
+    {
+      "id": "thoracic-4",
+      "en": "Thoracic vertebra 4",
+      "he": "חוליה חזית 4",
+      "layer": "bone",
+      "side": "midline",
+      "regionId": "cervical_neck",
+      "sources": [
+        {
+          "elementId": "FJ3166",
+          "sha256": "cbd60a450a8b2f3ee90ccc655f79a63b090d8a3abf5e6849cf288a7b2d4207f2",
+          "mappingRows": [
+            "FMA5018\tbone organ\tFJ3166",
+            "FMA7477\tirregular bone\tFJ3166",
+            "FMA9139\tthoracic vertebra\tFJ3166",
+            "FMA9248\tfourth thoracic vertebra\tFJ3166",
+            "FMA9914\tvertebra\tFJ3166",
+            "FMA55671\tcavitated organ\tFJ3166",
+            "FMA55673\torgan with cavitated organ parts\tFJ3166",
+            "FMA61775\tphysical anatomical entity\tFJ3166",
+            "FMA62955\tanatomical entity\tFJ3166",
+            "FMA67135\tanatomical structure\tFJ3166",
+            "FMA67165\tmaterial anatomical entity\tFJ3166",
+            "FMA67498\torgan\tFJ3166"
+          ]
+        }
+      ],
+      "triangles": 2066,
+      "review": "pending"
+    },
+    {
+      "id": "thoracic-5",
+      "en": "Thoracic vertebra 5",
+      "he": "חוליה חזית 5",
+      "layer": "bone",
+      "side": "midline",
+      "regionId": "cervical_neck",
+      "sources": [
+        {
+          "elementId": "FJ3169",
+          "sha256": "20c3b1dfed3a2ac5e631838ae924379672dac2047186711cfaa819b9a1db6e5b",
+          "mappingRows": [
+            "FMA5018\tbone organ\tFJ3169",
+            "FMA7477\tirregular bone\tFJ3169",
+            "FMA9139\tthoracic vertebra\tFJ3169",
+            "FMA9914\tvertebra\tFJ3169",
+            "FMA9922\tfifth thoracic vertebra\tFJ3169",
+            "FMA55671\tcavitated organ\tFJ3169",
+            "FMA55673\torgan with cavitated organ parts\tFJ3169",
+            "FMA61775\tphysical anatomical entity\tFJ3169",
+            "FMA62955\tanatomical entity\tFJ3169",
+            "FMA67135\tanatomical structure\tFJ3169",
+            "FMA67165\tmaterial anatomical entity\tFJ3169",
+            "FMA67498\torgan\tFJ3169"
+          ]
+        }
+      ],
+      "triangles": 2280,
+      "review": "pending"
+    },
+    {
+      "id": "thoracic-6",
+      "en": "Thoracic vertebra 6",
+      "he": "חוליה חזית 6",
+      "layer": "bone",
+      "side": "midline",
+      "regionId": "cervical_neck",
+      "sources": [
+        {
+          "elementId": "FJ3171",
+          "sha256": "ebee2a07751de0aa0b33974eea0a9228fed9980f740c619776003d5a38c370c5",
+          "mappingRows": [
+            "FMA5018\tbone organ\tFJ3171",
+            "FMA7477\tirregular bone\tFJ3171",
+            "FMA9139\tthoracic vertebra\tFJ3171",
+            "FMA9914\tvertebra\tFJ3171",
+            "FMA9945\tsixth thoracic vertebra\tFJ3171",
+            "FMA55671\tcavitated organ\tFJ3171",
+            "FMA55673\torgan with cavitated organ parts\tFJ3171",
+            "FMA61775\tphysical anatomical entity\tFJ3171",
+            "FMA62955\tanatomical entity\tFJ3171",
+            "FMA67135\tanatomical structure\tFJ3171",
+            "FMA67165\tmaterial anatomical entity\tFJ3171",
+            "FMA67498\torgan\tFJ3171"
+          ]
+        }
+      ],
+      "triangles": 2248,
+      "review": "pending"
+    },
+    {
+      "id": "scapula",
+      "en": "Scapula",
+      "he": "עצם השכמה",
+      "layer": "bone",
+      "side": "right",
+      "regionId": "cervical_neck",
+      "sources": [
+        {
+          "elementId": "FJ3384",
+          "sha256": "1641b04e55f9d75bdd6f1f4f07ea596e5dea0a8cb6b348bff47281b8a0bc6e5d",
+          "mappingRows": [
+            "FMA5018\tbone organ\tFJ3384",
+            "FMA7476\tflat bone\tFJ3384",
+            "FMA13394\tscapula\tFJ3384",
+            "FMA13395\tright scapula\tFJ3384",
+            "FMA55671\tcavitated organ\tFJ3384",
+            "FMA55673\torgan with cavitated organ parts\tFJ3384",
+            "FMA61775\tphysical anatomical entity\tFJ3384",
+            "FMA62955\tanatomical entity\tFJ3384",
+            "FMA67135\tanatomical structure\tFJ3384",
+            "FMA67165\tmaterial anatomical entity\tFJ3384",
+            "FMA67498\torgan\tFJ3384"
+          ]
+        }
+      ],
+      "triangles": 26172,
+      "review": "pending"
+    },
+    {
+      "id": "clavicle",
+      "en": "Clavicle",
+      "he": "עצם הבריח",
+      "layer": "bone",
+      "side": "right",
+      "regionId": "cervical_neck",
+      "sources": [
+        {
+          "elementId": "FJ3362",
+          "sha256": "9a111cac8351e79dd1315aea90108fe56f78e4bf0159473e6ad727ba91b60e6d",
+          "mappingRows": [
+            "FMA5018\tbone organ\tFJ3362",
+            "FMA7474\tlong bone\tFJ3362",
+            "FMA13321\tclavicle\tFJ3362",
+            "FMA13322\tright clavicle\tFJ3362",
+            "FMA55671\tcavitated organ\tFJ3362",
+            "FMA55673\torgan with cavitated organ parts\tFJ3362",
+            "FMA61775\tphysical anatomical entity\tFJ3362",
+            "FMA62955\tanatomical entity\tFJ3362",
+            "FMA67135\tanatomical structure\tFJ3362",
+            "FMA67165\tmaterial anatomical entity\tFJ3362",
+            "FMA67498\torgan\tFJ3362"
+          ]
+        }
+      ],
+      "triangles": 1146,
+      "review": "pending"
+    },
+    {
+      "id": "rib-1",
+      "en": "Rib 1",
+      "he": "צלע 1",
+      "layer": "bone",
+      "side": "right",
+      "regionId": "cervical_neck",
+      "sources": [
+        {
+          "elementId": "FJ3334",
+          "sha256": "3831c5c578d45fc491e7e72417cc436e04a1a3a1916138e51528ad0b0b212a54",
+          "mappingRows": [
+            "FMA5018\tbone organ\tFJ3334",
+            "FMA7474\tlong bone\tFJ3334",
+            "FMA7574\trib\tFJ3334",
+            "FMA7592\ttrue rib\tFJ3334",
+            "FMA7596\tatypical rib\tFJ3334",
+            "FMA7597\tfirst rib\tFJ3334",
+            "FMA7857\tright first rib\tFJ3334",
+            "FMA55671\tcavitated organ\tFJ3334",
+            "FMA55673\torgan with cavitated organ parts\tFJ3334",
+            "FMA61775\tphysical anatomical entity\tFJ3334",
+            "FMA62955\tanatomical entity\tFJ3334",
+            "FMA67135\tanatomical structure\tFJ3334",
+            "FMA67165\tmaterial anatomical entity\tFJ3334",
+            "FMA67498\torgan\tFJ3334"
+          ]
+        }
+      ],
+      "triangles": 3276,
+      "review": "pending"
+    },
+    {
+      "id": "rib-2",
+      "en": "Rib 2",
+      "he": "צלע 2",
+      "layer": "bone",
+      "side": "right",
+      "regionId": "cervical_neck",
+      "sources": [
+        {
+          "elementId": "FJ3336",
+          "sha256": "57084a626a91aa88782f2e836c75450cd90bf19717dfd3f31602b4c674b70c0c",
+          "mappingRows": [
+            "FMA5018\tbone organ\tFJ3336",
+            "FMA7474\tlong bone\tFJ3336",
+            "FMA7574\trib\tFJ3336",
+            "FMA7592\ttrue rib\tFJ3336",
+            "FMA7596\tatypical rib\tFJ3336",
+            "FMA7620\tsecond rib\tFJ3336",
+            "FMA7882\tright second rib\tFJ3336",
+            "FMA55671\tcavitated organ\tFJ3336",
+            "FMA55673\torgan with cavitated organ parts\tFJ3336",
+            "FMA61775\tphysical anatomical entity\tFJ3336",
+            "FMA62955\tanatomical entity\tFJ3336",
+            "FMA67135\tanatomical structure\tFJ3336",
+            "FMA67165\tmaterial anatomical entity\tFJ3336",
+            "FMA67498\torgan\tFJ3336"
+          ]
+        }
+      ],
+      "triangles": 5594,
+      "review": "pending"
+    },
+    {
+      "id": "sternum",
+      "en": "Sternum — attachment context",
+      "he": "עצם החזה — הקשר לחיבורי השרירים",
+      "layer": "bone",
+      "side": "midline",
+      "regionId": "cervical_neck",
+      "sources": [
+        {
+          "elementId": "FJ3290",
+          "sha256": "e94f731d044131260947146ab79fa7c4712865e1aac36a1410003358b96e0692",
+          "mappingRows": [
+            "FMA7486\tmanubrium\tFJ3290",
+            "FMA10483\tzone of bone organ\tFJ3290",
+            "FMA12215\tzone of sternum\tFJ3290",
+            "FMA55268\torgan zone\tFJ3290",
+            "FMA61775\tphysical anatomical entity\tFJ3290",
+            "FMA62955\tanatomical entity\tFJ3290",
+            "FMA67135\tanatomical structure\tFJ3290",
+            "FMA67165\tmaterial anatomical entity\tFJ3290",
+            "FMA67619\torgan region\tFJ3290",
+            "FMA82472\tcardinal organ part\tFJ3290"
+          ]
+        },
+        {
+          "elementId": "FJ3178",
+          "sha256": "ec90f03f2ce1edebc8793a9e9973229b198d6367eb5eab1dff6e238110e94d9d",
+          "mappingRows": [
+            "FMA7487\tbody of sternum\tFJ3178",
+            "FMA45734\tbody of organ\tFJ3178",
+            "FMA55268\torgan zone\tFJ3178",
+            "FMA61775\tphysical anatomical entity\tFJ3178",
+            "FMA62955\tanatomical entity\tFJ3178",
+            "FMA67135\tanatomical structure\tFJ3178",
+            "FMA67165\tmaterial anatomical entity\tFJ3178",
+            "FMA67619\torgan region\tFJ3178",
+            "FMA82472\tcardinal organ part\tFJ3178"
+          ]
+        },
+        {
+          "elementId": "FJ3153",
+          "sha256": "371573a43e28506d674bf4999ee4c50c0497014aa8d69865f450a078d493a495",
+          "mappingRows": [
+            "FMA7488\txiphoid process\tFJ3153",
+            "FMA61775\tphysical anatomical entity\tFJ3153",
+            "FMA62955\tanatomical entity\tFJ3153",
+            "FMA67135\tanatomical structure\tFJ3153",
+            "FMA67165\tmaterial anatomical entity\tFJ3153",
+            "FMA67601\tprocess of organ\tFJ3153",
+            "FMA67619\torgan region\tFJ3153",
+            "FMA82472\tcardinal organ part\tFJ3153",
+            "FMA86140\torgan segment\tFJ3153"
+          ]
+        }
+      ],
+      "triangles": 8114,
+      "review": "pending"
+    },
+    {
+      "id": "occipital-bone",
+      "en": "Occipital bone",
+      "he": "עצם העורף",
+      "layer": "bone",
+      "side": "midline",
+      "regionId": "cervical_neck",
+      "sources": [
+        {
+          "elementId": "FJ3309",
+          "sha256": "c0262a08591e48504c8a53302525377e0c4ad1c165456475f3bb80aab6202d44",
+          "mappingRows": [
+            "FMA5018\tbone organ\tFJ3309",
+            "FMA7476\tflat bone\tFJ3309",
+            "FMA52735\toccipital bone\tFJ3309",
+            "FMA55671\tcavitated organ\tFJ3309",
+            "FMA55673\torgan with cavitated organ parts\tFJ3309",
+            "FMA61775\tphysical anatomical entity\tFJ3309",
+            "FMA62955\tanatomical entity\tFJ3309",
+            "FMA67135\tanatomical structure\tFJ3309",
+            "FMA67165\tmaterial anatomical entity\tFJ3309",
+            "FMA67498\torgan\tFJ3309"
+          ]
+        }
+      ],
+      "triangles": 12450,
+      "review": "pending"
+    },
+    {
+      "id": "temporal-bone",
+      "en": "Temporal bone",
+      "he": "עצם הרקה",
+      "layer": "bone",
+      "side": "right",
+      "regionId": "cervical_neck",
+      "sources": [
+        {
+          "elementId": "FJ3386",
+          "sha256": "b008c86a55b1e7743a56060b4d9cb8f8abcac71d83810f66fc50847181b7fa75",
+          "mappingRows": [
+            "FMA5018\tbone organ\tFJ3386",
+            "FMA7477\tirregular bone\tFJ3386",
+            "FMA7478\tpneumatized bone\tFJ3386",
+            "FMA52737\ttemporal bone\tFJ3386",
+            "FMA52738\tright temporal bone\tFJ3386",
+            "FMA55671\tcavitated organ\tFJ3386",
+            "FMA55673\torgan with cavitated organ parts\tFJ3386",
+            "FMA61775\tphysical anatomical entity\tFJ3386",
+            "FMA62955\tanatomical entity\tFJ3386",
+            "FMA67135\tanatomical structure\tFJ3386",
+            "FMA67165\tmaterial anatomical entity\tFJ3386",
+            "FMA67498\torgan\tFJ3386"
+          ]
+        }
+      ],
+      "triangles": 4928,
+      "review": "pending"
+    },
+    {
+      "id": "sternocleidomastoid",
+      "en": "Sternocleidomastoid",
+      "he": "סטרנוקליידומסטואיד",
+      "layer": "muscle",
+      "side": "right",
+      "regionId": "cervical_neck",
+      "sources": [
+        {
+          "elementId": "FJ1595",
+          "sha256": "287ce88ff3321e41d83b34bb0c30f66ab273aceac9fd0a6c693af4532d0e0681",
+          "mappingRows": [
+            "FMA5022\tmuscle organ\tFJ1595",
+            "FMA9617\tmuscle of neck\tFJ1595",
+            "FMA13407\tsternocleidomastoid\tFJ1595",
+            "FMA13408\tright sternocleidomastoid\tFJ1595",
+            "FMA55665\tnonparenchymatous organ\tFJ1595",
+            "FMA55670\tsolid organ\tFJ1595",
+            "FMA61775\tphysical anatomical entity\tFJ1595",
+            "FMA62955\tanatomical entity\tFJ1595",
+            "FMA64822\tsuperficial muscle of neck\tFJ1595",
+            "FMA67135\tanatomical structure\tFJ1595",
+            "FMA67165\tmaterial anatomical entity\tFJ1595",
+            "FMA67498\torgan\tFJ1595"
+          ]
+        }
+      ],
+      "triangles": 10344,
+      "review": "pending"
+    },
+    {
+      "id": "levator-scapulae",
+      "en": "Levator scapulae",
+      "he": "מרים השכמה",
+      "layer": "muscle",
+      "side": "right",
+      "regionId": "cervical_neck",
+      "sources": [
+        {
+          "elementId": "FJ1532",
+          "sha256": "ee7897cbc5cde540e9cc29b03617d90f1b3caaebee4489f6590ee9c4632dcd42",
+          "mappingRows": [
+            "FMA5022\tmuscle organ\tFJ1532",
+            "FMA9621\tmuscle of upper limb\tFJ1532",
+            "FMA32516\textrinsic muscle of shoulder\tFJ1532",
+            "FMA32518\tdeep extrinsic muscle of shoulder\tFJ1532",
+            "FMA32519\tlevator scapulae\tFJ1532",
+            "FMA32540\tright levator scapulae\tFJ1532",
+            "FMA33531\tmuscle of shoulder\tFJ1532",
+            "FMA37347\tmuscle of pectoral girdle\tFJ1532",
+            "FMA55665\tnonparenchymatous organ\tFJ1532",
+            "FMA55670\tsolid organ\tFJ1532",
+            "FMA61775\tphysical anatomical entity\tFJ1532",
+            "FMA62955\tanatomical entity\tFJ1532",
+            "FMA67135\tanatomical structure\tFJ1532",
+            "FMA67165\tmaterial anatomical entity\tFJ1532",
+            "FMA67498\torgan\tFJ1532"
+          ]
+        }
+      ],
+      "triangles": 4718,
+      "review": "pending"
+    },
+    {
+      "id": "scalenes",
+      "en": "Scalenes — anterior, middle and posterior",
+      "he": "סקאלנים — קדמי, אמצעי ואחורי",
+      "layer": "muscle",
+      "side": "right",
+      "regionId": "cervical_neck",
+      "sources": [
+        {
+          "elementId": "FJ1592",
+          "sha256": "a8e09cc9dcc353437edeafeb78873c3f4d9727fcd9187d0f43dd57a3e72efb83",
+          "mappingRows": [
+            "FMA5022\tmuscle organ\tFJ1592",
+            "FMA9617\tmuscle of neck\tFJ1592",
+            "FMA13385\tscalenus anterior\tFJ1592",
+            "FMA13392\tright scalenus anterior\tFJ1592",
+            "FMA55665\tnonparenchymatous organ\tFJ1592",
+            "FMA55670\tsolid organ\tFJ1592",
+            "FMA61775\tphysical anatomical entity\tFJ1592",
+            "FMA62955\tanatomical entity\tFJ1592",
+            "FMA64829\tscalene muscle\tFJ1592",
+            "FMA67135\tanatomical structure\tFJ1592",
+            "FMA67165\tmaterial anatomical entity\tFJ1592",
+            "FMA67498\torgan\tFJ1592"
+          ]
+        },
+        {
+          "elementId": "FJ1593",
+          "sha256": "d601c1bf83da406115bc5605305b04ef8f4a37518e3d8528ca35e93fde0f4140",
+          "mappingRows": [
+            "FMA5022\tmuscle organ\tFJ1593",
+            "FMA9617\tmuscle of neck\tFJ1593",
+            "FMA13386\tscalenus medius\tFJ1593",
+            "FMA13390\tright scalenus medius\tFJ1593",
+            "FMA55665\tnonparenchymatous organ\tFJ1593",
+            "FMA55670\tsolid organ\tFJ1593",
+            "FMA61775\tphysical anatomical entity\tFJ1593",
+            "FMA62955\tanatomical entity\tFJ1593",
+            "FMA64829\tscalene muscle\tFJ1593",
+            "FMA67135\tanatomical structure\tFJ1593",
+            "FMA67165\tmaterial anatomical entity\tFJ1593",
+            "FMA67498\torgan\tFJ1593"
+          ]
+        },
+        {
+          "elementId": "FJ1594",
+          "sha256": "babdc76481ea863c4f1d5599fbc843da667780a2d7a5abe2c30a4c82374c9f11",
+          "mappingRows": [
+            "FMA5022\tmuscle organ\tFJ1594",
+            "FMA9617\tmuscle of neck\tFJ1594",
+            "FMA13387\tscalenus posterior\tFJ1594",
+            "FMA13388\tright scalenus posterior\tFJ1594",
+            "FMA55665\tnonparenchymatous organ\tFJ1594",
+            "FMA55670\tsolid organ\tFJ1594",
+            "FMA61775\tphysical anatomical entity\tFJ1594",
+            "FMA62955\tanatomical entity\tFJ1594",
+            "FMA64829\tscalene muscle\tFJ1594",
+            "FMA67135\tanatomical structure\tFJ1594",
+            "FMA67165\tmaterial anatomical entity\tFJ1594",
+            "FMA67498\torgan\tFJ1594"
+          ]
+        }
+      ],
+      "triangles": 9512,
+      "review": "pending"
+    },
+    {
+      "id": "longus-capitis",
+      "en": "Longus capitis",
+      "he": "לונגוס קפיטיס",
+      "layer": "muscle",
+      "side": "right",
+      "regionId": "cervical_neck",
+      "sources": [
+        {
+          "elementId": "FJ1582",
+          "sha256": "2b0def59b27f6f6c654983b04daf3401997517a7c93bfff5bf70d0d0eb875ac9",
+          "mappingRows": [
+            "FMA5022\tmuscle organ\tFJ1582",
+            "FMA22594\tmuscle of vertebral column\tFJ1582",
+            "FMA32514\tprevertebral muscle\tFJ1582",
+            "FMA46308\tlongus capitis\tFJ1582",
+            "FMA46309\tright longus capitis\tFJ1582",
+            "FMA55665\tnonparenchymatous organ\tFJ1582",
+            "FMA55670\tsolid organ\tFJ1582",
+            "FMA61775\tphysical anatomical entity\tFJ1582",
+            "FMA62955\tanatomical entity\tFJ1582",
+            "FMA67135\tanatomical structure\tFJ1582",
+            "FMA67165\tmaterial anatomical entity\tFJ1582",
+            "FMA67498\torgan\tFJ1582"
+          ]
+        }
+      ],
+      "triangles": 3956,
+      "review": "pending"
+    },
+    {
+      "id": "splenius-capitis",
+      "en": "Splenius capitis",
+      "he": "ספלניוס קפיטיס",
+      "layer": "muscle",
+      "side": "right",
+      "regionId": "cervical_neck",
+      "sources": [
+        {
+          "elementId": "FJ1545",
+          "sha256": "1d1361ff53074dc46a3a372cfd754121afb7a24511fee225b06b312e3277efa8",
+          "mappingRows": [
+            "FMA5022\tmuscle organ\tFJ1545",
+            "FMA22594\tmuscle of vertebral column\tFJ1545",
+            "FMA22653\tsplenius capitis\tFJ1545",
+            "FMA22728\tright splenius capitis\tFJ1545",
+            "FMA32515\tpostvertebral muscle\tFJ1545",
+            "FMA32559\tsuperficial postvertebral muscle\tFJ1545",
+            "FMA55665\tnonparenchymatous organ\tFJ1545",
+            "FMA55670\tsolid organ\tFJ1545",
+            "FMA61775\tphysical anatomical entity\tFJ1545",
+            "FMA62955\tanatomical entity\tFJ1545",
+            "FMA67135\tanatomical structure\tFJ1545",
+            "FMA67165\tmaterial anatomical entity\tFJ1545",
+            "FMA67498\torgan\tFJ1545",
+            "FMA77180\tsplenius\tFJ1545"
+          ]
+        }
+      ],
+      "triangles": 7808,
+      "review": "pending"
+    },
+    {
+      "id": "splenius-cervicis",
+      "en": "Splenius cervicis",
+      "he": "ספלניוס סרוויסיס",
+      "layer": "muscle",
+      "side": "right",
+      "regionId": "cervical_neck",
+      "sources": [
+        {
+          "elementId": "FJ1546",
+          "sha256": "d1d911084f09a997efd08c69b15885cb20fe2fe849c5f8652bc6f46c1ca62fe5",
+          "mappingRows": [
+            "FMA5022\tmuscle organ\tFJ1546",
+            "FMA22594\tmuscle of vertebral column\tFJ1546",
+            "FMA22681\tsplenius cervicis\tFJ1546",
+            "FMA22726\tright splenius cervicis\tFJ1546",
+            "FMA32515\tpostvertebral muscle\tFJ1546",
+            "FMA32559\tsuperficial postvertebral muscle\tFJ1546",
+            "FMA55665\tnonparenchymatous organ\tFJ1546",
+            "FMA55670\tsolid organ\tFJ1546",
+            "FMA61775\tphysical anatomical entity\tFJ1546",
+            "FMA62955\tanatomical entity\tFJ1546",
+            "FMA67135\tanatomical structure\tFJ1546",
+            "FMA67165\tmaterial anatomical entity\tFJ1546",
+            "FMA67498\torgan\tFJ1546",
+            "FMA77180\tsplenius\tFJ1546"
+          ]
+        }
+      ],
+      "triangles": 6256,
+      "review": "pending"
+    },
+    {
+      "id": "semispinalis-capitis",
+      "en": "Semispinalis capitis",
+      "he": "סמיספינאליס קפיטיס",
+      "layer": "muscle",
+      "side": "right",
+      "regionId": "cervical_neck",
+      "sources": [
+        {
+          "elementId": "FJ1538",
+          "sha256": "189e16f70c49bc3465f5216fcb0e0b0ffb114458fde427eaf5406ddd1a1bd315",
+          "mappingRows": [
+            "FMA5022\tmuscle organ\tFJ1538",
+            "FMA22594\tmuscle of vertebral column\tFJ1538",
+            "FMA22823\tsemispinalis\tFJ1538",
+            "FMA22830\tsemispinalis capitis\tFJ1538",
+            "FMA22876\tright semispinalis capitis\tFJ1538",
+            "FMA32515\tpostvertebral muscle\tFJ1538",
+            "FMA32560\tintermediate postvertebral muscle\tFJ1538",
+            "FMA55665\tnonparenchymatous organ\tFJ1538",
+            "FMA55670\tsolid organ\tFJ1538",
+            "FMA61775\tphysical anatomical entity\tFJ1538",
+            "FMA62955\tanatomical entity\tFJ1538",
+            "FMA67135\tanatomical structure\tFJ1538",
+            "FMA67165\tmaterial anatomical entity\tFJ1538",
+            "FMA67498\torgan\tFJ1538"
+          ]
+        }
+      ],
+      "triangles": 1912,
+      "review": "pending"
+    },
+    {
+      "id": "upper-trapezius",
+      "en": "Upper trapezius — descending part",
+      "he": "טרפזיוס עליון — החלק היורד",
+      "layer": "muscle",
+      "side": "right",
+      "regionId": "cervical_neck",
+      "sources": [
+        {
+          "elementId": "FJ1521",
+          "sha256": "19bd9d1cbbb84e10826eb770068f6e271cd79dde960bca62ac71da24120fc354",
+          "mappingRows": [
+            "FMA32557\tdescending part of trapezius\tFJ1521",
+            "FMA33586\tdescending part of right trapezius\tFJ1521",
+            "FMA55268\torgan zone\tFJ1521",
+            "FMA61775\tphysical anatomical entity\tFJ1521",
+            "FMA62955\tanatomical entity\tFJ1521",
+            "FMA67135\tanatomical structure\tFJ1521",
+            "FMA67165\tmaterial anatomical entity\tFJ1521",
+            "FMA67619\torgan region\tFJ1521",
+            "FMA82472\tcardinal organ part\tFJ1521"
+          ]
+        }
+      ],
+      "triangles": 7108,
+      "review": "pending"
+    },
+    {
+      "id": "rectus-capitis-posterior-major",
+      "en": "Rectus capitis posterior major",
+      "he": "הישר האחורי הגדול של הראש",
+      "layer": "muscle",
+      "side": "right",
+      "regionId": "cervical_neck",
+      "sources": [
+        {
+          "elementId": "FJ1589",
+          "sha256": "bd2e4e6cfb363bfdbe9b1cdc22115e5099de3ac10daa14210caf38fe771346da",
+          "mappingRows": [
+            "FMA5022\tmuscle organ\tFJ1589",
+            "FMA22594\tmuscle of vertebral column\tFJ1589",
+            "FMA32515\tpostvertebral muscle\tFJ1589",
+            "FMA32525\trectus capitis posterior major\tFJ1589",
+            "FMA32530\tright rectus capitis posterior major\tFJ1589",
+            "FMA32561\tdeep postvertebral muscle\tFJ1589",
+            "FMA32582\tposterior suboccipital muscle\tFJ1589",
+            "FMA55665\tnonparenchymatous organ\tFJ1589",
+            "FMA55670\tsolid organ\tFJ1589",
+            "FMA61775\tphysical anatomical entity\tFJ1589",
+            "FMA62955\tanatomical entity\tFJ1589",
+            "FMA67135\tanatomical structure\tFJ1589",
+            "FMA67165\tmaterial anatomical entity\tFJ1589",
+            "FMA67498\torgan\tFJ1589"
+          ]
+        }
+      ],
+      "triangles": 1572,
+      "review": "pending"
+    },
+    {
+      "id": "rectus-capitis-posterior-minor",
+      "en": "Rectus capitis posterior minor",
+      "he": "הישר האחורי הקטן של הראש",
+      "layer": "muscle",
+      "side": "right",
+      "regionId": "cervical_neck",
+      "sources": [
+        {
+          "elementId": "FJ1590",
+          "sha256": "96eb4ad812cc9f9864f811327b30168153a6d681c93bc00ead8204e137010809",
+          "mappingRows": [
+            "FMA5022\tmuscle organ\tFJ1590",
+            "FMA22594\tmuscle of vertebral column\tFJ1590",
+            "FMA32515\tpostvertebral muscle\tFJ1590",
+            "FMA32526\trectus capitis posterior minor\tFJ1590",
+            "FMA32532\tright rectus capitis posterior minor\tFJ1590",
+            "FMA32561\tdeep postvertebral muscle\tFJ1590",
+            "FMA32582\tposterior suboccipital muscle\tFJ1590",
+            "FMA55665\tnonparenchymatous organ\tFJ1590",
+            "FMA55670\tsolid organ\tFJ1590",
+            "FMA61775\tphysical anatomical entity\tFJ1590",
+            "FMA62955\tanatomical entity\tFJ1590",
+            "FMA67135\tanatomical structure\tFJ1590",
+            "FMA67165\tmaterial anatomical entity\tFJ1590",
+            "FMA67498\torgan\tFJ1590"
+          ]
+        }
+      ],
+      "triangles": 886,
+      "review": "pending"
+    },
+    {
+      "id": "obliquus-capitis-superior",
+      "en": "Obliquus capitis superior",
+      "he": "האלכסוני העליון של הראש",
+      "layer": "muscle",
+      "side": "right",
+      "regionId": "cervical_neck",
+      "sources": [
+        {
+          "elementId": "FJ1585",
+          "sha256": "6b255f0276f6f0ed75afd64ff35d333bc83d29d6825ea868b5e2498d0887a390",
+          "mappingRows": [
+            "FMA5022\tmuscle organ\tFJ1585",
+            "FMA22594\tmuscle of vertebral column\tFJ1585",
+            "FMA32515\tpostvertebral muscle\tFJ1585",
+            "FMA32527\tobliquus capitis superior\tFJ1585",
+            "FMA32534\tright obliquus capitis superior\tFJ1585",
+            "FMA32561\tdeep postvertebral muscle\tFJ1585",
+            "FMA32582\tposterior suboccipital muscle\tFJ1585",
+            "FMA55665\tnonparenchymatous organ\tFJ1585",
+            "FMA55670\tsolid organ\tFJ1585",
+            "FMA61775\tphysical anatomical entity\tFJ1585",
+            "FMA62955\tanatomical entity\tFJ1585",
+            "FMA67135\tanatomical structure\tFJ1585",
+            "FMA67165\tmaterial anatomical entity\tFJ1585",
+            "FMA67498\torgan\tFJ1585"
+          ]
+        }
+      ],
+      "triangles": 1410,
+      "review": "pending"
+    },
+    {
+      "id": "obliquus-capitis-inferior",
+      "en": "Obliquus capitis inferior",
+      "he": "האלכסוני התחתון של הראש",
+      "layer": "muscle",
+      "side": "right",
+      "regionId": "cervical_neck",
+      "sources": [
+        {
+          "elementId": "FJ1584",
+          "sha256": "76e6b88bd952d938d18c4e23f50083f8b4071071947ccf2f67d4800d25353dfa",
+          "mappingRows": [
+            "FMA5022\tmuscle organ\tFJ1584",
+            "FMA22594\tmuscle of vertebral column\tFJ1584",
+            "FMA32515\tpostvertebral muscle\tFJ1584",
+            "FMA32528\tobliquus capitis inferior\tFJ1584",
+            "FMA32536\tright obliquus capitis inferior\tFJ1584",
+            "FMA32561\tdeep postvertebral muscle\tFJ1584",
+            "FMA32582\tposterior suboccipital muscle\tFJ1584",
+            "FMA55665\tnonparenchymatous organ\tFJ1584",
+            "FMA55670\tsolid organ\tFJ1584",
+            "FMA61775\tphysical anatomical entity\tFJ1584",
+            "FMA62955\tanatomical entity\tFJ1584",
+            "FMA67135\tanatomical structure\tFJ1584",
+            "FMA67165\tmaterial anatomical entity\tFJ1584",
+            "FMA67498\torgan\tFJ1584"
+          ]
+        }
+      ],
+      "triangles": 1032,
+      "review": "pending"
+    }
+  ],
+  "unavailable": [
+    "longus-colli",
+    "intervertebral-discs",
+    "cartilage",
+    "ligaments",
+    "joint-capsules",
+    "separate-tendons",
+    "nerves",
+    "vessels",
+    "spinal-cord",
+    "complete-skull",
+    "contralateral-paired-structures",
+    "unlisted-muscles"
+  ]
+}

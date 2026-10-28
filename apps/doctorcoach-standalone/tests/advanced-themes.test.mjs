@@ -26,7 +26,7 @@ test('text and accent contrast adapt to extreme independent surface choices',()=
   for(const [fg,bg] of [['--text',background],['--muted',background],['--accent-red',background],['--dc-card-text',secondary],['--dc-card-muted',secondary],['--dc-card-accent',secondary],['--dc-nav-text',secondary],['--dc-nav-accent',secondary],['--dc-button-text',background]])assert.ok(contrast(t[fg],bg)>=4.5,`${fg} on ${bg}: ${contrast(t[fg],bg)}`);
  }
  for(const p of themePresets){const t=themeTokens(p.appearance),c=colorsFor(p.appearance);assert.ok(contrast(t['--text'],c.background)>=4.5);}
- assert.equal(themePresets.length,13);
+ assert.equal(themePresets.length,18);
  for(const name of ['Dark','Light','Dark Blue','Purple','Wine Red','Yellow','Forest Green'])assert.ok(themePresets.some(p=>p.name===name),name);assert.equal(swatchFamilies.length,10);assert.ok(swatchFamilies.every(f=>f.slice(2).every(isHexColor)));
  for(const mode of ['dark','light'])for(const c of colors){const t=themeTokens({mode,palette:'blue',custom:fromPrimary(c,mode)});assert.ok(contrast(t['--dc-button-text'],c)>=4.5);}
 });
@@ -98,4 +98,29 @@ test('every required preset persists independently with readable surface and con
   const c=colorsFor(saved.appearance),v=themeTokens(saved.appearance);
   for(const [fg,bg] of [['--text',c.background],['--dc-card-text',c.secondary],['--dc-nav-text',c.navigation],['--dc-button-text',c.button]])assert.ok(contrast(v[fg],bg)>=4.5,`${preset.name}: ${fg}`);
  }
+});
+
+
+test('premium UI keeps shared surface tokens and preserves reduced-motion/mobile support',()=>{
+ const css=readFileSync(new URL('../app/advanced-themes.css',import.meta.url),'utf8')+readFileSync(new URL('../app/apple-premium.css',import.meta.url),'utf8');
+ for(const token of ['--dc-premium-radius','--dc-premium-elevation','--dc-surface-gradient','--dc-nav-active','--dc-focus'])assert.ok(css.includes(token),token);
+ assert.match(css,/prefers-reduced-motion:reduce/);
+ assert.match(css,/@media\s*\(max-width:600px\)/);
+ assert.match(css,/\.mobile-bottom-nav button\.active/);
+ const wine=themePresets.find(p=>p.id==='wine');
+ assert.ok(wine,'Wine Red preset exists');
+ assert.equal(wine.appearance.custom.background,'#130b13');
+ assert.equal(wine.appearance.custom.secondary,'#211521');
+ assert.equal(wine.appearance.custom.button,'#e83f70');
+ const tokens=themeTokens(wine.appearance);
+ assert.ok(contrast(tokens['--dc-card-text'],wine.appearance.custom.secondary)>=4.5);
+ assert.ok(contrast(tokens['--dc-button-text'],wine.appearance.custom.button)>=4.5);
+});
+
+test('curated clinical palettes retain the navy teal champagne reference and distinct accessible choices',()=>{
+ const ids=['medical-premium','ocean-slate','sage-stone','ivory-champagne','midnight-lavender'];
+ for(const id of ids){const p=themePresets.find(p=>p.id===id);assert.ok(p,id);assert.ok(isAppearance(p.appearance));for(const mode of ['dark','light']){const a=appearanceWithMode(p.appearance,mode),c=colorsFor(a),tokens=themeTokens(a);assert.ok(contrast(tokens['--dc-home-action'],c.background)>=4.5,id+' action contrast');assert.ok(contrast(tokens['--dc-card-text'],c.secondary)>=4.5,id+' card contrast');}}
+ const reference=colorsFor(themePresets.find(p=>p.id==='medical-premium').appearance);assert.equal(reference.background,'#0c1523');assert.equal(reference.secondary,'#1a2a3a');assert.equal(reference.button,'#edce97');assert.equal(reference.accent,'#8dcac8');
+ assert.equal(new Set(themePresets.map(p=>p.id)).size,themePresets.length);
+ assert.equal(resetAppearance,themePresets.find(p=>p.id==='dark').appearance);
 });

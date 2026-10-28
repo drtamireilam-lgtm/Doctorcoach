@@ -14,6 +14,7 @@ export type SupabaseIdentityDependencies = {
   getUser: (token: string) => Promise<{ data: { user: User | null }; error: unknown }>;
   checkSession: (input: SessionCheck) => Promise<boolean>;
   now?: () => number;
+  primaryMethods?: readonly ('otp'|'oauth')[];
 };
 const uuid = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
 const object = (value: unknown): value is Record<string, unknown> => !!value && typeof value === 'object' && !Array.isArray(value);
@@ -49,10 +50,10 @@ export function supabaseIdentityVerifier(deps: SupabaseIdentityDependencies): Id
           !seconds(claims.iat) || claims.iat * 1000 > at + 30000 || claims.iat >= claims.exp ||
           (claims.nbf !== undefined && (!seconds(claims.nbf) || claims.nbf * 1000 > at)) ||
           !Array.isArray(claims.amr)) return null;
-      // Email OTP only in this staging phase. Refresh/recovery/MFA timestamps
+      // Primary methods are explicitly opted in by the server integration. Refresh/recovery/MFA timestamps
       // do not establish recent primary authentication for account linking.
       const issuedAt = claims.iat;
-      const authentication = claims.amr.filter(entry => object(entry) && entry.method === 'otp' &&
+      const authentication = claims.amr.filter(entry => object(entry) && (deps.primaryMethods??['otp']).includes(entry.method as 'otp'|'oauth') &&
         seconds(entry.timestamp) && entry.timestamp * 1000 <= at + 30000 && entry.timestamp <= issuedAt);
       if (!authentication.length) return null;
       const authenticatedAt = Math.max(...authentication.map(entry => entry.timestamp as number)) * 1000;

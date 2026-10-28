@@ -466,5 +466,113 @@
     "wikimedia_search": "https://commons.wikimedia.org/wiki/Special:MediaSearch?type=image&search=Opponens+Digiti+Minimi+muscle+anatomy",
     "google_images_search": "https://www.google.com/search?tbm=isch&q=Opponens+Digiti+Minimi+muscle+anatomy",
     "status": "source-selection-needed"
+  },
+  {
+    "region_id": "lower_back_spine",
+    "region_he": "גב תחתון / עמוד שדרה",
+    "region_en": "Lower Back / Spine",
+    "muscle_id": "iliocostalis-lumborum",
+    "name_en": "Iliocostalis Lumborum",
+    "name_he": "איליוקוסטליס לומבורום",
+    "primary_function_he": "יישור הגו; כיווץ חד־צדי תורם לכפיפה לאותו צד",
+    "wikimedia_search": "https://www.elsevier.com/resources/anatomy/muscular-system/muscles-of-back/iliocostalis-lumborum-muscle/21106",
+    "google_images_search": "",
+    "status": "reference-checked; clinical review pending"
+  },
+  {
+    "region_id": "lower_back_spine",
+    "region_he": "גב תחתון / עמוד שדרה",
+    "region_en": "Lower Back / Spine",
+    "muscle_id": "iliocostalis-thoracis",
+    "name_en": "Iliocostalis Thoracis",
+    "name_he": "איליוקוסטליס תורציס",
+    "primary_function_he": "יישור הגו; כיווץ חד־צדי תורם לכפיפה לאותו צד",
+    "wikimedia_search": "https://www.elsevier.com/resources/anatomy/muscular-system/muscles-of-back/iliocostalis-thoracis-muscle/23569",
+    "google_images_search": "",
+    "status": "reference-checked; clinical review pending"
+  },
+  {
+    "region_id": "lower_back_spine",
+    "region_he": "גב תחתון / עמוד שדרה",
+    "region_en": "Lower Back / Spine",
+    "muscle_id": "longissimus-thoracis",
+    "name_en": "Longissimus Thoracis",
+    "name_he": "לונגיסימוס תורציס",
+    "primary_function_he": "יישור הגו; כיווץ חד־צדי תורם לכפיפה לאותו צד",
+    "wikimedia_search": "https://www.elsevier.com/resources/anatomy/muscular-system/muscles-of-back/longissimus-thoracis-muscle/21643",
+    "google_images_search": "",
+    "status": "reference-checked; clinical review pending"
+  },
+  {
+    "region_id": "lower_back_spine",
+    "region_he": "גב תחתון / עמוד שדרה",
+    "region_en": "Lower Back / Spine",
+    "muscle_id": "spinalis-thoracis",
+    "name_en": "Spinalis Thoracis",
+    "name_he": "ספינליס תורציס",
+    "primary_function_he": "יישור הגו; כיווץ חד־צדי תורם לכפיפה לאותו צד",
+    "wikimedia_search": "https://www.elsevier.com/resources/anatomy/muscular-system/muscles-of-back/spinalis-thoracis-muscle/16413",
+    "google_images_search": "",
+    "status": "reference-checked; clinical review pending"
+  },
+  {
+    "region_id": "lower_back_spine",
+    "region_he": "גב תחתון / עמוד שדרה",
+    "region_en": "Lower Back / Spine",
+    "muscle_id": "semispinalis-thoracis",
+    "name_en": "Semispinalis Thoracis",
+    "name_he": "סמיספינליס תורציס",
+    "primary_function_he": "יישור הגו; כיווץ חד־צדי מסובב לצד הנגדי",
+    "wikimedia_search": "https://www.elsevier.com/resources/anatomy/muscular-system/muscles-of-back/semispinalis-thoracis-muscle/18584",
+    "google_images_search": "",
+    "status": "reference-checked; clinical review pending"
+  },
+  {
+    "region_id": "cervical_neck",
+    "region_he": "צוואר / עמוד שדרה צווארי",
+    "region_en": "Cervical Spine / Neck",
+    "muscle_id": "rectus-capitis-posterior-major",
+    "name_en": "Rectus capitis posterior major",
+    "name_he": "הישר האחורי הגדול של הראש",
+    "primary_function_he": "יישור הראש וסיוע בסיבוב לאותו צד",
+    "wikimedia_search": "https://www.lumen.luc.edu/lumen/meded/grossanatomy/dissector/muscles/rpmj.htm",
+    "google_images_search": "",
+    "status": "reference-checked; clinical review pending"
+  },
+  {
+    "region_id": "cervical_neck",
+    "region_he": "צוואר / עמוד שדרה צווארי",
+    "region_en": "Cervical Spine / Neck",
+    "muscle_id": "rectus-capitis-posterior-minor",
+    "name_en": "Rectus capitis posterior minor",
+    "name_he": "הישר האחורי הקטן של הראש",
+    "primary_function_he": "סיוע ביישור הראש ובשליטה במנח העורף",
+    "wikimedia_search": "https://www.lumen.luc.edu/lumen/meded/grossanatomy/dissector/muscles/rpmn.htm",
+    "google_images_search": "",
+    "status": "reference-checked; clinical review pending"
+  },
+  {
+    "region_id": "cervical_neck",
+    "region_he": "צוואר / עמוד שדרה צווארי",
+    "region_en": "Cervical Spine / Neck",
+    "muscle_id": "obliquus-capitis-superior",
+    "name_en": "Obliquus capitis superior",
+    "name_he": "האלכסוני העליון של הראש",
+    "primary_function_he": "סיוע ביישור הראש ובכפיפה צידית לאותו צד",
+    "wikimedia_search": "https://www.lumen.luc.edu/lumen/meded/grossanatomy/dissector/muscles/obcs.htm",
+    "google_images_search": "",
+    "status": "reference-checked; clinical review pending"
+  },
+  {
+    "region_id": "cervical_neck",
+    "region_he": "צוואר / עמוד שדרה צווארי",
+    "region_en": "Cervical Spine / Neck",
+    "muscle_id": "obliquus-capitis-inferior",
+    "name_en": "Obliquus capitis inferior",
+    "name_he": "האלכסוני התחתון של הראש",
+    "primary_function_he": "סיבוב האטלס והראש לאותו צד ביחס ל־C2",
+    "wikimedia_search": "https://www.lumen.luc.edu/lumen/meded/grossanatomy/dissector/muscles/obci.htm",
+    "google_images_search": "",
+    "status": "reference-checked; clinical review pending"
   }
 ]
