@@ -1,0 +1,10 @@
+✔ membership revocation during delivery or after read capture blocks the final operation (57.761619ms)
+✔ moving to another coach does not share prior messages or allow cross-thread read markers (58.609607ms)
+ℹ tests 1632
+ℹ suites 0
+ℹ pass 1632
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 41092.406256
