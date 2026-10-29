@@ -1,3 +1,5 @@
+import {detectImportColumns,extractImportRows,finalizeImport} from '../../lib/program-import.ts';
+import {programItemsForWrite} from '../../lib/custom-exercise-types.ts';
 // Built standalone Worker + local D1/R2. All provider traffic is synthetic.
 // This script cannot send email, access production or deploy anything.
 import {createRequire} from 'node:module';
@@ -221,6 +223,25 @@ try{
  }
  assert.equal((await db.prepare('SELECT COUNT(*) n FROM appointment_status_history').first()).n,9);
  console.log('PASS: built HTTP consultations request, pending count, approval, disabled Calendar, reschedule, cancel, explicit completion/no-show, scoped history/date search, transition audit and coach denial.');
+
+ // Smart Import 3: actual built API + local D1 only; these are synthetic rows, not the missing user workbook.
+ const importSheet={name:'SYNTHETIC large import',rows:[['Exercise','Sets','Reps','Weight','RPE','Notes'],...Array.from({length:30},(_,i)=>['SYNTHETIC private import '+i,'2','8,10','24.75','7,7','x'.repeat(490)])].map(row=>row.map(value=>({value,formula:false})))};
+ const importColumns=detectImportColumns(importSheet),importItems=finalizeImport(extractImportRows(importSheet,importColumns.header,importColumns.mapping));
+ const writeItems=programItemsForWrite(importItems),importRequest=randomUUID(),importTitle='SYNTHETIC Smart Import 3';
+ cookies=doctorCookies;const oldDraft=await json('/api/care/draft?client='+encodeURIComponent(owner));
+ const importPayload={action:'save',clientId:owner,requestId:importRequest,title:importTitle,items:writeItems,version:oldDraft.version,revisionOf:null};assert.ok(JSON.stringify(importPayload).length>64000);
+ const importedDraft=await json('/api/care/draft',importPayload);assert.deepEqual(importedDraft.draft.items,importItems);
+ assert.deepEqual((await json('/api/care/draft?client='+encodeURIComponent(owner))).draft.items,importItems);
+ const globalCustomCount=(await db.prepare('SELECT COUNT(*) n FROM custom_exercises').first()).n;
+ await json('/api/care/team',{action:'assign',clientId:owner,id:importRequest,title:importTitle,items:writeItems,draftVersion:importedDraft.version});
+ cookies=secondCookies;assert.ok(!JSON.stringify(await json('/api/program')).includes('SYNTHETIC private import'));
+ cookies=firstCookies;assert.deepEqual((await json('/api/program')).items,importItems);
+ let importedSession=(await json('/api/training',{requestId:randomUUID(),dayId:'1',before:0})).session;assert.equal(importedSession.items.length,30);assert.deepEqual(importedSession.items[0].results.map(s=>s.amount),[8,10]);assert.deepEqual(importedSession.items[0].targetRpes,[7,7]);
+ importedSession=(await json('/api/training',{id:importedSession.id,version:importedSession.version,action:'set',exerciseId:importedSession.items[0].exerciseId,occurrenceId:importedSession.items[0].occurrenceId,setIndex:0,done:true,amount:8,weight:42.5,actualRpe:8},'PATCH')).session;
+ const reloadedImport=(await json('/api/training')).active;assert.equal(reloadedImport.items[0].results[0].weight,42.5);assert.equal(reloadedImport.items[0].importSource.raw.weight,'24.75');
+ await json('/api/training',{id:importedSession.id,version:importedSession.version,action:'finish',after:0},'PATCH');
+ assert.equal((await db.prepare('SELECT COUNT(*) n FROM custom_exercises').first()).n,globalCustomCount);
+ console.log('PASS: built HTTP Smart Import 3 unknown exercises, over-64KB draft, reload, guarded assignment, cross-user isolation, per-set reps/RPE, manual weights and no global library inserts. Synthetic data only.');
 
  // Exercise actual D1 rollback, not only the SQLite test adapter.
  cookies='';await json('/auth/send',{email:'rollback@example.test'});await json('/auth/verify',{code:'123456'});

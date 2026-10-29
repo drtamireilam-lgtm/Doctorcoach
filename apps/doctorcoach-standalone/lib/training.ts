@@ -1,3 +1,4 @@
+import {parseImportSource,parseSetReps,type ImportSource} from './import-source.ts';
 import {parseCardioPrescription,isCardioExerciseId,type CardioPrescription} from './cardio.ts';
 import type {CardioExecution} from './cardio-player.ts';
 import {parseLoadMetadata,fromKg,hasTotalLoad,type LoadMetadata} from './load-units.ts';
@@ -8,7 +9,7 @@ import {duringPain} from './workout-context.ts';
 export type Unit = 'reps' | 'seconds' | 'minutes';
 export type ExerciseTempo={eccentric:number;bottom:number;concentric:number;top:number};
 export type WarmupSetPrescription = {amount:number;weight:number};
-export type PlanItem = { load?:LoadMetadata; warmupSets?:WarmupSetPrescription[]; side?:'left'|'right'|'both'; exerciseId: string; cardio?:CardioPrescription; occurrenceId?:string; customExercise?:CustomExercise;sets: number; reps: number; repsMax?:number|null; unit: Unit; weight: number; weightUnspecified?:boolean; notes: string; tempo?:ExerciseTempo|null; targetRpe?: number|null; targetRpes?:(number|null)[]; effortScale?:EffortScale; approvedSubstitutions?:string[]; dayId?:string; workoutSection?:WorkoutSection };
+export type PlanItem = { setReps?:{min:number;max:number}[];importSource?:ImportSource; load?:LoadMetadata; warmupSets?:WarmupSetPrescription[]; side?:'left'|'right'|'both'; exerciseId: string; cardio?:CardioPrescription; occurrenceId?:string; customExercise?:CustomExercise;sets: number; reps: number; repsMax?:number|null; unit: Unit; weight: number; weightUnspecified?:boolean; notes: string; tempo?:ExerciseTempo|null; targetRpe?: number|null; targetRpes?:(number|null)[]; effortScale?:EffortScale; approvedSubstitutions?:string[]; dayId?:string; workoutSection?:WorkoutSection };
 export type SetResult = { weightSource?:'manual'|'automatic'; done: boolean; amount: number; weight: number; actualRpe?: number|null; painDuring?:number|null };
 export type ReadinessSnapshot={id:string;day:string;version:number;capturedAt:string;data:{sleep:number;energy:number;stress:number;note:string}};
 export type WorkoutFollowup={day:string;pain:number;recordedAt:string};
@@ -101,7 +102,9 @@ export function parsePlanItem(value: unknown, fallback?: PlanItem): PlanItem {
   if(side!==undefined&&!['left','right','both'].includes(String(side)))throw new TrainingError('יש לבחור צד שמאל, ימין או שני הצדדים.');
   const occurrenceId=value.occurrenceId??defaults.occurrenceId;
   if(occurrenceId!==undefined&&(typeof occurrenceId!=='string'||!/^[a-zA-Z0-9:_-]{1,160}$/.test(occurrenceId)))throw new TrainingError('מזהה הופעת התרגיל אינו תקין.');
-  return { exerciseId: value.exerciseId,...(cardio?{cardio}:{}),...(load?{load}:{}),...(warmupSets===undefined?{}:{warmupSets}),...(side===undefined?{}:{side:side as PlanItem['side']}),...(occurrenceId===undefined?{}:{occurrenceId}),...(defaults.customExercise?{customExercise:defaults.customExercise}:{}),sets, reps, unit: unit as Unit, weight, notes: notes.trim(), targetRpe, effortScale,workoutSection:workoutSection as WorkoutSection,...(targetRpes?{targetRpes}:{}),...(tempo===undefined?{}:{tempo}),...(repsMax===undefined?{}:{repsMax:repsMax as number|null}),...(weightUnspecified===undefined?{}:{weightUnspecified:weightUnspecified as boolean}) };
+  const setReps=parseSetReps(value.setReps===undefined?defaults.setReps:value.setReps,sets,unit);
+  const importSource=parseImportSource(value.importSource??defaults.importSource,value.exerciseId,sets);
+  return { exerciseId: value.exerciseId,...(setReps?{setReps}:{}),...(importSource?{importSource}:{}),...(cardio?{cardio}:{}),...(load?{load}:{}),...(warmupSets===undefined?{}:{warmupSets}),...(side===undefined?{}:{side:side as PlanItem['side']}),...(occurrenceId===undefined?{}:{occurrenceId}),...(defaults.customExercise?{customExercise:defaults.customExercise}:{}),sets, reps, unit: unit as Unit, weight, notes: notes.trim(), targetRpe, effortScale,workoutSection:workoutSection as WorkoutSection,...(targetRpes?{targetRpes}:{}),...(tempo===undefined?{}:{tempo}),...(repsMax===undefined?{}:{repsMax:repsMax as number|null}),...(weightUnspecified===undefined?{}:{weightUnspecified:weightUnspecified as boolean}) };
 }
 
 export const repetitionLabel=(item:Pick<PlanItem,'reps'|'repsMax'>)=>item.repsMax!=null&&item.repsMax!==item.reps?`${item.reps}–${item.repsMax}`:String(item.reps);

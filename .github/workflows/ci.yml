@@ -4,7 +4,7 @@ on:
   push:
     branches: [main, "feature/cardio-automatic-steps-*", "codex/exercise-recognition-3-*", "codex/import-integration-lab-*", "codex/application-audit-*", "stabilize/**", "fix/appearance-toggle-persistence-*", "feature/ui-ux-liad-followup-20261019", "feature/doctorcoach-2-smart-workout-20261020", "feature/anatomy-completion-*", "integration/anatomy-rehab-stretch-*"]
   pull_request:
-    branches: [main, "feature/cardio-automatic-steps-*", "codex/exercise-recognition-3-*", "codex/import-integration-lab-*", "codex/generic-movement-import-*", "codex/application-audit-*", "codex/import-structure-regressions-*", "codex/import-alias-precision-*", "codex/google-apple-signin-*", "feature/anatomy-*", "integration/anatomy-*", "codex/anatomy-*"]
+    branches: [main, "codex/smart-import-3-*", "feature/premium-home-ui-*", "feature/cardio-automatic-steps-*", "codex/exercise-recognition-3-*", "codex/import-integration-lab-*", "codex/generic-movement-import-*", "codex/application-audit-*", "codex/import-structure-regressions-*", "codex/import-alias-precision-*", "codex/google-apple-signin-*", "feature/anatomy-*", "integration/anatomy-*", "codex/anatomy-*"]
 
 permissions:
   contents: read
@@ -57,6 +57,11 @@ jobs:
         env:
           CONSULTATION_CHROMIUM_PATH: /usr/bin/google-chrome
         run: node --experimental-strip-types scripts/consultation-browser-smoke.mjs
+      - name: Smart Import 3 bilingual desktop and mobile save/reload/assign
+        if: startsWith(github.head_ref, 'codex/smart-import-3-') || startsWith(github.ref_name, 'codex/smart-import-3-')
+        env:
+          DC_IMPORT_CHROMIUM: /usr/bin/google-chrome
+        run: node --experimental-strip-types scripts/import-browser-smoke.mjs
       - name: Standalone TypeScript
         run: npm run typecheck
       - name: Offline cardio migration and native contracts
