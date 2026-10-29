@@ -16,7 +16,7 @@ export function normalizeImportExerciseName(value:string){
   .replace(/\s+/g,' ').trim();
 }
 type Entry={exerciseId:string;source:string;canonical:boolean};
-type Index={names:Map<string,Entry[]>;tokens:Map<string,Entry[]>;keys:string[]};
+type Index={names:Map<string,Entry[]>;tokens:Map<string,Entry[]>;keys:string[];reviews:Map<string,ExerciseImportMatch>};
 // Sorted MULTISET: no stopword removal, stemming or dropping unknown tokens.
 const tokenKey=(key:string)=>key.split(' ').sort().join(' ');
 const cache=new WeakMap<readonly NamedExercise[],Index>();
@@ -30,7 +30,7 @@ function indexFor(catalog:readonly NamedExercise[]):Index{
  }
  const tokens=new Map<string,Entry[]>();
  for(const [key,entries] of names){const signature=tokenKey(key);tokens.set(signature,[...tokens.get(signature)??[],...entries]);}
- const index={names,tokens,keys:[...names.keys()]};cache.set(catalog,index);return index;
+ const index={names,tokens,keys:[...names.keys()],reviews:new Map<string,ExerciseImportMatch>()};cache.set(catalog,index);return index;
 }
 function similarity(a:string,b:string){
  if(Math.abs(a.length-b.length)>Math.max(a.length,b.length)*.4)return 0;
@@ -61,9 +61,16 @@ export function matchExerciseForImport(name:string,catalog:readonly NamedExercis
   return {exerciseId:ids[0],status:literal?(literal.canonical?'exact':'alias'):'normalized',confidence:1,candidates};
  }
  if(options.suggestions===false)return empty();
+ // Repeated names across days/weeks should not repeat the full fuzzy scan.
+ // Scope to the existing immutable-catalog index and bound retained user text.
+ const reviewKey=(options.allowGeneralMovement?'general:':'strict:')+key;
+ const copy=(result:ExerciseImportMatch):ExerciseImportMatch=>({...result,candidates:result.candidates.map(candidate=>({...candidate}))});
+ const remembered=index.reviews.get(reviewKey);if(remembered)return copy(remembered);
  // Spelling similarity is evidence for review only, even at a very high score.
  const scores=new Map<string,number>();
  for(const candidateKey of index.keys){const words=key.split(' '),candidateWords=candidateKey.split(' ');const contained=words.length>=2&&words.every(w=>candidateWords.includes(w));const score=Math.max(similarity(key,candidateKey),contained?.74:0);if(score<.72)continue;for(const entry of index.names.get(candidateKey)??[])if(options.allowGeneralMovement||!entry.exerciseId.startsWith('movement-'))scores.set(entry.exerciseId,Math.max(scores.get(entry.exerciseId)??0,score));}
  const candidates=[...scores].sort((a,b)=>b[1]-a[1]||a[0].localeCompare(b[0])).slice(0,3).map(([exerciseId,score])=>({exerciseId,score,reason:'Similar spelling; verify equipment, angle and side manually'}));
- return candidates.length?{exerciseId:'',status:'suggested',confidence:candidates[0].score,candidates}:empty();
+ const result:ExerciseImportMatch=candidates.length?{exerciseId:'',status:'suggested',confidence:candidates[0].score,candidates}:empty();
+ if(index.reviews.size>=128)index.reviews.delete(index.reviews.keys().next().value!);
+ index.reviews.set(reviewKey,copy(result));return result;
 }
