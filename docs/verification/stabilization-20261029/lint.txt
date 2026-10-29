@@ -1,0 +1,1 @@
+Baseline full lint:78errors,116warnings. Changed source files:0errors,1existing unused mapping parameter warning. No ESLint suppression or broad refactor.

@@ -5,14 +5,14 @@ import {availableCustomExercises} from './custom-exercises.ts';
 import {healthConsentGuard,requireHealthConsent} from './consent-server.ts';
 import {trainingAccess,noActiveWorkout} from './training-access.ts';
 import {requireTrainingAllowed} from './safety-store.ts';
-import {isStaff} from './staff.ts';
+import {isStaff,isAdmin} from './staff.ts';
 import type {StaffIdentity} from './staff.ts';
 import {TrainingError} from './training.ts';
 import {trainingStore} from './training-store.ts';
 import {currentWeek,inputRecord,integerField,inviteHash,parseAssignedItems,parseProfile,textField,validEmail,validId} from './care.ts';
 import type {CareBundle,CareCheckin,CareClient,CareNote,CareProfile,CareProgram,CareRole,CareStaff} from './care.ts';
 import {canAuthorPrograms,programAuthorGuard,type ProgramAuthorConfig} from './program-author.ts';
-export type CareConfig=ProgramAuthorConfig&{adminEmails?:string;clinicianEmails?:string;operationsEmails?:string;exclusiveMedical?:boolean};
+export type CareConfig=ProgramAuthorConfig&{adminEmails?:string;clinicianEmails?:string;operationsEmails?:string;exclusiveMedical?:boolean;userManagementEnabled?:boolean};
 type ProfileRow={user_id:string;name:string;goal:string;experience:string;equipment:string;days:number;medical_json:string;version:number;updated_at:string};
 const now=()=>new Date().toISOString();
 export function careStore(db:D1Database,config:CareConfig={}){
@@ -64,14 +64,18 @@ async function previewInvite(user:StaffIdentity,payload:unknown){const p=inputRe
     if(staff.role==='coordinator'){await requireTeamRead(staff);return [];}
     const role=staffRoleGuard(staff.email,staff.role,config);
     const rows=await db.prepare(`SELECT p.user_id AS userId,p.name,p.goal,p.updated_at AS updatedAt,(SELECT COUNT(*) FROM care_checkins c WHERE c.client_id=p.user_id AND c.reviewed_at IS NULL) AS pendingCheckins,(SELECT COUNT(*) FROM media_assets m WHERE m.owner_id=p.user_id AND m.kind='review' AND m.status='ready' AND NOT EXISTS(SELECT 1 FROM media_feedback f WHERE f.asset_id=m.id)) AS pendingVideos FROM care_profiles p JOIN care_connections l ON l.client_id=p.user_id WHERE l.staff_email=? AND l.active=1 AND l.scope='care' AND ${role.sql} ORDER BY pendingCheckins+pendingVideos DESC,p.updated_at DESC`).bind(staff.email,...role.args).all<CareClient>();
+    if(config.userManagementEnabled){
+      const pendingProfiles=await db.prepare(`SELECT u.user_id AS userId,d.display_name AS name,'' AS goal,CAST(u.joined_at AS TEXT) AS updatedAt,0 AS pendingCheckins,0 AS pendingVideos FROM dc_managed_users u JOIN dc_identity_details d ON d.principal_id=u.user_id JOIN care_connections l ON l.client_id=u.user_id WHERE l.staff_email=? AND l.active=1 AND l.scope='care' AND u.status='active' AND u.approval<>'pending' AND NOT EXISTS(SELECT 1 FROM care_profiles p WHERE p.user_id=u.user_id) AND ${role.sql} ORDER BY u.joined_at DESC,u.user_id`).bind(staff.email,...role.args).all<CareClient>();
+      rows.results.push(...pendingProfiles.results);
+    }
     await requireTeamRead(staff,rows.results);
     return rows.results;
   }
   return {
     staffFor,requireStaff,authorize,bundle,programGuard,
-    async teamOverview(user:StaffIdentity){const me=await requireStaff(user);const people=await clients(user),staff=await roster();await requireTeamRead(me,people);return {me,clients:people,staff,canManage:isStaff(user,config.adminEmails)};},
+    async teamOverview(user:StaffIdentity){const me=await requireStaff(user);const people=await clients(user),staff=await roster();await requireTeamRead(me,people);return {me,clients:people,staff,canManage:isAdmin(user,config.adminEmails)};},
     async roster(user:StaffIdentity){const me=await requireStaff(user),people=await roster();await requireTeamRead(me);return people;},
-    async saveStaff(user:StaffIdentity,payload:unknown){if(!isStaff(user,config.adminEmails))throw new TrainingError('רק מנהל המערכת יכול לנהל הרשאות.',403);const p=inputRecord(payload);const email=validEmail(p.email);if(isStaff({userId:'lookup',email},config.clinicianEmails)||isStaff({userId:'lookup',email},config.adminEmails))throw new TrainingError('הרשאת חשבון הבעלים מנוהלת בהגדרות השרת.');if(config.exclusiveMedical&&p.role==='clinician')throw new TrainingError('גישה רפואית מוגדרת לחשבון הרופא בלבד בהגדרות השרת.',403);const name=textField(p.name,'שם איש הצוות',100,2);if(!['coach','clinician','dietitian','coordinator'].includes(String(p.role))||typeof p.active!=='boolean')throw new TrainingError('יש לבחור תפקיד ומצב חשבון.');await db.prepare('INSERT INTO care_staff(email,name,role,active,updated_at) VALUES(?,?,?,?,?) ON CONFLICT(email) DO UPDATE SET name=excluded.name,role=excluded.role,active=excluded.active,updated_at=excluded.updated_at').bind(email,name,p.role,p.active?1:0,now()).run();return roster();},
+    async saveStaff(user:StaffIdentity,payload:unknown){if(config.userManagementEnabled)throw new TrainingError('Use confirmed user management',403);if(!isAdmin(user,config.adminEmails))throw new TrainingError('רק מנהל המערכת יכול לנהל הרשאות.',403);const p=inputRecord(payload);const email=validEmail(p.email);if(isStaff({userId:'lookup',email},config.clinicianEmails)||isStaff({userId:'lookup',email},config.adminEmails))throw new TrainingError('הרשאת חשבון הבעלים מנוהלת בהגדרות השרת.');if(config.exclusiveMedical&&p.role==='clinician')throw new TrainingError('גישה רפואית מוגדרת לחשבון הרופא בלבד בהגדרות השרת.',403);const name=textField(p.name,'שם איש הצוות',100,2);if(!['coach','clinician','dietitian','coordinator'].includes(String(p.role))||typeof p.active!=='boolean')throw new TrainingError('יש לבחור תפקיד ומצב חשבון.');await db.prepare('INSERT INTO care_staff(email,name,role,active,updated_at) VALUES(?,?,?,?,?) ON CONFLICT(email) DO UPDATE SET name=excluded.name,role=excluded.role,active=excluded.active,updated_at=excluded.updated_at').bind(email,name,p.role,p.active?1:0,now()).run();return roster();},
     async saveProfile(user:StaffIdentity,payload:unknown){const p=parseProfile(payload);const args=[p.name,p.goal,p.experience,p.equipment,p.days,JSON.stringify(p.medical),now()];const row=p.version===0?await db.prepare('INSERT INTO care_profiles(user_id,name,goal,experience,equipment,days,medical_json,updated_at) VALUES(?,?,?,?,?,?,?,?) ON CONFLICT(user_id) DO NOTHING RETURNING user_id').bind(user.userId,...args).first():await db.prepare('UPDATE care_profiles SET name=?,goal=?,experience=?,equipment=?,days=?,medical_json=?,updated_at=?,version=version+1 WHERE user_id=? AND version=? RETURNING user_id').bind(...args,user.userId,p.version).first();if(!row)throw new TrainingError('השאלון עודכן בחלון אחר. טענו מחדש לפני שמירה.',409);return bundle(user,user.userId);},
     async createInvite(user:StaffIdentity,payload:unknown){
       const creator=await requireStaff(user),p=inputRecord(payload);

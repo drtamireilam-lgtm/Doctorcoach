@@ -2,7 +2,7 @@ import {requestAccount} from './account-requests.ts';
 import {careStore} from './care-store.ts';
 import type {CareConfig} from './care-store.ts';
 import type {StaffIdentity} from './staff.ts';
-import {isStaff} from './staff.ts';
+import {isStaff,isAdmin} from './staff.ts';
 import {careConnectionGuard,combineCareGuards} from './care-write-guard.ts';
 import {healthConsentGuard,requireHealthConsent} from './consent-server.ts';
 import {inputRecord,integerField,textField,validId,validEmail} from './care.ts';
@@ -19,7 +19,7 @@ export function onboardingStore(db:D1Database,config:CareConfig={}){
  async function team(){const rows=await db.prepare('SELECT email,name,role FROM care_staff WHERE active=1 AND role IN (\'clinician\',\'coach\',\'dietitian\',\'coordinator\') ORDER BY name').all<{email:string;name:string;role:string}>();const result=new Map(rows.results.map(r=>[r.email,r]));for(const email of (config.clinicianEmails??'').split(',').map(x=>x.trim().toLowerCase()).filter(Boolean)){const s=await care.staffFor(email);if(s)result.set(s.email,s);}return [...result.values()];}
  async function get(user:StaffIdentity):Promise<OnboardingData>{
  const [r,c,reviews,staff,people]=await Promise.all([db.prepare('SELECT * FROM user_intakes WHERE user_id=?').bind(user.userId).first<{answers_json:string;completed:number;tour_completed:number;version:number;updated_at:string}>(),consentState(user.userId),db.prepare(`SELECT ${reviewColumns} FROM medical_reviews WHERE client_id=? ORDER BY created_at DESC LIMIT 20`).bind(user.userId).all<Omit<Review,'flags'>&{flags_json:string}>(),care.staffFor(user.email),team()]);
- return {intake:r?{answers:JSON.parse(r.answers_json),completed:!!r.completed,tourCompleted:!!r.tour_completed,version:r.version,updatedAt:r.updated_at}:null,consents:c,consentRevision:CONSENT_REVISION,reviews:reviews.results.map(reviewDto),staffRole:staff?.role??null,canAdmin:isStaff(user,config.adminEmails),team:people,trainingBlocked:reviews.results.some(r=>['pending','in_review'].includes(r.state))};
+ return {intake:r?{answers:JSON.parse(r.answers_json),completed:!!r.completed,tourCompleted:!!r.tour_completed,version:r.version,updatedAt:r.updated_at}:null,consents:c,consentRevision:CONSENT_REVISION,reviews:reviews.results.map(reviewDto),staffRole:staff?.role??null,canAdmin:isAdmin(user,config.adminEmails),team:people,trainingBlocked:reviews.results.some(r=>['pending','in_review'].includes(r.state))};
  }
  return {get,team,consentState,
  async save(user:StaffIdentity,payload:unknown){

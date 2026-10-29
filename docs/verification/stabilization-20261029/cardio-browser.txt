@@ -1,0 +1,1 @@
+PASS: English/Hebrew cardio at 390/1440, interval rounds, persisted result corrections/sources, no overflow/external requests. Synthetic local fixture only.

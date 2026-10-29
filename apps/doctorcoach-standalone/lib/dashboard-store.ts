@@ -3,7 +3,7 @@ import {staffActivity,activityConsentGuard} from './staff-activity-store.ts';
 import {careStore} from './care-store.ts';
 import {staffRoleGuard} from './care-write-guard.ts';
 import type {CareConfig} from './care-store.ts';
-import {isStaff} from './staff.ts';
+import {isStaff,isAdmin} from './staff.ts';
 import type {StaffIdentity} from './staff.ts';
 import {TrainingError} from './training.ts';
 import {onboardingStore,reviewColumns,reviewDto} from './onboarding-store.ts';
@@ -14,7 +14,7 @@ import {currentWeek,inputRecord,validId} from './care.ts';
 export function dashboardStore(db:D1Database,config:CareConfig={}){
  const care=careStore(db,config);
  return {
- async get(user:StaffIdentity){const staff=await care.staffFor(user.email);const admin=isStaff(user,config.adminEmails);if(!staff&&!admin)throw new TrainingError('העמוד זמין לצוות בלבד.',403);
+ async get(user:StaffIdentity){const staff=await care.staffFor(user.email);const admin=isAdmin(user,config.adminEmails);if(!staff&&!admin)throw new TrainingError('העמוד זמין לצוות בלבד.',403);
 const threads=await messagingStore(db,config).threads(user);const rows=staff?(await db.prepare('SELECT p.user_id AS id,p.name,p.goal,p.updated_at AS updatedAt,c.medical_access,c.nutrition_access,c.scope FROM care_profiles p JOIN care_connections c ON c.client_id=p.user_id WHERE c.staff_email=? AND c.active=1 AND c.scope=? ORDER BY p.updated_at DESC LIMIT 100').bind(staff.email,staff.role==='coordinator'?'coordinator':'care').all<{id:string;name:string;goal:string;updatedAt:string;medical_access:number;nutrition_access:number;scope:string}>()).results:[];
  const privacyChecks:Awaited<ReturnType<typeof activityPrivacy>>[]=[];const clients=[];const reviews:Review[]=[];const activityClientIds:string[]=[];const snapshotTime=new Date();
  for(const row of rows){const intake=await db.prepare('SELECT answers_json,created_at,completed FROM user_intakes WHERE user_id=?').bind(row.id).first<{answers_json:string;created_at:string;completed:number}>();const a:Answers=intake?JSON.parse(intake.answers_json):{};
@@ -42,6 +42,6 @@ const threads=await messagingStore(db,config).threads(user);const rows=staff?(aw
  }
  for(const privacy of privacyChecks)await privacy.recheck();return {role:staff?.role??'admin',canManageCoaches:isStaff(user,config.ownerProgramEmails),canMonitorCoaches:isStaff(user,config.ownerProgramEmails)||staff?.role==='coach'||staff?.role==='coordinator',canAdmin:admin,clients,reviews,requests,audit,unread:threads.reduce((n,t)=>n+t.unread,0),newUsers:clients.filter(c=>c.createdAt>new Date(Date.now()-7*86400000).toISOString()).length};
  },
- async completeRequest(user:StaffIdentity,payload:unknown){if(!isStaff(user,config.adminEmails))throw new TrainingError('הרשאת מנהל נדרשת.',403);const p=inputRecord(payload);if(p.confirmed!==true)throw new TrainingError('יש לאשר שהבקשה טופלה בפועל.');const id=validId(p.id);const r=await db.prepare('SELECT kind FROM account_requests WHERE id=?').bind(id).first<{kind:string}>();if(r?.kind==='deletion')throw new TrainingError('בקשת מחיקה חייבת להתבצע דרך תהליך מחיקת החשבון, ולא בסימון טיפול.',409);await db.prepare("UPDATE account_requests SET state='handled',updated_at=? WHERE id=? AND state='pending' AND kind!='deletion'").bind(new Date().toISOString(),id).run();return {ok:true};},
+ async completeRequest(user:StaffIdentity,payload:unknown){if(!isAdmin(user,config.adminEmails))throw new TrainingError('הרשאת מנהל נדרשת.',403);const p=inputRecord(payload);if(p.confirmed!==true)throw new TrainingError('יש לאשר שהבקשה טופלה בפועל.');const id=validId(p.id);const r=await db.prepare('SELECT kind FROM account_requests WHERE id=?').bind(id).first<{kind:string}>();if(r?.kind==='deletion')throw new TrainingError('בקשת מחיקה חייבת להתבצע דרך תהליך מחיקת החשבון, ולא בסימון טיפול.',409);await db.prepare("UPDATE account_requests SET state='handled',updated_at=? WHERE id=? AND state='pending' AND kind!='deletion'").bind(new Date().toISOString(),id).run();return {ok:true};},
  };
 }

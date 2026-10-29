@@ -1,4 +1,4 @@
-import {isStaff,type StaffIdentity} from './staff.ts';
+import {isStaff,type StaffIdentity,isAdmin} from './staff.ts';
 import {TrainingError} from './training.ts';
 import {photoMembers,type PhotoMember} from './team-profiles.ts';
 import {readDocumentBody} from './private-documents.ts';
@@ -14,7 +14,7 @@ export async function readTeamPhotoBody(request:Request){
  return {mime,bytes:await readDocumentBody(request,size,mime)};
 }
 export function teamPhotoStore(db:D1Database,admins?:string){
- const requireAdmin=(user:StaffIdentity|null)=>{if(!isStaff(user,admins))throw new TrainingError('ניהול תמונות הצוות זמין למנהלים בלבד.',user?403:401);};
+ const requireAdmin=(user:StaffIdentity|null)=>{if(!isAdmin(user,admins))throw new TrainingError('ניהול תמונות הצוות זמין למנהלים בלבד.',user?403:401);};
  const row=(id:PhotoMember)=>db.prepare('SELECT * FROM team_photos WHERE member_id=?').bind(id).first<Row>();
  return {requireAdmin,
  async list(){return Promise.all(photoMembers.map(async memberId=>{const r=await row(memberId);return {memberId,version:r?.version??0,url:r?`/api/team-photos/${memberId}?v=${r.version}`:null} as TeamPhoto;}));},

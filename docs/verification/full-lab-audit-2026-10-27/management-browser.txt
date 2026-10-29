@@ -1,0 +1,8 @@
+PASS light he 390: pending, cancel without POST, role approval, coach assignment/transfer, all guidance modes, no entitlement grant, preserved entitlement, refresh, audit, stale conflict, direction, no overflow
+PASS light he 1440: pending, cancel without POST, role approval, coach assignment/transfer, all guidance modes, no entitlement grant, preserved entitlement, refresh, audit, stale conflict, direction, no overflow
+PASS light en 390: pending, cancel without POST, role approval, coach assignment/transfer, all guidance modes, no entitlement grant, preserved entitlement, refresh, audit, stale conflict, direction, no overflow
+PASS light en 1440: pending, cancel without POST, role approval, coach assignment/transfer, all guidance modes, no entitlement grant, preserved entitlement, refresh, audit, stale conflict, direction, no overflow
+PASS dark he 390: pending, cancel without POST, role approval, coach assignment/transfer, all guidance modes, no entitlement grant, preserved entitlement, refresh, audit, stale conflict, direction, no overflow
+PASS dark he 1440: pending, cancel without POST, role approval, coach assignment/transfer, all guidance modes, no entitlement grant, preserved entitlement, refresh, audit, stale conflict, direction, no overflow
+PASS dark en 390: pending, cancel without POST, role approval, coach assignment/transfer, all guidance modes, no entitlement grant, preserved entitlement, refresh, audit, stale conflict, direction, no overflow
+PASS dark en 1440: pending, cancel without POST, role approval, coach assignment/transfer, all guidance modes, no entitlement grant, preserved entitlement, refresh, audit, stale conflict, direction, no overflow

@@ -1,12 +1,12 @@
 import type {ProgramAuthorConfig} from './program-author.ts';
-import {isStaff,type StaffIdentity} from './staff.ts';
+import {isStaff,type StaffIdentity,isAdmin} from './staff.ts';
 import {inputRecord,integerField,textField,validId,inviteHash} from './care.ts';
 import {TrainingError} from './training.ts';
 import {trainingAccess,noActiveWorkout} from './training-access.ts';
 type Code={id:string;label:string;durationDays:number;maxUses:number;usedCount:number;active:number;expiresAt:string;createdAt:string};
 const columns='id,label,duration_days AS durationDays,max_uses AS maxUses,used_count AS usedCount,active,expires_at AS expiresAt,created_at AS createdAt';
 export function pilotStore(db:D1Database,admins?:string,config:ProgramAuthorConfig={}){
- const admin=(u:StaffIdentity)=>{if(!isStaff(u,admins))throw new TrainingError('ניהול פיילוט זמין לצוות הניהול בלבד.',403);};
+ const admin=(u:StaffIdentity)=>{if(!isAdmin(u,admins))throw new TrainingError('ניהול פיילוט זמין לצוות הניהול בלבד.',403);};
  return {
  async get(u:StaffIdentity,manage=false){if(manage){admin(u);return {codes:(await db.prepare(`SELECT ${columns} FROM pilot_codes ORDER BY created_at DESC LIMIT 100`).all<Code>()).results};}return {access:await trainingAccess(db,u.userId,config),redemptions:(await db.prepare('SELECT starts_at AS startsAt,ends_at AS endsAt FROM pilot_redemptions WHERE user_id=? ORDER BY starts_at DESC').bind(u.userId).all()).results};},
  async create(u:StaffIdentity,payload:unknown){admin(u);const p=inputRecord(payload),label=textField(p.label,'שם הפיילוט',100,2),days=integerField(p.durationDays,'ימי ניסיון',1,90),max=integerField(p.maxUses,'מספר משתתפים',1,1000),enrollmentDays=integerField(p.enrollmentDays,'ימים להצטרפות',1,90);const bytes=crypto.getRandomValues(new Uint8Array(10)),code='PILOT-'+[...bytes].map(b=>b.toString(16).padStart(2,'0')).join('').toUpperCase(),id=crypto.randomUUID(),at=new Date().toISOString(),expires=new Date(Date.now()+enrollmentDays*86400000).toISOString();

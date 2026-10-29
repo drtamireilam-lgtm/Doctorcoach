@@ -1,0 +1,39 @@
+Application command: pnpm test
+✔ moving to another coach does not share prior messages or allow cross-thread read markers (94.141727ms)
+ℹ tests 1663
+ℹ suites 0
+ℹ pass 1663
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 64629.188664
+
+Activity privacy regression command: node --experimental-strip-types --test tests/activity.test.mjs
+✔ unreadable/provider/error statuses retain historical values until a successful replacement (63.624778ms)
+ℹ tests 25
+ℹ suites 0
+ℹ pass 25
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 1979.890914
+
+Root command: npm test
+ℹ tests 10
+ℹ suites 0
+ℹ pass 10
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 32.270679
+ℹ tests 6
+ℹ suites 0
+ℹ pass 6
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 10763.482082

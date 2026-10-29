@@ -1,0 +1,12 @@
+✔ pagination gives disjoint chronological pages and a read cannot reference another thread (73.44341ms)
+✔ archive, expired license and revoked consent stop delivery and coach access but retain trainee-owned history (53.25603ms)
+✔ membership revocation during delivery or after read capture blocks the final operation (46.651423ms)
+✔ moving to another coach does not share prior messages or allow cross-thread read markers (50.022425ms)
+ℹ tests 1696
+ℹ suites 0
+ℹ pass 1696
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 25777.179023

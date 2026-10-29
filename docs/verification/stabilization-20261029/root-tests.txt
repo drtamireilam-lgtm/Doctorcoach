@@ -1,0 +1,12 @@
+  ✔ ownership, version and deletion are not writable by the user (5.566066ms)
+  ✔ forged user metadata does not give team or administrator access (7.787946ms)
+  ✔ anonymous sessions and missing auth claims are denied (5.274826ms)
+✔ profile schema enforces ownership and concurrency in a local PostgreSQL engine (2378.224636ms)
+ℹ tests 6
+ℹ suites 0
+ℹ pass 6
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 2387.832008

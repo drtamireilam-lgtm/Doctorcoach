@@ -320,3 +320,30 @@ html.light .onboarding-progress{background:#fff;color:#1b1b24;border-color:#d8d8
 .video-trim-timeline input[type=range]::-moz-range-thumb{width:24px;height:40px;border:3px solid #fff;border-radius:6px;background:#b71930;pointer-events:auto;cursor:ew-resize;touch-action:none}
 .video-trim-timeline input[type=range]:focus-visible{outline:2px solid #fff;outline-offset:4px}
 .video-trim-times{display:flex;gap:16px}.video-trim-times label{flex:1;min-width:0}.video-trim-times input{width:100%}
+
+/* Confirmed administrative user management, using the current theme. */
+.um-controls,.um-actions,.um-pagination{display:flex;gap:12px;align-items:end;flex-wrap:wrap;margin-block:16px}
+.um-controls label{display:grid;gap:6px;flex:1;min-width:160px}
+.um-controls input,.um-controls select{max-width:100%;min-height:44px;width:100%}
+.um-table{overflow:auto}.um-table table,.um-dialog table{width:100%;border-collapse:collapse;text-align:start}
+.um-table th,.um-table td,.um-dialog th,.um-dialog td{padding:12px;border-bottom:1px solid var(--border,#d3d8df);text-align:start;vertical-align:top}
+.um-table th{white-space:nowrap}.um-roles{display:flex;gap:8px;overflow:auto;padding-block:12px}.um-roles label{display:flex;align-items:center;gap:6px;white-space:nowrap;min-height:44px;padding:8px;border:1px solid var(--border,#d3d8df);border-radius:8px}
+.um-dialog{max-width:min(94vw,680px);max-height:90vh;overflow:auto;color:var(--text,#17212d);background:var(--card,var(--surface,#fff))}
+.um-dialog::backdrop{background:rgb(0 0 0 / .45)}.um-pagination{justify-content:center}.um-editor fieldset{min-width:0}
+@media(max-width:600px){.um-actions .button{flex:1}.um-controls{align-items:stretch}.um-dialog{padding:16px}.um-dialog td,.um-dialog th{padding:7px}}
+
+.user-management{min-width:0;max-width:100%;overflow-wrap:anywhere}.um-audit-values{display:grid;gap:8px}.um-audit-values>div{display:grid;gap:4px}.um-audit-values dd{margin:0;color:var(--muted)}
+
+.um-table caption{position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%)}
+.um-table button{white-space:nowrap;min-height:44px}
+@media(max-width:700px){
+ .um-table table,.um-table tbody{display:block}.um-table thead{display:none}
+ .um-table tr{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;border-bottom:1px solid var(--line);padding-block:18px}
+ .um-table td{display:block;border:0;padding:0;overflow-wrap:anywhere}
+ .um-table td::before{content:attr(data-label);display:block;color:var(--muted);font-size:12px;margin-bottom:5px}
+ .um-table td:first-child{grid-column:1/-1;font-size:18px;font-weight:600}
+ .um-table td:last-child{grid-column:1/-1;display:flex;gap:12px}.um-table td:last-child::before{display:none}
+}
+
+/* Keep the added guidance column readable in constrained desktop containers. */
+@media(min-width:701px){.user-management .um-table{overflow:auto}.user-management .um-table table{min-width:1120px}.user-management .um-table td:nth-child(2){min-width:190px}.user-management .um-table td:last-child{min-width:100px}}

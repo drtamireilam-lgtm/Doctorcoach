@@ -1,0 +1,11 @@
+{
+  "scope": "Real authPage UI with isolated HTTP provider fixture, not a real Google/Apple login",
+  "checks": [
+    "HE/EN RTL/LTR mobile layout; disabled providers honest; email sign-in remains enabled",
+    "keyboard activates only configured provider; server outage unlocks controls and retains OTP",
+    "both provider buttons enable only with positive server availability (isolated fixture)",
+    "canceled callback provides localized feedback without provider error details",
+    "no browser JavaScript errors"
+  ],
+  "errors": []
+}
