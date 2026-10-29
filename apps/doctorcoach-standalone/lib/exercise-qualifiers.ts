@@ -27,5 +27,5 @@ export function parseExerciseQualifiers(value:string){
  const machineBarbell=result.equipment.includes('machine')&&result.equipment.includes('barbell')&&!result.equipment.includes('smith');
  const freeSmith=result.equipment.includes('smith')&&(/\bfree\b|חופשי/.test(text));
  const positionConflict=result.position.includes('standing')&&result.position.some(p=>p!=='standing')||result.position.includes('seated')&&result.position.some(p=>p!=='seated')||result.position.includes('supine')&&result.position.includes('prone');
- return {...result,conflict:competingImplements||machineBarbell||freeSmith||result.angle.length>1||result.grip.length>1||result.laterality.length>1||result.side.length>1||positionConflict};
+ return {...result,conflict:competingImplements||machineBarbell||freeSmith||result.angle.length>1||result.grip.filter(g=>['wide','narrow'].includes(g)).length>1||result.grip.filter(g=>['neutral','pronated','supinated'].includes(g)).length>1||result.laterality.length>1||result.side.length>1||positionConflict};
 }

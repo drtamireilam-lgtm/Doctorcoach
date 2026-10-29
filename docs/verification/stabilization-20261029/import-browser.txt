@@ -1,0 +1,249 @@
+10:12:46 AM [vite] (client) Re-optimizing dependencies because vite config has changed
+PASS 390 he csv
+PASS 390 he xlsx
+PASS 390 he pdf
+PASS 390 en csv
+PASS 390 en xlsx
+PASS 390 en pdf
+PASS 1440 he csv
+PASS 1440 he xlsx
+PASS 1440 he pdf
+PASS 1440 en csv
+PASS 1440 en xlsx
+PASS 1440 en pdf
+{
+  "scope": "Actual ProgramExcelImport in isolated local Vite harness. Synthetic catalog/memory GET fixtures and local onAccept callback; no authenticated save, assignment or live LAB.",
+  "checks": [
+    {
+      "width": 390,
+      "language": "he",
+      "format": "csv",
+      "acceptedIds": [
+        "barbell-bench",
+        "seated-curl",
+        "seated-leg-press",
+        "incline-machine-chest-press",
+        "machine-lateral-raise",
+        "machine-biceps-curl",
+        "cable-straight-leg-hip-flexion",
+        "parallel-bar-dip",
+        "wide-grip-cable-pulldown",
+        "narrow-grip-cable-pulldown",
+        "movement-wide-grip-pulldown",
+        "movement-narrow-grip-pulldown"
+      ]
+    },
+    {
+      "width": 390,
+      "language": "he",
+      "format": "xlsx",
+      "acceptedIds": [
+        "barbell-bench",
+        "seated-curl",
+        "seated-leg-press",
+        "incline-machine-chest-press",
+        "machine-lateral-raise",
+        "machine-biceps-curl",
+        "cable-straight-leg-hip-flexion",
+        "parallel-bar-dip",
+        "wide-grip-cable-pulldown",
+        "narrow-grip-cable-pulldown",
+        "movement-wide-grip-pulldown",
+        "movement-narrow-grip-pulldown"
+      ]
+    },
+    {
+      "width": 390,
+      "language": "he",
+      "format": "pdf",
+      "acceptedIds": [
+        "barbell-bench",
+        "seated-curl",
+        "seated-leg-press",
+        "incline-machine-chest-press",
+        "machine-lateral-raise",
+        "machine-biceps-curl",
+        "cable-straight-leg-hip-flexion",
+        "parallel-bar-dip",
+        "wide-grip-cable-pulldown",
+        "narrow-grip-cable-pulldown",
+        "movement-wide-grip-pulldown",
+        "movement-narrow-grip-pulldown"
+      ]
+    },
+    {
+      "width": 390,
+      "language": "en",
+      "format": "csv",
+      "acceptedIds": [
+        "barbell-bench",
+        "seated-curl",
+        "seated-leg-press",
+        "incline-machine-chest-press",
+        "machine-lateral-raise",
+        "machine-biceps-curl",
+        "cable-straight-leg-hip-flexion",
+        "parallel-bar-dip",
+        "wide-grip-cable-pulldown",
+        "narrow-grip-cable-pulldown",
+        "movement-wide-grip-pulldown",
+        "movement-narrow-grip-pulldown"
+      ]
+    },
+    {
+      "width": 390,
+      "language": "en",
+      "format": "xlsx",
+      "acceptedIds": [
+        "barbell-bench",
+        "seated-curl",
+        "seated-leg-press",
+        "incline-machine-chest-press",
+        "machine-lateral-raise",
+        "machine-biceps-curl",
+        "cable-straight-leg-hip-flexion",
+        "parallel-bar-dip",
+        "wide-grip-cable-pulldown",
+        "narrow-grip-cable-pulldown",
+        "movement-wide-grip-pulldown",
+        "movement-narrow-grip-pulldown"
+      ]
+    },
+    {
+      "width": 390,
+      "language": "en",
+      "format": "pdf",
+      "acceptedIds": [
+        "barbell-bench",
+        "seated-curl",
+        "seated-leg-press",
+        "incline-machine-chest-press",
+        "machine-lateral-raise",
+        "machine-biceps-curl",
+        "cable-straight-leg-hip-flexion",
+        "parallel-bar-dip",
+        "wide-grip-cable-pulldown",
+        "narrow-grip-cable-pulldown",
+        "movement-wide-grip-pulldown",
+        "movement-narrow-grip-pulldown"
+      ]
+    },
+    {
+      "width": 1440,
+      "language": "he",
+      "format": "csv",
+      "acceptedIds": [
+        "barbell-bench",
+        "seated-curl",
+        "seated-leg-press",
+        "incline-machine-chest-press",
+        "machine-lateral-raise",
+        "machine-biceps-curl",
+        "cable-straight-leg-hip-flexion",
+        "parallel-bar-dip",
+        "wide-grip-cable-pulldown",
+        "narrow-grip-cable-pulldown",
+        "movement-wide-grip-pulldown",
+        "movement-narrow-grip-pulldown"
+      ]
+    },
+    {
+      "width": 1440,
+      "language": "he",
+      "format": "xlsx",
+      "acceptedIds": [
+        "barbell-bench",
+        "seated-curl",
+        "seated-leg-press",
+        "incline-machine-chest-press",
+        "machine-lateral-raise",
+        "machine-biceps-curl",
+        "cable-straight-leg-hip-flexion",
+        "parallel-bar-dip",
+        "wide-grip-cable-pulldown",
+        "narrow-grip-cable-pulldown",
+        "movement-wide-grip-pulldown",
+        "movement-narrow-grip-pulldown"
+      ]
+    },
+    {
+      "width": 1440,
+      "language": "he",
+      "format": "pdf",
+      "acceptedIds": [
+        "barbell-bench",
+        "seated-curl",
+        "seated-leg-press",
+        "incline-machine-chest-press",
+        "machine-lateral-raise",
+        "machine-biceps-curl",
+        "cable-straight-leg-hip-flexion",
+        "parallel-bar-dip",
+        "wide-grip-cable-pulldown",
+        "narrow-grip-cable-pulldown",
+        "movement-wide-grip-pulldown",
+        "movement-narrow-grip-pulldown"
+      ]
+    },
+    {
+      "width": 1440,
+      "language": "en",
+      "format": "csv",
+      "acceptedIds": [
+        "barbell-bench",
+        "seated-curl",
+        "seated-leg-press",
+        "incline-machine-chest-press",
+        "machine-lateral-raise",
+        "machine-biceps-curl",
+        "cable-straight-leg-hip-flexion",
+        "parallel-bar-dip",
+        "wide-grip-cable-pulldown",
+        "narrow-grip-cable-pulldown",
+        "movement-wide-grip-pulldown",
+        "movement-narrow-grip-pulldown"
+      ]
+    },
+    {
+      "width": 1440,
+      "language": "en",
+      "format": "xlsx",
+      "acceptedIds": [
+        "barbell-bench",
+        "seated-curl",
+        "seated-leg-press",
+        "incline-machine-chest-press",
+        "machine-lateral-raise",
+        "machine-biceps-curl",
+        "cable-straight-leg-hip-flexion",
+        "parallel-bar-dip",
+        "wide-grip-cable-pulldown",
+        "narrow-grip-cable-pulldown",
+        "movement-wide-grip-pulldown",
+        "movement-narrow-grip-pulldown"
+      ]
+    },
+    {
+      "width": 1440,
+      "language": "en",
+      "format": "pdf",
+      "acceptedIds": [
+        "barbell-bench",
+        "seated-curl",
+        "seated-leg-press",
+        "incline-machine-chest-press",
+        "machine-lateral-raise",
+        "machine-biceps-curl",
+        "cable-straight-leg-hip-flexion",
+        "parallel-bar-dip",
+        "wide-grip-cable-pulldown",
+        "narrow-grip-cable-pulldown",
+        "movement-wide-grip-pulldown",
+        "movement-narrow-grip-pulldown"
+      ]
+    }
+  ],
+  "browserErrors": [],
+  "apiWrites": [],
+  "externalRequests": []
+}

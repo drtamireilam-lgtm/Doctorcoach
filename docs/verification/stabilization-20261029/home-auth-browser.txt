@@ -1,0 +1,13 @@
+PASS full-app sign-in and return 390 he plan
+PASS full-app sign-in and return 390 he care
+PASS full-app sign-in and return 390 he onboarding
+PASS full-app sign-in and return 390 en plan
+PASS full-app sign-in and return 390 en care
+PASS full-app sign-in and return 390 en onboarding
+PASS full-app sign-in and return 1440 he plan
+PASS full-app sign-in and return 1440 he care
+PASS full-app sign-in and return 1440 he onboarding
+PASS full-app sign-in and return 1440 en plan
+PASS full-app sign-in and return 1440 en care
+PASS full-app sign-in and return 1440 en onboarding
+PASS no page errors; no real credentials, OTP delivery or provider sign-in tested

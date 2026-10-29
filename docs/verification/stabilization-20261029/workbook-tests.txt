@@ -1,0 +1,14 @@
+✔ detailed literal workbook names preserve existing equipment variants (70.394138ms)
+✔ standalone numbered workout heading is a block, while prescribed coded rows still need review (28.478955ms)
+✔ grip width and hand orientation coexist, while competing widths/orientations remain blocked (11.36881ms)
+✔ reviewed detailed names persist through draft, assignment, workouts and reopened stores (181.149083ms)
+✔ compact numbered headings work but annotations and formulas cannot disappear as headings (30.795838ms)
+✔ actual effort lists are preserved as source notes rather than silently used as target RPE (0.751123ms)
+ℹ tests 6
+ℹ suites 0
+ℹ pass 6
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 459.977558
