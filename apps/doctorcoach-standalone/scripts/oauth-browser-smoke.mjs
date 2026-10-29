@@ -26,9 +26,10 @@ const server=createServer(async(req,res)=>{
  }catch{res.statusCode=500;res.end('{}');}
 });
 await new Promise(r=>server.listen(37864,'127.0.0.1',r));
-const browser=await chromium.launch({executablePath:'C:/Program Files/Google/Chrome/Application/chrome.exe',headless:true});
+let browser;
 const checks=[],errors=[];
 try{
+ browser=await chromium.launch({executablePath:process.env.DC_OAUTH_CHROMIUM||undefined,headless:true});
  const page=await browser.newPage({viewport:{width:390,height:900}});page.on('pageerror',e=>errors.push(e.message));
  for(const lang of ['he','en']){
   await page.goto('http://127.0.0.1:37864/auth/signin?lang='+lang);
@@ -57,4 +58,4 @@ try{
  assert.deepEqual(errors,[]);checks.push('no browser JavaScript errors');
  const report={scope:'Real authPage UI with isolated HTTP provider fixture, not a real Google/Apple login',checks,errors};
  await writeFile(resolve(evidence,'checks.json'),JSON.stringify(report,null,2));console.log(JSON.stringify(report,null,2));
-}finally{await browser.close();await new Promise(r=>server.close(r));}
+}finally{try{await browser?.close();}finally{await new Promise(r=>server.close(r));}}

@@ -1,3 +1,4 @@
+import {authHref} from './auth-language.ts';
 import hebrew from './locales/he.json';
 import english from './locales/en.json';
 import {stretchTranslations} from './stretch-exercises';
@@ -31,6 +32,10 @@ for(const [he,en] of [
  ['הוספת אירובי לתוכנית','Add cardio to program'],['הסרת אירובי','Remove cardio'],['יעדי הפעילות נשמרים בנפרד מהביצוע.','Activity targets are saved separately from actual results.'],
  ['אימוני אירובי שהושלמו','Completed cardio sessions'],['דקות אירובי שבוצעו','Completed cardio minutes'],['מרחק אירובי שנמדד (מטרים)','Measured cardio distance (meters)'],['RPE אירובי ממוצע','Average cardio RPE'],
  ['ציוד והערות לתרגיל (אופציונלי)','Equipment and exercise notes (optional)'],
+ ['שמירת העיצוב נכשלה. נסו שוב בהגדרות המראה.','Appearance could not be saved. Try again in appearance settings.'],
+ ['העיצוב השתנה בחלון אחר. טענו אותו בהגדרות המראה.','Appearance changed in another window. Reload it in appearance settings.'],
+ ['העיצוב נשמר בחשבון.','Appearance saved to your account.'],
+ ['יש להתחבר לשמירת העיצוב.','Sign in to save your appearance.'],
  ["איך DoctorCoach עובד", "How DoctorCoach Works"],
  ["חימום ומוביליטי", "Warm-up & Mobility"],
  ["האימון המרכזי", "Main workout"],
@@ -615,6 +620,8 @@ export function displayLocale(): string {
   return typeof document !== 'undefined' && document.documentElement.lang === 'en' ? 'en-GB' : 'he-IL';
 }
 export function translateBookingHref(href:string,language:Language):string {
+  const auth=authHref(href,language);
+  if(auth!==href)return auth;
   if(language==='he'||!href.startsWith('https://wa.me/')) return href;
   const url=new URL(href),message=url.searchParams.get('text');
   if(!message) return href;

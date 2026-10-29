@@ -203,3 +203,16 @@ test('expired or exhausted OTP challenges cannot restore the code screen',async 
  assert.deepEqual(await (await f.api('/auth/pending',{},challengeCookie+'='+fresh.challenge)).json(),{pending:false});
  assert.equal((await f.api('/auth/pending',{},'',{origin:'https://other.test'})).status,403);
 });
+
+test('legacy auth redirects and sign-in language switches retain language and safe return routes',async t=>{
+ const f=await setup(t),next=async()=>new Response('missing');
+ for(const lang of ['en','he'])for(const action of ['signin','signout']){
+  const r=await f.gateway.handle(new Request(origin+'/'+action+'-with-chatgpt?lang='+lang+'&return_to=%2F%23settings'),next);
+  const url=new URL(r.headers.get('location'));
+  assert.equal(url.pathname,'/auth/'+action);assert.equal(url.searchParams.get('lang'),lang);assert.equal(url.searchParams.get('return_to'),'/?lang='+lang+'#settings');
+  const page=await f.gateway.handle(new Request(origin+'/auth/'+action+'?lang='+lang+'&return_to='+encodeURIComponent('/?lang='+(lang==='en'?'he':'en')+'#settings')),next);
+  const html=await page.text();assert.ok(html.includes('lang="'+lang+'"'));assert.ok(html.includes('/?lang='+lang+'#settings'));
+ }
+ const unsafe=await f.gateway.handle(new Request(origin+'/signin-with-chatgpt?lang=en&return_to=https%3A%2F%2Fevil.test'),next);
+ assert.equal(new URL(unsafe.headers.get('location')).searchParams.get('return_to'),'/?lang=en');
+});
