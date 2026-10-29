@@ -2,9 +2,9 @@ name: DoctorCoach CI
 
 on:
   push:
-    branches: [main, "audit/full-lab-*", "feature/premium-home-ui-*", "fix/consultation-calendar-*", "codex/trainee-guidance-*", "codex/user-team-management-*", "codex/consultation-management-*", "feature/cardio-automatic-steps-*", "codex/exercise-recognition-3-*", "codex/import-integration-lab-*", "codex/application-audit-*", "stabilize/**", "fix/appearance-toggle-persistence-*", "feature/ui-ux-liad-followup-20261019", "feature/doctorcoach-2-smart-workout-20261020", "feature/anatomy-completion-*", "integration/anatomy-rehab-stretch-*"]
+    branches: [main, "codex/integration-59-60-61-*", "audit/full-lab-*", "feature/premium-home-ui-*", "fix/consultation-calendar-*", "codex/trainee-guidance-*", "codex/user-team-management-*", "codex/consultation-management-*", "feature/cardio-automatic-steps-*", "codex/exercise-recognition-3-*", "codex/import-integration-lab-*", "codex/application-audit-*", "stabilize/**", "fix/appearance-toggle-persistence-*", "feature/ui-ux-liad-followup-20261019", "feature/doctorcoach-2-smart-workout-20261020", "feature/anatomy-completion-*", "integration/anatomy-rehab-stretch-*"]
   pull_request:
-    branches: [main, "audit/full-lab-*", "feature/premium-home-ui-*", "fix/consultation-calendar-*", "codex/trainee-guidance-*", "codex/user-team-management-*", "codex/consultation-management-*", "feature/cardio-automatic-steps-*", "codex/exercise-recognition-3-*", "codex/import-integration-lab-*", "codex/generic-movement-import-*", "codex/application-audit-*", "codex/import-structure-regressions-*", "codex/import-alias-precision-*", "codex/google-apple-signin-*", "feature/anatomy-*", "integration/anatomy-*", "codex/anatomy-*"]
+    branches: [main, "audit/full-lab-*", "feature/premium-home-ui-*", "fix/consultation-calendar-*", "codex/trainee-guidance-*", "codex/user-team-management-*", "codex/consultation-management-*", "feature/cardio-automatic-steps-*", "codex/exercise-recognition-3-*", "codex/import-integration-lab-*", "codex/generic-movement-import-*", "codex/application-audit-*", "codex/import-structure-regressions-*", "codex/import-alias-precision-*", "codex/google-apple-signin-*", "feature/anatomy-*", "integration/anatomy-*", "codex/anatomy-*", "codex/smart-import-3-*"]
 
 permissions:
   contents: read
@@ -35,10 +35,10 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 20
     env:
-      LAB_AUDIT: ${{ startsWith(github.ref_name, 'audit/full-lab-') || startsWith(github.head_ref, 'audit/full-lab-') }}
-      CARDIO_CHECKS: ${{ startsWith(github.ref_name, 'audit/full-lab-') || startsWith(github.head_ref, 'audit/full-lab-') || startsWith(github.ref_name, 'feature/cardio-automatic-steps-') || startsWith(github.head_ref, 'feature/cardio-automatic-steps-') }}
+      LAB_AUDIT: ${{ startsWith(github.ref_name, 'codex/integration-59-60-61-') || startsWith(github.ref_name, 'audit/full-lab-') || startsWith(github.head_ref, 'codex/integration-59-60-61-') || startsWith(github.head_ref, 'audit/full-lab-') }}
+      CARDIO_CHECKS: ${{ startsWith(github.ref_name, 'codex/integration-59-60-61-') || startsWith(github.ref_name, 'audit/full-lab-') || startsWith(github.head_ref, 'codex/integration-59-60-61-') || startsWith(github.head_ref, 'audit/full-lab-') || startsWith(github.ref_name, 'feature/cardio-automatic-steps-') || startsWith(github.head_ref, 'feature/cardio-automatic-steps-') }}
       # PR refs are synthetic merge refs; use the source and target branch names too.
-      ANATOMY_BROWSER_CHECKS: ${{ startsWith(github.ref_name, 'audit/full-lab-') || startsWith(github.head_ref, 'audit/full-lab-') || startsWith(github.ref_name, 'codex/application-audit-') || startsWith(github.head_ref, 'codex/application-audit-') || startsWith(github.ref_name, 'feature/anatomy-') || startsWith(github.ref_name, 'integration/anatomy-') || startsWith(github.head_ref, 'feature/anatomy-') || startsWith(github.head_ref, 'integration/anatomy-') || startsWith(github.base_ref, 'feature/anatomy-') || startsWith(github.base_ref, 'integration/anatomy-') || startsWith(github.base_ref, 'codex/anatomy-') }}
+      ANATOMY_BROWSER_CHECKS: ${{ startsWith(github.ref_name, 'codex/integration-59-60-61-') || startsWith(github.ref_name, 'audit/full-lab-') || startsWith(github.head_ref, 'codex/integration-59-60-61-') || startsWith(github.head_ref, 'audit/full-lab-') || startsWith(github.ref_name, 'codex/application-audit-') || startsWith(github.head_ref, 'codex/application-audit-') || startsWith(github.ref_name, 'feature/anatomy-') || startsWith(github.ref_name, 'integration/anatomy-') || startsWith(github.head_ref, 'feature/anatomy-') || startsWith(github.head_ref, 'integration/anatomy-') || startsWith(github.base_ref, 'feature/anatomy-') || startsWith(github.base_ref, 'integration/anatomy-') || startsWith(github.base_ref, 'codex/anatomy-') }}
     defaults:
       run:
         working-directory: apps/doctorcoach-standalone
@@ -63,6 +63,11 @@ jobs:
         env:
           DC_MANAGEMENT_CHROMIUM: /usr/bin/google-chrome
         run: node --experimental-strip-types scripts/user-management-browser-smoke.mjs
+      - name: Smart Import 3 bilingual desktop and mobile save/reload/assign
+        if: env.LAB_AUDIT != 'true' && (startsWith(github.head_ref, 'codex/smart-import-3-') || startsWith(github.ref_name, 'codex/smart-import-3-') || startsWith(github.head_ref, 'codex/smart-import-31-') || startsWith(github.ref_name, 'codex/smart-import-31-'))
+        env:
+          DC_IMPORT_CHROMIUM: /usr/bin/google-chrome
+        run: node --experimental-strip-types scripts/import-browser-smoke.mjs
       - name: Standalone TypeScript
         run: npm run typecheck
       - name: Offline cardio migration and native contracts

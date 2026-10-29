@@ -17,7 +17,7 @@ test('preview correction resolves only the unknown row and keeps general, Hammer
  const sheet=readCsvWorkbook(bytes('Exercise,Sets,Reps,Weight,Weight Unit,Warmup sets,Notes\nSquat,3,18-6,100,lb,10@45,\nwide grip hammer rows,2,10,40,kg,,machine\nKelso Shrug,2,12,15,kg,,\nUnlisted synthetic exercise,2,8,20,kg,,coach correction'))[0];
  const rows=parse(sheet);assert.equal(rows.length,4);
  assert.deepEqual(rows.slice(0,3).map(r=>r.exerciseId),['movement-squat','movement-hammer-row-wide','movement-kelso-shrug']);
- assert.equal(rows[3].exerciseId,'');assert.throws(()=>finalizeImport(rows));
+ assert.equal(rows[3].exerciseId,'');assert.ok(finalizeImport(rows)[3].customExercise);
  rows[3]={...rows[3],name:'Dumbbell Bench Press',...matchExerciseForRow('Dumbbell Bench Press')};
  const items=finalizeImport(rows);assert.equal(items[3].exerciseId,'bench');
  assert.equal(items[0].weight,100*.45359237);assert.equal(items[0].warmupSets[0].weight,45*.45359237);

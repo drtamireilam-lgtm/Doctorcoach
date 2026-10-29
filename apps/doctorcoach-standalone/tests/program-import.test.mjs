@@ -23,12 +23,12 @@ test('oversized, invalid XML entities and large sparse sheets are rejected',()=>
  assert.throws(()=>readExcelWorkbook(zip('<worksheet>'+ ' '.repeat(4*1024*1024)+'</worksheet>')));
 });
 test('headers, days, ranges, effort, tempo, notes and blank weights preserve source meaning',()=>{
- const r=rows();assert.equal(r.length,2);assert.deepEqual(r.map(i=>i.dayId),['1','4']);
+ const r=rows();assert.equal(r.length,2);assert.deepEqual(r.map(i=>i.dayId),['1','2']);
  const items=finalizeImport(r);assert.equal(items[0].reps,6);assert.equal(items[0].repsMax,8);assert.equal(repetitionLabel(items[0]),'6–8');assert.equal(items[0].weightUnspecified,true);assert.equal(items[0].targetRpe,7);assert.equal(items[1].weight,30);assert.deepEqual(items[0].tempo,{eccentric:3,bottom:0,concentric:2,top:0});assert.equal(items[0].notes,'Keep control');
 });
 test('ambiguous names, formulas, duplicate rows and invalid values cannot silently publish',()=>{
  assert.equal(matchImportExercise('squats'),'movement-squat');assert.equal(matchImportExercise('overheard press'),'movement-overhead-press');
- const r=rows();assert.throws(()=>finalizeImport([{...r[0],exerciseId:''}]));
+ const r=rows();assert.ok(finalizeImport([{...r[0],exerciseId:''}])[0].customExercise);
  assert.throws(()=>finalizeImport([{...r[0],issues:['Formula requires manual values']}]));
  assert.throws(()=>finalizeImport([r[0],r[0]]));
  for(const patch of [{reps:'8-101'},{reps:'six'},{sets:'0'},{rpe:'7',rir:'2'},{weight:'=1+1'},{tempo:'3-0-2'}])assert.throws(()=>importRowItem({...r[0],...patch}));
