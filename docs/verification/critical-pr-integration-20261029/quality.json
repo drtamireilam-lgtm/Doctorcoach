@@ -1,0 +1,177 @@
+{
+  "fixture": "24 synthetic reviewed names; generic bench alias regression included",
+  "total": 24,
+  "correctAutomatic": 15,
+  "incorrectAutomatic": 0,
+  "manualReview": 9,
+  "rows": [
+    {
+      "name": "Bench Press",
+      "expected": "movement-chest-press",
+      "actual": "movement-chest-press",
+      "status": "alias",
+      "outcome": "correctAutomatic"
+    },
+    {
+      "name": "Barbell Bench Press",
+      "expected": "barbell-bench",
+      "actual": "barbell-bench",
+      "status": "exact",
+      "outcome": "correctAutomatic"
+    },
+    {
+      "name": "לחיצת חזה",
+      "expected": "movement-chest-press",
+      "actual": "movement-chest-press",
+      "status": "exact",
+      "outcome": "correctAutomatic"
+    },
+    {
+      "name": "Kelso Shrug",
+      "expected": "movement-kelso-shrug",
+      "actual": "movement-kelso-shrug",
+      "status": "exact",
+      "outcome": "correctAutomatic"
+    },
+    {
+      "name": "לחיצת חזה במוט",
+      "expected": "barbell-bench",
+      "actual": "barbell-bench",
+      "status": "exact",
+      "outcome": "correctAutomatic"
+    },
+    {
+      "name": "פולי עליון",
+      "expected": "lat-pulldown",
+      "actual": "lat-pulldown",
+      "status": "alias",
+      "outcome": "correctAutomatic"
+    },
+    {
+      "name": "הרחקת כתף",
+      "expected": "movement-lateral-raise",
+      "actual": "movement-lateral-raise",
+      "status": "alias",
+      "outcome": "correctAutomatic"
+    },
+    {
+      "name": "DB Bench Press",
+      "expected": "bench",
+      "actual": "bench",
+      "status": "alias",
+      "outcome": "correctAutomatic"
+    },
+    {
+      "name": "BB bench press",
+      "expected": "barbell-bench",
+      "actual": "barbell-bench",
+      "status": "alias",
+      "outcome": "correctAutomatic"
+    },
+    {
+      "name": "Cable Chest Fly",
+      "expected": "cable-fly",
+      "actual": "cable-fly",
+      "status": "alias",
+      "outcome": "correctAutomatic"
+    },
+    {
+      "name": "Leg Curl",
+      "expected": "movement-leg-curl",
+      "actual": "movement-leg-curl",
+      "status": "exact",
+      "outcome": "correctAutomatic"
+    },
+    {
+      "name": "כפיפת ברכיים בישיבה במכונה",
+      "expected": "seated-curl",
+      "actual": "seated-curl",
+      "status": "normalized",
+      "outcome": "correctAutomatic"
+    },
+    {
+      "name": "Incline dumbbell bench press",
+      "expected": "incline-db",
+      "actual": "incline-db",
+      "status": "alias",
+      "outcome": "correctAutomatic"
+    },
+    {
+      "name": "Romainian deadlift",
+      "expected": "rdl",
+      "actual": "rdl",
+      "status": "alias",
+      "outcome": "correctAutomatic"
+    },
+    {
+      "name": "Hammer Strength Chest Press",
+      "expected": "",
+      "actual": "",
+      "status": "unmatched",
+      "outcome": "manualReview"
+    },
+    {
+      "name": "Dumbbel bench press",
+      "expected": "",
+      "actual": "",
+      "status": "suggested",
+      "outcome": "manualReview"
+    },
+    {
+      "name": "פשיטת מרפקים",
+      "expected": "",
+      "actual": "",
+      "status": "suggested",
+      "outcome": "manualReview"
+    },
+    {
+      "name": "כפיפות מרפקים",
+      "expected": "",
+      "actual": "",
+      "status": "suggested",
+      "outcome": "manualReview"
+    },
+    {
+      "name": "לחיצת חזה בשיפוע",
+      "expected": "",
+      "actual": "",
+      "status": "suggested",
+      "outcome": "manualReview"
+    },
+    {
+      "name": "Smith bench press",
+      "expected": "",
+      "actual": "",
+      "status": "unmatched",
+      "outcome": "manualReview"
+    },
+    {
+      "name": "בנץ פרס במוט",
+      "expected": "",
+      "actual": "",
+      "status": "suggested",
+      "outcome": "manualReview"
+    },
+    {
+      "name": "unknown orbital press",
+      "expected": "",
+      "actual": "",
+      "status": "unmatched",
+      "outcome": "manualReview"
+    },
+    {
+      "name": "barbell machine bench press",
+      "expected": "",
+      "actual": "",
+      "status": "unmatched",
+      "outcome": "manualReview"
+    },
+    {
+      "name": "בנץ׳ פרס",
+      "expected": "movement-chest-press",
+      "actual": "movement-chest-press",
+      "status": "normalized",
+      "outcome": "correctAutomatic"
+    }
+  ]
+}
