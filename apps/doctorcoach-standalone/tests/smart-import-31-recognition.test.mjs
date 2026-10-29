@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import {matchExerciseForImport as match} from '../lib/exercise-matching.ts';
 const options={allowGeneralMovement:true};
 import {recognitionCases} from './fixtures/smart-import-31-recognition.mjs';
-test('23 reviewed bilingual examples retain correct specific/generic matches or manual review',()=>{
+test('24 reviewed bilingual examples retain correct specific/generic matches or manual review',()=>{
  for(const [name,id] of recognitionCases)assert.equal(match(name,undefined,options).exerciseId,id,name);
 });
 test('cached fuzzy reviews cannot be poisoned by caller mutation',()=>{
@@ -26,4 +26,3 @@ test('evicting old repeated-query results never changes review semantics',()=>{
  for(let i=0;i<140;i++)match(`Unrecognized movement ${i}`,catalog);
  assert.deepEqual(match('Special curll',catalog),old);
 });
-

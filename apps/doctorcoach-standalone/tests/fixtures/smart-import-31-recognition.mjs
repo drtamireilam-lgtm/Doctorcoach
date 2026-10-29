@@ -5,7 +5,5 @@ export const recognitionCases=[
  ['Cable Chest Fly','cable-fly'],['Leg Curl','movement-leg-curl'],['כפיפת ברכיים בישיבה במכונה','seated-curl'],
  ['Incline dumbbell bench press','incline-db'],['Romainian deadlift','rdl'],
  ['Hammer Strength Chest Press',''],['Dumbbel bench press',''],['פשיטת מרפקים',''],['כפיפות מרפקים',''],
- ['לחיצת חזה בשיפוע',''],['Smith bench press',''],['בנץ פרס במוט',''],['unknown orbital press',''],['barbell machine bench press','']
+ ['לחיצת חזה בשיפוע',''],['Smith bench press',''],['בנץ פרס במוט',''],['unknown orbital press',''],['barbell machine bench press',''],['בנץ׳ פרס','movement-chest-press']
 ];
-export const knownConflictCase=['בנץ׳ פרס','movement-chest-press'];
-
