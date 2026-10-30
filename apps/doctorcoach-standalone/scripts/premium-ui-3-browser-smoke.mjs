@@ -66,7 +66,7 @@ try{
  const screenshotResponses=structuredClone(responses);
  // Actual React save/edit/resume/finish flow backed by a disposable SQLite store.
  delete responses['/api/user-management'];responses['/api/account']={signedIn:true,canManageServices:false,careRole:null};
- for(const language of ['he','en'])for(const width of (workout4?[390,430,768,1440]:[390,1440])){
+ for(const language of ['he','en'])for(const width of (workout4?(process.env.DC_UI3_QUICK?[390]:[390,430,768,1440]):[390,1440])){
   for(const close of cleanups.splice(0))close();
   trainingFixture=platform({after:fn=>cleanups.push(fn)});await trainingFixture.connect();
   await trainingFixture.training.savePlan(client.userId,{...defaultPrescription('bench'),sets:3,reps:10,weight:20,targetRpe:8});
@@ -91,13 +91,13 @@ try{
   await fields().nth(0).fill('61.5');await first.locator('.set-save').click();await first.locator('.set-save.saved').waitFor();
   assert.equal((await trainingFixture.training.feed(client.userId)).active.items[0].results[0].weight,61.5);
   if(workout4){const second=page.locator('.set-line').nth(1);await second.locator('.smart-set-fields input').nth(0).fill('63.125');await second.locator('.smart-set-fields input').nth(2).fill('8');await second.locator('.set-save').click();await second.locator('.set-save.saved').waitFor();assert.equal((await trainingFixture.training.feed(client.userId)).active.items[0].results[1].weight,63.125);}
-  await page.screenshot({path:join(evidence,`workout-saved-set-${width}-${language}.png`),fullPage:true});
+  await page.evaluate(()=>scrollTo(0,0));await page.screenshot({path:join(evidence,`workout-saved-set-${width}-${language}.png`),fullPage:true});
   await page.locator('.finish-card .button.primary').click();const dialog=page.getByRole('dialog');
   await dialog.locator('input').first().fill('0');await dialog.locator('button[type=submit]').click();await page.locator('.workout-saved').waitFor();
-  if(workout4){await page.getByRole('heading',{name:language==='en'?'Workout saved':'האימון נשמר',exact:true}).waitFor();assert.match(await page.locator('.workout-finish-stats').textContent(),/1,246[.,]3/);await page.screenshot({path:join(evidence,`workout-complete-${width}-${language}.png`),fullPage:true});}
+  if(workout4){await page.getByRole('heading',{name:language==='en'?'Workout saved':'האימון נשמר',exact:true}).waitFor();assert.match(await page.locator('.workout-finish-stats').textContent(),/1,246[.,]3/);await page.evaluate(()=>scrollTo(0,0));await page.screenshot({path:join(evidence,`workout-complete-${width}-${language}.png`),fullPage:true});}
   await page.locator('.workout-saved .button.primary').click();await page.locator('#workout-history-list').click();
   persisted=await trainingFixture.training.feed(client.userId);assert.equal(persisted.active,null);assert.equal(persisted.history.length,1);assert.equal(persisted.history[0].completedSets,workout4?2:1);assert.equal(persisted.history[0].items[0].results[0].weight,61.5);
-  await page.screenshot({path:join(evidence,`workout-history-${width}-${language}.png`),fullPage:true});
+  await page.evaluate(()=>scrollTo(0,0));await page.screenshot({path:join(evidence,`workout-history-${width}-${language}.png`),fullPage:true});
   workoutChecks.push({language,width,save:true,edit:true,reload:true,finish:true,history:true,nextLoad:true});console.log('PASS SQLite workout save/edit/reload/finish/history/next-load',theme,language,width);
  }
  trainingFixture=null;for(const close of cleanups.splice(0))close();Object.assign(responses,screenshotResponses);
