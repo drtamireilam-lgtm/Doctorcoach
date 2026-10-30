@@ -71,7 +71,7 @@ try{
   await trainingFixture.training.savePlan(client.userId,{...defaultPrescription('bench'),sets:3,reps:10,weight:20,targetRpe:8});
   await trainingFixture.training.start(client.userId,{requestId:randomUUID(),before:0});
   responses['/api/program']={...responses['/api/program'],items:await trainingFixture.training.getPlan(client.userId)};
-  await page.setViewportSize({width,height:900});await page.goto(`http://127.0.0.1:37866/?lang=${language}#workout`);
+  await page.setViewportSize({width,height:900});await page.goto(`http://127.0.0.1:37866/?lang=${language}#workout`);await page.reload();
   await page.locator('.session-exercise .exercise-disclosure-toggle').first().click();
   const first=page.locator('.set-line').first(),fields=()=>first.locator('.smart-set-fields input');
   await fields().nth(0).fill('60');await fields().nth(1).fill('10');await fields().nth(2).fill('6');
@@ -89,7 +89,7 @@ try{
   await page.locator('.workout-saved .button.primary').click();await page.locator('#workout-history-list').click();
   persisted=await trainingFixture.training.feed(client.userId);assert.equal(persisted.active,null);assert.equal(persisted.history.length,1);assert.equal(persisted.history[0].completedSets,1);assert.equal(persisted.history[0].items[0].results[0].weight,61.5);
   await page.screenshot({path:join(evidence,`workout-history-${width}-${language}.png`),fullPage:true});
-  workoutChecks.push({language,width,save:true,edit:true,reload:true,finish:true,history:true,nextLoad:true});
+  workoutChecks.push({language,width,save:true,edit:true,reload:true,finish:true,history:true,nextLoad:true});console.log('PASS SQLite workout save/edit/reload/finish/history/next-load',theme,language,width);
  }
  trainingFixture=null;for(const close of cleanups.splice(0))close();Object.assign(responses,screenshotResponses);
  for(const width of (process.env.DC_UI3_QUICK?[390]:[320,375,390,430,768,1024,1440])){
