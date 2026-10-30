@@ -10,8 +10,8 @@ export function AccountShortcut({section,go}:{section:string;go:Go}){
  const english=useLanguage().language==='en',label=english?'Settings & account':'הגדרות וחשבון';
  return <button type="button" className="account-shortcut" aria-label={label} title={label} aria-current={isAccountSection(section)?'page':undefined} onClick={()=>go('settings')}><Settings2 size={20} aria-hidden="true"/><span>{label}</span></button>;
 }
-export function HomeIntroduction({go,completed,returning,weeklyWorkouts=null,activeWorkout=false,trainingBlocked=false,workoutAction,exerciseCount,name}:{workoutAction?:ReactNode;exerciseCount?:number;name?:string;go:Go;completed:boolean;returning:boolean;weeklyWorkouts?:number|null;activeWorkout?:boolean;trainingBlocked?:boolean}){
- return <PremiumHome go={go} completed={completed} returning={returning} weeklyWorkouts={weeklyWorkouts} activeWorkout={activeWorkout} trainingBlocked={trainingBlocked} workoutAction={workoutAction} exerciseCount={exerciseCount} name={name}/>;
+export function HomeIntroduction({go,completed,returning,weeklyWorkouts=null,activeWorkout=false,trainingBlocked=false,workoutAction,exerciseCount,name,programTitle,workoutProgress}:{programTitle?:string|null;workoutProgress?:{completed:number;planned:number}|null;workoutAction?:ReactNode;exerciseCount?:number;name?:string;go:Go;completed:boolean;returning:boolean;weeklyWorkouts?:number|null;activeWorkout?:boolean;trainingBlocked?:boolean}){
+ return <PremiumHome go={go} completed={completed} returning={returning} weeklyWorkouts={weeklyWorkouts} activeWorkout={activeWorkout} trainingBlocked={trainingBlocked} workoutAction={workoutAction} exerciseCount={exerciseCount} name={name} programTitle={programTitle} workoutProgress={workoutProgress}/>;
 }
 export function AreaNavigation({section,go}:{section:string;go:Go}){
  const area=areaFor(section),links=area&&areaLinks[area];

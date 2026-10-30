@@ -7,5 +7,8 @@ export function homeWorkoutActionAllowed(input:{auth:string;status:number;loadin
 export function homeSummary(activity:ActivityFeed|null,wellness:WellnessBundle|null){
  const readiness=wellness?.records.filter(r=>r.kind==='readiness').sort((a,b)=>b.day.localeCompare(a.day))[0];
  const energy=readiness?.data.energy;
- return {steps:activity?.summary.today??null,stepGoal:activity?.goal?.dailyTarget??null,energy:typeof energy==='number'&&Number.isFinite(energy)?energy:null,energyDay:readiness?.day??null};
+ const rehab=wellness?.records.filter(r=>r.kind==='rehab').sort((a,b)=>b.day.localeCompare(a.day))[0];
+ const pain=rehab?.data.pain;
+ const recoveryPain=typeof pain==='number'&&Number.isFinite(pain)&&pain>=0&&pain<=10?pain:null;
+ return {steps:activity?.summary.today??null,stepGoal:activity?.goal?.dailyTarget??null,energy:typeof energy==='number'&&Number.isFinite(energy)?energy:null,energyDay:readiness?.day??null,recoveryPain,recoveryDay:recoveryPain===null?null:rehab!.day};
 }

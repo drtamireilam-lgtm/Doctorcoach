@@ -108,3 +108,53 @@ html .dc-ui3 .mobile-bottom-nav button.active svg{filter:drop-shadow(0 0 6px col
 html[data-custom-theme] .dc-ui3 .button.primary,
 html[data-custom-theme] .dc-ui3 .button.primary:hover:not(:disabled){background:var(--dc-button);border-color:var(--dc-button);color:var(--dc-button-text)}
 html[data-custom-theme] .dc-ui3 .mobile-bottom-nav button.active svg{color:var(--dc-gold)}
+
+/* Shared rhythm and interaction tokens for the existing product workspaces. */
+.dc-ui3{--dc-space-1:4px;--dc-space-2:8px;--dc-space-3:12px;--dc-space-4:16px;--dc-space-6:24px;--dc-shadow-card:0 6px 20px rgb(0 0 0 / .12);--dc-motion-fast:160ms;line-height:1.55}
+html .dc-ui3 :is(.panel,.exercise-card,.history-session,.care-card,.team-card,.service-card){background:var(--dc-surface);box-shadow:var(--dc-shadow-card)}
+.dc-ui3 :is(input:not([type=checkbox]):not([type=radio]):not([type=range]),select){min-height:44px}
+.dc-ui3 :is(button,.button){white-space:normal;overflow-wrap:anywhere}
+.dc-ui3 :is(.care-actions,.workspace-actions,.dc-timer-controls){flex-wrap:wrap;gap:var(--dc-space-2)}
+.dc-ui3 :is(.care-empty,.empty-state){padding:var(--dc-space-6);text-align:center;color:var(--dc-text-secondary)}
+.dc-ui3 :is(.status-badge,.service-state){line-height:1.5;border-radius:999px}
+.dc-ui3 :is(.dc-ui3-activity,.dc-ui3-data-notice){grid-column:1/-1}
+.dc-ui3-activity{padding:var(--dc-space-6)}
+.dc-ui3-activity-heading{display:flex;gap:var(--dc-space-3);align-items:center}
+.dc-ui3-activity-heading>svg{color:var(--dc-cyan);flex-shrink:0}
+.dc-ui3-activity h2{font-size:1rem;margin:0}
+.dc-ui3-activity p{font-size:.85rem;color:var(--dc-text-secondary);margin-block:var(--dc-space-2) var(--dc-space-4)}
+.dc-ui3-activity .dc-ui3-activity-heading p{margin:var(--dc-space-1) 0}
+.dc-ui3-workout-progress{display:grid;gap:var(--dc-space-2);margin-block:0 var(--dc-space-4);font-size:.8rem}
+.dc-ui3-workout-progress progress{width:100%;height:8px;accent-color:var(--dc-gold);border:0;border-radius:99px;overflow:hidden;background:var(--dc-surface-elevated)}
+.dc-ui3-workout-progress progress::-webkit-progress-bar{background:var(--dc-surface-elevated)}
+.dc-ui3-workout-progress progress::-webkit-progress-value{background:var(--dc-gold)}
+.dc-ui3 .dc-ui3-rings{grid-template-columns:repeat(2,minmax(0,1fr));gap:var(--dc-space-4)}
+.dc-ui3-rings>button{border-radius:var(--dc-radius-button);padding:var(--dc-space-1)}
+.dc-ui3 .dc-premium-quick nav button{background:var(--dc-surface);text-align:start}
+.dc-ui3 .dc-premium-quick nav button>span{min-width:0}
+.dc-ui3 :is(.button,.dc-icon-button,.dc-premium-quick nav button):active:not(:disabled){transform:translateY(1px)}
+@media(hover:hover) and (pointer:fine){
+ .dc-ui3 :is(.dc-premium-quick nav button,.dc-ui3-rings>button):hover{background:var(--dc-surface-elevated);border-color:var(--dc-cyan)}
+}
+@media(max-width:760px){
+ .dc-ui3-activity{padding:var(--dc-space-4)}
+ .dc-ui3 .topbar{height:calc(64px + env(safe-area-inset-top));padding-top:env(safe-area-inset-top)}
+ .dc-ui3 :is(.session-set,.session-row,.set-row){min-width:0}
+ .dc-ui3 :is(.set-input,.rpe-input) input{min-width:0;width:100%}
+ .dc-ui3 .dc-ui3-home .dc-premium-hero-content{width:74%;max-width:340px}
+ .dc-ui3 .dc-premium-further{flex-wrap:wrap}
+}
+@media(max-width:375px){
+ .dc-ui3 .content{padding-inline:var(--dc-space-3)}
+ .dc-ui3 .dc-ui3-home .dc-premium-hero{padding:var(--dc-space-4)}
+ .dc-ui3 .dc-ui3-home .dc-premium-hero-content{width:100%}
+ .dc-ui3-home .dc-premium-hero::after{background:linear-gradient(90deg,var(--dc-background),color-mix(in srgb,var(--dc-background) 85%,transparent))}
+ .dc-ui3 .dc-premium-quick nav{gap:var(--dc-space-2)}
+ .dc-ui3 .dc-premium-quick nav button{padding:var(--dc-space-3);gap:6px}
+ .dc-ui3 .dc-premium-quick nav button>svg:last-child{display:none}
+ .dc-ui3 .dc-timer-controls{display:grid;grid-template-columns:repeat(2,minmax(0,1fr))}
+ .dc-ui3 .dc-timer-controls label{grid-column:1/-1}
+}
+@media(prefers-reduced-motion:reduce){.dc-ui3 :is(.button,.dc-icon-button,.dc-premium-quick nav button):active{transform:none}}
+.dc-ui3 .text-button{min-height:44px}
+@media(max-width:760px){.dc-ui3 :is(input,select,textarea){font-size:16px}}

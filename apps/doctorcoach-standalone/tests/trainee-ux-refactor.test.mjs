@@ -99,3 +99,27 @@ test('rendered personal file exposes progress, rehabilitation and nutrition',()=
  for(const label of ['התקדמות','שיקום וכאב','תזונה ומדידות','פרטים ושאלונים','מסמכים ותיק רפואי'])assert.ok(labels.includes(label),label);
  assert.ok(!labels.includes('הגדרות'));
 });
+
+test('premium dashboard forwards real set progress, keeps existing routes and hides progress during a medical block',()=>{
+ for(const language of ['he','en']){
+  const visited=[],premium=component('premium-home.tsx',language);
+  const {HomeIntroduction}=component('site-areas.tsx',language,{'./premium-home':premium});
+  const wrapper=HomeIntroduction({go:s=>visited.push(s),completed:true,returning:true,activeWorkout:true,programTitle:'Assigned strength session',workoutProgress:{completed:2,planned:6}});
+  const tree=wrapper.type(wrapper.props),progress=nodes(tree,n=>n.type==='progress')[0];
+  assert.equal(progress.props.value,2);assert.equal(progress.props.max,6);
+  const nav=nodes(tree,n=>n.type==='nav')[0];
+  for(const button of nodes(nav,n=>n.type==='button'))button.props.onClick();
+  assert.deepEqual(visited,['plan','history','library','consult','care','learn','recovery','history']);
+  const blocked=premium.PremiumHome({...wrapper.props,trainingBlocked:true});
+  assert.equal(nodes(blocked,n=>n.type==='progress').length,0);
+ }
+});
+
+test('dashboard activity errors offer retry without displaying a cached connected device',()=>{
+ let retries=0;
+ const hooks={useCareResource:url=>url==='/api/activity'?{data:{connection:{platform:'healthkit',status:'connected'}},error:'offline',reload:()=>{retries++;}}:{data:null}};
+ const tree=component('premium-home.tsx','en',{'../hooks/use-care':hooks}).PremiumHome({go:()=>{},completed:true,returning:true,weeklyWorkouts:0,activeWorkout:false,trainingBlocked:false});
+ const alert=nodes(tree,n=>n.props?.role==='alert')[0];assert.ok(alert);
+ nodes(alert,n=>n.type==='button')[0].props.onClick();assert.equal(retries,1);
+ assert.ok(nodes(tree,n=>n.type==='p'&&n.props.children==='Connection status unavailable').length);
+});

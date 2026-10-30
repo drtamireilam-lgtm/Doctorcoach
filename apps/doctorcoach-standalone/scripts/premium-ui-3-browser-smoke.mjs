@@ -46,9 +46,9 @@ try{
   return route.continue();
  });
  const page=await context.newPage();page.setDefaultTimeout(120000);page.setDefaultNavigationTimeout(120000);page.on('pageerror',e=>{errors.push(e.message);console.error('Browser error:',e.message);});
- for(const width of (process.env.DC_UI3_QUICK?[390]:[390,430,768,1440])){
+ for(const width of (process.env.DC_UI3_QUICK?[390]:[320,375,390,430,768,1024,1440])){
   await page.setViewportSize({width,height:900});
-  for(const section of ['home','workout','history','learn','library','details','recovery','consult','care','more']){
+  for(const section of (process.env.DC_UI3_SECTIONS?.split(',')??['home','plan','workout','history','learn','library','details','recovery','consult','care','more'])){
    await page.goto(`http://127.0.0.1:37866/?lang=he#${section==='details'?'library?exercise=bench':section}`);await page.locator('.dc-ui3').waitFor();await page.waitForTimeout(900);if(section==='workout')await page.locator('.session-exercise .exercise-disclosure-toggle').first().click();
    const overflow=await page.evaluate(()=>document.documentElement.scrollWidth>innerWidth);assert.equal(overflow,false,`${section} overflows at ${width}`);
    await page.evaluate(()=>scrollTo(0,0));
@@ -58,7 +58,8 @@ try{
  }
  await page.setViewportSize({width:390,height:900});await page.goto('http://127.0.0.1:37866/?lang=he#workout');await page.getByRole('region',{name:'טיימר מנוחה'}).waitFor();
  const timer=page.getByRole('region',{name:'טיימר מנוחה'});await timer.getByRole('button',{name:'התחלה',exact:true}).click();await page.waitForTimeout(1200);assert.notEqual(await timer.locator('output').textContent(),'01:30');await timer.getByRole('button',{name:'השהיה',exact:true}).click();const paused=await timer.locator('output').textContent();await page.waitForTimeout(1100);assert.equal(await timer.locator('output').textContent(),paused);await timer.getByRole('button',{name:'איפוס',exact:true}).click();assert.equal(await timer.locator('output').textContent(),'01:30');
- for(const section of ['home','workout','library','details']){await page.goto(`http://127.0.0.1:37866/?lang=en#${section==='details'?'library?exercise=bench':section}`);await page.locator('.dc-ui3').waitFor();await page.waitForTimeout(800);assert.equal(await page.locator('html').getAttribute('dir'),'ltr');assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth>innerWidth),false);await page.screenshot({path:join(evidence,`${section}-390-en.png`),fullPage:true});}
+ for(const width of (process.env.DC_UI3_QUICK?[390]:[320,375,390,430,768,1024,1440])){await page.setViewportSize({width,height:900});for(const section of (process.env.DC_UI3_SECTIONS?.split(',')??['home','plan','workout','history','learn','library','details','recovery','consult','care','more'])){await page.goto(`http://127.0.0.1:37866/?lang=en#${section==='details'?'library?exercise=bench':section}`);await page.locator('.dc-ui3').waitFor();await page.waitForTimeout(800);assert.equal(await page.locator('html').getAttribute('dir'),'ltr');assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth>innerWidth),false);await page.screenshot({path:join(evidence,`${section}-${width}-en.png`),fullPage:true});checks.push({section,width,language:'en',overflow:false});}}
+ await page.setViewportSize({width:390,height:900});
  responses['/api/onboarding'].trainingBlocked=true;
  await page.goto('http://127.0.0.1:37866/?lang=he#home');await page.reload();await page.locator('.dc-premium-hero').waitFor();await page.waitForTimeout(500);assert.equal(await page.locator('.dc-premium-hero').getByRole('button',{name:'ליצירת קשר עם הצוות',exact:true}).count(),1);assert.equal(await page.locator('.dc-premium-hero .button').count(),1);await page.evaluate(()=>scrollTo(0,0));await page.screenshot({path:join(evidence,'home-blocked-390.png')});
  responses['/api/onboarding'].trainingBlocked=false;responses['/api/activity'].summary.today=null;responses['/api/wellness'].records=[];
