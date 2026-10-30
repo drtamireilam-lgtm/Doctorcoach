@@ -5,7 +5,12 @@ import {resolve,join} from 'node:path';
 import {createServer} from 'vite';
 import react from '@vitejs/plugin-react';
 import {defaultServices} from '../lib/services.ts';
+import {defaultAppearance} from '../lib/appearance.ts';
+import {appearanceWithMode,colorsFor} from '../lib/advanced-theme.ts';
 import {chromium} from '@playwright/test';
+const theme=process.env.DC_UI3_THEME??'dark';assert.ok(['light','dark'].includes(theme));
+const appearance=appearanceWithMode(defaultAppearance,theme);
+const buttonRgb='rgb('+colorsFor(appearance).button.slice(1).match(/../g).map(part=>parseInt(part,16)).join(', ')+')';
 const runtime=resolve('.sites-runtime');await mkdir(runtime,{recursive:true});
 const fixture=await mkdtemp(join(runtime,'ui3-browser-'));
 const evidence=resolve(process.env.DC_UI3_EVIDENCE??join(runtime,'ui3-evidence'));await mkdir(evidence,{recursive:true});
@@ -21,6 +26,7 @@ const day=new Intl.DateTimeFormat('en-CA',{timeZone:'Asia/Jerusalem',year:'numer
 const access={mode:'self',canBuild:true,canStart:true,selfUntil:'2099-01-01',programId:null,programTitle:null};
 const onboarding={intake:{answers:{name:'חשבון בדיקה מקומי'},completed:true,tourCompleted:true,version:1,updatedAt:now},consents:{terms:true,privacy:true,health:true,team:true},consentRevision:'2026-09-28.1',reviews:[],team:[],staffRole:null,canAdmin:false,trainingBlocked:false};
 const responses={
+ '/api/preferences/appearance':{ownerId:'synthetic-ui3',version:1,appearance},
  '/api/account':{signedIn:true,canManageServices:false,careRole:null},
  '/api/program':{items:[item],access,split:null,workoutPreference:{mode:'fixed',version:0}},
  '/api/training':feed,'/api/logs':{logs:[]},'/api/favorites':{favorites:[]},'/api/onboarding':onboarding,
@@ -49,21 +55,21 @@ try{
  for(const width of (process.env.DC_UI3_QUICK?[390]:[320,375,390,430,768,1024,1440])){
   await page.setViewportSize({width,height:900});
   for(const section of (process.env.DC_UI3_SECTIONS?.split(',')??['home','plan','workout','history','learn','library','details','recovery','consult','care','more'])){
-   await page.goto(`http://127.0.0.1:37866/?lang=he#${section==='details'?'library?exercise=bench':section}`);await page.locator('.dc-ui3').waitFor();await page.waitForTimeout(900);if(section==='workout')await page.locator('.session-exercise .exercise-disclosure-toggle').first().click();
+   await page.goto(`http://127.0.0.1:37866/?lang=he#${section==='details'?'library?exercise=bench':section}`);await page.locator('.dc-ui3').waitFor();await page.waitForFunction(mode=>document.documentElement.classList.contains(mode),theme);await page.waitForTimeout(900);if(section==='workout')await page.locator('.session-exercise .exercise-disclosure-toggle').first().click();
    const overflow=await page.evaluate(()=>document.documentElement.scrollWidth>innerWidth);assert.equal(overflow,false,`${section} overflows at ${width}`);
    await page.evaluate(()=>scrollTo(0,0));
-   if(section==='home'){const colors=await page.locator('.dc-premium-hero .button').evaluate(el=>({background:getComputedStyle(el).backgroundColor,button:getComputedStyle(el).getPropertyValue('--dc-button').trim()}));assert.equal(colors.background,'rgb(245, 185, 66)',JSON.stringify(colors));}
+   if(section==='home'){const colors=await page.locator('.dc-premium-hero .button').evaluate(el=>({background:getComputedStyle(el).backgroundColor,button:getComputedStyle(el).getPropertyValue('--dc-button').trim()}));assert.equal(colors.background,buttonRgb,JSON.stringify(colors));assert.equal(colors.button.toLowerCase(),colorsFor(appearance).button.toLowerCase(),JSON.stringify(colors));}
    if(section==='history'){const labels=await page.locator('.progress-sort-card .training-metrics > div > span').evaluateAll(nodes=>nodes.map(n=>n.getBoundingClientRect().width));assert.ok(labels.length>0);assert.ok(labels.every(w=>w>=96),'Consistency metric labels must remain readable: '+labels.join(','));}await page.screenshot({path:join(evidence,`${section}-${width}.png`),fullPage:true});if(section==='home')await page.screenshot({path:join(evidence,`home-${width}-viewport.png`)});if(section==='history'){await page.locator('.activity-card').screenshot({path:join(evidence,`cardio-${width}.png`),style:'.topbar,.mobile-bottom-nav{visibility:hidden!important}'});await page.locator('.performance-panel').screenshot({path:join(evidence,`strength-${width}.png`),style:'.topbar,.mobile-bottom-nav{visibility:hidden!important}'});}checks.push({section,width,overflow});
   }
  }
  await page.setViewportSize({width:390,height:900});await page.goto('http://127.0.0.1:37866/?lang=he#workout');await page.getByRole('region',{name:'טיימר מנוחה'}).waitFor();
  const timer=page.getByRole('region',{name:'טיימר מנוחה'});await timer.getByRole('button',{name:'התחלה',exact:true}).click();await page.waitForTimeout(1200);assert.notEqual(await timer.locator('output').textContent(),'01:30');await timer.getByRole('button',{name:'השהיה',exact:true}).click();const paused=await timer.locator('output').textContent();await page.waitForTimeout(1100);assert.equal(await timer.locator('output').textContent(),paused);await timer.getByRole('button',{name:'איפוס',exact:true}).click();assert.equal(await timer.locator('output').textContent(),'01:30');
- for(const width of (process.env.DC_UI3_QUICK?[390]:[320,375,390,430,768,1024,1440])){await page.setViewportSize({width,height:900});for(const section of (process.env.DC_UI3_SECTIONS?.split(',')??['home','plan','workout','history','learn','library','details','recovery','consult','care','more'])){await page.goto(`http://127.0.0.1:37866/?lang=en#${section==='details'?'library?exercise=bench':section}`);await page.locator('.dc-ui3').waitFor();await page.waitForTimeout(800);assert.equal(await page.locator('html').getAttribute('dir'),'ltr');assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth>innerWidth),false);if(section==='history'){const labels=await page.locator('.progress-sort-card .training-metrics > div > span').evaluateAll(nodes=>nodes.map(n=>n.getBoundingClientRect().width));assert.ok(labels.length>0);assert.ok(labels.every(w=>w>=96),'Consistency metric labels must remain readable: '+labels.join(','));}await page.screenshot({path:join(evidence,`${section}-${width}-en.png`),fullPage:true});checks.push({section,width,language:'en',overflow:false});}}
+ for(const width of (process.env.DC_UI3_QUICK?[390]:[320,375,390,430,768,1024,1440])){await page.setViewportSize({width,height:900});for(const section of (process.env.DC_UI3_SECTIONS?.split(',')??['home','plan','workout','history','learn','library','details','recovery','consult','care','more'])){await page.goto(`http://127.0.0.1:37866/?lang=en#${section==='details'?'library?exercise=bench':section}`);await page.locator('.dc-ui3').waitFor();await page.waitForFunction(mode=>document.documentElement.classList.contains(mode),theme);await page.waitForTimeout(800);assert.equal(await page.locator('html').getAttribute('dir'),'ltr');assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth>innerWidth),false);if(section==='history'){const labels=await page.locator('.progress-sort-card .training-metrics > div > span').evaluateAll(nodes=>nodes.map(n=>n.getBoundingClientRect().width));assert.ok(labels.length>0);assert.ok(labels.every(w=>w>=96),'Consistency metric labels must remain readable: '+labels.join(','));}await page.screenshot({path:join(evidence,`${section}-${width}-en.png`),fullPage:true});checks.push({section,width,language:'en',overflow:false});}}
  await page.setViewportSize({width:390,height:900});
  responses['/api/onboarding'].trainingBlocked=true;
  await page.goto('http://127.0.0.1:37866/?lang=he#home');await page.reload();await page.locator('.dc-premium-hero').waitFor();await page.waitForTimeout(500);assert.equal(await page.locator('.dc-premium-hero').getByRole('button',{name:'ליצירת קשר עם הצוות',exact:true}).count(),1);assert.equal(await page.locator('.dc-premium-hero .button').count(),1);await page.evaluate(()=>scrollTo(0,0));await page.screenshot({path:join(evidence,'home-blocked-390.png')});
  responses['/api/onboarding'].trainingBlocked=false;responses['/api/activity'].summary.today=null;responses['/api/wellness'].records=[];
  await page.reload();await page.locator('.dc-premium-hero').waitFor();await page.waitForTimeout(500);assert.equal(await page.locator('.dc-ui3-rings strong').nth(1).textContent(),'—');assert.equal(await page.locator('.dc-ui3-rings strong').nth(2).textContent(),'—');await page.screenshot({path:join(evidence,'home-empty-390.png')});
  assert.deepEqual(errors,[]);
- await writeFile(join(evidence,'results.json'),JSON.stringify({checks,timer:'start/pause/reset passed',errors},null,2));console.log(JSON.stringify({screenshots:checks.length,evidence,timer:'passed',errors}));
+ await writeFile(join(evidence,'results.json'),JSON.stringify({theme,checks,timer:'start/pause/reset passed',errors},null,2));console.log(JSON.stringify({theme,screenshots:checks.length,evidence,timer:'passed',errors}));
 }finally{await browser?.close();await server.close();await rm(fixture,{recursive:true,force:true});}
