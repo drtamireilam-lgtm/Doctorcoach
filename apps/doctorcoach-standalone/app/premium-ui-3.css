@@ -75,6 +75,7 @@ html .dc-ui3 .mobile-bottom-nav button.active svg{filter:drop-shadow(0 0 6px col
 .dc-ui3 :is(.search-box,input,select,textarea){max-width:100%}
 .dc-ui3 :is(.session-exercise,.exercise-card,.detail-main,.panel){min-width:0;overflow-wrap:anywhere}
 @media(min-width:1100px){
+ .dc-ui3-home .dc-progress-ring{max-width:112px}
  .dc-ui3 .dc-ui3-home{grid-template-columns:minmax(0,1.5fr) minmax(280px,1fr);gap:22px}
  .dc-ui3-home .dc-ui3-greeting,.dc-ui3-home .dc-premium-further{grid-column:1/-1}
  .dc-ui3 .dc-ui3-home .dc-premium-hero{grid-column:1;grid-row:2;min-height:335px}
