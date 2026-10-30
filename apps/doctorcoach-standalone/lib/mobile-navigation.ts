@@ -7,7 +7,7 @@ export const traineeAreas=[
  {id:'learn',label:'אנטומיה ולמידה'},{id:'contact',label:'יצירת קשר'},
 ] as const;
 export type TraineeArea=typeof traineeAreas[number]['id']|'more';
-export const traineePrimaryNav=[{id:'home',label:'בית'},{id:'plan',label:'התוכנית שלי'},{id:'care',label:'התיק שלי'},{id:'more',label:'עוד'}] as const;
+export const traineePrimaryNav=[{id:'home',label:'בית'},{id:'plan',label:'אימונים'},{id:'history',label:'התקדמות'},{id:'learn',label:'אנטומיה'},{id:'more',label:'עוד'}] as const;
 // Hide staff shortcuts while authorization is refreshing or unavailable.
 export function staffDestinations(input:{access:string;careRole?:string|null}){
  if(!['member','staff'].includes(input.access))return [];
@@ -22,7 +22,7 @@ const parents:Record<string,TraineeArea>={
 };
 export function areaFor(section:string):TraineeArea|undefined{return parents[section];}
 export function isAccountSection(section:string){return ['settings','membership','privacy'].includes(section);}
-export function mobileTabFor(section:string){const area=areaFor(section);if(isAccountSection(section)||!area)return undefined;if(area==='history')return 'care';return section!=='more'&&['home','care','plan'].includes(area)?area:'menu';}
+export function mobileTabFor(section:string){const area=areaFor(section);if(isAccountSection(section)||!area)return undefined;return ['home','plan','history','learn'].includes(area)?area:'menu';}
 export const areaLinks:Partial<Record<TraineeArea,{id:string;label:string}[]>>={
  home:[{id:'home',label:'בית'},{id:'pro',label:'הצוות'},{id:'stories',label:'סיפורי התקדמות'}],
  care:[{id:'care',label:'התיק שלי'},{id:'onboarding',label:'שאלונים והערכה'},{id:'injuries',label:'פציעות והתאמות'},{id:'history',label:'התקדמות'}],

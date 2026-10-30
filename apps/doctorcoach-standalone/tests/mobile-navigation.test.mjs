@@ -1,6 +1,10 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import {isSimpleTrainee,mobileTabFor,areaFor,traineeAreas,areaLinks} from '../lib/mobile-navigation.ts';
+import {isSimpleTrainee,mobileTabFor,areaFor,traineeAreas,areaLinks,traineePrimaryNav} from '../lib/mobile-navigation.ts';
+
+test('premium phone navigation exposes training, progress and anatomy directly',()=>{
+ assert.deepEqual(traineePrimaryNav.map(n=>n.id),['home','plan','history','learn','more']);
+});
 
 test('personal daily view waits for verified trainee identity and completed onboarding',()=>{
  const trainee={auth:'ready',staffAccess:'member',completed:true};
@@ -15,7 +19,7 @@ test('legacy links retain their parent area and phone selection',()=>{
  const groups={home:['home','stories','pro'],more:['more','settings','membership','privacy'],care:['care','onboarding','injuries'],plan:['plan','workout','readiness'],history:['history','nutrition','recovery'],library:['library','videos'],learn:['learn'],contact:['contact','messages','feedback','appointments','consult']};
  for(const [area,sections] of Object.entries(groups))for(const section of sections){
   assert.equal(areaFor(section),area,section);
-  assert.equal(mobileTabFor(section),['settings','membership','privacy'].includes(section)?undefined:area==='history'?'care':section!=='more'&&['home','care','plan'].includes(area)?area:'menu',section);
+  assert.equal(mobileTabFor(section),['settings','membership','privacy'].includes(section)?undefined:['home','plan','history','learn'].includes(area)?area:'menu',section);
  }
 });
 test('secondary navigation links stay within their parent area',()=>{

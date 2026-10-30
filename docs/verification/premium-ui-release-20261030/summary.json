@@ -1,0 +1,59 @@
+{
+  "tested_runtime_commit": "cf36a5136e7d5d2327f7de0b383460ab75111093",
+  "pr63": "bc635ff5fd07939f8f7d3a9ece623606da93ea56",
+  "pr62": "5d5284f55677017459e63252f24199aa4bd486f8",
+  "standalone_tests": {
+    "pass": 1738,
+    "fail": 0,
+    "skip": 0,
+    "cancelled": 0
+  },
+  "foundation_tests": 10,
+  "local_postgres_rls_tests": 6,
+  "typecheck": "passed",
+  "root_build": "passed",
+  "standalone_build": "passed",
+  "worker_http_synthetic": "passed",
+  "visual": {
+    "dark": {
+      "layouts": 182,
+      "workout_flows": 4,
+      "page_errors": 0,
+      "timer": "start/pause/reset passed"
+    },
+    "light": {
+      "layouts": 182,
+      "workout_flows": 4,
+      "page_errors": 0,
+      "timer": "start/pause/reset passed"
+    }
+  },
+  "layouts_total": 364,
+  "workout_flows_total": 8,
+  "screenshot_pngs": 426,
+  "lint": {
+    "errors": 78,
+    "warnings": 116,
+    "status": "Failed; inherited errors remain"
+  },
+  "browser_workflows": {
+    "management": 8,
+    "consultations": 4,
+    "import_cases": 16,
+    "cardio_language_width_flows": 4,
+    "auth_entrypoints": 12,
+    "palette_mode_width_combinations": 75,
+    "anatomy_reported_checks": {
+      "viewer": 20,
+      "joints": 13,
+      "application": 86,
+      "exercise_motion": 10
+    }
+  },
+  "github_ci": {
+    "status": "queued; not verified green",
+    "url": "https://github.com/drtamireilam-lgtm/Doctorcoach/actions/runs/41101418493"
+  },
+  "lab_readiness": "Blocked on fresh remote schema/ledger, backup/restore, identity/secrets/binding verification and real acceptance",
+  "remote_writes": false
+}

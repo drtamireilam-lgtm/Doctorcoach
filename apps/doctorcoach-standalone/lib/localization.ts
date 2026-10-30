@@ -7,6 +7,8 @@ const normalize = (text: string) => text.trim().replace(/\s+/g, ' ');
 const dictionary = new Map(hebrew.map((text, index) => [normalize(text), english[index]]));
 // New privacy labels are kept explicit instead of partially translating consent text.
 for(const [he,en] of [
+ ["ההתקדמות שלי", "My progress"],
+ ["אפשר לסדר את כרטיסי ההתקדמות לפי מה שחשוב לכם.", "Arrange progress cards by what matters to you."],
  ["הייעוץ אושר, אך הסנכרון ל-Google Calendar נכשל.", "The consultation was approved, but Google Calendar synchronization failed."],
  ["הייעוץ נשמר וסונכרן ל־Google Calendar.", "The consultation was saved and synchronized with Google Calendar."],
  ["הייעוץ בוטל והביטול אומת ב־Google Calendar.", "The consultation was cancelled and cancellation was verified in Google Calendar."],

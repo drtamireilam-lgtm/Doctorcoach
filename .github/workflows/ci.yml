@@ -2,9 +2,9 @@ name: DoctorCoach CI
 
 on:
   push:
-    branches: [main, "codex/integration-59-60-61-*", "audit/full-lab-*", "feature/premium-home-ui-*", "fix/consultation-calendar-*", "codex/trainee-guidance-*", "codex/user-team-management-*", "codex/consultation-management-*", "feature/cardio-automatic-steps-*", "codex/exercise-recognition-3-*", "codex/import-integration-lab-*", "codex/application-audit-*", "stabilize/**", "fix/appearance-toggle-persistence-*", "feature/ui-ux-liad-followup-20261019", "feature/doctorcoach-2-smart-workout-20261020", "feature/anatomy-completion-*", "integration/anatomy-rehab-stretch-*"]
+    branches: [main, "feature/doctorcoach-premium-ui-3", "codex/integration-59-60-61-*", "audit/full-lab-*", "feature/premium-home-ui-*", "fix/consultation-calendar-*", "codex/trainee-guidance-*", "codex/user-team-management-*", "codex/consultation-management-*", "feature/cardio-automatic-steps-*", "codex/exercise-recognition-3-*", "codex/import-integration-lab-*", "codex/application-audit-*", "stabilize/**", "fix/appearance-toggle-persistence-*", "feature/ui-ux-liad-followup-20261019", "feature/doctorcoach-2-smart-workout-20261020", "feature/anatomy-completion-*", "integration/anatomy-rehab-stretch-*"]
   pull_request:
-    branches: [main, "audit/full-lab-*", "feature/premium-home-ui-*", "fix/consultation-calendar-*", "codex/trainee-guidance-*", "codex/user-team-management-*", "codex/consultation-management-*", "feature/cardio-automatic-steps-*", "codex/exercise-recognition-3-*", "codex/import-integration-lab-*", "codex/generic-movement-import-*", "codex/application-audit-*", "codex/import-structure-regressions-*", "codex/import-alias-precision-*", "codex/google-apple-signin-*", "feature/anatomy-*", "integration/anatomy-*", "codex/anatomy-*", "codex/smart-import-3-*"]
+    branches: [main, "feature/doctorcoach-premium-ui-3", "codex/integration-59-60-61-*", "audit/full-lab-*", "feature/premium-home-ui-*", "fix/consultation-calendar-*", "codex/trainee-guidance-*", "codex/user-team-management-*", "codex/consultation-management-*", "feature/cardio-automatic-steps-*", "codex/exercise-recognition-3-*", "codex/import-integration-lab-*", "codex/generic-movement-import-*", "codex/application-audit-*", "codex/import-structure-regressions-*", "codex/import-alias-precision-*", "codex/google-apple-signin-*", "feature/anatomy-*", "integration/anatomy-*", "codex/anatomy-*", "codex/smart-import-3-*"]
 
 permissions:
   contents: read
@@ -35,10 +35,10 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 20
     env:
-      LAB_AUDIT: ${{ startsWith(github.ref_name, 'codex/integration-59-60-61-') || startsWith(github.ref_name, 'audit/full-lab-') || startsWith(github.head_ref, 'codex/integration-59-60-61-') || startsWith(github.head_ref, 'audit/full-lab-') }}
-      CARDIO_CHECKS: ${{ startsWith(github.ref_name, 'codex/integration-59-60-61-') || startsWith(github.ref_name, 'audit/full-lab-') || startsWith(github.head_ref, 'codex/integration-59-60-61-') || startsWith(github.head_ref, 'audit/full-lab-') || startsWith(github.ref_name, 'feature/cardio-automatic-steps-') || startsWith(github.head_ref, 'feature/cardio-automatic-steps-') }}
+      LAB_AUDIT: ${{ startsWith(github.ref_name, 'codex/integration-59-60-61-') || startsWith(github.ref_name, 'audit/full-lab-') || startsWith(github.head_ref, 'codex/integration-59-60-61-') || startsWith(github.head_ref, 'audit/full-lab-') || startsWith(github.base_ref, 'codex/integration-59-60-61-') || github.ref_name == 'feature/doctorcoach-premium-ui-3' || github.head_ref == 'feature/doctorcoach-premium-ui-3' || github.base_ref == 'feature/doctorcoach-premium-ui-3' }}
+      CARDIO_CHECKS: ${{ startsWith(github.ref_name, 'codex/integration-59-60-61-') || startsWith(github.ref_name, 'audit/full-lab-') || startsWith(github.head_ref, 'codex/integration-59-60-61-') || startsWith(github.head_ref, 'audit/full-lab-') || startsWith(github.ref_name, 'feature/cardio-automatic-steps-') || startsWith(github.head_ref, 'feature/cardio-automatic-steps-') || startsWith(github.base_ref, 'codex/integration-59-60-61-') || github.ref_name == 'feature/doctorcoach-premium-ui-3' || github.head_ref == 'feature/doctorcoach-premium-ui-3' || github.base_ref == 'feature/doctorcoach-premium-ui-3' }}
       # PR refs are synthetic merge refs; use the source and target branch names too.
-      ANATOMY_BROWSER_CHECKS: ${{ startsWith(github.ref_name, 'codex/integration-59-60-61-') || startsWith(github.ref_name, 'audit/full-lab-') || startsWith(github.head_ref, 'codex/integration-59-60-61-') || startsWith(github.head_ref, 'audit/full-lab-') || startsWith(github.ref_name, 'codex/application-audit-') || startsWith(github.head_ref, 'codex/application-audit-') || startsWith(github.ref_name, 'feature/anatomy-') || startsWith(github.ref_name, 'integration/anatomy-') || startsWith(github.head_ref, 'feature/anatomy-') || startsWith(github.head_ref, 'integration/anatomy-') || startsWith(github.base_ref, 'feature/anatomy-') || startsWith(github.base_ref, 'integration/anatomy-') || startsWith(github.base_ref, 'codex/anatomy-') }}
+      ANATOMY_BROWSER_CHECKS: ${{ startsWith(github.ref_name, 'codex/integration-59-60-61-') || startsWith(github.ref_name, 'audit/full-lab-') || startsWith(github.head_ref, 'codex/integration-59-60-61-') || startsWith(github.head_ref, 'audit/full-lab-') || startsWith(github.ref_name, 'codex/application-audit-') || startsWith(github.head_ref, 'codex/application-audit-') || startsWith(github.ref_name, 'feature/anatomy-') || startsWith(github.ref_name, 'integration/anatomy-') || startsWith(github.head_ref, 'feature/anatomy-') || startsWith(github.head_ref, 'integration/anatomy-') || startsWith(github.base_ref, 'feature/anatomy-') || startsWith(github.base_ref, 'integration/anatomy-') || startsWith(github.base_ref, 'codex/anatomy-') || startsWith(github.base_ref, 'codex/integration-59-60-61-') || github.ref_name == 'feature/doctorcoach-premium-ui-3' || github.head_ref == 'feature/doctorcoach-premium-ui-3' || github.base_ref == 'feature/doctorcoach-premium-ui-3' }}
     defaults:
       run:
         working-directory: apps/doctorcoach-standalone
@@ -51,6 +51,19 @@ jobs:
         run: npm install --global pnpm@11.25.0
       - name: Install locked standalone dependencies
         run: pnpm install --frozen-lockfile
+      - name: Premium UI 3 local visual and interaction checks
+        if: github.head_ref == 'feature/doctorcoach-premium-ui-3' || github.ref_name == 'feature/doctorcoach-premium-ui-3' || github.base_ref == 'feature/doctorcoach-premium-ui-3'
+        env:
+          DC_CHROMIUM: /usr/bin/google-chrome
+        run: |
+          node --experimental-strip-types scripts/premium-ui-3-browser-smoke.mjs
+          DC_UI3_THEME=light DC_UI3_EVIDENCE=.sites-runtime/ui3-evidence/light node --experimental-strip-types scripts/premium-ui-3-browser-smoke.mjs
+      - name: Save Premium UI 3 screenshots
+        if: always() && (github.head_ref == 'feature/doctorcoach-premium-ui-3' || github.ref_name == 'feature/doctorcoach-premium-ui-3' || github.base_ref == 'feature/doctorcoach-premium-ui-3')
+        uses: actions/upload-artifact@v4
+        with:
+          name: premium-ui-3-visual-evidence
+          path: apps/doctorcoach-standalone/.sites-runtime/ui3-evidence
       - name: Standalone regression tests
         run: npm test
       - name: Consultation desktop and mobile bilingual workflow

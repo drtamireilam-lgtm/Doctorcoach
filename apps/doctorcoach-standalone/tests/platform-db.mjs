@@ -14,8 +14,19 @@ export const coach = { userId:'coach', email:'coach@example.test' };
 export const client = { userId:'client', email:'client@example.test' };
 export const stranger = { userId:'stranger', email:'stranger@example.test' };
 export const profile = () => ({name:'בדיקת מערכת',goal:'בדיקת תוכנית',experience:'מתחיל',equipment:'משקולות',days:3,medical:{painAreas:'מידע פרטי לבדיקה',injuryHistory:'מידע פרטי לבדיקה',medicalHistory:'מידע פרטי לבדיקה'},version:0});
-export function platform(t) {
+export function platform(t, {now, sqlNow = now} = {}) {
+  if (now) t.mock.timers.enable({apis:['Date'], now:new Date(now)});
   const sql = new DatabaseSync(':memory:');
+  if (sqlNow) {
+    // SQLite's clock is independent of mocked Date. Keep SQL guards and triggers
+    // on the same fixture clock, retaining native strftime formatting/modifiers.
+    const clockSql = new DatabaseSync(':memory:');
+    sql.function('strftime', {varargs:true}, (...args) => {
+      const values = args.map(value => value === 'now' ? sqlNow : value);
+      return clockSql.prepare(`SELECT strftime(${values.map(() => '?').join(',')}) AS value`).get(...values).value;
+    });
+    t.after(() => clockSql.close());
+  }
   for (const migration of migrations) sql.exec(migration);
   t.after(() => sql.close());
   // Existing feature tests use an active independent entitlement; access-policy tests override it explicitly.
