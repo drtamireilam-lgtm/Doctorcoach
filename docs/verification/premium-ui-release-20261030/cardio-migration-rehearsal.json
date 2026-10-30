@@ -1,0 +1,12 @@
+{
+  "status": "PASS",
+  "offlineOnly": true,
+  "remoteVerified": false,
+  "migrationsApplied": 5,
+  "originalTablesPreserved": 86,
+  "populatedTablesPreserved": 14,
+  "identityTablesPreserved": 10,
+  "oldColumnRowsPreserved": true,
+  "schemaVerified": true,
+  "constraintsVerified": true
+}

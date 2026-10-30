@@ -1,0 +1,1064 @@
+{
+  "theme": "dark",
+  "checks": [
+    {
+      "section": "home",
+      "width": 320,
+      "overflow": false
+    },
+    {
+      "section": "plan",
+      "width": 320,
+      "overflow": false
+    },
+    {
+      "section": "workout",
+      "width": 320,
+      "overflow": false
+    },
+    {
+      "section": "history",
+      "width": 320,
+      "overflow": false
+    },
+    {
+      "section": "learn",
+      "width": 320,
+      "overflow": false
+    },
+    {
+      "section": "library",
+      "width": 320,
+      "overflow": false
+    },
+    {
+      "section": "details",
+      "width": 320,
+      "overflow": false
+    },
+    {
+      "section": "recovery",
+      "width": 320,
+      "overflow": false
+    },
+    {
+      "section": "consult",
+      "width": 320,
+      "overflow": false
+    },
+    {
+      "section": "care",
+      "width": 320,
+      "overflow": false
+    },
+    {
+      "section": "more",
+      "width": 320,
+      "overflow": false
+    },
+    {
+      "section": "home",
+      "width": 375,
+      "overflow": false
+    },
+    {
+      "section": "plan",
+      "width": 375,
+      "overflow": false
+    },
+    {
+      "section": "workout",
+      "width": 375,
+      "overflow": false
+    },
+    {
+      "section": "history",
+      "width": 375,
+      "overflow": false
+    },
+    {
+      "section": "learn",
+      "width": 375,
+      "overflow": false
+    },
+    {
+      "section": "library",
+      "width": 375,
+      "overflow": false
+    },
+    {
+      "section": "details",
+      "width": 375,
+      "overflow": false
+    },
+    {
+      "section": "recovery",
+      "width": 375,
+      "overflow": false
+    },
+    {
+      "section": "consult",
+      "width": 375,
+      "overflow": false
+    },
+    {
+      "section": "care",
+      "width": 375,
+      "overflow": false
+    },
+    {
+      "section": "more",
+      "width": 375,
+      "overflow": false
+    },
+    {
+      "section": "home",
+      "width": 390,
+      "overflow": false
+    },
+    {
+      "section": "plan",
+      "width": 390,
+      "overflow": false
+    },
+    {
+      "section": "workout",
+      "width": 390,
+      "overflow": false
+    },
+    {
+      "section": "history",
+      "width": 390,
+      "overflow": false
+    },
+    {
+      "section": "learn",
+      "width": 390,
+      "overflow": false
+    },
+    {
+      "section": "library",
+      "width": 390,
+      "overflow": false
+    },
+    {
+      "section": "details",
+      "width": 390,
+      "overflow": false
+    },
+    {
+      "section": "recovery",
+      "width": 390,
+      "overflow": false
+    },
+    {
+      "section": "consult",
+      "width": 390,
+      "overflow": false
+    },
+    {
+      "section": "care",
+      "width": 390,
+      "overflow": false
+    },
+    {
+      "section": "more",
+      "width": 390,
+      "overflow": false
+    },
+    {
+      "section": "home",
+      "width": 430,
+      "overflow": false
+    },
+    {
+      "section": "plan",
+      "width": 430,
+      "overflow": false
+    },
+    {
+      "section": "workout",
+      "width": 430,
+      "overflow": false
+    },
+    {
+      "section": "history",
+      "width": 430,
+      "overflow": false
+    },
+    {
+      "section": "learn",
+      "width": 430,
+      "overflow": false
+    },
+    {
+      "section": "library",
+      "width": 430,
+      "overflow": false
+    },
+    {
+      "section": "details",
+      "width": 430,
+      "overflow": false
+    },
+    {
+      "section": "recovery",
+      "width": 430,
+      "overflow": false
+    },
+    {
+      "section": "consult",
+      "width": 430,
+      "overflow": false
+    },
+    {
+      "section": "care",
+      "width": 430,
+      "overflow": false
+    },
+    {
+      "section": "more",
+      "width": 430,
+      "overflow": false
+    },
+    {
+      "section": "home",
+      "width": 768,
+      "overflow": false
+    },
+    {
+      "section": "plan",
+      "width": 768,
+      "overflow": false
+    },
+    {
+      "section": "workout",
+      "width": 768,
+      "overflow": false
+    },
+    {
+      "section": "history",
+      "width": 768,
+      "overflow": false
+    },
+    {
+      "section": "learn",
+      "width": 768,
+      "overflow": false
+    },
+    {
+      "section": "library",
+      "width": 768,
+      "overflow": false
+    },
+    {
+      "section": "details",
+      "width": 768,
+      "overflow": false
+    },
+    {
+      "section": "recovery",
+      "width": 768,
+      "overflow": false
+    },
+    {
+      "section": "consult",
+      "width": 768,
+      "overflow": false
+    },
+    {
+      "section": "care",
+      "width": 768,
+      "overflow": false
+    },
+    {
+      "section": "more",
+      "width": 768,
+      "overflow": false
+    },
+    {
+      "section": "home",
+      "width": 1024,
+      "overflow": false
+    },
+    {
+      "section": "plan",
+      "width": 1024,
+      "overflow": false
+    },
+    {
+      "section": "workout",
+      "width": 1024,
+      "overflow": false
+    },
+    {
+      "section": "history",
+      "width": 1024,
+      "overflow": false
+    },
+    {
+      "section": "learn",
+      "width": 1024,
+      "overflow": false
+    },
+    {
+      "section": "library",
+      "width": 1024,
+      "overflow": false
+    },
+    {
+      "section": "details",
+      "width": 1024,
+      "overflow": false
+    },
+    {
+      "section": "recovery",
+      "width": 1024,
+      "overflow": false
+    },
+    {
+      "section": "consult",
+      "width": 1024,
+      "overflow": false
+    },
+    {
+      "section": "care",
+      "width": 1024,
+      "overflow": false
+    },
+    {
+      "section": "more",
+      "width": 1024,
+      "overflow": false
+    },
+    {
+      "section": "home",
+      "width": 1440,
+      "overflow": false
+    },
+    {
+      "section": "plan",
+      "width": 1440,
+      "overflow": false
+    },
+    {
+      "section": "workout",
+      "width": 1440,
+      "overflow": false
+    },
+    {
+      "section": "history",
+      "width": 1440,
+      "overflow": false
+    },
+    {
+      "section": "learn",
+      "width": 1440,
+      "overflow": false
+    },
+    {
+      "section": "library",
+      "width": 1440,
+      "overflow": false
+    },
+    {
+      "section": "details",
+      "width": 1440,
+      "overflow": false
+    },
+    {
+      "section": "recovery",
+      "width": 1440,
+      "overflow": false
+    },
+    {
+      "section": "consult",
+      "width": 1440,
+      "overflow": false
+    },
+    {
+      "section": "care",
+      "width": 1440,
+      "overflow": false
+    },
+    {
+      "section": "more",
+      "width": 1440,
+      "overflow": false
+    },
+    {
+      "section": "home",
+      "width": 320,
+      "language": "en",
+      "overflow": false
+    },
+    {
+      "section": "plan",
+      "width": 320,
+      "language": "en",
+      "overflow": false
+    },
+    {
+      "section": "workout",
+      "width": 320,
+      "language": "en",
+      "overflow": false
+    },
+    {
+      "section": "history",
+      "width": 320,
+      "language": "en",
+      "overflow": false
+    },
+    {
+      "section": "learn",
+      "width": 320,
+      "language": "en",
+      "overflow": false
+    },
+    {
+      "section": "library",
+      "width": 320,
+      "language": "en",
+      "overflow": false
+    },
+    {
+      "section": "details",
+      "width": 320,
+      "language": "en",
+      "overflow": false
+    },
+    {
+      "section": "recovery",
+      "width": 320,
+      "language": "en",
+      "overflow": false
+    },
+    {
+      "section": "consult",
+      "width": 320,
+      "language": "en",
+      "overflow": false
+    },
+    {
+      "section": "care",
+      "width": 320,
+      "language": "en",
+      "overflow": false
+    },
+    {
+      "section": "more",
+      "width": 320,
+      "language": "en",
+      "overflow": false
+    },
+    {
+      "section": "home",
+      "width": 375,
+      "language": "en",
+      "overflow": false
+    },
+    {
+      "section": "plan",
+      "width": 375,
+      "language": "en",
+      "overflow": false
+    },
+    {
+      "section": "workout",
+      "width": 375,
+      "language": "en",
+      "overflow": false
+    },
+    {
+      "section": "history",
+      "width": 375,
+      "language": "en",
+      "overflow": false
+    },
+    {
+      "section": "learn",
+      "width": 375,
+      "language": "en",
+      "overflow": false
+    },
+    {
+      "section": "library",
+      "width": 375,
+      "language": "en",
+      "overflow": false
+    },
+    {
+      "section": "details",
+      "width": 375,
+      "language": "en",
+      "overflow": false
+    },
+    {
+      "section": "recovery",
+      "width": 375,
+      "language": "en",
+      "overflow": false
+    },
+    {
+      "section": "consult",
+      "width": 375,
+      "language": "en",
+      "overflow": false
+    },
+    {
+      "section": "care",
+      "width": 375,
+      "language": "en",
+      "overflow": false
+    },
+    {
+      "section": "more",
+      "width": 375,
+      "language": "en",
+      "overflow": false
+    },
+    {
+      "section": "home",
+      "width": 390,
+      "language": "en",
+      "overflow": false
+    },
+    {
+      "section": "plan",
+      "width": 390,
+      "language": "en",
+      "overflow": false
+    },
+    {
+      "section": "workout",
+      "width": 390,
+      "language": "en",
+      "overflow": false
+    },
+    {
+      "section": "history",
+      "width": 390,
+      "language": "en",
+      "overflow": false
+    },
+    {
+      "section": "learn",
+      "width": 390,
+      "language": "en",
+      "overflow": false
+    },
+    {
+      "section": "library",
+      "width": 390,
+      "language": "en",
+      "overflow": false
+    },
+    {
+      "section": "details",
+      "width": 390,
+      "language": "en",
+      "overflow": false
+    },
+    {
+      "section": "recovery",
+      "width": 390,
+      "language": "en",
+      "overflow": false
+    },
+    {
+      "section": "consult",
+      "width": 390,
+      "language": "en",
+      "overflow": false
+    },
+    {
+      "section": "care",
+      "width": 390,
+      "language": "en",
+      "overflow": false
+    },
+    {
+      "section": "more",
+      "width": 390,
+      "language": "en",
+      "overflow": false
+    },
+    {
+      "section": "home",
+      "width": 430,
+      "language": "en",
+      "overflow": false
+    },
+    {
+      "section": "plan",
+      "width": 430,
+      "language": "en",
+      "overflow": false
+    },
+    {
+      "section": "workout",
+      "width": 430,
+      "language": "en",
+      "overflow": false
+    },
+    {
+      "section": "history",
+      "width": 430,
+      "language": "en",
+      "overflow": false
+    },
+    {
+      "section": "learn",
+      "width": 430,
+      "language": "en",
+      "overflow": false
+    },
+    {
+      "section": "library",
+      "width": 430,
+      "language": "en",
+      "overflow": false
+    },
+    {
+      "section": "details",
+      "width": 430,
+      "language": "en",
+      "overflow": false
+    },
+    {
+      "section": "recovery",
+      "width": 430,
+      "language": "en",
+      "overflow": false
+    },
+    {
+      "section": "consult",
+      "width": 430,
+      "language": "en",
+      "overflow": false
+    },
+    {
+      "section": "care",
+      "width": 430,
+      "language": "en",
+      "overflow": false
+    },
+    {
+      "section": "more",
+      "width": 430,
+      "language": "en",
+      "overflow": false
+    },
+    {
+      "section": "home",
+      "width": 768,
+      "language": "en",
+      "overflow": false
+    },
+    {
+      "section": "plan",
+      "width": 768,
+      "language": "en",
+      "overflow": false
+    },
+    {
+      "section": "workout",
+      "width": 768,
+      "language": "en",
+      "overflow": false
+    },
+    {
+      "section": "history",
+      "width": 768,
+      "language": "en",
+      "overflow": false
+    },
+    {
+      "section": "learn",
+      "width": 768,
+      "language": "en",
+      "overflow": false
+    },
+    {
+      "section": "library",
+      "width": 768,
+      "language": "en",
+      "overflow": false
+    },
+    {
+      "section": "details",
+      "width": 768,
+      "language": "en",
+      "overflow": false
+    },
+    {
+      "section": "recovery",
+      "width": 768,
+      "language": "en",
+      "overflow": false
+    },
+    {
+      "section": "consult",
+      "width": 768,
+      "language": "en",
+      "overflow": false
+    },
+    {
+      "section": "care",
+      "width": 768,
+      "language": "en",
+      "overflow": false
+    },
+    {
+      "section": "more",
+      "width": 768,
+      "language": "en",
+      "overflow": false
+    },
+    {
+      "section": "home",
+      "width": 1024,
+      "language": "en",
+      "overflow": false
+    },
+    {
+      "section": "plan",
+      "width": 1024,
+      "language": "en",
+      "overflow": false
+    },
+    {
+      "section": "workout",
+      "width": 1024,
+      "language": "en",
+      "overflow": false
+    },
+    {
+      "section": "history",
+      "width": 1024,
+      "language": "en",
+      "overflow": false
+    },
+    {
+      "section": "learn",
+      "width": 1024,
+      "language": "en",
+      "overflow": false
+    },
+    {
+      "section": "library",
+      "width": 1024,
+      "language": "en",
+      "overflow": false
+    },
+    {
+      "section": "details",
+      "width": 1024,
+      "language": "en",
+      "overflow": false
+    },
+    {
+      "section": "recovery",
+      "width": 1024,
+      "language": "en",
+      "overflow": false
+    },
+    {
+      "section": "consult",
+      "width": 1024,
+      "language": "en",
+      "overflow": false
+    },
+    {
+      "section": "care",
+      "width": 1024,
+      "language": "en",
+      "overflow": false
+    },
+    {
+      "section": "more",
+      "width": 1024,
+      "language": "en",
+      "overflow": false
+    },
+    {
+      "section": "home",
+      "width": 1440,
+      "language": "en",
+      "overflow": false
+    },
+    {
+      "section": "plan",
+      "width": 1440,
+      "language": "en",
+      "overflow": false
+    },
+    {
+      "section": "workout",
+      "width": 1440,
+      "language": "en",
+      "overflow": false
+    },
+    {
+      "section": "history",
+      "width": 1440,
+      "language": "en",
+      "overflow": false
+    },
+    {
+      "section": "learn",
+      "width": 1440,
+      "language": "en",
+      "overflow": false
+    },
+    {
+      "section": "library",
+      "width": 1440,
+      "language": "en",
+      "overflow": false
+    },
+    {
+      "section": "details",
+      "width": 1440,
+      "language": "en",
+      "overflow": false
+    },
+    {
+      "section": "recovery",
+      "width": 1440,
+      "language": "en",
+      "overflow": false
+    },
+    {
+      "section": "consult",
+      "width": 1440,
+      "language": "en",
+      "overflow": false
+    },
+    {
+      "section": "care",
+      "width": 1440,
+      "language": "en",
+      "overflow": false
+    },
+    {
+      "section": "more",
+      "width": 1440,
+      "language": "en",
+      "overflow": false
+    },
+    {
+      "section": "dashboard",
+      "width": 320,
+      "language": "he",
+      "overflow": false
+    },
+    {
+      "section": "users",
+      "width": 320,
+      "language": "he",
+      "overflow": false
+    },
+    {
+      "section": "dashboard",
+      "width": 320,
+      "language": "en",
+      "overflow": false
+    },
+    {
+      "section": "users",
+      "width": 320,
+      "language": "en",
+      "overflow": false
+    },
+    {
+      "section": "dashboard",
+      "width": 375,
+      "language": "he",
+      "overflow": false
+    },
+    {
+      "section": "users",
+      "width": 375,
+      "language": "he",
+      "overflow": false
+    },
+    {
+      "section": "dashboard",
+      "width": 375,
+      "language": "en",
+      "overflow": false
+    },
+    {
+      "section": "users",
+      "width": 375,
+      "language": "en",
+      "overflow": false
+    },
+    {
+      "section": "dashboard",
+      "width": 390,
+      "language": "he",
+      "overflow": false
+    },
+    {
+      "section": "users",
+      "width": 390,
+      "language": "he",
+      "overflow": false
+    },
+    {
+      "section": "dashboard",
+      "width": 390,
+      "language": "en",
+      "overflow": false
+    },
+    {
+      "section": "users",
+      "width": 390,
+      "language": "en",
+      "overflow": false
+    },
+    {
+      "section": "dashboard",
+      "width": 430,
+      "language": "he",
+      "overflow": false
+    },
+    {
+      "section": "users",
+      "width": 430,
+      "language": "he",
+      "overflow": false
+    },
+    {
+      "section": "dashboard",
+      "width": 430,
+      "language": "en",
+      "overflow": false
+    },
+    {
+      "section": "users",
+      "width": 430,
+      "language": "en",
+      "overflow": false
+    },
+    {
+      "section": "dashboard",
+      "width": 768,
+      "language": "he",
+      "overflow": false
+    },
+    {
+      "section": "users",
+      "width": 768,
+      "language": "he",
+      "overflow": false
+    },
+    {
+      "section": "dashboard",
+      "width": 768,
+      "language": "en",
+      "overflow": false
+    },
+    {
+      "section": "users",
+      "width": 768,
+      "language": "en",
+      "overflow": false
+    },
+    {
+      "section": "dashboard",
+      "width": 1024,
+      "language": "he",
+      "overflow": false
+    },
+    {
+      "section": "users",
+      "width": 1024,
+      "language": "he",
+      "overflow": false
+    },
+    {
+      "section": "dashboard",
+      "width": 1024,
+      "language": "en",
+      "overflow": false
+    },
+    {
+      "section": "users",
+      "width": 1024,
+      "language": "en",
+      "overflow": false
+    },
+    {
+      "section": "dashboard",
+      "width": 1440,
+      "language": "he",
+      "overflow": false
+    },
+    {
+      "section": "users",
+      "width": 1440,
+      "language": "he",
+      "overflow": false
+    },
+    {
+      "section": "dashboard",
+      "width": 1440,
+      "language": "en",
+      "overflow": false
+    },
+    {
+      "section": "users",
+      "width": 1440,
+      "language": "en",
+      "overflow": false
+    }
+  ],
+  "workoutChecks": [
+    {
+      "language": "he",
+      "width": 390,
+      "save": true,
+      "edit": true,
+      "reload": true,
+      "finish": true,
+      "history": true,
+      "nextLoad": true
+    },
+    {
+      "language": "he",
+      "width": 1440,
+      "save": true,
+      "edit": true,
+      "reload": true,
+      "finish": true,
+      "history": true,
+      "nextLoad": true
+    },
+    {
+      "language": "en",
+      "width": 390,
+      "save": true,
+      "edit": true,
+      "reload": true,
+      "finish": true,
+      "history": true,
+      "nextLoad": true
+    },
+    {
+      "language": "en",
+      "width": 1440,
+      "save": true,
+      "edit": true,
+      "reload": true,
+      "finish": true,
+      "history": true,
+      "nextLoad": true
+    }
+  ],
+  "timer": "start/pause/reset passed",
+  "errors": []
+}
