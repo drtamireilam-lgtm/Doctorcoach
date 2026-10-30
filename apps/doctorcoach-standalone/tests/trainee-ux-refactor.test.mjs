@@ -6,9 +6,10 @@ import ts from 'typescript';
 import * as jsx from 'react/jsx-runtime';
 import * as authLanguage from '../lib/auth-language.ts';
 import * as navigation from '../lib/mobile-navigation.ts';
+import * as homeSummary from '../lib/home-summary.ts';
 function component(file,language='he',overrides={}){
  const exports={},icons=new Proxy({},{get:(_,key)=>String(key)});
- const modules={'react/jsx-runtime':jsx,'react':{useState:v=>[typeof v==='function'?v():v,()=>{}]},'lucide-react':icons,...overrides,'../lib/auth-language':authLanguage,'../lib/mobile-navigation':navigation,'./language-provider':{Localize:'Localize',useLanguage:()=>({language})},'../components/language-provider':{Localize:'Localize',useLanguage:()=>({language})}};
+ const modules={'react/jsx-runtime':jsx,'react':{useState:v=>[typeof v==='function'?v():v,()=>{}]},'lucide-react':icons,'../hooks/use-care':{useCareResource:()=>({data:null})},...overrides,'../lib/auth-language':authLanguage,'../lib/mobile-navigation':navigation,'../lib/home-summary':homeSummary,'./language-provider':{Localize:'Localize',useLanguage:()=>({language})},'../components/language-provider':{Localize:'Localize',useLanguage:()=>({language})}};
  vm.runInNewContext(ts.transpileModule(readFileSync(new URL('../components/'+file,import.meta.url),'utf8'),{compilerOptions:{module:ts.ModuleKind.CommonJS,target:ts.ScriptTarget.ES2022,jsx:ts.JsxEmit.ReactJSX}}).outputText,{exports,require:k=>modules[k]??{}});
  return exports;
 }
@@ -18,7 +19,7 @@ test('More keeps account settings separate from its compact destinations',()=>{
   const destinations=[],tree=component('site-areas.tsx',language).MoreArea({go:s=>destinations.push(s),signedIn:true});
   const nav=nodes(tree,n=>n.type==='nav')[0];assert.equal(nav.props.className,'compact-menu');
   for(const button of nodes(nav,n=>n.type==='button'))button.props.onClick();
-  assert.deepEqual(destinations,['library','learn','contact','feedback']);
+  assert.deepEqual(destinations,['care','library','learn','contact','feedback']);
   assert.equal(nodes(tree,n=>n.type==='a'&&n.props.href?.includes('signout')).length,0);
  }
 });
@@ -54,20 +55,20 @@ test('settings separate technical/account controls from the personal file',()=>{
   assert.equal(new URL(signout[0].props.href,'https://app.test').searchParams.get('lang'),language);
  }
 });
-test('progress belongs to My file; account and staff pages select no unrelated main tab',()=>{
- for(const section of ['history','nutrition','recovery'])assert.equal(navigation.mobileTabFor(section),'care',section);
+test('progress has its own tab; account and staff pages select no unrelated main tab',()=>{
+ for(const section of ['history','nutrition','recovery'])assert.equal(navigation.mobileTabFor(section),'history',section);
  for(const section of ['settings','privacy','membership','admin','team','dashboard'])assert.equal(navigation.mobileTabFor(section),undefined,section);
- for(const section of ['library','learn','contact','feedback'])assert.equal(navigation.mobileTabFor(section),'menu',section);
+ for(const section of ['library','contact','feedback'])assert.equal(navigation.mobileTabFor(section),'menu',section);
  assert.ok(!navigation.areaLinks.care.some(x=>x.id==='settings'));
- assert.deepEqual(navigation.traineePrimaryNav.map(x=>x.id),['home','plan','care','more']);
+ assert.deepEqual(navigation.traineePrimaryNav.map(x=>x.id),['home','plan','history','learn','more']);
 });
 
-test('phone navigation keeps four controls without marking More on account pages',()=>{
+test('phone navigation keeps five controls without marking More on account pages',()=>{
  const visited=[],tree=component('site-areas.tsx').AreaMobileNav({section:'settings',go:s=>visited.push(s),openMenu:()=>{}});
- const buttons=nodes(tree,n=>n.type==='button');assert.equal(buttons.length,4);
+ const buttons=nodes(tree,n=>n.type==='button');assert.equal(buttons.length,5);
  for(const b of buttons)b.props.onClick();
- assert.deepEqual(visited,['home','plan','care','more']);
- assert.equal(buttons[3].props['aria-current'],undefined);
+ assert.deepEqual(visited,['home','plan','history','learn','more']);
+ assert.equal(buttons[4].props['aria-current'],undefined);
 });
 
 test('persistent account shortcut opens settings and owns account-page selection in both languages',()=>{

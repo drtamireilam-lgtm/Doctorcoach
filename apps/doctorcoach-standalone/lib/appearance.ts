@@ -11,7 +11,7 @@ export const palettes=[
 ] as const;
 export type Palette=typeof palettes[number]['id'];
 export type Appearance={mode:'light'|'dark';palette:Palette;custom?:CustomColors};
-export const defaultAppearance:Appearance={mode:'dark',palette:'red'};
+export const defaultAppearance:Appearance={mode:'dark',palette:'teal',custom:{background:'#030b14',primary:'#00e5f0',secondary:'#071827',button:'#f5b942',navigation:'#030b14',accent:'#00e5f0'}};
 export function isPalette(value:unknown):value is Palette{return palettes.some(p=>p.id===value);}
 export function isAppearance(value:unknown):value is Appearance{
  if(!value||typeof value!=='object')return false;const v=value as Record<string,unknown>;

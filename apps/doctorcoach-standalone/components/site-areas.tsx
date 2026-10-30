@@ -1,4 +1,5 @@
 'use client';
+import type {ReactNode} from 'react';
 import {PremiumHome} from './premium-home';
 import {Localize,useLanguage} from "../components/language-provider";
 import {ArrowRight,HelpCircle,ArrowLeft,Home,UserRound,ClipboardList,History,Menu,BookOpen,Accessibility,MessagesSquare,Settings2,Users,CalendarDays,HeartPulse,Film} from 'lucide-react';
@@ -9,8 +10,8 @@ export function AccountShortcut({section,go}:{section:string;go:Go}){
  const english=useLanguage().language==='en',label=english?'Settings & account':'הגדרות וחשבון';
  return <button type="button" className="account-shortcut" aria-label={label} title={label} aria-current={isAccountSection(section)?'page':undefined} onClick={()=>go('settings')}><Settings2 size={20} aria-hidden="true"/><span>{label}</span></button>;
 }
-export function HomeIntroduction({go,completed,returning,weeklyWorkouts=null,activeWorkout=false,trainingBlocked=false}:{go:Go;completed:boolean;returning:boolean;weeklyWorkouts?:number|null;activeWorkout?:boolean;trainingBlocked?:boolean}){
- return <PremiumHome go={go} completed={completed} returning={returning} weeklyWorkouts={weeklyWorkouts} activeWorkout={activeWorkout} trainingBlocked={trainingBlocked}/>;
+export function HomeIntroduction({go,completed,returning,weeklyWorkouts=null,activeWorkout=false,trainingBlocked=false,workoutAction,exerciseCount,name}:{workoutAction?:ReactNode;exerciseCount?:number;name?:string;go:Go;completed:boolean;returning:boolean;weeklyWorkouts?:number|null;activeWorkout?:boolean;trainingBlocked?:boolean}){
+ return <PremiumHome go={go} completed={completed} returning={returning} weeklyWorkouts={weeklyWorkouts} activeWorkout={activeWorkout} trainingBlocked={trainingBlocked} workoutAction={workoutAction} exerciseCount={exerciseCount} name={name}/>;
 }
 export function AreaNavigation({section,go}:{section:string;go:Go}){
  const area=areaFor(section),links=area&&areaLinks[area];
@@ -26,12 +27,13 @@ export function AreaNavigation({section,go}:{section:string;go:Go}){
 export function AreaMobileNav({section,go,openMenu}:{section:string;go:Go;openMenu:()=>void}){
  const current=mobileTabFor(section);
  return <Localize><nav className="mobile-bottom-nav streamlined-bottom" aria-label="ניווט בטלפון">{[
-  {id:'home',label:'בית',icon:Home},{id:'plan',label:'התוכנית שלי',icon:ClipboardList},{id:'care',label:'התיק שלי',icon:UserRound},
+  {id:'home',label:'בית',icon:Home},{id:'plan',label:'אימונים',icon:ClipboardList},{id:'history',label:'התקדמות',icon:History},{id:'learn',label:'אנטומיה',icon:Accessibility},
  ].map(item=><button key={item.id} className={current===item.id?'active':''} aria-current={current===item.id?'page':undefined} onClick={()=>go(item.id)}><item.icon size={20}/><span>{item.label}</span></button>)}<button className={current==='menu'?'active':''} aria-current={current==='menu'?'page':undefined} onClick={()=>go('more')}><Menu size={20}/><span>עוד</span></button></nav></Localize>;
 }
 export function MoreArea({go,staffLinks=[],signedIn=false}:{go:Go;staffLinks?:{id:string;label:string}[];signedIn?:boolean}){
  const english=useLanguage().language==='en';
  const entries=[
+ ['care','התיק האישי','My personal file','הפרופיל, התוכנית והצוות שלך','Your profile, program and care team',UserRound],
  ['library','ספריית התרגילים','Exercise library','תרגילים, מתיחות והדגמות','Exercises, stretches and demos',BookOpen],
  ['learn','אנטומיה ולמידה','Anatomy & learning','הגוף, השרירים והתנועה','Body, muscles and movement',Accessibility],
  ['contact','יצירת קשר','Contact','הודעות, תורים ומשוב','Messages, appointments and feedback',MessagesSquare],

@@ -1,33 +1,34 @@
 'use client';
-import {ArrowLeft,ArrowRight,Activity,ChartNoAxesCombined,Dumbbell,HeartPulse,MessageCircle,ShieldCheck,Smartphone,UserRound} from 'lucide-react';
+import type {ReactNode} from 'react';
+import {ArrowLeft,ArrowRight,Activity,HeartPulse,Accessibility,BookOpen,Settings2} from 'lucide-react';
+import {useCareResource} from '../hooks/use-care';
+import type {ActivityFeed} from '../lib/activity';
+import type {WellnessBundle} from '../lib/wellness';
+import {homeSummary} from '../lib/home-summary';
 import {useLanguage} from './language-provider';
-type Go=(section:string)=>void;
-type DashboardProps={go:Go;completed:boolean;returning:boolean;weeklyWorkouts:number|null;activeWorkout:boolean;trainingBlocked:boolean};
-function PremiumCard({children,className=''}:{children:React.ReactNode;className?:string}){return <section className={`dc-premium-card ${className}`}>{children}</section>}
-function PremiumAction({children,onClick,primary=false}:{children:React.ReactNode;onClick:()=>void;primary?:boolean}){return <button type="button" className={`dc-premium-action ${primary?'is-primary':''}`} onClick={onClick}>{children}</button>}
-export function PremiumHome({go,completed,returning,weeklyWorkouts,activeWorkout,trainingBlocked}:DashboardProps){
+import {PremiumCard,ProgressRing} from './premium-ui';
+type DashboardProps={go:(section:string)=>void;completed:boolean;returning:boolean;weeklyWorkouts:number|null;activeWorkout:boolean;trainingBlocked:boolean;workoutAction?:ReactNode;exerciseCount?:number;name?:string};
+export function PremiumHome({go,completed,returning,weeklyWorkouts,activeWorkout,trainingBlocked,workoutAction,exerciseCount,name}:DashboardProps){
  const english=useLanguage().language==='en',Arrow=english?ArrowRight:ArrowLeft;
  const t=(he:string,en:string)=>english?en:he;
+ const activity=useCareResource<ActivityFeed>('/api/activity'),wellness=useCareResource<WellnessBundle>('/api/wellness');
+ const summary=homeSummary(returning&&!activity.error?activity.data:null,returning&&!wellness.error?wellness.data:null);
  const next=trainingBlocked?'messages':activeWorkout?'workout':completed?'plan':'onboarding';
- const nextLabel=trainingBlocked?t('יצירת קשר עם הצוות','Contact the team'):activeWorkout?t('המשך אימון','Resume workout'):completed?t('לתוכנית האימון','Open my program'):t('הרשמה והיכרות','Get started');
  const destinations=[
-  {id:'plan',icon:Dumbbell,he:'התוכנית שלי',en:'My program'},
-  {id:'history',icon:ChartNoAxesCombined,he:'ההתקדמות שלי',en:'My progress'},
-  {id:'care',icon:UserRound,he:'התיק שלי',en:'My file'},
-  {id:'contact',icon:MessageCircle,he:'צור קשר',en:'Contact'},
- ] as const;
- return <div className="dc-premium" dir={english?'ltr':'rtl'}>
-  <div className="dc-premium-eyebrow"><ShieldCheck size={16} aria-hidden="true"/><span>DoctorCoach</span><span className="dc-premium-dot" aria-hidden="true"/> {t('בריאות ואימונים, יחד','Health and training, together')}</div>
-  <header className="dc-premium-heading"><div><span>{t('האזור האישי','Your space')}</span><h1>{t('להתקדם עם ביטחון','Move forward with confidence')}</h1><p>{t('האימונים, הבריאות וההתקדמות שלך — במקום אחד.','Your training, health and progress — in one place.')}</p></div></header>
-  <PremiumCard className="dc-premium-consult"><div className="dc-premium-consult-icon"><HeartPulse size={23} aria-hidden="true"/></div><div className="dc-premium-consult-copy"><strong>{t('ייעוץ רפואי עם ד״ר תמיר עילם','Medical consultation with Dr. Tamir Eilam')}</strong><span>{t('מענה מקצועי לשאלות רפואיות ותיאום פגישה.','Professional medical guidance and appointments.')}</span></div><button type="button" onClick={()=>go('consult')} aria-label={t('פתיחת אזור הייעוצים','Open consultations')}><Arrow size={21} aria-hidden="true"/></button></PremiumCard>
-  <PremiumCard className="dc-premium-hero"><div className="dc-premium-orbit" aria-hidden="true"/><div className="dc-premium-hero-content"><span className="dc-premium-kicker">{t('התנועה הבאה שלך','Your next move')}</span><h2>{activeWorkout?t('האימון שלך מחכה לך','Your workout is waiting'):t('האימון הבא מתחיל כאן','Your next workout starts here')}</h2><p>{trainingBlocked?t('פתיחת אימון חדש ממתינה לבירור רפואי.','A medical review is required before starting a workout.'):completed?t('התוכנית שלך, הביצועים שלך והדרך שעשית.','Your program, performance and progress.'):t('מכירים אותך תחילה, ואז בונים דרך שמתאימה לך.','Start with your profile to build your path.')}</p><PremiumAction primary onClick={()=>go(next)}>{nextLabel}<Arrow size={19} aria-hidden="true"/></PremiumAction></div><div className="dc-premium-hero-art" aria-hidden="true"><Activity size={106} strokeWidth={0.8}/></div></PremiumCard>
-  <div className="dc-premium-metrics" aria-label={t('סיכום אישי','Personal summary')}>
-   <PremiumCard><span className="dc-premium-metric-icon"><HeartPulse size={21}/></span><span className="dc-premium-metric-title">{t('מוכנות לאימון','Readiness')}</span><strong>{t('טרם נמדדה','Not recorded')}</strong><button type="button" onClick={()=>go('readiness')}>{t('לבדיקת מוכנות','Check readiness')} <Arrow size={14}/></button></PremiumCard>
-   <PremiumCard><span className="dc-premium-metric-icon"><ChartNoAxesCombined size={21}/></span><span className="dc-premium-metric-title">{t('התקדמות שבועית','Weekly progress')}</span><strong>{weeklyWorkouts===null?t('אין נתונים','No data'):`${weeklyWorkouts} ${t('אימונים','workouts')}`}</strong><button type="button" onClick={()=>go('history')}>{t('לצפייה בהתקדמות','View progress')} <Arrow size={14}/></button></PremiumCard>
-   <PremiumCard><span className="dc-premium-metric-icon"><Activity size={21}/></span><span className="dc-premium-metric-title">{t('התאוששות','Recovery')}</span><strong>{t('טרם נמדדה','Not recorded')}</strong><button type="button" onClick={()=>go('recovery')}>{t('למעקב התאוששות','Track recovery')} <Arrow size={14}/></button></PremiumCard>
-  </div>
-  <PremiumCard className="dc-premium-steps"><div className="dc-premium-steps-visual" aria-hidden="true"><Smartphone size={46} strokeWidth={1}/></div><div className="dc-premium-steps-content"><div className="dc-premium-steps-heading"><span><Smartphone size={21}/>{t('הצעדים שלך','Your steps')}</span><span className="dc-premium-status">{t('נתונים לא זמינים','No data available')}</span></div><p>{t('נתוני צעדים יופיעו כאן כשהחיבור למקור הפעילות יהיה זמין ומאושר.','Your steps will appear here when an activity source is connected and authorized.')}</p><button type="button" onClick={()=>go('settings')}>{t('להגדרות החשבון','Account settings')} <Arrow size={16}/></button></div></PremiumCard>
-  <section className="dc-premium-quick"><h2>{t('גישה מהירה','Quick access')}</h2><nav aria-label={t('פעולות מהירות','Quick actions')}>{destinations.map(({id,icon:Icon,he,en})=><button type="button" key={id} onClick={()=>go(id)}><Icon size={23} aria-hidden="true"/><span>{english?en:he}</span><Arrow className="dc-premium-tile-chevron" size={15} aria-hidden="true"/></button>)}</nav></section>
-  {!returning&&<div className="dc-premium-further"><span>{t('עוד אפשרויות','Explore more')}</span><button type="button" onClick={()=>go('learn')}>{t('אנטומיה ולמידה','Anatomy & learning')} <Arrow size={16}/></button><button type="button" onClick={()=>go('library')}>{t('ספריית תרגילים','Exercise library')} <Arrow size={16}/></button></div>}
+  {id:'recovery',icon:HeartPulse,he:'שיקום ומעקב כאב',en:'Pain & rehabilitation'},
+  {id:'history',icon:Activity,he:'פעילות אירובית',en:'Cardio & activity'},
+  {id:'consult',icon:HeartPulse,he:'ייעוץ רפואי עם ד״ר תמיר עילם',en:'Medical consultation with Dr. Tamir Eilam'},
+  {id:'learn',icon:Accessibility,he:'ספריית אנטומיה',en:'Anatomy library'},
+ ];
+ return <div className="dc-premium dc-ui3-home" dir={english?'ltr':'rtl'}>
+  <header className="dc-ui3-greeting"><div><span className="dc-premium-kicker">{t('תנועה חכמה. התקדמות אישית.','Move smarter. Progress personally.')}</span><h1>{t('שלום','Hello')}{name?`, ${name}`:''} <span aria-hidden="true">👋</span></h1><p>{returning?t('טוב שחזרת. מתקדמים בקצב שלך.','Welcome back. Move at your own pace.'):t('בריאות ואימונים, יחד','Health and training, together')}</p></div><button type="button" className="dc-icon-button" onClick={()=>go('care')} aria-label={t('פתיחת הפרופיל שלי','Open my profile')}><Settings2 size={22}/></button></header>
+  <PremiumCard className="dc-premium-hero"><img className="dc-ui3-hero-image" src="/premium-ui-3/workout-hero.png" alt="" width="1536" height="1024" fetchPriority="high"/><div className="dc-premium-hero-content"><span className="dc-premium-kicker">{t('האימון הבא שלך','Your next workout')}</span><h2>{activeWorkout?t('ממשיכים מאיפה שעצרת','Continue your workout'):t('התוכנית האישית שלך','Your personal program')}</h2><p>{trainingBlocked?t('ממתינים לבירור רפואי לפני אימון חדש','Medical review required before a new workout'):exerciseCount?`${exerciseCount} ${t('תרגילים בתוכנית','exercises in your program')}`:t('התוכנית והביצועים שלך, במקום אחד','Your program and performance, together')}</p>{workoutAction&&!trainingBlocked?workoutAction:<button type="button" className="button primary" onClick={()=>go(next)}>{trainingBlocked?t('ליצירת קשר עם הצוות','Contact the team'):activeWorkout?t('המשך אימון','Resume workout'):completed?t('לתוכנית האימון','My program'):t('מתחילים בהיכרות','Get started')}<Arrow size={18}/></button>}</div></PremiumCard>
+  <PremiumCard className="dc-ui3-week"><h2>{t('ההתקדמות השבועית','Weekly progress')}</h2><div className="dc-ui3-rings">
+   <button type="button" onClick={()=>go('history')}><ProgressRing value={weeklyWorkouts===null?'—':String(weeklyWorkouts)} label={t('אימונים','Workouts')} detail={t('ב־7 הימים האחרונים','Last 7 days')}/></button>
+   <button type="button" onClick={()=>go('history')}><ProgressRing value={summary.steps===null?'—':summary.steps.toLocaleString(english?'en-US':'he-IL')} label={t('צעדים היום','Steps today')} progress={summary.steps!==null&&summary.stepGoal?summary.steps/summary.stepGoal*100:null} detail={summary.steps===null?t('אין נתון זמין','No data available'):t('מהמקור המאושר שלך','From your authorized source')}/></button>
+   <button type="button" onClick={()=>go('readiness')}><ProgressRing value={summary.energy===null?'—':`${summary.energy}/10`} label={summary.energy===null?t('מוכנות','Readiness'):t('אנרגיה מדווחת','Reported energy')} detail={summary.energyDay??t('לבדיקת מוכנות','Check readiness')}/></button>
+  </div></PremiumCard>
+  <section className="dc-premium-quick"><h2>{t('ממשיכים מכאן','Explore your space')}</h2><nav aria-label={t('פעולות מהירות','Quick actions')}>{destinations.map(({id,icon:Icon,he,en})=><button type="button" key={id} aria-label={id==='consult'?t('פתיחת אזור הייעוצים','Open consultations'):undefined} onClick={()=>go(id)}><Icon size={28} aria-hidden="true"/><span><strong>{english?en:he}</strong></span><Arrow size={15} aria-hidden="true"/></button>)}</nav></section>
+  <div className="dc-premium-further"><button type="button" onClick={()=>go('library')}><BookOpen size={18}/>{t('ספריית התרגילים','Exercise library')}</button><button type="button" onClick={()=>go('care')}>{t('התיק האישי והצוות שלך','Your personal file & team')}<Arrow size={16}/></button></div>
  </div>;
 }
