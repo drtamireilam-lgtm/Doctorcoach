@@ -1,0 +1,70 @@
+/* Workout 4: scoped refinements using the account-owned Premium palette. */
+.dc-ui3 :is(.plan-workspace,.workout-workspace){max-width:1120px;margin-inline:auto}
+.dc-ui3 .program-rows{display:grid;gap:14px}
+.dc-ui3 .exercise-disclosure{border:1px solid var(--dc-border);border-radius:var(--dc-radius-card);background:var(--dc-surface);overflow:hidden;transition:border-color var(--dc-motion-fast)}
+.dc-ui3 .exercise-disclosure-heading{margin:0}
+.dc-ui3 .exercise-disclosure-toggle{min-height:64px;padding:16px;gap:12px;font-size:1rem;font-weight:700;text-align:start;width:100%}
+.dc-ui3 .exercise-disclosure-toggle .row-number{border-radius:10px;background:var(--dc-surface-elevated);color:var(--dc-cyan);min-width:36px;height:36px;display:grid;place-items:center}
+.dc-ui3 .workout-prescription-summary{display:flex;align-items:center;gap:12px;padding:0 16px 16px;color:var(--dc-text-primary)}
+.dc-ui3 .workout-prescription-summary dl{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;flex:1;min-width:0;margin:0}
+.dc-ui3 .workout-prescription-summary dt{font-size:.72rem;color:var(--dc-text-secondary);margin-bottom:4px}
+.dc-ui3 .workout-prescription-summary dd{margin:0;font-size:.9rem;font-weight:650;overflow-wrap:anywhere}
+.dc-ui3 .workout-exercise-symbol{display:grid;place-items:center;font-size:28px;width:42px;height:48px;flex-shrink:0;color:var(--dc-cyan);background:var(--dc-surface-elevated);border-radius:12px}
+.dc-ui3 .workout-exercise-state{font-size:.75rem;color:var(--dc-text-secondary);white-space:nowrap}
+.dc-ui3 .workout-exercise-state.complete{color:var(--dc-cyan)}
+.dc-ui3 .exercise-disclosure-body{padding:16px;border-top:1px solid var(--dc-border)}
+.dc-ui3 .workout-context-disclosure{margin-block:12px;color:var(--dc-text-secondary)}
+.dc-ui3 .workout-context-disclosure>summary{min-height:44px;cursor:pointer;align-content:center}
+.dc-ui3 .smart-set-line{padding:14px!important;gap:12px!important;margin-top:12px;border-inline-start:3px solid var(--dc-border)}
+.dc-ui3 .smart-set-line.next-pending-set{border-inline-start-color:var(--dc-gold)}
+.dc-ui3 .smart-set-line.done{border-inline-start-color:var(--dc-cyan)}
+.dc-ui3 .set-previous-performance{margin:0;font-size:.78rem;color:var(--dc-text-secondary)}
+.dc-ui3 .smart-set-line .set-check{min-height:28px;font-size:.85rem}
+.dc-ui3 .smart-set-fields{gap:10px;grid-template-columns:repeat(3,minmax(0,1fr))}
+.dc-ui3 .smart-set-fields>label:last-child{grid-column:auto}
+.dc-ui3 .smart-set-fields label{gap:6px}
+.dc-ui3 .smart-set-fields input{height:48px;min-height:48px;font-size:16px!important;padding-inline:8px;font-weight:650;direction:ltr;text-align:center}
+.dc-ui3 .smart-set-line>.set-save{min-height:44px}
+.dc-ui3 .compact-next-set{padding:10px 12px;background:var(--dc-surface-elevated);border-radius:10px;font-size:.85rem;color:var(--dc-text-secondary)}
+.dc-ui3 .compact-next-set strong{color:var(--dc-cyan)}
+.dc-ui3 .dc-rest-timer{position:fixed;inset-inline-end:24px;bottom:24px;z-index:18;width:min(420px,calc(100vw - 32px));margin:0;padding:12px;gap:8px;border:1px solid var(--dc-border);box-shadow:var(--dc-shadow-card);background:var(--dc-surface-elevated)}
+.dc-timer-compact{display:flex;align-items:center;gap:8px}
+.dc-timer-compact>svg{color:var(--dc-cyan);flex-shrink:0}
+.dc-ui3 .dc-timer-compact h2{font-size:.78rem;margin:0;white-space:nowrap}
+.dc-ui3 .dc-timer-compact .dc-countdown{font-size:1.35rem;min-width:65px;margin-inline-end:auto;letter-spacing:.02em}
+.dc-ui3 .dc-timer-compact .button{min-height:44px;padding:8px;gap:4px;font-size:.8rem}
+.dc-timer-icon{display:grid;place-items:center;min-width:44px;height:44px;border:0;border-radius:10px;background:transparent;color:var(--dc-text-primary)}
+.dc-timer-duration{display:flex;justify-content:space-between;align-items:center;gap:12px;font-size:.85rem}
+.dc-timer-duration select{width:auto}
+.dc-ui3 .dc-rest-timer p{font-size:.75rem;margin:8px 0 0}
+.dc-timer-complete{font-size:.8rem;color:var(--dc-cyan)}
+.dc-ui3 .view-workout{padding-bottom:160px}
+.dc-ui3 .workout-finish-stats,.dc-dialog .workout-finish-stats{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin-block:16px}
+.workout-finish-stats>div{display:grid;gap:10px;padding:16px;border:1px solid var(--line);border-radius:14px;background:var(--raised)}
+.workout-finish-stats span{font-size:.8rem;color:var(--muted)}
+.workout-finish-stats strong{font-size:1.25rem;line-height:1.4;overflow-wrap:anywhere;font-variant-numeric:tabular-nums}
+.workout-finish-stats small{font-size:.7rem;font-weight:400}
+.workout-complete-mark{display:grid;place-items:center;width:52px;height:52px;border-radius:50%;background:var(--raised);color:var(--dc-cyan,var(--text));font-size:26px;animation:workout-complete-in .3s ease-out}
+@keyframes workout-complete-in{from{opacity:0;transform:scale(.9)}to{opacity:1;transform:scale(1)}}
+@media(max-width:760px){
+ .dc-ui3 .workout-prescription-summary{gap:8px;flex-wrap:wrap}
+ .dc-ui3 .workout-exercise-symbol{display:none}
+ .dc-ui3 .workout-prescription-summary dl{gap:8px;flex-basis:100%}
+ .dc-ui3 .workout-prescription-summary dt{font-size:.68rem}
+ .dc-ui3 .workout-prescription-summary dd{font-size:.8rem}
+ .dc-ui3 .dc-rest-timer{bottom:calc(82px + env(safe-area-inset-bottom));inset-inline-end:16px}
+ .dc-ui3 .view-workout{padding-bottom:calc(190px + env(safe-area-inset-bottom))}
+ .dc-ui3 .workout-layout{display:block}
+ .dc-ui3 .exercise-disclosure-body{padding:12px}
+ .dc-ui3 .workout-finish-stats{gap:8px}
+ .workout-finish-stats>div{padding:12px}
+ .dc-timer-compact>svg{display:none}
+}
+@media(max-width:375px){.dc-ui3 .smart-set-fields{grid-template-columns:repeat(2,minmax(0,1fr))}.dc-ui3 .smart-set-fields>label:last-child{grid-column:1/-1}}
+@media(prefers-reduced-motion:reduce){.workout-complete-mark{animation:none}}
+
+@media(max-width:375px){.dc-timer-compact{gap:4px}.dc-ui3 .dc-timer-compact h2{display:none}}
+.dc-ui3 .workout-exercise-settings>summary{min-height:44px;align-content:center;font-size:.82rem;color:var(--dc-text-secondary);cursor:pointer}
+.dc-ui3 .workout-exercise-settings[open]{padding-block-end:12px}
+.dc-ui3 .smart-set-line.done{background:color-mix(in srgb,var(--dc-cyan) 5%,var(--dc-surface));border-color:var(--dc-border);border-inline-start-color:var(--dc-cyan)}
+.dc-ui3 .smart-set-line>.set-save.saved{background:transparent;color:var(--dc-cyan);border-color:var(--dc-border)}
