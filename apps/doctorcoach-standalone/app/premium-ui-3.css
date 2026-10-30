@@ -2,7 +2,7 @@
 .dc-ui3 {
  --dc-background:var(--canvas,#030b14);--dc-surface:var(--card,#071827);
  --dc-surface-elevated:var(--raised,#0b2032);--dc-cyan:var(--accent-red,#00e5f0);
- --dc-gold:var(--dc-button,#f5b942);--dc-text-primary:var(--text,#fff);
+ --dc-gold:var(--dc-home-action,var(--dc-button,#f5b942));--dc-text-primary:var(--text,#fff);
  --dc-text-secondary:var(--muted,#9cb2c5);--dc-border:color-mix(in srgb,var(--dc-cyan) 24%,transparent);
  --dc-radius-card:18px;--dc-radius-button:12px;
  font-family:'Noto Sans Hebrew','Arial',sans-serif;
@@ -36,7 +36,7 @@ html .dc-ui3 .mobile-bottom-nav button.active svg{filter:drop-shadow(0 0 6px col
 .dc-ui3-greeting p{color:var(--dc-text-secondary);font-size:.9rem;margin:0}
 .dc-icon-button{border:1px solid var(--dc-border);border-radius:12px;background:var(--dc-surface);color:var(--dc-cyan);width:44px;height:44px;display:grid;place-items:center;flex-shrink:0}
 .dc-ui3 .dc-ui3-home .dc-premium-card{background:linear-gradient(145deg,color-mix(in srgb,var(--dc-surface) 96%,var(--dc-cyan)),var(--dc-surface));border:1px solid var(--dc-border);border-radius:18px}
-.dc-ui3 .dc-ui3-home .dc-premium-hero{position:relative;overflow:hidden;isolation:isolate;min-height:290px;padding:28px;display:flex;align-items:center}
+.dc-ui3 .dc-ui3-home .dc-premium-hero{--dc-text:#fff;--dc-muted:#c5d4df;--dc-gold:#f5b942;--dc-background:#030b14;position:relative;overflow:hidden;isolation:isolate;min-height:290px;padding:28px;display:flex;align-items:center}
 .dc-ui3-hero-image{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:65% center;z-index:-2}
 .dc-ui3-home .dc-premium-hero::after{content:'';position:absolute;inset:0;background:linear-gradient(90deg,#030b14f5 0%,#030b14d9 38%,#030b1415 85%);z-index:-1}
 .dc-ui3-home .dc-premium-hero-content{width:58%;margin-right:auto;margin-left:0;color:#fff;z-index:1}
@@ -75,6 +75,7 @@ html .dc-ui3 .mobile-bottom-nav button.active svg{filter:drop-shadow(0 0 6px col
 .dc-ui3 :is(.search-box,input,select,textarea){max-width:100%}
 .dc-ui3 :is(.session-exercise,.exercise-card,.detail-main,.panel){min-width:0;overflow-wrap:anywhere}
 @media(min-width:1100px){
+ .dc-ui3-home .dc-progress-ring{max-width:112px}
  .dc-ui3 .dc-ui3-home{grid-template-columns:minmax(0,1.5fr) minmax(280px,1fr);gap:22px}
  .dc-ui3-home .dc-ui3-greeting,.dc-ui3-home .dc-premium-further{grid-column:1/-1}
  .dc-ui3 .dc-ui3-home .dc-premium-hero{grid-column:1;grid-row:2;min-height:335px}

@@ -22,7 +22,7 @@ try {
   if(await page.locator('.dc-premium').getAttribute('dir')!=='ltr')await page.locator('.header-language-toggle').click();await page.waitForTimeout(250);
   if(await page.locator('.dc-premium').getAttribute('dir')!=='ltr')throw Error('English direction');
   const english=await page.evaluate(()=>({width:innerWidth,scroll:document.documentElement.scrollWidth,header:document.querySelector('.topbar').getBoundingClientRect().height}));if(english.scroll>width||(width<=760&&english.header>80))throw Error('English layout '+JSON.stringify(english));
-  await page.locator('.dc-premium-consult button').click();await page.waitForTimeout(250);
+  await page.getByRole('button',{name:'Open consultations',exact:true}).click();await page.locator('.view-consult').waitFor();
   if(!await page.locator('.view-consult').count())throw Error('Consult navigation');
  }
  if(errors.length)throw Error(errors.join('\n'));
