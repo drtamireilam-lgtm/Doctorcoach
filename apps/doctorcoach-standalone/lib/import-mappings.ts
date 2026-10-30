@@ -3,7 +3,7 @@ import {inputRecord,textField,integerField} from './care.ts';
 import {TrainingError} from './training.ts';
 import {canAuthorPrograms,type ProgramAuthorConfig} from './program-author.ts';
 import {isStaff,type StaffIdentity} from './staff.ts';
-import {normalizeExerciseName} from './exercise-search.ts';
+import {normalizeImportExerciseName} from './exercise-matching.ts';
 import {exercises} from './content.ts';
 import {availableCustomExercises} from './custom-exercises.ts';
 import type {ImportMapping} from './import-mapping-types.ts';
@@ -13,7 +13,8 @@ export function importMappingsStore(db:D1Database,config:ProgramAuthorConfig&{op
  async function authorize(user:StaffIdentity){const row=await db.prepare('SELECT role,active FROM care_staff WHERE email=?').bind(user.email.toLowerCase()).first<{role:string;active:number}>();const role=row?(row.active?row.role:''):isStaff(user,config.ownerProgramEmails)?'clinician':'';const external=!row?await db.prepare("SELECT id FROM coach_workspaces WHERE owner_id=? AND state='active' AND license_until>?").bind(user.userId,new Date().toISOString()).first():null;if(isStaff(user,config.operationsEmails)||!external&&!canAuthorPrograms(user,role,config))throw new TrainingError('התאמות יבוא זמינות למאמן פעיל או לרופא המנהל.',403);}
  return {
  async list(user:StaffIdentity):Promise<ImportMapping[]>{await authorize(user);const g=guard(user),available=new Set([...exercises,...await availableCustomExercises(db,user.userId)].map(e=>e.id));const rows=await db.prepare(`SELECT source,exercise_id AS exerciseId,version FROM import_exercise_mappings WHERE owner_id=? AND ${g.sql} ORDER BY updated_at DESC LIMIT 250`).bind(user.userId,...g.args).all<ImportMapping>();await authorize(user);return rows.results.filter(r=>available.has(r.exerciseId));},
- async write(user:StaffIdentity,payload:unknown){await authorize(user);const p=inputRecord(payload),source=textField(p.source,'שם התרגיל במקור',100,1),key=normalizeExerciseName(source),version=integerField(p.version,'גרסה',0,1000000),g=guard(user);if(!key)throw new TrainingError('יש להזין שם תרגיל.');
+ async write(user:StaffIdentity,payload:unknown){await authorize(user);const p=inputRecord(payload),source=textField(p.source,'שם התרגיל במקור',100,1),canonical=normalizeImportExerciseName(source),version=integerField(p.version,'גרסה',0,1000000),g=guard(user);if(!canonical)throw new TrainingError('יש להזין שם תרגיל.');
+ const existing=(await db.prepare('SELECT source_key,source,version FROM import_exercise_mappings WHERE owner_id=?').bind(user.userId).all<{source_key:string;source:string;version:number}>()).results.filter(row=>normalizeImportExerciseName(row.source)===canonical);const exact=existing.find(row=>row.source===source);if(existing.length>1&&!exact||version===0&&existing.length)throw new TrainingError('כבר קיימת התאמה לשם הזה. רעננו וערכו את ההתאמה הקיימת.',409);const key=(exact??existing[0])?.source_key??canonical;
  if(p.action==='delete'){const deleted=await db.prepare(`DELETE FROM import_exercise_mappings WHERE owner_id=? AND source_key=? AND version=? AND ${g.sql} RETURNING source`).bind(user.userId,key,version,...g.args).first();if(!deleted)throw new TrainingError('ההתאמה או ההרשאה השתנו. רעננו ונסו שוב.',409);return;}
  if(p.action!=='save')throw new TrainingError('פעולה לא מוכרת.');const exerciseId=textField(p.exerciseId,'תרגיל',80,1),builtin=exercises.some(e=>e.id===exerciseId);if(!builtin&&!(await availableCustomExercises(db,user.userId)).some(e=>e.id===exerciseId))throw new TrainingError('התרגיל אינו זמין בספרייה האישית שלכם.',403);
  const valid=`(?=1 OR EXISTS(SELECT 1 FROM custom_exercises WHERE id=? AND (owner_id=? OR state='published')))`;

@@ -4,7 +4,7 @@ import {readFileSync,readdirSync} from 'node:fs';
 import {DatabaseSync} from 'node:sqlite';
 import {platform} from './platform-db.mjs';
 import {appearanceStore} from '../lib/appearance-store.ts';
-import {isAppearance,isHexColor,isCustomColors,canonicalAppearance,parseOwnedAppearanceResponse} from '../lib/appearance.ts';
+import {defaultAppearance,isAppearance,isHexColor,isCustomColors,canonicalAppearance,parseOwnedAppearanceResponse} from '../lib/appearance.ts';
 import {themeTokens,colorsFor,fromPrimary,contrast,themePresets,resetAppearance,themeEditReducer,textOn,swatchFamilies,appearanceWithMode} from '../lib/advanced-theme.ts';
 const custom={background:'#000000',primary:'#FFFFFF',secondary:'#FFFFFF',button:'#FDE047',navigation:'#DC2626',accent:'#DDDDDD'};
 const appearance={mode:'dark',palette:'red',custom};
@@ -122,5 +122,5 @@ test('curated clinical palettes retain the navy teal champagne reference and dis
  for(const id of ids){const p=themePresets.find(p=>p.id===id);assert.ok(p,id);assert.ok(isAppearance(p.appearance));for(const mode of ['dark','light']){const a=appearanceWithMode(p.appearance,mode),c=colorsFor(a),tokens=themeTokens(a);assert.ok(contrast(tokens['--dc-home-action'],c.background)>=4.5,id+' action contrast');assert.ok(contrast(tokens['--dc-card-text'],c.secondary)>=4.5,id+' card contrast');}}
  const reference=colorsFor(themePresets.find(p=>p.id==='medical-premium').appearance);assert.equal(reference.background,'#0c1523');assert.equal(reference.secondary,'#1a2a3a');assert.equal(reference.button,'#edce97');assert.equal(reference.accent,'#8dcac8');
  assert.equal(new Set(themePresets.map(p=>p.id)).size,themePresets.length);
- assert.equal(resetAppearance,themePresets.find(p=>p.id==='dark').appearance);
+ assert.equal(resetAppearance,defaultAppearance);
 });

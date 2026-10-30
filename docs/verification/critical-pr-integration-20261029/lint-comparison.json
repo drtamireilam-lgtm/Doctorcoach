@@ -1,0 +1,19 @@
+{
+  "baseline59": {
+    "errors": 78,
+    "warnings": 116
+  },
+  "integrated": {
+    "errors": 78,
+    "warnings": 116
+  },
+  "added": [
+    {
+      "file": "C:\\Users\\תמיר\\Documents\\Codex\\2026-10-29\\doctorcoach-codex-smart-import-3-1\\work\\integration\\apps\\doctorcoach-standalone\\lib\\import-source.ts",
+      "line": 16,
+      "rule": "@typescript-eslint/no-unused-vars",
+      "severity": 1,
+      "message": "'sets' is defined but never used."
+    }
+  ]
+}

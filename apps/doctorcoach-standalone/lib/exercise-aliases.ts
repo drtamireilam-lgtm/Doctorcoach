@@ -78,7 +78,7 @@ const baseAliases:Readonly<Record<string,readonly string[]>>={
 // benchpress and Hebrew gym shorthand below follow the conventional barbell use.
 const additionalAliases:Readonly<Record<string,readonly string[]>>={
  'bench':['לחיצת חזה דאמבלים','לחיצת חזה עם דאמבלים','דאמבל בנץ פרס','Flat DB Bench Press'],
- 'barbell-bench':['BB Bench Press','benchpress','בנצ פרס','בנץ פרס','בנצ פרס עם מוט','בנץ פרס מוט','בנצפרס'],
+ 'barbell-bench':['BB Bench Press','benchpress','בנצ פרס','בנצ פרס עם מוט','בנץ פרס מוט','בנצפרס'],
  'incline-db':['Incline Dumbbell Press','לחיצת חזה דאמבלים בשיפוע','לחיצת חזה בשיפוע חיובי עם משקולות'],
  'incline-barbell-bench':['Incline BB Bench Press','לחיצת חזה במוט בשיפוע חיובי'],
  'chest-fly':['Pecdeck','פקדק','פאק דק'],
