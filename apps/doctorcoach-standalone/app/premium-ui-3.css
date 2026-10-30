@@ -158,3 +158,16 @@ html .dc-ui3 :is(.panel,.exercise-card,.history-session,.care-card,.team-card,.s
 @media(prefers-reduced-motion:reduce){.dc-ui3 :is(.button,.dc-icon-button,.dc-premium-quick nav button):active{transform:none}}
 .dc-ui3 .text-button{min-height:44px}
 @media(max-width:760px){.dc-ui3 :is(input,select,textarea){font-size:16px}}
+
+/* Keep metric labels beside their values readable instead of narrowing to a letter. */
+.dc-ui3 .progress-sort-card .training-metrics{grid-template-columns:repeat(auto-fit,minmax(min(100%,180px),1fr))}
+@media(max-width:760px){
+ .dc-ui3 .progress-sort-card .training-metrics{grid-template-columns:minmax(0,1fr)}
+ .dc-ui3 .progress-sort-card .training-metrics>div>span{min-width:0}
+}
+@media(max-width:760px){
+ .dc-ui3 .progress-sort-card .training-metrics>div,
+ .dc-ui3 .progress-sort-card .training-metrics>div:last-child{flex-direction:column;align-items:stretch;gap:8px}
+ .dc-ui3 .progress-sort-card .training-metrics>div>span{flex:none;width:100%}
+ .dc-ui3 .progress-sort-card .training-metrics strong{margin:0;overflow-wrap:anywhere}
+}
