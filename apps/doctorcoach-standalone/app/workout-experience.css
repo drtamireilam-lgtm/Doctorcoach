@@ -68,3 +68,9 @@
 .dc-ui3 .workout-exercise-settings[open]{padding-block-end:12px}
 .dc-ui3 .smart-set-line.done{background:color-mix(in srgb,var(--dc-cyan) 5%,var(--dc-surface));border-color:var(--dc-border);border-inline-start-color:var(--dc-cyan)}
 .dc-ui3 .smart-set-line>.set-save.saved{background:transparent;color:var(--dc-cyan);border-color:var(--dc-border)}
+
+/* Leave room for decimal load values without a native spinner consuming text space. */
+.dc-ui3 .smart-set-fields input[type=number]{appearance:textfield;-moz-appearance:textfield}
+.dc-ui3 .smart-set-fields input::-webkit-inner-spin-button,
+.dc-ui3 .smart-set-fields input::-webkit-outer-spin-button{-webkit-appearance:none;margin:0}
+@media(min-width:376px) and (max-width:760px){.dc-ui3 .smart-set-fields{grid-template-columns:minmax(0,1.4fr) minmax(0,.8fr) minmax(0,.8fr)}}
