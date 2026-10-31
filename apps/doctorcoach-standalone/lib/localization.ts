@@ -7,6 +7,9 @@ const normalize = (text: string) => text.trim().replace(/\s+/g, ' ');
 const dictionary = new Map(hebrew.map((text, index) => [normalize(text), english[index]]));
 // New privacy labels are kept explicit instead of partially translating consent text.
 for(const [he,en] of [
+ ["הסט הבא לביצוע","Next set"],
+ ["לסט הבא","Go to next set"],
+ ["סיום סט","Complete set"],
  ["האימון נשמר","Workout saved"],
  ["האימון נשמר בהיסטוריה שלך.","Your workout was saved to history."],
  ["מסכמים את האימון","Workout summary"],
