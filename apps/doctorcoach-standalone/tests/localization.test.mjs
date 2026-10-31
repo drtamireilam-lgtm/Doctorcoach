@@ -81,3 +81,9 @@ test('progress screen headings and arrangement guidance translate without changi
   assert.equal(translateText(he,'en'),en);assert.equal(translateText(he,'he'),he);
  }
 });
+
+test('workout primary set actions translate in English and retain Hebrew labels',()=>{
+ for(const [he,en] of [['הסט הבא לביצוע','Next set'],['לסט הבא','Go to next set'],['סיום סט','Complete set']]){
+  assert.equal(translateText(he,'en'),en);assert.equal(translateText(he,'he'),he);
+ }
+});

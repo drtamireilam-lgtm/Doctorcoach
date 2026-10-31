@@ -64,6 +64,21 @@ jobs:
         with:
           name: premium-ui-3-visual-evidence
           path: apps/doctorcoach-standalone/.sites-runtime/ui3-evidence
+      - name: Premium Workout 4 bilingual dark and light workflows
+        if: startsWith(github.head_ref, 'feature/premium-workout-4-') || startsWith(github.ref_name, 'feature/premium-workout-4-')
+        env:
+          DC_CHROMIUM: /usr/bin/google-chrome
+          DC_WORKOUT4: '1'
+          DC_UI3_SECTIONS: plan,workout
+        run: |
+          DC_UI3_EVIDENCE=.sites-runtime/workout4-evidence/dark node --experimental-strip-types scripts/premium-ui-3-browser-smoke.mjs
+          DC_UI3_THEME=light DC_UI3_EVIDENCE=.sites-runtime/workout4-evidence/light node --experimental-strip-types scripts/premium-ui-3-browser-smoke.mjs
+      - name: Save Workout 4 evidence
+        if: always() && (startsWith(github.head_ref, 'feature/premium-workout-4-') || startsWith(github.ref_name, 'feature/premium-workout-4-'))
+        uses: actions/upload-artifact@v4
+        with:
+          name: premium-workout-4-evidence
+          path: apps/doctorcoach-standalone/.sites-runtime/workout4-evidence
       - name: Standalone regression tests
         run: npm test
       - name: Consultation desktop and mobile bilingual workflow

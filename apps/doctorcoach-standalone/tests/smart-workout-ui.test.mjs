@@ -6,7 +6,7 @@ import ts from 'typescript';
 import * as jsx from 'react/jsx-runtime';
 import * as sections from '../lib/workout-sections.ts';
 function load(name,language='he'){
- const exports={};const modules={'react/jsx-runtime':jsx,'./load-unit-picker':{useLoadUnit:()=> 'kg'},'../lib/load-units':{fromKg:(weight)=>weight},'./language-provider':{useLanguage:()=>({language}),Localize:'Localize'},'../lib/workout-sections':sections,'../lib/effort':{effortName:()=> 'RPE',effortValue:n=>n,effortTarget:()=> 'RPE 8'},'../lib/training':{targetRpeForSet:()=>8}};
+ const exports={};const modules={'react/jsx-runtime':jsx,'./load-unit-picker':{useLoadUnit:()=> 'kg'},'../lib/load-units':{fromKg:(weight)=>weight},'./language-provider':{useLanguage:()=>({language}),Localize:'Localize'},'../lib/workout-sections':sections,'../lib/effort':{effortName:()=> 'RPE',effortValue:n=>n,effortTarget:()=> 'RPE 8'},'../lib/training':{targetRpeForSet:()=>8,repetitionLabel:i=>String(i.reps)}};
  vm.runInNewContext(ts.transpileModule(fs.readFileSync(new URL('../components/'+name,import.meta.url),'utf8'),{compilerOptions:{module:ts.ModuleKind.CommonJS,target:ts.ScriptTarget.ES2022,jsx:ts.JsxEmit.ReactJSX}}).outputText,{exports,require:k=>modules[k]??{}});return exports;
 }
 function nodes(n,p){return !n||typeof n!=='object'?[]:[...(p(n)?[n]:[]),...[n.props?.children].flat(Infinity).flatMap(c=>nodes(c,p))];}
@@ -40,4 +40,11 @@ test('learning navigation keeps general guides separate from DoctorCoach overvie
  assert.ok(general);assert.equal(general.props['aria-current'],undefined);assert.equal(overview.props['aria-current'],'page');
  assert.ok(links.some(a=>a.props.href==='#learn?section=physiology'));
  assert.ok(links.some(a=>a.props.href==='#learn?section=supplements'));
+});
+
+test('collapsed workout prescription labels per-side loads explicitly in both languages',()=>{
+ for(const language of ['he','en']){
+  const tree=load('workout-prescription.tsx',language).WorkoutPrescription({item:{sets:3,reps:8,unit:'reps',weight:20,targetRpe:8,load:{sourceValue:20,sourceUnit:'kg',basis:'per-side'}}});
+  assert.ok(text(tree).includes(language==='en'?'per side':'לכל צד'));
+ }
 });
