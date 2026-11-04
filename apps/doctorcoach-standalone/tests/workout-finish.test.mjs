@@ -33,3 +33,15 @@ test('summary never invents a baseline or e1RM for unsupported sets',()=>{
  const s=session({items:[item({results:[{done:true,weight:0,amount:15}]})]});const summary=workoutFinishSummary(s,[]);assert.equal(summary.comparisons[0].prior,null);assert.equal(summary.comparisons[0].current.estimate,null);
  const otherDay=session({id:'old',status:'completed',finishedAt:'2026-10-15',items:[item({dayId:'2'})]});assert.equal(workoutFinishSummary(s,[otherDay]).comparisons[0].prior,null);
 });
+
+test('summary volume counts only completed main sets with known total external load',()=>{
+ const s=session({items:[item(),item({exerciseId:'warm',workoutSection:'warmup'}),item({exerciseId:'side',load:{basis:'per-side',sourceValue:20,sourceUnit:'kg'}}),item({exerciseId:'timed',unit:'seconds'})]});
+ const summary=workoutFinishSummary(s,[]);assert.equal(summary.volumeKg,160);assert.equal(summary.volumeExcludedSets,2);
+ assert.equal(workoutFinishSummary(session({items:[item({load:{basis:'per-side',sourceValue:20,sourceUnit:'kg'}})]}),[]).volumeKg,null);
+});
+
+test('completed exercise count distinguishes a partial exercise from a fully completed one',()=>{
+ assert.equal(workoutFinishSummary(session(),[]).completedExercises,0);
+ const full=item({results:[{done:true,weight:20,amount:8},{done:true,weight:21,amount:8}]});
+ assert.equal(workoutFinishSummary(session({items:[full]}),[]).completedExercises,1);
+});

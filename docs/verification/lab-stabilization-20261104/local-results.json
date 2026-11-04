@@ -1,0 +1,61 @@
+{
+  "date": "2026-11-04",
+  "base": "e95108a6b2a67086296621107c50b446a3d90619",
+  "standalone": {
+    "passed": 1744,
+    "failed": 0,
+    "skipped": 0
+  },
+  "baselineStandalone": {
+    "passed": 1737,
+    "failed": 1,
+    "failure": "timezone boundary overlaps are retained and labelled but never averaged twice"
+  },
+  "foundation": {
+    "passed": 10
+  },
+  "postgresRls": {
+    "passed": 6
+  },
+  "typecheck": "PASS",
+  "foundationBuild": "PASS",
+  "isolatedWorkerBuild": "PASS",
+  "targetGuard": "PASS",
+  "builtSyntheticWorker": "PASS",
+  "focusedLint": {
+    "errors": 0,
+    "inheritedWarnings": 1
+  },
+  "fullLint": {
+    "errors": 78,
+    "warnings": 116,
+    "status": "inherited failure"
+  },
+  "localBrowser": "BLOCKED: Chromium download invalid/truncated ZIP",
+  "remoteWrites": false,
+  "deployments": false,
+  "realProviderWrites": false,
+  "schema": {
+    "schemaCompatible": true,
+    "requiredTables": 95,
+    "missingTables": [],
+    "missingColumns": {},
+    "genericMigrationReplayAllowed": false,
+    "warnings": [
+      "COLUMN_NAMES_ONLY_CONSTRAINTS_AND_PROVIDER_READINESS_REQUIRE_SEPARATE_VERIFICATION",
+      "EMPTY_LEDGER_DOES_NOT_MEAN_EMPTY_DATABASE"
+    ]
+  },
+  "cardioMigrationRehearsal": {
+    "status": "PASS",
+    "offlineOnly": true,
+    "remoteVerified": false,
+    "migrationsApplied": 5,
+    "originalTablesPreserved": 86,
+    "populatedTablesPreserved": 14,
+    "identityTablesPreserved": 10,
+    "oldColumnRowsPreserved": true,
+    "schemaVerified": true,
+    "constraintsVerified": true
+  }
+}
