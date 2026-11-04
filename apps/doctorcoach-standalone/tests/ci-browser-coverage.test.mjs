@@ -20,3 +20,17 @@ test('unrelated pull requests keep selective browser checks',()=>{
  const github={ref_name:'71/merge',head_ref:'docs/readme',base_ref:'main'};
  for(const flag of ['LAB_AUDIT','CARDIO_CHECKS','ANATOMY_BROWSER_CHECKS'])assert.equal(enabled(flag,github),false,flag);
 });
+
+function stepEnabled(name,github){
+ const block=workflow.split(`      - name: ${name}\n`)[1];
+ assert.ok(block,`Missing step ${name}`);
+ const expression=block.match(/^        if: (.*)$/m)?.[1];
+ assert.ok(expression,`Missing condition for ${name}`);
+ return vm.runInNewContext(expression,{github,env:{LAB_AUDIT:String(enabled('LAB_AUDIT',github))},always:()=>true,startsWith:(value,prefix)=>(value??'').startsWith(prefix)});
+}
+for(const github of [
+ {ref_name:'codex/integration-59-60-61-20261029',head_ref:'',base_ref:''},
+ {ref_name:'70/merge',head_ref:'work/lab-acceptance-premium-ui-qa-20261104',base_ref:'codex/integration-59-60-61-20261029'},
+])test(`integration ${github.head_ref?'PR':'push'} runs and retains full Premium visual coverage`,()=>{
+ for(const name of ['Premium UI 3 local visual and interaction checks','Save Premium UI 3 screenshots','Premium Workout 4 bilingual dark and light workflows','Save Workout 4 evidence'])assert.equal(stepEnabled(name,github),true,name);
+});
