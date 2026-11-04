@@ -31,6 +31,53 @@ jobs:
       - name: Typecheck and build
         run: npm run build
 
+  premium-visual:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    if: ${{ startsWith(github.ref_name, 'codex/integration-59-60-61-') || startsWith(github.ref_name, 'audit/full-lab-') || startsWith(github.head_ref, 'codex/integration-59-60-61-') || startsWith(github.head_ref, 'audit/full-lab-') || startsWith(github.base_ref, 'codex/integration-59-60-61-') || github.ref_name == 'feature/doctorcoach-premium-ui-3' || github.head_ref == 'feature/doctorcoach-premium-ui-3' || github.base_ref == 'feature/doctorcoach-premium-ui-3' || startsWith(github.head_ref, 'feature/premium-workout-4-') || startsWith(github.ref_name, 'feature/premium-workout-4-') }}
+    env:
+      LAB_AUDIT: ${{ startsWith(github.ref_name, 'codex/integration-59-60-61-') || startsWith(github.ref_name, 'audit/full-lab-') || startsWith(github.head_ref, 'codex/integration-59-60-61-') || startsWith(github.head_ref, 'audit/full-lab-') || startsWith(github.base_ref, 'codex/integration-59-60-61-') || github.ref_name == 'feature/doctorcoach-premium-ui-3' || github.head_ref == 'feature/doctorcoach-premium-ui-3' || github.base_ref == 'feature/doctorcoach-premium-ui-3' }}
+    defaults:
+      run:
+        working-directory: apps/doctorcoach-standalone
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+      - name: Install pinned package manager
+        run: npm install --global pnpm@11.25.0
+      - name: Install locked standalone dependencies
+        run: pnpm install --frozen-lockfile
+      - name: Premium UI 3 local visual and interaction checks
+        if: env.LAB_AUDIT == 'true' || github.head_ref == 'feature/doctorcoach-premium-ui-3' || github.ref_name == 'feature/doctorcoach-premium-ui-3' || github.base_ref == 'feature/doctorcoach-premium-ui-3'
+        env:
+          DC_CHROMIUM: /usr/bin/google-chrome
+        run: |
+          node --experimental-strip-types scripts/premium-ui-3-browser-smoke.mjs
+          DC_UI3_THEME=light DC_UI3_EVIDENCE=.sites-runtime/ui3-evidence/light node --experimental-strip-types scripts/premium-ui-3-browser-smoke.mjs
+      - name: Save Premium UI 3 screenshots
+        if: always() && (env.LAB_AUDIT == 'true' || github.head_ref == 'feature/doctorcoach-premium-ui-3' || github.ref_name == 'feature/doctorcoach-premium-ui-3' || github.base_ref == 'feature/doctorcoach-premium-ui-3')
+        uses: actions/upload-artifact@v4
+        with:
+          name: premium-ui-3-visual-evidence
+          path: apps/doctorcoach-standalone/.sites-runtime/ui3-evidence
+      - name: Premium Workout 4 bilingual dark and light workflows
+        if: env.LAB_AUDIT == 'true' || startsWith(github.head_ref, 'feature/premium-workout-4-') || startsWith(github.ref_name, 'feature/premium-workout-4-')
+        env:
+          DC_CHROMIUM: /usr/bin/google-chrome
+          DC_WORKOUT4: '1'
+          DC_UI3_SECTIONS: plan,workout
+        run: |
+          DC_UI3_EVIDENCE=.sites-runtime/workout4-evidence/dark node --experimental-strip-types scripts/premium-ui-3-browser-smoke.mjs
+          DC_UI3_THEME=light DC_UI3_EVIDENCE=.sites-runtime/workout4-evidence/light node --experimental-strip-types scripts/premium-ui-3-browser-smoke.mjs
+      - name: Save Workout 4 evidence
+        if: always() && (env.LAB_AUDIT == 'true' || startsWith(github.head_ref, 'feature/premium-workout-4-') || startsWith(github.ref_name, 'feature/premium-workout-4-'))
+        uses: actions/upload-artifact@v4
+        with:
+          name: premium-workout-4-evidence
+          path: apps/doctorcoach-standalone/.sites-runtime/workout4-evidence
+
   standalone:
     runs-on: ubuntu-latest
     timeout-minutes: 20
@@ -51,34 +98,6 @@ jobs:
         run: npm install --global pnpm@11.25.0
       - name: Install locked standalone dependencies
         run: pnpm install --frozen-lockfile
-      - name: Premium UI 3 local visual and interaction checks
-        if: github.head_ref == 'feature/doctorcoach-premium-ui-3' || github.ref_name == 'feature/doctorcoach-premium-ui-3' || github.base_ref == 'feature/doctorcoach-premium-ui-3'
-        env:
-          DC_CHROMIUM: /usr/bin/google-chrome
-        run: |
-          node --experimental-strip-types scripts/premium-ui-3-browser-smoke.mjs
-          DC_UI3_THEME=light DC_UI3_EVIDENCE=.sites-runtime/ui3-evidence/light node --experimental-strip-types scripts/premium-ui-3-browser-smoke.mjs
-      - name: Save Premium UI 3 screenshots
-        if: always() && (github.head_ref == 'feature/doctorcoach-premium-ui-3' || github.ref_name == 'feature/doctorcoach-premium-ui-3' || github.base_ref == 'feature/doctorcoach-premium-ui-3')
-        uses: actions/upload-artifact@v4
-        with:
-          name: premium-ui-3-visual-evidence
-          path: apps/doctorcoach-standalone/.sites-runtime/ui3-evidence
-      - name: Premium Workout 4 bilingual dark and light workflows
-        if: startsWith(github.head_ref, 'feature/premium-workout-4-') || startsWith(github.ref_name, 'feature/premium-workout-4-')
-        env:
-          DC_CHROMIUM: /usr/bin/google-chrome
-          DC_WORKOUT4: '1'
-          DC_UI3_SECTIONS: plan,workout
-        run: |
-          DC_UI3_EVIDENCE=.sites-runtime/workout4-evidence/dark node --experimental-strip-types scripts/premium-ui-3-browser-smoke.mjs
-          DC_UI3_THEME=light DC_UI3_EVIDENCE=.sites-runtime/workout4-evidence/light node --experimental-strip-types scripts/premium-ui-3-browser-smoke.mjs
-      - name: Save Workout 4 evidence
-        if: always() && (startsWith(github.head_ref, 'feature/premium-workout-4-') || startsWith(github.ref_name, 'feature/premium-workout-4-'))
-        uses: actions/upload-artifact@v4
-        with:
-          name: premium-workout-4-evidence
-          path: apps/doctorcoach-standalone/.sites-runtime/workout4-evidence
       - name: Standalone regression tests
         run: npm test
       - name: Team and trainee program word wrapping across themes and widths
