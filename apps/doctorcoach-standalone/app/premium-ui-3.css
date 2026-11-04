@@ -115,6 +115,16 @@ html[data-custom-theme] .dc-ui3 .mobile-bottom-nav button.active svg{color:var(-
 html .dc-ui3 :is(.panel,.exercise-card,.history-session,.care-card,.team-card,.service-card){background:var(--dc-surface);box-shadow:var(--dc-shadow-card)}
 .dc-ui3 :is(input:not([type=checkbox]):not([type=radio]):not([type=range]),select){min-height:44px}
 .dc-ui3 :is(button,.button){white-space:normal;overflow-wrap:anywhere}
+/* Roster actions wrap as whole buttons before their labels lose word width. */
+.dc-ui3 .staff-client-actions>.button{flex:1 1 140px;min-inline-size:min(100%,140px);overflow-wrap:normal;word-break:normal}
+.dc-ui3 .staff-client-actions>.button>svg{flex-shrink:0}
+/* The desktop sidebar can leave less room than a phone's full-width editor. */
+.dc-ui3 .program-exercise-fields .care-grid.four{grid-template-columns:repeat(auto-fit,minmax(min(100%,160px),1fr))}
+.dc-ui3 .workspace-heading{flex-wrap:wrap}
+.dc-ui3 .workspace-heading>.button{flex-shrink:0;overflow-wrap:normal;word-break:normal}
+/* Keep at most four file areas per row, with room for whole HE/EN labels. */
+.dc-ui3 .staff-file-tabs>[data-slot=tabs-list]{grid-template-columns:repeat(auto-fit,minmax(min(100%,max(130px,calc((100% - 36px)/4))),1fr))}
+.dc-ui3 .staff-file-tabs>[data-slot=tabs-list]>[data-slot=tabs-trigger]{overflow-wrap:normal;word-break:normal}
 .dc-ui3 :is(.care-actions,.workspace-actions,.dc-timer-controls){flex-wrap:wrap;gap:var(--dc-space-2)}
 .dc-ui3 :is(.care-empty,.empty-state){padding:var(--dc-space-6);text-align:center;color:var(--dc-text-secondary)}
 .dc-ui3 :is(.status-badge,.service-state){line-height:1.5;border-radius:999px}
