@@ -8,7 +8,7 @@ const evidence=resolve(process.env.DC_OAUTH_EVIDENCE??'../../../../outputs/oauth
 let available={google:false,apple:false},starts=[];
 const server=createServer(async(req,res)=>{
  try{
-  const url=new URL(req.url,'http://127.0.0.1:37864');
+  const url=new URL(req.url,'http://127.0.0.1');
   if(url.pathname==='/auth/signin'){
    const response=authPage({signout:false,returnTo:'/#learn?section=physiology',english:url.searchParams.get('lang')==='en',isolatedStaging:true});
    res.writeHead(response.status,Object.fromEntries(response.headers));res.end(await response.text());return;
@@ -25,14 +25,26 @@ const server=createServer(async(req,res)=>{
   res.statusCode=404;res.end('{}');
  }catch{res.statusCode=500;res.end('{}');}
 });
-await new Promise(r=>server.listen(37864,'127.0.0.1',r));
+console.error(JSON.stringify({stage:'oauth-fixture-start',node:process.version,platform:process.platform}));
+// Keep startup observable even if no active handle remains to settle the await.
+// Port 0 gives each fixture its own socket, including concurrent invocations.
+await new Promise((resolve,reject)=>{
+ const finish=error=>{clearTimeout(timer);server.off('error',failed);server.off('listening',ready);error?reject(error):resolve();};
+ const failed=error=>finish(error),ready=()=>finish();
+ const timer=setTimeout(()=>{server.close();finish(new Error('OAuth fixture did not start listening within 10000ms'));},10000);
+ server.once('error',failed);server.once('listening',ready);
+ try{server.listen(0,'127.0.0.1');}catch(error){finish(error);}
+});
+const origin='http://127.0.0.1:'+server.address().port;
+console.error(JSON.stringify({stage:'oauth-fixture-listening',origin}));
 let browser;
 const checks=[],errors=[];
 try{
  browser=await chromium.launch({executablePath:process.env.DC_OAUTH_CHROMIUM||undefined,headless:true});
+ console.error(JSON.stringify({stage:'oauth-browser-ready',browser:browser.version()}));
  const page=await browser.newPage({viewport:{width:390,height:900}});page.on('pageerror',e=>errors.push(e.message));
  for(const lang of ['he','en']){
-  await page.goto('http://127.0.0.1:37864/auth/signin?lang='+lang);
+  await page.goto(origin+'/auth/signin?lang='+lang);
   await page.locator('#oauth-google-state').filter({hasText:lang==='he'?'ממתין להגדרת הספק':'Awaiting provider setup'}).waitFor();
   assert.equal(await page.locator('#oauth-google').isEnabled(),false);assert.equal(await page.locator('#oauth-apple').isEnabled(),false);
   assert.equal(await page.locator('#email-form button').isEnabled(),true);
@@ -52,10 +64,10 @@ try{
  await page.locator('#oauth-google:not([disabled])').waitFor();await page.locator('#oauth-apple:not([disabled])').waitFor();
  await page.screenshot({path:resolve(evidence,'en-desktop-enabled-fixture.png'),fullPage:true});
  checks.push('both provider buttons enable only with positive server availability (isolated fixture)');
- await page.goto('http://127.0.0.1:37864/auth/signin?lang=en&oauth_error=cancelled');
+ await page.goto(origin+'/auth/signin?lang=en&oauth_error=cancelled');
  await page.getByRole('status').filter({hasText:'Sign-in was canceled.'}).waitFor();
  checks.push('canceled callback provides localized feedback without provider error details');
  assert.deepEqual(errors,[]);checks.push('no browser JavaScript errors');
- const report={scope:'Real authPage UI with isolated HTTP provider fixture, not a real Google/Apple login',checks,errors};
+ const report={scope:'Real authPage UI with isolated HTTP provider fixture, not a real Google/Apple login',origin,node:process.version,browser:browser.version(),checks,errors};
  await writeFile(resolve(evidence,'checks.json'),JSON.stringify(report,null,2));console.log(JSON.stringify(report,null,2));
 }finally{try{await browser?.close();}finally{await new Promise(r=>server.close(r));}}
