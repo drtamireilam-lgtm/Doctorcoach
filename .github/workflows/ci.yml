@@ -147,7 +147,19 @@ jobs:
         if: env.LAB_AUDIT == 'true'
         env:
           DC_OAUTH_CHROMIUM: /usr/bin/google-chrome
-        run: node --experimental-strip-types scripts/oauth-browser-smoke.mjs
+          DC_OAUTH_EVIDENCE: .sites-runtime/oauth-browser-evidence
+        run: |
+          node --experimental-strip-types scripts/oauth-browser-smoke.mjs
+          node --test scripts/oauth-browser-isolation.test.mjs
+      - name: Save synthetic OAuth browser evidence
+        if: always() && env.LAB_AUDIT == 'true'
+        uses: actions/upload-artifact@v4
+        with:
+          name: oauth-browser-evidence-${{ github.sha }}
+          path: apps/doctorcoach-standalone/.sites-runtime/oauth-browser-evidence/
+          include-hidden-files: true
+          if-no-files-found: warn
+          retention-days: 7
       - name: Audit importer component with synthetic files
         if: env.LAB_AUDIT == 'true'
         env:
