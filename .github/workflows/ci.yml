@@ -4,7 +4,7 @@ on:
   push:
     branches: [main, "feature/doctorcoach-premium-ui-3", "codex/integration-59-60-61-*", "audit/full-lab-*", "feature/premium-home-ui-*", "fix/consultation-calendar-*", "codex/trainee-guidance-*", "codex/user-team-management-*", "codex/consultation-management-*", "feature/cardio-automatic-steps-*", "codex/exercise-recognition-3-*", "codex/import-integration-lab-*", "codex/application-audit-*", "stabilize/**", "fix/appearance-toggle-persistence-*", "feature/ui-ux-liad-followup-20261019", "feature/doctorcoach-2-smart-workout-20261020", "feature/anatomy-completion-*", "integration/anatomy-rehab-stretch-*"]
   pull_request:
-    branches: [main, "feature/doctorcoach-premium-ui-3", "codex/integration-59-60-61-*", "audit/full-lab-*", "feature/premium-home-ui-*", "fix/consultation-calendar-*", "codex/trainee-guidance-*", "codex/user-team-management-*", "codex/consultation-management-*", "feature/cardio-automatic-steps-*", "codex/exercise-recognition-3-*", "codex/import-integration-lab-*", "codex/generic-movement-import-*", "codex/application-audit-*", "codex/import-structure-regressions-*", "codex/import-alias-precision-*", "codex/google-apple-signin-*", "feature/anatomy-*", "integration/anatomy-*", "codex/anatomy-*", "codex/smart-import-3-*"]
+    branches: [main, "feature/doctorcoach-premium-ui-3", "feature/premium-workout-4-*", "codex/integration-59-60-61-*", "audit/full-lab-*", "feature/premium-home-ui-*", "fix/consultation-calendar-*", "codex/trainee-guidance-*", "codex/user-team-management-*", "codex/consultation-management-*", "feature/cardio-automatic-steps-*", "codex/exercise-recognition-3-*", "codex/import-integration-lab-*", "codex/generic-movement-import-*", "codex/application-audit-*", "codex/import-structure-regressions-*", "codex/import-alias-precision-*", "codex/google-apple-signin-*", "feature/anatomy-*", "integration/anatomy-*", "codex/anatomy-*", "codex/smart-import-3-*"]
 
 permissions:
   contents: read
@@ -64,8 +64,36 @@ jobs:
         with:
           name: premium-ui-3-visual-evidence
           path: apps/doctorcoach-standalone/.sites-runtime/ui3-evidence
+      - name: Premium Workout 4 bilingual dark and light workflows
+        if: startsWith(github.head_ref, 'feature/premium-workout-4-') || startsWith(github.ref_name, 'feature/premium-workout-4-')
+        env:
+          DC_CHROMIUM: /usr/bin/google-chrome
+          DC_WORKOUT4: '1'
+          DC_UI3_SECTIONS: plan,workout
+        run: |
+          DC_UI3_EVIDENCE=.sites-runtime/workout4-evidence/dark node --experimental-strip-types scripts/premium-ui-3-browser-smoke.mjs
+          DC_UI3_THEME=light DC_UI3_EVIDENCE=.sites-runtime/workout4-evidence/light node --experimental-strip-types scripts/premium-ui-3-browser-smoke.mjs
+      - name: Save Workout 4 evidence
+        if: always() && (startsWith(github.head_ref, 'feature/premium-workout-4-') || startsWith(github.ref_name, 'feature/premium-workout-4-'))
+        uses: actions/upload-artifact@v4
+        with:
+          name: premium-workout-4-evidence
+          path: apps/doctorcoach-standalone/.sites-runtime/workout4-evidence
       - name: Standalone regression tests
         run: npm test
+      - name: Team and trainee program word wrapping across themes and widths
+        if: env.LAB_AUDIT == 'true' || startsWith(github.head_ref, 'fix/dashboard-rtl-') || startsWith(github.base_ref, 'feature/premium-workout-4-')
+        env:
+          DC_CHROMIUM: /usr/bin/google-chrome
+        run: node --experimental-strip-types scripts/dashboard-layout-browser-smoke.mjs
+      - name: Save dashboard layout evidence
+        if: always() && (env.LAB_AUDIT == 'true' || startsWith(github.head_ref, 'fix/dashboard-rtl-') || startsWith(github.base_ref, 'feature/premium-workout-4-'))
+        uses: actions/upload-artifact@v4
+        with:
+          name: dashboard-layout-evidence
+          path: apps/doctorcoach-standalone/.sites-runtime/dashboard-layout
+          include-hidden-files: true
+          retention-days: 7
       - name: Consultation desktop and mobile bilingual workflow
         if: env.LAB_AUDIT == 'true' || startsWith(github.head_ref, 'fix/consultation-calendar-') || startsWith(github.ref_name, 'fix/consultation-calendar-') || startsWith(github.head_ref, 'codex/trainee-guidance-') || startsWith(github.ref_name, 'codex/trainee-guidance-') || startsWith(github.head_ref, 'codex/consultation-management-') || startsWith(github.head_ref, 'codex/user-team-management-')
         env:

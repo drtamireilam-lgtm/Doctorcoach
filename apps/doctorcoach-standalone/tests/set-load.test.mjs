@@ -157,3 +157,20 @@ test('saving an automatic draft acknowledges its provenance without a permanentl
  s=await f.training.patch(client.userId,{id:s.id,version:s.version,action:'set',exerciseId:'goblet',setIndex:1,...draft});
  const fresh={...s.items[0].results[1],targetRpe:8};assert.equal(fresh.weightSource,'automatic');const merged=mergeSetDraft(old,fresh,draft);for(const field of ['weight','weightSource','amount','actualRpe','painDuring','targetRpe'])assert.equal(merged[field],fresh[field]);
 });
+
+test('continuous mode retains fractional recommendations and the existing safety and pain guards',()=>{
+ const i=item(9),r=nextSetLoad(i,0,session,0);
+ assert.ok(Math.abs(r.weight-97.2973)<.0001);assert.equal(r.calculatedWeight,97.3);
+ assert.equal(nextSetLoad(item(6),0,session,0).weight,105);
+ assert.equal(nextSetLoad(i,0,{before:1,after:null},0).weight,null);
+ assert.equal(nextSetLoad(i,0,session,2.5).weight,97.5);
+});
+
+test('continuous recommendation persists and subsequent manual decimal load remains authoritative',async t=>{
+ const f=platform(t);await f.connect();await f.training.savePlan(client.userId,{...defaultPrescription('goblet'),sets:2,reps:5,weight:100,targetRpe:8});
+ let s=await f.training.start(client.userId,{requestId:randomUUID(),before:0});
+ s=await f.training.patch(client.userId,{id:s.id,version:s.version,action:'set',exerciseId:'goblet',setIndex:0,done:true,amount:5,weight:100,actualRpe:9,autoNextLoad:true,step:0});
+ assert.ok(Math.abs(s.items[0].results[1].weight-97.2973)<.0001);
+ s=await f.training.patch(client.userId,{id:s.id,version:s.version,action:'set',exerciseId:'goblet',setIndex:1,done:true,amount:5,weight:96.375,weightSource:'manual',actualRpe:8});
+ const stored=(await f.training.feed(client.userId)).active.items[0].results[1];assert.equal(stored.weight,96.375);assert.equal(stored.weightSource,'manual');
+});

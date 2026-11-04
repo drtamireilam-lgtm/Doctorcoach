@@ -10,7 +10,7 @@ function fixture(patch){
  vm.runInNewContext(ts.transpileModule(readFileSync(new URL('../components/workout-finish.tsx',import.meta.url),'utf8'),{compilerOptions:{module:ts.ModuleKind.CommonJS,jsx:ts.JsxEmit.ReactJSX}}).outputText,{exports,require:k=>modules[k]});
  const render=(open=true)=>{cursor=0;return exports.FinishWorkoutDialog({controller:{busy:false,patch,feed:{history:[]}},session:{},open,onClose:()=>{closed++;},onSaved:s=>{saved=s;}});};
  function find(node,predicate){if(!node||typeof node!=='object')return null;if(predicate(node))return node;for(const child of [node.props?.children].flat(Infinity)){const result=find(child,predicate);if(result)return result;}return null;}
- return {render,find,get saved(){return saved;},get closed(){return closed;}};
+ return {render,find,renderSaved:()=>exports.SavedWorkout({session:{},controller:{feed:{history:[]}},go:()=>{}}),get saved(){return saved;},get closed(){return closed;}};
 }
 test('finish waits for completed server response before acknowledging save',async()=>{
  let resolve;const pending=new Promise(r=>{resolve=r;});const f=fixture(()=>pending);
@@ -44,4 +44,11 @@ test('summary drafts survive closing and reopening without saving to server',()=
  const workspace=readFileSync(new URL('../components/training-workspace.tsx',import.meta.url),'utf8');
  assert.match(workspace,/<FinishWorkoutDialog key=\{session.id\} open=\{finish\}/);
  assert.doesNotMatch(workspace,/finish&&<FinishWorkoutDialog/);
+});
+
+
+test('saved workout keeps heading semantics and announces the confirmation separately',()=>{
+ const f=fixture(async()=>null),tree=f.renderSaved();
+ const heading=f.find(tree,n=>n.type==='h1');assert.ok(heading);assert.equal(heading.props.role,undefined);
+ const notice=f.find(tree,n=>n.type==='p'&&n.props.role==='status');assert.ok(notice);
 });

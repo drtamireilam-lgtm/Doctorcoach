@@ -45,6 +45,13 @@ export function nextSetLoad(item:SessionExercise,index:number,session:Pick<Train
  const relativePercent=Math.round((raw/weight-1)*1000)/10;
  const text=relativePercent>0?`עלייה מחושבת של ${relativePercent}% מהסט הקודם.`:relativePercent<0?`ירידה מחושבת של ${Math.abs(relativePercent)}% מהסט הקודם.`:'המשקל המחושב נשאר כמו בסט הקודם.';
  if(!Number.isFinite(raw)||raw<=0)return none('לא ניתן לחשב משקל.');
+ // Explicit continuous mode keeps decimal loads; existing equipment modes and
+ // the conservative 5% per-set guard remain unchanged.
+ if(step===0){
+  const bounded=Math.max(weight*.95,Math.min(weight*1.05,raw));
+  const result=Math.round(bounded*10000)/10000;
+  return {weight:result>0&&result<=1000?result:null,calculatedWeight,relativePercent,text,estimate};
+ }
  if(!loadSteps.some(n=>Math.abs(n-step)<1e-8||Math.abs(toKg(n,'lb')-step)<1e-8))return {weight:null,calculatedWeight,relativePercent,text,estimate};
  // Product guardrail, not a clinical threshold: at most 5% per set, rounded toward the current load.
  const bounded=Math.max(weight*.95,Math.min(weight*1.05,raw));

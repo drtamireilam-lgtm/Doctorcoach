@@ -9,7 +9,7 @@ export function NextSetCalculation({item,index,suggestion,preview=false}:{item:S
  const unit=useLoadUnit();
  const english=useLanguage().language==='en';
  if(suggestion.calculatedWeight===null||!item.results[index+1])return null;
- const weight=new Intl.NumberFormat(english?'en-GB':'he-IL',{maximumFractionDigits:1}).format(fromKg(suggestion.calculatedWeight,unit));
+ const weight=new Intl.NumberFormat(english?'en-GB':'he-IL',{maximumFractionDigits:4}).format(fromKg(suggestion.weight??suggestion.calculatedWeight,unit));
  const direction=(suggestion.relativePercent??0)>0?'↑':(suggestion.relativePercent??0)<0?'↓':'↔';
  return <span className="next-set-calculation compact-next-set" role="status">{english?'Next set':'הסט הבא'}: <strong dir="ltr">{weight} {unit} {direction}</strong>{preview&&<small>{english?'Preview':'תצוגה מקדימה'}</small>}</span>;
 }
