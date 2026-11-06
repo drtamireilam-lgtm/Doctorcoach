@@ -26,6 +26,7 @@ function setLine(){
  return props=>{cursor=0;return exports.RenderSetLine(props)};
 }
 function nodes(node){if(!node||typeof node!=='object')return [];return [node,...[node.props?.children].flat(Infinity).flatMap(nodes)];}
+function label(node){if(node==null||typeof node==='boolean')return '';if(typeof node==='string'||typeof node==='number')return String(node);return (Array.isArray(node)?node:[node.props?.children]).flat(Infinity).map(label).join('');}
 
 for(const [nextReps,expected,step] of [[5,162.5,2.5],[6,157.5,2.5],[5,160.6579,0],[6,156.75,0]])test(`165 x 5 at RPE 8 completes in one press and fills next ${nextReps} reps at target 7 with step ${step}`,async t=>{
  const f=platform(t);await f.connect();await f.training.savePlan(client.userId,{...training.defaultPrescription('goblet'),sets:2,reps:5,weight:100,targetRpe:7});
@@ -39,7 +40,10 @@ for(const [nextReps,expected,step] of [[5,162.5,2.5],[6,157.5,2.5],[5,160.6579,0
  const controls=draw();
  assert.equal(controls.filter(n=>n.props?.className?.startsWith('set-save')).length,1);
  assert.equal(controls.some(n=>n.props?.onCheckedChange&&n.props?.['aria-label']?.startsWith('סימון סט')),false);
- assert.equal(controls.find(n=>n.props?.className?.startsWith('set-save')).props.children,'סיום סט');
+ assert.equal(label(controls.find(n=>n.props?.className?.startsWith('set-save')).props.children),'סיום סט');
+ controller.busy=true;const busy=draw().find(n=>n.props?.className?.startsWith('set-save'));
+ assert.equal(busy.props['aria-busy'],true);assert.equal(busy.props.disabled,true);
+ assert.equal(label(busy.props.children),'סיום סט');controller.busy=false;
  await controls.find(n=>n.props?.className?.startsWith('set-save')).props.onClick();
  assert.equal(session.items[0].results[0].done,true);
  assert.equal(session.items[0].results[0].weight,165);
