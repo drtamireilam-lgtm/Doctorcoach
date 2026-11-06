@@ -12,22 +12,16 @@ import assert from 'node:assert/strict';
 import {signLink} from '../crypto.ts';
 import {googleCalendarStore,CALENDAR_SCOPE} from '../../lib/google-calendar.ts';
 import {themePresets} from '../../lib/advanced-theme.ts';
+import {syntheticAuthProvider} from './fixtures/synthetic-auth-provider.mjs';
 const root=fileURLToPath(new URL('../../',import.meta.url));
 const require=createRequire(realpathSync(path.join(root,'node_modules/@cloudflare/vite-plugin/package.json')));
 const {Miniflare}=require('miniflare');
 const origin='https://doctorcoach-isolated-staging.dr-tamireilam.workers.dev',project='https://auth.example.test';
-const identities=new Map(),tokens=new Map(),refreshTokens=new Map(),used=new Set(),revoked=new Set();
-let serial=0,refreshCount=0;
+const authProvider=syntheticAuthProvider({code:()=> '123456',firstExpiry:1});
+const identities=authProvider.identities;
 const legacyKeys=await crypto.subtle.generateKey('Ed25519',true,['sign','verify']);
 const legacyPrivate=await crypto.subtle.exportKey('jwk',legacyKeys.privateKey);
 const legacyPublic=await crypto.subtle.exportKey('jwk',legacyKeys.publicKey);
-function mint(email,first=false){
- let identity=identities.get(email);
- if(!identity){identity={subject:randomUUID(),sid:randomUUID(),primary:Math.floor(Date.now()/1000)};identities.set(email,identity);}
- const at=Math.floor(Date.now()/1000),token=[{alg:'ES256'},{iss:project+'/auth/v1',sub:identity.subject,session_id:identity.sid,aud:'authenticated',role:'authenticated',is_anonymous:false,iat:at,exp:at+300,amr:[{method:'otp',timestamp:identity.primary}]}].map(v=>Buffer.from(JSON.stringify(v)).toString('base64url')).concat('synthetic-'+(++serial)).join('.');
- tokens.set(token,{...identity,email});const refresh='synthetic-refresh-'+serial;refreshTokens.set(refresh,email);
- return {access_token:token,refresh_token:refresh,expires_in:first?1:300};
-}
 async function modules(dir){const result=[];for(const entry of await readdir(dir,{withFileTypes:true})){const full=path.join(dir,entry.name);if(entry.isDirectory())result.push(...await modules(full));else if(/\.m?js$/.test(entry.name))result.push({type:'ESModule',path:full});}return result;}
 const entries=await modules(path.join(root,'dist/server'));
 entries.sort((a,b)=>a.path===path.join(root,'dist/server/index.js')?-1:b.path===path.join(root,'dist/server/index.js')?1:a.path.localeCompare(b.path));
@@ -36,14 +30,7 @@ const googleEvents=new Map();let googleFailure=false,googleCreates=0;
 async function googleResponse(req){const url=new URL(req.url);if(url.hostname==='oauth2.googleapis.com')return Response.json({access_token:'SYNTHETIC-GOOGLE-ACCESS',refresh_token:'SYNTHETIC-GOOGLE-REFRESH',scope:CALENDAR_SCOPE});if(url.pathname.endsWith('/userinfo'))return Response.json({email:'doctor@example.test',verified_email:true});if(googleFailure)return Response.json({error:'synthetic provider failure'},{status:503});const id=url.pathname.split('/').at(-1);if(['POST','PUT'].includes(req.method)){const body=await req.json();if(req.method==='POST'){if(googleEvents.has(body.id))return Response.json({}, {status:409});googleCreates++;}googleEvents.set(body.id,{...body,etag:'"synthetic"'});return Response.json({id:body.id});}if(req.method==='DELETE'){googleEvents.delete(id);return new Response(null,{status:204});}return googleEvents.has(id)?Response.json(googleEvents.get(id)):Response.json({}, {status:404});}
 const runtimeOptions={modules:entries,modulesRoot:path.join(root,'dist/server'),compatibilityDate:'2026-05-15',compatibilityFlags:['nodejs_compat'],d1Databases:['DB'],r2Buckets:['BUCKET'],bindings:{DC_AUTH_ORIGIN:origin,DC_SUPABASE_URL:project,DC_SUPABASE_PUBLIC_KEY:'sb_publishable_synthetic',DC_SESSION_KEY:Buffer.alloc(32,7).toString('base64'),DC_LEGACY_ISSUER:'sites:synthetic-old',DC_NEW_ACCOUNTS_ENABLED:'true',DC_LEGACY_PUBLIC_JWK:JSON.stringify(legacyPublic),DOCTORCOACH_ADMIN_EMAILS:'doctor@example.test',DOCTORCOACH_CLINICIAN_EMAILS:'doctor@example.test'},outboundService:async req=>{
  const url=new URL(req.url);if(['oauth2.googleapis.com','www.googleapis.com'].includes(url.hostname))return googleResponse(req);assert.equal(url.origin,project);
- if(url.pathname==='/auth/v1/otp')return Response.json({});
- if(url.pathname==='/auth/v1/verify'){const body=await req.json();if(body.token!=='123456'||used.has(body.email))return Response.json({error:'invalid'},{status:401});used.add(body.email);return Response.json(mint(body.email,true));}
- if(url.pathname==='/auth/v1/token'){const body=await req.json(),email=refreshTokens.get(body.refresh_token);if(!email)return Response.json({}, {status:401});refreshCount++;refreshTokens.delete(body.refresh_token);return Response.json(mint(email));}
- const identity=tokens.get((req.headers.get('authorization')??'').slice(7));
- if(url.pathname==='/auth/v1/user')return identity&&!revoked.has(identity.sid)?Response.json({id:identity.subject,email:identity.email,is_anonymous:false,email_confirmed_at:new Date().toISOString()}):Response.json({}, {status:401});
- if(url.pathname.includes('/rpc/'))return Response.json(!!identity&&!revoked.has(identity.sid));
- if(url.pathname==='/auth/v1/logout'){if(identity)revoked.add(identity.sid);return Response.json({});}
- return Response.json({}, {status:404});
+ return authProvider.fetch(req);
 }};
 const mf=new Miniflare(runtimeOptions);
 try{
@@ -79,7 +66,7 @@ try{
  assert.deepEqual((await json('/api/preferences/appearance')).appearance,{mode:'light',palette:'pink'});
  assert.equal((await request('/api/preferences/appearance',{appearance:{mode:'dark',palette:'blue'},version:0})).status,409);
  assert.equal((await request('/api/preferences/appearance',{appearance:{mode:'dark',palette:'green'},version:1},{origin:'https://foreign.example.test'})).status,403);
- assert.equal(account.signedIn,true);assert.equal(account.canManageServices,false);assert.equal(account.careRole,null);assert.ok(refreshCount>=1);
+ assert.equal(account.signedIn,true);assert.equal(account.canManageServices,false);assert.equal(account.careRole,null);assert.ok(authProvider.refreshCount>=1);
  const owner=(await db.prepare('SELECT principal_id FROM dc_identity_aliases WHERE subject=?').bind(identities.get('first@example.test').subject).first()).principal_id;
  assert.equal(initialAppearance.ownerId,owner);
  // Actual HTTP persistence for every named preset; provider identities remain synthetic.
