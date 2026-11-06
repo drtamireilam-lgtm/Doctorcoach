@@ -27,7 +27,7 @@ export function previewNextSetLoad(item:SessionExercise,index:number,session:Pic
  const items=(session.items??[item]).map(existing=>exerciseOccurrenceKey(existing)===exerciseOccurrenceKey(item)?preview:existing);
  return nextSetLoad(preview,index,{...session,items},step);
 }
-export function nextSetLoad(item:SessionExercise,index:number,session:Pick<TrainingSession,'before'|'after'>&Partial<Pick<TrainingSession,'items'>>,step=2.5):{weight:number|null;calculatedWeight:number|null;relativePercent:number|null;text:string;estimate:number|null}{
+export function nextSetLoad(item:SessionExercise,index:number,session:Pick<TrainingSession,'before'|'after'>&Partial<Pick<TrainingSession,'items'>>,step=2.5):{weight:number|null;calculatedWeight:number|null;relativePercent:number|null;text:string;estimate:number|null;fatigueLimited?:boolean}{
  const target=targetRpeForSet(item,index+1);
  const source=item.results[index],next=item.results[index+1];const estimate=source&&hasTotalLoad(item)&&workoutSection(item)==='main'?setEstimated1RM(source,item.unit):null;
  const none=(text:string)=>({weight:null,calculatedWeight:null,relativePercent:null,text,estimate});
@@ -45,20 +45,28 @@ export function nextSetLoad(item:SessionExercise,index:number,session:Pick<Train
  const relativePercent=Math.round((raw/weight-1)*1000)/10;
  const text=relativePercent>0?`עלייה מחושבת של ${relativePercent}% מהסט הקודם.`:relativePercent<0?`ירידה מחושבת של ${Math.abs(relativePercent)}% מהסט הקודם.`:'המשקל המחושב נשאר כמו בסט הקודם.';
  if(!Number.isFinite(raw)||raw<=0)return none('לא ניתן לחשב משקל.');
+ // Observed performance decline, not a physiological fatigue estimate. Only
+ // three consecutive valid working sets of this occurrence can veto an increase.
+ // Use unrounded estimates so display rounding cannot create or hide the trend.
+ const prior=item.results.slice(Math.max(0,index-2),index+1);
+ const estimates=prior.map(s=>s.done&&setEstimated1RM(s,item.unit)!==null?s.weight*factor(s.amount,s.actualRpe!):null);
+ const declining=estimates.length===3&&estimates.every(n=>n!==null)&&estimates[0]!>estimates[1]!+1e-8&&estimates[1]!>estimates[2]!+1e-8;
+ const fatigueLimited=declining&&raw>weight;
+ const guarded=fatigueLimited?weight:raw;
  // Explicit continuous mode keeps decimal loads; existing equipment modes and
  // the conservative 5% per-set guard remain unchanged.
  if(step===0){
-  const bounded=Math.max(weight*.95,Math.min(weight*1.05,raw));
-  const result=Math.round(bounded*10000)/10000;
-  return {weight:result>0&&result<=1000?result:null,calculatedWeight,relativePercent,text,estimate};
+  const bounded=Math.max(weight*.95,Math.min(weight*1.05,guarded));
+  const result=fatigueLimited?weight:Math.round(bounded*10000)/10000;
+  return {weight:result>0&&result<=1000?result:null,calculatedWeight,relativePercent,text,estimate,fatigueLimited};
  }
  if(!loadSteps.some(n=>Math.abs(n-step)<1e-8||Math.abs(toKg(n,'lb')-step)<1e-8))return {weight:null,calculatedWeight,relativePercent,text,estimate};
  // Product guardrail, not a clinical threshold: at most 5% per set, rounded toward the current load.
- const bounded=Math.max(weight*.95,Math.min(weight*1.05,raw));
+ const bounded=Math.max(weight*.95,Math.min(weight*1.05,guarded));
  const rounded=bounded>weight?Math.floor((bounded+1e-8)/step)*step:bounded<weight?Math.ceil((bounded-1e-8)/step)*step:weight;
- const result=Math.round((bounded>weight?Math.max(weight,rounded):Math.min(weight,rounded))*100)/100;
+ const result=fatigueLimited?weight:Math.round((bounded>weight?Math.max(weight,rounded):Math.min(weight,rounded))*100)/100;
  if(result<=0||result>1000)return {weight:null,calculatedWeight,relativePercent,estimate,text};
- return {weight:result,calculatedWeight,relativePercent,estimate,text};
+ return {weight:result,calculatedWeight,relativePercent,estimate,text,fatigueLimited};
 }
 
 /** A read-only opening suggestion from the latest matching workout, never a plan edit. */
