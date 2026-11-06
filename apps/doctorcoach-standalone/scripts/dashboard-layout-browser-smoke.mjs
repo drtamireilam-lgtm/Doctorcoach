@@ -23,10 +23,12 @@ const training={active:null,history:[],stats:{total:0,week:0,sets:0}};
 const bundle={profile:{userId:clientId,name:'מתאמן בדיקה עם שם ארוך',goal:'תוכנית כוח והתקדמות הדרגתית',experience:'מתחיל',equipment:'חדר כושר',days:3,version:1,updatedAt:now},connections:[],notes:[],programs:[program],activeProgramId:program.id,checkins:[],training,canViewMedical:false,canViewNutrition:false,canManagePrograms:true,viewerRole:'coach',week:'2026-W45'};
 const draft={draft:null,version:0,updatedAt:null};
 let theme='dark';const errors=[],checks=[],unexpected=[];
-const server=await createServer({configFile:false,cacheDir:join(runtime,'dashboard-vite-cache'),root:fixture,publicDir:resolve('public'),plugins:[react()],resolve:{alias:{'@':resolve('.')}},server:{host:'127.0.0.1',port:37868,strictPort:true,fs:{allow:[resolve('.'),await realpath('node_modules')]}}});
+const server=await createServer({configFile:false,cacheDir:join(runtime,'dashboard-vite-cache'),root:fixture,publicDir:resolve('public'),plugins:[react()],resolve:{alias:{'@':resolve('.')}},server:{host:'127.0.0.1',port:37868,strictPort:false,fs:{allow:[resolve('.'),await realpath('node_modules')]}}});
 let browser;
 try{
  await server.listen();browser=await chromium.launch({executablePath:process.env.DC_CHROMIUM||undefined,headless:true,args:['--no-sandbox','--disable-dev-shm-usage','--disable-gpu']});
+ const origin=server.resolvedUrls.local[0];
+ console.log('Dashboard fixture origin:',origin);
  const context=await browser.newContext({reducedMotion:'reduce'});
  await context.route('**/*',async route=>{
   const request=route.request(),url=new URL(request.url());
@@ -55,7 +57,7 @@ try{
   for(const surface of ['team','editor','trainee']){
    Object.assign(draft,{draft:null,version:0,updatedAt:null});
    const hash=surface==='editor'?`#team?client=${clientId}&tab=programs`:'#team';
-   await page.goto(`http://127.0.0.1:37868/?lang=${lang}&surface=${surface==='trainee'?'trainee':'team'}${hash}`);
+   await page.goto(`${origin}?lang=${lang}&surface=${surface==='trainee'?'trainee':'team'}${hash}`);
    await page.waitForFunction(mode=>document.documentElement.classList.contains(mode),theme);
    assert.equal(await page.locator('html').getAttribute('dir'),lang==='he'?'rtl':'ltr');
    if(surface==='team')await page.locator('.care-client').waitFor();
