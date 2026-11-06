@@ -1,0 +1,69 @@
+{
+  "testedAt": "2026-11-06T15:46:17.957Z",
+  "checkoutSha": null,
+  "prHeadSha": null,
+  "scope": "Local synthetic browser simulation; real built Worker handlers and disposable D1/R2; no live account/provider/device acceptance",
+  "checks": [
+    {
+      "name": "he/390 workout",
+      "savedWorkout": "b1f802c3-5e30-41e2-b939-d298226b4d8d",
+      "actualRpe": 6,
+      "repetitions": 10,
+      "weight": 60,
+      "nextLoad": 62.8571,
+      "realPersistence": true
+    },
+    {
+      "name": "he/390 import csv",
+      "items": 3,
+      "realDraftAndAssignment": true,
+      "freshTraineeSession": true
+    },
+    {
+      "name": "he/390 import xlsx",
+      "items": 3,
+      "realDraftAndAssignment": true,
+      "freshTraineeSession": true
+    },
+    {
+      "name": "he/390 import pdf",
+      "items": 3,
+      "realDraftAndAssignment": true,
+      "freshTraineeSession": true
+    },
+    {
+      "name": "he/390 roles and isolation",
+      "ownerProfessionalRole": "physician",
+      "separateOwnerGrant": true
+    },
+    {
+      "name": "he/390 consultations and Calendar",
+      "language": "he",
+      "width": 390,
+      "requestedCancellationIsExistingRejection": true,
+      "syntheticCalendarCreates": 1,
+      "noLiveEvents": true
+    },
+    {
+      "name": "en/1440 workout",
+      "savedWorkout": "613c5d7e-7ed8-4c79-b913-eed4c600f327",
+      "actualRpe": 6,
+      "repetitions": 10,
+      "weight": 60,
+      "nextLoad": 62.8571,
+      "realPersistence": true
+    }
+  ],
+  "failures": [
+    {
+      "stage": "en/1440 import csv",
+      "message": "TimeoutError: locator.evaluate: Timeout 20000ms exceeded.\nCall log:\n\u001b[2m  - waiting for getByRole('button', { name: /בדיקת כל ימי התוכנית לפני פרסום/ }).locator('xpath=ancestor::form')\u001b[22m\n",
+      "classification": "fixture defect: English publication button uses translated prefix; fixed selector mapping, assertions retained"
+    }
+  ],
+  "browserErrors": [],
+  "externalRequests": [],
+  "transportErrors": [],
+  "browser": "156.0.8078.74",
+  "evidenceNote": "Sanitized run 24: all six Hebrew journeys completed; English workout completed; English import stopped on a fixture selector. Subsequent English-only evidence is recorded separately."
+}

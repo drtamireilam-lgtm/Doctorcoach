@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import {readFileSync} from 'node:fs';
 import vm from 'node:vm';
 
-const workflow=readFileSync(new URL('../../../.github/workflows/ci.yml',import.meta.url),'utf8');
+const workflow=readFileSync(new URL('../../../.github/workflows/ci.yml',import.meta.url),'utf8').replace(/\r\n/g,'\n');
 function enabled(flag,github){
  const expression=workflow.match(new RegExp(`^      ${flag}: \\$\\{\\{ (.*) \\}\\}$`,'m'))?.[1];
  assert.ok(expression,`Missing ${flag} expression`);

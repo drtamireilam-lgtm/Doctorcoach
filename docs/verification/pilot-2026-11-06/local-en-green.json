@@ -1,0 +1,62 @@
+{
+  "testedAt": "2026-11-06T15:59:53.263Z",
+  "checkoutSha": null,
+  "prHeadSha": null,
+  "scope": "Local synthetic browser simulation; real built Worker handlers and disposable D1/R2; no live account/provider/device acceptance",
+  "checks": [
+    {
+      "name": "en/1440 workout",
+      "savedWorkout": "b4a81d7f-8f28-4573-bc84-dda39330dc04",
+      "actualRpe": 6,
+      "repetitions": 10,
+      "weight": 60,
+      "nextLoad": 62.8571,
+      "realPersistence": true
+    },
+    {
+      "name": "en/1440 import csv",
+      "items": 3,
+      "realDraftAndAssignment": true,
+      "freshTraineeSession": true
+    },
+    {
+      "name": "en/1440 import xlsx",
+      "items": 3,
+      "realDraftAndAssignment": true,
+      "freshTraineeSession": true
+    },
+    {
+      "name": "en/1440 import pdf",
+      "items": 3,
+      "realDraftAndAssignment": true,
+      "freshTraineeSession": true
+    },
+    {
+      "name": "en/1440 roles and isolation",
+      "ownerProfessionalRole": "physician",
+      "separateOwnerGrant": true
+    },
+    {
+      "name": "en/1440 consultations and Calendar",
+      "language": "en",
+      "width": 1440,
+      "requestedCancellationIsExistingRejection": true,
+      "syntheticCalendarCreates": 1,
+      "noLiveEvents": true
+    },
+    {
+      "name": "all browser requests local; no browser JavaScript errors"
+    }
+  ],
+  "failures": [],
+  "browserErrors": [],
+  "externalRequests": [],
+  "transportErrors": [],
+  "matrix": [
+    {
+      "lang": "en",
+      "width": 1440
+    }
+  ],
+  "browser": "156.0.8078.80"
+}
