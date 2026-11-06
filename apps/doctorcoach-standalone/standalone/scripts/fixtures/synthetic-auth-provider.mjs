@@ -11,6 +11,16 @@ export function syntheticAuthProvider({now=Date.now,code=sequence=>String(100000
   return {access_token:token,refresh_token:refresh,expires_in:first?firstExpiry:300};
  };
  const fixture={identities,outage:false,get refreshCount(){return refreshCount;},
+  // Test-only checkpoint: tokens refer to session IDs so restored logout and
+  // refresh state remain shared, rather than becoming independent JSON copies.
+  snapshot:()=>({identities:[...identities],issuances:[...issuances],sessions:[...sessions],tokens:[...tokens].map(([token,s])=>[token,s.sid]),refreshTokens:[...refreshTokens].map(([token,s])=>[token,s.sid]),serial,issued,refreshCount,outage:fixture.outage}),
+  restore(state){
+   const replace=(map,rows)=>{map.clear();for(const [key,value] of rows)map.set(key,value);};
+   replace(identities,state.identities);replace(issuances,state.issuances);replace(sessions,state.sessions);
+   const references=rows=>rows.map(([token,sid])=>{assert.ok(sessions.has(sid),'Synthetic checkpoint session missing');return [token,sessions.get(sid)];});
+   replace(tokens,references(state.tokens));replace(refreshTokens,references(state.refreshTokens));
+   serial=state.serial;issued=state.issued;refreshCount=state.refreshCount;fixture.outage=state.outage;
+  },
   codeFor:email=>issuances.get(email)?.code,
   sessionFor:token=>tokens.get(token),
   async fetch(req){
