@@ -2,6 +2,41 @@ import test from 'node:test';import assert from 'node:assert/strict';import {ran
 import {setEstimated1RM,nextSetLoad,previewNextSetLoad,automaticSetDraft} from '../lib/set-load.ts';import {platform,client} from './platform-db.mjs';import {defaultPrescription} from '../lib/training.ts';
 const item=(rpe=8)=>({...defaultPrescription('goblet'),name:'בדיקה',sets:2,reps:5,weight:100,targetRpe:8,results:[{done:true,amount:5,weight:100,actualRpe:rpe},{done:false,amount:5,weight:100,actualRpe:null}]});
 const session={before:0,after:null};
+
+const declining=()=>({...item(6),sets:4,results:[100,98,96].map(weight=>({done:true,amount:5,weight,actualRpe:6})).concat([{done:false,amount:5,weight:96,actualRpe:null}])});
+test('three declining working-set estimates prevent an increase without inventing a fatigue reduction',()=>{
+ const i=declining(),before=JSON.stringify(i),result=nextSetLoad(i,2,session,0);
+ assert.equal(result.weight,96);assert.equal(result.fatigueLimited,true);
+ assert.equal(JSON.stringify(i),before);
+ i.targetRpe=6;assert.equal(nextSetLoad(i,2,session,0).weight,96);
+ i.results[2].actualRpe=9;assert.ok(nextSetLoad(i,2,session,0).weight<96);
+});
+test('equipment rounding cannot increase or truncate a held manual decimal load',()=>{
+ const i=declining();i.results[2].weight=96.125;
+ for(const step of [0,.25,2.5,5])assert.equal(nextSetLoad(i,2,session,step).weight,96.125);
+});
+test('stable, insufficient, gapped or invalid prior data cannot invent a fatigue trend',()=>{
+ for(const edit of [i=>i.results[0].weight=98,i=>i.results[1].done=false,i=>i.results[0].actualRpe=null,i=>i.results[0].amount=11]){
+  const i=declining();edit(i);assert.ok(nextSetLoad(i,2,session,0).weight>96);assert.notEqual(nextSetLoad(i,2,session,0).fatigueLimited,true);
+ }
+ assert.equal(nextSetLoad(item(6),0,session,0).weight,105);
+});
+test('draft preview shares the fatigue ceiling and cannot bypass exercise or pain gates',()=>{
+ const i=declining();i.results[2].done=false;
+ assert.equal(previewNextSetLoad(i,2,session,i.results[2],0).weight,96);
+ for(const patch of [{unit:'seconds'},{workoutSection:'warmup'},{load:{basis:'per-side'}}])assert.equal(previewNextSetLoad({...i,...patch},2,session,i.results[2],0).weight,null);
+ assert.equal(previewNextSetLoad(i,2,{before:1,after:null},i.results[2],0).weight,null);
+});
+test('fatigue ceiling persists through reload while manual decimal choice remains authoritative',async t=>{
+ const f=platform(t);await f.connect();await f.training.savePlan(client.userId,{...defaultPrescription('goblet'),sets:4,reps:5,weight:100,targetRpe:8});
+ let s=await f.training.start(client.userId,{requestId:randomUUID(),before:0});
+ for(const [setIndex,weight] of [100,98,96].entries())s=await f.training.patch(client.userId,{id:s.id,version:s.version,action:'set',exerciseId:'goblet',setIndex,done:true,amount:5,weight,actualRpe:6,autoNextLoad:true,step:0});
+ assert.equal((await f.training.feed(client.userId)).active.items[0].results[3].weight,96);
+ s=await f.training.patch(client.userId,{id:s.id,version:s.version,action:'set',exerciseId:'goblet',setIndex:3,done:false,amount:5,weight:93.125,weightSource:'manual'});
+ const result=(await f.training.feed(client.userId)).active.items[0].results[3];
+ assert.equal(result.weight,93.125);assert.equal(result.weightSource,'manual');
+ assert.equal((await f.training.getPlan(client.userId))[0].weight,100);
+});
 test('editing next reps or target updates the actual weight field from the previous completed set with equipment rounding and safety cap',()=>{
  const i=item(6);i.results[0]={done:true,amount:8,weight:20,actualRpe:6};i.results[1]={done:false,amount:10,weight:20,actualRpe:null};
  const before=JSON.stringify(i),draft={...i.results[1],targetRpe:8};

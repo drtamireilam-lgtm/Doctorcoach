@@ -27,6 +27,10 @@
 .dc-ui3 .smart-set-line>.set-save{min-height:44px}
 .dc-ui3 .compact-next-set{padding:10px 12px;background:var(--dc-surface-elevated);border-radius:10px;font-size:.85rem;color:var(--dc-text-secondary)}
 .dc-ui3 .compact-next-set strong{color:var(--dc-cyan)}
+.workout-recommendation{display:flex;flex-direction:column;align-items:flex-start;gap:6px;min-width:0;padding-block:8px;overflow-wrap:anywhere}
+.workout-recommendation>small{color:var(--muted);line-height:1.5}
+.dc-ui3 .workout-recommendation>small{color:var(--dc-text-secondary)}
+.workout-recommendation .workout-performance-note{font-weight:600}
 .dc-ui3 .dc-rest-timer{position:fixed;inset-inline-end:24px;bottom:24px;z-index:18;width:min(420px,calc(100vw - 32px));margin:0;padding:12px;gap:8px;border:1px solid var(--dc-border);box-shadow:var(--dc-shadow-card);background:var(--dc-surface-elevated)}
 .dc-timer-compact{display:flex;align-items:center;gap:8px}
 .dc-timer-compact>svg{color:var(--dc-cyan);flex-shrink:0}

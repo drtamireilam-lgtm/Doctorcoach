@@ -34,6 +34,10 @@ async function api(page,path,body,method=body===undefined?'GET':'POST'){
 async function json(page,path,body,method){const r=await api(page,path,body,method);assert.equal(r.status,200,path+': '+JSON.stringify(r.value));return r.value;}
 async function login(page,r,key,lang,section){
  await page.goto(r.origin+'/auth/signin?lang='+lang+'&return_to='+encodeURIComponent('/?lang='+lang+'#'+section));
+ // The explicit local resend check can leave a pending code challenge. Wait
+ // for sign-in initialization, then use the existing switch-email UI.
+ await page.waitForFunction(()=>{const button=document.querySelector('#email-form button');return button&&!button.disabled;});
+ if(await page.locator('#code-form').isVisible())await page.locator('#switch-email').click();
  await page.locator('#email-form input').fill(r.identities[key].email);await page.locator('#email-form button').click();await page.locator('#code-form:visible').waitFor();
  await page.locator('#code-form input').fill(await r.provider.codeFor(r.identities[key].email));await page.locator('#code-form button').first().click();
  await page.waitForURL(url=>url.pathname==='/'&&url.hash==='#'+section);assert.equal(new URL(page.url()).searchParams.get('lang'),lang);
@@ -47,7 +51,14 @@ async function logout(page,r,lang){
  const replay=r.actor('a');replay.cookies=cookies;assert.equal((await replay.request('/auth/status',{})).status,401);
  return cookies;
 }
-async function localFreshLoginWindow(r,key,request){assert.equal((await request('/auth/send',{email:r.identities[key].email})).status,429);await r.resetLocalResendWindow(r.identities[key].email);}
+async function localFreshLoginWindow(r,key,request){
+ // A complete workout may outlast the real resend interval. Establish a fresh
+ // local window explicitly, then prove throttling instead of assuming time.
+ const email=r.identities[key].email;await r.resetLocalResendWindow(email);
+ assert.equal((await request('/auth/send',{email})).status,200);
+ assert.equal((await request('/auth/send',{email})).status,429);
+ await r.resetLocalResendWindow(email);
+}
 async function viewAs(page,r,actor,lang){
  await page.goto('about:blank');await page.context().clearCookies();
  const pair=actor.cookies.split('; ').find(value=>value.startsWith('__Host-dc_session='));assert.ok(pair);
@@ -64,7 +75,7 @@ async function workoutJourney(r,page,lang,width,owner){
  await manage(r,owner,'a','coach');await manage(r,owner,'b','coachB');
  await login(page,r,'coach',lang,'team?client='+a+'&tab=programs');
  assert.equal((await json(page,'/api/account')).careRole,'coach');assert.equal((await api(page,'/api/user-management')).status,403);
- const title='SYNTHETIC Pilot '+lang,items=[{...defaultPrescription('goblet'),sets:2,reps:10,weight:60,targetRpe:8,notes:'Synthetic complete journey'}];
+ const title='SYNTHETIC Pilot '+lang,items=[{...defaultPrescription('goblet'),sets:4,reps:10,weight:60,targetRpe:8,notes:'Synthetic complete journey'}];
  const payload={action:'save',clientId:a,requestId:randomUUID(),title,items,version:0,revisionOf:null};
  await r.db.exec("CREATE TRIGGER pilot_fail_save BEFORE INSERT ON coach_program_drafts BEGIN SELECT RAISE(ABORT,'synthetic storage failure'); END;");
  try{assert.notEqual((await api(page,'/api/care/draft',payload)).status,200);assert.equal((await r.db.prepare('SELECT COUNT(*) n FROM coach_program_drafts').first()).n,0);}finally{await r.db.exec('DROP TRIGGER pilot_fail_save;');}
@@ -84,20 +95,37 @@ async function workoutJourney(r,page,lang,width,owner){
  assert.equal((await json(page,'/api/training',{requestId:session.id,before:session.before})).session.id,session.id);
  const disclosure=page.locator('.session-exercise .exercise-disclosure-toggle').first();await disclosure.waitFor();if(await disclosure.getAttribute('aria-expanded')==='false')await disclosure.click();await page.locator('.set-line').first().waitFor();
  const row=page.locator('.set-line').first(),fields=row.locator('.smart-set-fields input');await fields.nth(0).fill('60');await fields.nth(1).fill('10');await fields.nth(2).fill('6');
+ await row.getByText(lang==='he'?'קל מהיעד':'Easier than target',{exact:false}).waitFor();
+ assert.match(await row.locator('.workout-recommendation').innerText(),/62[.,]8571/);
  await row.locator('.set-save').click();await row.locator('.set-save.saved').waitFor();
  session=(await json(page,'/api/training')).active;assert.equal(session.items[0].results[0].actualRpe,6);assert.equal(session.items[0].results[0].amount,10);assert.equal(session.items[0].results[0].weight,60);
  assert.ok(Math.abs(session.items[0].results[1].weight-62.857142857)<0.0001,'continuous recommendation must not be rounded to equipment increments');
+ const firstNextLoad=session.items[0].results[1].weight;
  const stale=await api(page,'/api/training',{action:'set',id:session.id,version:session.version-1,exerciseId:'goblet',setIndex:0,done:true,amount:10,weight:1,actualRpe:6},'PATCH');assert.equal(stale.status,409);
  await page.reload();await disclosure.waitFor();if(await disclosure.getAttribute('aria-expanded')==='false')await disclosure.click();await page.locator('.set-line').first().waitFor();
  assert.equal((await json(page,'/api/training')).active.items[0].results[0].weight,60);
+ for(const [index,weight] of [[1,59],[2,58]]){
+  const set=page.locator('.set-line').nth(index),inputs=set.locator('.smart-set-fields input');
+  await inputs.nth(0).fill(String(weight));await inputs.nth(1).fill('10');await inputs.nth(2).fill('6');await set.locator('.set-save').click();await set.locator('.set-save.saved').waitFor();
+ }
+ await page.locator('.set-line').nth(2).getByText(lang==='he'?'ירידה בביצוע בשלושה סטים: לא מוצעת עלייה במשקל.':'Declining performance across three sets: no increase suggested.',{exact:true}).waitFor();
+ session=(await json(page,'/api/training')).active;assert.equal(session.items[0].results[3].weight,58);
+ assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth>innerWidth),false);
+ await page.screenshot({path:resolve(evidence,`${lang}-${width}-fatigue-ceiling.png`),fullPage:true});
+ const last=page.locator('.set-line').nth(3),lastFields=last.locator('.smart-set-fields input');await lastFields.nth(0).fill('57.125');await lastFields.nth(1).fill('10');await lastFields.nth(2).fill('8');await last.locator('.set-save').click();await last.locator('.set-save.saved').waitFor();
+ await page.reload();await disclosure.waitFor();if(await disclosure.getAttribute('aria-expanded')==='false')await disclosure.click();
+ session=(await json(page,'/api/training')).active;assert.equal(session.completedSets,4);assert.equal(session.items[0].results[3].weight,57.125);assert.equal(session.items[0].results[3].weightSource,'manual');
  await page.locator('.finish-card .button.primary').click();const dialog=page.getByRole('dialog');await dialog.locator('input').first().fill('0');await dialog.locator('button[type=submit]').click();await page.locator('.workout-saved').waitFor();
- const feed=await json(page,'/api/training');assert.equal(feed.active,null);assert.equal(feed.history[0].id,session.id);assert.equal(feed.stats.total,1);const progress=await json(page,'/api/progress');assert.equal(progress.current.completed,1);assert.equal(progress.current.sets,1);assert.equal(progress.current.volume,600);
+ // Weekly aggregate intentionally rounds to one decimal; stored set loads above
+ // and history below must retain the exact manually entered 57.125 kg.
+ const feed=await json(page,'/api/training');assert.equal(feed.active,null);assert.equal(feed.history[0].id,session.id);assert.equal(feed.stats.total,1);const progress=await json(page,'/api/progress');assert.equal(progress.current.completed,1);assert.equal(progress.current.sets,4);assert.equal(progress.current.volume,2341.3);
  await page.screenshot({path:resolve(evidence,`${lang}-${width}-workout-saved.png`),fullPage:true});
  const oldSession=await logout(page,r,lang);await localFreshLoginWindow(r,'a',(p,b)=>api(page,p,b));
  await login(page,r,'a',lang,'history');const freshCookies=(await page.context().cookies()).map(c=>c.name+'='+c.value).join('; ');assert.notEqual(freshCookies,oldSession);
  const history=(await json(page,'/api/training')).history;assert.equal(history[0].id,session.id);assert.equal(history[0].items[0].results[0].weight,60);assert.equal(history[0].items[0].results[0].actualRpe,6);assert.equal((await json(page,'/api/program')).access.programTitle,title);
  await page.reload();await page.locator('#workout-history-list').waitFor();assert.equal((await json(page,'/api/training')).history[0].id,session.id);
- check(stage,{savedWorkout:session.id,actualRpe:6,repetitions:10,weight:60,nextLoad:session.items[0].results[1].weight,realPersistence:true});
+ assert.equal(history[0].items[0].results[3].weight,57.125);
+ check(stage,{savedWorkout:session.id,actualRpe:6,repetitions:10,weight:60,nextLoad:firstNextLoad,completedSets:4,fatigueCeiling:58,manualFinalLoad:57.125,realPersistence:true});
  return {sessionId:session.id,coach};
 }
 
