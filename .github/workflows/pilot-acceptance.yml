@@ -1,0 +1,47 @@
+name: DoctorCoach local synthetic pilot acceptance
+on:
+  push:
+    branches: ['codex/pilot-e2e-*']
+  pull_request:
+    branches: ['codex/integration-59-60-61-*']
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  pilot-acceptance:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    defaults:
+      run:
+        working-directory: apps/doctorcoach-standalone
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24.22.2'
+      - name: Record tested checkout
+        run: |
+          git rev-parse HEAD
+          git rev-parse HEAD^{tree}
+          node --version
+      - name: Install locked dependencies
+        run: npm install --global pnpm@11.25.0 && pnpm install --frozen-lockfile
+      - name: Synthetic provider lifecycle regression
+        run: node --test tests/synthetic-auth-provider.test.mjs
+      - name: Build local application
+        run: npm run build:standalone
+      - name: Continuous browser and real-handler journeys
+        env:
+          DC_CHROMIUM: /usr/bin/google-chrome
+          DC_PILOT_CHECKOUT_SHA: ${{ github.sha }}
+          DC_PILOT_PR_HEAD_SHA: ${{ github.event.pull_request.head.sha || github.sha }}
+        run: node --experimental-strip-types standalone/scripts/pilot-acceptance.mjs
+      - name: Retain sanitized synthetic evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: pilot-synthetic-acceptance-${{ github.sha }}
+          path: apps/doctorcoach-standalone/.sites-runtime/pilot-evidence/
+          include-hidden-files: true
+          if-no-files-found: warn
+          retention-days: 7
