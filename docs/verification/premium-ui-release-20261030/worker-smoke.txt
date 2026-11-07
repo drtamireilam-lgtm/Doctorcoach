@@ -1,0 +1,12 @@
+PASS: all configured premium themes persisted through built HTTP owner-scoped preferences. This is not browser visual QA.
+PASS: built HTTP dietitian nutrition scope, medical redaction, cross-trainee denial and immediate revocation.
+PASS: built HTTP legacy account linking, replay denial, reserved staff registration denial, trainee/coach/doctor/admin roles, independent coach rosters, cross-coach read/write/progress denial, medical redaction, private media permissions and immediate revocation.
+PASS: built HTTP consultations request, pending count, approval, disabled Calendar, reschedule, cancel, explicit completion/no-show, scoped history/date search, transition audit and coach denial.
+PASS: built HTTP Smart Import 3 unknown exercises, over-64KB draft, reload, guarded assignment, cross-user isolation, per-set reps/RPE, manual weights and no global library inserts. Synthetic data only.
+PASS: actual local D1 registration/link storage failures roll back external identities and permit safe retries.
+PASS: built Worker HTTP all three guidance modes, preserved entitlement/program pointer and immediate derived coach revocation.
+PASS: built management UID authority, assigned coach access and immediate removal, secretary grant/revoke and clinical denial, active-session disable/reenable. All identities and data synthetic.
+PASS: built Worker Calendar approval failure, explicit retry and readback receipt, repeated retry without duplicate, reschedule same event, cancellation, coach/client denial. Google and every identity are SYNTHETIC; no live event created.
+DC_AUTH_DIAG session_validation_denied
+DC_AUTH_DIAG identity_headers_missing
+PASS: built workerd HTTP sign-in, wrong OTP, registration, provider token refresh, spoofed headers, first workout, RIR, next-set load, history, private PDF/video bytes, authenticated cross-user isolation and logout replay. Provider is SYNTHETIC, not real email delivery.

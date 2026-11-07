@@ -30,7 +30,7 @@ test('standalone numbered workout heading is a block, while prescribed coded row
  const sheet=readCsvWorkbook(new TextEncoder().encode('Exercise,Sets,Reps,Weight,Notes\nC,,,,\nLeg Curl,2,8,30,first\nC 2,,,,\nLeg Curl,3,10,40,second\nD,,,,\nLeg Curl,4,12,50,third'))[0];
  const d=detectImportColumns(sheet);const rows=extractImportRows(sheet,d.header,d.mapping);assert.equal(rows.length,3);assert.deepEqual(rows.map(r=>r.sourceDay),['C','C 2','D']);
  const items=finalizeImport(rows);assert.equal(new Set(items.map(i=>i.dayId)).size,3);assert.deepEqual(items.map(i=>i.weight),[30,40,50]);assert.deepEqual(items.map(i=>i.notes),['first','second','third']);
- const coded=readCsvWorkbook(new TextEncoder().encode('Exercise,Sets,Reps\nC 2,3,8'))[0];const h=detectImportColumns(coded);const unknown=extractImportRows(coded,h.header,h.mapping);assert.equal(unknown.length,1);assert.throws(()=>finalizeImport(unknown));
+ const coded=readCsvWorkbook(new TextEncoder().encode('Exercise,Sets,Reps\nC 2,3,8'))[0];const h=detectImportColumns(coded);const unknown=extractImportRows(coded,h.header,h.mapping);assert.equal(unknown.length,1);assert.equal(unknown[0].exerciseId,'');assert.equal(unknown[0].name,'C 2');const [privateItem]=finalizeImport(unknown);assert.match(privateItem.exerciseId,/^import-/);assert.equal(privateItem.importSource.originalName,'C 2');assert.notEqual(privateItem.importSource.matchingStatus,'MATCHED');
 });
 test('grip width and hand orientation coexist, while competing widths/orientations remain blocked',async()=>{
  const {parseExerciseQualifiers}=await import('../lib/exercise-qualifiers.ts');

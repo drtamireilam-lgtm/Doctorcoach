@@ -28,6 +28,10 @@ export function workoutFinishSummary(session:TrainingSession,history:TrainingSes
   return {name:item.name,current,prior,previousAt:match?.session.finishedAt??null};
  });
  const cardioItems=session.items.filter(i=>i.cardio&&i.cardioResult?.status==='completed');
+ const volumeItems=completed.filter(i=>workoutSection(i)==='main');
+ const volumeSets=volumeItems.filter(i=>i.unit==='reps'&&hasTotalLoad(i)).flatMap(i=>i.results.filter(s=>s.done));
+ const volumeKg=volumeSets.length?Math.round(volumeSets.reduce((n,s)=>n+s.weight*s.amount,0)*10000)/10000:null;
+ const volumeExcludedSets=volumeItems.filter(i=>i.unit!=='reps'||!hasTotalLoad(i)).reduce((n,i)=>n+i.results.filter(s=>s.done).length,0);
  const cardio={completed:cardioItems.length,minutes:cardioItems.reduce((n,i)=>n+performedCardioSeconds(i.cardioResult!)/60,0),distanceMeters:cardioItems.some(i=>i.cardioResult!.metrics.distanceMeters!==undefined)?cardioItems.reduce((n,i)=>n+(i.cardioResult!.metrics.distanceMeters??0),0):null};
- return {exercises:completed.length+cardio.completed,strengthExercises:completed.length,cardio,sets:completed.reduce((sum,i)=>sum+i.results.filter(s=>s.done).length,0),comparisons};
+ return {exercises:completed.length+cardio.completed,strengthExercises:completed.length,completedExercises:completed.filter(i=>i.results.length>0&&i.results.every(r=>r.done)).length+cardio.completed,cardio,sets:completed.reduce((sum,i)=>sum+i.results.filter(s=>s.done).length,0),comparisons,volumeKg,volumeExcludedSets};
 }

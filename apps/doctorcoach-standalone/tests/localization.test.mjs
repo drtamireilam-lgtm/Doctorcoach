@@ -75,3 +75,15 @@ test('Localize renders localized auth hrefs while leaving form values intact',as
   assert.equal(anchor.props.children.props.value,'סקוואט');
  }
 });
+
+test('progress screen headings and arrangement guidance translate without changing Hebrew',()=>{
+ for(const [he,en] of [['ההתקדמות שלי','My progress'],['אפשר לסדר את כרטיסי ההתקדמות לפי מה שחשוב לכם.','Arrange progress cards by what matters to you.']]){
+  assert.equal(translateText(he,'en'),en);assert.equal(translateText(he,'he'),he);
+ }
+});
+
+test('workout primary set actions translate in English and retain Hebrew labels',()=>{
+ for(const [he,en] of [['הסט הבא לביצוע','Next set'],['לסט הבא','Go to next set'],['סיום סט','Complete set']]){
+  assert.equal(translateText(he,'en'),en);assert.equal(translateText(he,'he'),he);
+ }
+});

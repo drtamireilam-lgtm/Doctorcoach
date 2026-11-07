@@ -1,5 +1,5 @@
 import surfaces from './appearance-surfaces.json' with {type:'json'};
-import {palettes, type Appearance, type CustomColors} from './appearance.ts';
+import {defaultAppearance,palettes, type Appearance, type CustomColors} from './appearance.ts';
 
 export function luminance(hex:string){const c=hex.slice(1).match(/../g)!.map(x=>parseInt(x,16)/255).map(v=>v<=.04045?v/12.92:((v+.055)/1.055)**2.4);return c[0]*.2126+c[1]*.7152+c[2]*.0722;}
 export function contrast(a:string,b:string){const x=luminance(a),y=luminance(b);return (Math.max(x,y)+.05)/(Math.min(x,y)+.05);}
@@ -53,7 +53,7 @@ export const themePresets:{id:string;name:string;he:string;appearance:Appearance
 {id:"teal",name:"Teal Cyan",he:"טורקיז",appearance:{"mode": "dark", "palette": "teal", "custom": {"background": "#071c21", "primary": "#52c4d0", "secondary": "#11343b", "button": "#52c4d0", "navigation": "#071c21", "accent": "#a3eef3"}}},
 {id:"rose",name:"Rose Pink",he:"ורוד",appearance:{"mode": "dark", "palette": "pink", "custom": {"background": "#210f1c", "primary": "#df88b7", "secondary": "#3b2033", "button": "#df88b7", "navigation": "#210f1c", "accent": "#ffc4e5"}}}
 ];
-export const resetAppearance=themePresets[0].appearance;
+export const resetAppearance=defaultAppearance;
 export function themeTokens(a:Appearance):Record<string,string>{
  const c=colorsFor(a),bg=c.background,card=c.secondary,nav=c.navigation;
  const preset=themePresets.find(p=>p.appearance.mode===a.mode&&p.appearance.palette===a.palette&&JSON.stringify(colorsFor(p.appearance))===JSON.stringify(c));

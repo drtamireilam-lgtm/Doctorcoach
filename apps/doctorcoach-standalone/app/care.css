@@ -32,3 +32,9 @@
 [data-joint-player] select{font:inherit;min-height:44px;max-width:100%;width:100%;padding:8px;border-radius:10px;color:var(--text);background:var(--card);border:1px solid var(--line)}
 [data-joint-player] button{min-height:44px;white-space:normal}
 [data-joint-player] input[type=range]{width:100%;min-height:44px}
+/* Import matching is advisory; only invalid prescriptions use error styling. */
+.import-save-summary{display:flex;flex-wrap:wrap;gap:12px;margin:16px 0}.import-save-summary>div{min-width:110px;padding:10px;border:1px solid var(--line);border-radius:10px}.import-save-summary dd{font-weight:700;font-size:1.2rem;margin:4px 0 0}
+.import-preview .import-match-badge[data-level=unmatched]{background:var(--raised);color:var(--text);border-color:var(--line)}
+.import-preview .import-match-badge[data-level=matched]{background:color-mix(in srgb,#13834b 14%,var(--card));color:var(--text);border-color:#13834b}
+.import-preview .import-match-badge[data-level=review]{background:color-mix(in srgb,#bd8a0d 15%,var(--card));color:var(--text);border-color:#bd8a0d}
+.import-preview .import-match-badge[data-level=invalid]{background:var(--soft-red);color:var(--accent-red);border-color:var(--red)}

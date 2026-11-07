@@ -8,6 +8,7 @@ import assert from 'node:assert/strict';
 import {randomUUID,randomBytes} from 'node:crypto';
 import {platform,doctor,client} from '../tests/platform-db.mjs';
 import {googleCalendarStore,CALENDAR_SCOPE} from '../lib/google-calendar.ts';
+import {appointmentDate,israelAppointmentTime} from '../lib/appointments.ts';
 const require=createRequire(import.meta.url),wr=require.resolve('wrangler/package.json'),{build}=createRequire(wr)('esbuild');
 const root=fileURLToPath(new URL('../',import.meta.url)),evidence=root+'/.sites-runtime/consultation-evidence';await mkdir(evidence,{recursive:true});
 await build({entryPoints:[root+'/tests/fixtures/consultation-browser.tsx'],outfile:evidence+'/fixture.js',bundle:true,conditions:['style'],platform:'browser',jsx:'automatic',define:{'process.env.NODE_ENV':'"production"'}});
@@ -48,6 +49,9 @@ try{for(const lang of ['he','en'])for(const width of [390,1440]){
  await approved.getByRole('button',{name:en?'Reschedule consultation':'שינוי מועד',exact:true}).click();
  await approved.locator('input[type="datetime-local"]').fill('2090-01-03T12:00');
  await approved.getByRole('button',{name:en?'Confirm and update time':'אישור ועדכון המועד',exact:true}).click();
+ // A version refresh remounts the card. Wait for the persisted appointment time
+ // before opening a dialog, otherwise the old card's dialog can disappear.
+ await approved.locator('.appointment-time').filter({hasText:appointmentDate(israelAppointmentTime('2090-01-03T12:00'),lang)}).waitFor();
  assert.equal(events.size,1);await page.getByRole('heading',{name:en?'Pending consultations (0)':'ממתינים לאישור (0)',exact:true}).waitFor();
  await page.locator('.appointment-card').filter({hasText:'Pending Synthetic'}).getByRole('button',{name:en?'Cancel request / appointment':'ביטול הבקשה / המפגש',exact:true}).click();
  await page.getByRole('button',{name:en?'Confirm cancellation':'אישור ביטול',exact:true}).click();

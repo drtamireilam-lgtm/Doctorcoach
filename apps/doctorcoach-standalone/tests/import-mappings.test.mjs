@@ -24,7 +24,7 @@ test('mapping write rechecks a revoked role and does not accept invented exercis
  const base=f.db.prepare.bind(f.db);let raced=false;f.db.prepare=query=>{if(query.startsWith('INSERT INTO import_exercise_mappings')&&!raced){raced=true;f.sql.exec("UPDATE care_staff SET active=0 WHERE role='coach'");}return base(query);};await assert.rejects(()=>s.write(coach,save()),e=>e.status===409);assert.equal(f.sql.prepare('SELECT COUNT(*) n FROM import_exercise_mappings WHERE owner_id=?').get(coach.userId).n,0);
 });
 test('saved suggestions do not choose variants or overwrite source prescription automatically',async()=>{
- const {exercises}=await import('../lib/content.ts'),{extractImportRows,finalizeImport}=await import('../lib/program-import.ts');const c=value=>({value,formula:false});const rows=extractImportRows({name:'A',rows:[['Exercise','Sets','Reps','Weight','RPE','Tempo','Notes'].map(c),['My Leg Curl','3','12-10','','8','3-0-2-0','Keep steady'].map(c)]},0,{exercise:0,sets:1,reps:2,weight:3,rpe:4,tempo:5,notes:6});const mapping=rememberedImportMapping([{source:'My Leg Curl',exerciseId:'seated-curl',version:1}],rows[0].name);assert.equal(rows[0].exerciseId,'');assert.throws(()=>finalizeImport(rows,exercises));const item=finalizeImport([{...rows[0],exerciseId:mapping.exerciseId}],exercises)[0];assert.equal(item.reps,10);assert.equal(item.repsMax,12);assert.equal(item.sets,3);assert.equal(item.weightUnspecified,true);assert.equal(item.targetRpe,8);assert.equal(item.tempo.eccentric,3);assert.equal(item.notes,'Keep steady');
+ const {exercises}=await import('../lib/content.ts'),{extractImportRows,finalizeImport}=await import('../lib/program-import.ts');const c=value=>({value,formula:false});const rows=extractImportRows({name:'A',rows:[['Exercise','Sets','Reps','Weight','RPE','Tempo','Notes'].map(c),['My Leg Curl','3','12-10','','8','3-0-2-0','Keep steady'].map(c)]},0,{exercise:0,sets:1,reps:2,weight:3,rpe:4,tempo:5,notes:6});const mapping=rememberedImportMapping([{source:'My Leg Curl',exerciseId:'seated-curl',version:1}],rows[0].name);assert.equal(rows[0].exerciseId,'');assert.ok(finalizeImport(rows,exercises)[0].customExercise);const item=finalizeImport([{...rows[0],exerciseId:mapping.exerciseId,matchConfirmed:true}],exercises)[0];assert.equal(item.reps,10);assert.equal(item.repsMax,12);assert.equal(item.sets,3);assert.equal(item.weightUnspecified,true);assert.equal(item.targetRpe,8);assert.equal(item.tempo.eccentric,3);assert.equal(item.notes,'Keep steady');
 });
 
 test('review proposals derive only from the signed-in coach persisted corrections',async t=>{
@@ -36,4 +36,9 @@ test('review proposals derive only from the signed-in coach persisted correction
  assert.equal(result.proposals.length,1);assert.equal(result.proposals[0].source,'Coach private spelling for press');
  assert.ok(!JSON.stringify(result).includes('Different owner'));
  assert.deepEqual(await s.list(coach),before);
+});
+
+test('Unicode and Hebrew quote variations cannot create duplicate coach aliases',async t=>{
+ const f=platform(t);await f.connect();const s=importMappingsStore(f.db,config);await s.write(coach,save('תרגיל ״אישי״','leg-press'));
+ await assert.rejects(()=>s.write(coach,save('תרגיל "אישי"','leg-press')),e=>e.status===409);
 });

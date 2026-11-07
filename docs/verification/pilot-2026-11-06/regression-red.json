@@ -1,0 +1,55 @@
+{
+  "scope": "Sanitized excerpts from local synthetic Chromium regressions; no real identity, provider or device acceptance",
+  "baseline": "a35227b320e92285da44eda2d562dcc332baef7a",
+  "cases": [
+    {
+      "run": 13,
+      "inherited": true,
+      "case": "Complete imported per-set RPE targets pass native form validation",
+      "expected": [],
+      "actual": [
+        {
+          "label": "RPE יעד",
+          "value": "",
+          "required": true
+        },
+        {
+          "label": "RPE יעד",
+          "value": "",
+          "required": true
+        },
+        {
+          "label": "RPE יעד",
+          "value": "",
+          "required": true
+        }
+      ],
+      "classification": "application defect",
+      "source": "pilot-acceptance-13-rpe-red.txt"
+    },
+    {
+      "run": 14,
+      "case": "Publication preview renders both imported set prescriptions",
+      "expected": 2,
+      "actual": 0,
+      "classification": "application defect",
+      "source": "pilot-acceptance-14-current.txt"
+    },
+    {
+      "run": 21,
+      "case": "Secretary is not offered a clinical guidance field that the server discards",
+      "expected": 0,
+      "actual": 1,
+      "classification": "application UI defect",
+      "source": "pilot-acceptance-21-calendar-config.txt"
+    },
+    {
+      "run": "component-view",
+      "case": "Fractional opening load in publication",
+      "expected": "33.125 kg",
+      "actual": "33.13 kg",
+      "classification": "application display defect",
+      "source": "pilot-review-view-red.txt"
+    }
+  ]
+}

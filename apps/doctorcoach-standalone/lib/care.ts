@@ -1,3 +1,4 @@
+import {programScopedId,programScopedExercise} from './import-source.ts';
 import { defaultPrescription, isRecord, parsePlanItem, withOccurrenceIds, TrainingError } from './training.ts';
 import { exercises } from './content.ts';
 import type { PlanItem, TrainingFeed } from './training.ts';
@@ -24,7 +25,7 @@ export function parseAssignedItems(value:unknown,customs:import('./custom-exerci
  if(!Array.isArray(value)||value.length<1||value.length>30)throw new TrainingError('התוכנית צריכה לכלול 1–30 תרגילים.');
  const ids=new Set<string>();
  const result=value.map(v=>{
-  const custom=isRecord(v)?customs.find(e=>e.id===v.exerciseId):undefined;
+  const custom=isRecord(v)?(typeof v.exerciseId==='string'&&programScopedId(v.exerciseId)?programScopedExercise(v.exerciseId,v.customExercise):customs.find(e=>e.id===v.exerciseId)):undefined;
   const item=parsePlanItem(v,custom?{...defaultPrescription(custom.id),unit:custom.unit,workoutSection:custom.kind==='מתיחה'?'stretch':'main',customExercise:custom}:undefined);
   const dayId=isRecord(v)?v.dayId:undefined;
   if(dayId!==undefined&&(typeof dayId!=='string'||!/^[1-7]$/.test(dayId)))throw new TrainingError('בחרו יום אימון בין 1 ל־7.');

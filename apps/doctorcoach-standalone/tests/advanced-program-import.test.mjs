@@ -45,7 +45,7 @@ test('unnamed exercise heading, table boundary and selected week work without im
 });
 test('changing selected week changes only source data; mapped formulas and RPE ranges require review',()=>{
  const sheet=fixture(),d=detectImportColumns(sheet);const a=extractImportRows(sheet,0,d.mapping,{lastRow:7,weekColumn:4});const b=extractImportRows(sheet,0,d.mapping,{lastRow:7,weekColumn:5});
- assert.equal(a[0].sourceLog,'26*8,(28*8)2');assert.equal(b[0].sourceLog,'30x8');assert.equal(a[0].rpe,'7');assert.equal(a[1].rpe,'8-9');assert.throws(()=>finalizeImport(a));
+ assert.equal(a[0].sourceLog,'26*8,(28*8)2');assert.equal(b[0].sourceLog,'30x8');assert.equal(a[0].rpe,'7');assert.equal(a[1].rpe,'8-9');assert.deepEqual(finalizeImport(a)[1].importSource.rpeRange,[8,9]);
  sheet.rows[2][4].formula=true;const formulas=extractImportRows(sheet,0,d.mapping,{lastRow:7,weekColumn:4,targetRpe:'7'});assert.equal(formulas[0].sourceSets.length,0);assert.ok(formulas[0].sourceLogError);
  assert.throws(()=>extractImportRows(sheet,0,d.mapping,{lastRow:500}));
  assert.throws(()=>extractImportRows(sheet,0,d.mapping,{weekColumn:1,lastRow:7}));
