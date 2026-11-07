@@ -5,10 +5,10 @@ import {mkdtempSync,writeFileSync,readFileSync,rmSync} from 'node:fs';
 import {tmpdir} from 'node:os';
 import {join} from 'node:path';
 import {spawnSync} from 'node:child_process';
-import {expectedSchema,checkSchema,calendarRepairStatements} from '../standalone/scripts/lab-schema-preflight.mjs';
+import {expectedSchema,expectedStructure,structuralMetadata,checkSchema,calendarRepairStatements} from '../standalone/scripts/lab-schema-preflight.mjs';
 
 test('complete schema with empty migration ledger requires reconciliation, never replay',()=>{
- const snapshot={tables:expectedSchema(),ledgerRows:0};
+ const snapshot={tables:expectedSchema(),structure:expectedStructure(),ledgerRows:0};
  const result=checkSchema(snapshot);
  assert.equal(result.schemaCompatible,true);
  assert.equal(result.genericMigrationReplayAllowed,false);
@@ -57,4 +57,45 @@ test('CLI exits nonzero for missing columns and does not write the input',()=>{
   assert.equal(JSON.parse(result.stdout).schemaCompatible,false);
   assert.equal(readFileSync(file,'utf8'),input);
  }finally{rmSync(dir,{recursive:true,force:true});}
+});
+
+
+test('column names alone cannot certify schema compatibility',()=>{
+ const result=checkSchema({tables:expectedSchema(),ledgerRows:0});
+ assert.equal(result.schemaCompatible,false);
+ assert.equal(result.columnNamesCompatible,true);
+ assert.ok(result.warnings.includes('STRUCTURAL_METADATA_NOT_VERIFIED'));
+});
+
+
+test('matching columns cannot hide changed defaults, keys, indexes, checks or triggers',()=>{
+ const baseline={tables:expectedSchema(),structure:expectedStructure(),ledgerRows:0};
+ assert.equal(checkSchema(baseline).schemaCompatible,true);
+ const table=Object.keys(baseline.structure.tables).find(t=>baseline.structure.tables[t].indexes.length&&baseline.structure.tables[t].foreignKeys.length);
+ assert.ok(table,'real migration schema must exercise indexes and foreign keys');
+ for(const mutate of [
+  s=>{s.tables[table].columns[0].notnull=1-s.tables[table].columns[0].notnull;},
+  s=>{s.tables[table].columns[0].dflt_value="'wrong'";},
+  s=>{s.tables[table].columns[0].pk+=1;},
+  s=>{s.tables[table].foreignKeys[0].on_delete='RESTRICT-CHANGED';},
+  s=>{s.tables[table].indexes[0].unique=1-s.tables[table].indexes[0].unique;},
+  s=>{s.objects.find(o=>o.type==='table').sql+=' /* changed CHECK or collation */';},
+  s=>{s.objects=s.objects.filter(o=>o.type!=='trigger');},
+  s=>{s.objects.push({type:'trigger',name:'unexpected_guard',tbl_name:table,sql:'synthetic'});},
+ ]){
+  const input=structuredClone(baseline);mutate(input.structure);
+  const result=checkSchema(input);
+  assert.equal(result.columnNamesCompatible,true);
+  assert.equal(result.schemaCompatible,false);
+  assert.ok(result.structuralDifferences.length);
+ }
+});
+
+
+test('metadata capture includes a user trigger resembling the SQLite prefix',()=>{
+ const db=new DatabaseSync(':memory:');
+ try{
+  db.exec("CREATE TABLE target(id TEXT); CREATE TRIGGER sqliteX_guard BEFORE INSERT ON target BEGIN SELECT RAISE(ABORT,'unexpected guard'); END");
+  assert.ok(structuralMetadata(db).objects.some(o=>o.name==='sqliteX_guard'));
+ }finally{db.close();}
 });

@@ -8,15 +8,37 @@ const app=new URL('../../',import.meta.url);
 const read=path=>readFileSync(new URL(path,app),'utf8');
 const quote=name=>'"'+name.replaceAll('"','""')+'"';
 
-export function expectedSchema(){
+function withExpectedSchema(inspect){
  const db=new DatabaseSync(':memory:');
  try{
   db.exec('PRAGMA foreign_keys=ON');
   for(const file of readdirSync(new URL('drizzle/',app)).filter(f=>/^\d{4}_.*\.sql$/.test(f)).sort())db.exec(read('drizzle/'+file));
   // Separate migration namespace; management depends on app 0059 + identity.
   for(const file of readdirSync(new URL('standalone/migrations/',app)).filter(f=>/^\d{4}_.*\.sql$/.test(f)).sort())db.exec(read('standalone/migrations/'+file));
-  return Object.fromEntries(db.prepare("SELECT name FROM sqlite_master WHERE type='table' AND name NOT LIKE 'sqlite_%' ORDER BY name").all().map(({name})=>[name,db.prepare(`PRAGMA table_info(${quote(name)})`).all().map(c=>c.name)]));
+  return inspect(db);
  }finally{db.close();}
+}
+
+// Schema metadata only: never SELECT application rows. Keep SQL intact (apart
+// from CRLF) so CHECK expressions, collations, predicates and trigger bodies
+// cannot disappear during normalization. Equivalent DDL may require review.
+export function structuralMetadata(db){
+ const objects=db.prepare("SELECT type,name,tbl_name,sql FROM sqlite_master WHERE name NOT GLOB 'sqlite_*' ORDER BY type,name").all().map(row=>({...row,sql:row.sql?.replaceAll('\r\n','\n')??null}));
+ const tables={};
+ for(const {name} of objects.filter(o=>o.type==='table')){
+  const columns=db.prepare(`PRAGMA table_xinfo(${quote(name)})`).all();
+  const foreignKeys=db.prepare(`PRAGMA foreign_key_list(${quote(name)})`).all();
+  const indexes=db.prepare(`PRAGMA index_list(${quote(name)})`).all().map(({seq,...index})=>({...index,columns:db.prepare(`PRAGMA index_xinfo(${quote(index.name)})`).all()})).sort((a,b)=>a.name.localeCompare(b.name));
+  tables[name]={columns,foreignKeys,indexes};
+ }
+ return {objects,tables};
+}
+export function expectedSchema(){return withExpectedSchema(db=>Object.fromEntries(Object.entries(structuralMetadata(db).tables).map(([name,t])=>[name,t.columns.filter(c=>c.hidden===0).map(c=>c.name)])));}
+export function expectedStructure(){return withExpectedSchema(structuralMetadata);}
+function same(a,b){
+ // Object property order is not evidence; array order is meaningful metadata.
+ const canonical=v=>Array.isArray(v)?v.map(canonical):v&&typeof v==='object'?Object.fromEntries(Object.keys(v).sort().map(k=>[k,canonical(v[k])])):v;
+ return JSON.stringify(canonical(a))===JSON.stringify(canonical(b));
 }
 
 function validate(snapshot){
@@ -34,10 +56,23 @@ export function checkSchema(snapshot){
   const absent=columns.filter(c=>!snapshot.tables[table].includes(c));
   if(absent.length)missingColumns[table]=absent;
  }
- const warnings=['COLUMN_NAMES_ONLY_CONSTRAINTS_AND_PROVIDER_READINESS_REQUIRE_SEPARATE_VERIFICATION'];
+ const warnings=['PROVIDER_READINESS_REQUIRES_SEPARATE_VERIFICATION'];
+ const structuralDifferences=[];
+ if(!snapshot.structure)warnings.push('STRUCTURAL_METADATA_NOT_VERIFIED');
+ else {
+  const expectedStructureMetadata=expectedStructure();
+  for(const [table,metadata] of Object.entries(expectedStructureMetadata.tables))if(!same(metadata,snapshot.structure.tables?.[table]))structuralDifferences.push('table:'+table);
+  for(const object of expectedStructureMetadata.objects){
+   const actual=snapshot.structure.objects?.find(o=>o.type===object.type&&o.name===object.name);
+   if(!same(object,actual))structuralDifferences.push(object.type+':'+object.name);
+  }
+  // Additional objects may impose new constraints or side effects; never ignore.
+  for(const object of snapshot.structure.objects??[])if(!expectedStructureMetadata.objects.some(o=>o.type===object.type&&o.name===object.name))structuralDifferences.push('unexpected:'+object.type+':'+object.name);
+ }
+ const columnNamesCompatible=missingTables.length===0&&Object.keys(missingColumns).length===0;
  if(snapshot.ledgerRows===0)warnings.push('EMPTY_LEDGER_DOES_NOT_MEAN_EMPTY_DATABASE');
  if(snapshot.ledgerRows===null)warnings.push('MIGRATION_LEDGER_NOT_VERIFIED');
- return {schemaCompatible:missingTables.length===0&&Object.keys(missingColumns).length===0,requiredTables:Object.keys(expected).length,missingTables,missingColumns,genericMigrationReplayAllowed:false,warnings};
+ return {schemaCompatible:columnNamesCompatible&&!!snapshot.structure&&structuralDifferences.length===0,columnNamesCompatible,structuralDifferences,requiredTables:Object.keys(expected).length,missingTables,missingColumns,genericMigrationReplayAllowed:false,warnings};
 }
 
 // Returns a review plan, never executes it. Reinspect immediately before approved
@@ -58,7 +93,7 @@ if(process.argv[1]===fileURLToPath(import.meta.url)){
  try{
   const [mode,file,...extra]=process.argv.slice(2);
   assert.ok(!extra.length&&((mode==='expected'&&!file)||(mode==='check'&&file)),'Usage: lab-schema-preflight.mjs expected | check metadata.json');
-  const result=mode==='expected'?{tables:expectedSchema(),ledgerRows:null}:checkSchema(JSON.parse(readFileSync(file,'utf8')));
+  const result=mode==='expected'?{tables:expectedSchema(),structure:expectedStructure(),ledgerRows:null}:checkSchema(JSON.parse(readFileSync(file,'utf8')));
   console.log(JSON.stringify(result,null,2));
   if(mode==='check'&&!result.schemaCompatible)process.exitCode=1;
  }catch(error){console.error(error.message);process.exitCode=2;}

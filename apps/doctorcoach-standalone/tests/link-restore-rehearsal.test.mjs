@@ -6,6 +6,9 @@ import {randomUUID} from 'node:crypto';
 import {tmpdir} from 'node:os';
 import path from 'node:path';
 import {platform,client} from './platform-db.mjs';
+import {coach,doctor} from './platform-db.mjs';
+import {coachDraftStore} from '../lib/coach-drafts.ts';
+import {finalizeImport,extractImportRows,detectImportColumns} from '../lib/program-import.ts';
 import {defaultPrescription} from '../lib/training.ts';
 import {identityMapping,verifyIdentity} from '../lib/identity-mapping.ts';
 import {snapshot,compareSnapshots} from '../standalone/scripts/snapshot.mjs';
@@ -20,6 +23,16 @@ test('actual SQLite backup and restore preserve application rows and private byt
  let session=await f.training.start(client.userId,{requestId:randomUUID(),before:0});
  for(let setIndex=0;setIndex<2;setIndex++)session=await f.training.patch(client.userId,{id:session.id,version:session.version,action:'set',exerciseId:'bench',setIndex,done:true,amount:8,weight:37.5,actualRpe:7});
  session=await f.training.patch(client.userId,{id:session.id,version:session.version,action:'finish',after:0});assert.equal(session.status,'completed');assert.equal(session.items[0].results[0].actualRpe,7);
+ // Real import/save/publication/assignment handlers, synthetic local data only.
+ const sheet={name:'Synthetic',rows:[['Exercise','Sets','Reps','Weight','RPE'],['Bench Press',2,8,33.125,7]].map(r=>r.map(v=>({value:String(v),formula:false})))};
+ const detected=detectImportColumns(sheet),items=finalizeImport(extractImportRows(sheet,detected.header,detected.mapping));
+ assert.equal(items[0].weight,33.125);
+ const drafts=coachDraftStore(f.db,f.care),draft={action:'save',version:0,requestId:randomUUID(),title:'Synthetic restored import',items,revisionOf:null};
+ await drafts.save(coach,client.userId,draft);
+ await f.care.assign(coach,client.userId,{id:draft.requestId,title:draft.title,items});
+ const appointment=await f.appointments.create(client,{id:randomUUID(),clientName:'Synthetic restore',serviceId:'medical-video',expectedPrice:30000,preference:'Synthetic only'});
+ await f.appointments.update(doctor,{id:appointment.id,version:appointment.version,action:'schedule',startsAt:new Date(Date.now()+7*86400000).toISOString()});
+ f.sql.prepare("UPDATE google_calendar_sync SET last_error_code='synthetic-provider-failure' WHERE appointment_id=?").run(appointment.id);
  // Identity schema is additive; existing owner IDs are never rewritten.
  f.sql.exec(await readFile(new URL('../standalone/migrations/0001_identity.sql',import.meta.url),'utf8'));
  const dir=await mkdtemp(path.join(tmpdir(),'dc-link-restore-'));let restored; t.after(async()=>{restored?.close();await rm(dir,{recursive:true,force:true});});
@@ -30,6 +43,16 @@ test('actual SQLite backup and restore preserve application rows and private byt
  const saved=new DatabaseSync(sourceFile,{readOnly:true});try{await backup(saved,restoredFile);}finally{saved.close();}
  const before=await snapshot(sourceFile,oldObjects);assert.equal(compareSnapshots(before,await snapshot(restoredFile,newObjects)),true);
  restored=new DatabaseSync(restoredFile);
+ assert.equal(restored.prepare('PRAGMA integrity_check').get().integrity_check,'ok');
+ assert.deepEqual(restored.prepare('PRAGMA foreign_key_check').all(),[]);
+ const receipt=restored.prepare('SELECT * FROM google_calendar_sync WHERE appointment_id=?').get(appointment.id);
+ assert.equal(receipt.time_zone,'Asia/Jerusalem');
+ assert.equal(receipt.last_error_code,'synthetic-provider-failure');
+ restored.prepare('DELETE FROM google_calendar_sync WHERE appointment_id=?').run(appointment.id);
+ const calendarLost=await snapshot(restoredFile,newObjects);
+ assert.throws(()=>compareSnapshots(before,calendarLost));
+ restored.prepare(`INSERT INTO google_calendar_sync(${Object.keys(receipt).join(',')}) VALUES(${Object.keys(receipt).map(()=>'?').join(',')})`).run(...Object.values(receipt));
+ assert.equal(compareSnapshots(before,await snapshot(restoredFile,newObjects)),true);
  const now=Date.now(),legacyIssuer='sites:synthetic-restore',externalIssuer='https://synthetic.example.test/auth/v1';
  const proof=async(issuer,subject)=>verifyIdentity('synthetic-proof',async()=>({issuer,subject,authenticatedAt:now,expiresAt:now+300000}),[issuer],now);
  const legacy=await proof(legacyIssuer,client.userId),external=await proof(externalIssuer,'new-synthetic-subject');
