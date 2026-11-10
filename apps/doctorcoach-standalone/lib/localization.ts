@@ -7,6 +7,16 @@ const normalize = (text: string) => text.trim().replace(/\s+/g, ' ');
 const dictionary = new Map(hebrew.map((text, index) => [normalize(text), english[index]]));
 // New privacy labels are kept explicit instead of partially translating consent text.
 for(const [he,en] of [
+ ["בקשת תור:", "Request an appointment:"],
+ // Public consultation copy verified in the signed-out LAB UI.
+ ["תיאום באישור הצוות", "Scheduling subject to team approval"],
+ ["בקשת תור לשירות הזה", "Request an appointment for this service"],
+ ["בקשת תור דרך האפליקציה", "Request an appointment in the app"],
+ ["לחצו על בקשת תור בשירות הרצוי, מלאו שם וימים ושעות מועדפים ושלחו. הצוות יאשר את המועד ברשימת התורים שלכם.", "Choose the service, enter your name and preferred days and times, and submit your request. The team will confirm the time in your appointment list."],
+ ["תזונה עם ליאור זליקסון", "Nutrition with Lior Zelikson"],
+ ["פגישת תזונה, ייעוץ או חבילת ליווי בהתאם להצעות של ליאור. הוא קובע את המחיר, התכולה ומשך השירות. שליחת בקשה אינה אישור תור.", "Nutrition appointments, consultations or coaching packages offered by Lior. He sets the price, scope and duration. Submitting a request does not confirm an appointment."],
+ ["שירותי התזונה והמחירים יופיעו לאחר שליאור יגדיר אותם. אין כרגע חבילות או מחירים מאושרים להצגה.", "Nutrition services and prices will appear once Lior configures them. No packages or prices are currently approved for display."],
+ ["חזרה ל", "Back to "],
  ["הסט הבא לביצוע","Next set"],
  ["לסט הבא","Go to next set"],
  ["סיום סט","Complete set"],
