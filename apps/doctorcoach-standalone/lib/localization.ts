@@ -12,6 +12,8 @@ for(const [he,en] of [
  ["תיאום באישור הצוות", "Scheduling subject to team approval"],
  ["בקשת תור לשירות הזה", "Request an appointment for this service"],
  ["בקשת תור דרך האפליקציה", "Request an appointment in the app"],
+ ["בחירת מועד או בקשת תיאום", "Choose a time or request scheduling"],
+ ["אפשר לבחור מועד ביומן החיצוני או לשלוח בקשה לצוות בטופס כאן.", "Choose a time in the external calendar or send the team a request using this form."],
  ["לחצו על בקשת תור בשירות הרצוי, מלאו שם וימים ושעות מועדפים ושלחו. הצוות יאשר את המועד ברשימת התורים שלכם.", "Choose the service, enter your name and preferred days and times, and submit your request. The team will confirm the time in your appointment list."],
  ["תזונה עם ליאור זליקסון", "Nutrition with Lior Zelikson"],
  ["פגישת תזונה, ייעוץ או חבילת ליווי בהתאם להצעות של ליאור. הוא קובע את המחיר, התכולה ומשך השירות. שליחת בקשה אינה אישור תור.", "Nutrition appointments, consultations or coaching packages offered by Lior. He sets the price, scope and duration. Submitting a request does not confirm an appointment."],

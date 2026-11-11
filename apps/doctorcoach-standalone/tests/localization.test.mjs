@@ -104,3 +104,10 @@ test('public consultation actions and guidance translate while Hebrew stays unch
 });
 
 test("appointment accessible names translate built-in service titles",()=>{assert.equal(translateText("בקשת תור: ייעוץ רפואי בזום","en"),"Request an appointment: Medical consultation via Zoom");});
+
+test('bookable consultation scheduling guidance translates and preserves Hebrew',()=>{
+ for(const [he,en] of [
+  ['בחירת מועד או בקשת תיאום','Choose a time or request scheduling'],
+  ['אפשר לבחור מועד ביומן החיצוני או לשלוח בקשה לצוות בטופס כאן.','Choose a time in the external calendar or send the team a request using this form.']
+ ]){assert.equal(translateText(he,'en'),en);assert.equal(translateText(he,'he'),he);}
+});
