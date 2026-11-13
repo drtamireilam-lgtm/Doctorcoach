@@ -95,7 +95,7 @@ export function trainingStore(db: D1Database,config:ProgramAuthorConfig={}) {
         db.prepare("SELECT * FROM training_sessions WHERE owner_id = ? AND status = 'completed' ORDER BY started_at DESC, id DESC LIMIT 50").bind(owner).all<Row>(),
         db.prepare("SELECT COUNT(*) AS total, COALESCE(SUM(CASE WHEN finished_at >= ? THEN 1 ELSE 0 END), 0) AS week, COALESCE(SUM((SELECT COUNT(*) FROM json_each(training_sessions.items_json) item,json_each(item.value,'$.results') result WHERE COALESCE(json_extract(item.value,'$.workoutSection'),'main')='main' AND json_extract(result.value,'$.done')=1)), 0) AS sets FROM training_sessions WHERE owner_id = ? AND status = 'completed'").bind(cutoff, owner).first<{total: number; week: number; sets: number}>(),
       ]);
-      return { active: active ? toSession(active) : null, history: history.results.map(toSession), stats: stats ?? { total: 0, week: 0, sets: 0 } };
+      return { ownerId:owner, active: active ? toSession(active) : null, history: history.results.map(toSession), stats: stats ?? { total: 0, week: 0, sets: 0 } };
     },
     async start(owner: string, payload: unknown): Promise<TrainingSession> {
     await requireTrainingAllowed(db,owner);

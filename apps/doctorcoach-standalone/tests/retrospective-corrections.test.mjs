@@ -110,3 +110,30 @@ test('date-only cardio corrections preserve unreported duration and reject futur
  assert.equal(saved.retrospective.performedAt,null);
  assert.equal(saved.retrospective.recordedAt,a.retrospective.recordedAt);
 });
+
+test('a denied UPDATE after journal insertion leaves no orphan audit row or blocked correction retry',async t=>{
+ const f=await setup(t),original=await f.store.submit(client.userId,input());
+ const edit=(await f.store.loadEntry(client.userId,original.id)).draft;
+ f.sql.exec("CREATE TRIGGER deny_correction BEFORE UPDATE ON training_sessions BEGIN SELECT RAISE(IGNORE); END");
+ await assert.rejects(()=>f.store.correct(client.userId,{...edit,note:'guard denied'}),e=>e.status===409);
+ assert.equal(journal(f).length,0,'A no-op guarded update must not leave a journal record');
+ f.sql.exec('DROP TRIGGER deny_correction');
+ const saved=await f.store.correct(client.userId,{...edit,note:'safe retry'});
+ assert.equal(saved.version,original.version+1);assert.equal(journal(f).length,1);
+});
+
+test('a delayed identical correction cannot delete a successful earlier journal after a subsequent edit',async t=>{
+ const f=await setup(t),original=await f.store.submit(client.userId,input());
+ const edit=(await f.store.loadEntry(client.userId,original.id)).draft;
+ const realBatch=f.db.batch.bind(f.db);let count=0,release,entered;
+ const gate=new Promise(resolve=>{release=resolve;}),ready=new Promise(resolve=>{entered=resolve;});
+ f.db.batch=async statements=>{if(++count===1){entered();await gate;}return realBatch(statements);};
+ const delayed=f.store.correct(client.userId,{...edit,note:'same request'}).then(value=>({value}),error=>({error}));
+ await ready;
+ const first=await f.store.correct(client.userId,{...edit,note:'same request'});
+ const next=(await f.store.loadEntry(client.userId,original.id)).draft;
+ await f.store.correct(client.userId,{...next,note:'later correction'});
+ release();const result=await delayed;assert.equal(result.error?.status,409);
+ assert.equal(journal(f).length,2,'Stale cleanup cannot remove either successful prior version');
+ assert.deepEqual(journal(f).map(row=>row.version).sort(),[original.version,first.version]);
+});

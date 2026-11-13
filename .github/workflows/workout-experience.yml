@@ -29,6 +29,8 @@ jobs:
         run: npm run typecheck && npm run build:standalone
       - name: Active session structure and prescription integrity
         run: node --experimental-strip-types --test tests/session-flexibility*.test.mjs tests/activity-privacy.test.mjs tests/set-line-completion.test.mjs
+      - name: Durable draft identity and conflict checks
+        run: node --experimental-strip-types --test tests/workout-drafts.test.mjs tests/workout-exercise-draft-identity.test.mjs
       - name: Private correction journal deletion coverage
         run: node --experimental-strip-types --test tests/account-deletion.test.mjs
       - name: Retrospective bilingual responsive acceptance
@@ -42,6 +44,15 @@ jobs:
           DC_UI3_WIDTHS: '320,390,430,768'
           DC_UI3_SECTIONS: plan,workout
         run: node --experimental-strip-types scripts/premium-ui-3-browser-smoke.mjs
+      - name: Device draft disconnection and race acceptance
+        env:
+          DC_CHROMIUM: /usr/bin/google-chrome
+          DC_WORKOUT4: '1'
+          DC_OFFLINE: '1'
+          DC_UI3_WIDTHS: '320,390'
+          DC_UI3_SECTIONS: workout,history
+          DC_UI3_EVIDENCE: .sites-runtime/recovery-evidence
+        run: node --experimental-strip-types scripts/premium-ui-3-browser-smoke.mjs
       - name: Retain synthetic evidence
         if: always()
         uses: actions/upload-artifact@v4
@@ -50,6 +61,7 @@ jobs:
           path: |
             apps/doctorcoach-standalone/.sites-runtime/retrospective/evidence/
             apps/doctorcoach-standalone/.sites-runtime/ui3-evidence/
+            apps/doctorcoach-standalone/.sites-runtime/recovery-evidence/
           include-hidden-files: true
           if-no-files-found: warn
           retention-days: 7

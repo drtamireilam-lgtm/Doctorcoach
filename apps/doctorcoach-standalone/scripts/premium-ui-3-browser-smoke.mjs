@@ -1,4 +1,5 @@
 import {workoutExerciseAnchor} from '../lib/workout-navigation.ts';
+import {verifyWorkoutRecovery} from './fixtures/workout-recovery-browser.mjs';
 // Actual application components, synthetic local responses only. No remote service access.
 import assert from 'node:assert/strict';
 import {randomUUID} from 'node:crypto';
@@ -13,6 +14,7 @@ import {defaultAppearance} from '../lib/appearance.ts';
 import {appearanceWithMode,colorsFor,contrast} from '../lib/advanced-theme.ts';
 import {chromium} from '@playwright/test';
 const workout4=process.env.DC_WORKOUT4==='1';
+const offline=process.env.DC_OFFLINE==='1';
 // Explicit widths let focused acceptance include the narrowest supported screen.
 const configuredWidths=process.env.DC_UI3_WIDTHS?.split(',').map(Number);
 if(configuredWidths)assert.ok(configuredWidths.length&&configuredWidths.every(w=>Number.isInteger(w)&&w>=280&&w<=2560),'DC_UI3_WIDTHS must contain supported integer widths');
@@ -26,7 +28,7 @@ const fixture=await mkdtemp(join(runtime,'ui3-browser-'));
 const evidence=resolve(process.env.DC_UI3_EVIDENCE??join(runtime,'ui3-evidence'));await mkdir(evidence,{recursive:true});
 const imports=[...(await readFile('app/layout.tsx','utf8')).matchAll(/import '\.\/(.+\.css)';/g)].map(m=>`import '../../app/${m[1]}';`).join('\n');
 await writeFile(join(fixture,'index.html'),'<html lang="he" dir="rtl"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><body><div id="root"></div><script type="module" src="/main.tsx"></script></body></html>');
-await writeFile(join(fixture,'main.tsx'),`import React from 'react';import {createRoot} from 'react-dom/client';import Page from '../../app/page';import {ThemeProvider} from '../../components/theme-provider';import {LanguageProvider} from '../../components/language-provider';${imports}\ncreateRoot(document.getElementById('root')).render(<ThemeProvider><LanguageProvider><Page/></LanguageProvider></ThemeProvider>);`);
+await writeFile(join(fixture,'main.tsx'),`import React from 'react';import {createRoot} from 'react-dom/client';import Page from '../../app/page';import {ThemeProvider} from '../../components/theme-provider';import {LanguageProvider} from '../../components/language-provider';${offline?"import * as cache from '../../lib/workout-draft-cache';import * as draftDomain from '../../lib/workout-drafts';window.__workoutDraftTest={...cache,...draftDomain};":''}${imports}\ncreateRoot(document.getElementById('root')).render(<ThemeProvider><LanguageProvider><Page/></LanguageProvider></ThemeProvider>);`);
 const now=new Date().toISOString();
 const item={exerciseId:'bench',sets:3,reps:10,unit:'reps',weight:20,notes:'',targetRpe:7};
 const active={id:'synthetic-ui3-session',status:'active',planMode:'self',items:[{...item,name:'לחיצת חזה — שם תרגיל ארוך לבדיקת פריסה',results:[{done:true,amount:10,weight:20,actualRpe:7},{done:false,amount:10,weight:20},{done:false,amount:10,weight:20}]}],startedAt:now,finishedAt:null,before:0,after:null,plannedSets:3,completedSets:1,version:1};
@@ -48,8 +50,15 @@ const responses={
  '/api/care':{profile:{userId:'synthetic',name:'חשבון בדיקה מקומי',goal:'בדיקת ממשק',experience:'מתחיל',equipment:'משקולות',days:3,version:1,updatedAt:now},connections:[{id:'synthetic-coach',name:'מאמן בדיקה',role:'coach'}],notes:[],programs:[],activeProgramId:null,checkins:[],training:feed,canViewMedical:false,canViewNutrition:false,viewerRole:null,week:day},
  '/api/appointments':{appointments:[{id:'synthetic-appointment',clientId:'synthetic',clientName:'חשבון בדיקה',serviceId:'medical-video',title:'פגישת בדיקה סינתטית',provider:'tamir',duration:30,priceAgorot:30000,preference:'מועד בדיקה',state:'scheduled',startsAt:new Date(Date.now()+86400000).toISOString(),endsAt:new Date(Date.now()+88200000).toISOString(),meetingUrl:'https://example.test/synthetic-consultation',staffNote:'',paymentState:'unpaid',paymentReference:'',version:1,createdAt:now,updatedAt:now,calendarStatus:'error'}],nextOffset:null,total:1},
 };
-const server=await createServer({configFile:false,cacheDir:resolve('.sites-runtime/ui3-vite-cache'),define:{'process.env.NEXT_PUBLIC_DC_ANATOMY_TARGET':JSON.stringify('local-development')},resolve:{alias:{'@':resolve('.')}},root:fixture,publicDir:resolve('public'),plugins:[react()],server:{host:'127.0.0.1',port:37866,strictPort:true,fs:{allow:[resolve('.')]}}});
-let browser,trainingFixture;const cleanups=[],errors=[],checks=[],workoutChecks=[];
+// Probe is injected only into this synthetic Vite fixture, never production files.
+const controllerProbe={name:'synthetic-workout-controller',enforce:'pre',transform(code,id){
+ if(!offline||!id.replaceAll('\\','/').split('?')[0].endsWith('/hooks/use-training.ts'))return;
+ const start=code.indexOf('  return {split,saveSplit,');if(start<0)throw new Error('Synthetic controller probe could not find the return object');
+ const end=code.indexOf('};',start)+2;
+ return code.slice(0,start)+code.slice(start,end).replace('return {','const syntheticController = {')+"\n if(typeof window!=='undefined')window.__workoutController=syntheticController;return syntheticController;"+code.slice(end);
+}};
+const server=await createServer({configFile:false,cacheDir:resolve('.sites-runtime/ui3-vite-cache'),define:{'process.env.NEXT_PUBLIC_DC_ANATOMY_TARGET':JSON.stringify('local-development')},resolve:{alias:{'@':resolve('.')}},root:fixture,publicDir:resolve('public'),plugins:[controllerProbe,react()],server:{host:'127.0.0.1',port:37866,strictPort:true,fs:{allow:[resolve('.')]}}});
+let browser,trainingFixture,failSetWrites=false,failTrainingReads=false,patchGate=null,releasePatch=null,trainingReads=0;const cleanups=[],errors=[],checks=[],workoutChecks=[];
 try{
  await server.listen();browser=await chromium.launch({executablePath:process.env.DC_CHROMIUM||undefined,headless:true,args:['--no-sandbox']});
  const context=await browser.newContext({viewport:{width:390,height:900},reducedMotion:'reduce'});
@@ -57,6 +66,10 @@ try{
   const r=route.request(),u=new URL(r.url());
   if(u.hostname!=='127.0.0.1')return route.abort();
   if(u.pathname==='/api/training'&&trainingFixture){
+   if(r.method()==='GET')trainingReads++;
+   if(failTrainingReads&&r.method()==='GET')return route.fulfill({status:503,json:{error:'Synthetic complete disconnection'}});
+   if(failSetWrites&&r.method()==='PATCH'&&r.postDataJSON()?.action==='set')return route.fulfill({status:503,json:{error:'Synthetic offline write failure'}});
+   if(patchGate&&r.method()==='PATCH')await patchGate;
    try{const json=r.method()==='GET'?await trainingFixture.training.feed(client.userId):r.method()==='PATCH'?{session:await trainingFixture.training.patch(client.userId,r.postDataJSON())}:null;
     return route.fulfill({status:json?200:405,json:json??{error:'Unsupported synthetic training operation'}});
    }catch(e){return route.fulfill({status:e.status??400,json:{error:e.message}});}
@@ -95,6 +108,7 @@ try{
   if(await moved.locator('.exercise-disclosure-toggle').getAttribute('aria-expanded')==='false')await moved.locator('.exercise-disclosure-toggle').click();
   await moved.getByRole('button',{name:language==='en'?'Move earlier':'הקדמת התרגיל',exact:true}).click();
   await page.waitForFunction(expected=>document.querySelectorAll('.session-exercise')[0]?.id===expected,benchAnchor);
+  const recovery=offline?await verifyWorkoutRecovery({page,fixture:trainingFixture,owner:client.userId,started,language,width,evidence,setFailure:value=>{failSetWrites=value!==false;failTrainingReads=value==='all';},readCount:()=>trainingReads,pausePatch:value=>{if(value)patchGate=new Promise(resolve=>{releasePatch=resolve;});else{releasePatch?.();patchGate=null;releasePatch=null;}}}):null;
   const first=page.locator('.set-line').first(),fields=()=>first.locator('.smart-set-fields input');
   await fields().nth(0).fill('60');await fields().nth(1).fill('10');await fields().nth(2).fill('6');
   assert.notEqual(await first.locator('.smart-set-metrics strong').textContent(),'—');
@@ -122,7 +136,7 @@ try{
   await page.locator('.workout-saved .button.primary').click();await page.locator('#workout-history-list').click();
   persisted=await trainingFixture.training.feed(client.userId);assert.equal(persisted.active,null);assert.equal(persisted.history.length,1);assert.equal(persisted.history[0].completedSets,workout4?2:1);assert.equal(persisted.history[0].items[0].results[0].weight,61.5);
   await page.evaluate(()=>scrollTo(0,0));await page.screenshot({path:join(evidence,`workout-history-${width}-${language}.png`),fullPage:true});
-  workoutChecks.push({language,width,save:true,edit:true,reload:true,finish:true,history:true,nextLoad:true});console.log('PASS SQLite workout save/edit/reload/finish/history/next-load',theme,language,width);
+  workoutChecks.push({language,width,save:true,edit:true,reload:true,finish:true,history:true,nextLoad:true,recovery});console.log('PASS SQLite workout save/edit/reload/finish/history/next-load',theme,language,width);
  }
  trainingFixture=null;for(const close of cleanups.splice(0))close();Object.assign(responses,screenshotResponses);
  for(const width of matrixWidths){
