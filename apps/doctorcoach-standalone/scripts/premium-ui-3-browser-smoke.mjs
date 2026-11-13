@@ -1,3 +1,4 @@
+import {workoutExerciseAnchor} from '../lib/workout-navigation.ts';
 // Actual application components, synthetic local responses only. No remote service access.
 import assert from 'node:assert/strict';
 import {randomUUID} from 'node:crypto';
@@ -74,10 +75,26 @@ try{
   for(const close of cleanups.splice(0))close();
   trainingFixture=platform({after:fn=>cleanups.push(fn)});await trainingFixture.connect();
   await trainingFixture.training.savePlan(client.userId,{...defaultPrescription('bench'),sets:3,reps:10,weight:20,targetRpe:8});
-  await trainingFixture.training.start(client.userId,{requestId:randomUUID(),before:0});
+  await trainingFixture.training.savePlan(client.userId,{...defaultPrescription('wall-slide'),workoutSection:'main',sets:2,reps:10,weight:0});
+  const started=await trainingFixture.training.start(client.userId,{requestId:randomUUID(),before:0});
+  const benchAnchor=workoutExerciseAnchor(started.id,started.items[0]);
   responses['/api/program']={...responses['/api/program'],items:await trainingFixture.training.getPlan(client.userId)};
   await page.setViewportSize({width,height:900});await page.goto(`http://127.0.0.1:37866/?lang=${language}#workout`);await page.reload();
   if(await page.locator('.session-exercise .exercise-disclosure-toggle').first().getAttribute('aria-expanded')==='false')await page.locator('.session-exercise .exercise-disclosure-toggle').first().click();
+  const flexible=page.locator('.session-flexibility').first();
+  await flexible.getByRole('button',{name:language==='en'?'Add workout set':'הוספת סט לאימון',exact:true}).click();
+  await page.waitForFunction(()=>document.querySelectorAll('.session-exercise')[0]?.querySelectorAll('.set-line').length===4);
+  let structure=(await trainingFixture.training.feed(client.userId)).active;
+  assert.equal(structure.items[0].prescription.sets,3);assert.equal(structure.items[0].targetRpes[3],null);
+  await flexible.getByRole('button',{name:language==='en'?'Remove last untouched set':'הסרת הסט האחרון שטרם תועד',exact:true}).click();
+  await page.waitForFunction(()=>document.querySelectorAll('.session-exercise')[0]?.querySelectorAll('.set-line').length===3);
+  await flexible.getByRole('button',{name:language==='en'?'Move later':'דחיית התרגיל',exact:true}).click();
+  await page.waitForFunction(expected=>document.querySelectorAll('.session-exercise')[1]?.id===expected,benchAnchor);
+  structure=(await trainingFixture.training.feed(client.userId)).active;assert.equal(structure.items[1].exerciseId,'bench');assert.equal(structure.items[1].prescribedPosition,0);
+  const moved=page.locator('.session-exercise').nth(1);
+  if(await moved.locator('.exercise-disclosure-toggle').getAttribute('aria-expanded')==='false')await moved.locator('.exercise-disclosure-toggle').click();
+  await moved.getByRole('button',{name:language==='en'?'Move earlier':'הקדמת התרגיל',exact:true}).click();
+  await page.waitForFunction(expected=>document.querySelectorAll('.session-exercise')[0]?.id===expected,benchAnchor);
   const first=page.locator('.set-line').first(),fields=()=>first.locator('.smart-set-fields input');
   await fields().nth(0).fill('60');await fields().nth(1).fill('10');await fields().nth(2).fill('6');
   assert.notEqual(await first.locator('.smart-set-metrics strong').textContent(),'—');

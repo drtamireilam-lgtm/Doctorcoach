@@ -1,3 +1,4 @@
+import {moveSessionExercise,changeSessionSetCount} from './session-flexibility.ts';
 import {cardioActivity,isCardioExerciseId,parseCardioPrescription} from './cardio.ts';
 import {applyCardioAction,cardioActionFingerprint} from './cardio-player.ts';
 import {finishFeedback} from './workout-finish.ts';
@@ -111,7 +112,7 @@ export function trainingStore(db: D1Database,config:ProgramAuthorConfig={}) {
       const fullPlan:PlanItem[] = prescribed?JSON.parse(prescribed.items_json):(await db.prepare(selectPlan).bind(owner).all<Omit<PlanItem,'weightUnspecified'>&{cardioJson:string|null;loadJson:string|null;warmupSetsJson:string|null;targetRpesJson:string|null;tempoJson:string|null;weightUnspecified:number;customExerciseJson:string|null;dayId:string}>()).results.map(({cardioJson,loadJson,warmupSetsJson,side,targetRpesJson,tempoJson,weightUnspecified,repsMax,customExerciseJson,dayId,...item})=>({...item,...(cardioJson?{cardio:parseCardioPrescription(JSON.parse(cardioJson))}:{}),...(loadJson?{load:JSON.parse(loadJson)}:{}),...(warmupSetsJson?{warmupSets:JSON.parse(warmupSetsJson)}:{}),...(side?{side}:{}),...(dayId!=='1'?{dayId}:{}),...(customExerciseJson?{customExercise:JSON.parse(customExerciseJson)}:{}),...(repsMax==null?{}:{repsMax}),...(weightUnspecified?{weightUnspecified:true}:{}),...(targetRpesJson?{targetRpes:JSON.parse(targetRpesJson)}:{}),...(tempoJson?{tempo:JSON.parse(tempoJson)}:{})}));
       const plan = selectWorkoutDay(withOccurrenceIds(fullPlan),payload.dayId);
       if(plan.some(item=>!item.cardio&&!byId.has(item.exerciseId)&&item.customExercise?.id!==item.exerciseId))throw new TrainingError('תרגיל בתוכנית אינו זמין. פנו למאמן לעדכון התוכנית לפני פתיחת האימון.',409);
-      const items = plan.filter(item => !!item.cardio||byId.has(item.exerciseId)||item.customExercise?.id===item.exerciseId).map(item => ({ ...item, name: item.cardio?(item.cardio.customLabel??cardioActivity(item.cardio.activityId)!.name):item.customExercise?.name??byId.get(item.exerciseId)!.name,...(item.warmupSets?{warmupResults:item.warmupSets.map(set=>({...set,done:false}))}:{}), results: item.cardio?[]:Array.from({ length: item.sets }, (_,index) => ({ done: false, amount: item.setReps?.[index]?.min??item.reps, weight: item.weight })) }));
+      const items = plan.filter(item => !!item.cardio||byId.has(item.exerciseId)||item.customExercise?.id===item.exerciseId).map((item,index) => ({ ...item, prescription:item.cardio?undefined:structuredClone(item),prescribedPosition:index,name: item.cardio?(item.cardio.customLabel??cardioActivity(item.cardio.activityId)!.name):item.customExercise?.name??byId.get(item.exerciseId)!.name,...(item.warmupSets?{warmupResults:item.warmupSets.map(set=>({...set,done:false}))}:{}), results: item.cardio?[]:Array.from({ length: item.sets }, (_,index) => ({ done: false, amount: item.setReps?.[index]?.min??item.reps, weight: item.weight })) }));
       if (!items.length) throw new TrainingError('יש להוסיף תרגילים לתוכנית לפני התחלת אימון.');
       const planned = items.reduce((sum, item) => sum + (item.cardio?0:item.sets), 0);
       const author=programAuthorGuard(config);
@@ -142,10 +143,10 @@ export function trainingStore(db: D1Database,config:ProgramAuthorConfig={}) {
     },
     async patch(owner: string, payload: unknown): Promise<TrainingSession> {
       if (!isRecord(payload) || typeof payload.id !== 'string' || payload.id.length > 64 || !Number.isInteger(payload.version)) throw new TrainingError('בקשת אימון לא תקינה.');
-      if(['set','warmupSet','swap','nextLoad','effortScale','cardio'].includes(String(payload.action)))await requireTrainingAllowed(db,owner);
+      if(['set','warmupSet','swap','nextLoad','effortScale','cardio','moveExercise','addSet','removeSet'].includes(String(payload.action)))await requireTrainingAllowed(db,owner);
       const session = await getSession(owner, payload.id);
       if (!session) throw new TrainingError('האימון לא נמצא.', 404);
-      if(['set','warmupSet','swap','nextLoad','effortScale','cardio'].includes(String(payload.action)))await requireHealthConsent(db,owner);
+      if(['set','warmupSet','swap','nextLoad','effortScale','cardio','moveExercise','addSet','removeSet'].includes(String(payload.action)))await requireHealthConsent(db,owner);
       if(payload.action==='followup'){
         await requireHealthConsent(db,owner);
         if(session.status!=='completed'||!session.finishedAt)throw new TrainingError('דיווח למחרת זמין לאימון שהסתיים בלבד.',409);
@@ -165,7 +166,12 @@ export function trainingStore(db: D1Database,config:ProgramAuthorConfig={}) {
       if(!['finish','cancel'].includes(String(payload.action))){const access=await trainingAccess(db,owner,config);if(!access.canStart||(access.mode==='coached'&&(session.planMode!=='coached'||session.programId!==access.programId))||(access.mode==='self'&&session.planMode==='coached'))throw new TrainingError('האימון אינו שייך למסלול או לתוכנית הפעילים. אפשר לסיים או לבטל אותו.',403);}
       let items = session.items; let status: TrainingSession['status'] = session.status; let after = session.after; let finishedAt = session.finishedAt;
       if(['set','warmupSet','swap','nextLoad','effortScale'].includes(String(payload.action))&&resolveSessionExercise(items,payload).cardio)throw new TrainingError('פעולת כוח אינה זמינה לפעילות אירובית.');
-      if(payload.action==='cardio'){const selected=resolveSessionExercise(items,payload);if(!selected.cardio)throw new TrainingError('בחרו פעילות אירובית.');if(['start','resume'].includes(String(payload.command))&&items.some(i=>i!==selected&&i.cardioResult?.status==='running'))throw new TrainingError('פעילות אירובית אחרת פועלת. השהו או סיימו אותה לפני התחלת פעילות נוספת.',409,session);items=items.map(i=>i===selected?{...i,cardioResult:applyCardioAction(i.cardio!,i.cardioResult,payload)}:i);}
+      if(payload.action==='moveExercise')items=moveSessionExercise(items,payload);
+      else if(payload.action==='addSet'||payload.action==='removeSet'){
+        if(session.planMode==='coached')throw new TrainingError('מספר הסטים נקבע על ידי המאמן.',403);
+        await requireSelfAccess(db,owner,config);items=changeSessionSetCount(items,payload);
+      }
+      else if(payload.action==='cardio'){const selected=resolveSessionExercise(items,payload);if(!selected.cardio)throw new TrainingError('בחרו פעילות אירובית.');if(['start','resume'].includes(String(payload.command))&&items.some(i=>i!==selected&&i.cardioResult?.status==='running'))throw new TrainingError('פעילות אירובית אחרת פועלת. השהו או סיימו אותה לפני התחלת פעילות נוספת.',409,session);items=items.map(i=>i===selected?{...i,cardioResult:applyCardioAction(i.cardio!,i.cardioResult,payload)}:i);}
       else if(payload.action==='warmupSet'){
         items=updateWarmupSet(items,payload);
       } else if (payload.action === 'set') {
@@ -211,8 +217,8 @@ export function trainingStore(db: D1Database,config:ProgramAuthorConfig={}) {
       else throw new TrainingError('פעולה לא מוכרת.');
       // Closing a workout remains possible after revocation; further training edits do not.
       const guard=['finish','cancel'].includes(String(payload.action))?null:combineCareGuards(trainingWriteGuard(owner,session,config),healthConsentGuard(owner));
-      const row = await db.prepare(`UPDATE training_sessions SET items_json = ?, status = ?, pain_after = ?, finished_at = ?, completed_sets = ?, finish_feedback_json = ?, version = version + 1 WHERE id = ? AND owner_id = ? AND version = ? AND status = 'active' ${guard?`AND ${guard.sql}`:''} RETURNING *`)
-        .bind(JSON.stringify(items), status, after, finishedAt, completion(items), payload.action==='finish'?JSON.stringify(finishFeedback(payload.feedback)):session.finishFeedback?JSON.stringify(session.finishFeedback):null, session.id, owner, session.version,...(guard?.args??[])).first<Row>();
+      const row = await db.prepare(`UPDATE training_sessions SET items_json = ?, status = ?, pain_after = ?, finished_at = ?, completed_sets = ?, planned_sets = ?, finish_feedback_json = ?, version = version + 1 WHERE id = ? AND owner_id = ? AND version = ? AND status = 'active' ${guard?`AND ${guard.sql}`:''} RETURNING *`)
+        .bind(JSON.stringify(items), status, after, finishedAt, completion(items), items.reduce((sum,item)=>sum+(item.cardio?0:item.sets),0), payload.action==='finish'?JSON.stringify(finishFeedback(payload.feedback)):session.finishFeedback?JSON.stringify(session.finishFeedback):null, session.id, owner, session.version,...(guard?.args??[])).first<Row>();
       if (!row){
         const current=await getSession(owner,session.id);
         if(guard&&current?.status==='active'&&current.version===session.version)throw new TrainingError('ההרשאות, התוכנית או מצב המוכנות השתנו. השינוי לא נשמר; אפשר לסיים או לבטל את האימון.',403,current);

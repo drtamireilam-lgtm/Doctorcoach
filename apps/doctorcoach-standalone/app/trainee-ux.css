@@ -52,3 +52,5 @@
 .retrospective-actions{position:static;padding-block:12px;background:var(--card);z-index:1;flex-wrap:wrap}
 @media(max-width:430px){.retrospective-workout .form-grid{grid-template-columns:minmax(0,1fr)}.retrospective-exercise{padding:10px}.retrospective-set{padding:8px}.retrospective-set-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}.retrospective-actions>button{width:100%}}
 @media(max-width:760px){.retrospective-actions{bottom:calc(76px + env(safe-area-inset-bottom,0px))}}
+
+.session-flexibility{margin-block:12px;min-width:0}.session-flexibility button{max-width:100%;white-space:normal;overflow-wrap:anywhere;min-height:44px}.session-flexibility small{overflow-wrap:anywhere}.session-prescription{min-width:0;overflow-wrap:anywhere}

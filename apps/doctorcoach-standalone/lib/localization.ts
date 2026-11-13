@@ -7,6 +7,11 @@ const normalize = (text: string) => text.trim().replace(/\s+/g, ' ');
 const dictionary = new Map(hebrew.map((text, index) => [normalize(text), english[index]]));
 // New privacy labels are kept explicit instead of partially translating consent text.
 for(const [he,en] of [
+ ["בחרו כיוון תקין לסידור התרגיל.","Choose a valid exercise order direction."],
+ ["מספר סטים אינו משתנה בפעילות אירובית.","Set count cannot be changed for cardio activities."],
+ ["אפשר לכלול עד 20 סטים לתרגיל.","An exercise can contain up to 20 sets."],
+ ["אפשר להסיר רק את הסט האחרון שעדיין לא תועד.","Only the final untouched set can be removed."],
+ ["מספר הסטים נקבע על ידי המאמן.","Your coach sets the number of sets."],
  ["בקשת תור:", "Request an appointment:"],
  // Public consultation copy verified in the signed-out LAB UI.
  ["תיאום באישור הצוות", "Scheduling subject to team approval"],
