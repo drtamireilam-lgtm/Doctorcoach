@@ -347,3 +347,5 @@ html.light .onboarding-progress{background:#fff;color:#1b1b24;border-color:#d8d8
 
 /* Keep the added guidance column readable in constrained desktop containers. */
 @media(min-width:701px){.user-management .um-table{overflow:auto}.user-management .um-table table{min-width:1120px}.user-management .um-table td:nth-child(2){min-width:190px}.user-management .um-table td:last-child{min-width:100px}}
+
+.program-order-target{min-width:0;margin-block:12px}.program-drag-handle{min-height:44px;cursor:grab;white-space:normal}.program-order-target>.field-hint{display:block;margin-block:4px 8px;overflow-wrap:anywhere}

@@ -7,6 +7,7 @@ const normalize = (text: string) => text.trim().replace(/\s+/g, ' ');
 const dictionary = new Map(hebrew.map((text, index) => [normalize(text), english[index]]));
 // New privacy labels are kept explicit instead of partially translating consent text.
 for(const [he,en] of [
+ ["מנוחה (שניות / דקות:שניות)","Rest (seconds / mm:ss)"],
  ["העריכה שבמכשיר השתנתה בזמן הפעולה. רעננו ובדקו לפני מחיקה.","The device draft changed during this action. Reload and review before discarding."],
  ["שחזור עריכות במכשיר אינו זמין. שמירה רגילה לשרת עדיין זמינה.","Device recovery is unavailable. Ordinary server saving remains available."],
  ["העריכה נשארה במסך אך לא נשמרה במכשיר. שמרו לשרת לפני יציאה.","Your edit remains on screen but was not saved on this device. Save to the server before leaving."],

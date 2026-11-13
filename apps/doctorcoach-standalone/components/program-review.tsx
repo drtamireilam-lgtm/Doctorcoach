@@ -1,4 +1,5 @@
 'use client';
+import {RestPrescription} from './rest-prescription';
 import {fromKg} from '../lib/load-units';
 import {planExerciseName} from '../lib/custom-exercise-types';
 import {CustomExerciseInstructions} from './custom-exercise-instructions';
@@ -34,7 +35,7 @@ export function ProgramReview({title,items,clientName,replaces,busy,error,stale,
     {(item.setReps||item.targetRpes)&&<ol>{Array.from({length:item.sets},(_,index)=>{const reps=item.setReps?.[index];return <li key={index}>סט {index+1}: {reps?repetitionLabel({reps:reps.min,repsMax:reps.max}):repetitionLabel(item)} {unitLabels[item.unit]} · {effortTarget({...item,targetRpe:targetRpeForSet(item,index)})}</li>;})}</ol>}
     {Array.from({length:item.sets},(_,index)=>targetRpeForSet(item,index)).every(value=>value==null)&&<p className="care-muted">לא הוגדר יעד מאמץ לתרגיל הזה.</p>}
     {item.weightUnspecified&&<p className="care-muted">המשקל חסר במקור. המתאמן יתעד את המשקל בפועל.</p>}
-    <TempoDetails item={item}/><CustomExerciseInstructions item={item}/>{item.notes&&<p className="care-preserve">הערת המאמן: {item.notes}</p>}
+    {item.restSeconds!=null&&<RestPrescription item={item}/>}<TempoDetails item={item}/><CustomExerciseInstructions item={item}/>{item.notes&&<p className="care-preserve">הערת המאמן: {item.notes}</p>}
     <p className="care-muted">{item.approvedSubstitutions?.length?`חלופות מאושרות: ${item.approvedSubstitutions.map(nameOf).join(' · ')}`:'ללא חלופות מאושרות'}</p>
    </article>}</WorkoutSections></div>
   </section>)}</div>

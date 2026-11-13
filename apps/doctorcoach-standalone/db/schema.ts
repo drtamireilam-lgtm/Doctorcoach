@@ -40,6 +40,7 @@ export const programItems = sqliteTable('program_items', {
   targetRpesJson:text('target_rpes_json'),targetRpe: real('target_rpe'),
   effortScale: text('effort_scale').notNull().default('rpe'),
   notes: text('notes').notNull().default(''),
+  restSeconds:integer('rest_seconds'),
   tempoJson:text('tempo_json'),
   loadJson:text('load_json'),
   warmupSetsJson:text('warmup_sets_json'),
