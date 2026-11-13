@@ -11,7 +11,7 @@ export function performancePoints(history:TrainingSession[],exerciseId:string,me
   if(!items.length)return [];
   const sets=items.flatMap(item=>item.results).filter(set=>set.done);
   const estimates=sets.map(set=>method==='effort'?setEstimated1RM(set,'reps'):estimated1RM(set.weight,set.amount)).filter((value):value is number=>value!==null);
-  const weights=sets.map(set=>set.weight).filter(weight=>Number.isFinite(weight)&&weight>0&&weight<=1000);
+  const weights=sets.map(set=>set.weight).filter((weight):weight is number=>weight!==null&&Number.isFinite(weight)&&weight>0&&weight<=1000);
   // Keep missing estimates as gaps; never substitute a different formula silently.
   return [{id:session.id,at:session.finishedAt??session.startedAt,e1rm:estimates.length?Math.max(...estimates):null,weight:weights.length?Math.max(...weights):null}];
  });

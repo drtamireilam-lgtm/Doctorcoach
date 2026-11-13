@@ -47,7 +47,7 @@ export function parseCardioPrescription(value:unknown):CardioPrescription{
  if(total*rounds>200||duration*rounds>86400)fail();return {activityId,mode:'intervals',targets,intervals,...(value.rounds===undefined?{}:{rounds}),...custom};
 }
 export function cardioPrescribedSeconds(p:CardioPrescription){return p.mode==='intervals'?(p.rounds??1)*(p.intervals??[]).reduce((n,i)=>n+i.durationSeconds*(i.repeat??1),0):p.targets.durationSeconds;}
-export function performedCardioSeconds(result:{elapsedSeconds:number;metrics:CardioMetrics}){return result.metrics.durationSeconds??result.elapsedSeconds;}
+export function performedCardioSeconds(result:{elapsedSeconds:number;metrics:CardioMetrics;durationUnreported?:boolean}){return result.metrics.durationSeconds??(result.durationUnreported?null:result.elapsedSeconds);}
 /** Sources describe reported provenance, not hardware attestation. No calories or heart-rate zone are invented. */
 export function completeCardioMetrics(id:CardioActivityId,value:unknown,sourcesValue:unknown,elapsed:number,complete=false){
  if(!record(value)||sourcesValue!==undefined&&!record(sourcesValue))fail();const raw={...value},sources:CardioMetricSources={};
@@ -68,3 +68,5 @@ export function completeCardioMetrics(id:CardioActivityId,value:unknown,sourcesV
  // Revalidate derived quantities against the same bounds as reported values.
  return {metrics:parseCardioMetrics(id,metrics),metricSources:Object.fromEntries(Object.entries(sources).filter(([key])=>key in metrics)) as CardioMetricSources};
 }
+
+export function reportedCardioMinutes(items:{cardioResult?:import('./cardio-player.ts').CardioExecution}[]){const values=items.flatMap(i=>{const n=i.cardioResult?performedCardioSeconds(i.cardioResult):null;return n===null?[]:[n/60];});return values.length?values.reduce((a,b)=>a+b,0):items.length?null:0;}

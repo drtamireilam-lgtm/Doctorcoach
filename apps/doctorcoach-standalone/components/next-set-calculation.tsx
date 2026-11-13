@@ -7,7 +7,7 @@ import {targetRpeForSet} from '../lib/training';
 import {effortName,effortValue} from '../lib/effort';
 import type {nextSetLoad} from '../lib/set-load';
 /** Presentation only; the shared engine owns all load guardrails. */
-export function NextSetCalculation({item,index,suggestion,preview=false,expanded=false,actualRpe,sourceWeight,targetRpe}:{item:SessionExercise;index:number;suggestion:ReturnType<typeof nextSetLoad>;preview?:boolean;expanded?:boolean;actualRpe?:number|null;sourceWeight?:number;targetRpe?:number|null}){
+export function NextSetCalculation({item,index,suggestion,preview=false,expanded=false,actualRpe,sourceWeight,targetRpe}:{item:SessionExercise;index:number;suggestion:ReturnType<typeof nextSetLoad>;preview?:boolean;expanded?:boolean;actualRpe?:number|null;sourceWeight?:number|null;targetRpe?:number|null}){
  const unit=useLoadUnit();
  const english=useLanguage().language==='en';
  const actual=actualRpe===undefined?item.results[index].actualRpe:actualRpe,target=targetRpe===undefined?targetRpeForSet(item,index):targetRpe;
@@ -30,7 +30,7 @@ export function NextSetCalculation({item,index,suggestion,preview=false,expanded
   return <div className="next-set-calculation workout-recommendation" role="status">{comparison}<span>{english?'No load recommendation':'אין המלצת משקל'}</span><small>{english?(reasons[suggestion.text]??'Complete compatible set data before calculating a recommendation.'):suggestion.text}</small></div>;
  }
  const weight=new Intl.NumberFormat(english?'en-GB':'he-IL',{maximumFractionDigits:4}).format(fromKg(suggestion.weight??suggestion.calculatedWeight,unit));
- const change=suggestion.weight!=null?suggestion.weight-(sourceWeight??item.results[index].weight):suggestion.relativePercent??0;
+ const change=suggestion.weight!=null?suggestion.weight-(sourceWeight??item.results[index].weight??suggestion.weight):suggestion.relativePercent??0;
  const direction=change>0?'↑':change<0?'↓':'↔';
  const compact=<span className="next-set-calculation compact-next-set">{english?'Next set':'הסט הבא'}: <strong dir="ltr">{weight} {unit} {direction}</strong>{preview&&<small>{english?'Preview':'תצוגה מקדימה'}</small>}</span>;
  if(!expanded)return <span role="status">{compact}</span>;

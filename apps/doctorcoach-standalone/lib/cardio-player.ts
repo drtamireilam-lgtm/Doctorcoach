@@ -1,5 +1,5 @@
 import {completeCardioMetrics,type CardioMetrics,type CardioMetricSources,type CardioPrescription} from './cardio.ts';
-export type CardioExecution={status:'running'|'paused'|'interrupted'|'completed';elapsedSeconds:number;checkpointAt:string;startedAt:string;finishedAt:string|null;metrics:CardioMetrics;metricSources?:CardioMetricSources;actionIds:string[];actionPayloads?:Record<string,string>};
+export type CardioExecution={durationUnreported?:boolean;status:'running'|'paused'|'interrupted'|'completed';elapsedSeconds:number;checkpointAt:string;startedAt:string;finishedAt:string|null;metrics:CardioMetrics;metricSources?:CardioMetricSources;actionIds:string[];actionPayloads?:Record<string,string>};
 export function applyCardioAction(p:CardioPrescription,previous:CardioExecution|undefined,payload:Record<string,unknown>,now=new Date().toISOString()):CardioExecution{
  const fail=():never=>{throw Object.assign(new Error('פעולת האירובי אינה תקינה.'),{status:400});};
  if(typeof payload.actionId!=='string'||!/^[a-zA-Z0-9:_-]{1,160}$/.test(payload.actionId)||!Number.isFinite(Date.parse(now)))fail();

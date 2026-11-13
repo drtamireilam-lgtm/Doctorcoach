@@ -1,0 +1,11 @@
+# Execution ledger — retrospective workouts
+User approved shared design and implementation in conversation. Native execution; no further routine confirmation needed.
+Pre-flight: store produces canonical sessions consumed by UI and analytics; all must retain nulls and performed dates.
+Ruling: current authorized program only, exact snapshot and program ID rechecked at submission; do not invent past assignments.
+Task 1: complete — canonical sessions plus nullable results/metadata and versioned private draft; 12 new tests including red→green review regressions. New migration applied only to disposable SQLite fixtures.
+Task 2: implemented — shared HE/EN editor in Program and Progress; explicit draft save/reload, copied prescription, free library/text and cardio, duplicate error→acknowledgement, mobile CSS and labels. Real React + private SQLite DOM emulation passed HE and EN. Chromium launch blocked by workspace Unix-socket restriction; WebKit executable absent. Exact rendered widths and physical iPhone/Safari remain unverified. Browser harness retained for a supported runner.
+Task 3: review and verification — independent reviewer identified stale-draft overwrite, unknown-pain loss, date shifts, cardio omission, legacy occurrence links, null target fallback, overnight duplicate detection, body-size cap and unit-label/changed-unit UX issues. All addressed; red→green tests cover core failures; 191 focused tests, TypeScript and new-source ESLint pass. Standalone build passes (no deploy).
+Ruling: partial pain uses retrospective metadata because the existing pain_before column is NOT NULL; every source decoder and staff pain projection now respects explicit missing metadata. No destructive alteration of the existing column.
+Ruling: no exact start time is fabricated; canonical date anchor is Israel midnight, with explicit performed date and optional reported duration displayed/exported separately. Existing date formatting now fixes Asia/Jerusalem.
+Ruling: browser layout acceptance remains open due unavailable permitted runtime. Keep PR Draft; do not present DOM emulation as Chromium/WebKit/device acceptance.
+No remote migration, LAB deployment, provider action, role configuration, real record change or merge.

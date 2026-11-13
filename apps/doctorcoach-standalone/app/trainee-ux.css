@@ -37,3 +37,18 @@
  .topbar-start{min-width:0}.topbar .breadcrumb{max-width:100%}
 }
 @media(prefers-reduced-motion:reduce){.compact-menu>button{transition:none}}
+
+/* Shared past-workout editor: no horizontal table on narrow screens. */
+.retrospective-workout{margin-block:16px;min-width:0}
+.retrospective-editor{margin-block-start:16px;min-width:0}
+.retrospective-fields{border:0;margin:0;padding:0;min-width:0;display:grid;gap:18px}
+.retrospective-exercise{padding:16px;border:1px solid var(--line);border-radius:14px;min-width:0}
+.retrospective-exercise h3{overflow-wrap:anywhere;margin:0;min-width:0}
+.retrospective-set{border:1px solid var(--line);border-radius:10px;padding:12px;min-width:0}
+.retrospective-set-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
+.retrospective-set-grid label{display:grid;gap:6px;min-width:0}
+.retrospective-workout input,.retrospective-workout select,.retrospective-workout textarea{max-width:100%;min-width:0;min-height:44px;box-sizing:border-box}
+.retrospective-workout button{min-height:44px;white-space:normal;overflow-wrap:anywhere}
+.retrospective-actions{position:sticky;bottom:0;padding-block:12px;background:var(--card);z-index:1;flex-wrap:wrap}
+@media(max-width:430px){.retrospective-exercise{padding:10px}.retrospective-set{padding:8px}.retrospective-set-grid{gap:6px}.retrospective-actions>button{width:100%}}
+@media(max-width:760px){.retrospective-actions{bottom:calc(76px + env(safe-area-inset-bottom,0px))}}
