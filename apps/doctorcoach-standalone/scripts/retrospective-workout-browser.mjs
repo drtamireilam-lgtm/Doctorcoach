@@ -41,7 +41,7 @@ await writeFile(
 );
 await writeFile(
   join(fixture, "main.tsx"),
-  `import React from 'react';import{createRoot}from'react-dom/client';import{RetrospectiveWorkout}from'../../components/retrospective-workout';import{LanguageProvider}from'../../components/language-provider';${css}\ncreateRoot(document.getElementById('root')).render(<LanguageProvider><main style={{maxWidth:850,margin:'auto',padding:12}}><RetrospectiveWorkout controller={{auth:'ready',refresh:async()=>true}}/></main></LanguageProvider>);`,
+  `import React from 'react';import{createRoot}from'react-dom/client';import{RetrospectiveWorkout}from'../../components/retrospective-workout';import{LanguageProvider}from'../../components/language-provider';${css}\ncreateRoot(document.getElementById('root')).render(<LanguageProvider><main style={{maxWidth:850,margin:'auto',padding:12}}><RetrospectiveWorkout sessionId={new URLSearchParams(location.search).get('session')??undefined} controller={{auth:'ready',refresh:async()=>true}}/></main></LanguageProvider>);`,
 );
 const server = await createServer({
   configFile: false,
@@ -61,7 +61,11 @@ const server = await createServer({
               const payload = bytes ? JSON.parse(bytes) : null;
               const data =
                 req.method === "GET"
-                  ? await store.load(client.userId)
+                  ? new URL(req.url, 'http://localhost').searchParams.has('session')
+                    ? await store.loadEntry(client.userId,new URL(req.url,'http://localhost').searchParams.get('session'))
+                    : await store.load(client.userId)
+                  : req.method === "PATCH"
+                    ? await store.correct(client.userId, payload)
                   : req.method === "PUT"
                     ? await store.saveDraft(client.userId, payload)
                     : await store.submit(client.userId, payload);
@@ -70,7 +74,7 @@ const server = await createServer({
             } catch (e) {
               res.statusCode = e.status ?? 500;
               res.setHeader("Content-Type", "application/json");
-              res.end(JSON.stringify({ error: e.message }));
+              res.end(JSON.stringify({ error: e.message, code: e.code }));
             }
           },
         );
@@ -96,8 +100,8 @@ try {
         : {}),
     });
     try {
-      for (const width of [320, 390, 430, 768, 1363])
-        for (const language of ["he", "en"]) {
+      for (const width of (process.env.DC_WIDTHS ?? '320,390,430,768,1363').split(',').map(Number))
+        for (const language of (process.env.DC_LANGUAGES ?? 'he,en').split(',')) {
           f.sql.prepare("DELETE FROM retrospective_workout_drafts").run();
           f.sql
             .prepare("DELETE FROM training_sessions WHERE owner_id='client'")
@@ -264,8 +268,47 @@ try {
             (await f.training.getPlan(client.userId))[0].targetRpe,
             8,
           );
+          // Open an existing completed record with the same production editor.
+          await page.goto(origin + '?lang=' + language + '&session=' + feed.history[0].id);
+          await page.getByRole('button',{name:t('תיקון התיעוד','Edit recorded workout'),exact:true}).click();
+          const weight=page.getByLabel(t('משקל בסט','Weight in set')+' 1 · Synthetic exercise');
+          await weight.waitFor();
+          assert.equal(await weight.inputValue(),'33.125');
+          assert.equal(await page.getByLabel(t('סוג התיעוד','Workout source')).isDisabled(),true);
+          assert.equal(await page.getByRole('button',{name:t('שמירת טיוטה','Save draft'),exact:true}).count(),0);
+          await weight.fill('35.5');
+          await page.getByLabel(t('תאריך ביצוע האימון','Workout date')).fill('2026-10-21');
+          const correctionGeometry=await page.evaluate(()=>({width:innerWidth,scroll:document.documentElement.scrollWidth}));
+          assert.ok(correctionGeometry.scroll<=width,JSON.stringify(correctionGeometry));
+          await page.screenshot({path:join(output,`${engine}-${language}-${width}-correction.png`),fullPage:true});
+          await weight.scrollIntoViewIfNeeded();
+          const fieldGeometry=await weight.evaluate(node=>({rect:node.getBoundingClientRect().toJSON(),style:getComputedStyle(node).visibility,parent:node.parentElement.outerHTML}));
+          assert.ok(fieldGeometry.rect.width>=40 && fieldGeometry.rect.height>=40,JSON.stringify(fieldGeometry));
+          assert.equal(await weight.evaluate(node=>{const r=node.getBoundingClientRect();return document.elementFromPoint(r.x+r.width/2,r.y+r.height/2)===node;}),true,'Save controls must not cover the weight entry');
+          await page.screenshot({path:join(output,`${engine}-${language}-${width}-correction-fields.png`)});
+          // A failed write leaves edits available for manual retry.
+          await page.route('**/api/training/retrospective',async route=>{
+            if(route.request().method()==='PATCH')await route.fulfill({status:503,contentType:'application/json',body:JSON.stringify({error:'Synthetic unavailable'})});
+            else await route.continue();
+          });
+          await page.getByRole('button',{name:t('שמירת התיקון','Save correction'),exact:true}).click();
+          await page.getByRole('alert').waitFor();
+          assert.equal(await weight.inputValue(),'35.5');
+          assert.equal((await f.training.feed(client.userId)).history[0].version,feed.history[0].version);
+          await page.unroute('**/api/training/retrospective');
+          await page.getByRole('button',{name:t('שמירת התיקון','Save correction'),exact:true}).click();
+          await page.getByText(t('התיקון נשמר. הגרסה הקודמת נשמרה ביומן השינויים.','Correction saved. The previous version is retained in the audit history.'),{exact:true}).waitFor();
+          const corrected=(await f.training.feed(client.userId)).history[0];
+          assert.equal(corrected.id,feed.history[0].id);
+          assert.equal(corrected.retrospective.recordedAt,feed.history[0].retrospective.recordedAt);
+          assert.equal(corrected.retrospective.date,'2026-10-21');
+          assert.equal(corrected.items[0].results[0].weight,35.5);
+          assert.equal(f.sql.prepare('SELECT count(*) AS n FROM retrospective_workout_revisions').get().n,1);
+          await page.reload();
+          await page.getByRole('button',{name:t('תיקון התיעוד','Edit recorded workout'),exact:true}).click();
+          await weight.waitFor();assert.equal(await weight.inputValue(),'35.5');
           assert.deepEqual(errors, []);
-          results.push({ engine, width, language, result: "PASS", geometry });
+          results.push({ engine, width, language, result: "PASS", geometry, correctionGeometry, correction:'edit/failure/retry/reload PASS' });
           await context.close();
           console.log(`${engine} ${language} ${width} PASS`);
         }

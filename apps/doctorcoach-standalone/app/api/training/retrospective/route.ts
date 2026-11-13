@@ -7,7 +7,7 @@ import { apiError, readPayload } from "../../../../lib/api-helpers";
 import { retrospectiveWorkoutStore } from "../../../../lib/retrospective-workout-store";
 async function handle(
   request: Request,
-  action: "load" | "saveDraft" | "submit",
+  action: "load" | "saveDraft" | "submit" | "correct",
 ) {
   const user = await getChatGPTUser();
   if (!user)
@@ -16,7 +16,11 @@ async function handle(
     const store = retrospectiveWorkoutStore(getRawDb(), careConfig());
     const result =
       action === "load"
-        ? await store.load(user.userId)
+        ? new URL(request.url).searchParams.has("session")
+          ? await store.loadEntry(user.userId, new URL(request.url).searchParams.get("session")!)
+          : await store.load(user.userId)
+        : action === "correct"
+          ? await store.correct(user.userId, await readPayload(request, 200000))
         : action === "saveDraft"
           ? await store.saveDraft(
               user.userId,
@@ -36,3 +40,4 @@ async function handle(
 export const GET = (request: Request) => handle(request, "load");
 export const PUT = (request: Request) => handle(request, "saveDraft");
 export const POST = (request: Request) => handle(request, "submit");
+export const PATCH = (request: Request) => handle(request, "correct");

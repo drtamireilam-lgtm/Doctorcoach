@@ -99,6 +99,22 @@ try{
  assert.equal((await json('/api/training')).history[0].items[0].warmupResults[0].weight,20);
  assert.equal((await json('/api/training')).stats.sets,2,'Embedded warmups do not count as work sets');
  assert.equal((await json('/api/program')).items[0].effortScale,'rir');
+ // Real authenticated HTTP path for retrospective creation and owner-only correction.
+ assert.equal((await request('/api/training/retrospective',undefined,{origin:'https://foreign.example.test'},'PATCH')).status,403);
+ const retroPayload={requestId:randomUUID(),version:0,source:'free',date:'2026-10-20',time:'19:45',durationMinutes:null,before:null,after:null,note:'',exercises:[{id:randomUUID(),exerciseId:'goblet',name:'',sets:[{done:true,amount:8,weight:33.125,actualRpe:7}]}]};
+ const retro=await json('/api/training/retrospective',retroPayload);
+ const retroContext=await json('/api/training/retrospective?session='+retro.id);
+ const retroEdit={...retroContext.draft,date:'2026-10-21',time:'00:30',note:'Synthetic correction'};
+ retroEdit.exercises[0].sets[0].weight=35.5;
+ const retroResponse=await request('/api/training/retrospective',retroEdit,{},'PATCH');
+ assert.equal(retroResponse.status,200);assert.match(retroResponse.headers.get('cache-control'),/no-store/);
+ const correctedRetro=await retroResponse.json();
+ assert.equal(correctedRetro.id,retro.id);assert.equal(correctedRetro.startedAt,'2026-10-20T21:30:00.000Z');
+ assert.equal(correctedRetro.retrospective.recordedAt,retro.retrospective.recordedAt);
+ assert.equal(correctedRetro.items[0].results[0].weight,35.5);
+ assert.equal((await json('/api/training/retrospective',retroEdit,'PATCH')).version,correctedRetro.version);
+ assert.equal((await db.prepare('SELECT count(*) AS n FROM retrospective_workout_revisions WHERE session_id=?').bind(retro.id).first()).n,1);
+ assert.equal((await request('/api/training/retrospective',{...retroEdit,note:'stale'},{},'PATCH')).status,409);
  const video=randomUUID(),videoKey='preserved/private/video',videoBytes=new Uint8Array([0,255,1,2,3,0,4]);
  await db.prepare("INSERT INTO media_assets(id,owner_id,kind,exercise_id,caption,mime,bytes,object_key,status,published,created_at) VALUES(?,?,'review','goblet','','video/mp4',?,?,'ready',0,?)").bind(video,owner,videoBytes.length,videoKey,at).run();
  await bucket.put(videoKey,videoBytes,{httpMetadata:{contentType:'video/mp4'},customMetadata:{fixture:'private'}});
@@ -109,6 +125,8 @@ try{
  download=await request('/api/documents/'+document);assert.equal(download.status,200);assert.deepEqual(new Uint8Array(await download.arrayBuffer()),pdf);
  cookies='';await json('/auth/send',{email:'second@example.test'});await json('/auth/verify',{code:'123456'});await json('/auth/register',{confirmed:true});
  assert.equal((await json('/api/training')).stats.total,0);
+ assert.equal((await request('/api/training/retrospective?session='+retro.id)).status,404);
+ assert.ok([403,404].includes((await request('/api/training/retrospective',retroEdit,{},'PATCH')).status));
  const secondAppearance=await json('/api/preferences/appearance?userId=forged-other');
  assert.equal(secondAppearance.appearance,null);assert.equal(secondAppearance.version,0);assert.notEqual(secondAppearance.ownerId,initialAppearance.ownerId);
  assert.ok([403,404].includes((await request('/api/media/'+video)).status));

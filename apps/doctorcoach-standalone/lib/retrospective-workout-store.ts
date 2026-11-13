@@ -11,7 +11,9 @@ import {
   parseRetrospectiveWorkout,
   RetrospectiveConflict,
   type RetrospectiveMetadata,
+  type RetrospectiveDraft,
 } from "./retrospective-workout.ts";
+import { workoutDayId } from "./workout-days.ts";
 function canonical(v: unknown): unknown {
   return Array.isArray(v)
     ? v.map(canonical)
@@ -93,6 +95,12 @@ export function retrospectiveWorkoutStore(
       );
     return ctx;
   }
+  async function entry(owner: string, id: string) {
+    const row = await db.prepare("SELECT * FROM training_sessions WHERE id=? AND owner_id=? AND status='completed' AND retrospective_json IS NOT NULL")
+      .bind(id, owner).first<Parameters<typeof trainingSessionFromRow>[0]>();
+    if (!row) throw new TrainingError("תיעוד האימון לא נמצא.", 404);
+    return trainingSessionFromRow(row);
+  }
   function checkProgram(
     p: Record<string, unknown>,
     ctx: Awaited<ReturnType<typeof context>>,
@@ -133,6 +141,71 @@ export function retrospectiveWorkoutStore(
     });
   }
   return {
+    async loadEntry(owner: string, id: string) {
+      const session = await entry(owner, id), meta = session.retrospective!;
+      const access = await trainingAccess(db, owner, config);
+      const draft: RetrospectiveDraft = {
+        requestId: session.id, version: session.version, source: meta.source,
+        programId: session.programId, dayId: workoutDayId(session.items[0]),
+        date: meta.date, time: meta.time ?? "", timeOccurrence: meta.timeOccurrence,
+        durationMinutes: meta.durationMinutes, before: meta.before, after: session.after,
+        note: session.finishFeedback?.note ?? "",
+        exercises: session.items.map(item => ({
+          id: item.occurrenceId && /^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i.test(item.occurrenceId) ? item.occurrenceId : crypto.randomUUID(),
+          exerciseId: item.exerciseId.startsWith("retrospective:") ? null : item.exerciseId,
+          name: item.name,
+          ...(meta.prescription.some(p => p.occurrenceId === item.occurrenceId)
+            ? {sourceOccurrenceId: item.occurrenceId} : {}),
+          sets: item.cardio ? [{done: item.cardioResult?.status === "completed",
+            amount: item.cardioResult?.metrics?.durationSeconds ?? null, weight: null,
+            actualRpe: item.cardioResult?.metrics?.rpe ?? null}]
+            : item.results.map(set => ({done: set.done, amount: set.amount, weight: set.weight, actualRpe: set.actualRpe ?? null})),
+        })),
+      };
+      return {draft, plan: meta.prescription, programId: session.programId, programToken: "", canSave: access.canStart};
+    },
+    async correct(owner: string, payload: unknown) {
+      await requireHealthConsent(db, owner);
+      await requireTrainingAllowed(db, owner);
+      if (!isRecord(payload) || typeof payload.requestId !== "string") throw new TrainingError("רישום לא תקין.");
+      const original = await entry(owner, payload.requestId), meta = original.retrospective!;
+      // Version is part of the correction identity: an identical retry of one edit
+      // is safe, while a subsequent intentional correction has a new identity.
+      const fingerprint = await hash(Object.fromEntries(Object.entries(payload).filter(([key]) => key !== "acknowledgeDuplicate")));
+      if (meta.correctionFingerprint === fingerprint) return original;
+      if (payload.version !== original.version || payload.source !== meta.source ||
+          (payload.programId ?? null) !== (original.programId ?? null) ||
+          String(payload.dayId ?? "1") !== workoutDayId(original.items[0]))
+        throw new TrainingError("התיעוד השתנה. טענו מחדש לפני תיקון.", 409);
+      const ctx = await authorize(owner);
+      const parsed = parseRetrospectiveWorkout(payload, meta.prescription);
+      const guard = combineCareGuards(trainingWriteGuard(owner, {planMode: ctx.access.mode, programId: ctx.programId}, config), healthConsentGuard(owner));
+      const nextDay = new Date(Date.parse(parsed.date + "T12:00:00Z") + 86400000).toISOString().slice(0,10);
+      const duplicateSql = "NOT EXISTS(SELECT 1 FROM training_sessions WHERE owner_id=? AND id<>? AND status='completed' AND COALESCE(finished_at,started_at)>=? AND COALESCE(finished_at,started_at)<?)";
+      const duplicateArgs = [owner, original.id, israelDateStart(parsed.date), israelDateStart(nextDay)];
+      if (payload.acknowledgeDuplicate !== true && !(await db.prepare(`SELECT 1 AS allowed WHERE ${duplicateSql}`).bind(...duplicateArgs).first()))
+        throw new RetrospectiveConflict("כבר קיים אימון בתאריך הזה. בדקו שזה אימון נוסף.", "duplicate_workout");
+      const at = new Date().toISOString();
+      const metadata: RetrospectiveMetadata = {...meta, date: parsed.date, time: parsed.time,
+        timeOccurrence: parsed.timeOccurrence, performedAt: parsed.performedAt, timeZone: "Asia/Jerusalem",
+        durationMinutes: parsed.durationMinutes, before: parsed.before,
+        updatedAt: at, correctionFingerprint: fingerprint};
+      const where = `id=? AND owner_id=? AND version=? AND status='completed' AND retrospective_json IS NOT NULL AND ${guard.sql} AND ${payload.acknowledgeDuplicate === true ? "1" : duplicateSql}`;
+      const args = [original.id, owner, original.version, ...guard.args, ...(payload.acknowledgeDuplicate === true ? [] : duplicateArgs)];
+      const completed = parsed.items.reduce((n,item)=>n+item.results.filter(set=>set.done).length,0);
+      const planned = parsed.items.reduce((n,item)=>n+(item.cardio?0:item.sets),0);
+      await db.batch([
+        db.prepare(`INSERT INTO retrospective_workout_revisions(session_id,owner_id,version,snapshot_json,corrected_at) SELECT id,owner_id,version,?,? FROM training_sessions WHERE ${where}`)
+          .bind(JSON.stringify(original), at, ...args),
+        db.prepare(`UPDATE training_sessions SET items_json=?,started_at=?,finished_at=?,pain_before=?,pain_after=?,planned_sets=?,completed_sets=?,finish_feedback_json=?,retrospective_json=?,version=version+1 WHERE ${where}`)
+          .bind(JSON.stringify(parsed.items), parsed.at, parsed.at, parsed.before ?? 0, parsed.after, planned, completed,
+            JSON.stringify({...original.finishFeedback, note: parsed.note}), JSON.stringify(metadata), ...args),
+      ]);
+      const saved = await entry(owner, original.id);
+      if (saved.retrospective?.correctionFingerprint !== fingerprint)
+        throw new TrainingError("התיעוד או ההרשאות השתנו. טענו מחדש לפני תיקון.", 409);
+      return saved;
+    },
     async load(owner: string) {
       const ctx = await context(owner);
       const row = await db

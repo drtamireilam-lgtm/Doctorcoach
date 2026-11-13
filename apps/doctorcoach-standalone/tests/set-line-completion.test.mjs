@@ -12,6 +12,7 @@ import * as sections from '../lib/workout-sections.ts';
 import * as navigation from '../lib/workout-navigation.ts';
 import * as days from '../lib/workout-days.ts';
 import * as experience from '../lib/workout-experience.ts';
+import * as autosave from '../lib/set-autosave.ts';
 import {platform,client} from './platform-db.mjs';
 
 // Exercise the real component handlers with React-like state across renders,
@@ -22,6 +23,7 @@ function setLine(){
  const state=[];let cursor=0;const exports={};
  const react={useState:initial=>{const n=cursor++;if(!(n in state))state[n]=typeof initial==='function'?initial():initial;return [state[n],v=>{state[n]=typeof v==='function'?v(state[n]):v}]},useRef:initial=>{const n=cursor++;return state[n]??(state[n]={current:initial})},useEffect:()=>{}};
  const modules={'react':react,'react/jsx-runtime':{jsx:(type,props)=>({type,props}),jsxs:(type,props)=>({type,props})},'../lib/content':{exercises:[],templates:[]},'./load-unit-picker':{useLoadUnit:()=> 'kg'},'../lib/localization':{displayLocale:()=> 'he-IL'},'../lib/training':training,'../lib/set-load':loads,'../lib/load-units':units,'../lib/effort':effort,'../lib/workout-sections':sections,'../lib/workout-navigation':navigation,'../lib/workout-days':days,'../lib/workout-experience':experience};
+ modules['../lib/set-autosave']=autosave;
  vm.runInNewContext(code,{exports,require:name=>modules[name]??{}});
  return props=>{cursor=0;return exports.RenderSetLine(props)};
 }

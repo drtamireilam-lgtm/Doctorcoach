@@ -34,6 +34,9 @@ test('unconfirmed, wrong-ID, unauthorised and retention-hold requests cannot sta
 });
 test('purge covers every owned table, removes dependent records and only exact owned files',async t=>{
  const f=await fixture(t);
+ // Revision journals have a real session foreign key; seed both rather than inventing an orphan.
+ f.sql.prepare("INSERT INTO training_sessions(id,owner_id,status,items_json,started_at,planned_sets,pain_before) VALUES('revision-parent',?,'completed','[]','2026-10-20',0,0)").run(client.userId);
+ f.sql.prepare("INSERT INTO retrospective_workout_revisions(session_id,owner_id,version,snapshot_json,corrected_at) VALUES('revision-parent',?,1,'{}','2026-11-13')").run(client.userId);
  // Seed each direct scope not already populated; defaults are left to the schema.
  for(const [table,col] of deletionScopes){if(f.sql.prepare(`SELECT COUNT(*) n FROM ${table} WHERE ${col}=?`).get(client.userId).n)continue;
   const info=f.sql.prepare(`PRAGMA table_info(${table})`).all();const columns=info.filter(c=>c.name===col||c.notnull&&c.dflt_value===null);

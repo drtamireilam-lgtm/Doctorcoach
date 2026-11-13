@@ -45,8 +45,8 @@ const empty = (): RetrospectiveDraft => ({
   note: "",
   exercises: [],
 });
-async function api<T>(method: string, body?: unknown): Promise<T> {
-  const response = await fetch("/api/training/retrospective", {
+async function api<T>(method: string, body?: unknown, sessionId?: string): Promise<T> {
+  const response = await fetch("/api/training/retrospective" + (sessionId ? `?session=${encodeURIComponent(sessionId)}` : ""), {
     method,
     cache: "no-store",
     headers: body ? { "Content-Type": "application/json" } : undefined,
@@ -63,8 +63,10 @@ async function api<T>(method: string, body?: unknown): Promise<T> {
 }
 function RetrospectiveWorkoutEditor({
   controller,
+  sessionId,
 }: {
   controller: Pick<TrainingController, "auth" | "refresh">;
+  sessionId?: string;
 }) {
   const en = useLanguage().language === "en",
     t = (he: string, eng: string) => (en ? eng : he),
@@ -100,7 +102,7 @@ function RetrospectiveWorkoutEditor({
     setBusy(true);
     setError("");
     try {
-      const data = await api<Context>("GET");
+      const data = await api<Context>("GET", undefined, sessionId);
       setContext(data);
       if (preserve) {
         setMessage(
@@ -117,7 +119,7 @@ function RetrospectiveWorkoutEditor({
       setSaved(!!data.draft);
       setMessage(
         data.draft
-          ? t("הטיוטה השמורה נטענה.", "Your saved draft has been loaded.")
+          ? sessionId ? t("התיעוד השמור נטען לתיקון.", "Saved workout loaded for correction.") : t("הטיוטה השמורה נטענה.", "Your saved draft has been loaded.")
           : "",
       );
       dirty.current = false;
@@ -215,13 +217,13 @@ function RetrospectiveWorkoutEditor({
     setMessage("");
     try {
       if (complete) {
-        await api("POST", draft);
+        const result = await api<{version:number}>(sessionId ? "PATCH" : "POST", draft);
         dirty.current = false;
         setSaved(false);
-        setDraft(empty());
+        setDraft(sessionId ? {...draft, version: result.version} : empty());
         const refreshed = await controller.refresh();
         setMessage(
-          refreshed
+          sessionId ? t("התיקון נשמר. הגרסה הקודמת נשמרה ביומן השינויים.", "Correction saved. The previous version is retained in the audit history.") : refreshed
             ? t(
                 "האימון נשמר בהיסטוריה בתאריך הביצוע.",
                 "Workout saved to history on its performed date.",
@@ -283,7 +285,7 @@ function RetrospectiveWorkoutEditor({
             if (!context) void load();
           }}
         >
-          {t("הוספת אימון שבוצע", "Log a completed workout")}
+          {sessionId ? t("תיקון התיעוד", "Edit recorded workout") : t("הוספת אימון שבוצע", "Log a completed workout")}
         </button>
         {open && (
           <div
@@ -291,11 +293,11 @@ function RetrospectiveWorkoutEditor({
             className="care-form retrospective-editor"
             dir={en ? "ltr" : "rtl"}
           >
-            <h2>{t("תיעוד אימון בדיעבד", "Record a past workout")}</h2>
+            <h2>{sessionId ? t("תיקון אימון שבוצע", "Correct a recorded workout") : t("תיעוד אימון בדיעבד", "Record a past workout")}</h2>
             <p>
               {t(
-                "מתוך התוכנית או אימון חופשי. מזינים רק מה שזוכרים; שדות ריקים נשארים ללא דיווח.",
-                "Use your program or log a free workout. Enter only what you remember; empty fields remain unreported.",
+                sessionId ? "מתקנים את הביצוע בלבד. התוכנית המקורית, מועד ההזנה והגרסאות הקודמות נשמרים." : "מתוך התוכנית או אימון חופשי. מזינים רק מה שזוכרים; שדות ריקים נשארים ללא דיווח.",
+                sessionId ? "Correct what you performed. The original prescription, recording date and previous versions are retained." : "Use your program or log a free workout. Enter only what you remember; empty fields remain unreported.",
               )}
             </p>
             {busy && !draft && (
@@ -317,7 +319,7 @@ function RetrospectiveWorkoutEditor({
                 {t("ניסיון נוסף", "Try again")}
               </button>
             )}
-            {context && (
+            {context && !sessionId && (
               <details>
                 <summary>
                   {t(
@@ -362,6 +364,11 @@ function RetrospectiveWorkoutEditor({
                 </button>
               </details>
             )}
+            {context && sessionId && <details>
+              <summary>{t("טעינה מחדש של התיעוד השמור", "Reload the saved workout")}</summary>
+              <label className="care-check"><input type="checkbox" checked={reloadConfirmed} onChange={e=>setReloadConfirmed(e.target.checked)}/><span>{t("להחליף את העריכה שבמסך בתיעוד השמור", "Replace current edits with the saved workout")}</span></label>
+              <button type="button" className="button secondary" disabled={busy || !reloadConfirmed} onClick={()=>{setReloadConfirmed(false);void load();}}>{t("טעינה מחדש", "Reload saved workout")}</button>
+            </details>}
             {message && (
               <p role="status" className="inline-note">
                 {message}
@@ -428,6 +435,7 @@ function RetrospectiveWorkoutEditor({
                   <label className="care-field">
                     {t("סוג התיעוד", "Workout source")}
                     <select
+                      disabled={!!sessionId}
                       value={draft.source}
                       onChange={(e) => {
                         const source = e.target.value as "free" | "program";
@@ -454,7 +462,7 @@ function RetrospectiveWorkoutEditor({
                       </option>
                     </select>
                   </label>
-                  {draft.source === "program" && (
+                  {draft.source === "program" && !sessionId && (
                     <div className="care-form">
                       <p className="care-muted">
                         {t(
@@ -627,7 +635,7 @@ function RetrospectiveWorkoutEditor({
                                 <span>{t("בוצע", "Performed")}</span>
                               </label>
                               <div className="retrospective-set-grid">
-                                <label>
+                                <label className="care-field">
                                   {unit === "seconds"
                                     ? t("שניות", "Seconds")
                                     : unit === "minutes"
@@ -660,7 +668,7 @@ function RetrospectiveWorkoutEditor({
                                   />
                                 </label>
                                 {!row.exerciseId?.startsWith("cardio:") && (
-                                  <label>
+                                  <label className="care-field">
                                     {original?.exerciseId === row.exerciseId &&
                                     original.load?.basis === "per-side"
                                       ? t(
@@ -688,7 +696,7 @@ function RetrospectiveWorkoutEditor({
                                     />
                                   </label>
                                 )}
-                                <label>
+                                <label className="care-field">
                                   RPE
                                   <input
                                     aria-label={`RPE ${n + 1} · ${row.name}`}
@@ -837,13 +845,13 @@ function RetrospectiveWorkoutEditor({
                     </label>
                   )}
                   <div className="care-actions retrospective-actions">
-                    <button
+                    {!sessionId && <button
                       type="button"
                       className="button secondary"
                       onClick={() => void save(false)}
                     >
                       {t("שמירת טיוטה", "Save draft")}
-                    </button>
+                    </button>}
                     <button
                       type="submit"
                       className="button primary"
@@ -853,14 +861,14 @@ function RetrospectiveWorkoutEditor({
                     >
                       {busy
                         ? t("שומרים…", "Saving…")
-                        : t(
+                        : sessionId ? t("שמירת התיקון", "Save correction") : t(
                             "שמירת האימון בהיסטוריה",
                             "Save workout to history",
                           )}
                     </button>
                   </div>
                   <p className="care-muted" role="status">
-                    {saved
+                    {sessionId ? t("יציאה לפני שמירת התיקון עלולה לאבד את העריכה שבמסך.", "Save corrections before leaving this screen.") : saved
                       ? t("טיוטה שמורה בחשבון", "Draft saved to your account")
                       : t(
                           "שינויים טרם נשמרו. שמרו טיוטה לפני יציאה מהמסך.",
@@ -887,10 +895,12 @@ function RetrospectiveWorkoutEditor({
 
 export function RetrospectiveWorkout({
   controller,
+  sessionId,
 }: {
   controller: Pick<TrainingController, "auth" | "refresh">;
+  sessionId?: string;
 }) {
   return controller.auth === "ready" ? (
-    <RetrospectiveWorkoutEditor controller={controller} />
+    <RetrospectiveWorkoutEditor controller={controller} sessionId={sessionId} />
   ) : null;
 }
