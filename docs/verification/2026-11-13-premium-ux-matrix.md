@@ -12,7 +12,7 @@ timeout 15 chromium --headless --no-sandbox --disable-gpu --dump-dom about:blank
 
 Result: exit 134 before any application navigation. Chromium reports `FATAL:chrome/browser/process_singleton_posix.cc:297 ... socket() failed: Operation not permitted (1)`; crash reporter also reports `ptrace: Operation not permitted (1)`. This is an execution-environment prerequisite failure, not a reproduced DoctorCoach defect. No browser restrictions were bypassed and no acceptance screenshots were created. No rendered layout, contrast, keyboard, focus, screen-reader or physical-device pass is claimed.
 
-## Current-run matrix
+## Local execution-host matrix
 
 | Surface | HE/RTL 320/390/430/768 | EN/LTR 320/390/430/768 | Scope |
 |---|---|---|---|
@@ -68,3 +68,19 @@ Fresh `scripts/program-substitution-dom.mjs` passed in HE and EN using the actua
 Fresh `scripts/set-autosave-dom.mjs` passed against the actual private SetLine component (a test-bundle-only export; production module exports unchanged). Real timers verify the debounce, 33.125 kg autosave with `done=false` and `autoNextLoad=false`, and retention of a newer weight edited while an earlier save is in flight. A simulated failed/conflicting save supplies a newer untouched quantity; the dirty weight stays visible and no automatic retry occurs for over two seconds. An explicit local edit unblocks a new autosave; only the explicit completion button sets `done=true`. This verifies UI effects and event wiring in addition to helper unit tests; the controller is synthetic, so HTTP authentication and real connectivity remain separate gates.
 
 Both optional-dependency scripts use the same `DC_JSDOM_MODULE` / `DC_ESBUILD_MODULE` inputs as the retrospective DOM fallback. Syntax and focused diff whitespace checks passed. Initial harness attempts encountered missing jsdom globals and CommonJS bundling prerequisites; those were harness setup failures corrected before the successful assertions, not product defects.
+
+## GitHub CI rendered acceptance supersedes the local browser blocker
+
+PR76 initial source head `6a842469a9a7e87681a9d1a9c40725f402fb1d76`, source tree `2694c4606e650a5fa74f3de962d19f16db641103`, passed candidate CI run [43452922055](https://github.com/drtamireilam-lgtm/Doctorcoach/actions/runs/43452922055). The tested synthetic merge `91c9a7d3c644253d449149d3d75d9e3cc890b0a5` has the identical tree; no branch was actually merged. Logs and artifact were inspected.
+
+| Fresh rendered Chromium check | Result |
+|---|---|
+| Retrospective free/program draft/history, HE/EN 320/390/430/768/1363 | 10/10 pass; zero document overflow or out-of-viewport controls |
+| Active workout save/edit/reload/finish/history/decimal next-load, HE/EN 320/390/430/768 | 8/8 pass with disposable SQLite |
+| Plan/workout geometry, HE/EN 320/390/430/768, established dark theme | 16/16 pass; zero document overflow; no browser errors |
+| Timer navigation/start/pause/reset | Pass |
+| Physical iPhone/Safari, VoiceOver and signed-in hosted LAB | Still unverified |
+
+Artifact14052986290 contains 54 evidence files (including screenshots and JSON matrices), SHA256 `16ca641c5f3d9f39c32a9693b18992a633264f1455f26049cf40ccb99f5357d7`; initial GitHub retention ends 20 November2026. Screenshots are synthetic, not real-user data.
+
+Manual inspection of the downloaded 320px screenshots found two visual issues beyond the original out-of-viewport detector: native date/time controls compressed their text inside the two-column form, and the Hebrew timer action split its word onto two lines. A focused follow-up uses a single form column at <=430px and preserves the compact timer action as a non-shrinking single line. Added rendered assertions for adequate date/time control width and single-line timer text, retaining all existing geometry/workflow checks. Exact final CI/evidence is tracked in PR76's description. No visual identity replacement or broad CSS refactor.

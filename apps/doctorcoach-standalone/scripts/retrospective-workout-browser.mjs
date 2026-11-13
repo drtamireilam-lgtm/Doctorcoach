@@ -207,6 +207,10 @@ try {
           }));
           assert.ok(geometry.scroll <= width, JSON.stringify(geometry));
           assert.deepEqual(geometry.clipped, []);
+          if (width <= 430) {
+            const nativeWidths = await page.locator('input[type="date"],input[type="time"]').evaluateAll(nodes => nodes.map(node => node.getBoundingClientRect().width));
+            assert.ok(nativeWidths.every(value => value >= 180), 'Native date/time text needs room at narrow widths: ' + nativeWidths.join(','));
+          }
           await page.screenshot({
             path: join(output, `${engine}-${language}-${width}.png`),
             fullPage: true,

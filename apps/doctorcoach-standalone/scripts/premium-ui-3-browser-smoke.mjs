@@ -86,7 +86,10 @@ try{
   assert.equal(persisted.completedSets,1);assert.equal(persisted.items[0].results[0].weight,60);assert.equal(persisted.items[0].results[0].actualRpe,6);assert.ok(persisted.items[0].results[1].weight>60,'Lower actual RPE must suggest more load for the next set');
   if(workout4){
    const suggested=persisted.items[0].results[1].weight;assert.ok(Math.abs(suggested-62.8571)<.0001,'Continuous next-set load should persist without equipment rounding');
-   const timer=page.getByRole('region',{name:language==='en'?'Rest timer':'טיימר מנוחה'});await timer.getByRole('button',{name:language==='en'?'Start':'התחלה',exact:true}).click();
+   const timer=page.getByRole('region',{name:language==='en'?'Rest timer':'טיימר מנוחה'});
+   const timerLabels=await timer.locator('.button span').evaluateAll(nodes=>nodes.map(node=>{const range=document.createRange();range.selectNodeContents(node);return {height:range.getBoundingClientRect().height,font:parseFloat(getComputedStyle(node).fontSize)}}));
+   assert.ok(timerLabels.length>0&&timerLabels.every(label=>label.height<=label.font*1.8),'Timer action text must remain on one line: '+JSON.stringify(timerLabels));
+   await timer.getByRole('button',{name:language==='en'?'Start':'התחלה',exact:true}).click();
    await page.goto('http://127.0.0.1:37866/?lang='+language+'#plan');await page.locator('.plan-workspace').waitFor();await page.goto('http://127.0.0.1:37866/?lang='+language+'#workout');await timer.waitFor();await page.waitForTimeout(1200);
    assert.notEqual(await timer.locator('output').textContent(),'01:30','Timer survives navigation');await timer.getByRole('button',{name:language==='en'?'Pause':'השהיה',exact:true}).click();
   }

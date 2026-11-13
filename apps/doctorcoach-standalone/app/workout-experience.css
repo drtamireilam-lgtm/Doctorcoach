@@ -36,7 +36,8 @@
 .dc-timer-compact>svg{color:var(--dc-cyan);flex-shrink:0}
 .dc-ui3 .dc-timer-compact h2{font-size:.78rem;margin:0;white-space:nowrap}
 .dc-ui3 .dc-timer-compact .dc-countdown{font-size:1.35rem;min-width:65px;margin-inline-end:auto;letter-spacing:.02em}
-.dc-ui3 .dc-timer-compact .button{min-height:44px;padding:8px;gap:4px;font-size:.8rem}
+.dc-ui3 .dc-timer-compact .button{min-height:44px;padding:8px;gap:4px;font-size:.8rem;flex-shrink:0;white-space:nowrap}
+.dc-ui3 .dc-timer-compact .button span{white-space:nowrap;overflow-wrap:normal}
 .dc-timer-icon{display:grid;place-items:center;min-width:44px;height:44px;border:0;border-radius:10px;background:transparent;color:var(--dc-text-primary)}
 .dc-timer-duration{display:flex;justify-content:space-between;align-items:center;gap:12px;font-size:.85rem}
 .dc-timer-duration select{width:auto}

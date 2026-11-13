@@ -56,3 +56,7 @@ Fresh aggregate batch: 113/113 focused assertions passed across retrospective/ti
 Independent review reproduced and corrected cross-exercise progression load transfer and autosave retry after optimistic-concurrency conflicts. Reviewers verified both corrections with no remaining material findings. New input/handler checks are bilingual; real React DOM tests verify retrospective draft round trips, substitution and autosave timers. DOM evidence does not establish visual responsiveness.
 
 TypeScript and production standalone build passed. Targeted lint of new helpers/components and retrospective files passed. Existing hooks/use-training.ts set-state-in-effect error and baseline warnings remain; no full-lint green claim is made. No package or lockfile change.
+
+## Rendered CI follow-up
+
+Initial PR76 source passed full candidate CI43452922055, including ten retrospective and eight active-workout Chromium flows plus sixteen bilingual plan/workout layout checks. Local-host Chromium remains blocked, but CI rendered evidence is now available and was inspected. Two 320px screenshot issues (compressed native date/time text and split Hebrew timer action) received focused CSS corrections and stronger rendered assertions. See premium-ux-matrix report and PR76 for final-source CI results. Physical Safari/hosted identity gates remain.
