@@ -76,7 +76,7 @@ export const retrospectiveWorkoutRevisions = sqliteTable('retrospective_workout_
   version: integer('version').notNull(),
   snapshotJson: text('snapshot_json').notNull(),
   correctedAt: text('corrected_at').notNull(),
-}, t => [uniqueIndex('retrospective_revision_version').on(t.sessionId,t.version),index('retrospective_revisions_owner').on(t.ownerId)]);
+}, t => [primaryKey({columns:[t.sessionId,t.version]}),index('retrospective_revisions_owner').on(t.ownerId)]);
 
 export const trainingSessions = sqliteTable('training_sessions', {
   id: text('id').primaryKey(),

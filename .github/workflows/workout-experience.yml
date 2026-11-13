@@ -25,6 +25,11 @@ jobs:
         run: npm install --global pnpm@11.25.0 && pnpm install --frozen-lockfile
       - name: Focused domain and security regressions
         run: node --experimental-strip-types --test tests/retrospective*.test.mjs tests/program-rest-order.test.mjs tests/program-templates.test.mjs tests/import-preview-cards.test.mjs tests/program-copy.test.mjs tests/program-substitution*.test.mjs tests/program-progression.test.mjs tests/program-autosave.test.mjs tests/program-revisions.test.mjs tests/coach-assignment.test.mjs tests/workout-experience.test.mjs tests/workout-write-races.test.mjs tests/training-access.test.mjs tests/set-autosave.test.mjs tests/set-load.test.mjs tests/rir.test.mjs tests/smart-import-31-workbook.test.mjs tests/smart-import-31-recognition.test.mjs tests/import-structure-journey.test.mjs tests/import-mappings.test.mjs tests/import-review-ui.test.mjs tests/program-review-view.test.mjs
+      - name: Populated workout migration compatibility
+        run: |
+          node --experimental-strip-types --test tests/workout-stack-migrations.test.mjs tests/lab-schema-preflight.test.mjs
+          mkdir -p .sites-runtime
+          node --experimental-strip-types standalone/scripts/workout-migration-smoke.mjs > .sites-runtime/workout-migration-evidence.json
       - name: Typecheck and build
         run: npm run typecheck && npm run build:standalone
       - name: Active session structure and prescription integrity
@@ -67,6 +72,7 @@ jobs:
         with:
           name: workout-experience-${{ github.sha }}
           path: |
+            apps/doctorcoach-standalone/.sites-runtime/workout-migration-evidence.json
             apps/doctorcoach-standalone/.sites-runtime/retrospective/evidence/
             apps/doctorcoach-standalone/.sites-runtime/ui3-evidence/
             apps/doctorcoach-standalone/.sites-runtime/recovery-evidence/
