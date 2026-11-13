@@ -10,14 +10,15 @@ export type Unit = 'reps' | 'seconds' | 'minutes';
 export type ExerciseTempo={eccentric:number;bottom:number;concentric:number;top:number};
 export type WarmupSetPrescription = {amount:number;weight:number};
 export type PlanItem = { setReps?:{min:number;max:number}[];importSource?:ImportSource; load?:LoadMetadata; warmupSets?:WarmupSetPrescription[]; side?:'left'|'right'|'both'; exerciseId: string; cardio?:CardioPrescription; occurrenceId?:string; customExercise?:CustomExercise;sets: number; reps: number; repsMax?:number|null; unit: Unit; weight: number; weightUnspecified?:boolean; notes: string; tempo?:ExerciseTempo|null; targetRpe?: number|null; targetRpes?:(number|null)[]; effortScale?:EffortScale; approvedSubstitutions?:string[]; dayId?:string; workoutSection?:WorkoutSection };
-export type SetResult = { weightSource?:'manual'|'automatic'; done: boolean; amount: number; weight: number; actualRpe?: number|null; painDuring?:number|null };
+export type SetResult = { weightSource?:'manual'|'automatic'; done: boolean; amount: number|null; weight: number|null; actualRpe?: number|null; painDuring?:number|null };
 export type ReadinessSnapshot={id:string;day:string;version:number;capturedAt:string;data:{sleep:number;energy:number;stress:number;note:string}};
 export type WorkoutFollowup={day:string;pain:number;recordedAt:string};
 export type SessionExercise = PlanItem & { name: string; cardioResult?:CardioExecution; results: SetResult[]; warmupResults?:SetResult[]; swappedFrom?:string };
 export type TrainingSession = {
   id: string; planMode?:'legacy'|'self'|'coached'; programId?:string|null; status: 'active' | 'completed' | 'cancelled'; items: SessionExercise[];
-  startedAt: string; finishedAt: string | null; before: number; after: number | null;
+  startedAt: string; finishedAt: string | null; before: number|null; after: number | null;
   plannedSets: number; completedSets: number; version: number;
+  retrospective?:import('./retrospective-workout.ts').RetrospectiveMetadata|null;
   readiness?:ReadinessSnapshot|null; followup?:WorkoutFollowup|null;
   finishFeedback?:{effort:number|null;note:string}|null;
 };
@@ -131,7 +132,7 @@ export function updateSet(items: SessionExercise[], value: Record<string, unknow
 
 export function formatDate(value: string): string {
   const date = new Date(value.includes('T') ? value : value.replace(' ', 'T') + 'Z');
-  return Number.isNaN(date.getTime()) ? 'תאריך לא זמין' : new Intl.DateTimeFormat('he-IL', { day: 'numeric', month: 'short', year: 'numeric' }).format(date);
+  return Number.isNaN(date.getTime()) ? 'תאריך לא זמין' : new Intl.DateTimeFormat('he-IL', { timeZone:'Asia/Jerusalem', day: 'numeric', month: 'short', year: 'numeric' }).format(date);
 }
 export function durationLabel(start: string, end: string): string {
   const minutes = Math.max(0, Math.round((Date.parse(end) - Date.parse(start)) / 60000));
@@ -146,8 +147,8 @@ export function parseRpe(value: unknown): number|null {
   return value;
 }
 /** Epley estimate for loaded sets of 1–10 reps only; not a measured maximum. */
-export function estimated1RM(weight:number,reps:number):number|null {
-  if(!Number.isFinite(weight)||weight<=0||!Number.isInteger(reps)||reps<1||reps>10)return null;
+export function estimated1RM(weight:number|null,reps:number|null):number|null {
+  if(weight===null||reps===null||!Number.isFinite(weight)||weight<=0||!Number.isInteger(reps)||reps<1||reps>10)return null;
   return Math.round((reps===1?weight:weight*(1+reps/30))*10)/10;
 }
 export function nextLoad(item:SessionExercise,session:TrainingSession):{weight:number|null;text:string} {
@@ -155,11 +156,13 @@ export function nextLoad(item:SessionExercise,session:TrainingSession):{weight:n
   if(!hasTotalLoad(item))return {weight:null,text:'יש להזין עומס כולל במפורש לפני חישוב עומס.'};
   if(workoutSection(item)!=='main')return {weight:null,text:'הצעת משקל זמינה לתרגילי האימון בלבד, לא לחימום או למתיחות.'};
   const sets=item.results.filter(s=>s.done);
+  if(session.before===null)return {weight:null,text:'לא דווח כאב לפני האימון; אין מספיק מידע להצעת עומס.'};
   if(session.before>0||(session.after??0)>0||(duringPain(session.items??[item])??0)>0||(session.followup?.pain??0)>0)return {weight:null,text:'דווח כאב. יש להתייעץ עם הצוות לפני שינוי עומס.'};
-  if(item.unit!=='reps'||item.results.some((_,i)=>targetRpeForSet(item,i)==null)||sets.length!==item.sets||sets.some(s=>!s.actualRpe||s.weight<=0))return {weight:null,text:'הצעה תוצג לאחר השלמת כל הסטים עם משקל ויעד מאמץ ודיווח מאמץ בפועל.'};
+  if(item.unit!=='reps'||item.results.some((_,i)=>targetRpeForSet(item,i)==null)||sets.length!==item.sets||sets.some(s=>!s.actualRpe||s.weight===null||s.amount===null||s.weight<=0))return {weight:null,text:'הצעה תוצג לאחר השלמת כל הסטים עם משקל ויעד מאמץ ודיווח מאמץ בפועל.'};
   if(new Set(sets.map(s=>s.weight)).size!==1)return {weight:null,text:'נרשמו משקלים שונים. בחרו עומס להמשך יחד עם המאמן.'};
   const weight=sets[0].weight;
-  const factor=sets.some((s,i)=>s.amount<item.reps||s.actualRpe!>targetRpeForSet(item,i)!+0.5)?0.975:sets.every((s,i)=>s.actualRpe!<targetRpeForSet(item,i)!-0.5)?1.025:1;
+  if(weight===null||sets.some(s=>s.amount===null))return {weight:null,text:"חסרים נתוני ביצוע לחישוב."};
+  const factor=sets.some((s,i)=>s.amount!==null&&s.amount<item.reps||s.actualRpe!>targetRpeForSet(item,i)!+0.5)?0.975:sets.every((s,i)=>s.actualRpe!<targetRpeForSet(item,i)!-0.5)?1.025:1;
   return {weight:Math.round(weight*factor*4)/4,text:factor>1?'הצעה לדיון עם המאמן: עלייה של כ־2.5%':factor<1?'הצעה לדיון עם המאמן: הפחתה של כ־2.5%':'הצעה לדיון עם המאמן: אותו עומס'};
 }
 

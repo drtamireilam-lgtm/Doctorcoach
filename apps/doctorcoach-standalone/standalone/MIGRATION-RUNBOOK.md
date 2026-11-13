@@ -167,3 +167,7 @@ backups. Do not revoke all user sessions or signing keys as an improvised rollba
 The release gate must continue to fail until actual provider backups/restoration,
 trusted bridge, browser linking, secrets, TLS/domain and rollback evidence exist.
 Do not tick evidence flags based on this preparation package.
+
+## Retrospective workouts — migration 0061 (not applied remotely)
+
+The retrospective-workout PR requires exactly `drizzle/0061_retrospective_workouts.sql`: an additive nullable `training_sessions.retrospective_json` column, a private versioned draft table and its account-deletion barriers. Existing completed session bytes and timestamps are not rewritten. No generic historical migration replay or ledger insertion is authorized. Review the actual LAB baseline and backup/recovery evidence, obtain separate exact-source migration/deployment approval, apply only the reviewed missing objects, then verify structure and auth/ownership boundaries before exposing the feature. Code rollback leaves the additive data/schema intact; do not drop private drafts or historical metadata as an automatic rollback. The SQL was exercised only in disposable local databases.

@@ -1,4 +1,4 @@
-import {performedCardioSeconds} from './cardio.ts';
+import {performedCardioSeconds,reportedCardioMinutes} from './cardio.ts';
 import {hasTotalLoad} from './load-units.ts';
 import {TrainingError,type TrainingSession,type SessionExercise} from './training.ts';
 import {setEstimated1RM} from './set-load.ts';
@@ -14,10 +14,11 @@ export function finishFeedback(value:unknown):FinishFeedback|null{
  return {effort,note:note.trim()};
 }
 function metrics(item:SessionExercise){
- const sets=item.results.filter(s=>s.done);
- if(!hasTotalLoad(item))return {weight:null,reps:item.unit==='reps'&&sets.length?Math.max(...sets.map(s=>s.amount)):null,estimate:null};
+ const sets=item.results.filter(s=>s.done),amounts=sets.flatMap(s=>s.amount===null?[]:[s.amount]),weights=sets.flatMap(s=>s.weight===null?[]:[s.weight]);
+ const reps=item.unit==='reps'&&amounts.length?Math.max(...amounts):null;
+ if(!hasTotalLoad(item))return {weight:null,reps,estimate:null};
  const estimates=sets.map(s=>setEstimated1RM(s,item.unit)).filter((n):n is number=>n!==null);
- return {weight:sets.length?Math.max(...sets.map(s=>s.weight)):null,reps:item.unit==='reps'&&sets.length?Math.max(...sets.map(s=>s.amount)):null,estimate:estimates.length?Math.max(...estimates):null};
+ return {weight:weights.length?Math.max(...weights):null,reps,estimate:estimates.length?Math.max(...estimates):null};
 }
 export function workoutFinishSummary(session:TrainingSession,history:TrainingSession[]){
  const completed=session.items.filter(i=>!i.cardio&&i.results.some(s=>s.done));
@@ -29,9 +30,9 @@ export function workoutFinishSummary(session:TrainingSession,history:TrainingSes
  });
  const cardioItems=session.items.filter(i=>i.cardio&&i.cardioResult?.status==='completed');
  const volumeItems=completed.filter(i=>workoutSection(i)==='main');
- const volumeSets=volumeItems.filter(i=>i.unit==='reps'&&hasTotalLoad(i)).flatMap(i=>i.results.filter(s=>s.done));
+ const volumeSets=volumeItems.filter(i=>i.unit==='reps'&&hasTotalLoad(i)).flatMap(i=>i.results.flatMap(s=>s.done&&s.weight!==null&&s.amount!==null?[{...s,weight:s.weight,amount:s.amount}]:[]));
  const volumeKg=volumeSets.length?Math.round(volumeSets.reduce((n,s)=>n+s.weight*s.amount,0)*10000)/10000:null;
  const volumeExcludedSets=volumeItems.filter(i=>i.unit!=='reps'||!hasTotalLoad(i)).reduce((n,i)=>n+i.results.filter(s=>s.done).length,0);
- const cardio={completed:cardioItems.length,minutes:cardioItems.reduce((n,i)=>n+performedCardioSeconds(i.cardioResult!)/60,0),distanceMeters:cardioItems.some(i=>i.cardioResult!.metrics.distanceMeters!==undefined)?cardioItems.reduce((n,i)=>n+(i.cardioResult!.metrics.distanceMeters??0),0):null};
+ const cardio={completed:cardioItems.length,minutes:reportedCardioMinutes(cardioItems),distanceMeters:cardioItems.some(i=>i.cardioResult!.metrics.distanceMeters!==undefined)?cardioItems.reduce((n,i)=>n+(i.cardioResult!.metrics.distanceMeters??0),0):null};
  return {exercises:completed.length+cardio.completed,strengthExercises:completed.length,completedExercises:completed.filter(i=>i.results.length>0&&i.results.every(r=>r.done)).length+cardio.completed,cardio,sets:completed.reduce((sum,i)=>sum+i.results.filter(s=>s.done).length,0),comparisons,volumeKg,volumeExcludedSets};
 }
