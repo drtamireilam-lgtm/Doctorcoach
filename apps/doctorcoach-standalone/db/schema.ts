@@ -69,6 +69,14 @@ export const exerciseFavorites = sqliteTable('exercise_favorites', {
   createdAt: text('created_at').notNull().default(sql`CURRENT_TIMESTAMP`),
 }, t => [uniqueIndex('favorites_owner_exercise').on(t.ownerId, t.exerciseId)]);
 
+export const retrospectiveWorkoutRevisions = sqliteTable('retrospective_workout_revisions', {
+  sessionId: text('session_id').notNull().references(() => trainingSessions.id, {onDelete:'cascade'}),
+  ownerId: text('owner_id').notNull(),
+  version: integer('version').notNull(),
+  snapshotJson: text('snapshot_json').notNull(),
+  correctedAt: text('corrected_at').notNull(),
+}, t => [uniqueIndex('retrospective_revision_version').on(t.sessionId,t.version),index('retrospective_revisions_owner').on(t.ownerId)]);
+
 export const trainingSessions = sqliteTable('training_sessions', {
   id: text('id').primaryKey(),
   ownerId: text('owner_id').notNull(),

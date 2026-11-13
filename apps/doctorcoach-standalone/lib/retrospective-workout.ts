@@ -56,6 +56,8 @@ export type RetrospectiveDraft = {
   acknowledgeDuplicate?: boolean;
 };
 export type RetrospectiveMetadata = {
+  updatedAt?: string;
+  correctionFingerprint?: string;
   source: "program" | "free";
   date: string;
   recordedAt: string;

@@ -49,6 +49,6 @@
 .retrospective-set-grid label{display:grid;gap:6px;min-width:0}
 .retrospective-workout input,.retrospective-workout select,.retrospective-workout textarea{max-width:100%;min-width:0;min-height:44px;box-sizing:border-box}
 .retrospective-workout button{min-height:44px;white-space:normal;overflow-wrap:anywhere}
-.retrospective-actions{position:sticky;bottom:0;padding-block:12px;background:var(--card);z-index:1;flex-wrap:wrap}
-@media(max-width:430px){.retrospective-workout .form-grid{grid-template-columns:minmax(0,1fr)}.retrospective-exercise{padding:10px}.retrospective-set{padding:8px}.retrospective-set-grid{gap:6px}.retrospective-actions>button{width:100%}}
+.retrospective-actions{position:static;padding-block:12px;background:var(--card);z-index:1;flex-wrap:wrap}
+@media(max-width:430px){.retrospective-workout .form-grid{grid-template-columns:minmax(0,1fr)}.retrospective-exercise{padding:10px}.retrospective-set{padding:8px}.retrospective-set-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}.retrospective-actions>button{width:100%}}
 @media(max-width:760px){.retrospective-actions{bottom:calc(76px + env(safe-area-inset-bottom,0px))}}
