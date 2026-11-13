@@ -1,0 +1,51 @@
+name: Workout experience candidate acceptance
+on:
+  push:
+    branches: ['feat/doctorcoach-3-*', 'feat/retrospective-workouts-*']
+  pull_request:
+    branches: ['feat/retrospective-workouts-*', 'codex/public-consult-localization-*']
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  candidate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    defaults:
+      run:
+        working-directory: apps/doctorcoach-standalone
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24.22.2'
+      - name: Record exact checkout
+        run: git rev-parse HEAD HEAD^{tree}
+      - name: Install locked dependencies
+        run: npm install --global pnpm@11.25.0 && pnpm install --frozen-lockfile
+      - name: Focused domain and security regressions
+        run: node --experimental-strip-types --test tests/retrospective*.test.mjs tests/program-copy.test.mjs tests/program-substitution*.test.mjs tests/program-progression.test.mjs tests/program-autosave.test.mjs tests/program-revisions.test.mjs tests/coach-assignment.test.mjs tests/workout-experience.test.mjs tests/workout-write-races.test.mjs tests/training-access.test.mjs tests/set-autosave.test.mjs tests/set-load.test.mjs tests/rir.test.mjs tests/smart-import-31-workbook.test.mjs tests/smart-import-31-recognition.test.mjs tests/import-structure-journey.test.mjs tests/import-mappings.test.mjs tests/import-review-ui.test.mjs tests/program-review-view.test.mjs
+      - name: Typecheck and build
+        run: npm run typecheck && npm run build:standalone
+      - name: Retrospective bilingual responsive acceptance
+        env:
+          DC_CHROMIUM: /usr/bin/google-chrome
+        run: node --experimental-strip-types scripts/retrospective-workout-browser.mjs
+      - name: Active workout responsive acceptance
+        env:
+          DC_CHROMIUM: /usr/bin/google-chrome
+          DC_WORKOUT4: '1'
+          DC_UI3_WIDTHS: '320,390,430,768'
+          DC_UI3_SECTIONS: plan,workout
+        run: node --experimental-strip-types scripts/premium-ui-3-browser-smoke.mjs
+      - name: Retain synthetic evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: workout-experience-${{ github.sha }}
+          path: |
+            apps/doctorcoach-standalone/.sites-runtime/retrospective/evidence/
+            apps/doctorcoach-standalone/.sites-runtime/ui3-evidence/
+          include-hidden-files: true
+          if-no-files-found: warn
+          retention-days: 7

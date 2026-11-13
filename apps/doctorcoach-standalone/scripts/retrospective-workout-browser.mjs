@@ -129,6 +129,7 @@ try {
           await page
             .getByLabel(t("תאריך ביצוע האימון", "Workout date"))
             .fill("2026-10-20");
+          await page.getByLabel(t("שעת ביצוע — אם זכורה (שעון ישראל)", "Workout time — if known (Israel time)")).fill("19:45");
           await page
             .getByLabel(t("או תרגיל בשם חופשי", "Or a free-text exercise"), {
               exact: true,
@@ -228,6 +229,9 @@ try {
           const feed = await f.training.feed(client.userId);
           assert.equal(feed.history.length, 1);
           assert.equal(feed.history[0].retrospective.date, "2026-10-20");
+          assert.equal(feed.history[0].retrospective.time, "19:45");
+          assert.equal(feed.history[0].retrospective.performedAt, "2026-10-20T16:45:00.000Z");
+          assert.notEqual(feed.history[0].retrospective.recordedAt, feed.history[0].retrospective.performedAt);
           assert.equal(feed.history[0].items[0].results[0].amount, null);
           assert.equal(feed.history[0].before, null);
           // Same shared screen loads a prescribed copy without prefilling performed numbers.

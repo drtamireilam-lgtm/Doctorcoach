@@ -104,6 +104,11 @@ for(const [he,en] of [
  ["אפשרויות סט · כאב וסרטון", "Set options · pain & video"],
  ["עדכון אוטומטי של משקל הסט הבא", "Automatically update next-set load"],
  ["שמרו תחילה את השינויים בסטים האחרים", "Save changes in the other sets first"],
+ ["שומר שינויים…", "Saving changes…"],
+ ["השינויים נשמרים אוטומטית. עד לאישור השמירה אפשר לשמור ידנית.", "Changes save automatically. You can also save manually until the server confirms."],
+ ["השמירה האוטומטית לא אושרה. השינויים נשארו במסך; בדקו ושמרו ידנית.", "Autosave was not confirmed. Your changes remain on screen; review and save manually."],
+ ["שעת ביצוע (ישראל)", "Workout time (Israel)"],
+
  ["דווח כאב — פנו לצוות", "Pain reported — contact your team"],
  ["הצגת שורות שדורשות בדיקה בלבד", "Show only rows requiring review"],
  ["אישור התאמה", "Confirm match"],

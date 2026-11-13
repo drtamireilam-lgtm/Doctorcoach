@@ -246,7 +246,7 @@ export function retrospectiveWorkoutStore(
         .prepare(
           "SELECT id FROM training_sessions WHERE owner_id=? AND status='completed' AND COALESCE(finished_at,started_at)>=? AND COALESCE(finished_at,started_at)<? LIMIT 1",
         )
-        .bind(owner, parsed.at, end)
+        .bind(owner, israelDateStart(parsed.date), end)
         .first();
       if (duplicate && payload.acknowledgeDuplicate !== true)
         throw new RetrospectiveConflict(
@@ -257,6 +257,10 @@ export function retrospectiveWorkoutStore(
         source: parsed.source,
         date: parsed.date,
         recordedAt: new Date().toISOString(),
+        performedAt: parsed.performedAt,
+        time: parsed.time,
+        timeZone: "Asia/Jerusalem",
+        ...(parsed.timeOccurrence ? { timeOccurrence: parsed.timeOccurrence } : {}),
         durationMinutes: parsed.durationMinutes,
         before: parsed.before,
         prescription: parsed.prescription,
@@ -269,7 +273,7 @@ export function retrospectiveWorkoutStore(
           ? { sql: "1", args: [] as string[] }
           : {
               sql: "NOT EXISTS(SELECT 1 FROM training_sessions WHERE owner_id=? AND status='completed' AND COALESCE(finished_at,started_at)>=? AND COALESCE(finished_at,started_at)<?)",
-              args: [owner, parsed.at, end],
+              args: [owner, israelDateStart(parsed.date), end],
             };
       const count = parsed.items.reduce(
           (n, i) => n + i.results.filter((r) => r.done).length,

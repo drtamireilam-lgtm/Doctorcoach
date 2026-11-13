@@ -405,3 +405,21 @@ test("program changes after draft creation and revocation during commit cannot s
   );
   assert.equal((await f.training.feed(client.userId)).history.length, 0);
 });
+
+test("actual workout time is retained separately from creation and duplicate checks still cover the whole date", async (t) => {
+  const f = platform(t, { now: now.toISOString() });
+  await f.connect();
+  const store = retrospectiveWorkoutStore(f.db);
+  const p = { ...input(), time: "19:45" };
+  const saved = await store.submit(client.userId, p);
+  assert.equal(saved.startedAt, "2026-10-20T16:45:00.000Z");
+  assert.equal(saved.retrospective.performedAt, saved.startedAt);
+  assert.equal(saved.retrospective.recordedAt, now.toISOString());
+  assert.equal(saved.retrospective.timeZone, "Asia/Jerusalem");
+  assert.equal(saved.retrospective.time, "19:45");
+  await assert.rejects(() => store.submit(client.userId, {...input(), time: "08:00"}), e => e.code === "duplicate_workout");
+  const next = await store.submit(client.userId, {...input(), time: "08:00", acknowledgeDuplicate: true});
+  assert.notEqual(next.id, saved.id);
+  assert.equal((await store.submit(client.userId, p)).id, saved.id);
+  await assert.rejects(() => store.submit(client.userId, {...p, time: "19:46"}), e => e.status === 409);
+});

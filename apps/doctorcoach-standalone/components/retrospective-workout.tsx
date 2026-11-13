@@ -244,8 +244,14 @@ function RetrospectiveWorkoutEditor({
         );
       }
     } catch (e) {
-      const duplicate =
-        (e as Error & { code?: string }).code === "duplicate_workout";
+      const code = (e as Error & { code?: string }).code;
+      const timeErrors: Record<string, string> = {
+        invalid_workout_time: "Choose a valid workout time.",
+        ambiguous_workout_time: "This Israel time occurred twice when daylight saving ended. Choose first or second occurrence.",
+        nonexistent_workout_time: "This Israel time did not exist when daylight saving began. Choose another time.",
+        future_workout_time: "The workout time cannot be in the future.",
+      };
+      const duplicate = code === "duplicate_workout";
       setDuplicateWarning(duplicate);
       setError(
         duplicate
@@ -254,7 +260,7 @@ function RetrospectiveWorkoutEditor({
               "A workout already exists on this date. Check history and confirm that this is an additional workout.",
             )
           : en
-            ? "Your changes were not saved. Refresh the program context or explicitly reload the saved draft before retrying."
+            ? (code && timeErrors[code]) || "Your changes were not saved. Refresh the program context or explicitly reload the saved draft before retrying."
             : (e as Error).message,
       );
     } finally {
@@ -385,6 +391,19 @@ function RetrospectiveWorkoutEditor({
                         onChange={(e) => change({ date: e.target.value })}
                       />
                     </label>
+                    <label className="care-field">
+                      {t("שעת ביצוע — אם זכורה (שעון ישראל)", "Workout time — if known (Israel time)")}
+                      <input type="time" value={draft.time ?? ""}
+                        onChange={e => change({ time: e.target.value, timeOccurrence: undefined })} />
+                    </label>
+                    {draft.time && <label className="care-field">
+                      {t("במעבר לשעון חורף, אם השעה חזרה פעמיים", "If this time occurred twice when daylight saving ended")}
+                      <select value={draft.timeOccurrence ?? ""} onChange={e => change({ timeOccurrence: e.target.value ? e.target.value as "earlier" | "later" : undefined })}>
+                        <option value="">{t("לא רלוונטי / לא ידוע", "Not applicable / unknown")}</option>
+                        <option value="earlier">{t("ההופעה הראשונה", "First occurrence")}</option>
+                        <option value="later">{t("ההופעה השנייה", "Second occurrence")}</option>
+                      </select>
+                    </label>}
                     <label className="care-field">
                       {t(
                         "משך האימון בדקות — אם זכור",

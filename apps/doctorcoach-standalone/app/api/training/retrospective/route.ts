@@ -1,4 +1,4 @@
-import { RetrospectiveConflict } from "../../../../lib/retrospective-workout";
+import { RetrospectiveConflict, RetrospectiveTimeError } from "../../../../lib/retrospective-workout";
 import { getChatGPTUser } from "../../../chatgpt-auth";
 import { getRawDb } from "../../../../db/raw";
 import { careConfig } from "../../../../lib/care-server";
@@ -25,7 +25,7 @@ async function handle(
           : await store.submit(user.userId, await readPayload(request, 200000));
     return privateJson(result);
   } catch (error) {
-    if (error instanceof RetrospectiveConflict)
+    if (error instanceof RetrospectiveConflict || error instanceof RetrospectiveTimeError)
       return privateJson(
         { error: error.message, code: error.code },
         { status: error.status },

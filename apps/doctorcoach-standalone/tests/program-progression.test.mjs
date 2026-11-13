@@ -2,6 +2,8 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import {randomUUID} from 'node:crypto';
 import {progressionProposal} from '../lib/program-progression.ts';
+import {substituteProgramExercise} from '../lib/program-substitution.ts';
+import {exercises} from '../lib/content.ts';
 import {defaultPrescription} from '../lib/training.ts';
 import {platform,client,coach} from './platform-db.mjs';
 const item=()=>({...defaultPrescription('goblet'),dayId:'1',sets:2,reps:5,weight:100,targetRpe:8});
@@ -46,4 +48,12 @@ test('approved revision carries proposed load to the next workout and preserves 
  const next=await f.training.start(client.userId,{requestId:randomUUID(),before:0});
  assert.equal(next.programId,revision.id);assert.equal(next.items[0].results[0].weight,102.5);
  assert.equal((await f.training.feed(client.userId)).history[0].items[0].results[0].weight,100);
+});
+
+test('a retained draft slot never transfers progression from the replaced exercise',()=>{
+ const original={...item(),occurrenceId:'stable-slot'},past=session();past.items[0].occurrenceId='stable-slot';
+ const replacement=substituteProgramExercise(original,exercises.find(e=>e.id==='bench'));
+ assert.equal(progressionProposal(replacement,'p',feed([past])).weight,null);
+ assert.equal(progressionProposal({...replacement,weight:40,weightUnspecified:false},'p',feed([past])).weight,null);
+ assert.equal(progressionProposal({...original,weight:0,weightUnspecified:true},'p',feed([past])).weight,null);
 });
