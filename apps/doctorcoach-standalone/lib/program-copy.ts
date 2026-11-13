@@ -26,3 +26,11 @@ export function moveProgramOccurrence(items:PlanItem[],key:string,direction:-1|1
  const target=peers[peers.findIndex(p=>p.n===index)+direction];if(!target)return items;
  const moved=[...items];[moved[index],moved[target.n]]=[moved[target.n],moved[index]];return moved;
 }
+
+/** Duplicate only editable draft content; saved programs and workout snapshots are untouched. */
+export function duplicateProgramOccurrence(items:PlanItem[],key:string):PlanItem[]{
+ const index=items.findIndex(item=>planItemKey(item)===key);
+ if(index<0||items.length>=30)return items;
+ const copy={...structuredClone(items[index]),occurrenceId:crypto.randomUUID()};
+ return [...items.slice(0,index+1),copy,...items.slice(index+1)];
+}

@@ -94,8 +94,9 @@ export function useTraining() {
     return true;
   });
   const start = async (requestId: string, before: number, dayId?:string) => {setStartError('');return mutate(async () => { const result = await request<{session:TrainingSession}>('/api/training','POST',{requestId,before,dayId}); syncSession(result.session); return result.session; },error=>setStartError(error.message));};
-  const patch = async (action: Record<string, unknown>) => mutate(async () => {
+  const patch = async (action: Record<string, unknown>, onStarted?: () => void) => mutate(async () => {
     if (!feed.active) return null;
+    onStarted?.();
     const result = await request<{session:TrainingSession}>('/api/training','PATCH',{id:feed.active.id,version:feed.active.version,...action});
     syncSession(result.session);
     if (action.action === 'finish') setNotice('האימון נשמר בהיסטוריה. כל הכבוד על ההתמדה!');

@@ -12,6 +12,10 @@ import {defaultAppearance} from '../lib/appearance.ts';
 import {appearanceWithMode,colorsFor,contrast} from '../lib/advanced-theme.ts';
 import {chromium} from '@playwright/test';
 const workout4=process.env.DC_WORKOUT4==='1';
+// Explicit widths let focused acceptance include the narrowest supported screen.
+const configuredWidths=process.env.DC_UI3_WIDTHS?.split(',').map(Number);
+if(configuredWidths)assert.ok(configuredWidths.length&&configuredWidths.every(w=>Number.isInteger(w)&&w>=280&&w<=2560),'DC_UI3_WIDTHS must contain supported integer widths');
+const matrixWidths=configuredWidths??(process.env.DC_UI3_QUICK?[390]:workout4?[390,430,768,1440]:[320,375,390,430,768,1024,1440]);
 const theme=process.env.DC_UI3_THEME??'dark';assert.ok(['light','dark'].includes(theme));
 const appearance=appearanceWithMode(defaultAppearance,theme);
 const rgbHex=value=>'#'+value.match(/[\d.]+/g).slice(0,3).map(n=>Math.round(Number(n)).toString(16).padStart(2,'0')).join('');
@@ -66,7 +70,7 @@ try{
  const screenshotResponses=structuredClone(responses);
  // Actual React save/edit/resume/finish flow backed by a disposable SQLite store.
  delete responses['/api/user-management'];responses['/api/account']={signedIn:true,canManageServices:false,careRole:null};
- for(const language of ['he','en'])for(const width of (workout4?(process.env.DC_UI3_QUICK?[390]:[390,430,768,1440]):[390,1440])){
+ for(const language of ['he','en'])for(const width of (configuredWidths??(workout4?(process.env.DC_UI3_QUICK?[390]:[390,430,768,1440]):[390,1440]))){
   for(const close of cleanups.splice(0))close();
   trainingFixture=platform({after:fn=>cleanups.push(fn)});await trainingFixture.connect();
   await trainingFixture.training.savePlan(client.userId,{...defaultPrescription('bench'),sets:3,reps:10,weight:20,targetRpe:8});
@@ -82,7 +86,10 @@ try{
   assert.equal(persisted.completedSets,1);assert.equal(persisted.items[0].results[0].weight,60);assert.equal(persisted.items[0].results[0].actualRpe,6);assert.ok(persisted.items[0].results[1].weight>60,'Lower actual RPE must suggest more load for the next set');
   if(workout4){
    const suggested=persisted.items[0].results[1].weight;assert.ok(Math.abs(suggested-62.8571)<.0001,'Continuous next-set load should persist without equipment rounding');
-   const timer=page.getByRole('region',{name:language==='en'?'Rest timer':'טיימר מנוחה'});await timer.getByRole('button',{name:language==='en'?'Start':'התחלה',exact:true}).click();
+   const timer=page.getByRole('region',{name:language==='en'?'Rest timer':'טיימר מנוחה'});
+   const timerLabels=await timer.locator('.button span').evaluateAll(nodes=>nodes.map(node=>{const range=document.createRange();range.selectNodeContents(node);return {height:range.getBoundingClientRect().height,font:parseFloat(getComputedStyle(node).fontSize)}}));
+   assert.ok(timerLabels.length>0&&timerLabels.every(label=>label.height<=label.font*1.8),'Timer action text must remain on one line: '+JSON.stringify(timerLabels));
+   await timer.getByRole('button',{name:language==='en'?'Start':'התחלה',exact:true}).click();
    await page.goto('http://127.0.0.1:37866/?lang='+language+'#plan');await page.locator('.plan-workspace').waitFor();await page.goto('http://127.0.0.1:37866/?lang='+language+'#workout');await timer.waitFor();await page.waitForTimeout(1200);
    assert.notEqual(await timer.locator('output').textContent(),'01:30','Timer survives navigation');await timer.getByRole('button',{name:language==='en'?'Pause':'השהיה',exact:true}).click();
   }
@@ -101,7 +108,7 @@ try{
   workoutChecks.push({language,width,save:true,edit:true,reload:true,finish:true,history:true,nextLoad:true});console.log('PASS SQLite workout save/edit/reload/finish/history/next-load',theme,language,width);
  }
  trainingFixture=null;for(const close of cleanups.splice(0))close();Object.assign(responses,screenshotResponses);
- for(const width of (process.env.DC_UI3_QUICK?[390]:workout4?[390,430,768,1440]:[320,375,390,430,768,1024,1440])){
+ for(const width of matrixWidths){
   await page.setViewportSize({width,height:900});
   for(const section of (process.env.DC_UI3_SECTIONS?.split(',')??['home','plan','workout','history','learn','library','details','recovery','consult','care','more'])){
    await page.goto(`http://127.0.0.1:37866/?lang=he#${section==='details'?'library?exercise=bench':section}`);await page.locator('.dc-ui3').waitFor();await page.waitForFunction(mode=>document.documentElement.classList.contains(mode),theme);await page.waitForTimeout(900);if(section==='workout')if(await page.locator('.session-exercise .exercise-disclosure-toggle').first().getAttribute('aria-expanded')==='false')await page.locator('.session-exercise .exercise-disclosure-toggle').first().click();
@@ -113,7 +120,7 @@ try{
  }
  await page.setViewportSize({width:390,height:900});await page.goto('http://127.0.0.1:37866/?lang=he#workout');await page.getByRole('region',{name:'טיימר מנוחה'}).waitFor();
  const timer=page.getByRole('region',{name:'טיימר מנוחה'});await timer.getByRole('button',{name:'התחלה',exact:true}).click();await page.waitForTimeout(1200);assert.notEqual(await timer.locator('output').textContent(),'01:30');await timer.getByRole('button',{name:'השהיה',exact:true}).click();const paused=await timer.locator('output').textContent();await page.waitForTimeout(1100);assert.equal(await timer.locator('output').textContent(),paused);await timer.getByRole('button',{name:'איפוס',exact:true}).click();assert.equal(await timer.locator('output').textContent(),'01:30');
- for(const width of (process.env.DC_UI3_QUICK?[390]:workout4?[390,430,768,1440]:[320,375,390,430,768,1024,1440])){await page.setViewportSize({width,height:900});for(const section of (process.env.DC_UI3_SECTIONS?.split(',')??['home','plan','workout','history','learn','library','details','recovery','consult','care','more'])){await page.goto(`http://127.0.0.1:37866/?lang=en#${section==='details'?'library?exercise=bench':section}`);await page.locator('.dc-ui3').waitFor();await page.waitForFunction(mode=>document.documentElement.classList.contains(mode),theme);await page.waitForTimeout(800);assert.equal(await page.locator('html').getAttribute('dir'),'ltr');if(workout4&&section==='workout'){await page.getByRole('button',{name:'Complete set',exact:true}).first().waitFor();assert.equal(await page.locator('.next-set-badge').first().textContent(),'Next set');}assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth>innerWidth),false);if(section==='details')assert.equal(await page.locator('.care-gate').count(),0,'Exercise detail must load, not show a sign-in gate');if(section==='history'){const labels=await page.locator('.progress-sort-card .training-metrics > div > span').evaluateAll(nodes=>nodes.map(n=>n.getBoundingClientRect().width));assert.ok(labels.length>0);assert.ok(labels.every(w=>w>=96),'Consistency metric labels must remain readable: '+labels.join(','));}await page.screenshot({path:join(evidence,`${section}-${width}-en.png`),fullPage:true});checks.push({section,width,language:'en',overflow:false});}}
+ for(const width of matrixWidths){await page.setViewportSize({width,height:900});for(const section of (process.env.DC_UI3_SECTIONS?.split(',')??['home','plan','workout','history','learn','library','details','recovery','consult','care','more'])){await page.goto(`http://127.0.0.1:37866/?lang=en#${section==='details'?'library?exercise=bench':section}`);await page.locator('.dc-ui3').waitFor();await page.waitForFunction(mode=>document.documentElement.classList.contains(mode),theme);await page.waitForTimeout(800);assert.equal(await page.locator('html').getAttribute('dir'),'ltr');if(workout4&&section==='workout'){await page.getByRole('button',{name:'Complete set',exact:true}).first().waitFor();assert.equal(await page.locator('.next-set-badge').first().textContent(),'Next set');}assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth>innerWidth),false);if(section==='details')assert.equal(await page.locator('.care-gate').count(),0,'Exercise detail must load, not show a sign-in gate');if(section==='history'){const labels=await page.locator('.progress-sort-card .training-metrics > div > span').evaluateAll(nodes=>nodes.map(n=>n.getBoundingClientRect().width));assert.ok(labels.length>0);assert.ok(labels.every(w=>w>=96),'Consistency metric labels must remain readable: '+labels.join(','));}await page.screenshot({path:join(evidence,`${section}-${width}-en.png`),fullPage:true});checks.push({section,width,language:'en',overflow:false});}}
  await page.setViewportSize({width:390,height:900});
  responses['/api/onboarding'].trainingBlocked=true;
  await page.goto('http://127.0.0.1:37866/?lang=he#home');await page.reload();await page.locator('.dc-premium-hero').waitFor();await page.waitForTimeout(500);assert.equal(await page.locator('.dc-premium-hero').getByRole('button',{name:'ליצירת קשר עם הצוות',exact:true}).count(),1);assert.equal(await page.locator('.dc-premium-hero .button').count(),1);await page.evaluate(()=>scrollTo(0,0));await page.screenshot({path:join(evidence,'home-blocked-390.png')});
@@ -126,7 +133,7 @@ try{
  responses['/api/staff-review-queue']={items:[],limited:false};
  responses['/api/team-tasks']={tasks:[],options:[],limited:false,selfEmail:'qa-coach@example.test',today:day};
  responses['/api/user-management']={users:[{user_id:'synthetic-client',display_name:'Synthetic QA Trainee',email:'qa-trainee@example.test',role:'trainee',approval:'approved',status:'active',coach_id:'synthetic-coach',coach_name:'Synthetic QA Coach',guidance_mode:'coached',version:1,joined_at:Date.now(),secretary:0,owner:0,can_edit:true}],coaches:[{user_id:'synthetic-coach',display_name:'Synthetic QA Coach'}],hasMore:false,coachesTruncated:false,permission:'owner',viewerId:'synthetic-owner'};
- for(const width of (process.env.DC_UI3_QUICK?[390]:workout4?[390,430,768,1440]:[320,375,390,430,768,1024,1440]))for(const language of ['he','en'])for(const section of (workout4?[]:['dashboard','users'])){
+ for(const width of matrixWidths)for(const language of ['he','en'])for(const section of (workout4?[]:['dashboard','users'])){
   responses['/api/account']={signedIn:true,canManageServices:section==='users',careRole:section==='users'?'clinician':'coach'};
   await page.setViewportSize({width,height:900});
   await page.goto(`http://127.0.0.1:37866/?lang=${language}#${section}`);

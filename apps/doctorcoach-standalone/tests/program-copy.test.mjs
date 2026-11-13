@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import {copyWorkoutDay,copiedProgramDraft} from '../lib/program-copy.ts';
+import {copyWorkoutDay,copiedProgramDraft,duplicateProgramOccurrence} from '../lib/program-copy.ts';
 import {defaultPrescription} from '../lib/training.ts';
 import {workoutDayId} from '../lib/workout-days.ts';
 const item=(dayId='1')=>({...defaultPrescription('goblet'),dayId,targetRpes:[7,8,8],repsMax:10,tempo:{eccentric:3,bottom:0,concentric:2,top:0},notes:'cue',approvedSubstitutions:['back-squat']});
@@ -21,4 +21,16 @@ test('program copy contains only editable program data and retains the intended 
  const program={id:'source',title:'Old plan',authorName:'A person',clientId:'private identity',items:[item()],createdAt:'2026-01-01',appliedAt:null};
  const copied=copiedProgramDraft(program,'active-target');assert.equal(copied.revisionOf,'active-target');assert.deepEqual(Object.keys(copied).sort(),['items','revisionOf','title']);
  copied.items[0].targetRpes[0]=10;assert.equal(program.items[0].targetRpes[0],7);assert.ok(copied.title.length<=100);assert.throws(()=>copiedProgramDraft({...program,items:[]},null));
+});
+
+test('single occurrence copy gets a fresh identity and detached dose and provenance',()=>{
+ const source={...item('2'),occurrenceId:'source-slot',importSource:{originalName:'Source exercise',raw:{sets:'3'}}};
+ const other={...item('3'),occurrenceId:'other-slot'},original=[source,other];
+ const copied=duplicateProgramOccurrence(original,'source-slot');
+ assert.equal(copied.length,3);assert.equal(copied[0],source);assert.equal(copied[2],other);
+ assert.equal(copied[1].dayId,'2');assert.notEqual(copied[1].occurrenceId,'source-slot');
+ copied[1].targetRpes[0]=10;copied[1].importSource.raw.sets='4';
+ assert.equal(source.targetRpes[0],7);assert.equal(source.importSource.raw.sets,'3');
+ assert.equal(duplicateProgramOccurrence(original,'missing'),original);
+ assert.equal(duplicateProgramOccurrence(Array.from({length:30},(_,n)=>({...item(),occurrenceId:'slot-'+n})),'slot-0').length,30);
 });

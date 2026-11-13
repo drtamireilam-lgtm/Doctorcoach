@@ -18,6 +18,13 @@ export class RetrospectiveConflict extends TrainingError {
     this.code = code;
   }
 }
+export class RetrospectiveTimeError extends TrainingError {
+  code: "invalid_workout_time" | "ambiguous_workout_time" | "nonexistent_workout_time" | "future_workout_time";
+  constructor(message: string, code: RetrospectiveTimeError["code"] = "invalid_workout_time") {
+    super(message);
+    this.code = code;
+  }
+}
 export type RetrospectiveSet = {
   done: boolean;
   amount: number | null;
@@ -39,6 +46,8 @@ export type RetrospectiveDraft = {
   programId?: string | null;
   dayId?: string;
   date: string;
+  time?: string;
+  timeOccurrence?: "earlier" | "later";
   durationMinutes: number | null;
   before: number | null;
   after: number | null;
@@ -50,6 +59,10 @@ export type RetrospectiveMetadata = {
   source: "program" | "free";
   date: string;
   recordedAt: string;
+  performedAt?: string | null;
+  time?: string | null;
+  timeZone?: "Asia/Jerusalem";
+  timeOccurrence?: "earlier" | "later";
   durationMinutes: number | null;
   before: number | null;
   prescription: PlanItem[];
@@ -95,6 +108,36 @@ export function israelDateStart(day: string) {
   }
   return new Date(time).toISOString();
 }
+// Resolve wall-clock input using the IANA zone, never the device/server zone.
+// Nearby zone offsets detect both spring gaps and autumn overlaps, including historical offsets with seconds.
+export function israelWorkoutTime(day: string, time: string, occurrence?: "earlier" | "later") {
+  if (!/^([01]\d|2[0-3]):[0-5]\d$/.test(time))
+    throw new RetrospectiveTimeError("בחרו שעת ביצוע תקינה.");
+  const target = `${day}T${time}`;
+  const wall = Date.parse(`${target}:00Z`);
+  const formatter = new Intl.DateTimeFormat("en-GB", {
+    timeZone: "Asia/Jerusalem", year: "numeric", month: "2-digit", day: "2-digit",
+    hour: "2-digit", minute: "2-digit", second: "2-digit", hourCycle: "h23",
+  });
+  const matches: string[] = [];
+  const offsets = new Set<number>();
+  for (let n = -8; n <= 8; n++) {
+    const probe = wall + n * 6 * 3600000;
+    const v = Object.fromEntries(formatter.formatToParts(probe).map(p => [p.type, p.value]));
+    offsets.add(Date.parse(`${v.year}-${v.month}-${v.day}T${v.hour}:${v.minute}:${v.second}Z`) - probe);
+  }
+  for (const offset of offsets) {
+    const candidate = wall - offset;
+    const v = Object.fromEntries(formatter.formatToParts(candidate).map(p => [p.type, p.value]));
+    if (`${v.year}-${v.month}-${v.day}T${v.hour}:${v.minute}` === target)
+      matches.push(new Date(candidate).toISOString());
+  }
+  matches.sort();
+  if (!matches.length) throw new RetrospectiveTimeError("השעה שנבחרה אינה קיימת בישראל עקב מעבר לשעון קיץ. בחרו שעה אחרת.", "nonexistent_workout_time");
+  if (matches.length > 1 && !occurrence)
+    throw new RetrospectiveTimeError("השעה מופיעה פעמיים במעבר לשעון חורף. בחרו הופעה ראשונה או שנייה.", "ambiguous_workout_time");
+  return occurrence === "later" ? matches[matches.length - 1] : matches[0];
+}
 export function parseRetrospectiveWorkout(
   value: unknown,
   plan: PlanItem[],
@@ -120,6 +163,15 @@ export function parseRetrospectiveWorkout(
     date > israelDay(now.toISOString())
   )
     throw new TrainingError("בחרו תאריך ביצוע תקין שאינו בעתיד.");
+  if (value.time !== undefined && typeof value.time !== "string")
+    throw new RetrospectiveTimeError("בחרו שעת ביצוע תקינה.");
+  if (value.timeOccurrence !== undefined && !["earlier", "later"].includes(String(value.timeOccurrence)))
+    throw new TrainingError("בחרו הופעת שעה תקינה.");
+  const time = value.time || null;
+  const timeOccurrence = value.timeOccurrence as "earlier" | "later" | undefined;
+  const performedAt = time ? israelWorkoutTime(date, time, timeOccurrence) : null;
+  if (performedAt && Date.parse(performedAt) > now.getTime())
+    throw new RetrospectiveTimeError("שעת ביצוע האימון אינה יכולה להיות בעתיד.", "future_workout_time");
   if (typeof value.note !== "string" || value.note.length > 500)
     throw new TrainingError("ההערה מוגבלת ל־500 תווים.");
   if (
@@ -263,7 +315,7 @@ export function parseRetrospectiveWorkout(
           ...(set.amount === null ? {} : { durationSeconds: set.amount }),
           ...(set.actualRpe === null ? {} : { rpe: set.actualRpe }),
         },
-        at = israelDateStart(date);
+        at = performedAt ?? israelDateStart(date);
       return {
         ...base,
         occurrenceId: original?.occurrenceId ?? row.id,
@@ -315,6 +367,9 @@ export function parseRetrospectiveWorkout(
     version: Number(value.version),
     source,
     date,
+    time,
+    timeOccurrence,
+    performedAt,
     durationMinutes: optionalNumber(value.durationMinutes, 1440, 1),
     before: optionalNumber(value.before, 10),
     after: optionalNumber(value.after, 10),
@@ -322,6 +377,6 @@ export function parseRetrospectiveWorkout(
     items,
     prescription: structuredClone(prescription),
     rows,
-    at: israelDateStart(date),
+    at: performedAt ?? israelDateStart(date),
   };
 }
