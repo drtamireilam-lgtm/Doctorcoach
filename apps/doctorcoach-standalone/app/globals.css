@@ -353,3 +353,5 @@ html.light .onboarding-progress{background:#fff;color:#1b1b24;border-color:#d8d8
 /* Long translated option text must stay inside its program editor control. */
 .program-exercise-fields .care-field .service-select{height:auto;min-height:46px}
 .program-exercise-fields .care-field .service-select [data-slot=select-value]{white-space:normal;overflow-wrap:anywhere;text-align:start}
+
+@media(max-width:430px){.program-exercise-fields .care-grid>div.care-field{grid-column:1/-1}}
