@@ -16,7 +16,7 @@ import {exercises} from '../lib/content.ts';
 
 function render(item){
  const exports={},modules={
-  'react/jsx-runtime':jsx,'../lib/load-units':loads,'../lib/custom-exercise-types':customs,
+  'react':React,'react/jsx-runtime':jsx,'./language-provider':{useLanguage:()=>({language:'he'})},'../lib/load-units':loads,'../lib/custom-exercise-types':customs,
   '../lib/training':training,'../lib/program-review':review,'../lib/workout-days':days,
   '../lib/effort':effort,'../lib/content':{exercises},
   '../components/language-provider':{Localize:({children})=>children},
@@ -24,6 +24,7 @@ function render(item){
   './exercise-tempo':{TempoDetails:()=>null},'./care-ui':{CareFeedback:()=>null},
   './workout-sections':{WorkoutSections:({items,children})=>items.map(children)},
  };
+ const restExports={};vm.runInNewContext(ts.transpileModule(readFileSync(new URL('../components/rest-prescription.tsx',import.meta.url),'utf8'),{compilerOptions:{module:ts.ModuleKind.CommonJS,target:ts.ScriptTarget.ES2022,jsx:ts.JsxEmit.ReactJSX}}).outputText,{exports:restExports,require:key=>modules[key]});modules['./rest-prescription']=restExports;
  const source=readFileSync(new URL('../components/program-review.tsx',import.meta.url),'utf8');
  vm.runInNewContext(ts.transpileModule(source,{compilerOptions:{module:ts.ModuleKind.CommonJS,target:ts.ScriptTarget.ES2022,jsx:ts.JsxEmit.ReactJSX}}).outputText,{exports,require:key=>{assert.ok(key in modules,key);return modules[key];},Intl});
  return renderToStaticMarkup(React.createElement(exports.ProgramReview,{title:'Synthetic review',items:[item],clientName:'Synthetic trainee',busy:false,error:'',stale:false,onBack(){},onEditDay(){},onPublish(){}}));
@@ -39,3 +40,5 @@ test('publication keeps RIR conversion per set and the existing no-target warnin
  assert.match(render({...perSet(),effortScale:'rir'}),/RIR יעד 3/);assert.match(render({...perSet(),effortScale:'rir'}),/RIR יעד 2/);
  assert.match(render({...perSet(),targetRpes:[null,null]}),/לא הוגדר יעד מאמץ לתרגיל הזה/);
 });
+
+test('publication shows explicit rest, including no-rest, and omits unspecified legacy values',()=>{assert.match(render({...perSet(),restSeconds:90}),/מנוחה: 90/);assert.match(render({...perSet(),restSeconds:0}),/מנוחה: 0/);assert.ok(!render(perSet()).includes('מנוחה'));});
