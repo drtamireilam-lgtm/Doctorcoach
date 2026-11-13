@@ -13,7 +13,7 @@ export type PlanItem = { setReps?:{min:number;max:number}[];importSource?:Import
 export type SetResult = { weightSource?:'manual'|'automatic'; done: boolean; amount: number|null; weight: number|null; actualRpe?: number|null; painDuring?:number|null };
 export type ReadinessSnapshot={id:string;day:string;version:number;capturedAt:string;data:{sleep:number;energy:number;stress:number;note:string}};
 export type WorkoutFollowup={day:string;pain:number;recordedAt:string};
-export type SessionExercise = PlanItem & { name: string; cardioResult?:CardioExecution; results: SetResult[]; warmupResults?:SetResult[]; swappedFrom?:string };
+export type SessionExercise = PlanItem & { prescription?:PlanItem; prescribedPosition?:number; name: string; cardioResult?:CardioExecution; results: SetResult[]; warmupResults?:SetResult[]; swappedFrom?:string };
 export type TrainingSession = {
   id: string; planMode?:'legacy'|'self'|'coached'; programId?:string|null; status: 'active' | 'completed' | 'cancelled'; items: SessionExercise[];
   startedAt: string; finishedAt: string | null; before: number|null; after: number | null;

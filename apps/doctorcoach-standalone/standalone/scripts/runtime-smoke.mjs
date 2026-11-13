@@ -85,6 +85,14 @@ try{
  assert.equal(session.plannedSets,9);assert.equal(session.items[2].load.sourceUnit,'lb');assert.equal(session.items[3].load.basis,'per-side');
  assert.notEqual(session.items[0].occurrenceId,session.items[1].occurrenceId);
  assert.equal(session.items[0].side,'left');assert.equal(session.items[0].warmupResults.length,2);assert.equal(session.items[1].warmupResults?.length??0,0);
+ assert.equal(session.items[0].prescription.sets,2);assert.equal(session.items[0].prescribedPosition,0);
+ session=(await json('/api/training',{action:'addSet',id:session.id,version:session.version,exerciseId:'goblet',occurrenceId:firstOccurrence},'PATCH')).session;
+ assert.equal(session.plannedSets,10);assert.equal(session.items[0].sets,3);assert.equal(session.items[0].targetRpes[2],null);
+ session=(await json('/api/training',{action:'removeSet',id:session.id,version:session.version,exerciseId:'goblet',occurrenceId:firstOccurrence},'PATCH')).session;
+ assert.equal(session.plannedSets,9);assert.equal(session.items[0].prescription.sets,2);
+ session=(await json('/api/training',{action:'moveExercise',id:session.id,version:session.version,exerciseId:'goblet',occurrenceId:firstOccurrence,direction:1},'PATCH')).session;
+ assert.equal(session.items[1].occurrenceId,firstOccurrence);assert.equal(session.items[1].prescribedPosition,0);
+ session=(await json('/api/training',{action:'moveExercise',id:session.id,version:session.version,exerciseId:'goblet',occurrenceId:firstOccurrence,direction:-1},'PATCH')).session;
  const warmupVersion=session.version;
  session=(await json('/api/training',{action:'warmupSet',id:session.id,version:session.version,exerciseId:'goblet',occurrenceId:firstOccurrence,setIndex:0,done:true,amount:10,weight:20},'PATCH')).session;
  assert.equal(session.completedSets,0);assert.equal(session.items[0].results[0].done,false);assert.equal(session.items[0].warmupResults[0].done,true);
