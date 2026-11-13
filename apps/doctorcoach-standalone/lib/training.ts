@@ -23,7 +23,7 @@ export type TrainingSession = {
   finishFeedback?:{effort:number|null;note:string}|null;
 };
 export type TrainingStats = { total: number; week: number; sets: number };
-export type TrainingFeed = { active: TrainingSession | null; history: TrainingSession[]; stats: TrainingStats };
+export type TrainingFeed = { ownerId?:string; active: TrainingSession | null; history: TrainingSession[]; stats: TrainingStats };
 export type LegacyLog = { id: number; exerciseCount: number; before: number; after: number; createdAt: string };
 export const unitLabels: Record<Unit, string> = { reps: 'חזרות', seconds: 'שניות', minutes: 'דקות' };
 export const unitMax: Record<Unit, number> = { reps: 100, seconds: 3600, minutes: 180 };

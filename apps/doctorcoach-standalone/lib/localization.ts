@@ -7,6 +7,14 @@ const normalize = (text: string) => text.trim().replace(/\s+/g, ' ');
 const dictionary = new Map(hebrew.map((text, index) => [normalize(text), english[index]]));
 // New privacy labels are kept explicit instead of partially translating consent text.
 for(const [he,en] of [
+ ["העריכה שבמכשיר השתנתה בזמן הפעולה. רעננו ובדקו לפני מחיקה.","The device draft changed during this action. Reload and review before discarding."],
+ ["שחזור עריכות במכשיר אינו זמין. שמירה רגילה לשרת עדיין זמינה.","Device recovery is unavailable. Ordinary server saving remains available."],
+ ["העריכה נשארה במסך אך לא נשמרה במכשיר. שמרו לשרת לפני יציאה.","Your edit remains on screen but was not saved on this device. Save to the server before leaving."],
+ ["לא ניתן למחוק כרגע את העריכה שבמכשיר. נסו שוב.","The device draft could not be discarded. Try again."],
+ ["האימון נשמר בשרת. ניקוי העריכה במכשיר ייבדק בטעינה הבאה.","Workout saved to the server. Device draft cleanup will be checked on the next load."],
+ ["שוחזרה עריכה מהמכשיר, אך הביצוע בשרת השתנה. בדקו את הערכים ושמרו ידנית או בטלו את השחזור.","Recovered device edits differ from the saved server values. Review and save manually, or discard the recovery."],
+ ["שוחזרו ערכים שטרם אושרו בשרת מהמכשיר הזה.","Unconfirmed edits were recovered from this device."],
+ ["ביטול השחזור וטעינת הערכים מהשרת","Discard recovery and load server values"],
  ["בחרו כיוון תקין לסידור התרגיל.","Choose a valid exercise order direction."],
  ["מספר סטים אינו משתנה בפעילות אירובית.","Set count cannot be changed for cardio activities."],
  ["אפשר לכלול עד 20 סטים לתרגיל.","An exercise can contain up to 20 sets."],

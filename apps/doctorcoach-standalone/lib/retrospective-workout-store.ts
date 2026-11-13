@@ -186,6 +186,9 @@ export function retrospectiveWorkoutStore(
       if (payload.acknowledgeDuplicate !== true && !(await db.prepare(`SELECT 1 AS allowed WHERE ${duplicateSql}`).bind(...duplicateArgs).first()))
         throw new RetrospectiveConflict("כבר קיים אימון בתאריך הזה. בדקו שזה אימון נוסף.", "duplicate_workout");
       const at = new Date().toISOString();
+      // Per-invocation ownership, separate from the retry fingerprint: even
+      // identical delayed requests cannot clean up another invocation's journal.
+      const auditSnapshot=JSON.stringify({...original,correctionOperationId:crypto.randomUUID()});
       const metadata: RetrospectiveMetadata = {...meta, date: parsed.date, time: parsed.time,
         timeOccurrence: parsed.timeOccurrence, performedAt: parsed.performedAt, timeZone: "Asia/Jerusalem",
         durationMinutes: parsed.durationMinutes, before: parsed.before,
@@ -196,10 +199,14 @@ export function retrospectiveWorkoutStore(
       const planned = parsed.items.reduce((n,item)=>n+(item.cardio?0:item.sets),0);
       await db.batch([
         db.prepare(`INSERT INTO retrospective_workout_revisions(session_id,owner_id,version,snapshot_json,corrected_at) SELECT id,owner_id,version,?,? FROM training_sessions WHERE ${where}`)
-          .bind(JSON.stringify(original), at, ...args),
+          .bind(auditSnapshot, at, ...args),
         db.prepare(`UPDATE training_sessions SET items_json=?,started_at=?,finished_at=?,pain_before=?,pain_after=?,planned_sets=?,completed_sets=?,finish_feedback_json=?,retrospective_json=?,version=version+1 WHERE ${where}`)
           .bind(JSON.stringify(parsed.items), parsed.at, parsed.at, parsed.before ?? 0, parsed.after, planned, completed,
             JSON.stringify({...original.finishFeedback, note: parsed.note}), JSON.stringify(metadata), ...args),
+        // A guarded statement can affect zero rows without throwing (for example
+        // entitlement expiry between statements). Keep no journal for a denied edit.
+        db.prepare(`DELETE FROM retrospective_workout_revisions WHERE session_id=? AND owner_id=? AND version=? AND corrected_at=? AND snapshot_json=? AND NOT EXISTS(SELECT 1 FROM training_sessions WHERE id=? AND owner_id=? AND json_extract(retrospective_json,'$.correctionFingerprint')=?)`)
+          .bind(original.id,owner,original.version,at,auditSnapshot,original.id,owner,fingerprint),
       ]);
       const saved = await entry(owner, original.id);
       if (saved.retrospective?.correctionFingerprint !== fingerprint)
