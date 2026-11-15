@@ -175,3 +175,73 @@ The retrospective-workout PR requires exactly `drizzle/0061_retrospective_workou
 ## Historical correction journal (Workout Experience follow-up)
 
 Migration `0062_retrospective_workout_revisions.sql` is additive and requires PR75 migration0061 first. It records private prior session versions before an atomic correction; it does not rewrite existing rows or migrate remote data. Review the actual target schema, backups and exact source separately before applying either missing migration or deploying. Account deletion removes journal rows before sessions; session deletion also cascades. Code rollback may leave this additive journal in place. Dropping it would destroy audit history and requires a separately reviewed retention decision. Only disposable synthetic SQLite databases were migrated here.
+
+## Workout Experience integration stack — 0061, 0062, 0063
+
+Review PR77–80 together above the existing PR75/76 base. These are application
+schema migrations in `drizzle/`, not identity migrations in
+`standalone/migrations/`. The isolated-staging Wrangler configuration points its
+migration directory at the identity namespace. A generic `d1 migrations apply`
+against that configuration does **not** establish that the workout schema exists.
+Do not replay historical migrations or invent ledger rows to reconcile this.
+
+| Order | Exact application file | Additive objects / compatibility |
+| --- | --- | --- |
+| 1 | `0061_retrospective_workouts.sql` | Nullable `training_sessions.retrospective_json`; private owner-keyed drafts and deletion barriers. Existing session JSON/timestamps stay unchanged. |
+| 2 | `0062_retrospective_workout_revisions.sql` | Private journal, composite primary key `(session_id, version)`, owner index, session foreign key with delete cascade, insertion deletion barrier. Depends on0061 for the complete correction workflow. |
+| 3 | `0063_program_rest.sql` | Nullable `program_items.rest_seconds`; integer0–1800 or NULL. Existing rows remain unspecified; zero explicitly means no rest. No backfill or session rewrite. |
+
+Before any separately authorized LAB SQL/deployment:
+
+1. Record the exact candidate commit and unchanged SQL checksums. The offline
+   rehearsal emits SHA-256 after LF newline normalization for each file.
+2. Obtain current schema metadata and verified backup/recovery evidence through
+   the approved environment mechanism. Column names alone are insufficient:
+   include `sqlite_master` definitions, column metadata, primary keys, indexes,
+   foreign keys, CHECK clauses and triggers. Do not include trainee rows in the
+   public review artifact.
+3. Use `node standalone/scripts/lab-schema-preflight.mjs expected` to generate the
+   expected metadata, then `... check metadata.json` against the authorized
+   target metadata. Missing0061/62/63 objects must be reconciled explicitly.
+   A partial or structurally different migration is a stop-for-review condition,
+   not permission to rerun it. An empty ledger does not prove an empty database.
+4. Establish that the pre0061 application baseline through0060 and the separate
+   identity/management namespace are compatible. If an earlier migration or
+   renumbered schema is missing, review it separately; the three workout files
+   are not a repair for an unknown baseline.
+5. After separate exact-source approval, an authorized operator applies only
+   reviewed missing files/objects in the order above, verifies the complete
+   structure and foreign-key/integrity results, and only then exposes code that
+   reads the new columns. Do not deploy PR80 code against a schema lacking0063.
+6. Run the synthetic LAB lifecycle and permission acceptance: import/edit/rest/
+   reorder -> draft/revision -> assign -> active/past workout -> correction ->
+   history/progress; interrupted saves and two-tab conflicts; revoked consent,
+   cross-owner/coach denial and account-deletion cleanup. Record actual results
+   separately from local fixtures. Physical Safari/iPhone remains a device gate.
+
+Offline validation commands (no cloud client or remote writes):
+
+```sh
+node --experimental-strip-types --test tests/workout-stack-migrations.test.mjs tests/lab-schema-preflight.test.mjs
+node --experimental-strip-types standalone/scripts/workout-migration-smoke.mjs
+```
+
+The first checks populated upgrades and partial0061/0062 states, all original
+column values, declaration/DDL key consistency, constraints, cascade/deletion
+barriers and fail-closed preflight. The second runs a populated upgrade on local
+workerd D1. Its JSON explicitly reports the runtime date and target date.
+Installed workerd currently cannot start the LAB's `2026-10-14` compatibility
+date; the default is the existing runtime-smoke baseline `2026-05-15`.
+`labRuntimeVerified:false` must not be presented as exact LAB-date
+acceptance. Matching the requested date to configuration is not an attestation
+of the running binary or deployed application. A supported newer local binary can be exercised explicitly with
+`DC_MIGRATION_RUNTIME_DATE=2026-10-14`; this does not change deployment config.
+
+For code rollback, retain the additive columns, drafts and journal. Stop new
+workout edit flows, preserve all new writes and review compatibility of any
+older program writer before enabling it; it may not understand rest metadata.
+Code rollback is not a database restore. Do not drop the journal/rest column,
+restore an older backup over newer records, or remove audit data automatically.
+Destructive rollback requires a separate approved retention/recovery decision.
+No remote schema, backup restore, merge or deployment is performed by these
+commands or this review.

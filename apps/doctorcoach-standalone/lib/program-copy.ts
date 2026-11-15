@@ -34,3 +34,12 @@ export function duplicateProgramOccurrence(items:PlanItem[],key:string):PlanItem
  const copy={...structuredClone(items[index]),occurrenceId:crypto.randomUUID()};
  return [...items.slice(0,index+1),copy,...items.slice(index+1)];
 }
+
+/** Move before a target within the same day/section. Other groups retain their positions. */
+export function reorderProgramOccurrence(items:PlanItem[],sourceKey:string,targetKey:string):PlanItem[]{
+ const source=items.find(i=>planItemKey(i)===sourceKey),target=items.find(i=>planItemKey(i)===targetKey);
+ if(!source||!target||source===target||workoutDayId(source)!==workoutDayId(target)||workoutSection(source)!==workoutSection(target))return items;
+ const peer=(i:PlanItem)=>workoutDayId(i)===workoutDayId(source)&&workoutSection(i)===workoutSection(source);
+ const peers=items.filter(peer).filter(i=>i!==source);peers.splice(peers.indexOf(target),0,source);
+ let index=0;return items.map(i=>peer(i)?peers[index++]:i);
+}

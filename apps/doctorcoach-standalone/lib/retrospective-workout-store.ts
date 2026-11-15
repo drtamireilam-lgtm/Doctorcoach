@@ -38,6 +38,7 @@ async function hash(v: unknown) {
     .join("");
 }
 const planColumns = [
+ "rest_seconds",
   "id",
   "exercise_id",
   "sets",
