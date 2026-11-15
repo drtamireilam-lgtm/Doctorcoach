@@ -1,4 +1,5 @@
 'use client';
+import type {CompletedSetCorrection} from '../lib/completed-workout-corrections';
 import {cachedSetKey,draftRecovery,sameDraftFields,makeWorkoutDraft,type CachedSetDraft,type SetDraftContext} from '../lib/workout-drafts';
 import {rememberWorkoutDraft,loadWorkoutDrafts,acknowledgeWorkoutDraft,clearWorkoutDrafts} from '../lib/workout-draft-cache';
 import {planItemKey,workoutDayId} from '../lib/workout-days';
@@ -167,8 +168,12 @@ export function useTraining() {
     else if (action.action === 'cancel') setNotice('האימון בוטל. אפשר להתחיל אימון חדש.');
     return result.session;
   });
+  const correctCompletedSet=async(payload:CompletedSetCorrection,onError?:(error:Error)=>void)=>mutate(async()=>{
+    const saved=await request<TrainingSession>('/api/training/corrections','PATCH',payload);
+    syncSession(saved);return saved;
+  },onError);
   const followup=async(session:TrainingSession,pain:number)=>mutate(async()=>{const result=await request<{session:TrainingSession}>('/api/training','PATCH',{action:'followup',id:session.id,version:session.version,pain});syncSession(result.session);setNotice('הדיווח ליום שאחרי נשמר באימון.');return result.session;});
  const saveSplit=async(value:ProgramSplit)=>{let failure:Error|undefined;const saved=await mutate(async()=>{const result=await request<{split:ProgramSplit}>('/api/program','POST',{...value,action:'split'});setSplit(result.split);setSelectedPlanDay('1');setNotice('חלוקת האימונים נשמרה. כעת בחרו תרגילים לכל אימון.');return true;},error=>{failure=error;});if(failure)throw failure;return saved;};
-  return {split,saveSplit,selectedPlanDay,setSelectedPlanDay,workoutPreference,saveWorkoutPreference,access,plan,legacy,favorites,feed,auth,notice,startError,busy:busy||refreshing,notify,refresh,savePlan,add,remove,useTemplate,toggleFavorite,start,patch,followup,recoverSetDraft,rememberSetDraft,discardSetDraft,currentSetSnapshot};
+  return {split,saveSplit,selectedPlanDay,setSelectedPlanDay,workoutPreference,saveWorkoutPreference,access,plan,legacy,favorites,feed,auth,notice,startError,busy:busy||refreshing,notify,refresh,savePlan,add,remove,useTemplate,toggleFavorite,start,patch,followup,correctCompletedSet,recoverSetDraft,rememberSetDraft,discardSetDraft,currentSetSnapshot};
 }
 export type TrainingController = ReturnType<typeof useTraining>;

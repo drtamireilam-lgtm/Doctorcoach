@@ -108,6 +108,21 @@ try{
  assert.equal((await json('/api/training')).stats.sets,2,'Embedded warmups do not count as work sets');
  assert.equal((await json('/api/training')).ownerId,owner,'Device recovery receives only the authenticated canonical owner');
  assert.equal((await json('/api/program')).items[0].effortScale,'rir');
+ // Completed live-set corrections preserve workout origin, time and all other saved fields.
+ const completedBefore=structuredClone(session);
+ const liveCorrection={sessionId:session.id,version:session.version,requestId:randomUUID(),exerciseId:'goblet',occurrenceId:firstOccurrence,setIndex:0,amount:6,weight:101.6,actualRpe:7.5};
+ assert.equal((await request('/api/training/corrections',liveCorrection,{origin:'https://foreign.example.test'},'PATCH')).status,403);
+ const liveResponse=await request('/api/training/corrections',liveCorrection,{},'PATCH');
+ assert.equal(liveResponse.status,200);assert.match(liveResponse.headers.get('cache-control'),/no-store/);
+ session=await liveResponse.json();
+ assert.equal(session.items[0].results[0].weight,101.6);assert.equal(session.items[0].results[0].amount,6);
+ assert.equal(session.startedAt,completedBefore.startedAt);assert.equal(session.finishedAt,completedBefore.finishedAt);
+ assert.equal(session.retrospective,null);assert.equal(session.completedSets,completedBefore.completedSets);
+ assert.deepEqual(session.items[0].warmupResults,completedBefore.items[0].warmupResults);
+ assert.deepEqual(session.items[0].prescription,completedBefore.items[0].prescription);
+ assert.equal((await json('/api/training/corrections',liveCorrection,'PATCH')).version,session.version);
+ assert.equal((await json('/api/training/corrections?session='+session.id)).session.id,session.id);
+ assert.equal((await request('/api/training/corrections',{...liveCorrection,weight:102},{},'PATCH')).status,409);
  // Real authenticated HTTP path for retrospective creation and owner-only correction.
  assert.equal((await request('/api/training/retrospective',undefined,{origin:'https://foreign.example.test'},'PATCH')).status,403);
  const retroPayload={requestId:randomUUID(),version:0,source:'free',date:'2026-10-20',time:'19:45',durationMinutes:null,before:null,after:null,note:'',exercises:[{id:randomUUID(),exerciseId:'goblet',name:'',sets:[{done:true,amount:8,weight:33.125,actualRpe:7}]}]};
@@ -135,6 +150,8 @@ try{
  cookies='';await json('/auth/send',{email:'second@example.test'});await json('/auth/verify',{code:'123456'});await json('/auth/register',{confirmed:true});
  assert.equal((await json('/api/training')).stats.total,0);
  assert.notEqual((await json('/api/training')).ownerId,owner);
+ assert.equal((await request('/api/training/corrections?session='+session.id)).status,404);
+ assert.ok([403,404].includes((await request('/api/training/corrections',liveCorrection,{},'PATCH')).status));
  assert.equal((await request('/api/training/retrospective?session='+retro.id)).status,404);
  assert.ok([403,404].includes((await request('/api/training/retrospective',retroEdit,{},'PATCH')).status));
  const secondAppearance=await json('/api/preferences/appearance?userId=forged-other');
