@@ -3,8 +3,14 @@ on:
   push:
     branches:
       - feature/anatomy-asset-safety-stage36
+      - feat/anatomy-4-20261116
     paths:
       - 'apps/doctorcoach-standalone/**'
+      - '.github/workflows/anatomy-validation.yml'
+  pull_request:
+    paths:
+      - 'apps/doctorcoach-standalone/**'
+      - 'docs/anatomy/**'
       - '.github/workflows/anatomy-validation.yml'
   workflow_dispatch:
 permissions:
@@ -35,6 +41,10 @@ jobs:
           DC_ISOLATED_STAGING_BUILD: 'true'
       - name: Install test browser
         run: pnpm exec playwright install --with-deps chromium
+      - name: Verify projected annotations and responsive viewer
+        run: node scripts/anatomy/annotations-smoke.mjs
+        env:
+          ANATOMY_EVIDENCE_DIR: /tmp/dc-anatomy-evidence/annotations
       - name: Render and interact with the actual app
         run: npm run test:anatomy:browser
       - uses: actions/upload-artifact@v4

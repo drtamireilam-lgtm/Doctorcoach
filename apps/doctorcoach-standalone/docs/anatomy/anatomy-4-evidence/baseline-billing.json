@@ -1,0 +1,36 @@
+{
+  "capturedAt": "2026-11-15T22:40:29.8591278Z",
+  "baselineCommit": "f115bd2",
+  "command": "node --experimental-strip-types --test --test-concurrency=2 tests/coach-payments.test.mjs",
+  "testCount": 14,
+  "passed": 0,
+  "failed": 14,
+  "failureStage": "All failures occur in fixture coachWorkspacesStore.invite before billing assertions",
+  "errorStatus": 409,
+  "errorMessage": "ההזמנה לא נוצרה. בדקו את הרישיון או נסו לאחר פקיעת הזמנות ישנות.",
+  "rootEvidence": "coach-payments fixture mocks JavaScript Date at 2026-10-15 and sets licenseUntil to 30 days later, then calls platform(t) without SQL clock override. workspaceOwnerGuard uses SQLite strftime(now), whose real date is after that license expiry; INSERT invitation guard returns no row. All 14 tests fail at this fixture step before billing assertions. Baseline f115bd2 reproduces every failure.",
+  "unchangedFiles": [
+    "tests/coach-payments.test.mjs",
+    "lib/coach-payments.ts",
+    "lib/coach-workspaces.ts",
+    "tests/platform-db.mjs"
+  ],
+  "tests": [
+    "first-month amount freezes at Israel midnight and cannot be altered or duplicated",
+    "snapshot uses membership history at month start, not current removed/added states",
+    "future preparation and retroactive charges before foundation activation are rejected",
+    "disconnected gateway and disabled collection never send any charge",
+    "without active mandate even enabled internal collection does not send",
+    "atomic claims and provider key make concurrent collection and retries send once",
+    "timeout is uncertain; reconciliation looks up the original key instead of resending",
+    "wrong amount, currency or key cannot be recorded as success",
+    "revocation between capture and claim prevents sending",
+    "readers see only authorized workspaces, never provider tokens; no connection is falsely shown",
+    "zero-seat month is skipped without a gateway call",
+    "a revoked mandate stops new collection but still permits reconciliation of money already sent",
+    "one provider receipt cannot settle two monthly jobs",
+    "account export scopes monthly financial metadata to its owner and excludes mandate references"
+  ],
+  "scope": "Synthetic disposable local SQLite tests only. No billing source changes.",
+  "baselineWorktreeCleaned": true
+}

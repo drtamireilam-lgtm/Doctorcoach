@@ -1,0 +1,134 @@
+/* Anatomy 4: scoped scene, controls and projected structure annotation. */
+.anatomy-model-viewer {
+  display: flex;
+  flex-direction: column;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Arial, sans-serif;
+  line-height: 1.5;
+  --anatomy-surface: #101c25;
+  --anatomy-raised: #182a34;
+  --anatomy-border: #354a54;
+  --anatomy-text: #f0f5f4;
+  --anatomy-muted: #b3c5c8;
+  --anatomy-teal: #8bd7ca;
+  --anatomy-gold: #ddc58d;
+  min-width: 0;
+  max-width: 100%;
+  padding: clamp(12px, 2.5vw, 24px);
+  border: 1px solid var(--anatomy-border);
+  border-radius: 24px;
+  background: var(--anatomy-surface);
+  color: var(--anatomy-text);
+  box-shadow: none;
+  gap: 16px;
+  overflow-wrap: anywhere;
+}
+.anatomy-model-viewer, .anatomy-model-viewer * { box-sizing: border-box; }
+.anatomy-model-viewer > * { min-width: 0; max-width: 100%; }
+.anatomy-model-viewer :is(h2, h3, strong, label) { color: var(--anatomy-text); }
+.anatomy-model-viewer h2 { margin: 0; font-size: clamp(20px, 2.5vw, 28px); line-height: 1.25; }
+.anatomy-model-viewer :is(p, .care-muted, small) { color: var(--anatomy-muted); line-height: 1.6; }
+.anatomy-model-viewer p { margin-block: 0; }
+.anatomy-model-viewer a { color: var(--anatomy-teal); text-underline-offset: 3px; }
+.anatomy-model-viewer :is(button, input, select) {
+  min-height: 44px;
+  min-width: 0;
+  max-width: 100%;
+  border: 1px solid var(--anatomy-border);
+  border-radius: 12px;
+  background: var(--anatomy-raised);
+  color: var(--anatomy-text);
+  font: inherit;
+  font-size: 14px;
+}
+.anatomy-model-viewer button {
+  padding: 9px 13px;
+  white-space: normal;
+  line-height: 1.35;
+  box-shadow: none;
+  cursor: pointer;
+  transition: background-color 140ms ease, border-color 140ms ease;
+}
+.anatomy-model-viewer button:hover:not(:disabled) { background: #233e48; border-color: #78b8b0; }
+.anatomy-model-viewer button:disabled { opacity: .48; cursor: default; }
+.anatomy-model-viewer button[aria-pressed="true"] {
+  color: #102b29;
+  background: var(--anatomy-teal);
+  border-color: var(--anatomy-teal);
+  font-weight: 700;
+}
+.anatomy-model-viewer .primary-button { background: var(--anatomy-gold); border-color: var(--anatomy-gold); color: #262310; font-weight: 700; }
+.anatomy-model-viewer :is(button, input, select, a, summary):focus-visible { outline: 3px solid var(--anatomy-gold); outline-offset: 3px; }
+.anatomy-model-viewer :is(input, select) { width: 100%; padding: 10px 12px; margin-block-start: 7px; }
+.anatomy-model-viewer input::placeholder { color: #a4b8bd; opacity: 1; }
+.anatomy-model-viewer :is(.anatomy-region-list, .anatomy-viewer-toolbar) {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  min-width: 0;
+}
+.anatomy-model-viewer .anatomy-viewer-toolbar {
+  padding: 10px;
+  border: 1px solid var(--anatomy-border);
+  border-radius: 16px;
+  background: #13232c;
+}
+.anatomy-model-viewer .anatomy-viewer-stage {
+  position: relative;
+  isolation: isolate;
+  width: 100%;
+  height: clamp(560px, 65vh, 760px);
+  min-height: 560px;
+  overflow: hidden;
+  border: 1px solid var(--anatomy-border);
+  border-radius: 20px;
+  background: linear-gradient(155deg, #1d333e 0%, #0c1720 75%);
+}
+.anatomy-model-viewer .anatomy-viewer-stage .anatomy-model-canvas {
+  position: absolute;
+  inset: 0;
+  width: 100% !important;
+  height: 100% !important;
+  min-height: 0 !important;
+  border-radius: inherit !important;
+  background: transparent !important;
+}
+.anatomy-model-viewer .anatomy-model-canvas canvas { display: block; max-width: 100%; }
+.anatomy-model-viewer .anatomy-annotation-lines { position: absolute; inset: 0; z-index: 2; width: 100%; height: 100%; overflow: hidden; pointer-events: none; }
+.anatomy-model-viewer .anatomy-annotation-lines :is(line, polyline, path) { stroke: var(--anatomy-gold); stroke-width: 1.5; fill: none; vector-effect: non-scaling-stroke; }
+.anatomy-model-viewer .anatomy-annotation-lines circle { fill: var(--anatomy-gold); stroke: #10212b; stroke-width: 2; }
+.anatomy-model-viewer .anatomy-annotation-card {
+  position: absolute;
+  z-index: 3;
+  width: 220px;
+  max-width: min(220px, calc(100% - 24px));
+  padding: 12px;
+  border: 1px solid #b4a579;
+  border-radius: 14px;
+  background: #13252f;
+  color: var(--anatomy-text);
+  text-align: start;
+  overflow-wrap: anywhere;
+}
+.anatomy-model-viewer .anatomy-annotation-card :is(h3, strong) { display: block; margin: 0; font-size: 15px; line-height: 1.35; }
+.anatomy-model-viewer .anatomy-annotation-card :is(p, small) { margin-block: 3px 7px; font-size: 12px; line-height: 1.4; }
+.anatomy-model-viewer .anatomy-annotation-card button { min-height: 44px; padding: 7px 10px; font-size: 12px; }
+.anatomy-model-viewer .anatomy-annotation-card > div { display: flex; flex-wrap: wrap; gap: 6px; }
+@media (max-width: 767px) {
+  .anatomy-model-viewer { border-radius: 18px; gap: 12px; }
+  .anatomy-model-viewer .anatomy-viewer-stage { height: clamp(380px, 58vh, 520px); min-height: 380px; border-radius: 16px; }
+  .anatomy-model-viewer .anatomy-viewer-toolbar { padding: 8px; gap: 6px; }
+  .anatomy-model-viewer .anatomy-viewer-toolbar button { flex: 1 1 76px; padding-inline: 9px; font-size: 13px; }
+}
+@media (max-width: 430px) {
+  .anatomy-model-viewer :is(.anatomy-region-list, .anatomy-viewer-toolbar) { gap: 6px; }
+  .anatomy-model-viewer .anatomy-region-list button { flex: 1 1 96px; padding-inline: 8px; font-size: 13px; }
+}
+@media (max-width: 350px) {
+  .anatomy-model-viewer { padding: 10px; }
+  .anatomy-model-viewer .anatomy-viewer-toolbar button { flex-basis: 68px; font-size: 12px; }
+  .anatomy-model-viewer .anatomy-annotation-card { padding: 10px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .anatomy-model-viewer *, .anatomy-model-viewer *::before, .anatomy-model-viewer *::after { transition: none !important; animation: none !important; scroll-behavior: auto !important; }
+}

@@ -8,15 +8,17 @@ export type LearningCard={contentReview?:ContentReview;innervationReference?:str
 export const learningCards=cards as LearningCard[];
 export const learningCard=(slug:string)=>learningCards.find(card=>card.slug===slug);
 export const exerciseMuscles=(id:string)=>learningCards.flatMap(card=>card.links.filter(link=>link.id===id).map(link=>({slug:card.slug,role:link.role})));
-export function anatomyHash(state:{region:string;muscle?:string;side:AnatomySide;view:AnatomyView;search?:string}){
+export function anatomyHash(state:{region:string;muscle?:string;side:AnatomySide;view:AnatomyView;search?:string;exercise?:string}){
  const q=new URLSearchParams({region:state.region,side:state.side,view:state.view});
  if(state.muscle)q.set('muscle',state.muscle);
  if(state.search)q.set('q',state.search);
+ if(state.exercise&&/^[a-z0-9][a-z0-9-]{0,119}$/.test(state.exercise))q.set('exercise',state.exercise);
  return '#learn?'+q.toString();
 }
 export function readAnatomyHash(hash:string,regionIds:string[],muscleIds:string[]){
  const q=new URLSearchParams(hash.split('?')[1]??'');
- return {region:regionIds.includes(q.get('region')??'')?q.get('region')!:'shoulder',muscle:muscleIds.includes(q.get('muscle')??'')?q.get('muscle')!:undefined,side:(['both','left','right'].includes(q.get('side')??'')?q.get('side'):'both') as AnatomySide,view:(q.get('view')==='back'?'back':'front') as AnatomyView,search:q.get('q')?.slice(0,120)??''};
+ const exercise=q.get('exercise')??'';
+ return {...(/^[a-z0-9][a-z0-9-]{0,119}$/.test(exercise)?{exercise}:{}),region:regionIds.includes(q.get('region')??'')?q.get('region')!:'shoulder',muscle:muscleIds.includes(q.get('muscle')??'')?q.get('muscle')!:undefined,side:(['both','left','right'].includes(q.get('side')??'')?q.get('side'):'both') as AnatomySide,view:(q.get('view')==='back'?'back':'front') as AnatomyView,search:q.get('q')?.slice(0,120)??''};
 }
 export function anatomyMatches(m:{name:string;en:string;slug:string},query:string){
  const normalize=(s:string)=>s.normalize('NFKD').replace(/\p{M}/gu,'').toLowerCase().replace(/[-־–]/g,' ').replace(/\s+/g,' ').trim();
