@@ -19,10 +19,11 @@ No second saving engine, new API or schema. Quick fields support repetitions and
 
 ## Evidence
 
-- Focused new and affected batch, quick-dose, preview, builder wiring, footer, autosave, publication review/revisions and assignment tests passed locally. Exact final count is recorded in the PR body.
+- Focused new and affected batch, quick-dose, preview, builder wiring, footer, autosave, publication review/revisions and assignment tests passed locally. Final local affected subset:75/75 passed.
 - Standalone TypeScript and new-file/helper/test ESLint passed. ProgramBuilder's existing file retains2 lint errors/5 warnings in unrelated ClientWorkspace/StaffWorkspace code. The identical2/5 result was reproduced on untouched PR82 source; no suppression or unrelated lint refactor added.
 - Production standalone build passed.
 - Independent source review found one concrete omission: cardio rest was absent from draft preview. HE/EN regressions first failed for both0/90; rest rendering moved outside the strength branch. Focused regressions then passed.
+- Passive preview additionally guards invalid/unbounded set counts from unfinished advanced edits. Bilingual regressions reject0/negative/fractional/100/1000000 counts without calling trainee dose rendering or allocating set rows; original values/name/notes remain for correction.
 - New real ProgramBuilder + disposable SQLite browser harness exercises HE/EN320/390/430/768/1363: search/queued add, quick dose/rest0, preview/back with no added write, failure/retry, invalid-buffer navigation warning, saved draft reload, no publication requests and geometry. Wired into candidate CI with screenshot/result retention.
 - Local Chromium remains blocked by OS Unix-socket policy; no local rendered pass claimed. Final CI result and exact source/tree are appended to the PR body, rather than changing a tested source just to record CI.
 

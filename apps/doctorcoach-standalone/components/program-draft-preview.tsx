@@ -35,6 +35,7 @@ export function ProgramDraftPreview({title,items,onBack,onEditDay}:{
      {item.cardio?<CardioPrescriptionSummary value={item.cardio}/>:<>
       <h4 dir="auto">{nameOf(item)}</h4>
       {item.side&&<p>{t('צד','Side')}: {item.side==='left'?t('שמאל','Left'):item.side==='right'?t('ימין','Right'):t('שני הצדדים','Both sides')}</p>}
+      {Number.isInteger(item.sets)&&item.sets>=1&&item.sets<=20?<>
       {!!item.warmupSets?.length&&<section aria-label={t('סטים לחימום','Warm-up sets')}><h5>{t('סטים לחימום','Warm-up sets')}</h5><ol>{item.warmupSets.map((set,index)=><li key={index}>{t('חימום','Warm-up')} {index+1}: <bdi>{warmupLoad(set.weight)}</bdi> × {set.amount} {unit(item)}</li>)}</ol></section>}
       {item.setReps||item.targetRpes?<><p>{item.sets} {t('סטים','sets')}</p><ol className="care-dose-list">{Array.from({length:item.sets},(_,index)=>{
        const range=item.setReps?.[index],target=targetRpeForSet(item,index);
@@ -42,6 +43,7 @@ export function ProgramDraftPreview({title,items,onBack,onEditDay}:{
       })}</ol></>:<><WorkoutPrescription item={item}/>{targetRpeForSet(item,0)==null&&<p className="care-muted">{t('חסר יעד מאמץ לתרגיל הזה.','Missing effort target for this exercise.')}</p>}</>}
       {item.weightUnspecified&&<p className="care-muted">{t('לא הוגדר משקל. המתאמן יתעד את המשקל בפועל.','Weight not specified. The trainee will record the actual weight.')}</p>}
       <TempoDetails item={item}/>
+      </>:<><p>{String(item.sets)} {t('סטים','sets')}</p><p role="alert" className="care-error">{t('תקנו את מספר הסטים (1–20) בעורך כדי להציג את המינון','Fix set count (1–20) in editor to preview dose')}</p></>}
       {item.customExercise&&<details className="panel"><summary>{t('הוראות לתרגיל האישי','Custom exercise instructions')} · <bdi>{item.customExercise.name}</bdi></summary><p dir="auto">{item.customExercise.en} · {item.customExercise.equipment}</p><p className="care-preserve" dir="auto">{item.customExercise.desc}</p>{item.customExercise.videoUrl&&<a href={item.customExercise.videoUrl} target="_blank" rel="noopener noreferrer">{t('צפייה בסרטון הביצוע','Watch exercise video')}</a>}</details>}
      </>}
      <RestPrescription item={item}/>

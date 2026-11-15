@@ -24,9 +24,9 @@
 
 ## Steps
 
-- [ ] Write focused failing domain/real-handler tests for each new behavior.
-- [ ] Implement each disjoint workstream and integrate via existing builder callbacks.
-- [ ] Run focused new and affected picker, dose, review, autosave and revision tests; TypeScript, targeted lint and build.
+- [x] Write focused failing domain/real-handler tests for each new behavior.
+- [x] Implement each disjoint workstream and integrate via existing builder callbacks.
+- [x] Run focused new and affected picker, dose, review, autosave and revision tests; TypeScript, targeted lint and build.
 - [ ] Extend synthetic browser acceptance at HE/RTL and EN/LTR320/390/430/768/1363: batch add, quick edit, preview/back, saved/retrieved draft, failed-save retry, navigation warning, zero publication requests and no page/control overflow. Physical iPhone/Safari remains distinct.
 - [ ] Independent final review and actual code PR, with exact source/CI evidence and remaining limits. No user test identities needed, no live services or deployment.
 

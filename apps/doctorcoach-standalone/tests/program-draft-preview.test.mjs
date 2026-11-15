@@ -17,7 +17,7 @@ import * as stretches from '../lib/stretch-exercises.ts';
 import * as cardio from '../lib/cardio.ts';
 import {exercises} from '../lib/content.ts';
 
-function fixture(language='en'){
+function fixture(language='en',onPrescriptionRender){
  const modules={react:{...React,useContext:()=>({language})},'react/jsx-runtime':jsx,
   '../lib/training':training,'../lib/workout-days':days,'../lib/effort':effort,'../lib/load-units':loads,
   '../lib/custom-exercise-types':customs,'../lib/workout-sections':sections,
@@ -33,6 +33,7 @@ function fixture(language='en'){
   modules[`./${file}`]=exports;return exports;
  }
  for(const file of ['language-provider','workout-prescription','exercise-tempo','rest-prescription','workout-sections','cardio-editor'])load(file);
+ if(onPrescriptionRender){const Original=modules['./workout-prescription'].WorkoutPrescription;modules['./workout-prescription']={WorkoutPrescription:props=>{onPrescriptionRender(props);return React.createElement(Original,props);}};}
  return load('program-draft-preview').ProgramDraftPreview;
 }
 const item=()=>({...training.defaultPrescription('goblet'),dayId:'2',sets:3,reps:5,setReps:[{min:8,max:8},{min:10,max:12},{min:6,max:6}],targetRpe:9,targetRpes:[7,null,8],effortScale:'rir',weight:3.125,load:{sourceValue:3.125,sourceUnit:'kg',basis:'per-side'},warmupSets:[{amount:5,weight:1.25}],side:'left',restSeconds:0,tempo:{eccentric:3,bottom:0,concentric:1,top:0},notes:'Private note\nSecond line'});
@@ -91,5 +92,16 @@ for(const language of ['he','en']){
   const cardioItem=training.defaultPrescription('cardio:walking');
   for(const restSeconds of [0,90])assert.match(render(language,[{...cardioItem,restSeconds}]),new RegExp(language==='en'?`Rest: ${restSeconds} seconds`:`מנוחה: ${restSeconds} שניות`));
   assert.doesNotMatch(render(language,[cardioItem]),language==='en'?/Rest: /:/מנוחה: /);
+ });
+}
+
+for(const language of ['he','en']){
+ test(`${language}: invalid draft set counts keep content but do not render a dose`,()=>{
+  const calls=[],Preview=fixture(language,props=>calls.push(props));
+  for(const sets of [0,-1,1.5,100,1000000])for(const perSet of [true,false]){
+   const html=renderToStaticMarkup(React.createElement(Preview,{title:'Invalid draft',items:[{...item(),sets,...(perSet?{}:{setReps:undefined,targetRpes:undefined})}],onBack(){}}));
+   assert.match(html,language==='en'?/Fix set count \(1–20\) in editor to preview dose/:/תקנו את מספר הסטים \(1–20\) בעורך כדי להציג את המינון/);assert.match(html,/role="alert"/);
+   assert.match(html,/Private note/);assert.match(html,new RegExp(`>${sets} `));assert.equal(calls.length,0);
+  }
  });
 }

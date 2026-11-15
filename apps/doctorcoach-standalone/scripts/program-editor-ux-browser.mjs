@@ -41,4 +41,4 @@ for(const language of ['he','en'])for(const width of (process.env.DC_EDITOR_WIDT
  results.push({language,width,batch:true,quickDose:true,passivePreview:true,saveRetry:true,retrieval:true,leaveWarning:true,publicationWrites,geometry});console.log('PASS program editor UX',language,width);await context.close();
 }
 assert.deepEqual(errors,[]);await writeFile(join(evidence,'results.json'),JSON.stringify({results,errors},null,2));console.log(JSON.stringify({passed:results.length,errors}));
-}finally{await browser?.close();await server.close();await rm(fixture,{recursive:true,force:true});for(const fn of cleanup.reverse())await fn();}
+}catch(error){const page=browser?.contexts().at(-1)?.pages()[0];if(page){await page.screenshot({path:join(evidence,'failure.png'),fullPage:true}).catch(()=>{});await writeFile(join(evidence,'failure.html'),await page.content()).catch(()=>{});}throw error;}finally{await browser?.close();await server.close();await rm(fixture,{recursive:true,force:true});for(const fn of cleanup.reverse())await fn();}
