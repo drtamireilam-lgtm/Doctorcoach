@@ -32,5 +32,11 @@
     "account export scopes monthly financial metadata to its owner and excludes mandate references"
   ],
   "scope": "Synthetic disposable local SQLite tests only. No billing source changes.",
-  "baselineWorktreeCleaned": true
+  "baselineWorktreeCleaned": true,
+  "anatomyFullSuite": {
+    "pass": "1953",
+    "tests": "1967",
+    "fail": "14",
+    "duration_ms": "776065.2299"
+  }
 }

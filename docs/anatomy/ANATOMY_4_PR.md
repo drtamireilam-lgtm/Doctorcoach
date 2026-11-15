@@ -18,12 +18,18 @@ This change preserves the bundled BodyParts3D geometry and existing static atlas
 
 ## Verification
 
-Verified locally: TypeScript check passed; isolated standalone build passed; static isolated configuration gate passed; 24 focused annotation/navigation/exercise/stretch tests passed; viewer-controls smoke passed 20 checks across all 15 real GLBs with no page errors. The annotation browser fixture passed 19 checks with no page errors, including real touch raycasting and hover-to-card traversal. The complete unit suite and full-app browser run are still in progress. Fourteen coach-payments tests have failed and all 14 failures reproduce on unchanged base f115bd2: a JavaScript-only mocked clock expires the fixture license under SQLite real time. See baseline-billing.json; no billing code is changed.
+- `node node_modules/typescript/bin/tsc --noEmit`: passed.
+- Isolated standalone build and static isolated configuration gate: passed, no deployment.
+- All anatomy unit files: 126/126 passed. Focused navigation/exercise/stretch checks also passed.
+- `annotations-smoke.mjs`: 19 checks passed, no page errors. Includes actual touch raycast and hover-to-card traversal; HE/EN at 320,390,430,768,1280px.
+- `viewer-controls-smoke.mjs`: 20 checks passed, no page errors across all 15 bundled GLBs.
+- Complete suite: 1,967 tests; 1,953 passed, 14 failed. All 14 coach-payments fixture failures reproduce on base f115bd2. The fixture mocks JavaScript time but SQLite uses real time, expiring its synthetic license before billing assertions. No billing code changed. See baseline-billing.json.
+- GitHub push CI 43770780307 independently reported the same 1,953 pass / 14 fail. The job remains failing; subsequent independent build/browser evidence steps now run without hiding the failed unit gate.
+- Full-app Windows browser smoke: local synthetic migrations passed, but Vite did not start listening during the observed setup window; interrupted before browser assertions. See full-app/setup-status.json. No full-app or physical Safari success is claimed.
 
-Planned evidence includes the complete unit suite and TypeScript check, isolated standalone build, anatomy browser checks, and `node scripts/anatomy/annotations-smoke.mjs` with Chromium. The annotation fixture checks the real bundled shoulder GLB, camera and zoom projection updates, selected highlights, detail opening, hide/restore/isolate/clear behavior, no page overflow and bounded labels at 320, 390, 430, 768 and 1280 pixels in both languages.
+Screenshots and JSON are committed under `apps/doctorcoach-standalone/docs/anatomy/anatomy-4-evidence/` and `docs/anatomy/anatomy-4-regression-evidence/`. Mobile screenshots were visually inspected and typography/hover defects refined. CI uploads `anatomy-browser-evidence`. Build output retains a >500kB chunk warning; physical iPhone performance is unmeasured.
 
-Local screenshots and JSON are included under apps/doctorcoach-standalone/docs/anatomy/anatomy-4-evidence/. CI uploads its evidence in the `anatomy-browser-evidence` artifact under `annotations/`. Screenshot filenames are `annotations-{en|he}-{width}.png`; final visual inspection and links remain pending. These fixture screenshots do not establish authenticated full-application or physical-device coverage.
-
+**Merge readiness: draft / blocked** by the baseline suite failures, remaining full-app validation, clinical sign-off and physical Safari checks. No merge or deployment was performed.
 ## Limits and migration risk
 
 No database migration, schema update, account write, entitlement change, dependency update or new anatomy asset is required. This is a stacked PR; merging directly against the older `main` would obscure its scope with earlier unmerged application work.

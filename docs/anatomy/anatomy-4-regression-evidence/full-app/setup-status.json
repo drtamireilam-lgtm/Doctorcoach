@@ -1,0 +1,13 @@
+{
+  "status": "setup-incomplete",
+  "command": "node scripts/anatomy/browser-smoke.mjs",
+  "platform": "Windows",
+  "browser": "C:/Program Files/Google/Chrome/Application/chrome.exe",
+  "phase": "Vite createServer/listen before browser launch",
+  "localMigrations": "passed; synthetic DB ID and --local only",
+  "lastOutput": "Vite rsc/ssr dependency scanning and bundling",
+  "endpoint": "http://127.0.0.1:37851/anatomy-preview refused connection",
+  "browserAssertionsRun": 0,
+  "termination": "Interrupted after extended startup without listening endpoint",
+  "featureFailureEstablished": false
+}
