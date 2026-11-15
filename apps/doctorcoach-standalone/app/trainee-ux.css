@@ -54,3 +54,10 @@
 @media(max-width:760px){.retrospective-actions{bottom:calc(76px + env(safe-area-inset-bottom,0px))}}
 
 .session-flexibility{margin-block:12px;min-width:0}.session-flexibility button{max-width:100%;white-space:normal;overflow-wrap:anywhere;min-height:44px}.session-flexibility small{overflow-wrap:anywhere}.session-prescription{min-width:0;overflow-wrap:anywhere}
+/* Draft previews also render outside the trainee workspace; keep prescription labels and values paired. */
+section.program-draft-preview .workout-prescription-summary dl{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,5rem),1fr));gap:.75rem;margin:0;min-width:0}
+section.program-draft-preview .workout-prescription-summary dl>div{min-width:0}
+section.program-draft-preview .workout-prescription-summary dt{font-size:.8rem;line-height:1.5;color:var(--muted,currentColor)}
+section.program-draft-preview .workout-prescription-summary dd{margin:.25rem 0 0;font-weight:600;overflow-wrap:anywhere}
+section.program-draft-preview[dir=rtl] .workout-prescription-summary dd{text-align:right}
+section.program-draft-preview[dir=ltr] .workout-prescription-summary dd{text-align:left}
