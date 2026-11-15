@@ -1,7 +1,9 @@
 /** Run after installing Chromium: ANATOMY_CHROMIUM=/path/to/chrome node scripts/anatomy/browser-smoke.mjs */
 import {chromium} from '@playwright/test';
 import {createServer} from 'vite';
-import {mkdir,writeFile,mkdtemp} from 'node:fs/promises';
+import {mkdir,writeFile,mkdtemp,readFile} from 'node:fs/promises';
+import * as THREE from 'three';
+import {GLTFLoader} from 'three/addons/loaders/GLTFLoader.js';
 import {spawnSync} from 'node:child_process';
 import {tmpdir} from 'node:os';
 import {join,resolve} from 'node:path';
@@ -18,6 +20,20 @@ async function dragCanvas(page,canvas){
  const path=await canvas.evaluate(element=>{const b=element.getBoundingClientRect();for(const ratio of [.15,.85,.3,.7]){const y=b.y+b.height*ratio;if(Array.from({length:11},(_,i)=>b.x+b.width*(.35+i*.04)).every(x=>document.elementFromPoint(x,y)===element))return {from:b.x+b.width*.35,to:b.x+b.width*.75,y};}return null;});
  assert.ok(path,'camera drag starts on current canvas bounds outside the annotation controls');
  await page.mouse.move(path.from,path.y);await page.mouse.down();await page.mouse.move(path.to,path.y,{steps:12});await page.mouse.up();
+}
+async function verifyStructureFraming(canvas,state,modelId,structureId){
+ const bytes=await readFile(resolve('public/anatomy/'+modelId+'.glb'));
+ const {scene}=await new GLTFLoader().parseAsync(bytes.buffer.slice(bytes.byteOffset,bytes.byteOffset+bytes.byteLength),'');
+ const modelCenter=new THREE.Box3().setFromObject(scene).getCenter(new THREE.Vector3());scene.position.sub(modelCenter);scene.updateMatrixWorld(true);
+ const structure=scene.getObjectByName(structureId);assert.ok(structure,'framing target exists in the actual GLB');
+ const bounds=new THREE.Box3().setFromObject(structure),center=bounds.getCenter(new THREE.Vector3());
+ assert.ok(center.distanceTo(new THREE.Vector3(...state.target))<1e-5,'camera targets the actual structure center');
+ const aspect=await canvas.evaluate(e=>e.clientWidth/e.clientHeight),camera=new THREE.PerspectiveCamera(35,aspect,.001,10);
+ camera.position.fromArray(state.position);camera.lookAt(...state.target);camera.updateMatrixWorld(true);
+ const projected=new THREE.Box3();for(const x of [bounds.min.x,bounds.max.x])for(const y of [bounds.min.y,bounds.max.y])for(const z of [bounds.min.z,bounds.max.z])projected.expandByPoint(new THREE.Vector3(x,y,z).project(camera));
+ const coverage=Math.max(projected.max.x-projected.min.x,projected.max.y-projected.min.y)/2;
+ assert.ok(coverage>.2&&coverage<.9,'focused anatomy occupies 20–90% of the responsive viewport, without clipping');
+ scene.traverse(object=>{if(object instanceof THREE.Mesh){object.geometry.dispose();for(const material of Array.isArray(object.material)?object.material:[object.material])material.dispose();}});
 }
 
 const evidenceDir=resolve(process.env.ANATOMY_EVIDENCE_DIR??join(tmpdir(),'dc-anatomy-evidence'));
@@ -307,7 +323,7 @@ try{
  await page.evaluate(()=>{const gl=document.querySelector('[data-model-id="neck"] canvas').getContext('webgl2'),ext=gl.getExtension('WEBGL_lose_context'),lose=ext.loseContext.bind(ext);window.__neckReleases=0;ext.loseContext=()=>{window.__neckReleases++;lose();};});await page.getByRole('button',{name:'Back to full body',exact:true}).click();await page.locator('[data-model-id="body"] canvas').waitFor({timeout:60000});assert.ok(await page.evaluate(()=>window.__neckReleases>=1));assert.equal(await page.locator('canvas').count(),1);
  console.log('Check passed:',checks.length+1);checks.push('leaving neck releases GPU context and restores one full-body scene');
  await page.goto('http://127.0.0.1:'+port+'/?lang=en#learn?atlas=body',{waitUntil:'domcontentloaded'});
- const thighBody=page.locator('[data-model-id="body"]');await thighBody.locator('canvas').waitFor();await thighBody.getByRole('combobox',{name:/^(Select structure|בחירת מבנה|Select body region|בחירת אזור בגוף)$/}).selectOption('groin');await (await openDetails(thighBody)).getByRole('button',{name:'Open region',exact:true}).click();const thigh=page.locator('[data-model-id="thigh"]');await thigh.locator('canvas').waitFor();assert.equal(await thigh.getByRole('combobox',{name:/^(Select structure|בחירת מבנה|Select body region|בחירת אזור בגוף)$/}).locator('option').count(),20);await thigh.getByRole('button',{name:'Reset',exact:true}).click();const thighDefault=await page.evaluate(()=>JSON.parse(sessionStorage.getItem('dc-thigh-view')).camera);assert.ok(Math.hypot(...thighDefault.position.map((n,i)=>n-thighDefault.target[i]))<1.5);await page.screenshot({path:join(evidenceDir,'thigh-initial-mobile.png'),fullPage:true});
+ const thighBody=page.locator('[data-model-id="body"]');await thighBody.locator('canvas').waitFor();await thighBody.getByRole('combobox',{name:/^(Select structure|בחירת מבנה|Select body region|בחירת אזור בגוף)$/}).selectOption('groin');await (await openDetails(thighBody)).getByRole('button',{name:'Open region',exact:true}).click();const thigh=page.locator('[data-model-id="thigh"]');await thigh.locator('canvas').waitFor();assert.equal(await thigh.getByRole('combobox',{name:/^(Select structure|בחירת מבנה|Select body region|בחירת אזור בגוף)$/}).locator('option').count(),20);await thigh.getByRole('button',{name:'Reset',exact:true}).click();const thighDefault=await page.evaluate(()=>JSON.parse(sessionStorage.getItem('dc-thigh-view')).camera);await verifyStructureFraming(thigh.locator('canvas'),thighDefault,'thigh','adductor-magnus');await page.screenshot({path:join(evidenceDir,'thigh-initial-mobile.png'),fullPage:true});
  console.log('Check passed:',checks.length+1);checks.push('body groin opens real thigh model with exact nineteen-structure inventory');
  await thigh.getByRole('combobox',{name:/^(Select structure|בחירת מבנה|Select body region|בחירת אזור בגוף)$/}).selectOption('adductor-brevis');await (await openDetails(thigh)).getByRole('heading',{name:'Adductor brevis',exact:true}).waitFor();await thigh.getByRole('button',{name:'Isolate structure',exact:true}).click();await thigh.getByRole('button',{name:'Focus structure',exact:true}).click();await page.screenshot({path:join(evidenceDir,'adductor-brevis-mobile.png'),fullPage:true});await thigh.getByRole('button',{name:'Show all structures',exact:true}).click();await thigh.getByRole('button',{name:'Muscles',exact:true}).click();assert.equal(await thigh.getByRole('combobox',{name:/^(Select structure|בחירת מבנה|Select body region|בחירת אזור בגוף)$/}).inputValue(),'');await thigh.getByRole('button',{name:'Muscles',exact:true}).click();
  console.log('Check passed:',checks.length+1);checks.push('deep adductor selection isolation focus and muscle layer clear the correct selection');
