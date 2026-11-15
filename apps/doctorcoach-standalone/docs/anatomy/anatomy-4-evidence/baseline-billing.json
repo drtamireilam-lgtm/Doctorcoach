@@ -38,5 +38,17 @@
     "tests": "1967",
     "fail": "14",
     "duration_ms": "776065.2299"
+  },
+  "fixtureClockCorrection": {
+    "focusedPassed": 14,
+    "testFile": "tests/coach-payments.test.mjs",
+    "change": "Reuse existing platform sqlNow fixture option with the same mocked timestamp",
+    "focusedFailed": 0,
+    "finalFullSuite": {
+      "passed": 1967,
+      "failed": 0,
+      "total": 1967
+    },
+    "runtimeBillingChanged": false
   }
 }

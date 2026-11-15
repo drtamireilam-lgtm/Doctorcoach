@@ -13,6 +13,12 @@ async function openDetails(scope){
  if(await button.count()&&await button.isEnabled()&&await button.getAttribute('aria-expanded')==='false')await button.click();
  return scope;
 }
+async function dragCanvas(page,canvas){
+ await canvas.scrollIntoViewIfNeeded();
+ const path=await canvas.evaluate(element=>{const b=element.getBoundingClientRect();for(const ratio of [.15,.85,.3,.7]){const y=b.y+b.height*ratio;if(Array.from({length:11},(_,i)=>b.x+b.width*(.35+i*.04)).every(x=>document.elementFromPoint(x,y)===element))return {from:b.x+b.width*.35,to:b.x+b.width*.75,y};}return null;});
+ assert.ok(path,'camera drag starts on current canvas bounds outside the annotation controls');
+ await page.mouse.move(path.from,path.y);await page.mouse.down();await page.mouse.move(path.to,path.y,{steps:12});await page.mouse.up();
+}
 
 const evidenceDir=resolve(process.env.ANATOMY_EVIDENCE_DIR??join(tmpdir(),'dc-anatomy-evidence'));
 await mkdir(evidenceDir,{recursive:true});
@@ -43,7 +49,7 @@ try{
  await page.getByRole('combobox',{name:/^(Select structure|בחירת מבנה|Select body region|בחירת אזור בגוף)$/}).selectOption('deltoid');await (await openDetails(page)).getByRole('heading',{name:'דלתואיד',exact:true}).waitFor();
  assert.equal(await page.locator('section[aria-label="כתף בתלת־ממד"]').getAttribute('dir'),'rtl');console.log('Check passed:',checks.length+1);checks.push('Hebrew selection, content and RTL');
  const canvas=page.locator('canvas');await canvas.scrollIntoViewIfNeeded();const bounds=await canvas.boundingBox();const snapshot=()=>page.screenshot({clip:bounds,animations:'disabled',timeout:60000});const before=await snapshot();
- await page.mouse.move(bounds.x+bounds.width*.5,bounds.y+bounds.height*.5);await page.mouse.down();await page.mouse.move(bounds.x+bounds.width*.8,bounds.y+bounds.height*.5,{steps:12});await page.mouse.up();
+ await dragCanvas(page,canvas);
  const rotated=await snapshot();assert.notDeepEqual(rotated,before);console.log('Check passed:',checks.length+1);checks.push('mouse orbit changes rendered pixels');
  await page.getByRole('button',{name:'מבט אחורי',exact:true}).click();assert.notDeepEqual(await snapshot(),rotated);console.log('Check passed:',checks.length+1);checks.push('camera preset changes pixels');
  await page.getByRole('button',{name:'שרירים',exact:true}).click();assert.equal(await page.getByRole('combobox',{name:/^(Select structure|בחירת מבנה|Select body region|בחירת אזור בגוף)$/}).locator('option[value="deltoid"]').count(),0);console.log('Check passed:',checks.length+1);checks.push('hidden layer cannot be selected');
@@ -132,7 +138,7 @@ try{
  await arm.getByRole('button',{name:'בידוד המבנה',exact:true}).click();assert.equal(await arm.getByRole('button',{name:'הצגת כל המבנים',exact:true}).getAttribute('aria-pressed'),'true');
  assert.notDeepEqual(await armPixels(),all);await arm.getByRole('button',{name:'הצגת כל המבנים',exact:true}).click();
  console.log('Check passed:',checks.length+1);checks.push('isolating a selected arm muscle changes rendered geometry and is reversible');
- await armCanvas.scrollIntoViewIfNeeded();await page.mouse.move(armBounds.x+armBounds.width*.5,armBounds.y+armBounds.height*.5);await page.mouse.down();await page.mouse.move(armBounds.x+armBounds.width*.8,armBounds.y+armBounds.height*.5,{steps:10});await page.mouse.up();
+ await dragCanvas(page,armCanvas);
  const remembered=await page.evaluate(()=>JSON.parse(sessionStorage.getItem('dc-arm-view')).camera);assert.ok(remembered);
  await (await openDetails(arm)).locator('.atlas-exercises button').first().click();await page.waitForFunction(()=>location.hash==='#library');
  await page.locator('.atlas-exercise-links a[href*="muscle=biceps-brachii"]').waitFor();

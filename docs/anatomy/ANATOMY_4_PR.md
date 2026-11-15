@@ -23,13 +23,13 @@ This change preserves the bundled BodyParts3D geometry and existing static atlas
 - All anatomy unit files: 126/126 passed. Focused navigation/exercise/stretch checks also passed.
 - `annotations-smoke.mjs`: 19 checks passed, no page errors. Includes actual touch raycast and hover-to-card traversal; HE/EN at 320,390,430,768,1280px.
 - `viewer-controls-smoke.mjs`: 20 checks passed, no page errors across all 15 bundled GLBs.
-- Complete suite: 1,967 tests; 1,953 passed, 14 failed. All 14 coach-payments fixture failures reproduce on base f115bd2. The fixture mocks JavaScript time but SQLite uses real time, expiring its synthetic license before billing assertions. No billing code changed. See baseline-billing.json.
+- Initial complete suite: 1,967 tests; 1,953 passed, 14 failed. Final complete suite after the test-fixture clock correction: **1,967 passed, zero failed**. All 14 coach-payments fixture failures reproduce on base f115bd2. The fixture mocks JavaScript time but SQLite uses real time, expiring its synthetic license before billing assertions. No billing runtime code changed. See baseline-billing.json.
 - GitHub push CI 43770780307 independently reported the same 1,953 pass / 14 fail. The job remains failing; subsequent independent build/browser evidence steps now run without hiding the failed unit gate.
 - Full-app Windows browser smoke: local synthetic migrations passed, but Vite did not start listening during the observed setup window; interrupted before browser assertions. See full-app/setup-status.json. No full-app or physical Safari success is claimed.
 
 Screenshots and JSON are committed under `apps/doctorcoach-standalone/docs/anatomy/anatomy-4-evidence/` and `docs/anatomy/anatomy-4-regression-evidence/`. Mobile screenshots were visually inspected and typography/hover defects refined. CI uploads `anatomy-browser-evidence`. Build output retains a >500kB chunk warning; physical iPhone performance is unmeasured.
 
-**Merge readiness: draft / blocked** by the baseline suite failures, remaining full-app validation, clinical sign-off and physical Safari checks. No merge or deployment was performed.
+**Merge readiness: draft** pending final full-app browser CI, clinical sign-off and physical Safari checks. The baseline clock failure has now been corrected in the test fixture only: all 14 targeted tests and the complete 1,967-test suite pass locally. No billing runtime code changed. No merge or deployment was performed.
 ## Limits and migration risk
 
 No database migration, schema update, account write, entitlement change, dependency update or new anatomy asset is required. This is a stacked PR; merging directly against the older `main` would obscure its scope with earlier unmerged application work.
