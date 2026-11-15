@@ -110,7 +110,10 @@ try{
  await page.mouse.click(bodyBounds.x+bodyBounds.width*.5,bodyBounds.y+bodyBounds.height*.42);
  assert.ok(await body.getByRole('combobox',{name:/^(Select structure|בחירת מבנה|Select body region|בחירת אזור בגוף)$/}).inputValue());
  console.log('Check passed:',checks.length+1);checks.push('clicking the real body surface selects an approximate navigation region');
- const cdp=await context.newCDPSession(page);const touchY=bodyBounds.y+bodyBounds.height*.5,touchX=bodyBounds.x+bodyBounds.width*.5;
+ // Keep selection active. Start both fingers on canvas, outside the interactive annotation.
+ const pinchPoint=await bodyCanvas.evaluate(canvas=>{const b=canvas.getBoundingClientRect(),x=b.x+b.width*.5;for(const ratio of [.15,.85,.35,.65]){const y=b.y+b.height*ratio;if([-67,67].every(offset=>document.elementFromPoint(x+offset,y)===canvas))return {x,y};}return null;});
+ assert.ok(pinchPoint,'two-finger gesture starts on unobscured canvas while the annotation remains selected');
+ const cdp=await context.newCDPSession(page);const touchY=pinchPoint.y,touchX=pinchPoint.x;
  const beforePinch=await page.evaluate(()=>JSON.parse(sessionStorage.getItem('dc-body-view')).camera.position);
  await cdp.send('Input.dispatchTouchEvent',{type:'touchStart',touchPoints:[{x:touchX-25,y:touchY,id:1},{x:touchX+25,y:touchY,id:2}]});
  for(let step=1;step<=6;step++)await cdp.send('Input.dispatchTouchEvent',{type:'touchMove',touchPoints:[{x:touchX-25-step*7,y:touchY,id:1},{x:touchX+25+step*7,y:touchY,id:2}]});
