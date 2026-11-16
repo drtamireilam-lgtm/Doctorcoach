@@ -62,3 +62,17 @@ test('legacy load proposal rejects changed per-set effort and rep prescriptions'
  assert.equal(progressionProposal({...item(),targetRpes:[7,9]},'p',feed([s])).weight,null);
  assert.equal(progressionProposal({...item(),setReps:[{min:4,max:6},{min:4,max:6}]},'p',feed([s])).weight,null);
 });
+test('legacy proposal uses latest performed workout and never retrospective upload order',()=>{
+ const old=session({id:'old',finishedAt:'2026-12-01T11:00:00Z',retrospective:{date:'2026-09-01',performedAt:null}}),recent=session({id:'recent',finishedAt:'2026-10-02T11:00:00Z'});recent.items[0].results[0].done=false;
+ assert.equal(progressionProposal(item(),'p',feed([old,recent])).weight,null);
+});
+test('legacy proposal blocks changed side, source units and custom definition snapshots',()=>{
+ const s=session();s.items[0].side='left';assert.equal(progressionProposal({...item(),side:'right'},'p',feed([s])).weight,null);
+ const pounds=session();pounds.items[0].load={basis:'total',sourceUnit:'lb',sourceValue:220.46226218};assert.equal(progressionProposal({...item(),load:{basis:'total',sourceUnit:'kg',sourceValue:100}},'p',feed([pounds])).weight,null);
+ const custom=session();custom.items[0].customExercise={id:'custom',name:'Old'};assert.equal(progressionProposal({...item(),customExercise:{id:'custom',name:'New'}},'p',feed([custom])).weight,null);
+});
+test('legacy proposal blocks ambiguous latest date-only exposure and labels performed date',()=>{
+ const unknown=session({id:'a',finishedAt:'2026-12-01T11:00:00Z',retrospective:{date:'2026-10-01',performedAt:null}}),known=session({id:'b'});
+ assert.equal(progressionProposal(item(),'p',feed([unknown,known])).weight,null);
+ assert.equal(progressionProposal(item(),'p',feed([unknown])).finishedAt,'2026-10-01');
+});

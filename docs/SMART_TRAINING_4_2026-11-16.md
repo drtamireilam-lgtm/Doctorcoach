@@ -16,7 +16,7 @@ Base: `136f53c`, `feat/program-editor-ux-20261115`. Previous anatomy PR84 and su
 ## Execution
 
 1. Extend deterministic recommendation/progression helpers with failing tests first; preserve compatibility and medical/pain gates.
-2. Build generator into existing coach draft editor without saving/assigning automatically; test quality and invalid inputs.
+2. Build generator into existing coach draft editor without publishing/assigning automatically; test quality and invalid inputs.
 3. Extend explicit pain sharing/review with additive migration, synthetic ownership/revocation/idempotency tests.
 4. Add analytics using completed working sets, qualified external load, actual performed dates and separate muscle roles. Test missing data, repeated IDs, invalid loads, date boundaries and historical immutability.
 5. Integrate bilingual components; exercise mobile views at320,390,430,768px in both directions, collect screenshots.
@@ -48,3 +48,7 @@ The existing e1RM heuristic is not an individually validated 1RM measurement. RI
 - Existing autosave/resume/retrospective logging, Smart Import, program revisions/assignment and anatomy role visualization are reused; no duplicate replacement systems were introduced.
 
 Safety-copy sources: [NHS back pain warning symptoms](https://www.nhs.uk/conditions/back-pain/), [NHS chest pain](https://www.nhs.uk/symptoms/chest-pain/).
+
+## Final regression refinements
+
+CI exposed a real pre-effect owner-switch rendering gap in the reusable review component. Review rows and sharing interaction state are now owner-tagged, and old async completions cannot publish into another owner context. Immediate render and deferred response tests preserve the strict isolation assertion. The older progression entry point now uses the same performed-date, variant and ambiguity guards as the new policy path.
