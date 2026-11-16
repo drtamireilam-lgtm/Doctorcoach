@@ -1,0 +1,13 @@
+# Exercise muscle roles and visible body overlay
+
+User requests the muscles used by each exercise, e.g. chest press: chest primary, anterior shoulder and triceps assisting; consistent colours explain primary/assisting/stabilizing roles. Reuse existing overlay and one model scene; add no automatic GPU scene in every exercise card.
+
+Current:183 catalog entries,103 mapped; all strength variations need a discoverable coloured role summary. Existing curated links plus authored exercise primary/secondary text are the authority for explicit mappings. Add a checked explicit movement-equivalence registry for regular variants, never infer from arbitrary names, custom text or body group at runtime. Unknown/custom/unverified entries retain an honest no-mapping state. Preserve stretching roles separately. Mirror new links in muscle→exercise navigation. Existing clinical-review-pending wording remains; no activation percentages or injury advice.
+
+Chest pressing must use the anterior deltoid, not all three heads. Optional part scope on a relationship is mapped to exact source subdivisions in detailed geometry; a region model without the subdivision reports missing coverage instead of colouring the whole deltoid. Existing whole-muscle links remain valid elsewhere. Likewise authored lateral/posterior shoulder variants can target exact respective source parts.
+
+Use existing palette: orange primary, blue assisting, purple stabilizing, green stretch. A coloured, text-labelled summary appears in exercise detail and active-workout exercise. The body-view link preserves exercise context; body model shows the same grouped names/legend, exercise title, and explicit focus-working-muscles button. Selection must retain its role colour; selection brightness may change but role meaning does not. Missing geometry uses human names, not slug IDs. No percent activation claim.
+
+Sources for pressing specificity: Rodríguez-Ridao et al.,2020, DOI10.3390/ijerph17197339, https://pmc.ncbi.nlm.nih.gov/articles/PMC7579505/ (anterior deltoid assists shoulder flexion; triceps extends elbow). Equipment variations are educational mechanical-family mappings, not extrapolated EMG magnitudes. Existing content.ts authored muscle descriptors and anatomy-learning.json card sources back other explicit variants; record this in code/docs. Preserve all current clinical approval status.
+
+No auth/db/health/geometry changes. TDD parser/role/coverage/part/unknown/alias tests, real WebGL browser overlay/selection/focus and HE/EN responsive checks, one fresh independent final review. Authorized integration merge/LAB-only release after final green CI; no Production. Physical Safari and signed-in live health writes remain outside automated evidence.
