@@ -21,7 +21,7 @@ export function inlineLearningFor(slug:string){
 }
 
 /** Saved source geometry takes precedence over catalog membership on return. */
-export function learningRegionForMuscle(id:string,preferred:string,regions:{id:string;muscleSlugs:string[]}[],enabled:boolean){
- const source=enabled&&modelForRegion(preferred)?.structures.some(s=>s.id===id);
+export function learningRegionForMuscle(id:string,preferred:string,regions:{id:string;muscleSlugs:string[]}[],enabled:boolean,preserveSource=true){
+ const source=enabled&&preserveSource&&modelForRegion(preferred)?.structures.some(s=>s.id===id);
  return modelRegionForMuscle(id,source?preferred:muscleRegionId(id,preferred,regions)??preferred,enabled);
 }
