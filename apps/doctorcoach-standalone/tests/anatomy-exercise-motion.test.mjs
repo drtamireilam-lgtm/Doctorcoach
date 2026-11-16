@@ -7,6 +7,7 @@ import {motionProfile,exercisePoseAngle,rotateJointPoint} from '../lib/anatomy-e
 import {createExerciseRig} from '../lib/anatomy-motion-rig.ts';
 import {anatomyModels} from '../lib/anatomy-models.ts';
 import {exercises} from '../lib/content.ts';
+import {anatomyRoleColors} from '../lib/anatomy-training.ts';
 const profile=()=>motionProfile('barbell-curl');
 test('one existing exercise ID resolves a source-bound prototype, without claiming muscle skinning',()=>{
  const p=profile();assert.ok(p);assert.equal(exercises.filter(e=>e.id===p.exerciseId).length,1);assert.equal(motionProfile('back-squat'),undefined);
@@ -32,5 +33,6 @@ test('runtime adapter preserves source buffers, only moves declared descendants 
  rig.pose(100,'motion',true,true);root.updateMatrixWorld(true);assert.ok(target.localToWorld(new THREE.Vector3().fromArray(original,0)).distanceTo(rest)>.01);assert.deepEqual(target.geometry.attributes.position.array,original);assert.equal(fixed.parent,root);
  assert.ok(meshes.filter(m=>model.structures.find(s=>s.id===m.name).layer==='muscle').every(m=>!m.visible));
  rig.pose(100,'muscles',true,true);root.updateMatrixWorld(true);assert.ok(target.localToWorld(new THREE.Vector3().fromArray(original,0)).distanceTo(rest)<1e-7);assert.ok(meshes.find(m=>m.name==='left-biceps-brachii').visible);assert.ok(!meshes.find(m=>m.name==='right-gluteus-maximus').visible);
+ for(const [id,role] of Object.entries(p.roles)){const mesh=meshes.find(m=>m.name===id);assert.equal('#'+mesh.material.color.getHexString(),anatomyRoleColors[role],id+' shares the atlas role palette');}
  rig.pose(0,'muscles',false,true);assert.equal(target.visible,false);rig.dispose();for(const m of meshes){m.geometry.dispose();m.material.dispose();}
 });

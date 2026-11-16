@@ -2,6 +2,7 @@
 import {useEffect,useRef,useState} from 'react';
 import {useLanguage} from './language-provider';
 import {anatomy3dLabEnabled} from '../lib/anatomy-lab';
+import {anatomyRoleColors} from '../lib/anatomy-training';
 import {anatomyModels} from '../lib/anatomy-models';
 import {boundedDegrees,exercisePoseAngle,motionProfile,type ExerciseMotionProfile,type MotionMode} from '../lib/anatomy-exercise-motion';
 import type {createAnatomyCanvas} from '../lib/anatomy-canvas';
@@ -58,8 +59,8 @@ function MotionPlayer({profile}:{profile:ExerciseMotionProfile}){
   <p>{he?'טווח ההדגמה: 0–100° ביחס למנח המקור; אינו מדידת טווח מפרק או המלצה לטווח אישי.':'Demonstration range: 0–100° relative to the source pose; not a clinical joint measurement or prescribed personal range.'}</p>
   {reduced&&<p role="status">{he?'הפחתת תנועה פעילה. אפשר לבחור מנח סטטי במחוון.':'Reduced motion enabled. Explore a static pose with the slider.'}</p>}
   <div className="anatomy-region-list" aria-label={he?'שכבות אנטומיות':'Anatomical layers'}><button type="button" aria-pressed={bones} onClick={()=>setBones(v=>!v)}>{he?'עצמות':'Bones'}</button><button type="button" disabled={mode!=='muscles'} aria-pressed={mode==='muscles'&&muscles} onClick={()=>setMuscles(v=>!v)}>{he?'שרירים':'Muscles'}</button></div>
-  <div aria-label={he?'תפקידי השרירים':'Muscle roles'}>{roles.map(([role,label])=><div key={role}><strong>{label}</strong><ul>{Object.entries(profile.roles).filter(([id,r])=>id.startsWith('right-')&&r===role).map(([id])=>{const s=model.structures.find(s=>s.id===id)!;return <li key={id}>{s[language].replace(/^Right /,'').replace(' — ימין','')}</li>;})}</ul></div>)}</div>
-  <p className="care-muted">{he?'הצבעים מציינים תפקיד איכותי בלבד: כתום — עיקריים, צהוב — מסייעים, כחול — מייצבים. הם אינם מדידת הפעלה או כוח.':'Qualitative roles only: orange — primary, yellow — assisting, blue — stabilizing. Colors do not measure activation or force.'}</p>
+  <div aria-label={he?'תפקידי השרירים':'Muscle roles'}>{roles.map(([role,label])=><div key={role}><strong style={{borderInlineStart:`4px solid ${anatomyRoleColors[role]}`,paddingInlineStart:8}}>{label}</strong><ul>{Object.entries(profile.roles).filter(([id,r])=>id.startsWith('right-')&&r===role).map(([id])=>{const s=model.structures.find(s=>s.id===id)!;return <li key={id}>{s[language].replace(/^Right /,'').replace(' — ימין','')}</li>;})}</ul></div>)}</div>
+  <p className="care-muted">{he?'הצבעים מציינים תפקיד איכותי בלבד: כתום — עיקריים, כחול — מסייעים, סגול — מייצבים. הם אינם מדידת הפעלה או כוח.':'Qualitative roles only: orange — primary, blue — assisting, purple — stabilizing. Colors do not measure activation or force.'}</p>
   {picked&&<p role="status">{model.structures.find(s=>s.id===picked)?.[language]}</p>}
   <details><summary>{he?'מקור המודל והסקירה':'Model source and review'}</summary><p>{model.asset.attribution}</p><a href={model.asset.licenseEvidence} target="_blank" rel="noopener noreferrer">BodyParts3D · CC BY 4.0</a><p><a href="/anatomy/musculoskeletal-source-and-license.json">{he?'פרטי מקור ועיבוד':'Source and conversion metadata'}</a></p><p>{he?'המודל והכיול ממתינים לסקירה קלינית; אין שינוי בנכסי האטלס המקוריים.':'Model and calibration await clinical review; original atlas assets are unchanged.'}</p></details>
  </section>;

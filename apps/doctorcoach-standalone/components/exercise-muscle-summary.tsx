@@ -1,4 +1,5 @@
 'use client';
+import {Localize} from './language-provider';
 import {exerciseAnatomyLinks} from '../lib/anatomy-exercises';
 import {anatomyRoleColors,exerciseMuscleName} from '../lib/anatomy-training';
 import {anatomyLabels} from '../lib/anatomy-learning';
@@ -13,4 +14,4 @@ export function ExerciseMuscleSummary({exerciseId,language,muscleHref,onMuscle}:
 }
 
 /** Preserve authored descriptions even where the geometry mapping is partial. */
-export function ExerciseCatalogMuscleNotes({primary,secondary}:{primary?:string;secondary?:string}){return primary||secondary?<dl className="care-definition"><dt>שרירים עיקריים</dt><dd>{primary}</dd><dt>שרירים מסייעים</dt><dd>{secondary}</dd></dl>:null;}
+export function ExerciseCatalogMuscleNotes({primary,secondary}:{primary?:string;secondary?:string}){return primary||secondary?<Localize><dl className="care-definition"><dt>שרירים עיקריים</dt><dd>{primary}</dd><dt>שרירים מסייעים</dt><dd>{secondary}</dd></dl></Localize>:null;}

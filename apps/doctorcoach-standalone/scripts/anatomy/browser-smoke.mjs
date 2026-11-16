@@ -374,7 +374,8 @@ try{
   await page.goto('http://127.0.0.1:'+port+'/?lang='+language+'#library?exercise=stretch-doorway-chest',{waitUntil:'domcontentloaded'});
   const target=page.locator('.atlas-exercise-links a[href*="muscle=pectoralis-major"]');
   await target.waitFor();assert.equal(await target.count(),1);
-  assert.ok((await target.innerText()).includes(language==='en'?'Stretch target':'שריר מטרה למתיחה'));
+  const targetRole=target.locator('xpath=ancestor::section[contains(@class,"anatomy-exercise-role--stretch")]');
+  assert.equal(await targetRole.count(),1);assert.ok((await targetRole.innerText()).includes(language==='en'?'Stretch target':'שריר מטרה למתיחה'));
   assert.ok(!/Primary muscle|Assisting muscle|Stabilizer|שריר עיקרי|שריר מסייע|מייצב/.test(await target.innerText()));
   await target.click();
   const chest=page.locator('[data-model-id="torso"]');await chest.locator('canvas').waitFor();
