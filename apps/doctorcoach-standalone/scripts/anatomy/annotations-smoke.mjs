@@ -54,6 +54,10 @@ try{
  await viewer.locator('.atlas-definitions').first().waitFor();checks.push('hover preview remains reachable across canvas gap and opens details');
  await viewer.getByRole('combobox').first().selectOption('deltoid');await card.waitFor();
  await card.getByRole('button',{name:'Explore & exercises',exact:true}).click();await viewer.locator('.atlas-definitions').first().waitFor();checks.push('annotation opens educational details');
+ const exerciseType=viewer.getByLabel('Exercise type',{exact:true});await exerciseType.selectOption('stretch');
+ const stretchCards=viewer.locator('.atlas-exercises button');for(const text of await stretchCards.allTextContents())assert.match(text,/Stretch target/);
+ if(!await stretchCards.count())await viewer.getByText('No exercises of this type.',{exact:true}).waitFor();
+ await exerciseType.selectOption('all');assert.ok(await viewer.locator('.atlas-exercises button').count());checks.push('explicitly named exercise filter separates stretches and restores existing role cards');
  await viewer.getByRole('button',{name:'Isolate structure',exact:true}).click();assert.equal(await card.getAttribute('data-selected-structure'),'deltoid');
  await viewer.getByRole('button',{name:'Hide structure',exact:true}).click();await card.waitFor({state:'hidden'});assert.equal(await viewer.getByRole('combobox').first().locator('option[value="deltoid"]').count(),0);
  await viewer.getByRole('button',{name:/Restore hidden structures/}).click();await viewer.getByRole('combobox').first().selectOption('deltoid');await card.waitFor();

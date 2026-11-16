@@ -21,7 +21,7 @@ This change preserves the bundled BodyParts3D geometry and existing static atlas
 - `node node_modules/typescript/bin/tsc --noEmit`: passed.
 - Isolated standalone build and static isolated configuration gate: passed, no deployment.
 - All anatomy unit files: 126/126 passed. Focused navigation/exercise/stretch checks also passed.
-- `annotations-smoke.mjs`: 19 checks passed, no page errors. Includes actual touch raycast and hover-to-card traversal; HE/EN at 320,390,430,768,1280px.
+- `annotations-smoke.mjs`: 20 checks passed, no page errors. Includes actual touch raycast and hover-to-card traversal; HE/EN at 320,390,430,768,1280px.
 - `viewer-controls-smoke.mjs`: 20 checks passed, no page errors across all 15 bundled GLBs.
 - Initial complete suite: 1,967 tests; 1,953 passed, 14 failed. Final complete suite after the test-fixture clock correction: **1,967 passed, zero failed**. All 14 coach-payments fixture failures reproduce on base f115bd2. The fixture mocks JavaScript time but SQLite uses real time, expiring its synthetic license before billing assertions. No billing runtime code changed. See baseline-billing.json.
 - Initial GitHub push CI43770780307 reproduced1953 pass/14 fail. After the fixture-only clock correction, CI43772529530 passed its full TypeScript/unit step, isolated build and annotation checks; workout acceptance43772529529 passed. Independent steps do not hide failed gates.

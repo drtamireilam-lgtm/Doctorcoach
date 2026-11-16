@@ -18,6 +18,7 @@
     "real canvas touch raycast selects pectoralis-major",
     "hover preview remains reachable across canvas gap and opens details",
     "annotation opens educational details",
+    "explicitly named exercise filter separates stretches and restores existing role cards",
     "isolate, hide, restore and clear retain consistent annotation state"
   ],
   "errors": [],
