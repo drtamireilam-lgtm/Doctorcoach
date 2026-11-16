@@ -1,4 +1,5 @@
 import * as THREE from 'three';
+import {prepareAnatomyMaterials,anatomyColor,lightAnatomyScene} from './anatomy-presentation';
 import {OrbitControls} from 'three/addons/controls/OrbitControls.js';
 import {GLTFLoader} from 'three/addons/loaders/GLTFLoader.js';
 import {anatomyModels,decodeAnatomyAsset,validateAnatomyAsset,visibleStructureIds,readCameraState,type AnatomyModel,type AtlasLayer,type CameraState} from './anatomy-models';
@@ -21,16 +22,18 @@ export async function createAnatomyCanvas(host:HTMLElement,onSelect:(id:string|n
  model.traverse(object=>{if(object instanceof THREE.Mesh)meshes.push(object);});
  const releaseModel=()=>{for(const mesh of meshes){mesh.geometry.dispose();for(const material of Array.isArray(mesh.material)?mesh.material:[mesh.material])material.dispose();}};
  if(signal.aborted){releaseModel();throw new DOMException('Aborted','AbortError');}
+ prepareAnatomyMaterials(meshes,new Map(modelSpec.structures.map(s=>[s.id,s.layer])));
  let rig:ReturnType<typeof createExerciseRig>|undefined;
  let jointRig:ReturnType<typeof createJointRig>|undefined;
  try{if(options.motion&&options.jointMotion)throw new Error('Only one motion adapter per scene');if(options.motion)rig=createExerciseRig(model,meshes,modelSpec,options.motion);if(options.jointMotion){jointRig=createJointRig(model,meshes,modelSpec);jointRig.configure(options.jointMotion.movement,options.jointMotion.side);}}catch(cause){jointRig?.dispose();releaseModel();throw cause;}
  let renderer:THREE.WebGLRenderer;
  try{renderer=new THREE.WebGLRenderer({antialias:true,alpha:true,powerPreference:'low-power'});}catch(cause){rig?.dispose();jointRig?.dispose();releaseModel();throw cause;}
  renderer.setPixelRatio(Math.min(window.devicePixelRatio,1.5));renderer.outputColorSpace=THREE.SRGBColorSpace;
- const scene=new THREE.Scene();scene.add(model);scene.add(new THREE.HemisphereLight(0xffffff,0x52617a,2.5));
- const light=new THREE.DirectionalLight(0xffffff,3);light.position.set(2,3,4);scene.add(light);
+ renderer.toneMapping=THREE.ACESFilmicToneMapping;renderer.toneMappingExposure=1.05;
+ const scene=new THREE.Scene();scene.add(model);
  const box=new THREE.Box3().setFromObject(model),center=box.getCenter(new THREE.Vector3()),size=box.getSize(new THREE.Vector3());
  model.position.sub(center);model.updateMatrixWorld(true);const radius=Math.max(size.x,size.y,size.z)*1.8;
+ lightAnatomyScene(scene,new THREE.Vector3(),size);
  const aspect=Math.max(host.clientWidth,1)/Math.max(host.clientHeight,1);
  const camera=new THREE.PerspectiveCamera(35,aspect,.001,Math.max(10,radius*10));
  const presetTarget=new THREE.Vector3();let presetDistance=radius;
@@ -97,7 +100,7 @@ export async function createAnatomyCanvas(host:HTMLElement,onSelect:(id:string|n
   if(!selected){hoverId=null;pickedAnchor=null;}
   const shown=new Set(visibleStructureIds(modelSpec,visible,isolated,hidden));
   for(const mesh of meshes){const structure=modelSpec.structures.find(s=>s.id===mesh.name);if(!structure)continue;mesh.visible=shown.has(structure.id);
-   const color=structure.id===selected?[.12,.65,1]:structure.layer==='bone'?[.88,.84,.71]:(structure.layer==='surface'||structure.layer==='cartilage')?[.32,.46,.59]:[.65,.18,.25];
-   for(const material of Array.isArray(mesh.material)?mesh.material:[mesh.material])if(material instanceof THREE.MeshStandardMaterial)material.color.setRGB(color[0],color[1],color[2],THREE.LinearSRGBColorSpace);
+   const color=anatomyColor(structure.layer,structure.id===selected);
+   for(const material of Array.isArray(mesh.material)?mesh.material:[mesh.material])if(material instanceof THREE.MeshStandardMaterial)material.color.set(color);
   }render();}};
 }
