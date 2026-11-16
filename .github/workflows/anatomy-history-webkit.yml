@@ -1,0 +1,35 @@
+name: Anatomy history WebKit
+on:
+  pull_request:
+    paths:
+      - 'apps/doctorcoach-standalone/**'
+      - '.github/workflows/anatomy-history-webkit.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  history-webkit:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    defaults:
+      run:
+        working-directory: apps/doctorcoach-standalone
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+      - uses: pnpm/action-setup@v4
+        with:
+          version: '11.25.0'
+          package_json_file: apps/doctorcoach-standalone/package.json
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm exec playwright install --with-deps webkit
+      - name: Verify actual history UI in local WebKit (synthetic only)
+        run: node scripts/anatomy/history-webkit-smoke.mjs
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: history-webkit-evidence
+          path: /tmp/dc-history-webkit/
+          if-no-files-found: error
