@@ -29,14 +29,15 @@ export function previewNextSetLoad(item:SessionExercise,index:number,session:Pic
 }
 export function nextSetLoad(item:SessionExercise,index:number,session:Pick<TrainingSession,'before'|'after'>&Partial<Pick<TrainingSession,'items'>>,step=2.5):{weight:number|null;calculatedWeight:number|null;relativePercent:number|null;text:string;estimate:number|null;fatigueLimited?:boolean}{
  const target=targetRpeForSet(item,index+1);
- const source=item.results[index],next=item.results[index+1];const estimate=source&&hasTotalLoad(item)&&workoutSection(item)==='main'?setEstimated1RM(source,item.unit):null;
+ const source=item.results[index],next=item.results[index+1];const estimate=source&&item.exerciseId!=='assisted-pull-up'&&hasTotalLoad(item)&&workoutSection(item)==='main'?setEstimated1RM(source,item.unit):null;
  const none=(text:string)=>({weight:null,calculatedWeight:null,relativePercent:null,text,estimate});
+ if(item.exerciseId==='assisted-pull-up')return none('משקל סיוע אינו עומס חיצוני; נדרשת התאמה מפורשת של המאמן.');
  if(!hasTotalLoad(item))return none('המשקל נמדד לכל צד; נדרש עומס כולל מפורש לחישובי כוח.');
  if(workoutSection(item)!=='main')return none('הצעת משקל זמינה לתרגילי האימון בלבד, לא לחימום או למתיחות.');
  if(!source?.done)return none('סמנו את הסט כבוצע כדי לחשב את המשקל לסט הבא.');
  if(!next)return none('זה הסט האחרון בתרגיל.');
  if(next.done||item.results.slice(index+1).some(s=>s.done))return none('כבר נשמר ביצוע בסט מאוחר יותר.');
- if(session.before===null||session.before>0||(session.after??0)>0||(duringPain(session.items??[item])??0)>0)return none('דווח כאב — התאמת העומס תיעשה עם הצוות.');
+ if(session.before!==0||(session.after??0)>0||(duringPain(session.items??[item])??0)>0)return none('דווח כאב — התאמת העומס תיעשה עם הצוות.');
  if(estimate===null||source.weight===null||source.amount===null)return none(item.effortScale==='rir'?'לחישוב נדרשים משקל חיצוני, 1–10 חזרות ו־RIR בין 0 ל־4.':'לחישוב נדרשים משקל חיצוני, 1–10 חזרות ו־RPE בין 6 ל־10.');
  if(!effort(target))return none(item.effortScale==='rir'?'להתאמת משקל נדרש RIR יעד בין 0 ל־4.':'להתאמת משקל נדרש RPE יעד בין 6 ל־10.');
  if(next.amount===null||!Number.isInteger(next.amount)||next.amount<1||next.amount>10)return none('בדקו את מספר החזרות בסט הבא.');
@@ -72,6 +73,7 @@ export function nextSetLoad(item:SessionExercise,index:number,session:Pick<Train
 /** A read-only opening suggestion from the latest matching workout, never a plan edit. */
 export function openingSetLoad(item:SessionExercise,history:TrainingSession[],active?:TrainingSession):{weight:number|null;text:string}{
  const none={weight:null,text:''};
+ if(item.exerciseId==='assisted-pull-up')return none;
  if(active&&(active.before===null||active.before>0||(active.after??0)>0||(duringPain(active.items)??0)>0))return none;
  for(const session of history){
   if(session.status!=='completed'||active&&(session.planMode!==active.planMode||session.programId!==active.programId))continue;

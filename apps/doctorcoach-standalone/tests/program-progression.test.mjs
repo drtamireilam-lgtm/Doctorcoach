@@ -57,3 +57,8 @@ test('a retained draft slot never transfers progression from the replaced exerci
  assert.equal(progressionProposal({...replacement,weight:40,weightUnspecified:false},'p',feed([past])).weight,null);
  assert.equal(progressionProposal({...original,weight:0,weightUnspecified:true},'p',feed([past])).weight,null);
 });
+test('legacy load proposal rejects changed per-set effort and rep prescriptions',()=>{
+ const s=session();
+ assert.equal(progressionProposal({...item(),targetRpes:[7,9]},'p',feed([s])).weight,null);
+ assert.equal(progressionProposal({...item(),setReps:[{min:4,max:6},{min:4,max:6}]},'p',feed([s])).weight,null);
+});

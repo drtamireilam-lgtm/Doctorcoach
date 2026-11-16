@@ -5,10 +5,11 @@ import fs from 'node:fs';
 import ts from 'typescript';
 import * as jsx from 'react/jsx-runtime';
 import * as sections from '../lib/workout-sections.ts';
+import * as recommendation from '../lib/training-recommendation.ts';
 import * as effort from '../lib/effort.ts';
 import {targetRpeForSet,repetitionLabel} from '../lib/training.ts';
-function load(name,language='he'){
- const exports={};const modules={'react/jsx-runtime':jsx,'./load-unit-picker':{useLoadUnit:()=> 'kg'},'../lib/load-units':{fromKg:(weight)=>weight},'./language-provider':{useLanguage:()=>({language}),Localize:'Localize'},'../lib/workout-sections':sections,'../lib/effort':effort,'../lib/training':{targetRpeForSet,repetitionLabel}};
+function load(name,language='he',loadUnit='kg'){
+ const exports={};const modules={'../lib/training-recommendation':recommendation,'react/jsx-runtime':jsx,'./load-unit-picker':{useLoadUnit:()=>loadUnit},'../lib/load-units':{fromKg:(weight,unit)=>unit==='lb'?weight/0.45359237:weight},'./language-provider':{useLanguage:()=>({language}),Localize:'Localize'},'../lib/workout-sections':sections,'../lib/effort':effort,'../lib/training':{targetRpeForSet,repetitionLabel}};
  vm.runInNewContext(ts.transpileModule(fs.readFileSync(new URL('../components/'+name,import.meta.url),'utf8'),{compilerOptions:{module:ts.ModuleKind.CommonJS,target:ts.ScriptTarget.ES2022,jsx:ts.JsxEmit.ReactJSX}}).outputText,{exports,require:k=>modules[k]??{}});return exports;
 }
 function nodes(n,p){return !n||typeof n!=='object'?[]:[...(p(n)?[n]:[]),...[n.props?.children].flat(Infinity).flatMap(c=>nodes(c,p))];}
@@ -85,4 +86,23 @@ test('collapsed workout prescription labels per-side loads explicitly in both la
   const tree=load('workout-prescription.tsx',language).WorkoutPrescription({item:{sets:3,reps:8,unit:'reps',weight:20,targetRpe:8,load:{sourceValue:20,sourceUnit:'kg',basis:'per-side'}}});
   assert.ok(text(tree).includes(language==='en'?'per side':'לכל צד'));
  }
+});
+
+test('expanded next-set separates heuristic estimate from practical load and uses edited baseline for delta',()=>{
+ for(const language of ['he','en']){
+  const tree=load('next-set-calculation.tsx',language).NextSetCalculation({item:{targetRpe:8,results:[{weight:100,actualRpe:6},{amount:5}]},index:0,sourceWeight:60,suggestion:{weight:62.5,calculatedWeight:66.7,relativePercent:11.1},expanded:true});
+  const raw=nodes(tree,n=>n.props?.['data-load-detail']==='raw')[0],practical=nodes(tree,n=>n.props?.['data-load-detail']==='practical')[0],delta=nodes(tree,n=>n.props?.['data-load-detail']==='delta')[0];
+  assert.match(text(raw),/66[.,]7/);assert.match(text(practical),/62[.,]5/);assert.match(text(delta),/2[.,]5.*4[.,]2/);
+  assert.match(text(tree),language==='en'?/heuristic.*not.*measurement/i:/כלל אצבע/);assert.match(text(tree),/5%/);assert.match(text(tree),/1–10/);
+ }
+});
+test('unsupported equipment never presents raw model load as an actionable next-set weight',()=>{
+ const tree=load('next-set-calculation.tsx','en').NextSetCalculation({item:{targetRpe:8,results:[{weight:100,actualRpe:9},{amount:5}]},index:0,suggestion:{weight:null,calculatedWeight:103,relativePercent:3,text:'Unsupported equipment increment'},expanded:true});
+ assert.match(text(tree),/No load recommendation/);assert.equal(nodes(tree,n=>n.props?.['data-load-detail']==='practical').length,0);assert.match(text(tree),/Harder than target/);
+});
+
+test('expanded next-set converts the absolute delta to pounds without converting percent',()=>{
+ const tree=load('next-set-calculation.tsx','en','lb').NextSetCalculation({item:{results:[{weight:100},{amount:5}]},index:0,sourceWeight:60,suggestion:{weight:62.5,calculatedWeight:66.7,relativePercent:11.1},expanded:true});
+ const delta=nodes(tree,n=>n.props?.['data-load-detail']==='delta')[0];
+ assert.match(text(delta),/5[.,]51.*lb.*4[.,]2/);
 });

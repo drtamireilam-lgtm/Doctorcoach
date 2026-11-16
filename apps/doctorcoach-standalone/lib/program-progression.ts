@@ -7,6 +7,7 @@ import {workoutSection} from './workout-sections.ts';
 /** Proposals edit only a coach's draft; publication remains the existing revision flow. */
 export function progressionProposal(item:PlanItem,programId:string,feed:TrainingFeed){
  const none=(reason:string)=>({weight:null as number|null,reason,sourceId:null as string|null,finishedAt:null as string|null});
+ if(item.exerciseId==='assisted-pull-up')return none('משקל סיוע אינו עומס חיצוני; נדרשת התאמה מפורשת של המאמן.');
  if(item.weightUnspecified||!hasTotalLoad(item))return none('נדרש משקל כולל מפורש לפני הצעת התקדמות.');
  if(workoutSection(item)!=='main')return none('הצעת משקל זמינה לתרגילי האימון בלבד, לא לחימום או למתיחות.');
  if(feed.active)return none('יש אימון פעיל. יש לסיים או לבטל אותו ולרענן את התיק לפני הצעה להמשך.');
@@ -14,7 +15,7 @@ export function progressionProposal(item:PlanItem,programId:string,feed:Training
  if(!session)return none('אין אימון שהושלם ליום הזה בגרסת התוכנית הפעילה.');
  const source=session.items.find(i=>planItemKey(i)===planItemKey(item));
  if(!source||source.exerciseId!==item.exerciseId||source.swappedFrom)return none('באימון האחרון לא בוצע התרגיל המקורי. העומס דורש התאמה של המאמן.');
- if(source.unit!==item.unit||source.sets!==item.sets||source.reps!==item.reps||(source.repsMax??null)!==(item.repsMax??null)||source.targetRpe!==item.targetRpe)return none('המינון או יעד המאמץ בטיוטה שונים מהאימון. יש לקבוע עומס מחדש.');
+ if(source.unit!==item.unit||source.sets!==item.sets||source.reps!==item.reps||(source.repsMax??null)!==(item.repsMax??null)||source.targetRpe!==item.targetRpe||JSON.stringify(source.targetRpes??null)!==JSON.stringify(item.targetRpes??null)||JSON.stringify(source.setReps??null)!==JSON.stringify(item.setReps??null))return none('המינון או יעד המאמץ בטיוטה שונים מהאימון. יש לקבוע עומס מחדש.');
  if(JSON.stringify(source.tempo??null)!==JSON.stringify(item.tempo??null))return none('הטמפו בטיוטה השתנה. יש לקבוע עומס מחדש.');
  if(!item.targetRpe||item.targetRpe<6||source.results.some(s=>s.done&&(s.actualRpe==null||s.actualRpe<6)))return none('נדרשים יעד ודיווח מאמץ בטווח RPE ‏6–10 או RIR ‏0–4.');
  const proposal=nextLoad(source,session);

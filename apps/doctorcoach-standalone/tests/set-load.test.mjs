@@ -1,5 +1,5 @@
 import test from 'node:test';import assert from 'node:assert/strict';import {randomUUID} from 'node:crypto';
-import {setEstimated1RM,nextSetLoad,previewNextSetLoad,automaticSetDraft} from '../lib/set-load.ts';import {platform,client} from './platform-db.mjs';import {defaultPrescription} from '../lib/training.ts';
+import {setEstimated1RM,nextSetLoad,previewNextSetLoad,automaticSetDraft,openingSetLoad} from '../lib/set-load.ts';import {platform,client} from './platform-db.mjs';import {defaultPrescription} from '../lib/training.ts';
 const item=(rpe=8)=>({...defaultPrescription('goblet'),name:'בדיקה',sets:2,reps:5,weight:100,targetRpe:8,results:[{done:true,amount:5,weight:100,actualRpe:rpe},{done:false,amount:5,weight:100,actualRpe:null}]});
 const session={before:0,after:null};
 
@@ -208,4 +208,21 @@ test('continuous recommendation persists and subsequent manual decimal load rema
  assert.ok(Math.abs(s.items[0].results[1].weight-97.2973)<.0001);
  s=await f.training.patch(client.userId,{id:s.id,version:s.version,action:'set',exerciseId:'goblet',setIndex:1,done:true,amount:5,weight:96.375,weightSource:'manual',actualRpe:8});
  const stored=(await f.training.feed(client.userId)).active.items[0].results[1];assert.equal(stored.weight,96.375);assert.equal(stored.weightSource,'manual');
+});
+test('assisted resistance, missing pain baseline and invalid increments never yield next-set actions',()=>{
+ const i=item(6);
+ for(const step of [NaN,Infinity,-1,undefined]){
+  if(step!==undefined)assert.equal(nextSetLoad(i,0,session,step).weight,null);
+ }
+ assert.equal(nextSetLoad({...i,exerciseId:'assisted-pull-up'},0,session).weight,null);
+ assert.equal(nextSetLoad(i,0,{after:null}).weight,null);
+});
+test('opening recommendation never interprets assisted machine weight as external resistance',()=>{
+ const i={...item(6),exerciseId:'assisted-pull-up'};
+ const history=[{id:'s',status:'completed',before:0,after:0,items:[{...i,results:i.results.map(r=>({...r,done:true,actualRpe:6}))}]}];
+ assert.equal(openingSetLoad(i,history).weight,null);
+});
+test('assisted machine results do not expose an external-load strength estimate',()=>{
+ const i={...item(6),exerciseId:'assisted-pull-up'};
+ assert.equal(nextSetLoad(i,0,session).estimate,null);
 });
