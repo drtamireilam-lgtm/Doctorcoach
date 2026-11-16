@@ -3,8 +3,14 @@ on:
   push:
     branches:
       - feature/anatomy-asset-safety-stage36
+      - feat/anatomy-4-20261116
     paths:
       - 'apps/doctorcoach-standalone/**'
+      - '.github/workflows/anatomy-validation.yml'
+  pull_request:
+    paths:
+      - 'apps/doctorcoach-standalone/**'
+      - 'docs/anatomy/**'
       - '.github/workflows/anatomy-validation.yml'
   workflow_dispatch:
 permissions:
@@ -30,12 +36,20 @@ jobs:
       - name: TypeScript and complete unit suite
         run: npm run typecheck && npm test
       - name: Build isolated LAB candidate (no deployment)
+        if: ${{ !cancelled() }}
         run: npm run build:standalone && node standalone/scripts/check-isolated-staging.mjs dist/server/wrangler.json
         env:
           DC_ISOLATED_STAGING_BUILD: 'true'
       - name: Install test browser
+        if: ${{ !cancelled() }}
         run: pnpm exec playwright install --with-deps chromium
+      - name: Verify projected annotations and responsive viewer
+        if: ${{ !cancelled() }}
+        run: node scripts/anatomy/annotations-smoke.mjs
+        env:
+          ANATOMY_EVIDENCE_DIR: /tmp/dc-anatomy-evidence/annotations
       - name: Render and interact with the actual app
+        if: ${{ !cancelled() }}
         run: npm run test:anatomy:browser
       - uses: actions/upload-artifact@v4
         if: always()

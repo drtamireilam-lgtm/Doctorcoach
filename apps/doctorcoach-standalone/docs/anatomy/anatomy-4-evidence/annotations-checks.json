@@ -1,0 +1,26 @@
+{
+  "checks": [
+    "Pan model → updates projected anchor",
+    "Zoom in updates projected anchor",
+    "Back view updates projected anchor",
+    "Front view updates projected anchor",
+    "en 320px bounded selected annotation",
+    "en 390px bounded selected annotation",
+    "en 430px bounded selected annotation",
+    "en 768px bounded selected annotation",
+    "en 1280px bounded selected annotation",
+    "he 320px bounded selected annotation",
+    "he 390px bounded selected annotation",
+    "he 430px bounded selected annotation",
+    "he 768px bounded selected annotation",
+    "he 1280px bounded selected annotation",
+    "muscle group preserves selected muscle and hides bone",
+    "real canvas touch raycast selects pectoralis-major",
+    "hover preview remains reachable across canvas gap and opens details",
+    "annotation opens educational details",
+    "explicitly named exercise filter separates stretches and restores existing role cards",
+    "isolate, hide, restore and clear retain consistent annotation state"
+  ],
+  "errors": [],
+  "scope": "Real shoulder GLB in isolated viewer fixture, Chromium software WebGL; responsive widths, no authenticated app coverage"
+}
