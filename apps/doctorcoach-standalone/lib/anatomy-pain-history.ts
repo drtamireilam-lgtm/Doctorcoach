@@ -8,3 +8,12 @@ export function painComparison(input:readonly AnatomyPainRecord[],filter:PainHis
  const first=records[0],last=records.at(-1),difference=first&&last&&Date.parse(first.data.occurredAt)<Date.parse(last.data.occurredAt)&&records.filter(r=>Date.parse(r.data.occurredAt)===Date.parse(first.data.occurredAt)).length===1&&records.filter(r=>Date.parse(r.data.occurredAt)===Date.parse(last.data.occurredAt)).length===1?last.data.intensity-first.data.intensity:null;
  return {records,difference};
 }
+/** A historical version gets the same short reference in every location. */
+export function painModelVersionLabel(version:string,versions:readonly string[],currentVersion:string,language:'he'|'en'){
+ if(version===currentVersion)return language==='he'?'מודל נוכחי':'Current model';
+ const others=[...new Set(versions)].filter(v=>v!==version&&v!==currentVersion);
+ let length=Math.min(8,version.length);
+ while(length<version.length&&others.some(v=>v.startsWith(version.slice(0,length))))length++;
+ const reference=version.slice(0,length)+(length<version.length?'…':'');
+ return (language==='he'?'מודל קודם':'Previous model')+' · '+reference;
+}
