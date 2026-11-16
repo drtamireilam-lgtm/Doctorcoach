@@ -37,6 +37,8 @@ test('purge covers every owned table, removes dependent records and only exact o
  // Revision journals have a real session foreign key; seed both rather than inventing an orphan.
  f.sql.prepare("INSERT INTO training_sessions(id,owner_id,status,items_json,started_at,planned_sets,pain_before) VALUES('revision-parent',?,'completed','[]','2026-10-20',0,0)").run(client.userId);
  f.sql.prepare("INSERT INTO retrospective_workout_revisions(session_id,owner_id,version,snapshot_json,corrected_at) VALUES('revision-parent',?,1,'{}','2026-11-13')").run(client.userId);
+ // Review snapshots require an explicit parent ID for their audit trigger.
+ f.sql.prepare("INSERT INTO pain_modification_reviews(id,owner_id,coach_email,request_json,report_json,actor_id,created_at,updated_at) VALUES('pain-review-parent',?,?,'{}','{}',?,'2026-11-16','2026-11-16')").run(client.userId,doctor.email,client.userId);
  // Seed each direct scope not already populated; defaults are left to the schema.
  for(const [table,col] of deletionScopes){if(f.sql.prepare(`SELECT COUNT(*) n FROM ${table} WHERE ${col}=?`).get(client.userId).n)continue;
   const info=f.sql.prepare(`PRAGMA table_info(${table})`).all();const columns=info.filter(c=>c.name===col||c.notnull&&c.dflt_value===null);
@@ -46,7 +48,7 @@ test('purge covers every owned table, removes dependent records and only exact o
  const other=f.sql.prepare('SELECT * FROM training_access WHERE user_id=?').get(stranger.userId);
  const result=await f.store.execute(doctor,f.payload);assert.equal(result.state,'deleted');
  for(const [table,col] of deletionScopes)assert.equal(f.sql.prepare(`SELECT COUNT(*) n FROM ${table} WHERE ${col}=?`).get(client.userId).n,0,table);
- for(const table of ['message_links','document_lifecycle'])assert.equal(f.sql.prepare(`SELECT COUNT(*) n FROM ${table}`).get().n,0,table);
+ for(const table of ['message_links','document_lifecycle','pain_modification_review_events'])assert.equal(f.sql.prepare(`SELECT COUNT(*) n FROM ${table}`).get().n,0,table);
  assert.deepEqual(f.sql.prepare('SELECT * FROM training_access WHERE user_id=?').get(stranger.userId),other);
  assert.deepEqual([...f.keys],['videos/unrelated/keep']);assert.equal((await deletionStatus(f.db,client.userId)).state,'deleted');
  const calls=f.removed.length;assert.equal((await f.store.execute(doctor,f.payload)).alreadyCompleted,true);assert.equal(f.removed.length,calls);
