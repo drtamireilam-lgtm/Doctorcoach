@@ -1,0 +1,45 @@
+name: Smart training 4 acceptance
+on:
+  pull_request:
+    paths:
+      - 'apps/doctorcoach-standalone/**'
+      - '.github/workflows/smart-training-validation.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  smart-training:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    defaults:
+      run:
+        working-directory: apps/doctorcoach-standalone
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24.22.2'
+      - uses: pnpm/action-setup@v4
+        with:
+          version: '11.25.0'
+          package_json_file: apps/doctorcoach-standalone/package.json
+      - run: pnpm install --frozen-lockfile
+      - name: Prepare pinned anatomy and check types
+        run: npm run typecheck
+      - name: Training, program, analytics and private review regressions
+        run: node --experimental-strip-types --test tests/set-load.test.mjs tests/adaptive-progression.test.mjs tests/assisted-load-metrics.test.mjs tests/program-progression.test.mjs tests/smart-workout-ui.test.mjs tests/smart-program-builder.test.mjs tests/training-analytics.test.mjs tests/pain-modifications.test.mjs tests/pain-modification-store.test.mjs tests/pain-review-lifecycle.test.mjs tests/pain-workspace-auth.test.mjs
+      - name: Bilingual synthetic component acceptance
+        env:
+          DC_CHROMIUM: /usr/bin/google-chrome
+        run: |
+          node --experimental-strip-types scripts/smart-training-browser.mjs
+          node --experimental-strip-types scripts/pain-modifications-browser.mjs
+      - name: Upload synthetic screenshots and results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: smart-training-synthetic-evidence
+          path: |
+            apps/doctorcoach-standalone/.sites-runtime/smart-training-evidence
+            apps/doctorcoach-standalone/.sites-runtime/pain-review-evidence
+          if-no-files-found: warn

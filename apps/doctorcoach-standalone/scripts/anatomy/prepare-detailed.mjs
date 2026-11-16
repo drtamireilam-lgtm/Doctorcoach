@@ -26,7 +26,7 @@ const {bytes,asset}=convertDetailedAtlas(source,catalogue);
 const output=JSON.stringify(asset,null,2)+'\n';
 const manifest=resolve(root,'lib/prepared/detailed-model.json');
 if(process.argv.includes('--generate-manifest')){await writeFile(manifest,output);await writeFile(resolve(root,'lib/prepared/detailed-areas.json'),JSON.stringify(detailedAreas,null,2)+'\n');}
-else if(await readFile(manifest,'utf8')!==output)throw Error('Detailed manifest does not match the pinned source and catalogue');
+else if((await readFile(manifest,'utf8')).replaceAll('\r\n','\n')!==output)throw Error('Detailed manifest does not match the pinned source and catalogue');
 await writeFile(resolve(root,'public/anatomy/detailed.glb'),bytes);
 await writeFile(resolve(root,'public/anatomy/detailed-source-and-license.json'),output);
 console.log(`Detailed whole-body asset verified: ${asset.structures.length} structures, ${bytes.length} bytes.`);
