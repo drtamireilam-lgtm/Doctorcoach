@@ -132,3 +132,7 @@
 @media (prefers-reduced-motion: reduce) {
   .anatomy-model-viewer *, .anatomy-model-viewer *::before, .anatomy-model-viewer *::after { transition: none !important; animation: none !important; scroll-behavior: auto !important; }
 }
+.anatomy-model-viewer .anatomy-quick-regions { display:flex;flex-wrap:wrap;gap:6px;padding:10px;border:1px solid var(--anatomy-border);border-radius:14px;background:#13232c; }
+.anatomy-model-viewer .anatomy-quick-regions button { flex:1 1 88px;min-height:44px;padding:7px 10px;font-size:13px; }
+.anatomy-model-viewer .anatomy-quick-regions button[aria-pressed="true"] { background:#224b4a;border-color:var(--anatomy-teal);color:var(--anatomy-text); }
+.anatomy-model-viewer .anatomy-parent-context { padding:12px;border-inline-start:3px solid var(--anatomy-gold);background:#182a34;border-radius:8px; }
