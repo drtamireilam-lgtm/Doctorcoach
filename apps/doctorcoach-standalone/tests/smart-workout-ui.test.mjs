@@ -71,7 +71,7 @@ test('learning deep link opens the dedicated DoctorCoach guide',async()=>{
 test('learning navigation keeps general guides separate from DoctorCoach overview',async()=>{
  const navigation=await import('../lib/learning-navigation.ts');
  let stateIndex=0;
- const exports={},modules={'react/jsx-runtime':jsx,react:{useState:()=>[['doctorcoach','anatomy'][stateIndex++],()=>{}],useEffect:()=>{}},'../components/language-provider':{Localize:'Localize',useLanguage:()=>({language:'he'})},'./anatomy-workspace':{AnatomyWorkspace:'AnatomyWorkspace'},'./learning-workspace':{LearningWorkspace:'LearningWorkspace'},'../lib/learning-navigation':navigation};
+ const exports={},modules={'react/jsx-runtime':jsx,react:{useState:()=>[[false,'doctorcoach','anatomy'][stateIndex++],()=>{}],useEffect:()=>{}},'../components/language-provider':{Localize:'Localize',useLanguage:()=>({language:'he'})},'./anatomy-pain-workspace':{AnatomyPainWorkspace:'AnatomyPainWorkspace'},'./anatomy-workspace':{AnatomyWorkspace:'AnatomyWorkspace'},'./learning-workspace':{LearningWorkspace:'LearningWorkspace'},'../lib/anatomy-lab':{anatomy3dLabEnabled:true},'../lib/learning-navigation':navigation};
  vm.runInNewContext(ts.transpileModule(fs.readFileSync(new URL('../components/learning-area.tsx',import.meta.url),'utf8'),{compilerOptions:{module:ts.ModuleKind.CommonJS,target:ts.ScriptTarget.ES2022,jsx:ts.JsxEmit.ReactJSX}}).outputText,{exports,require:k=>modules[k]});
  const links=nodes(exports.LearningArea({onExercise(){}}),n=>n.type==='a');
  const general=links.find(a=>a.props.href==='#learn?article=rpe'),overview=links.find(a=>a.props.href==='#learn?article=doctorcoach');

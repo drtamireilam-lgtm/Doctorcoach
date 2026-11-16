@@ -136,3 +136,8 @@
 .anatomy-model-viewer .anatomy-quick-regions button { flex:1 1 88px;min-height:44px;padding:7px 10px;font-size:13px; }
 .anatomy-model-viewer .anatomy-quick-regions button[aria-pressed="true"] { background:#224b4a;border-color:var(--anatomy-teal);color:var(--anatomy-text); }
 .anatomy-model-viewer .anatomy-parent-context { padding:12px;border-inline-start:3px solid var(--anatomy-gold);background:#182a34;border-radius:8px; }
+
+.anatomy-role-legend{display:flex;flex-wrap:wrap;gap:12px}.anatomy-pain-fieldset{border:0;padding:0;min-width:0;display:grid;gap:16px}.anatomy-pain-fieldset label{display:grid;gap:6px}.anatomy-pain-fieldset select,.anatomy-pain-fieldset input,.anatomy-pain-fieldset textarea{width:100%;max-width:100%;min-width:0}.anatomy-pain-fieldset textarea{min-height:90px}.anatomy-pain-map .anatomy-viewer-stage{height:480px;position:relative}.anatomy-pain-map .anatomy-model-canvas{height:100%}
+.anatomy-role-legend,.anatomy-workout-actions{display:flex;flex-wrap:wrap;gap:12px}.anatomy-pain-fieldset{min-width:0;border:0;padding:0;display:grid;gap:16px}.anatomy-pain-fieldset label{display:grid;gap:8px}.anatomy-pain-fieldset input,.anatomy-pain-fieldset select,.anatomy-pain-fieldset textarea{box-sizing:border-box;max-width:100%;width:100%;min-height:44px}.anatomy-pain-fieldset textarea{min-height:96px}.anatomy-pain-map select{max-width:100%;width:100%;white-space:normal}.anatomy-pain-map .anatomy-viewer-stage{height:520px;max-height:68vh}.anatomy-pain-map .anatomy-model-canvas{height:100%}
+
+.anatomy-model-viewer button[aria-pressed="true"]:hover:not(:disabled){color:#102b29;background:var(--anatomy-teal);border-color:var(--anatomy-teal)}

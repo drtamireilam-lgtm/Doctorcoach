@@ -7,10 +7,11 @@ import {positionAnnotation} from '../lib/anatomy-annotations';
 import {MuscleExercises} from './anatomy-exercises';
 import './anatomy-4.css';
 import {anatomyNavigationAreas,navigationHidden} from '../lib/anatomy-navigation';
+import {exerciseStructureRoles,exerciseCoverage,anatomyRoleColors} from '../lib/anatomy-training';
 import {anatomyHiddenStructures,type MuscleDepth} from '../lib/anatomy-depth';
 
 /** One owned scene at a time. Only validated bundled assets; no remote URLs or uploads. */
-export function AnatomyModelViewer({model,language,onExercise,onMuscle,onRegion,initialSelection,autoOpen=false}:{model:AnatomyModel;language:'he'|'en';onExercise:(id:string)=>void;onMuscle:(slug:string)=>void;onRegion?:(id:string)=>void;initialSelection?:string;autoOpen?:boolean}){
+export function AnatomyModelViewer({model,language,onExercise,onMuscle,onRegion,initialSelection,exerciseId,autoOpen=false}:{model:AnatomyModel;language:'he'|'en';onExercise:(id:string)=>void;onMuscle:(slug:string)=>void;onRegion?:(id:string)=>void;initialSelection?:string;exerciseId?:string;autoOpen?:boolean}){
  const he=language==='he',t=anatomyLabels[language],key='dc-'+model.id+'-view';
  const layers=[...new Set(model.structures.map(s=>s.layer))];
  const host=useRef<HTMLDivElement|null>(null),controller=useRef<Awaited<ReturnType<typeof createAnatomyCanvas>>|null>(null),camera=useRef<CameraState|null>(null);
@@ -19,6 +20,7 @@ export function AnatomyModelViewer({model,language,onExercise,onMuscle,onRegion,
  const [hidden,setHidden]=useState<Set<string>>(new Set()),[query,setQuery]=useState('');
  const [depths,setDepths]=useState<Set<MuscleDepth>>(new Set(['superficial','deep'])),[bodySide,setBodySide]=useState<'both'|'left'|'right'>('both'),[hideHistory,setHideHistory]=useState<string[]>([]);
  const [navigationArea,setNavigationArea]=useState('all');
+ const [overlay,setOverlay]=useState(true);const roles=exerciseId?exerciseStructureRoles(model,exerciseId):new Map();const missingRoles=exerciseId?exerciseCoverage(model,exerciseId).missing:[];
  const effectiveHidden=anatomyHiddenStructures(model.structures,hidden,depths,bodySide);
  const listedHidden=navigationHidden(model.structures,effectiveHidden,navigationArea);
  const [hover,setHover]=useState<string|null>(null),[detailsOpen,setDetailsOpen]=useState(false);
@@ -60,7 +62,7 @@ export function AnatomyModelViewer({model,language,onExercise,onMuscle,onRegion,
   }).catch(()=>{if(!abort.signal.aborted)setError(true);});
   return()=>{if(controller.current){camera.current=controller.current.snapshot();persist.current();}abort.abort();controller.current?.dispose();controller.current=null;};
  },[started,attempt,model]);
- useEffect(()=>{controller.current?.update(selection??hover,visible,isolated?selection:null,effectiveHidden);},[selection,hover,visible,isolated,hidden,depths,bodySide,navigationArea,loaded]);
+ useEffect(()=>{controller.current?.update(selection??hover,visible,isolated?selection:null,effectiveHidden,overlay?roles:new Map());},[selection,hover,visible,isolated,hidden,depths,bodySide,navigationArea,loaded,exerciseId,overlay]);
  function focusNavigationArea(area:string,side=bodySide){
   controller.current?.setView(area==='back'?'back':'front',false);
   if(area!=='all')controller.current?.focusStructures(model.structures.filter(s=>s.navigationArea===area&&(side==='both'||s.side===side||s.side==='midline')).map(s=>s.id));
@@ -98,6 +100,7 @@ export function AnatomyModelViewer({model,language,onExercise,onMuscle,onRegion,
      {selection?<><button type="button" onClick={()=>setDetailsOpen(v=>!v)} aria-expanded={detailsOpen}>{he?'מידע ותרגילים':'Explore & exercises'} <span aria-hidden="true">→</span></button><button type="button" onClick={()=>controller.current?.focus(selection)}>{he?'התמקדות':'Focus'}</button></>:<button type="button" onClick={()=>select(annotated.id)}>{he?'בחירת המבנה':'Select structure'}</button>}
     </div></>}
    </div>
+   {exerciseId&&<div className="panel care-stack" data-no-translate><p>{he?'הדגשה לפי המיפוי הלימודי; אינה מדידה של מידת הפעלת השריר. תתי־חלקים משקפים את מיפוי השריר השלם.':'Educational relationships, not measured activation. Subdivisions reflect the whole-muscle mapping.'}</p><button type="button" aria-pressed={overlay} onClick={()=>setOverlay(v=>!v)}>{he?'הדגשת שרירי התרגיל':'Highlight exercise muscles'}</button><div className="anatomy-role-legend">{(['primary','secondary','stabilizer','stretch'] as const).filter(role=>[...roles.values()].includes(role)).map(role=><span key={role} style={{borderInlineStart:'5px solid '+anatomyRoleColors[role],paddingInlineStart:8}}>{role==='stretch'?(he?'מטרת מתיחה':'Stretch target'):t[role]}</span>)}</div>{!!missingRoles.length&&<p className="anatomy-coverage-note">{he?'חלק מהשרירים המקושרים אינם מיוצגים במודל: ':'Some linked muscles are not represented on this model: '}{missingRoles.map(l=>l.slug).join(', ')}</p>}{!roles.size&&<p>{he?'אין למודל זה מיפוי שרירים לתרגיל שנבחר.':'No muscle mapping is available on this model for this exercise.'}</p>}</div>}
    {model.id==='detailed'&&<div className="anatomy-quick-regions" role="group" aria-label={he?'ניווט מהיר לפי אזור':'Quick body regions'}><button type="button" aria-pressed={navigationArea==='all'} disabled={!loaded} onClick={()=>navigateArea('all')}>{he?'כל הגוף':'Whole body'}</button>{anatomyNavigationAreas.map(area=><button type="button" key={area.id} aria-pressed={navigationArea===area.id} disabled={!loaded} onClick={()=>navigateArea(area.id)}>{area[language]}</button>)}</div>}
    <p className="care-muted">{he?'גרירה לסיבוב • צביטה להגדלה • גלילה אנכית להמשך העמוד':'Drag to rotate • Pinch to zoom • Swipe vertically to scroll'}</p>
    <div className="anatomy-region-list anatomy-viewer-toolbar" aria-label={he?'מצלמה':'Camera'}>{[['front',t.front],['back',t.back],['right',he?'מבט מימין':'Right view'],['left',he?'מבט משמאל':'Left view']].map(([orbit,label])=><button disabled={!loaded} key={orbit} onClick={()=>view(orbit as AnatomyCamera)}>{label}</button>)}<button disabled={!loaded} onClick={()=>{controller.current?.setView(model.initialView??'front',false);setNavigationArea('all');select(null);isolate(false);setVisible(new Set(layers));setHidden(new Set());setHideHistory([]);setDepths(new Set(['superficial','deep']));setBodySide('both');setQuery('');}}>{t.reset}</button><button onClick={()=>{select(null);isolate(false);}}>{he?'ניקוי הבחירה':'Clear selection'}</button></div>
