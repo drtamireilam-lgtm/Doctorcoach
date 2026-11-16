@@ -114,13 +114,17 @@ try{
  await page.locator('section[aria-label="כתף בתלת־ממד"] canvas').waitFor({timeout:60000});
  const atlas=page.locator('section[aria-label="כתף בתלת־ממד"]');
  await atlas.getByRole('combobox',{name:/^(Select structure|בחירת מבנה|Select body region|בחירת אזור בגוף)$/}).selectOption('deltoid');
- await (await openDetails(atlas)).locator('.atlas-exercises button').first().click();
+ await atlas.getByRole('button',{name:'הזזת המודל →',exact:true}).click();const inlineCamera=await page.evaluate(()=>JSON.parse(sessionStorage.getItem('dc-shoulder-view')).camera);
+ await atlas.locator('.anatomy-learning-preview').getByRole('button',{name:'חיזוק ותנועה',exact:true}).click();await atlas.locator('.anatomy-preview-links button').first().click();
  await page.waitForFunction(()=>location.hash==='#library');
  await (await openDetails(page)).getByRole('heading',{name:'לחיצת כתפיים במוט',exact:true}).waitFor();
  console.log('Check passed:',checks.length+1);checks.push('integrated app opens canonical exercise from shoulder');
  await page.goBack();await page.locator('section[aria-label="כתף בתלת־ממד"] canvas').waitFor({timeout:60000});
  assert.equal(await page.locator('section[aria-label="כתף בתלת־ממד"]').getByRole('combobox',{name:/^(Select structure|בחירת מבנה|Select body region|בחירת אזור בגוף)$/}).inputValue(),'deltoid');
+ assert.deepEqual(await page.evaluate(()=>JSON.parse(sessionStorage.getItem('dc-shoulder-view')).camera),inlineCamera);
  console.log('Check passed:',checks.length+1);checks.push('browser back restores integrated anatomy and selection');
+ // A shared muscle must return to the originating model, not its catalog region.
+ await atlas.getByRole('combobox',{name:/^(Select structure|בחירת מבנה|Select body region|בחירת אזור בגוף)$/}).selectOption('trapezius');await atlas.getByRole('button',{name:'הזזת המודל →',exact:true}).click();const sharedCamera=await page.evaluate(()=>JSON.parse(sessionStorage.getItem('dc-shoulder-view')).camera);await atlas.locator('.anatomy-learning-preview').getByRole('button',{name:'חיזוק ותנועה',exact:true}).click();await atlas.locator('.anatomy-preview-links button').first().click();await page.waitForFunction(()=>location.hash==='#library');await page.locator('.detail-grid').waitFor();await page.goBack();await atlas.locator('canvas').waitFor({timeout:60000});assert.equal(await atlas.getByRole('combobox',{name:/^(Select structure|בחירת מבנה|Select body region|בחירת אזור בגוף)$/}).inputValue(),'trapezius');assert.deepEqual(await page.evaluate(()=>JSON.parse(sessionStorage.getItem('dc-shoulder-view')).camera),sharedCamera);checks.push('inline shared muscle return retains originating shoulder model, selection and camera');
  // Full-body navigation and the second detailed region use the same integrated app.
  await page.goto('http://127.0.0.1:'+port+'/#learn?atlas=body',{waitUntil:'domcontentloaded'});
  const body=page.locator('[data-model-id="body"]');await body.locator('canvas').waitFor({timeout:60000});
