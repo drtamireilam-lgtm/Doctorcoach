@@ -1,3 +1,4 @@
+import {cardioActivity} from './cardio.ts';
 import {exercises} from './content.ts';
 import {trainingAccess,assignedPlan} from './training-access.ts';
 import {workspaceProgramId,workspaceAssignmentGuard} from './coach-workspace-guard.ts';
@@ -12,15 +13,15 @@ export type PainGuard={sql:string;args:(string|number|null)[]};
 const builtin=new Map(exercises.map(e=>[e.id,e]));
 const yes=():PainGuard=>({sql:'1=1',args:[]});
 const label=(id:string,he:unknown,en:unknown,source:PainExerciseOption['source']):PainExerciseOption=>({id,he:typeof he==='string'?he.slice(0,150):id,en:typeof en==='string'?en.slice(0,150):id,source});
-const snapshot=(item:PlanItem&{name?:string},source:PainExerciseOption['source'])=>label(item.exerciseId,item.name??planExerciseName(item,builtin.get(item.exerciseId)?.name),item.customExercise?.en??builtin.get(item.exerciseId)?.en??item.name,source);
+const snapshot=(item:PlanItem&{name?:string},source:PainExerciseOption['source'])=>label(item.exerciseId,item.name??planExerciseName(item,builtin.get(item.exerciseId)?.name),(item.cardio?cardioActivity(item.cardio.activityId)?.nameEn:undefined)??item.customExercise?.en??builtin.get(item.exerciseId)?.en??item.name,source);
 export function painExerciseResolver(db:D1Database,config:ProgramAuthorConfig={}){
  async function plan(owner:string):Promise<{items:PlanItem[];guard:PainGuard;itemGuards?:Map<string,PainGuard>}>{
   const access=await trainingAccess(db,owner,config);
   if(access.mode==='self'){
-   const rows=await db.prepare('SELECT id,exercise_id,custom_exercise_json FROM program_items WHERE owner_id=? ORDER BY id').bind(owner).all<{id:number;exercise_id:string;custom_exercise_json:string|null}>();
-   const items=rows.results.map(r=>({exerciseId:r.exercise_id,...r.custom_exercise_json?{customExercise:JSON.parse(r.custom_exercise_json)}:{}})) as PlanItem[];
-   const guard:PainGuard={sql:`EXISTS(SELECT 1 FROM training_access WHERE user_id=? AND mode='self') AND NOT EXISTS(SELECT 1 FROM json_each(?) j WHERE NOT EXISTS(SELECT 1 FROM program_items p WHERE p.owner_id=? AND p.exercise_id=j.value))`,args:[owner,JSON.stringify([...new Set(items.map(i=>i.exerciseId))]),owner]};
-   const itemGuards=new Map<string,PainGuard>();for(const row of rows.results)if(!itemGuards.has(row.exercise_id))itemGuards.set(row.exercise_id,{sql:`(${guard.sql}) AND EXISTS(SELECT 1 FROM program_items WHERE id=? AND owner_id=? AND exercise_id=? AND COALESCE(custom_exercise_json,'')=?)`,args:[...guard.args,row.id,owner,row.exercise_id,row.custom_exercise_json??'']});
+   const rows=await db.prepare('SELECT id,exercise_id,custom_exercise_json,cardio_json FROM program_items WHERE owner_id=? ORDER BY id').bind(owner).all<{id:number;exercise_id:string;custom_exercise_json:string|null;cardio_json:string|null}>();
+   const items=rows.results.map(r=>({exerciseId:r.exercise_id,...r.cardio_json?{cardio:JSON.parse(r.cardio_json)}:{},...r.custom_exercise_json?{customExercise:JSON.parse(r.custom_exercise_json)}:{}})) as PlanItem[];
+   const guard:PainGuard={sql:`EXISTS(SELECT 1 FROM training_access WHERE user_id=? AND mode='self') AND NOT EXISTS(SELECT 1 FROM json_each(?) j WHERE NOT EXISTS(SELECT 1 FROM program_items p WHERE p.owner_id=? AND p.id=json_extract(j.value,'$.id') AND p.exercise_id=json_extract(j.value,'$.exercise_id') AND COALESCE(p.custom_exercise_json,'')=COALESCE(json_extract(j.value,'$.custom_exercise_json'),'') AND COALESCE(p.cardio_json,'')=COALESCE(json_extract(j.value,'$.cardio_json'),'')))`,args:[owner,JSON.stringify(rows.results),owner]};
+   const itemGuards=new Map<string,PainGuard>();for(const row of rows.results)if(!itemGuards.has(row.exercise_id))itemGuards.set(row.exercise_id,{sql:`(${guard.sql}) AND EXISTS(SELECT 1 FROM program_items WHERE id=? AND owner_id=? AND exercise_id=? AND COALESCE(custom_exercise_json,'')=? AND COALESCE(cardio_json,'')=?)`,args:[...guard.args,row.id,owner,row.exercise_id,row.custom_exercise_json??'',row.cardio_json??'']});
    return {items,guard,itemGuards};
   }
   const p=access.programId?await assignedPlan(db,owner,access.programId,config):null;
@@ -35,7 +36,7 @@ export function painExerciseResolver(db:D1Database,config:ProgramAuthorConfig={}
    for(const r of rows.results){const e=JSON.parse(r.definition_json);options.set(r.id,label(r.id,e.name,e.en,r.owner_id===user.userId?'personal':'public'));}
    const current=await plan(user.userId);let usesPlan=false;
    for(const item of current.items)if(!options.has(item.exerciseId)){options.set(item.exerciseId,snapshot(item,'program'));usesPlan=true;}
-   const customGuard:PainGuard=rows.results.length?{sql:`(SELECT COUNT(*) FROM custom_exercises WHERE id IN (SELECT value FROM json_each(?)) AND (owner_id=? OR state='published'))=?`,args:[JSON.stringify(rows.results.map(r=>r.id)),user.userId,rows.results.length]}:yes();
+   const customGuard:PainGuard=rows.results.length?{sql:`(SELECT COUNT(*) FROM custom_exercises WHERE EXISTS(SELECT 1 FROM json_each(?) j WHERE json_extract(j.value,'$.id')=custom_exercises.id AND json_extract(j.value,'$.definition_json')=custom_exercises.definition_json) AND (owner_id=? OR state='published'))=?`,args:[JSON.stringify(rows.results.map(r=>({id:r.id,definition_json:r.definition_json}))),user.userId,rows.results.length]}:yes();
    return {exercises:[...options.values()],guard:{sql:`(${customGuard.sql}) AND (${usesPlan?current.guard.sql:'1=1'})`,args:[...customGuard.args,...usesPlan?current.guard.args:[]]} as PainGuard};
   },
   async resolve(user:StaffIdentity,data:AnatomyPainData):Promise<{option:PainExerciseOption|null;guard:PainGuard;occurrenceId?:string}>{

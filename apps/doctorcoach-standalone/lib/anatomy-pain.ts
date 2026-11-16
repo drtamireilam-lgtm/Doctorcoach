@@ -15,7 +15,7 @@ export function parseAnatomyPain(input:unknown,now=new Date()):AnatomyPainData{
  const at=textField(p.occurredAt,'מועד הדיווח',40,20),match=/^(\d{4}-\d{2}-\d{2})T(\d{2}):(\d{2})(?::(\d{2})(?:\.\d{1,3})?)?(Z|[+-](\d{2}):(\d{2}))$/.exec(at);
  if(!match||!Number.isFinite(Date.parse(match[1]+'T12:00:00Z'))||new Date(match[1]+'T12:00:00Z').toISOString().slice(0,10)!==match[1]||+match[2]>23||+match[3]>59||+(match[4]??0)>59||+(match[6]??0)>14||+(match[7]??0)>59||(+match[6]===14&&+match[7]!==0))fail();
  const timestamp=Date.parse(at);if(!Number.isFinite(timestamp)||timestamp>now.getTime()||timestamp<Date.parse('2000-01-01T00:00:00Z'))fail();
- const exerciseId=textField(p.exerciseId??'','תרגיל',150);if(exerciseId&&!/^[a-zA-Z0-9][a-zA-Z0-9_-]{0,149}$/.test(exerciseId))fail();
+ const exerciseId=textField(p.exerciseId??'','תרגיל',150);if(exerciseId&&!/^[a-zA-Z0-9][a-zA-Z0-9:_-]{0,149}$/.test(exerciseId))fail();
  const sessionId=p.sessionId===undefined||p.sessionId===''?undefined:validId(p.sessionId);
  const occurrenceId=p.occurrenceId===undefined||p.occurrenceId===''?undefined:textField(p.occurrenceId,'הופעת תרגיל',200,1);
  if(occurrenceId&&(!sessionId||!exerciseId||!/^[A-Za-z0-9:_-]+$/.test(occurrenceId)))fail();

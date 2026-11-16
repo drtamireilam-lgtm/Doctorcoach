@@ -5,7 +5,7 @@ import {careRequest,CareRequestError,useCareResource} from '../hooks/use-care';
 import {AnatomyPainMap} from './anatomy-pain-map';
 import {painStructures,painModelVersion,type AnatomyPainBundle,type AnatomyPainRecord,type PainPoint,type AnatomyPainData} from '../lib/anatomy-pain';
 import {painAccessState} from '../lib/anatomy-pain-ui';
-import {painOptions,painOccurrences,painCanPlot,type PainWorkoutContext} from '../lib/anatomy-pain-context';
+import {painOptions,painOccurrences,painCanPlot,painOccurrenceChoice,type PainWorkoutContext} from '../lib/anatomy-pain-context';
 import type {PainCatalog,PainExerciseOption} from '../lib/anatomy-pain-exercises';
 import {exercises} from '../lib/content';
 const localTime=(date=new Date())=>new Date(date.getTime()-date.getTimezoneOffset()*60000).toISOString().slice(0,16);
@@ -27,6 +27,7 @@ export function AnatomyPainWorkspace({expectedOwner,auth,context,embedded=false,
 }
 function PrivatePain({language,bundle,invalidate,context,onDirty}:{language:'he'|'en';bundle:AnatomyPainBundle;invalidate:()=>Promise<void>;context?:PainWorkoutContext;onDirty:(dirty:boolean)=>void}){
  const he=language==='he',catalog=useCareResource<PainCatalog>('/api/anatomy-pain?catalog=1');
+ useEffect(()=>{const refresh=()=>{if(!document.hidden)void catalog.reload();};window.addEventListener('focus',refresh);document.addEventListener('visibilitychange',refresh);return()=>{window.removeEventListener('focus',refresh);document.removeEventListener('visibilitychange',refresh);};},[catalog.reload]);
  const [point,setPoint]=useState<PainPoint|null>(null),[placement,setPlacement]=useState<'surface'|'centre'>('surface'),[view,setView]=useState<'front'|'back'|'left'|'right'>('front');
  const [intensity,setIntensity]=useState('0'),[at,setAt]=useState(()=>context?.occurredAt?localTime(new Date(context.occurredAt)):localTime()),[timing,setTiming]=useState<AnatomyPainData['timing']>(context?.timing??'before'),[notes,setNotes]=useState(''),[exercise,setExercise]=useState(context?.exerciseId??''),[occurrence,setOccurrence]=useState(context?.occurrenceId??''),[query,setQuery]=useState(''),[touched,setTouched]=useState(false);
  const [records,setRecords]=useState(bundle.records),[busy,setBusy]=useState(false),[message,setMessage]=useState(''),[error,setError]=useState(''),[locked,setLocked]=useState(false),[history,setHistory]=useState<AnatomyPainRecord|null>(null);
@@ -37,11 +38,14 @@ function PrivatePain({language,bundle,invalidate,context,onDirty}:{language:'he'
  useEffect(()=>{if([401,403].includes(catalog.status)||catalog.data&&catalog.data.ownerId!==bundle.ownerId){setLocked(true);void invalidate();}},[catalog.status,catalog.data?.ownerId,bundle.ownerId,invalidate]);
  useEffect(()=>{onDirty(!!point||!!notes||touched||!!pending.current);},[point,notes,touched,busy,onDirty]);
  useEffect(()=>()=>onDirty(false),[onDirty]);
- const allOptions=painOptions(catalog.data?.ownerId===bundle.ownerId?catalog.data.exercises:builtins,context,'');
+ const catalogReady=!catalog.loading&&!catalog.error&&catalog.status===200&&catalog.data?.ownerId===bundle.ownerId;
+ const entries=catalogReady?catalog.data!.exercises:builtins;
+ const safeContext=context?.sessionId?context:context?{...context,items:context.items?.filter(i=>entries.some(e=>e.id===i.exerciseId))}:undefined;
+ const allOptions=painOptions(entries,safeContext,'');
  const eligible=context?.sessionId?allOptions.filter(o=>context.items?.some(i=>i.exerciseId===o.id)):allOptions;
  const filtered=painOptions(eligible,undefined,query),chosen=eligible.find(e=>e.id===exercise);
  const choices=chosen&&!filtered.some(e=>e.id===chosen.id)?[chosen,...filtered]:filtered;
- const occurrences=painOccurrences(context,exercise),effectiveOccurrence=occurrences.some(i=>i.occurrenceId===occurrence)?occurrence:occurrences.length===1?occurrences[0].occurrenceId??'':'';
+ const occurrences=painOccurrences(context,exercise),effectiveOccurrence=painOccurrenceChoice(occurrences,occurrence);
  const contextInvalid=!!context?.sessionId&&!!exercise&&(!chosen||!effectiveOccurrence);
  const selected=point?painStructures.find(s=>s.id===point.structureId):null,displayed=history?painStructures.find(s=>s.id===history.data.structureId):selected;
  const frozen=busy||!!pending.current;
@@ -56,7 +60,7 @@ function PrivatePain({language,bundle,invalidate,context,onDirty}:{language:'he'
    const result=await careRequest<AnatomyPainBundle>('/api/anatomy-pain',pending.current);if(!alive.current||requestGeneration!==generation.current)return;
    if(result.ownerId!==bundle.ownerId){setLocked(true);void invalidate();return;}
    setRecords(result.records);pending.current=null;setPoint(null);setNotes('');setTouched(false);setMessage(he?'הדיווח נשמר בחשבון שלך.':'Report saved to your account.');
-  }catch(e){if(!alive.current||requestGeneration!==generation.current)return;if(e instanceof CareRequestError&&(e.status===401||e.status===403)){setLocked(true);void invalidate();}else{if(e instanceof CareRequestError&&e.status>=400&&e.status<500){pending.current=null;setError(e.message);}else setError(he?'השמירה לא אושרה. הדיווח נשאר בזיכרון העמוד; אפשר לנסות שוב.':'Save was not confirmed. The draft remains in this page; retry.');}}
+  }catch(e){if(!alive.current||requestGeneration!==generation.current)return;if(e instanceof CareRequestError&&(e.status===401||e.status===403)){pending.current=null;setLocked(true);void invalidate();}else{if(e instanceof CareRequestError&&e.status>=400&&e.status<500){pending.current=null;setError(e.message);}else setError(he?'השמירה לא אושרה. הדיווח נשאר בזיכרון העמוד; אפשר לנסות שוב.':'Save was not confirmed. The draft remains in this page; retry.');}}
   finally{lock.current=false;if(alive.current&&requestGeneration===generation.current)setBusy(false);}
  }
  if(locked)return <div role="status"><p>{he?'הגישה השתנתה. יש לרענן את הרשימה לפני דיווח נוסף.':'Access changed. Refresh the list before reporting again.'}</p><button type="button" onClick={()=>{setLocked(false);void catalog.reload();void invalidate();}}>{he?'ניסיון נוסף':'Retry'}</button></div>;
@@ -73,7 +77,7 @@ function PrivatePain({language,bundle,invalidate,context,onDirty}:{language:'he'
    {catalog.loading&&<p role="status">{he?'טוענים תרגילים אישיים ומהתוכנית…':'Loading personal and program exercises…'}</p>}
    {catalog.error&&<p role="status">{he?'לא ניתן לעדכן את רשימת התרגילים. אפשר לדווח ללא שיוך או לנסות שוב.':'Unable to update exercises. Report without an exercise or retry.'}<button type="button" onClick={()=>void catalog.reload()}>{he?'טעינת תרגילים מחדש':'Reload exercises'}</button></p>}
    <label className="care-field">{he?'תרגיל קשור — רשות':'Related exercise — optional'}<select value={exercise} onChange={e=>{setExercise(e.target.value);setOccurrence('');change();}}><option value="">{he?'ללא תרגיל':'No exercise'}</option>{exercise&&!chosen&&<option value={exercise} disabled>{he?'התרגיל אינו זמין בהקשר זה':'Exercise unavailable in this context'}</option>}{choices.map(e=><option key={e.id} value={e.id}>{he?e.he:e.en} · {source(e.source)}</option>)}</select></label>
-   {occurrences.length>1&&<label className="care-field">{he?'הופעת התרגיל באימון':'Exercise occurrence in workout'}<select value={effectiveOccurrence} onChange={e=>{setOccurrence(e.target.value);change();}}><option value="">{he?'בחרו הופעה':'Choose occurrence'}</option>{occurrences.map((i,index)=><option key={i.occurrenceId} value={i.occurrenceId}>{index+1}. {i.name}</option>)}</select></label>}
+   {(occurrences.length>1||!!occurrence&&!effectiveOccurrence)&&<label className="care-field">{he?'הופעת התרגיל באימון':'Exercise occurrence in workout'}<select value={effectiveOccurrence} onChange={e=>{setOccurrence(e.target.value);change();}}><option value="">{he?'בחרו הופעה':'Choose occurrence'}</option>{occurrences.map((i,index)=><option key={i.occurrenceId} value={i.occurrenceId}>{index+1}. {i.name}</option>)}</select></label>}
    {contextInvalid&&<p role="alert">{he?'בחרו תרגיל והופעה שעדיין נמצאים באימון, או דיווח ללא תרגיל.':'Choose a current workout exercise and occurrence, or report without an exercise.'}</p>}
    <label className="care-field">{he?'הערה — רשות':'Note — optional'}<textarea maxLength={1500} value={notes} onChange={e=>{setNotes(e.target.value);change();}}/></label>
   </fieldset>
