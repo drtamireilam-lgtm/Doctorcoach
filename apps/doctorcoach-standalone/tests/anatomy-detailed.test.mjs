@@ -21,7 +21,7 @@ test('exact catalogue mapping never infers neighbouring subdivisions',()=>{
  const mappings=[{en:'Left soleus',he:'סולאוס — שמאל',id:'left-soleus',layer:'muscle',learningId:'soleus',regionId:'lower_leg'}];
  const {structures}=convertDetailedAtlas(source,mappings);
  assert.equal(structures.find(s=>s.en==='Left soleus')?.learningId,'soleus');
- assert.ok(structures.filter(s=>s.learningId).every(s=>s.en==='Left soleus'||s.en==='Right soleus'));
+ assert.ok(structures.filter(s=>s.learningId&&!s.learningScope).every(s=>s.en==='Left soleus'||s.en==='Right soleus'||/^(Long|Short) head of (left|right) biceps femoris$/.test(s.en)));
 });
 
 test('detailed model passes existing immutable-source admission and all-body source inventory',async()=>{

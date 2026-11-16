@@ -2,6 +2,7 @@ import {readFile,writeFile,mkdir} from 'node:fs/promises';
 import {createHash} from 'node:crypto';
 import {fileURLToPath} from 'node:url';
 import {resolve} from 'node:path';
+import {detailedAreas} from './detailed-labels.mjs';
 import {convertDetailedAtlas,sourceUrl,sourceSha} from './detailed-asset.mjs';
 const root=fileURLToPath(new URL('../../',import.meta.url));
 const cache=resolve(root,'.sites-runtime/detailed-source.glb');
@@ -24,7 +25,7 @@ for(const card of cards){
 const {bytes,asset}=convertDetailedAtlas(source,catalogue);
 const output=JSON.stringify(asset,null,2)+'\n';
 const manifest=resolve(root,'lib/prepared/detailed-model.json');
-if(process.argv.includes('--generate-manifest'))await writeFile(manifest,output);
+if(process.argv.includes('--generate-manifest')){await writeFile(manifest,output);await writeFile(resolve(root,'lib/prepared/detailed-areas.json'),JSON.stringify(detailedAreas,null,2)+'\n');}
 else if(await readFile(manifest,'utf8')!==output)throw Error('Detailed manifest does not match the pinned source and catalogue');
 await writeFile(resolve(root,'public/anatomy/detailed.glb'),bytes);
 await writeFile(resolve(root,'public/anatomy/detailed-source-and-license.json'),output);

@@ -1,4 +1,5 @@
 import {createHash} from 'node:crypto';
+import {detailedName,wholeMuscleContext,exactDetailedLearning} from './detailed-labels.mjs';
 export const sourceRevision='320805e06aee51e2e6f6b22533eb2a59d43f2d4d';
 export const sourceSha='9744d3dffced835961104447d23a781ad469588289ce322d84d000e0d498326c';
 export const sourceUrl=`https://raw.githubusercontent.com/Charleeh/ecorche/${sourceRevision}/model/ecorche.glb`;
@@ -24,8 +25,8 @@ export function convertDetailedAtlas(source,catalogue){
   const candidates=catalogue.filter(s=>s.layer===layer&&normalized(s.en)===normalized(info.name));
   const keys=new Set(candidates.map(s=>s.learningId??s.id.replace(/^(left|right)-/,'')));
   const mapping=keys.size===1?(candidates.find(s=>s.side===info.side)??candidates[0]):undefined;
-  const he=mapping?mapping.he.replace(/ — (ימין|שמאל)$/,'')+(info.side==='left'?' — שמאל':info.side==='right'?' — ימין':''):info.name;
-  structures.push({id,en:info.name,he,layer,side:info.side,depth,...(mapping?.learningId?{learningId:mapping.learningId,regionId:mapping.regionId}:{}),sources:[{elementId:`ecorche:${info.name}`,sha256:sourceSha,mappingRows:[info.source,info.fma??'',info.layer]}]});
+  const {he,area}=detailedName(info.name);const exact=exactDetailedLearning(info.name);const parent=!mapping?.learningId?wholeMuscleContext(info.name):undefined;
+  structures.push({id,en:info.name,he,layer,side:info.side,depth,navigationArea:area,...(exact?{learningId:exact}:{}),...(parent?{learningId:parent,learningScope:'parent'}:{}),...(mapping?.learningId?{learningId:mapping.learningId,regionId:mapping.regionId}:{}),sources:[{elementId:`ecorche:${info.name}`,sha256:sourceSha,mappingRows:[info.source,info.fma??'',info.layer]}]});
  }
  if(structures.length!==634)throw new Error('Detailed source inventory changed');
  doc.materials=owned;
