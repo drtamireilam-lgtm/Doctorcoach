@@ -4,7 +4,7 @@ import {TrainingError} from './training.ts';
 export const painModelVersion=detailed.glbSha256;
 export const painStructures=detailed.structures;
 export type PainPoint={structureId:string;x:number;y:number;z:number};
-export type AnatomyPainData=PainPoint&{modelVersion:string;view:'front'|'back'|'left'|'right';side:string;placement:'surface'|'centre';intensity:number;occurredAt:string;timing:'before'|'during'|'after'|'other';sessionId?:string;occurrenceId?:string;exerciseNameHe?:string;exerciseNameEn?:string;notes:string;exerciseId:string};
+export type AnatomyPainData=PainPoint&{modelVersion:string;view:'front'|'back'|'left'|'right';side:string;placement:'surface'|'centre';intensity:number;occurredAt:string;timing:'before'|'during'|'after'|'other';sessionId?:string;occurrenceId?:string;setIndex?:number;exerciseNameHe?:string;exerciseNameEn?:string;notes:string;exerciseId:string};
 export type AnatomyPainRecord={id:string;data:AnatomyPainData;createdAt:string};
 export type AnatomyPainBundle={ownerId:string;records:AnatomyPainRecord[]};
 export function parseAnatomyPain(input:unknown,now=new Date()):AnatomyPainData{
@@ -19,5 +19,6 @@ export function parseAnatomyPain(input:unknown,now=new Date()):AnatomyPainData{
  const sessionId=p.sessionId===undefined||p.sessionId===''?undefined:validId(p.sessionId);
  const occurrenceId=p.occurrenceId===undefined||p.occurrenceId===''?undefined:textField(p.occurrenceId,'הופעת תרגיל',200,1);
  if(occurrenceId&&(!sessionId||!exerciseId||!/^[A-Za-z0-9:_-]+$/.test(occurrenceId)))fail();
- return {...sessionId?{sessionId}:{},...occurrenceId?{occurrenceId}:{},modelVersion:painModelVersion,structureId:structure!.id,x:p.x as number,y:p.y as number,z:p.z as number,view:p.view as AnatomyPainData['view'],side:structure!.side,placement:p.placement as AnatomyPainData['placement'],intensity:integerField(p.intensity,'עוצמת כאב',0,10),occurredAt:new Date(timestamp).toISOString(),timing:p.timing as AnatomyPainData['timing'],notes:textField(p.notes??'','הערה',1500),exerciseId};
+ const setIndex=p.setIndex;if(setIndex!==undefined&&(!sessionId||!exerciseId||!occurrenceId||typeof setIndex!=='number'||!Number.isInteger(setIndex)||setIndex<0||setIndex>19))fail();
+ return {...setIndex!==undefined?{setIndex:setIndex as number}:{},...sessionId?{sessionId}:{},...occurrenceId?{occurrenceId}:{},modelVersion:painModelVersion,structureId:structure!.id,x:p.x as number,y:p.y as number,z:p.z as number,view:p.view as AnatomyPainData['view'],side:structure!.side,placement:p.placement as AnatomyPainData['placement'],intensity:integerField(p.intensity,'עוצמת כאב',0,10),occurredAt:new Date(timestamp).toISOString(),timing:p.timing as AnatomyPainData['timing'],notes:textField(p.notes??'','הערה',1500),exerciseId};
 }

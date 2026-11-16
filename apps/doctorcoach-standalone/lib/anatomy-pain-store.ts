@@ -21,10 +21,12 @@ export function anatomyPainStore(db:D1Database,config:ProgramAuthorConfig={}){
   await requireHealthConsent(db,user.userId);const id=validId(p.id),data=parseAnatomyPain(p.data),g=guard(user);
   const previous=await db.prepare(`SELECT content_json FROM wellness_records WHERE id=? AND client_id=? AND kind='painLocation' AND ${g.sql}`).bind(id,user.userId,...g.args).first<{content_json:string}>();
   if(previous){if(!sameRequest(previous.content_json,data))throw new TrainingError('מזהה הדיווח כבר נשמר עם תוכן אחר.',409);return list(user);}
-  const resolved=await resolver.resolve(user,data),exerciseGuard=resolved.guard.sql,exerciseArgs=resolved.guard.args;
+  async function committed(){const row=await db.prepare(`SELECT content_json FROM wellness_records WHERE id=? AND client_id=? AND kind='painLocation' AND ${g.sql}`).bind(id,user.userId,...g.args).first<{content_json:string}>();return !!row&&sameRequest(row.content_json,data);}
+  let resolved:Awaited<ReturnType<typeof resolver.resolve>>;try{resolved=await resolver.resolve(user,data);}catch(error){if(await committed())return list(user);throw error;}
+  const exerciseGuard=resolved.guard.sql,exerciseArgs=resolved.guard.args;
   const stored={...data,...resolved.occurrenceId?{occurrenceId:resolved.occurrenceId}:{},...resolved.option?{exerciseNameHe:resolved.option.he,exerciseNameEn:resolved.option.en}:{}},json=JSON.stringify(stored);
   const saved=await db.prepare(`INSERT INTO wellness_records(id,client_id,kind,slot,day,content_json,author_name,updated_at) SELECT ?,?,'painLocation',?,?,?,'דיווח אישי',? WHERE ${g.sql} AND ${exerciseGuard} ON CONFLICT DO NOTHING RETURNING id`).bind(id,user.userId,id,data.occurredAt.slice(0,10),json,new Date().toISOString(),...g.args,...exerciseArgs).first();
-  if(!saved){await requireHealthConsent(db,user.userId);const previous=await db.prepare(`SELECT content_json FROM wellness_records WHERE id=? AND client_id=? AND kind='painLocation' AND ${g.sql} AND ${exerciseGuard}`).bind(id,user.userId,...g.args,...exerciseArgs).first<{content_json:string}>();if(!previous||!sameRequest(previous.content_json,data))throw new TrainingError('השמירה לא אושרה. ההרשאה, התרגיל או מזהה הדיווח השתנו.',409);}
+  if(!saved){await requireHealthConsent(db,user.userId);if(!await committed())throw new TrainingError('השמירה לא אושרה. ההרשאה, התרגיל או מזהה הדיווח השתנו.',409);}
   return list(user);
  }};
 }
