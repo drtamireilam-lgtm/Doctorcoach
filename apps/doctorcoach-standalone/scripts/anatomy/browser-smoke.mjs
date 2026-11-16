@@ -379,8 +379,11 @@ try{
   await page.reload();await chest.locator('canvas').waitFor();
   assert.equal(await chest.getByRole('combobox',{name:/^(Select structure|בחירת מבנה|Select body region|בחירת אזור בגוף)$/}).inputValue(),'pectoralis-major');
   await (await openDetails(chest)).getByRole('button',{name:language==='en'?'Open muscle learning card':'פתיחת כרטיס השריר',exact:true}).click();
-  const stretches=page.getByRole('region',{name:language==='en'?'Stretches for this muscle':'מתיחות לשריר',exact:true});
+  const muscleCard=page.locator('.muscle-detail');
+  await muscleCard.getByLabel(language==='en'?'Exercise type':'סוג תרגיל',{exact:true}).selectOption('stretch');
+  const stretches=muscleCard.locator('.atlas-exercises');
   assert.equal(await stretches.locator('button').count(),1);
+  assert.match(await stretches.innerText(),language==='en'?/Stretch target/:/שריר מטרה למתיחה/);
   await stretches.locator('button').click();await target.waitFor();
   assert.equal(await target.count(),1);
   assert.ok(await page.evaluate(()=>document.documentElement.scrollWidth<=window.innerWidth));
