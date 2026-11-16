@@ -1,4 +1,4 @@
-import {anatomyRoleColors} from './anatomy-training';
+import {exerciseMaterialRole} from './anatomy-training';
 import type {PainPoint} from './anatomy-pain';
 import type {AnatomyExerciseRole} from './anatomy-exercises';
 import * as THREE from 'three';
@@ -107,7 +107,7 @@ export async function createAnatomyCanvas(host:HTMLElement,onSelect:(id:string|n
   if(!selected){hoverId=null;pickedAnchor=null;}
   const shown=new Set(visibleStructureIds(modelSpec,visible,isolated,hidden));
   for(const mesh of meshes){const structure=modelSpec.structures.find(s=>s.id===mesh.name);if(!structure)continue;mesh.visible=shown.has(structure.id);
-   const color=anatomyColor(structure.layer,structure.id===selected);
-   for(const material of Array.isArray(mesh.material)?mesh.material:[mesh.material])if(material instanceof THREE.MeshStandardMaterial){material.color.set(modelSpec.id==='detailed'?'#ffffff':color);const role=roles.get(structure.id);material.emissive.set(structure.id===selected?'#145d65':role?anatomyRoleColors[role]:'#000000');material.emissiveIntensity=structure.id===selected?.8:role?.55:1;}
+   const paint=exerciseMaterialRole(roles.get(structure.id),structure.id===selected),color=anatomyColor(structure.layer,paint.selectedBase);
+   for(const material of Array.isArray(mesh.material)?mesh.material:[mesh.material])if(material instanceof THREE.MeshStandardMaterial){material.color.set(modelSpec.id==='detailed'?'#ffffff':color);material.emissive.set(paint.emissive);material.emissiveIntensity=paint.intensity;}
   }render();}};
 }
