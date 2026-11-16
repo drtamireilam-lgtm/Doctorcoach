@@ -1,0 +1,11 @@
+import {painModelVersion,type AnatomyPainData} from './anatomy-pain.ts';
+import type {PainExerciseOption} from './anatomy-pain-exercises.ts';
+import type {TrainingSession,SessionExercise} from './training.ts';
+export type PainContextItem={exerciseId:string;occurrenceId?:string;name:string;en?:string};
+export type PainWorkoutContext={sessionId?:string;occurrenceId?:string;exerciseId?:string;timing?:AnatomyPainData['timing'];items?:PainContextItem[];occurredAt?:string};
+export function painContextForSession(session:Pick<TrainingSession,'id'|'items'>&Partial<Pick<TrainingSession,'status'|'finishedAt'>>,item:Pick<SessionExercise,'exerciseId'|'occurrenceId'>|undefined,timing:AnatomyPainData['timing']):PainWorkoutContext{return {sessionId:session.id,...item?{exerciseId:item.exerciseId,occurrenceId:item.occurrenceId}:{},timing,...timing==='after'&&session.status==='completed'&&session.finishedAt?{occurredAt:session.finishedAt}:{},items:session.items.map(i=>({exerciseId:i.exerciseId,occurrenceId:i.occurrenceId,name:i.name,en:i.customExercise?.en}))};}
+export function painOptions(entries:readonly PainExerciseOption[],context:PainWorkoutContext|undefined,query:string){const options=new Map(entries.map(e=>[e.id,e]));for(const item of context?.items??[]){const old=options.get(item.exerciseId);options.set(item.exerciseId,{id:item.exerciseId,he:item.name,en:item.en??old?.en??item.name,source:context?.sessionId?'workout':old?.source??'program'});}const q=query.normalize('NFKC').toLocaleLowerCase().trim();return [...options.values()].filter(e=>!q||(e.he+' '+e.en+' '+e.id).normalize('NFKC').toLocaleLowerCase().includes(q));}
+export function painOccurrences(context:PainWorkoutContext|undefined,exerciseId:string){return context?.sessionId?(context.items??[]).filter(i=>i.exerciseId===exerciseId&&i.occurrenceId):[];}
+export function painCanPlot(point:{modelVersion:string;x:number;y:number;z:number}){return point.modelVersion===painModelVersion&&[point.x,point.y,point.z].every(n=>Number.isFinite(n)&&n>=0&&n<=1);}
+
+export function painOccurrenceChoice(items:readonly {occurrenceId?:string}[],selected:string){return selected?(items.some(i=>i.occurrenceId===selected)?selected:''):items.length===1?items[0].occurrenceId??'':'';}
