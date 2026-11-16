@@ -18,7 +18,7 @@ export function wellnessStore(db:D1Database,config:CareConfig={}){
   const credential=nutritionCredentialGuard(user.email),nutritionVerified=!!(a.nutrition&&!a.self&&(await db.prepare(`SELECT CASE WHEN ${credential.sql} THEN 1 ELSE 0 END allowed`).bind(...credential.args).first<{allowed:number}>())?.allowed);
   const assessment=await db.prepare("SELECT * FROM wellness_records WHERE client_id=? AND kind='assessment'").bind(clientId).first<Row>();
   const shared=!!assessment&&JSON.parse(assessment.content_json).shareTeam===true;
-  const result=await db.prepare(`SELECT * FROM wellness_records WHERE client_id=? ${a.nutrition?'':"AND kind IN ('rehab','return','readiness','episode')"} ORDER BY day DESC,updated_at DESC LIMIT 730`).bind(clientId).all<Row>();
+  const result=await db.prepare(`SELECT * FROM wellness_records WHERE client_id=? AND kind<>'painLocation' ${a.nutrition?'':"AND kind IN ('rehab','return','readiness','episode')"} ORDER BY day DESC,updated_at DESC LIMIT 730`).bind(clientId).all<Row>();
   let summary:WellnessBundle['summary']=null;
   if(a.self||a.nutrition||shared){
    const last=await db.prepare("SELECT * FROM wellness_records WHERE client_id=? AND kind='daily' ORDER BY day DESC LIMIT 1").bind(clientId).first<Row>();

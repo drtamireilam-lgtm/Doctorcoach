@@ -1,0 +1,2 @@
+/** Retain in-memory drafts only while the authenticated owner still matches. */
+export function painAccessState(s:{auth?:string;expectedOwner?:string;bundleOwner?:string;status:number;loading:boolean;visible:boolean;error:boolean}){const mount=s.auth==='ready'&&!!s.expectedOwner&&s.expectedOwner===s.bundleOwner&&![401,403,404].includes(s.status);return {mount,show:mount&&s.visible&&!s.loading&&!s.error};}

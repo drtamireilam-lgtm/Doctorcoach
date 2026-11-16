@@ -18,7 +18,7 @@ permissions:
 jobs:
   anatomy-validation:
     runs-on: ubuntu-latest
-    timeout-minutes: 20
+    timeout-minutes: 30
     defaults:
       run:
         working-directory: apps/doctorcoach-standalone
@@ -51,6 +51,9 @@ jobs:
       - name: Verify detailed whole-body atlas and source depth controls
         if: ${{ !cancelled() }}
         run: node scripts/anatomy/detailed-smoke.mjs
+      - name: Verify anatomy training links and private pain workflow
+        if: ${{ !cancelled() }}
+        run: node scripts/anatomy/training-pain-smoke.mjs
       - name: Render and interact with the actual app
         if: ${{ !cancelled() }}
         run: npm run test:anatomy:browser
