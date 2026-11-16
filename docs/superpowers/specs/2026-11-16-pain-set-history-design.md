@@ -1,0 +1,11 @@
+# Pain set context and history comparison
+
+Complete the already-shipped full-body private pain workflow. Whole-body point/side, intensity/time, exercise and workout occurrence binding already exist. User approved implementing the proposed pain/workout/history upgrade autonomously.
+
+Add optional working-set selection within the exact owned workout exercise occurrence. Reuse existing snapshot results and wellness JSON; no migration, new permission, workout result mutation or automatic prescription change. Use zero-based setIndex internally (0–19); require session/exercise/explicit occurrence, reject cardio and absent/out-of-range sets server-side. Validate the same session JSON atomically at insert. History records a set's ordinal at report time, not a guarantee of its present identity after workout corrections. Preserve old report readability, retries and owner/consent/deletion guards.
+
+Add history comparison from the already-authorized latest100 records: choose exact structure, exercise and workout timing; group only same modelVersion/side, sort by occurredAt with stable ties, show dated intensity observations and numeric latest-minus-earliest difference. No averaging, diagnosis, causal claims or interpretation as improvement. Show both dates, sample count and explicit limited-history scope. Different models are separate groups and remain non-plottable on mismatched geometry. Keep state in owner-scoped component memory, no URLs/storage/telemetry. Reuse the existing one-scene pain map.
+
+Approach: extend existing private report JSON and add a small pure comparison selector with accessible table UI. A new database/table or multi-scene dashboard would duplicate privacy guards and cost mobile resources. Use existing React/TS/node:test/Playwright stack. No external clinical content is added.
+
+Verify parser bounds, exact repeated occurrence, zero intensity/index, foreign ownership, mutation races, idempotency, legacy reports, comparison ordering/filtering/version separation and HE/EN mobile UI. Fresh independent final review; final CI green before authorized integration merge and LAB-only deployment. Physical Safari and signed-in real live write acceptance remain unverified.

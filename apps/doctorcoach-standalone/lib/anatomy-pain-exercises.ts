@@ -1,3 +1,4 @@
+import {workoutSection} from './workout-sections.ts';
 import {cardioActivity} from './cardio.ts';
 import {exercises} from './content.ts';
 import {trainingAccess,assignedPlan} from './training-access.ts';
@@ -45,6 +46,7 @@ export function painExerciseResolver(db:D1Database,config:ProgramAuthorConfig={}
     if(!row)throw new TrainingError('האימון אינו נגיש לחשבון שלך.',403);
     let item:SessionExercise|undefined;
     if(data.exerciseId){const items=withOccurrenceIds(JSON.parse(row.items_json) as SessionExercise[]),matches=items.filter(i=>i.exerciseId===data.exerciseId);item=data.occurrenceId?matches.find(i=>i.occurrenceId===data.occurrenceId):matches.length===1?matches[0]:undefined;if(!item)throw new TrainingError('בחרו את הופעת התרגיל המתאימה באימון.',409);}
+    if(data.setIndex!==undefined&&(!item||item.cardio||workoutSection(item)!=='main'||data.setIndex>=(item.results?.length??0)))throw new TrainingError('סט העבודה אינו נמצא בהופעת התרגיל שנבחרה.',409);
     return {option:item?snapshot(item,'workout'):null,occurrenceId:item?.occurrenceId,guard:{sql:`EXISTS(SELECT 1 FROM training_sessions WHERE id=? AND owner_id=? AND status IN ('active','completed')${item?' AND items_json=?':''})`,args:[data.sessionId,user.userId,...item?[row.items_json]:[]]}};
    }
    if(!data.exerciseId)return {option:null,guard:yes()};
