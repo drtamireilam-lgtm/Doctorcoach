@@ -49,3 +49,7 @@ public/pdf-import-assets/
 # Offline migration signing bundles must never enter Git.
 old-runtime-secrets.json
 new-runtime-secrets.json
+
+# Checksum-pinned whole-body asset generated at build time.
+/public/anatomy/detailed.glb
+/public/anatomy/detailed-source-and-license.json

@@ -21,7 +21,9 @@
     "test:services": "node --experimental-strip-types --test tests/services.test.mjs",
     "test:favorites": "node --experimental-strip-types --test tests/favorites.test.mjs",
     "test:platform": "node --experimental-strip-types --test tests/care.test.mjs tests/media.test.mjs tests/appointments.test.mjs",
-    "test:anatomy:browser": "node scripts/anatomy/browser-smoke.mjs"
+    "test:anatomy:browser": "node scripts/anatomy/browser-smoke.mjs",
+    "pretypecheck": "node scripts/anatomy/prepare-detailed.mjs",
+    "pretest": "node scripts/anatomy/prepare-detailed.mjs"
   },
   "dependencies": {
     "@base-ui/react": "^1.7.0",

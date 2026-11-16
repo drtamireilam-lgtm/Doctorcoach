@@ -1,0 +1,7 @@
+# Whole-body anatomy detail
+
+Owner requested every body part, rather than a shoulder/arm pilot. Add a detailed full-body reference alongside the original source atlas and regional viewers. Reuse Écorché commit 320805e06aee51e2e6f6b22533eb2a59d43f2d4d, retaining its actual geometry, transforms, vertex colours, baked occlusion, source depth classification and attribution. Its upstream tendon tints are visual styling, not individually validated tendon structures or calibrated fibre pathways.
+
+Use checksum-pinned build-time retrieval and deterministic GLB metadata adaptation, served locally at runtime. Preserve original clinical/exercise catalogue and motion engine. Link only uniquely exact known muscle names to canonical cards. Unmapped structures keep source English names and an honest unavailable-content state. Add independent superficial/deep controls, source identity, reversible hiding and an undo action. Never treat depth alone as a full anatomical dissection sequence.
+
+Alternatives: procedural fibres on old meshes would invent directions; replacing every original asset would break source-bound joint motion. A separate source-identified reference uses real geometry without either problem. Keep original overview default for compatibility; make detailed whole-body mode prominent and available directly. Do not promise every human muscle, clinically validated anatomy, native phone speed, genuine fibre tracts or complete new Hebrew translations.

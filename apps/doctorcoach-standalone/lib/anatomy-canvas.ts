@@ -101,6 +101,6 @@ export async function createAnatomyCanvas(host:HTMLElement,onSelect:(id:string|n
   const shown=new Set(visibleStructureIds(modelSpec,visible,isolated,hidden));
   for(const mesh of meshes){const structure=modelSpec.structures.find(s=>s.id===mesh.name);if(!structure)continue;mesh.visible=shown.has(structure.id);
    const color=anatomyColor(structure.layer,structure.id===selected);
-   for(const material of Array.isArray(mesh.material)?mesh.material:[mesh.material])if(material instanceof THREE.MeshStandardMaterial)material.color.set(color);
+   for(const material of Array.isArray(mesh.material)?mesh.material:[mesh.material])if(material instanceof THREE.MeshStandardMaterial){material.color.set(modelSpec.id==='detailed'?'#ffffff':color);material.emissive.set(modelSpec.id==='detailed'&&structure.id===selected?'#145d65':'#000000');}
   }render();}};
 }
