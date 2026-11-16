@@ -59,7 +59,7 @@ export default function HomePage(){
   const workoutDirty=useRef(false),painDrafts=useRef(new Set<object>());
  const onWorkoutDraftChange=useCallback((dirty:boolean)=>{workoutDirty.current=dirty;navigation.current.setDirty(dirty||painDrafts.current.size>0);},[]);
  useEffect(()=>{const changed=(event:Event)=>{const {token,dirty}=(event as CustomEvent<{token:object;dirty:boolean}>).detail;if(dirty)painDrafts.current.add(token);else painDrafts.current.delete(token);navigation.current.setDirty(workoutDirty.current||painDrafts.current.size>0);};window.addEventListener('dc-pain-draft',changed);return()=>window.removeEventListener('dc-pain-draft',changed);},[]);
-  const confirmLeave=()=>window.confirm(translateText('יש שינויים שטרם נשמרו באימון או בדיווח הכאב. יציאה תמחק את הטיוטות האלה. לצאת בכל זאת?',language));
+  const confirmLeave=()=>window.confirm(language==='en'?'There are unsaved workout changes or pain reports. Leaving discards these drafts. Leave anyway?':'יש שינויים שטרם נשמרו באימון או בדיווח הכאב. יציאה תמחק את הטיוטות האלה. לצאת בכל זאת?');
   const [recovery,setRecovery]=useState(()=>recoveryTarget(''));
   const [section,setSection]=useState<Section>('home'); const [selected,setSelected]=useState<string|null>(null); const [menu,setMenu]=useState(false); const [injury,setInjury]=useState(guides[0].name);
   useEffect(()=>{
