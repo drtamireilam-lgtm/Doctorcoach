@@ -1,5 +1,7 @@
 import * as THREE from 'three';
 
+export function anatomyMaterialRoughness(layer:string|undefined){return layer==='muscle'?0.66:layer==='bone'?0.84:layer==='cartilage'?0.46:0.74;}
+
 /** Presentation only: source meshes, normals, textures and anatomical IDs stay intact. */
 export function prepareAnatomyMaterials(meshes: THREE.Mesh[], layers: ReadonlyMap<string, string>) {
   const originals = new Set<THREE.Material>();
@@ -10,7 +12,7 @@ export function prepareAnatomyMaterials(meshes: THREE.Mesh[], layers: ReadonlyMa
       const material = source.clone();
       if (material instanceof THREE.MeshStandardMaterial) {
         material.metalness = 0;
-        material.roughness = layer === 'muscle' ? 0.66 : layer === 'bone' ? 0.84 : layer === 'cartilage' ? 0.46 : 0.74;
+        material.roughness = anatomyMaterialRoughness(layer);
         // Modest highlights describe the surface without making tissue look lacquered.
         material.envMapIntensity = 0.3;
       }

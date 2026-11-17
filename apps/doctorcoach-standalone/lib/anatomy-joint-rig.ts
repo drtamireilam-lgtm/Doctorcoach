@@ -1,4 +1,5 @@
 import * as THREE from 'three';
+import {anatomyMaterialRoughness} from './anatomy-presentation.ts';
 import {mergeGeometries} from 'three/addons/utils/BufferGeometryUtils.js';
 import type {AnatomyModel} from './anatomy-models.ts';
 import {channelsFor,jointAssetSha,type JointChannel,type JointMovement,type JointSide,type Landmark} from './anatomy-joint-movements.ts';
@@ -55,7 +56,7 @@ export function createJointRig(root:THREE.Object3D,meshes:THREE.Mesh[],model:Ana
     const originals=meshes.filter(m=>specs.get(m.name)?.layer==='bone'&&m.parent===parent&&!m.name.endsWith('-patella')&&context.bones.has(m.name)===inContext);if(!originals.length)continue;
     const copies=originals.map(m=>{m.updateMatrix();return m.geometry.clone().applyMatrix4(m.matrix);});let geometry:THREE.BufferGeometry|null;
     try{geometry=mergeGeometries(copies,false);}finally{copies.forEach(g=>g.dispose());}
-    if(!geometry)throw new Error('Source batching unavailable');const batch=new THREE.Mesh(geometry,new THREE.MeshStandardMaterial({color:0xe5dac2,roughness:.8,side:THREE.DoubleSide}));batch.userData.jointBoneBatch=true;batch.userData.jointContext=inContext;parent.add(batch);batches.push(batch);
+    if(!geometry)throw new Error('Source batching unavailable');const batch=new THREE.Mesh(geometry,new THREE.MeshStandardMaterial({color:0xe5dac2,roughness:anatomyMaterialRoughness('bone'),side:THREE.DoubleSide}));batch.userData.jointBoneBatch=true;batch.userData.jointContext=inContext;parent.add(batch);batches.push(batch);
    }
    for(const mesh of meshes)if(specs.get(mesh.name)?.layer==='bone')mesh.layers.set(1);
    neutral(true,false);

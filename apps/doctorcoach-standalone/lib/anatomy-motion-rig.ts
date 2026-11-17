@@ -1,4 +1,5 @@
 import * as THREE from 'three';
+import {anatomyMaterialRoughness} from './anatomy-presentation.ts';
 import {anatomyRoleColors} from './anatomy-training.ts';
 import {mergeGeometries} from 'three/addons/utils/BufferGeometryUtils.js';
 import type {AnatomyModel} from './anatomy-models.ts';
@@ -27,7 +28,7 @@ export function createExerciseRig(root:THREE.Object3D,meshes:THREE.Mesh[],model:
   const copies=originals.map(m=>{m.updateMatrix();return m.geometry.clone().applyMatrix4(m.matrix);});
   const geometry=mergeGeometries(copies,false);copies.forEach(g=>g.dispose());
   if(!geometry)throw new Error('Unable to batch source bones');
-  const batch=new THREE.Mesh(geometry,new THREE.MeshStandardMaterial({color:0xe5dac2,roughness:.8,metalness:0,side:THREE.DoubleSide}));batch.userData.motionBoneBatch=true;parent.add(batch);batches.push(batch);
+  const batch=new THREE.Mesh(geometry,new THREE.MeshStandardMaterial({color:0xe5dac2,roughness:anatomyMaterialRoughness('bone'),metalness:0,side:THREE.DoubleSide}));batch.userData.motionBoneBatch=true;parent.add(batch);batches.push(batch);
   originals.forEach(m=>{boneLayers.set(m,m.layers.mask);m.layers.set(1);});
  }
  let disposed=false;
