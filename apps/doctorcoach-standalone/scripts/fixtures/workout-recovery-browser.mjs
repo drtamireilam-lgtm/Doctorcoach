@@ -6,7 +6,7 @@ export async function verifyWorkoutRecovery({page,fixture,owner,started,language
  const expand=async()=>{const toggle=page.locator('.session-exercise .exercise-disclosure-toggle').first();if(await toggle.getAttribute('aria-expanded')==='false')await toggle.click();};
  const cached=async()=>page.evaluate(async id=>(await window.__workoutDraftTest.loadWorkoutDrafts('client',id)),started.id);
  setFailure(true);
- await inputs().nth(0).fill('33.125');await inputs().nth(1).fill('9');await inputs().nth(2).fill('7');
+ await inputs().nth(0).fill('33.125');await inputs().nth(1).fill('9');await inputs().nth(3).fill('7');
  await page.waitForFunction(async id=>(await window.__workoutDraftTest.loadWorkoutDrafts('client',id)).some(r=>r.fields.weight===33.125&&r.fields.amount===9&&r.fields.actualRpe===7),started.id);
  await page.waitForTimeout(1300);
  assert.equal((await fixture.training.feed(owner)).active.items[0].results[0].weight,20);
@@ -14,7 +14,7 @@ export async function verifyWorkoutRecovery({page,fixture,owner,started,language
  await page.waitForTimeout(300);assert.equal(await page.locator('.set-line').count(),0,'Unavailable server context cannot display cached workout fields');
  setFailure(true);await page.evaluate(()=>window.dispatchEvent(new Event('online')));await expand();
  await page.waitForFunction(()=>document.querySelector('.set-line .smart-set-fields input')?.value==='33.125');
- assert.equal(await inputs().nth(1).inputValue(),'9');assert.equal(await inputs().nth(2).inputValue(),'7');
+ assert.equal(await inputs().nth(1).inputValue(),'9');assert.equal(await inputs().nth(3).inputValue(),'7');
  assert.equal((await fixture.training.feed(owner)).active.items[0].results[0].done,false);
  await page.waitForTimeout(1300);
  // A different tab saved a new value while this device's edit was unconfirmed.
