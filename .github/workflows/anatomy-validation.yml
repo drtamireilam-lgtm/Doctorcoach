@@ -62,6 +62,10 @@ jobs:
           if-no-files-found: ignore
 
   pain-workout-validation:
+    strategy:
+      fail-fast: false
+      matrix:
+        width: [320, 390, 430, 768]
     runs-on: ubuntu-latest
     timeout-minutes: 20
     defaults:
@@ -83,10 +87,12 @@ jobs:
       - name: Install test browser
         run: pnpm exec playwright install --with-deps chromium
       - name: Verify anatomy training links and private pain workflow
+        env:
+          DC_ANATOMY_WIDTH: ${{ matrix.width }}
         run: node scripts/anatomy/training-pain-smoke.mjs
       - uses: actions/upload-artifact@v4
         if: ${{ !cancelled() }}
         with:
-          name: pain-workout-browser-evidence
+          name: pain-workout-browser-evidence-${{ matrix.width }}
           path: /tmp/dc-anatomy-evidence/training-pain/
           if-no-files-found: ignore

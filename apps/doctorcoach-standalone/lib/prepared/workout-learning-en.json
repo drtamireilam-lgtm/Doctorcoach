@@ -1,0 +1,2046 @@
+{
+  "wall-slide": {
+    "sourceDesc": "תנועה מבוקרת של השכמה והכתף בטווח נוח.",
+    "sourceCues": [
+      "גב יציב ונשימה רגועה",
+      "להתקדם רק בטווח שמרגיש נשלט"
+    ],
+    "desc": "Controlled scapular and shoulder movement within a comfortable range.",
+    "cues": [
+      "Stable back and relaxed breathing",
+      "Progress only within a controlled range"
+    ]
+  },
+  "band-er": {
+    "sourceDesc": "עבודה מדורגת על מסובבי הכתף.",
+    "sourceCues": [
+      "מרפק קרוב לגוף",
+      "לא לפצות בתנועת הגב"
+    ],
+    "desc": "Graded rotator cuff work.",
+    "cues": [
+      "Elbow close to the body",
+      "Avoid compensating with back movement"
+    ]
+  },
+  "landmine": {
+    "sourceDesc": "וריאציה ללחיצה בזווית אלכסונית.",
+    "sourceCues": [
+      "שליטה בשכמה",
+      "טווח שמאפשר תנועה נוחה"
+    ],
+    "desc": "An angled pressing variation.",
+    "cues": [
+      "Scapular control",
+      "A comfortable movement range"
+    ]
+  },
+  "chest-row": {
+    "sourceDesc": "משיכה כשהגו נתמך והעומס על הגב התחתון קטן יותר.",
+    "sourceCues": [
+      "משיכה יציבה",
+      "ללא תנופה"
+    ],
+    "desc": "Supported pulling with less lower-back load.",
+    "cues": [
+      "Steady pull",
+      "No momentum"
+    ]
+  },
+  "bench": {
+    "sourceDesc": "לחיצה אופקית בשליטה.",
+    "sourceCues": [
+      "מנח נוח לכתף",
+      "להימנע מירידה מעבר לטווח הנשלט"
+    ],
+    "desc": "Controlled horizontal pressing.",
+    "cues": [
+      "Comfortable shoulder position",
+      "Avoid going beyond your controlled range"
+    ]
+  },
+  "goblet": {
+    "sourceDesc": "דפוס סקוואט עם משקל קדמי.",
+    "sourceCues": [
+      "עומק לפי שליטה ונוחות",
+      "כפות רגליים יציבות"
+    ],
+    "desc": "A front-loaded squat pattern.",
+    "cues": [
+      "Depth according to control and comfort",
+      "Stable feet"
+    ]
+  },
+  "sit-stand": {
+    "sourceDesc": "תרגול פונקציונלי של כפיפה ויישור ברך.",
+    "sourceCues": [
+      "קצב מבוקר",
+      "בחירת גובה כיסא מתאים"
+    ],
+    "desc": "Functional knee flexion and extension.",
+    "cues": [
+      "Controlled pace",
+      "Choose a suitable chair height"
+    ]
+  },
+  "step-up": {
+    "sourceDesc": "חיזוק מדורג של רגל אחת.",
+    "sourceCues": [
+      "מדרגה נמוכה בתחילה",
+      "ברך נעה בהתאם לשליטה"
+    ],
+    "desc": "Graded single-leg strengthening.",
+    "cues": [
+      "Start with a low step",
+      "Controlled knee movement"
+    ]
+  },
+  "rdl": {
+    "sourceDesc": "דפוס ציר ירך לחיזוק שרשרת אחורית.",
+    "sourceCues": [
+      "עמוד שדרה במנח נשלט",
+      "התחלה במשקל קל"
+    ],
+    "desc": "Hip-hinge pattern for posterior-chain strength.",
+    "cues": [
+      "Controlled spine position",
+      "Start with light weight"
+    ]
+  },
+  "bird-dog": {
+    "sourceDesc": "שליטה בגו ובאגן תוך תנועת גפיים.",
+    "sourceCues": [
+      "תנועה איטית",
+      "אגן יציב"
+    ],
+    "desc": "Trunk and pelvic control during limb movement.",
+    "cues": [
+      "Slow movement",
+      "Stable pelvis"
+    ]
+  },
+  "dead-bug": {
+    "sourceDesc": "שליטה מרכזית בזמן תנועת יד ורגל.",
+    "sourceCues": [
+      "לנשום ברצף",
+      "לשמור על טווח נשלט"
+    ],
+    "desc": "Core control during arm and leg movement.",
+    "cues": [
+      "Breathe continuously",
+      "Maintain a controlled range"
+    ]
+  },
+  "hip-bridge": {
+    "sourceDesc": "עבודה על פשיטת ירך והפעלת ישבן.",
+    "sourceCues": [
+      "תנועה מהירך",
+      "ללא הקשתת יתר"
+    ],
+    "desc": "Hip extension and glute activation.",
+    "cues": [
+      "Move from the hip",
+      "Avoid excessive arching"
+    ]
+  },
+  "split-squat": {
+    "sourceDesc": "חיזוק רגליים בתמיכה א־סימטרית.",
+    "sourceCues": [
+      "אחיזה לתמיכה במידת הצורך",
+      "עומק מותאם"
+    ],
+    "desc": "Leg strength with asymmetric support.",
+    "cues": [
+      "Hold for support if needed",
+      "Adapted depth"
+    ]
+  },
+  "ecc-calf": {
+    "sourceDesc": "חיזוק שרירי השוק בטווח נוח.",
+    "sourceCues": [
+      "עלייה וירידה מבוקרות",
+      "להיעזר במעקה לשיווי משקל"
+    ],
+    "desc": "Calf strengthening within a comfortable range.",
+    "cues": [
+      "Controlled rise and lowering",
+      "Use a rail for balance"
+    ]
+  },
+  "balance": {
+    "sourceDesc": "תרגול שיווי משקל עם תמיכה זמינה.",
+    "sourceCues": [
+      "קרוב לקיר או מעקה",
+      "לשמור על יציבות"
+    ],
+    "desc": "Balance practice with support available.",
+    "cues": [
+      "Near a wall or rail",
+      "Maintain stability"
+    ]
+  },
+  "wrist-ext": {
+    "sourceDesc": "חיזוק מדורג של פושטי שורש כף היד.",
+    "sourceCues": [
+      "תנועה איטית",
+      "עומס התחלתי נמוך"
+    ],
+    "desc": "Graded wrist extensor strengthening.",
+    "cues": [
+      "Slow movement",
+      "Low initial load"
+    ]
+  },
+  "hammer-curl": {
+    "sourceDesc": "חיזוק זרוע באחיזה ניטרלית.",
+    "sourceCues": [
+      "מרפק יציב",
+      "בלי נדנוד גוף"
+    ],
+    "desc": "Neutral-grip arm strengthening.",
+    "cues": [
+      "Stable elbow",
+      "No body swinging"
+    ]
+  },
+  "walk": {
+    "sourceDesc": "פעילות אירובית קלה עם התאמת משך וקצב.",
+    "sourceCues": [
+      "להתחיל בהיקף נסבל",
+      "לעקוב אחר התגובה למחרת"
+    ],
+    "desc": "Light aerobic activity with adapted duration and pace.",
+    "cues": [
+      "Start with a tolerable amount",
+      "Monitor next-day response"
+    ]
+  },
+  "barbell-bench": {
+    "sourceDesc": "שכבו על ספסל יציב, הורידו את המוט בשליטה ודחפו מעלה עם עזרי בטיחות.",
+    "sourceCues": [
+      "שכבו על ספסל יציב, הורידו את המוט בשליטה ודחפו מעלה עם עזרי בטיחות.",
+      "התאימו את הסטים, החזרות ו־RPE היעד עם המאמן."
+    ],
+    "desc": "Lie on a stable bench, lower the bar with control and press up using safety supports.",
+    "cues": [
+      "Lie on a stable bench, lower the bar with control and press up using safety supports.",
+      "Adapt sets, reps and target RPE with your coach."
+    ]
+  },
+  "incline-db": {
+    "sourceDesc": "כוונו שיפוע מתון, הורידו את המשקולות בצדי החזה ולחצו בטווח נשלט.",
+    "sourceCues": [
+      "כוונו שיפוע מתון, הורידו את המשקולות בצדי החזה ולחצו בטווח נשלט.",
+      "התאימו את הסטים, החזרות ו־RPE היעד עם המאמן."
+    ],
+    "desc": "Use a moderate incline, lower dumbbells beside your chest and press within a controlled range.",
+    "cues": [
+      "Use a moderate incline, lower dumbbells beside your chest and press within a controlled range.",
+      "Adapt sets, reps and target RPE with your coach."
+    ]
+  },
+  "chest-fly": {
+    "sourceDesc": "התאימו את גובה המושב, קרבו את הידיות ושמרו על כיפוף קל במרפקים.",
+    "sourceCues": [
+      "התאימו את גובה המושב, קרבו את הידיות ושמרו על כיפוף קל במרפקים.",
+      "התאימו את הסטים, החזרות ו־RPE היעד עם המאמן."
+    ],
+    "desc": "Adjust seat height, bring handles together and keep elbows slightly bent.",
+    "cues": [
+      "Adjust seat height, bring handles together and keep elbows slightly bent.",
+      "Adapt sets, reps and target RPE with your coach."
+    ]
+  },
+  "db-fly": {
+    "sourceDesc": "פתחו את הזרועות בשכיבה בטווח נשלט והחזירו מבלי לשנות את זווית המרפק.",
+    "sourceCues": [
+      "פתחו את הזרועות בשכיבה בטווח נשלט והחזירו מבלי לשנות את זווית המרפק.",
+      "התאימו את הסטים, החזרות ו־RPE היעד עם המאמן."
+    ],
+    "desc": "Open your arms while lying down within a controlled range, then return without changing elbow angle.",
+    "cues": [
+      "Open your arms while lying down within a controlled range, then return without changing elbow angle.",
+      "Adapt sets, reps and target RPE with your coach."
+    ]
+  },
+  "lat-pulldown": {
+    "sourceDesc": "משכו לכיוון החזה העליון באחיזה ברוחב כתפיים עד מעט רחבה, ללא משיכה מאחורי הראש.",
+    "sourceCues": [
+      "משכו לכיוון החזה העליון באחיזה ברוחב כתפיים עד מעט רחבה, ללא משיכה מאחורי הראש.",
+      "התאימו את הסטים, החזרות ו־RPE היעד עם המאמן."
+    ],
+    "desc": "Pull toward your upper chest with a shoulder-width or slightly wider grip, never behind your head.",
+    "cues": [
+      "Pull toward your upper chest with a shoulder-width or slightly wider grip, never behind your head.",
+      "Adapt sets, reps and target RPE with your coach."
+    ]
+  },
+  "pullup": {
+    "sourceDesc": "עלו בשליטה ללא תנופה. אפשר לבחור מכונה מסייעת ולהתאים את האחיזה.",
+    "sourceCues": [
+      "עלו בשליטה ללא תנופה. אפשר לבחור מכונה מסייעת ולהתאים את האחיזה.",
+      "התאימו את הסטים, החזרות ו־RPE היעד עם המאמן."
+    ],
+    "desc": "Rise with control, without swinging. Use an assisted machine and adapt grip as needed.",
+    "cues": [
+      "Rise with control, without swinging. Use an assisted machine and adapt grip as needed.",
+      "Adapt sets, reps and target RPE with your coach."
+    ]
+  },
+  "chinup": {
+    "sourceDesc": "אחזו כשכפות הידיים פונות אליכם ועלו וירדו בטווח הנשלט שלכם.",
+    "sourceCues": [
+      "אחזו כשכפות הידיים פונות אליכם ועלו וירדו בטווח הנשלט שלכם.",
+      "התאימו את הסטים, החזרות ו־RPE היעד עם המאמן."
+    ],
+    "desc": "Grip with palms toward you and move up and down within your controlled range.",
+    "cues": [
+      "Grip with palms toward you and move up and down within your controlled range.",
+      "Adapt sets, reps and target RPE with your coach."
+    ]
+  },
+  "wide-row": {
+    "sourceDesc": "התאימו את תמיכת החזה ומשכו כשהמרפקים פונים לצדדים, ללא תנופת גו.",
+    "sourceCues": [
+      "התאימו את תמיכת החזה ומשכו כשהמרפקים פונים לצדדים, ללא תנופת גו.",
+      "התאימו את הסטים, החזרות ו־RPE היעד עם המאמן."
+    ],
+    "desc": "Adjust chest support and pull with elbows outward, without trunk momentum.",
+    "cues": [
+      "Adjust chest support and pull with elbows outward, without trunk momentum.",
+      "Adapt sets, reps and target RPE with your coach."
+    ]
+  },
+  "barbell-row": {
+    "sourceDesc": "הטו גו מציר הירך, משכו את המוט לכיוון הגוף ושמרו על מנח יציב.",
+    "sourceCues": [
+      "הטו גו מציר הירך, משכו את המוט לכיוון הגוף ושמרו על מנח יציב.",
+      "התאימו את הסטים, החזרות ו־RPE היעד עם המאמן."
+    ],
+    "desc": "Hinge at your hips, pull the bar toward your body and maintain a stable position.",
+    "cues": [
+      "Hinge at your hips, pull the bar toward your body and maintain a stable position.",
+      "Adapt sets, reps and target RPE with your coach."
+    ]
+  },
+  "cable-row": {
+    "sourceDesc": "משכו את הידית לכיוון הגו ללא נדנוד והחזירו בשליטה.",
+    "sourceCues": [
+      "משכו את הידית לכיוון הגו ללא נדנוד והחזירו בשליטה.",
+      "התאימו את הסטים, החזרות ו־RPE היעד עם המאמן."
+    ],
+    "desc": "Pull the handle toward your trunk without rocking and return with control.",
+    "cues": [
+      "Pull the handle toward your trunk without rocking and return with control.",
+      "Adapt sets, reps and target RPE with your coach."
+    ]
+  },
+  "overhead-press": {
+    "sourceDesc": "לחצו את המוט מעלה תוך שמירה על גו יציב וטווח שאפשר לשלוט בו.",
+    "sourceCues": [
+      "לחצו את המוט מעלה תוך שמירה על גו יציב וטווח שאפשר לשלוט בו.",
+      "התאימו את הסטים, החזרות ו־RPE היעד עם המאמן."
+    ],
+    "desc": "Press the bar upward with a stable trunk through a controlled range.",
+    "cues": [
+      "Press the bar upward with a stable trunk through a controlled range.",
+      "Adapt sets, reps and target RPE with your coach."
+    ]
+  },
+  "lateral-raise": {
+    "sourceDesc": "הרימו את הזרועות לצדדים עם כיפוף קל במרפקים וללא תנופה.",
+    "sourceCues": [
+      "הרימו את הזרועות לצדדים עם כיפוף קל במרפקים וללא תנופה.",
+      "התאימו את הסטים, החזרות ו־RPE היעד עם המאמן."
+    ],
+    "desc": "Raise arms sideways with slightly bent elbows and no momentum.",
+    "cues": [
+      "Raise arms sideways with slightly bent elbows and no momentum.",
+      "Adapt sets, reps and target RPE with your coach."
+    ]
+  },
+  "rear-delt": {
+    "sourceDesc": "במכונה או עם תמיכת חזה, פתחו את הזרועות לאחור והחזירו לאט.",
+    "sourceCues": [
+      "במכונה או עם תמיכת חזה, פתחו את הזרועות לאחור והחזירו לאט.",
+      "התאימו את הסטים, החזרות ו־RPE היעד עם המאמן."
+    ],
+    "desc": "Using a machine or chest support, open your arms backward and return slowly.",
+    "cues": [
+      "Using a machine or chest support, open your arms backward and return slowly.",
+      "Adapt sets, reps and target RPE with your coach."
+    ]
+  },
+  "face-pull": {
+    "sourceDesc": "משכו חבל לכיוון הפנים והפרידו את קצותיו, ללא פיצוי מהגב.",
+    "sourceCues": [
+      "משכו חבל לכיוון הפנים והפרידו את קצותיו, ללא פיצוי מהגב.",
+      "התאימו את הסטים, החזרות ו־RPE היעד עם המאמן."
+    ],
+    "desc": "Pull the rope toward your face and separate its ends without back compensation.",
+    "cues": [
+      "Pull the rope toward your face and separate its ends without back compensation.",
+      "Adapt sets, reps and target RPE with your coach."
+    ]
+  },
+  "cable-er": {
+    "sourceDesc": "הצמידו את המרפק לצד הגוף וסובבו את האמה החוצה בעומס קל ומבוקר.",
+    "sourceCues": [
+      "הצמידו את המרפק לצד הגוף וסובבו את האמה החוצה בעומס קל ומבוקר.",
+      "התאימו את הסטים, החזרות ו־RPE היעד עם המאמן."
+    ],
+    "desc": "Keep your elbow beside your body and rotate your forearm outward with light controlled resistance.",
+    "cues": [
+      "Keep your elbow beside your body and rotate your forearm outward with light controlled resistance.",
+      "Adapt sets, reps and target RPE with your coach."
+    ]
+  },
+  "serratus-punch": {
+    "sourceDesc": "דחפו קדימה דרך השכמה מבלי לכופף וליישר שוב ושוב את המרפק.",
+    "sourceCues": [
+      "דחפו קדימה דרך השכמה מבלי לכופף וליישר שוב ושוב את המרפק.",
+      "התאימו את הסטים, החזרות ו־RPE היעד עם המאמן."
+    ],
+    "desc": "Push forward through the scapula without repeatedly bending and extending your elbow.",
+    "cues": [
+      "Push forward through the scapula without repeatedly bending and extending your elbow.",
+      "Adapt sets, reps and target RPE with your coach."
+    ]
+  },
+  "barbell-curl": {
+    "sourceDesc": "כופפו מרפקים כשהזרועות יציבות ליד הגוף, ללא נדנוד.",
+    "sourceCues": [
+      "כופפו מרפקים כשהזרועות יציבות ליד הגוף, ללא נדנוד.",
+      "התאימו את הסטים, החזרות ו־RPE היעד עם המאמן."
+    ],
+    "desc": "Curl with upper arms stable beside your body, without swinging.",
+    "cues": [
+      "Curl with upper arms stable beside your body, without swinging.",
+      "Adapt sets, reps and target RPE with your coach."
+    ]
+  },
+  "cable-curl": {
+    "sourceDesc": "עמדו מול הפולי וכופפו מרפקים תוך שליטה בהחזרה.",
+    "sourceCues": [
+      "עמדו מול הפולי וכופפו מרפקים תוך שליטה בהחזרה.",
+      "התאימו את הסטים, החזרות ו־RPE היעד עם המאמן."
+    ],
+    "desc": "Face the cable and curl your elbows with a controlled return.",
+    "cues": [
+      "Face the cable and curl your elbows with a controlled return.",
+      "Adapt sets, reps and target RPE with your coach."
+    ]
+  },
+  "triceps-pushdown": {
+    "sourceDesc": "השאירו את המרפקים סמוך לגו, ישרו אותם והחזירו בשליטה.",
+    "sourceCues": [
+      "השאירו את המרפקים סמוך לגו, ישרו אותם והחזירו בשליטה.",
+      "התאימו את הסטים, החזרות ו־RPE היעד עם המאמן."
+    ],
+    "desc": "Keep elbows close to your trunk, extend them and return with control.",
+    "cues": [
+      "Keep elbows close to your trunk, extend them and return with control.",
+      "Adapt sets, reps and target RPE with your coach."
+    ]
+  },
+  "overhead-triceps": {
+    "sourceDesc": "כופפו ויישרו את המרפקים מעל הראש בטווח נוח מבלי להקשית את הגב.",
+    "sourceCues": [
+      "כופפו ויישרו את המרפקים מעל הראש בטווח נוח מבלי להקשית את הגב.",
+      "התאימו את הסטים, החזרות ו־RPE היעד עם המאמן."
+    ],
+    "desc": "Bend and extend elbows overhead through a comfortable range without arching your back.",
+    "cues": [
+      "Bend and extend elbows overhead through a comfortable range without arching your back.",
+      "Adapt sets, reps and target RPE with your coach."
+    ]
+  },
+  "wrist-curl": {
+    "sourceDesc": "הניחו את האמה על תמיכה וכופפו את שורש כף היד בתנועה קטנה ומבוקרת.",
+    "sourceCues": [
+      "הניחו את האמה על תמיכה וכופפו את שורש כף היד בתנועה קטנה ומבוקרת.",
+      "התאימו את הסטים, החזרות ו־RPE היעד עם המאמן."
+    ],
+    "desc": "Support your forearm and flex your wrist in a small controlled movement.",
+    "cues": [
+      "Support your forearm and flex your wrist in a small controlled movement.",
+      "Adapt sets, reps and target RPE with your coach."
+    ]
+  },
+  "farmer-carry": {
+    "sourceDesc": "אחזו משקולות לצדי הגוף וצעדו במסלול פנוי במנח יציב.",
+    "sourceCues": [
+      "אחזו משקולות לצדי הגוף וצעדו במסלול פנוי במנח יציב.",
+      "התאימו את הסטים, החזרות ו־RPE היעד עם המאמן."
+    ],
+    "desc": "Hold weights at your sides and walk along a clear path in a stable position.",
+    "cues": [
+      "Hold weights at your sides and walk along a clear path in a stable position.",
+      "Adapt sets, reps and target RPE with your coach."
+    ]
+  },
+  "back-squat": {
+    "sourceDesc": "מקמו את המוט ביציבות, רדו לעומק נשלט ועלו עם כפות רגליים יציבות.",
+    "sourceCues": [
+      "מקמו את המוט ביציבות, רדו לעומק נשלט ועלו עם כפות רגליים יציבות.",
+      "התאימו את הסטים, החזרות ו־RPE היעד עם המאמן."
+    ],
+    "desc": "Position the bar securely, descend to a controlled depth and rise with stable feet.",
+    "cues": [
+      "Position the bar securely, descend to a controlled depth and rise with stable feet.",
+      "Adapt sets, reps and target RPE with your coach."
+    ]
+  },
+  "leg-press": {
+    "sourceDesc": "כוונו את המושב, הורידו את המזחלת בטווח שבו האגן נשאר נתמך ודחפו בשליטה.",
+    "sourceCues": [
+      "כוונו את המושב, הורידו את המזחלת בטווח שבו האגן נשאר נתמך ודחפו בשליטה.",
+      "התאימו את הסטים, החזרות ו־RPE היעד עם המאמן."
+    ],
+    "desc": "Adjust the seat and lower the sled only while your pelvis stays supported; press with control.",
+    "cues": [
+      "Adjust the seat and lower the sled only while your pelvis stays supported; press with control.",
+      "Adapt sets, reps and target RPE with your coach."
+    ]
+  },
+  "leg-extension": {
+    "sourceDesc": "התאימו את ציר המכונה לברך, ישרו את הברכיים והחזירו לאט.",
+    "sourceCues": [
+      "התאימו את ציר המכונה לברך, ישרו את הברכיים והחזירו לאט.",
+      "התאימו את הסטים, החזרות ו־RPE היעד עם המאמן."
+    ],
+    "desc": "Align the machine axis with your knee, extend and return slowly.",
+    "cues": [
+      "Align the machine axis with your knee, extend and return slowly.",
+      "Adapt sets, reps and target RPE with your coach."
+    ]
+  },
+  "seated-curl": {
+    "sourceDesc": "התאימו את המשענת והכרית, כופפו את הברכיים והחזירו בשליטה.",
+    "sourceCues": [
+      "התאימו את המשענת והכרית, כופפו את הברכיים והחזירו בשליטה.",
+      "התאימו את הסטים, החזרות ו־RPE היעד עם המאמן."
+    ],
+    "desc": "Adjust the backrest and pad, bend your knees and return with control.",
+    "cues": [
+      "Adjust the backrest and pad, bend your knees and return with control.",
+      "Adapt sets, reps and target RPE with your coach."
+    ]
+  },
+  "lying-curl": {
+    "sourceDesc": "שמרו את האגן נתמך וכופפו ברכיים מבלי להרים את הגו.",
+    "sourceCues": [
+      "שמרו את האגן נתמך וכופפו ברכיים מבלי להרים את הגו.",
+      "התאימו את הסטים, החזרות ו־RPE היעד עם המאמן."
+    ],
+    "desc": "Keep your pelvis supported and bend your knees without lifting your trunk.",
+    "cues": [
+      "Keep your pelvis supported and bend your knees without lifting your trunk.",
+      "Adapt sets, reps and target RPE with your coach."
+    ]
+  },
+  "hip-thrust": {
+    "sourceDesc": "השענו עם הגב העליון על ספסל יציב, הרימו את האגן דרך הירכיים והורידו בשליטה.",
+    "sourceCues": [
+      "השענו עם הגב העליון על ספסל יציב, הרימו את האגן דרך הירכיים והורידו בשליטה.",
+      "התאימו את הסטים, החזרות ו־RPE היעד עם המאמן."
+    ],
+    "desc": "Support your upper back on a stable bench, raise your pelvis through your hips and lower with control.",
+    "cues": [
+      "Support your upper back on a stable bench, raise your pelvis through your hips and lower with control.",
+      "Adapt sets, reps and target RPE with your coach."
+    ]
+  },
+  "cable-kickback": {
+    "sourceDesc": "באחיזה יציבה, הניעו את הירך לאחור מבלי ליצור תנועה גדולה בגב.",
+    "sourceCues": [
+      "באחיזה יציבה, הניעו את הירך לאחור מבלי ליצור תנועה גדולה בגב.",
+      "התאימו את הסטים, החזרות ו־RPE היעד עם המאמן."
+    ],
+    "desc": "Hold for stability and move your thigh backward without excessive back movement.",
+    "cues": [
+      "Hold for stability and move your thigh backward without excessive back movement.",
+      "Adapt sets, reps and target RPE with your coach."
+    ]
+  },
+  "adduction": {
+    "sourceDesc": "התאימו טווח נוח, קרבו את הירכיים והחזירו את המשקל לאט.",
+    "sourceCues": [
+      "התאימו טווח נוח, קרבו את הירכיים והחזירו את המשקל לאט.",
+      "התאימו את הסטים, החזרות ו־RPE היעד עם המאמן."
+    ],
+    "desc": "Set a comfortable range, bring your thighs together and return the weight slowly.",
+    "cues": [
+      "Set a comfortable range, bring your thighs together and return the weight slowly.",
+      "Adapt sets, reps and target RPE with your coach."
+    ]
+  },
+  "standing-calf": {
+    "sourceDesc": "עלו על כריות כף הרגל וירדו בטווח מבוקר ללא קפיצה.",
+    "sourceCues": [
+      "עלו על כריות כף הרגל וירדו בטווח מבוקר ללא קפיצה.",
+      "התאימו את הסטים, החזרות ו־RPE היעד עם המאמן."
+    ],
+    "desc": "Rise onto the balls of your feet and lower through a controlled range, without bouncing.",
+    "cues": [
+      "Rise onto the balls of your feet and lower through a controlled range, without bouncing.",
+      "Adapt sets, reps and target RPE with your coach."
+    ]
+  },
+  "seated-calf": {
+    "sourceDesc": "הניחו את כריות כף הרגל על המשטח, הרימו והורידו את העקבים בשליטה.",
+    "sourceCues": [
+      "הניחו את כריות כף הרגל על המשטח, הרימו והורידו את העקבים בשליטה.",
+      "התאימו את הסטים, החזרות ו־RPE היעד עם המאמן."
+    ],
+    "desc": "Place the balls of your feet on the platform; raise and lower your heels with control.",
+    "cues": [
+      "Place the balls of your feet on the platform; raise and lower your heels with control.",
+      "Adapt sets, reps and target RPE with your coach."
+    ]
+  },
+  "deadlift": {
+    "sourceDesc": "הציבו את המוט קרוב לגוף, צרו מתח לפני המשיכה ועמדו תוך תנועת ירך וברך.",
+    "sourceCues": [
+      "הציבו את המוט קרוב לגוף, צרו מתח לפני המשיכה ועמדו תוך תנועת ירך וברך.",
+      "התאימו את הסטים, החזרות ו־RPE היעד עם המאמן."
+    ],
+    "desc": "Keep the bar close, build tension before pulling and stand through hip and knee movement.",
+    "cues": [
+      "Keep the bar close, build tension before pulling and stand through hip and knee movement.",
+      "Adapt sets, reps and target RPE with your coach."
+    ]
+  },
+  "paused-bench": {
+    "sourceDesc": "עצרו עצירה נשלטת בתחתית הלחיצה ללא הקפצה והיעזרו במשגיח או במוטות בטיחות.",
+    "sourceCues": [
+      "עצרו עצירה נשלטת בתחתית הלחיצה ללא הקפצה והיעזרו במשגיח או במוטות בטיחות.",
+      "התאימו את הסטים, החזרות ו־RPE היעד עם המאמן."
+    ],
+    "desc": "Pause with control at the bottom without bouncing. Use a spotter or safety bars.",
+    "cues": [
+      "Pause with control at the bottom without bouncing. Use a spotter or safety bars.",
+      "Adapt sets, reps and target RPE with your coach."
+    ]
+  },
+  "paused-squat": {
+    "sourceDesc": "עצרו לזמן שנקבע בעומק נשלט ושמרו על מתח ויציבות לפני העלייה.",
+    "sourceCues": [
+      "עצרו לזמן שנקבע בעומק נשלט ושמרו על מתח ויציבות לפני העלייה.",
+      "התאימו את הסטים, החזרות ו־RPE היעד עם המאמן."
+    ],
+    "desc": "Pause for the assigned time at a controlled depth, maintaining tension and stability before rising.",
+    "cues": [
+      "Pause for the assigned time at a controlled depth, maintaining tension and stability before rising.",
+      "Adapt sets, reps and target RPE with your coach."
+    ]
+  },
+  "crunch": {
+    "sourceDesc": "קרבו את בית החזה לאגן בתנועה מבוקרת ללא משיכה בצוואר.",
+    "sourceCues": [
+      "קרבו את בית החזה לאגן בתנועה מבוקרת ללא משיכה בצוואר.",
+      "התאימו את הסטים, החזרות ו־RPE היעד עם המאמן."
+    ],
+    "desc": "Bring your rib cage toward your pelvis with control, without pulling your neck.",
+    "cues": [
+      "Bring your rib cage toward your pelvis with control, without pulling your neck.",
+      "Adapt sets, reps and target RPE with your coach."
+    ]
+  },
+  "plank": {
+    "sourceDesc": "הישענו על האמות, שמרו גו יציב ונשמו לאורך השהייה.",
+    "sourceCues": [
+      "הישענו על האמות, שמרו גו יציב ונשמו לאורך השהייה.",
+      "התאימו את הסטים, החזרות ו־RPE היעד עם המאמן."
+    ],
+    "desc": "Support on your forearms, hold a stable trunk and breathe throughout.",
+    "cues": [
+      "Support on your forearms, hold a stable trunk and breathe throughout.",
+      "Adapt sets, reps and target RPE with your coach."
+    ]
+  },
+  "side-plank": {
+    "sourceDesc": "הישענו על האמה והחזיקו את הגו בקו נשלט; אפשר להתחיל עם ברכיים כפופות.",
+    "sourceCues": [
+      "הישענו על האמה והחזיקו את הגו בקו נשלט; אפשר להתחיל עם ברכיים כפופות.",
+      "התאימו את הסטים, החזרות ו־RPE היעד עם המאמן."
+    ],
+    "desc": "Support on your forearm and hold a controlled body line; start with bent knees if needed.",
+    "cues": [
+      "Support on your forearm and hold a controlled body line; start with bent knees if needed.",
+      "Adapt sets, reps and target RPE with your coach."
+    ]
+  },
+  "hanging-knee": {
+    "sourceDesc": "הרימו ברכיים בתנועה מבוקרת מבלי להתנדנד.",
+    "sourceCues": [
+      "הרימו ברכיים בתנועה מבוקרת מבלי להתנדנד.",
+      "התאימו את הסטים, החזרות ו־RPE היעד עם המאמן."
+    ],
+    "desc": "Raise knees with control without swinging.",
+    "cues": [
+      "Raise knees with control without swinging.",
+      "Adapt sets, reps and target RPE with your coach."
+    ]
+  },
+  "woodchop": {
+    "sourceDesc": "הניעו את הידית באלכסון בעזרת תנועה מתואמת של הגוף, ללא משיכה חדה.",
+    "sourceCues": [
+      "הניעו את הידית באלכסון בעזרת תנועה מתואמת של הגוף, ללא משיכה חדה.",
+      "התאימו את הסטים, החזרות ו־RPE היעד עם המאמן."
+    ],
+    "desc": "Move the handle diagonally with coordinated body movement, without jerking.",
+    "cues": [
+      "Move the handle diagonally with coordinated body movement, without jerking.",
+      "Adapt sets, reps and target RPE with your coach."
+    ]
+  },
+  "pallof": {
+    "sourceDesc": "עמדו לצד הפולי ודחפו את הידית קדימה תוך התנגדות לסיבוב הגו.",
+    "sourceCues": [
+      "עמדו לצד הפולי ודחפו את הידית קדימה תוך התנגדות לסיבוב הגו.",
+      "התאימו את הסטים, החזרות ו־RPE היעד עם המאמן."
+    ],
+    "desc": "Stand beside the cable and press forward while resisting trunk rotation.",
+    "cues": [
+      "Stand beside the cable and press forward while resisting trunk rotation.",
+      "Adapt sets, reps and target RPE with your coach."
+    ]
+  },
+  "shrug": {
+    "sourceDesc": "הרימו והורידו את השכמות ללא סיבובי כתפיים וללא תנועת צוואר מכוונת.",
+    "sourceCues": [
+      "הרימו והורידו את השכמות ללא סיבובי כתפיים וללא תנועת צוואר מכוונת.",
+      "התאימו את הסטים, החזרות ו־RPE היעד עם המאמן."
+    ],
+    "desc": "Raise and lower your scapulae without rolling shoulders or intentional neck movement.",
+    "cues": [
+      "Raise and lower your scapulae without rolling shoulders or intentional neck movement.",
+      "Adapt sets, reps and target RPE with your coach."
+    ]
+  },
+  "back-extension": {
+    "sourceDesc": "כוונו את הכרית מתחת לקפל הירך והניעו את הגו בטווח שניתן לשלוט בו.",
+    "sourceCues": [
+      "כוונו את הכרית מתחת לקפל הירך והניעו את הגו בטווח שניתן לשלוט בו.",
+      "התאימו את הסטים, החזרות ו־RPE היעד עם המאמן."
+    ],
+    "desc": "Set the pad below the hip crease and move your trunk within a controlled range.",
+    "cues": [
+      "Set the pad below the hip crease and move your trunk within a controlled range.",
+      "Adapt sets, reps and target RPE with your coach."
+    ]
+  },
+  "cable-abduction": {
+    "sourceDesc": "באחיזה יציבה, הרחיקו רגל לצד בלי להטות את האגן.",
+    "sourceCues": [
+      "באחיזה יציבה, הרחיקו רגל לצד בלי להטות את האגן.",
+      "התאימו את הסטים, החזרות ו־RPE היעד עם המאמן."
+    ],
+    "desc": "Hold for stability and move your leg sideways without tilting your pelvis.",
+    "cues": [
+      "Hold for stability and move your leg sideways without tilting your pelvis.",
+      "Adapt sets, reps and target RPE with your coach."
+    ]
+  },
+  "side-abduction": {
+    "sourceDesc": "שכבו על הצד, שמרו את האגן יציב והרימו את הרגל העליונה בטווח מבוקר.",
+    "sourceCues": [
+      "שכבו על הצד, שמרו את האגן יציב והרימו את הרגל העליונה בטווח מבוקר.",
+      "התאימו את הסטים, החזרות ו־RPE היעד עם המאמן."
+    ],
+    "desc": "Lie on your side, keep your pelvis stable and raise your upper leg with control.",
+    "cues": [
+      "Lie on your side, keep your pelvis stable and raise your upper leg with control.",
+      "Adapt sets, reps and target RPE with your coach."
+    ]
+  },
+  "push-up": {
+    "sourceDesc": "הניחו ידיים על משטח יציב, הורידו את הגוף כיחידה ולחצו חזרה תוך שמירה על גו נשלט.",
+    "sourceCues": [
+      "הניחו ידיים על משטח יציב, הורידו את הגוף כיחידה ולחצו חזרה תוך שמירה על גו נשלט.",
+      "התאימו את הסטים, החזרות ו־RPE היעד עם המאמן."
+    ],
+    "desc": "Place your hands on a stable surface, lower your body as one unit, and press back up while keeping your trunk controlled.",
+    "cues": [
+      "Place your hands on a stable surface, lower your body as one unit, and press back up while keeping your trunk controlled.",
+      "Adapt sets, reps and target RPE with your coach."
+    ]
+  },
+  "machine-chest-press": {
+    "sourceDesc": "התאימו מושב כך שהידיות בגובה החזה, השאירו גב נתמך ולחצו והחזירו בשליטה.",
+    "sourceCues": [
+      "התאימו מושב כך שהידיות בגובה החזה, השאירו גב נתמך ולחצו והחזירו בשליטה.",
+      "התאימו את הסטים, החזרות ו־RPE היעד עם המאמן."
+    ],
+    "desc": "Adjust the seat so the handles are at chest height, keep your back supported, and press and return with control.",
+    "cues": [
+      "Adjust the seat so the handles are at chest height, keep your back supported, and press and return with control.",
+      "Adapt sets, reps and target RPE with your coach."
+    ]
+  },
+  "cable-fly": {
+    "sourceDesc": "בעמידה יציבה בין הכבלים, קרבו את הזרועות לפני הגוף עם כיפוף קל וקבוע במרפקים.",
+    "sourceCues": [
+      "בעמידה יציבה בין הכבלים, קרבו את הזרועות לפני הגוף עם כיפוף קל וקבוע במרפקים.",
+      "התאימו את הסטים, החזרות ו־RPE היעד עם המאמן."
+    ],
+    "desc": "Stand steadily between the cables and bring your arms together in front of your body, keeping a slight, fixed bend in your elbows.",
+    "cues": [
+      "Stand steadily between the cables and bring your arms together in front of your body, keeping a slight, fixed bend in your elbows.",
+      "Adapt sets, reps and target RPE with your coach."
+    ]
+  },
+  "incline-barbell-bench": {
+    "sourceDesc": "כוונו ספסל בשיפוע מתון, הורידו את המוט בשליטה ולחצו מעלה עם משגיח או מוטות בטיחות.",
+    "sourceCues": [
+      "כוונו ספסל בשיפוע מתון, הורידו את המוט בשליטה ולחצו מעלה עם משגיח או מוטות בטיחות.",
+      "התאימו את הסטים, החזרות ו־RPE היעד עם המאמן."
+    ],
+    "desc": "Set the bench to a moderate incline, lower the bar with control, and press upward using a spotter or safety bars.",
+    "cues": [
+      "Set the bench to a moderate incline, lower the bar with control, and press upward using a spotter or safety bars.",
+      "Adapt sets, reps and target RPE with your coach."
+    ]
+  },
+  "single-arm-db-row": {
+    "sourceDesc": "תמכו בגוף על ספסל יציב, משכו את המשקולת לצד הגו והחזירו ללא סיבוב או תנופה של הגוף.",
+    "sourceCues": [
+      "תמכו בגוף על ספסל יציב, משכו את המשקולת לצד הגו והחזירו ללא סיבוב או תנופה של הגוף.",
+      "התאימו את הסטים, החזרות ו־RPE היעד עם המאמן."
+    ],
+    "desc": "Support your body on a stable bench, pull the dumbbell toward the side of your trunk, and return without twisting or swinging your body.",
+    "cues": [
+      "Support your body on a stable bench, pull the dumbbell toward the side of your trunk, and return without twisting or swinging your body.",
+      "Adapt sets, reps and target RPE with your coach."
+    ]
+  },
+  "t-bar-row": {
+    "sourceDesc": "מקמו את המוט במתקן מעוגן, החזיקו גו יציב ומשכו את הידית לכיוון הגוף ללא תנופה.",
+    "sourceCues": [
+      "מקמו את המוט במתקן מעוגן, החזיקו גו יציב ומשכו את הידית לכיוון הגוף ללא תנופה.",
+      "התאימו את הסטים, החזרות ו־RPE היעד עם המאמן."
+    ],
+    "desc": "Position the bar in an anchored attachment, keep your trunk stable, and pull the handle toward your body without swinging.",
+    "cues": [
+      "Position the bar in an anchored attachment, keep your trunk stable, and pull the handle toward your body without swinging.",
+      "Adapt sets, reps and target RPE with your coach."
+    ]
+  },
+  "straight-arm-pulldown": {
+    "sourceDesc": "עמדו מול פולי גבוה, שמרו כיפוף קל וקבוע במרפקים והניעו את הידית לכיוון הירכיים.",
+    "sourceCues": [
+      "עמדו מול פולי גבוה, שמרו כיפוף קל וקבוע במרפקים והניעו את הידית לכיוון הירכיים.",
+      "התאימו את הסטים, החזרות ו־RPE היעד עם המאמן."
+    ],
+    "desc": "Stand facing a high pulley, keep a slight, fixed bend in your elbows, and move the handle toward your thighs.",
+    "cues": [
+      "Stand facing a high pulley, keep a slight, fixed bend in your elbows, and move the handle toward your thighs.",
+      "Adapt sets, reps and target RPE with your coach."
+    ]
+  },
+  "assisted-pull-up": {
+    "sourceDesc": "בחרו סיוע במכונה, עלו וירדו בשליטה ללא תנופה. במכונה, יותר משקל סיוע מקל על התנועה; ציינו את הסיוע בהערת המאמן ולא כעומס חיצוני.",
+    "sourceCues": [
+      "בחרו סיוע במכונה, עלו וירדו בשליטה ללא תנופה. במכונה, יותר משקל סיוע מקל על התנועה; ציינו את הסיוע בהערת המאמן ולא כעומס חיצוני.",
+      "התאימו את הסטים, החזרות ו־RPE היעד עם המאמן."
+    ],
+    "desc": "Select machine assistance and rise and lower with control, without swinging. On the machine, more assistance weight makes the movement easier; record assistance in the coach note rather than as external load.",
+    "cues": [
+      "Select machine assistance and rise and lower with control, without swinging. On the machine, more assistance weight makes the movement easier; record assistance in the coach note rather than as external load.",
+      "Adapt sets, reps and target RPE with your coach."
+    ]
+  },
+  "seated-db-shoulder-press": {
+    "sourceDesc": "שבו עם גב נתמך, לחצו את המשקולות מעלה בטווח נשלט והורידו ללא הקשתת הגו.",
+    "sourceCues": [
+      "שבו עם גב נתמך, לחצו את המשקולות מעלה בטווח נשלט והורידו ללא הקשתת הגו.",
+      "התאימו את הסטים, החזרות ו־RPE היעד עם המאמן."
+    ],
+    "desc": "Sit with your back supported, press the dumbbells upward through a controlled range, and lower them without arching your trunk.",
+    "cues": [
+      "Sit with your back supported, press the dumbbells upward through a controlled range, and lower them without arching your trunk.",
+      "Adapt sets, reps and target RPE with your coach."
+    ]
+  },
+  "cable-lateral-raise": {
+    "sourceDesc": "עמדו לצד פולי נמוך, הרימו את הזרוע לצד עם כיפוף קל במרפק והחזירו ללא תנופה.",
+    "sourceCues": [
+      "עמדו לצד פולי נמוך, הרימו את הזרוע לצד עם כיפוף קל במרפק והחזירו ללא תנופה.",
+      "התאימו את הסטים, החזרות ו־RPE היעד עם המאמן."
+    ],
+    "desc": "Stand beside a low pulley, raise your arm sideways with a slight bend in your elbow, and return without swinging.",
+    "cues": [
+      "Stand beside a low pulley, raise your arm sideways with a slight bend in your elbow, and return without swinging.",
+      "Adapt sets, reps and target RPE with your coach."
+    ]
+  },
+  "reverse-pec-deck": {
+    "sourceDesc": "שבו מול תמיכת החזה, התאימו גובה ידיות ופתחו את הזרועות לאחור תוך שמירה על גו נתמך.",
+    "sourceCues": [
+      "שבו מול תמיכת החזה, התאימו גובה ידיות ופתחו את הזרועות לאחור תוך שמירה על גו נתמך.",
+      "התאימו את הסטים, החזרות ו־RPE היעד עם המאמן."
+    ],
+    "desc": "Sit facing the chest support, adjust the handle height, and open your arms backward while keeping your trunk supported.",
+    "cues": [
+      "Sit facing the chest support, adjust the handle height, and open your arms backward while keeping your trunk supported.",
+      "Adapt sets, reps and target RPE with your coach."
+    ]
+  },
+  "dumbbell-curl": {
+    "sourceDesc": "כופפו ויישרו את המרפקים כשהזרועות לצד הגוף, ללא תנופת גו ועם החזרה מבוקרת.",
+    "sourceCues": [
+      "כופפו ויישרו את המרפקים כשהזרועות לצד הגוף, ללא תנופת גו ועם החזרה מבוקרת.",
+      "התאימו את הסטים, החזרות ו־RPE היעד עם המאמן."
+    ],
+    "desc": "Bend and straighten your elbows with your upper arms beside your body, without swinging your trunk and with a controlled return.",
+    "cues": [
+      "Bend and straighten your elbows with your upper arms beside your body, without swinging your trunk and with a controlled return.",
+      "Adapt sets, reps and target RPE with your coach."
+    ]
+  },
+  "incline-db-curl": {
+    "sourceDesc": "שבו על ספסל בשיפוע עם גב נתמך, השאירו זרועות לצדי הגוף וכופפו מרפקים בטווח נשלט.",
+    "sourceCues": [
+      "שבו על ספסל בשיפוע עם גב נתמך, השאירו זרועות לצדי הגוף וכופפו מרפקים בטווח נשלט.",
+      "התאימו את הסטים, החזרות ו־RPE היעד עם המאמן."
+    ],
+    "desc": "Sit on an inclined bench with your back supported, keep your upper arms beside your body, and bend your elbows through a controlled range.",
+    "cues": [
+      "Sit on an inclined bench with your back supported, keep your upper arms beside your body, and bend your elbows through a controlled range.",
+      "Adapt sets, reps and target RPE with your coach."
+    ]
+  },
+  "preacher-curl": {
+    "sourceDesc": "הניחו את הזרועות על כרית הספסל וכופפו ויישרו מרפקים ללא הרמת הכתפיים וללא הקפצה בתחתית.",
+    "sourceCues": [
+      "הניחו את הזרועות על כרית הספסל וכופפו ויישרו מרפקים ללא הרמת הכתפיים וללא הקפצה בתחתית.",
+      "התאימו את הסטים, החזרות ו־RPE היעד עם המאמן."
+    ],
+    "desc": "Rest your upper arms on the bench pad and bend and straighten your elbows without lifting your shoulders or bouncing at the bottom.",
+    "cues": [
+      "Rest your upper arms on the bench pad and bend and straighten your elbows without lifting your shoulders or bouncing at the bottom.",
+      "Adapt sets, reps and target RPE with your coach."
+    ]
+  },
+  "skull-crusher": {
+    "sourceDesc": "שכבו על ספסל יציב, כופפו ויישרו את המרפקים כשהזרועות נשלטות. השתמשו בעומס המאפשר שליטה ובמשגיח לפי הצורך.",
+    "sourceCues": [
+      "שכבו על ספסל יציב, כופפו ויישרו את המרפקים כשהזרועות נשלטות. השתמשו בעומס המאפשר שליטה ובמשגיח לפי הצורך.",
+      "התאימו את הסטים, החזרות ו־RPE היעד עם המאמן."
+    ],
+    "desc": "Lie on a stable bench and bend and straighten your elbows while controlling your upper arms. Use a load you can control and a spotter when needed.",
+    "cues": [
+      "Lie on a stable bench and bend and straighten your elbows while controlling your upper arms. Use a load you can control and a spotter when needed.",
+      "Adapt sets, reps and target RPE with your coach."
+    ]
+  },
+  "cable-overhead-triceps": {
+    "sourceDesc": "כוונו את הפולי, התמקמו ביציבות ויישרו מרפקים מעל הראש ללא הקשתת הגו או תנופה.",
+    "sourceCues": [
+      "כוונו את הפולי, התמקמו ביציבות ויישרו מרפקים מעל הראש ללא הקשתת הגו או תנופה.",
+      "התאימו את הסטים, החזרות ו־RPE היעד עם המאמן."
+    ],
+    "desc": "Adjust the pulley, take a stable position, and straighten your elbows overhead without arching your trunk or swinging.",
+    "cues": [
+      "Adjust the pulley, take a stable position, and straighten your elbows overhead without arching your trunk or swinging.",
+      "Adapt sets, reps and target RPE with your coach."
+    ]
+  },
+  "close-grip-bench": {
+    "sourceDesc": "בחרו אחיזה צרה יחסית אך נוחה לשורש כף היד, הורידו את המוט בשליטה ולחצו עם עזרי בטיחות.",
+    "sourceCues": [
+      "בחרו אחיזה צרה יחסית אך נוחה לשורש כף היד, הורידו את המוט בשליטה ולחצו עם עזרי בטיחות.",
+      "התאימו את הסטים, החזרות ו־RPE היעד עם המאמן."
+    ],
+    "desc": "Choose a relatively narrow grip that is comfortable for your wrists, lower the bar with control, and press using safety equipment.",
+    "cues": [
+      "Choose a relatively narrow grip that is comfortable for your wrists, lower the bar with control, and press using safety equipment.",
+      "Adapt sets, reps and target RPE with your coach."
+    ]
+  },
+  "bulgarian-split-squat": {
+    "sourceDesc": "הניחו רגל אחורית על ספסל יציב, רדו ועלו באמצעות הרגל הקדמית בטווח נשלט. החזרות נספרות לכל צד.",
+    "sourceCues": [
+      "הניחו רגל אחורית על ספסל יציב, רדו ועלו באמצעות הרגל הקדמית בטווח נשלט. החזרות נספרות לכל צד.",
+      "התאימו את הסטים, החזרות ו־RPE היעד עם המאמן."
+    ],
+    "desc": "Place your rear foot on a stable bench and lower and rise using your front leg through a controlled range. Repetitions are counted per side.",
+    "cues": [
+      "Place your rear foot on a stable bench and lower and rise using your front leg through a controlled range. Repetitions are counted per side.",
+      "Adapt sets, reps and target RPE with your coach."
+    ]
+  },
+  "hack-squat": {
+    "sourceDesc": "הישענו במכונה, ודאו שהעצירות מכוונות ורדו ועלו עם כפות רגליים יציבות וגב נתמך.",
+    "sourceCues": [
+      "הישענו במכונה, ודאו שהעצירות מכוונות ורדו ועלו עם כפות רגליים יציבות וגב נתמך.",
+      "התאימו את הסטים, החזרות ו־RPE היעד עם המאמן."
+    ],
+    "desc": "Lean against the machine, check that the stops are adjusted, and lower and rise with stable feet and your back supported.",
+    "cues": [
+      "Lean against the machine, check that the stops are adjusted, and lower and rise with stable feet and your back supported.",
+      "Adapt sets, reps and target RPE with your coach."
+    ]
+  },
+  "smith-squat": {
+    "sourceDesc": "מקמו את המוט והעצירות במכונה, בחרו מיקום רגליים נוח ורדו ועלו בטווח שניתן לשלוט בו.",
+    "sourceCues": [
+      "מקמו את המוט והעצירות במכונה, בחרו מיקום רגליים נוח ורדו ועלו בטווח שניתן לשלוט בו.",
+      "התאימו את הסטים, החזרות ו־RPE היעד עם המאמן."
+    ],
+    "desc": "Position the bar and safety stops on the machine, choose a comfortable foot position, and lower and rise through a range you can control.",
+    "cues": [
+      "Position the bar and safety stops on the machine, choose a comfortable foot position, and lower and rise through a range you can control.",
+      "Adapt sets, reps and target RPE with your coach."
+    ]
+  },
+  "reverse-lunge": {
+    "sourceDesc": "צעדו לאחור, הורידו את הגוף בשליטה וחזרו לעמידה באמצעות הרגל הקדמית. החזרות נספרות לכל צד.",
+    "sourceCues": [
+      "צעדו לאחור, הורידו את הגוף בשליטה וחזרו לעמידה באמצעות הרגל הקדמית. החזרות נספרות לכל צד.",
+      "התאימו את הסטים, החזרות ו־RPE היעד עם המאמן."
+    ],
+    "desc": "Step backward, lower your body with control, and return to standing using your front leg. Repetitions are counted per side.",
+    "cues": [
+      "Step backward, lower your body with control, and return to standing using your front leg. Repetitions are counted per side.",
+      "Adapt sets, reps and target RPE with your coach."
+    ]
+  },
+  "walking-lunge": {
+    "sourceDesc": "צעדו קדימה במסלול פנוי, רדו למכרע נשלט והמשיכו לצד השני. הגדירו בתוכנית חזרות לכל צד.",
+    "sourceCues": [
+      "צעדו קדימה במסלול פנוי, רדו למכרע נשלט והמשיכו לצד השני. הגדירו בתוכנית חזרות לכל צד.",
+      "התאימו את הסטים, החזרות ו־RPE היעד עם המאמן."
+    ],
+    "desc": "Step forward along a clear path, lower into a controlled lunge, and continue on the other side. Specify repetitions per side in the program.",
+    "cues": [
+      "Step forward along a clear path, lower into a controlled lunge, and continue on the other side. Specify repetitions per side in the program.",
+      "Adapt sets, reps and target RPE with your coach."
+    ]
+  },
+  "hip-abduction-machine": {
+    "sourceDesc": "שבו עם גב נתמך, התאימו טווח התחלה והרחיקו את הירכיים ללא תנופת גו.",
+    "sourceCues": [
+      "שבו עם גב נתמך, התאימו טווח התחלה והרחיקו את הירכיים ללא תנופת גו.",
+      "התאימו את הסטים, החזרות ו־RPE היעד עם המאמן."
+    ],
+    "desc": "Sit with your back supported, adjust the starting range, and move your thighs apart without swinging your trunk.",
+    "cues": [
+      "Sit with your back supported, adjust the starting range, and move your thighs apart without swinging your trunk.",
+      "Adapt sets, reps and target RPE with your coach."
+    ]
+  },
+  "trap-bar-deadlift": {
+    "sourceDesc": "עמדו בתוך המוט, אחזו בידיות וקומו באמצעות תנועה מתואמת של הירכיים והברכיים ללא משיכה חדה.",
+    "sourceCues": [
+      "עמדו בתוך המוט, אחזו בידיות וקומו באמצעות תנועה מתואמת של הירכיים והברכיים ללא משיכה חדה.",
+      "התאימו את הסטים, החזרות ו־RPE היעד עם המאמן."
+    ],
+    "desc": "Stand inside the bar, grasp the handles, and stand up with coordinated hip and knee movement, without jerking.",
+    "cues": [
+      "Stand inside the bar, grasp the handles, and stand up with coordinated hip and knee movement, without jerking.",
+      "Adapt sets, reps and target RPE with your coach."
+    ]
+  },
+  "sumo-deadlift": {
+    "sourceDesc": "בחרו עמידה רחבה נוחה, אחזו במוט בין הברכיים וקומו בשליטה כשהמוט קרוב לגוף.",
+    "sourceCues": [
+      "בחרו עמידה רחבה נוחה, אחזו במוט בין הברכיים וקומו בשליטה כשהמוט קרוב לגוף.",
+      "התאימו את הסטים, החזרות ו־RPE היעד עם המאמן."
+    ],
+    "desc": "Choose a comfortable wide stance, grasp the bar between your knees, and stand up with control while keeping the bar close to your body.",
+    "cues": [
+      "Choose a comfortable wide stance, grasp the bar between your knees, and stand up with control while keeping the bar close to your body.",
+      "Adapt sets, reps and target RPE with your coach."
+    ]
+  },
+  "cable-crunch": {
+    "sourceDesc": "מול פולי גבוה, קרבו את בית החזה לאגן בתנועה מבוקרת בלי למשוך בחבל באמצעות הזרועות בלבד.",
+    "sourceCues": [
+      "מול פולי גבוה, קרבו את בית החזה לאגן בתנועה מבוקרת בלי למשוך בחבל באמצעות הזרועות בלבד.",
+      "התאימו את הסטים, החזרות ו־RPE היעד עם המאמן."
+    ],
+    "desc": "Facing a high pulley, bring your rib cage toward your pelvis with a controlled movement, without pulling the rope using only your arms.",
+    "cues": [
+      "Facing a high pulley, bring your rib cage toward your pelvis with a controlled movement, without pulling the rope using only your arms.",
+      "Adapt sets, reps and target RPE with your coach."
+    ]
+  },
+  "ab-wheel": {
+    "sourceDesc": "התחילו בכריעה, גלגלו קדימה רק עד הטווח שבו ניתן לשמור על גו נשלט וחזרו ללא קריסה בגב.",
+    "sourceCues": [
+      "התחילו בכריעה, גלגלו קדימה רק עד הטווח שבו ניתן לשמור על גו נשלט וחזרו ללא קריסה בגב.",
+      "התאימו את הסטים, החזרות ו־RPE היעד עם המאמן."
+    ],
+    "desc": "Start kneeling, roll forward only as far as you can maintain trunk control, and return without letting your back collapse.",
+    "cues": [
+      "Start kneeling, roll forward only as far as you can maintain trunk control, and return without letting your back collapse.",
+      "Adapt sets, reps and target RPE with your coach."
+    ]
+  },
+  "hanging-leg-raise": {
+    "sourceDesc": "החזיקו בתלייה יציבה והרימו והורידו את הרגליים בטווח נשלט ללא תנופה.",
+    "sourceCues": [
+      "החזיקו בתלייה יציבה והרימו והורידו את הרגליים בטווח נשלט ללא תנופה.",
+      "התאימו את הסטים, החזרות ו־RPE היעד עם המאמן."
+    ],
+    "desc": "Maintain a stable hang and raise and lower your legs through a controlled range without swinging.",
+    "cues": [
+      "Maintain a stable hang and raise and lower your legs through a controlled range without swinging.",
+      "Adapt sets, reps and target RPE with your coach."
+    ]
+  },
+  "suitcase-carry": {
+    "sourceDesc": "אחזו משקל בצד אחד וצעדו במסלול פנוי בלי להטות את הגו. הגדירו זמן לכל צד והחליפו יד.",
+    "sourceCues": [
+      "אחזו משקל בצד אחד וצעדו במסלול פנוי בלי להטות את הגו. הגדירו זמן לכל צד והחליפו יד.",
+      "התאימו את הסטים, החזרות ו־RPE היעד עם המאמן."
+    ],
+    "desc": "Hold a weight on one side and walk along a clear path without leaning your trunk. Specify time per side and switch hands.",
+    "cues": [
+      "Hold a weight on one side and walk along a clear path without leaning your trunk. Specify time per side and switch hands.",
+      "Adapt sets, reps and target RPE with your coach."
+    ]
+  },
+  "side-lying-external-rotation": {
+    "sourceDesc": "סיבוב האמה כלפי מעלה עם מרפק צמוד לגוף.",
+    "sourceCues": [
+      "הניחו מגבת מתחת למרפק",
+      "בחרו התנגדות קלה וטווח נשלט"
+    ],
+    "desc": "Rotate the forearm upward with the elbow beside your body.",
+    "cues": [
+      "Place a towel under the elbow",
+      "Use light resistance and a controlled range"
+    ]
+  },
+  "scaption": {
+    "sourceDesc": "הרמת היד מעט קדימה מצדי הגוף.",
+    "sourceCues": [
+      "אגודל פונה מעלה",
+      "הימנעו ממשיכת הכתף לכיוון האוזן"
+    ],
+    "desc": "Raise your hand slightly forward of your side.",
+    "cues": [
+      "Thumb pointing up",
+      "Avoid shrugging toward the ear"
+    ]
+  },
+  "push-up-plus": {
+    "sourceDesc": "דחיפה נוספת דרך השכמות לאחר יישור המרפקים.",
+    "sourceCues": [
+      "התחילו מול קיר",
+      "שמרו על שליטה בגו"
+    ],
+    "desc": "An additional scapular push after elbow extension.",
+    "cues": [
+      "Start against a wall",
+      "Maintain trunk control"
+    ]
+  },
+  "chin-tuck": {
+    "sourceDesc": "החלקה עדינה של הראש לאחור כשהמבט קדימה.",
+    "sourceCues": [
+      "אין לדחוף לטווח מכאיב",
+      "הימנעו מהטיית הראש מטה"
+    ],
+    "desc": "Gently slide your head backward while looking forward.",
+    "cues": [
+      "Do not force a painful range",
+      "Avoid tilting your head downward"
+    ]
+  },
+  "deep-neck-flexor-hold": {
+    "sourceDesc": "הנהון קטן בשכיבה עם הראש נתמך.",
+    "sourceCues": [
+      "השאירו את הראש על המשטח",
+      "נשמו ללא מאמץ"
+    ],
+    "desc": "A small nod while lying with the head supported.",
+    "cues": [
+      "Keep your head on the surface",
+      "Breathe without strain"
+    ]
+  },
+  "cervical-isometric-rotation": {
+    "sourceDesc": "התנגדות קלה ביד לסיבוב הראש, ללא תנועה.",
+    "sourceCues": [
+      "הפעילו כוח קל בלבד",
+      "הפסיקו אם מופיעים סחרחורת, הקרנה או נימול"
+    ],
+    "desc": "Light hand resistance to head rotation without movement.",
+    "cues": [
+      "Use light force only",
+      "Stop for dizziness, radiating symptoms or numbness"
+    ]
+  },
+  "thoracic-extension-bench": {
+    "sourceDesc": "תנועה בחלק העליון של הגב כשהזרועות נתמכות.",
+    "sourceCues": [
+      "הימנעו מהקשתת יתר בגב התחתון",
+      "בחרו טווח נוח"
+    ],
+    "desc": "Upper-back movement with supported arms.",
+    "cues": [
+      "Avoid excessive lower-back arching",
+      "Choose a comfortable range"
+    ]
+  },
+  "wrist-extension-eccentric": {
+    "sourceDesc": "הורדת שורש כף היד באיטיות כשהאמה נתמכת.",
+    "sourceCues": [
+      "אפשר לסייע בעלייה ביד השנייה",
+      "משקל וטווח נקבעים לפי התגובה"
+    ],
+    "desc": "Slow wrist lowering with forearm support.",
+    "cues": [
+      "Use the other hand to assist the lift",
+      "Choose weight and range according to response"
+    ]
+  },
+  "wrist-flexion-eccentric": {
+    "sourceDesc": "הורדה מבוקרת כשהאמה נתמכת וכף היד פונה מעלה.",
+    "sourceCues": [
+      "אל תניעו את המרפק",
+      "התחילו בהתנגדות קטנה"
+    ],
+    "desc": "Controlled lowering with forearm supported and palm up.",
+    "cues": [
+      "Do not move your elbow",
+      "Start with low resistance"
+    ]
+  },
+  "forearm-pronation-band": {
+    "sourceDesc": "סיבוב האמה כך שכף היד פונה מטה.",
+    "sourceCues": [
+      "מרפק נתמך",
+      "התנגדות קלה ללא פיצוי מהכתף"
+    ],
+    "desc": "Rotate the forearm so the palm faces down.",
+    "cues": [
+      "Supported elbow",
+      "Light resistance without shoulder compensation"
+    ]
+  },
+  "forearm-supination-band": {
+    "sourceDesc": "סיבוב האמה כך שכף היד פונה מעלה.",
+    "sourceCues": [
+      "מרפק נתמך",
+      "הימנעו מאחיזה מכאיבה"
+    ],
+    "desc": "Rotate the forearm so the palm faces up.",
+    "cues": [
+      "Supported elbow",
+      "Avoid a painful grip"
+    ]
+  },
+  "grip-isometric": {
+    "sourceDesc": "לחיצה עדינה על כדור רך או מגבת.",
+    "sourceCues": [
+      "הרפו בין ההחזקות",
+      "אין ללחוץ בכוח מרבי"
+    ],
+    "desc": "Gently squeeze a soft ball or towel.",
+    "cues": [
+      "Relax between holds",
+      "Do not squeeze maximally"
+    ]
+  },
+  "finger-extension-band": {
+    "sourceDesc": "פתיחת האצבעות כנגד גומייה קלה.",
+    "sourceCues": [
+      "תנועה איטית",
+      "שמרו על שורש כף יד נוח"
+    ],
+    "desc": "Open fingers against a light band.",
+    "cues": [
+      "Slow movement",
+      "Keep the wrist comfortable"
+    ]
+  },
+  "mcgill-curl-up": {
+    "sourceDesc": "הרמה קטנה של הראש והשכמות מהמשטח.",
+    "sourceCues": [
+      "התנועה קצרה ומבוקרת",
+      "אל תעצרו נשימה"
+    ],
+    "desc": "Lift the head and scapulae slightly from the surface.",
+    "cues": [
+      "Short controlled movement",
+      "Do not hold your breath"
+    ]
+  },
+  "hip-hinge-dowel": {
+    "sourceDesc": "לימוד תנועה מהירכיים בעזרת מקל למשוב.",
+    "sourceCues": [
+      "שלחו אגן לאחור",
+      "אין צורך להגיע לעומק מרבי"
+    ],
+    "desc": "Learn hip movement using a dowel for feedback.",
+    "cues": [
+      "Move your pelvis backward",
+      "No need for maximal depth"
+    ]
+  },
+  "roman-chair-ql-lateral-stretch": {
+    "sourceDesc": "וריאציית מתיחה צידית בעזרת ספסל רומי.",
+    "sourceCues": [
+      "תרגיל מתקדם לבחירה ולהדגמה של איש מקצוע",
+      "אבטחו את המנח והימנעו מירידה פסיבית לקצה הטווח"
+    ],
+    "desc": "A lateral stretch variation using a Roman chair.",
+    "cues": [
+      "Advanced exercise for professional selection and demonstration",
+      "Secure your position and avoid passive descent to end range"
+    ]
+  },
+  "single-leg-glute-bridge": {
+    "sourceDesc": "הרמת האגן כשהתמיכה ברגל אחת.",
+    "sourceCues": [
+      "אגן מאוזן",
+      "אפשר לחזור לתמיכה בשתי רגליים"
+    ],
+    "desc": "Raise your pelvis supported on one leg.",
+    "cues": [
+      "Level pelvis",
+      "Return to two-leg support if needed"
+    ]
+  },
+  "clamshell": {
+    "sourceDesc": "פתיחת הברך העליונה כשהעקבים צמודים.",
+    "sourceCues": [
+      "הימנעו מגלגול האגן לאחור",
+      "השתמשו בטווח קטן ונשלט"
+    ],
+    "desc": "Open the upper knee while keeping heels together.",
+    "cues": [
+      "Avoid rolling your pelvis backward",
+      "Use a small controlled range"
+    ]
+  },
+  "cossack-squat-stretch": {
+    "sourceDesc": "העברת משקל לצד אחד בעמידה רחבה.",
+    "sourceCues": [
+      "אפשר להיעזר בתמיכה",
+      "אל תכפו עומק או מתיחה חדה"
+    ],
+    "desc": "Shift weight to one side in a wide stance.",
+    "cues": [
+      "Use support if needed",
+      "Do not force depth or a sharp stretch"
+    ]
+  },
+  "adductor-squeeze": {
+    "sourceDesc": "לחיצה הדרגתית על כרית בין הברכיים.",
+    "sourceCues": [
+      "בחרו כוח נסבל",
+      "הרפו בין ההחזקות"
+    ],
+    "desc": "Gradually squeeze a cushion between your knees.",
+    "cues": [
+      "Use tolerable force",
+      "Relax between holds"
+    ]
+  },
+  "copenhagen-short-lever": {
+    "sourceDesc": "תמיכה צידית כשהברך העליונה נתמכת בספסל.",
+    "sourceCues": [
+      "נדרשת התאמה אישית של העומס",
+      "התחילו בזמן קצר ובתמיכה מתאימה"
+    ],
+    "desc": "Side support with the upper knee resting on a bench.",
+    "cues": [
+      "Load requires individual adaptation",
+      "Start with short holds and suitable support"
+    ]
+  },
+  "copenhagen-long-lever": {
+    "sourceDesc": "תמיכה צידית כשהרגל העליונה נתמכת באזור הקרסול.",
+    "sourceCues": [
+      "דורש יכולת בסיס קודמת",
+      "אין להתקדם אליו אוטומטית בגלל ירידה בכאב"
+    ],
+    "desc": "Side support with the upper leg supported near the ankle.",
+    "cues": [
+      "Requires prior baseline ability",
+      "Do not progress automatically because pain decreased"
+    ]
+  },
+  "step-down": {
+    "sourceDesc": "ירידה מבוקרת ממדרגה נמוכה.",
+    "sourceCues": [
+      "היעזרו במעקה לפי הצורך",
+      "התאימו גובה ושליטה"
+    ],
+    "desc": "Controlled descent from a low step.",
+    "cues": [
+      "Use a rail as needed",
+      "Adapt height and control"
+    ]
+  },
+  "wall-sit": {
+    "sourceDesc": "החזקת כפיפת ברכיים כשהגב נתמך בקיר.",
+    "sourceCues": [
+      "עומק לפי היכולת",
+      "נשמו ברצף"
+    ],
+    "desc": "Hold bent knees with your back against a wall.",
+    "cues": [
+      "Depth according to ability",
+      "Breathe continuously"
+    ]
+  },
+  "leg-extension-isometric": {
+    "sourceDesc": "החזקת הברך בזווית שנבחרה כנגד התנגדות.",
+    "sourceCues": [
+      "הזווית והעומס נקבעים אישית",
+      "אין לכפות כאב"
+    ],
+    "desc": "Hold the knee at a selected angle against resistance.",
+    "cues": [
+      "Angle and load are individualized",
+      "Do not force pain"
+    ]
+  },
+  "spanish-squat": {
+    "sourceDesc": "סקוואט עם תמיכת רצועה מאחורי הברכיים.",
+    "sourceCues": [
+      "יש לאבטח את הרצועה לעוגן מתאים",
+      "תרגלו תחילה בהשגחה"
+    ],
+    "desc": "Squat with a strap supporting behind the knees.",
+    "cues": [
+      "Secure the strap to a suitable anchor",
+      "Practice under supervision first"
+    ]
+  },
+  "hamstring-bridge": {
+    "sourceDesc": "הרמת אגן בעזרת דחיפה דרך העקבים.",
+    "sourceCues": [
+      "מרחק העקבים משנה את דרגת הקושי",
+      "הפסיקו במקרה של כאב חד"
+    ],
+    "desc": "Raise the pelvis by pushing through the heels.",
+    "cues": [
+      "Heel distance changes difficulty",
+      "Stop for sharp pain"
+    ]
+  },
+  "nordic-hamstring": {
+    "sourceDesc": "הטיית הגוף לפנים מברכיים כשהקרסוליים מאובטחים.",
+    "sourceCues": [
+      "תרגיל מתקדם עם עזרה לחזרה",
+      "בחרו טווח שבו ניתן לשלוט"
+    ],
+    "desc": "Lean forward from kneeling with ankles secured.",
+    "cues": [
+      "Advanced exercise with assisted return",
+      "Choose a controllable range"
+    ]
+  },
+  "single-leg-rdl": {
+    "sourceDesc": "ציר ירך בתמיכה על רגל אחת.",
+    "sourceCues": [
+      "אפשר להחזיק תמיכה",
+      "שמרו על אגן יציב"
+    ],
+    "desc": "Hip hinge supported on one leg.",
+    "cues": [
+      "Hold support if needed",
+      "Maintain a stable pelvis"
+    ]
+  },
+  "tibialis-raise": {
+    "sourceDesc": "הרמת קדמת כף הרגל כשהעקבים על הקרקע.",
+    "sourceCues": [
+      "הישענו על קיר לתמיכה",
+      "עלו ורדו בשליטה"
+    ],
+    "desc": "Raise the forefoot with heels on the ground.",
+    "cues": [
+      "Lean against a wall for support",
+      "Rise and lower with control"
+    ]
+  },
+  "ankle-inversion-band": {
+    "sourceDesc": "הנעת כף הרגל פנימה כנגד גומייה קלה.",
+    "sourceCues": [
+      "התנועה בקרסול",
+      "הברך נשארת יציבה"
+    ],
+    "desc": "Move the foot inward against a light band.",
+    "cues": [
+      "Movement comes from the ankle",
+      "Knee stays stable"
+    ]
+  },
+  "ankle-eversion-band": {
+    "sourceDesc": "הנעת כף הרגל החוצה כנגד גומייה קלה.",
+    "sourceCues": [
+      "הימנעו מסיבוב כל הרגל",
+      "טווח שאינו מעורר כאב"
+    ],
+    "desc": "Move the foot outward against a light band.",
+    "cues": [
+      "Avoid rotating the whole leg",
+      "A pain-free range"
+    ]
+  },
+  "short-foot": {
+    "sourceDesc": "הפעלה עדינה של הקשת בלי לכווץ את האצבעות.",
+    "sourceCues": [
+      "השאירו אצבעות ארוכות",
+      "התחילו בישיבה"
+    ],
+    "desc": "Gently activate the arch without curling toes.",
+    "cues": [
+      "Keep toes extended",
+      "Start seated"
+    ]
+  },
+  "toe-yoga": {
+    "sourceDesc": "תרגול הרמת הבוהן והאצבעות בנפרד.",
+    "sourceCues": [
+      "אפשר לסייע ביד",
+      "בלי כיווץ מאומץ"
+    ],
+    "desc": "Practice raising the great toe and other toes separately.",
+    "cues": [
+      "Assist with your hand if needed",
+      "Without forceful contraction"
+    ]
+  },
+  "front-squat": {
+    "sourceDesc": "סקוואט כשהמשקל מוחזק קדמית לגוף.",
+    "sourceCues": [
+      "בחרו אחיזה נוחה",
+      "התחילו במשקל המאפשר שליטה"
+    ],
+    "desc": "Squat with weight held in front of the body.",
+    "cues": [
+      "Choose a comfortable grip",
+      "Start with a controllable weight"
+    ]
+  },
+  "stretch-upper-trapezius-standing": {
+    "sourceDesc": "הטיית הראש בעדינות לצד כשהכתף הנגדית נשארת רגועה.",
+    "sourceCues": [
+      "בצעו רק את המתיחה והמינון שהצוות בחר. ללא קפיצות או כפיית טווח; הפסיקו בכאב חד, נימול או סחרחורת."
+    ],
+    "desc": "Gently tilt the head sideways while keeping the opposite shoulder relaxed.",
+    "cues": [
+      "Use only the stretch and dosage selected by the team. Do not bounce or force the range; stop for sharp pain, tingling or dizziness."
+    ]
+  },
+  "stretch-levator-scapulae": {
+    "sourceDesc": "בישיבה או בעמידה נתמכת, הפניית המבט באלכסון מטה לכיוון בית השחי.",
+    "sourceCues": [
+      "בצעו רק את המתיחה והמינון שהצוות בחר. ללא קפיצות או כפיית טווח; הפסיקו בכאב חד, נימול או סחרחורת."
+    ],
+    "desc": "Seated or supported standing, look diagonally down toward the armpit.",
+    "cues": [
+      "Use only the stretch and dosage selected by the team. Do not bounce or force the range; stop for sharp pain, tingling or dizziness."
+    ]
+  },
+  "stretch-posterior-neck": {
+    "sourceDesc": "כפיפה עדינה של הראש לפנים במנח יציב שנבחר עם הצוות.",
+    "sourceCues": [
+      "בצעו רק את המתיחה והמינון שהצוות בחר. ללא קפיצות או כפיית טווח; הפסיקו בכאב חד, נימול או סחרחורת."
+    ],
+    "desc": "Gently bend the head forward in a stable position selected with the team.",
+    "cues": [
+      "Use only the stretch and dosage selected by the team. Do not bounce or force the range; stop for sharp pain, tingling or dizziness."
+    ]
+  },
+  "stretch-doorway-chest": {
+    "sourceDesc": "הנחת האמה על המשקוף ופתיחת החזה בתנועה קטנה ומבוקרת.",
+    "sourceCues": [
+      "בצעו רק את המתיחה והמינון שהצוות בחר. ללא קפיצות או כפיית טווח; הפסיקו בכאב חד, נימול או סחרחורת."
+    ],
+    "desc": "Place the forearm on a doorway and open the chest with a small controlled movement.",
+    "cues": [
+      "Use only the stretch and dosage selected by the team. Do not bounce or force the range; stop for sharp pain, tingling or dizziness."
+    ]
+  },
+  "stretch-supine-y-chest": {
+    "sourceDesc": "בשכיבה נתמכת, פתיחת הזרועות לצורת Y בזווית נוחה לכתפיים.",
+    "sourceCues": [
+      "בצעו רק את המתיחה והמינון שהצוות בחר. ללא קפיצות או כפיית טווח; הפסיקו בכאב חד, נימול או סחרחורת."
+    ],
+    "desc": "Lying with support, open the arms into a Y at a comfortable shoulder angle.",
+    "cues": [
+      "Use only the stretch and dosage selected by the team. Do not bounce or force the range; stop for sharp pain, tingling or dizziness."
+    ]
+  },
+  "stretch-anterior-deltoid-wall": {
+    "sourceDesc": "הנחת היד על קיר מעט מאחורי הגוף וסיבוב קטן של הגו ממנו.",
+    "sourceCues": [
+      "בצעו רק את המתיחה והמינון שהצוות בחר. ללא קפיצות או כפיית טווח; הפסיקו בכאב חד, נימול או סחרחורת."
+    ],
+    "desc": "Place a hand on a wall slightly behind the body and gently turn the trunk away.",
+    "cues": [
+      "Use only the stretch and dosage selected by the team. Do not bounce or force the range; stop for sharp pain, tingling or dizziness."
+    ]
+  },
+  "stretch-posterior-shoulder-cross-body": {
+    "sourceDesc": "העברת הזרוע לרוחב החזה ותמיכה בה ביד הנגדית.",
+    "sourceCues": [
+      "בצעו רק את המתיחה והמינון שהצוות בחר. ללא קפיצות או כפיית טווח; הפסיקו בכאב חד, נימול או סחרחורת."
+    ],
+    "desc": "Bring the arm across the chest and support it with the opposite hand.",
+    "cues": [
+      "Use only the stretch and dosage selected by the team. Do not bounce or force the range; stop for sharp pain, tingling or dizziness."
+    ]
+  },
+  "stretch-upper-back-pole": {
+    "sourceDesc": "באחיזה בעמוד יציב, הושטת הידיים לפנים והתרחקות קלה של הגו.",
+    "sourceCues": [
+      "בצעו רק את המתיחה והמינון שהצוות בחר. ללא קפיצות או כפיית טווח; הפסיקו בכאב חד, נימול או סחרחורת."
+    ],
+    "desc": "Holding a stable pole, reach forward and gently move the trunk away.",
+    "cues": [
+      "Use only the stretch and dosage selected by the team. Do not bounce or force the range; stop for sharp pain, tingling or dizziness."
+    ]
+  },
+  "stretch-lat-pole-single-arm": {
+    "sourceDesc": "אחיזה בעמוד יציב מעל גובה הכתף והתרחקות מבוקרת של האגן.",
+    "sourceCues": [
+      "בצעו רק את המתיחה והמינון שהצוות בחר. ללא קפיצות או כפיית טווח; הפסיקו בכאב חד, נימול או סחרחורת."
+    ],
+    "desc": "Hold a stable pole above shoulder height and move the hips away with control.",
+    "cues": [
+      "Use only the stretch and dosage selected by the team. Do not bounce or force the range; stop for sharp pain, tingling or dizziness."
+    ]
+  },
+  "stretch-overhead-triceps": {
+    "sourceDesc": "בישיבה או בעמידה, כפיפת המרפק מעל הראש ותמיכה עדינה ביד הנגדית.",
+    "sourceCues": [
+      "בצעו רק את המתיחה והמינון שהצוות בחר. ללא קפיצות או כפיית טווח; הפסיקו בכאב חד, נימול או סחרחורת."
+    ],
+    "desc": "Seated or standing, bend the elbow overhead and gently support it with the opposite hand.",
+    "cues": [
+      "Use only the stretch and dosage selected by the team. Do not bounce or force the range; stop for sharp pain, tingling or dizziness."
+    ]
+  },
+  "stretch-biceps-wall": {
+    "sourceDesc": "הנחת היד על קיר מאחורי קו הגוף וסיבוב קטן ומבוקר של הגו.",
+    "sourceCues": [
+      "בצעו רק את המתיחה והמינון שהצוות בחר. ללא קפיצות או כפיית טווח; הפסיקו בכאב חד, נימול או סחרחורת."
+    ],
+    "desc": "Place a hand on a wall behind the body and gently turn the trunk away.",
+    "cues": [
+      "Use only the stretch and dosage selected by the team. Do not bounce or force the range; stop for sharp pain, tingling or dizziness."
+    ]
+  },
+  "stretch-wrist-flexor-straight-elbow": {
+    "sourceDesc": "עם מרפק ישר, הובלת כף היד בעדינות לפשיטה בעזרת היד הנגדית.",
+    "sourceCues": [
+      "בצעו רק את המתיחה והמינון שהצוות בחר. ללא קפיצות או כפיית טווח; הפסיקו בכאב חד, נימול או סחרחורת."
+    ],
+    "desc": "With the elbow straight, gently guide the wrist into extension using the opposite hand.",
+    "cues": [
+      "Use only the stretch and dosage selected by the team. Do not bounce or force the range; stop for sharp pain, tingling or dizziness."
+    ]
+  },
+  "stretch-wrist-extensor-straight-elbow": {
+    "sourceDesc": "עם מרפק ישר, הובלת כף היד בעדינות לכפיפה בעזרת היד הנגדית.",
+    "sourceCues": [
+      "בצעו רק את המתיחה והמינון שהצוות בחר. ללא קפיצות או כפיית טווח; הפסיקו בכאב חד, נימול או סחרחורת."
+    ],
+    "desc": "With the elbow straight, gently guide the wrist into flexion using the opposite hand.",
+    "cues": [
+      "Use only the stretch and dosage selected by the team. Do not bounce or force the range; stop for sharp pain, tingling or dizziness."
+    ]
+  },
+  "stretch-ql-standing-side": {
+    "sourceDesc": "הושטת יד מעל הראש והטיית הגו בעדינות לצד הנגדי.",
+    "sourceCues": [
+      "בצעו רק את המתיחה והמינון שהצוות בחר. ללא קפיצות או כפיית טווח; הפסיקו בכאב חד, נימול או סחרחורת."
+    ],
+    "desc": "Reach one arm overhead and gently bend the trunk to the opposite side.",
+    "cues": [
+      "Use only the stretch and dosage selected by the team. Do not bounce or force the range; stop for sharp pain, tingling or dizziness."
+    ]
+  },
+  "stretch-double-knee-to-chest": {
+    "sourceDesc": "בשכיבה על הגב, קירוב שתי הברכיים לחזה בטווח נוח.",
+    "sourceCues": [
+      "בצעו רק את המתיחה והמינון שהצוות בחר. ללא קפיצות או כפיית טווח; הפסיקו בכאב חד, נימול או סחרחורת."
+    ],
+    "desc": "Lying on the back, bring both knees toward the chest within a comfortable range.",
+    "cues": [
+      "Use only the stretch and dosage selected by the team. Do not bounce or force the range; stop for sharp pain, tingling or dizziness."
+    ]
+  },
+  "stretch-childs-pose": {
+    "sourceDesc": "מכריעה נתמכת, הובלת האגן לאחור והושטת הידיים לפנים.",
+    "sourceCues": [
+      "בצעו רק את המתיחה והמינון שהצוות בחר. ללא קפיצות או כפיית טווח; הפסיקו בכאב חד, נימול או סחרחורת."
+    ],
+    "desc": "From supported kneeling, move the hips back and reach the arms forward.",
+    "cues": [
+      "Use only the stretch and dosage selected by the team. Do not bounce or force the range; stop for sharp pain, tingling or dizziness."
+    ]
+  },
+  "stretch-low-cobra": {
+    "sourceDesc": "בשכיבה על הבטן, הרמה קטנה של בית החזה ללא כפיית פשיטה בגב.",
+    "sourceCues": [
+      "בצעו רק את המתיחה והמינון שהצוות בחר. ללא קפיצות או כפיית טווח; הפסיקו בכאב חד, נימול או סחרחורת."
+    ],
+    "desc": "Lying face down, lift the chest slightly without forcing spinal extension.",
+    "cues": [
+      "Use only the stretch and dosage selected by the team. Do not bounce or force the range; stop for sharp pain, tingling or dizziness."
+    ]
+  },
+  "stretch-hip-flexor-half-kneeling": {
+    "sourceDesc": "בחצי כריעה, שמירת האגן יציב והתקדמות קטנה לפנים.",
+    "sourceCues": [
+      "בצעו רק את המתיחה והמינון שהצוות בחר. ללא קפיצות או כפיית טווח; הפסיקו בכאב חד, נימול או סחרחורת."
+    ],
+    "desc": "In half-kneeling, keep the pelvis controlled and move forward slightly.",
+    "cues": [
+      "Use only the stretch and dosage selected by the team. Do not bounce or force the range; stop for sharp pain, tingling or dizziness."
+    ]
+  },
+  "stretch-modified-thomas": {
+    "sourceDesc": "בשכיבה על משטח יציב בקצהו, קירוב ברך אחת והשארת הרגל השנייה נתמכת או יורדת לפי ההדגמה.",
+    "sourceCues": [
+      "בצעו רק את המתיחה והמינון שהצוות בחר. ללא קפיצות או כפיית טווח; הפסיקו בכאב חד, נימול או סחרחורת."
+    ],
+    "desc": "On a stable surface near its edge, bring one knee toward the chest and position the other leg as demonstrated.",
+    "cues": [
+      "Use only the stretch and dosage selected by the team. Do not bounce or force the range; stop for sharp pain, tingling or dizziness."
+    ]
+  },
+  "stretch-quadriceps-standing": {
+    "sourceDesc": "באחיזה בתמיכה יציבה, כפיפת הברך והבאת העקב לכיוון הישבן.",
+    "sourceCues": [
+      "בצעו רק את המתיחה והמינון שהצוות בחר. ללא קפיצות או כפיית טווח; הפסיקו בכאב חד, נימול או סחרחורת."
+    ],
+    "desc": "Holding stable support, bend the knee and bring the heel toward the buttock.",
+    "cues": [
+      "Use only the stretch and dosage selected by the team. Do not bounce or force the range; stop for sharp pain, tingling or dizziness."
+    ]
+  },
+  "stretch-rectus-femoris-half-kneeling": {
+    "sourceDesc": "בחצי כריעה, כפיפת הברך האחורית וקיבוע האגן לפי ההדגמה האישית.",
+    "sourceCues": [
+      "בצעו רק את המתיחה והמינון שהצוות בחר. ללא קפיצות או כפיית טווח; הפסיקו בכאב חד, נימול או סחרחורת.",
+      "נדרשת הדגמה אישית לפני שימוש. אין לכפות כפיפת ברך או פשיטת ירך."
+    ],
+    "desc": "In half-kneeling, bend the rear knee and control the pelvis according to the individual demonstration.",
+    "cues": [
+      "Use only the stretch and dosage selected by the team. Do not bounce or force the range; stop for sharp pain, tingling or dizziness.",
+      "An individual demonstration is required before use. Do not force knee flexion or hip extension."
+    ]
+  },
+  "stretch-couch": {
+    "sourceDesc": "תמיכת כף הרגל האחורית על ספה או קיר, עם ריפוד לברך ושליטה באגן.",
+    "sourceCues": [
+      "בצעו רק את המתיחה והמינון שהצוות בחר. ללא קפיצות או כפיית טווח; הפסיקו בכאב חד, נימול או סחרחורת.",
+      "נדרשת הדגמה אישית לפני שימוש. אין לכפות כפיפת ברך או פשיטת ירך."
+    ],
+    "desc": "Support the rear foot against a couch or wall, cushion the knee and control the pelvis.",
+    "cues": [
+      "Use only the stretch and dosage selected by the team. Do not bounce or force the range; stop for sharp pain, tingling or dizziness.",
+      "An individual demonstration is required before use. Do not force knee flexion or hip extension."
+    ]
+  },
+  "stretch-hamstring-step": {
+    "sourceDesc": "הנחת העקב על מדרגה נמוכה והטיה קטנה של הגו מהירך.",
+    "sourceCues": [
+      "בצעו רק את המתיחה והמינון שהצוות בחר. ללא קפיצות או כפיית טווח; הפסיקו בכאב חד, נימול או סחרחורת."
+    ],
+    "desc": "Place the heel on a low step and hinge the trunk slightly from the hip.",
+    "cues": [
+      "Use only the stretch and dosage selected by the team. Do not bounce or force the range; stop for sharp pain, tingling or dizziness."
+    ]
+  },
+  "stretch-glute-knee-opposite-shoulder": {
+    "sourceDesc": "בשכיבה על הגב, הובלת הברך בעדינות לכיוון הכתף הנגדית.",
+    "sourceCues": [
+      "בצעו רק את המתיחה והמינון שהצוות בחר. ללא קפיצות או כפיית טווח; הפסיקו בכאב חד, נימול או סחרחורת."
+    ],
+    "desc": "Lying on the back, gently guide the knee toward the opposite shoulder.",
+    "cues": [
+      "Use only the stretch and dosage selected by the team. Do not bounce or force the range; stop for sharp pain, tingling or dizziness."
+    ]
+  },
+  "stretch-adductor-butterfly": {
+    "sourceDesc": "בישיבה יציבה, הצמדת כפות הרגליים ופתיחת הברכיים בטווח נוח.",
+    "sourceCues": [
+      "בצעו רק את המתיחה והמינון שהצוות בחר. ללא קפיצות או כפיית טווח; הפסיקו בכאב חד, נימול או סחרחורת."
+    ],
+    "desc": "Sit steadily with the soles together and let the knees open within a comfortable range.",
+    "cues": [
+      "Use only the stretch and dosage selected by the team. Do not bounce or force the range; stop for sharp pain, tingling or dizziness."
+    ]
+  },
+  "stretch-adductor-lateral-lunge": {
+    "sourceDesc": "בעמידה רחבה, העברת משקל לצד אחד תוך שמירת הרגל השנייה ארוכה.",
+    "sourceCues": [
+      "בצעו רק את המתיחה והמינון שהצוות בחר. ללא קפיצות או כפיית טווח; הפסיקו בכאב חד, נימול או סחרחורת."
+    ],
+    "desc": "From a wide stance, shift weight to one side while keeping the opposite leg long.",
+    "cues": [
+      "Use only the stretch and dosage selected by the team. Do not bounce or force the range; stop for sharp pain, tingling or dizziness."
+    ]
+  },
+  "stretch-lateral-hip-cross-legged": {
+    "sourceDesc": "בעמידה יציבה עם רגליים מוצלבות, הטיה עדינה של הגוף לצד.",
+    "sourceCues": [
+      "בצעו רק את המתיחה והמינון שהצוות בחר. ללא קפיצות או כפיית טווח; הפסיקו בכאב חד, נימול או סחרחורת."
+    ],
+    "desc": "Stand steadily with the legs crossed and gently lean the body sideways.",
+    "cues": [
+      "Use only the stretch and dosage selected by the team. Do not bounce or force the range; stop for sharp pain, tingling or dizziness."
+    ]
+  },
+  "stretch-lateral-hip-wall": {
+    "sourceDesc": "בתמיכה בקיר, מיקום הרגליים והסטת האגן הצדה לפי ההדגמה.",
+    "sourceCues": [
+      "בצעו רק את המתיחה והמינון שהצוות בחר. ללא קפיצות או כפיית טווח; הפסיקו בכאב חד, נימול או סחרחורת."
+    ],
+    "desc": "Using wall support, position the legs and shift the hips sideways as demonstrated.",
+    "cues": [
+      "Use only the stretch and dosage selected by the team. Do not bounce or force the range; stop for sharp pain, tingling or dizziness."
+    ]
+  },
+  "stretch-calf-wall-straight-knee": {
+    "sourceDesc": "בעמידת פסיעה מול קיר, שמירת הברך האחורית ישרה והעקב על הרצפה.",
+    "sourceCues": [
+      "בצעו רק את המתיחה והמינון שהצוות בחר. ללא קפיצות או כפיית טווח; הפסיקו בכאב חד, נימול או סחרחורת."
+    ],
+    "desc": "In a split stance facing a wall, keep the rear knee straight and the heel on the floor.",
+    "cues": [
+      "Use only the stretch and dosage selected by the team. Do not bounce or force the range; stop for sharp pain, tingling or dizziness."
+    ]
+  },
+  "stretch-soleus-wall-bent-knee": {
+    "sourceDesc": "בעמידת פסיעה מול קיר, כפיפת הברך האחורית כשהעקב נשאר על הרצפה.",
+    "sourceCues": [
+      "בצעו רק את המתיחה והמינון שהצוות בחר. ללא קפיצות או כפיית טווח; הפסיקו בכאב חד, נימול או סחרחורת."
+    ],
+    "desc": "In a split stance facing a wall, bend the rear knee while keeping the heel on the floor.",
+    "cues": [
+      "Use only the stretch and dosage selected by the team. Do not bounce or force the range; stop for sharp pain, tingling or dizziness."
+    ]
+  },
+  "movement-squat": {
+    "sourceDesc": "התנועה נשמרת כפי שנכתבה בתוכנית. ניתן לציין ציוד ומכשיר בהערות התרגיל.",
+    "sourceCues": [],
+    "desc": "The movement is retained as written in the program. Equipment and machine details can be specified in the exercise notes.",
+    "cues": []
+  },
+  "movement-chest-press": {
+    "sourceDesc": "התנועה נשמרת כפי שנכתבה בתוכנית. ניתן לציין ציוד ומכשיר בהערות התרגיל.",
+    "sourceCues": [],
+    "desc": "The movement is retained as written in the program. Equipment and machine details can be specified in the exercise notes.",
+    "cues": []
+  },
+  "movement-leg-curl": {
+    "sourceDesc": "התנועה נשמרת כפי שנכתבה בתוכנית. ניתן לציין ציוד ומכשיר בהערות התרגיל.",
+    "sourceCues": [],
+    "desc": "The movement is retained as written in the program. Equipment and machine details can be specified in the exercise notes.",
+    "cues": []
+  },
+  "movement-calf-raise": {
+    "sourceDesc": "התנועה נשמרת כפי שנכתבה בתוכנית. ניתן לציין ציוד ומכשיר בהערות התרגיל.",
+    "sourceCues": [],
+    "desc": "The movement is retained as written in the program. Equipment and machine details can be specified in the exercise notes.",
+    "cues": []
+  },
+  "movement-shrug": {
+    "sourceDesc": "התנועה נשמרת כפי שנכתבה בתוכנית. ניתן לציין ציוד ומכשיר בהערות התרגיל.",
+    "sourceCues": [],
+    "desc": "The movement is retained as written in the program. Equipment and machine details can be specified in the exercise notes.",
+    "cues": []
+  },
+  "movement-pullover": {
+    "sourceDesc": "התנועה נשמרת כפי שנכתבה בתוכנית. ניתן לציין ציוד ומכשיר בהערות התרגיל.",
+    "sourceCues": [],
+    "desc": "The movement is retained as written in the program. Equipment and machine details can be specified in the exercise notes.",
+    "cues": []
+  },
+  "movement-upright-row": {
+    "sourceDesc": "התנועה נשמרת כפי שנכתבה בתוכנית. ניתן לציין ציוד ומכשיר בהערות התרגיל.",
+    "sourceCues": [],
+    "desc": "The movement is retained as written in the program. Equipment and machine details can be specified in the exercise notes.",
+    "cues": []
+  },
+  "movement-overhead-press": {
+    "sourceDesc": "התנועה נשמרת כפי שנכתבה בתוכנית. ניתן לציין ציוד ומכשיר בהערות התרגיל.",
+    "sourceCues": [],
+    "desc": "The movement is retained as written in the program. Equipment and machine details can be specified in the exercise notes.",
+    "cues": []
+  },
+  "movement-bent-over-row": {
+    "sourceDesc": "התנועה נשמרת כפי שנכתבה בתוכנית. ניתן לציין ציוד ומכשיר בהערות התרגיל.",
+    "sourceCues": [],
+    "desc": "The movement is retained as written in the program. Equipment and machine details can be specified in the exercise notes.",
+    "cues": []
+  },
+  "movement-lateral-raise": {
+    "sourceDesc": "התנועה נשמרת כפי שנכתבה בתוכנית. ניתן לציין ציוד ומכשיר בהערות התרגיל.",
+    "sourceCues": [],
+    "desc": "The movement is retained as written in the program. Equipment and machine details can be specified in the exercise notes.",
+    "cues": []
+  },
+  "movement-rear-delt-fly": {
+    "sourceDesc": "התנועה נשמרת כפי שנכתבה בתוכנית. ניתן לציין ציוד ומכשיר בהערות התרגיל.",
+    "sourceCues": [],
+    "desc": "The movement is retained as written in the program. Equipment and machine details can be specified in the exercise notes.",
+    "cues": []
+  },
+  "movement-rear-delt-row": {
+    "sourceDesc": "התנועה נשמרת כפי שנכתבה בתוכנית. ניתן לציין ציוד ומכשיר בהערות התרגיל.",
+    "sourceCues": [],
+    "desc": "The movement is retained as written in the program. Equipment and machine details can be specified in the exercise notes.",
+    "cues": []
+  },
+  "movement-side-crunch": {
+    "sourceDesc": "התנועה נשמרת כפי שנכתבה בתוכנית. ניתן לציין ציוד ומכשיר בהערות התרגיל.",
+    "sourceCues": [],
+    "desc": "The movement is retained as written in the program. Equipment and machine details can be specified in the exercise notes.",
+    "cues": []
+  },
+  "movement-kelso-shrug": {
+    "sourceDesc": "קירוב השכמות בתמיכת הגו; יש לשמור על תנועת השכמה ולא להפוך את התרגיל לחתירה במרפקים.",
+    "sourceCues": [],
+    "desc": "Bring your shoulder blades together with your trunk supported; keep the movement at the shoulder blades rather than turning it into an elbow row.",
+    "cues": []
+  },
+  "movement-hammer-pulldown-narrow": {
+    "sourceDesc": "התנועה נשמרת כפי שנכתבה בתוכנית. ניתן לציין ציוד ומכשיר בהערות התרגיל.",
+    "sourceCues": [],
+    "desc": "The movement is retained as written in the program. Equipment and machine details can be specified in the exercise notes.",
+    "cues": []
+  },
+  "movement-hammer-row-wide": {
+    "sourceDesc": "התנועה נשמרת כפי שנכתבה בתוכנית. ניתן לציין ציוד ומכשיר בהערות התרגיל.",
+    "sourceCues": [],
+    "desc": "The movement is retained as written in the program. Equipment and machine details can be specified in the exercise notes.",
+    "cues": []
+  },
+  "seated-leg-press": {
+    "sourceDesc": "התאימו מושב ומשענת למכונת הלחיצה בישיבה, שמרו אגן וגב נתמכים ודחפו בשליטה. זווית המזחלת אינה נקבעת לפי השם בלבד.",
+    "sourceCues": [
+      "התאימו מושב ומשענת למכונת הלחיצה בישיבה, שמרו אגן וגב נתמכים ודחפו בשליטה. זווית המזחלת אינה נקבעת לפי השם בלבד.",
+      "התאימו טווח, עומס וחזרות עם המאמן ושמרו על תנועה נשלטת."
+    ],
+    "desc": "Adjust the seat and backrest of the seated leg-press machine, keep your pelvis and back supported, and push with control. The sled angle cannot be determined from the name alone.",
+    "cues": [
+      "Adjust the seat and backrest of the seated leg-press machine, keep your pelvis and back supported, and push with control. The sled angle cannot be determined from the name alone.",
+      "Adjust range, load and repetitions with your coach and keep the movement controlled."
+    ]
+  },
+  "incline-machine-chest-press": {
+    "sourceDesc": "התאימו את מושב מכונת הלחיצה בשיפוע, השאירו גב נתמך ולחצו והחזירו בטווח נשלט. אין להחליף בלחיצה שטוחה או בלחיצת כתפיים.",
+    "sourceCues": [
+      "התאימו את מושב מכונת הלחיצה בשיפוע, השאירו גב נתמך ולחצו והחזירו בטווח נשלט. אין להחליף בלחיצה שטוחה או בלחיצת כתפיים.",
+      "התאימו טווח, עומס וחזרות עם המאמן ושמרו על תנועה נשלטת."
+    ],
+    "desc": "Adjust the seat of the incline chest-press machine, keep your back supported, and press and return through a controlled range. Do not substitute a flat chest press or shoulder press.",
+    "cues": [
+      "Adjust the seat of the incline chest-press machine, keep your back supported, and press and return through a controlled range. Do not substitute a flat chest press or shoulder press.",
+      "Adjust range, load and repetitions with your coach and keep the movement controlled."
+    ]
+  },
+  "machine-lateral-raise": {
+    "sourceDesc": "התאימו את מכונת ההרחקה והרימו את הזרועות לצדדים בטווח נשלט וללא תנופה. ישיבה או עמידה נקבעות לפי המכונה והתוכנית, ולא לפי השם הכללי.",
+    "sourceCues": [
+      "התאימו את מכונת ההרחקה והרימו את הזרועות לצדדים בטווח נשלט וללא תנופה. ישיבה או עמידה נקבעות לפי המכונה והתוכנית, ולא לפי השם הכללי.",
+      "התאימו טווח, עומס וחזרות עם המאמן ושמרו על תנועה נשלטת."
+    ],
+    "desc": "Adjust the lateral-raise machine and raise your arms sideways through a controlled range without swinging. Sitting or standing depends on the machine and program, not on the general name.",
+    "cues": [
+      "Adjust the lateral-raise machine and raise your arms sideways through a controlled range without swinging. Sitting or standing depends on the machine and program, not on the general name.",
+      "Adjust range, load and repetitions with your coach and keep the movement controlled."
+    ]
+  },
+  "machine-biceps-curl": {
+    "sourceDesc": "התאימו את המכונה וכופפו ויישרו את המרפקים בשליטה. מנח הגוף ותמיכת הזרוע לפי המכשיר והתוכנית; השם אינו קובע ספסל כומר.",
+    "sourceCues": [
+      "התאימו את המכונה וכופפו ויישרו את המרפקים בשליטה. מנח הגוף ותמיכת הזרוע לפי המכשיר והתוכנית; השם אינו קובע ספסל כומר.",
+      "התאימו טווח, עומס וחזרות עם המאמן ושמרו על תנועה נשלטת."
+    ],
+    "desc": "Adjust the machine and bend and straighten your elbows with control. Body position and upper-arm support depend on the machine and program; the name does not specify a preacher bench.",
+    "cues": [
+      "Adjust the machine and bend and straighten your elbows with control. Body position and upper-arm support depend on the machine and program; the name does not specify a preacher bench.",
+      "Adjust range, load and repetitions with your coach and keep the movement controlled."
+    ]
+  },
+  "cable-straight-leg-hip-flexion": {
+    "sourceDesc": "חברו רצועת קרסול לפולי והתקבעו במנח שנקבע בתוכנית. הניעו את הירך קדימה כשהברך נשארת ישרה ללא פיצוי מהגב. שם זה אינו קובע תנוחת גוף.",
+    "sourceCues": [
+      "חברו רצועת קרסול לפולי והתקבעו במנח שנקבע בתוכנית. הניעו את הירך קדימה כשהברך נשארת ישרה ללא פיצוי מהגב. שם זה אינו קובע תנוחת גוף.",
+      "התאימו טווח, עומס וחזרות עם המאמן ושמרו על תנועה נשלטת."
+    ],
+    "desc": "Attach an ankle strap to the pulley and stabilize yourself in the position specified in the program. Move your thigh forward while keeping your knee straight and avoiding compensation from your back. This name does not specify a body position.",
+    "cues": [
+      "Attach an ankle strap to the pulley and stabilize yourself in the position specified in the program. Move your thigh forward while keeping your knee straight and avoiding compensation from your back. This name does not specify a body position.",
+      "Adjust range, load and repetitions with your coach and keep the movement controlled."
+    ]
+  },
+  "parallel-bar-dip": {
+    "sourceDesc": "בתמיכה על שני מוטות מקבילים, כופפו ויישרו את המרפקים בטווח נשלט ללא תנופה. זו אינה גרסת ספסל או מכונה מסייעת. שדה המשקל מיועד לעומס חיצוני בלבד.",
+    "sourceCues": [
+      "בתמיכה על שני מוטות מקבילים, כופפו ויישרו את המרפקים בטווח נשלט ללא תנופה. זו אינה גרסת ספסל או מכונה מסייעת. שדה המשקל מיועד לעומס חיצוני בלבד.",
+      "התאימו טווח, עומס וחזרות עם המאמן ושמרו על תנועה נשלטת."
+    ],
+    "desc": "Supported on two parallel bars, bend and straighten your elbows through a controlled range without swinging. This is not the bench or assisted-machine variation. The weight field is for external load only.",
+    "cues": [
+      "Supported on two parallel bars, bend and straighten your elbows through a controlled range without swinging. This is not the bench or assisted-machine variation. The weight field is for external load only.",
+      "Adjust range, load and repetitions with your coach and keep the movement controlled."
+    ]
+  },
+  "wide-grip-cable-pulldown": {
+    "sourceDesc": "התאימו את תמיכת הירכיים בפולי העליון ומשכו באחיזה רחבה לכיוון החזה העליון, ללא משיכה מאחורי הראש וללא תנופת גו.",
+    "sourceCues": [
+      "התאימו את תמיכת הירכיים בפולי העליון ומשכו באחיזה רחבה לכיוון החזה העליון, ללא משיכה מאחורי הראש וללא תנופת גו.",
+      "התאימו טווח, עומס וחזרות עם המאמן ושמרו על תנועה נשלטת."
+    ],
+    "desc": "Adjust the thigh support at the high pulley and pull with a wide grip toward your upper chest, without pulling behind your head or swinging your trunk.",
+    "cues": [
+      "Adjust the thigh support at the high pulley and pull with a wide grip toward your upper chest, without pulling behind your head or swinging your trunk.",
+      "Adjust range, load and repetitions with your coach and keep the movement controlled."
+    ]
+  },
+  "narrow-grip-cable-pulldown": {
+    "sourceDesc": "התאימו תמיכת ירכיים בפולי העליון ומשכו באחיזה צרה לכיוון החזה בשליטה. כיוון כפות הידיים נקבע בתוכנית; אחיזה צרה אינה קובעת ניטרלית או תחתית.",
+    "sourceCues": [
+      "התאימו תמיכת ירכיים בפולי העליון ומשכו באחיזה צרה לכיוון החזה בשליטה. כיוון כפות הידיים נקבע בתוכנית; אחיזה צרה אינה קובעת ניטרלית או תחתית.",
+      "התאימו טווח, עומס וחזרות עם המאמן ושמרו על תנועה נשלטת."
+    ],
+    "desc": "Adjust the thigh support at the high pulley and pull toward your chest with a narrow grip and control. Palm orientation is specified in the program; a narrow grip does not imply neutral or underhand orientation.",
+    "cues": [
+      "Adjust the thigh support at the high pulley and pull toward your chest with a narrow grip and control. Palm orientation is specified in the program; a narrow grip does not imply neutral or underhand orientation.",
+      "Adjust range, load and repetitions with your coach and keep the movement controlled."
+    ]
+  },
+  "movement-wide-grip-pulldown": {
+    "sourceDesc": "משיכה אנכית באחיזה רחבה לפי תוכנית המאמן. סוג המתקן והציוד אינם מצוינים בשם; אין להסיק כבל או מכונת המר.",
+    "sourceCues": [
+      "משיכה אנכית באחיזה רחבה לפי תוכנית המאמן. סוג המתקן והציוד אינם מצוינים בשם; אין להסיק כבל או מכונת המר.",
+      "התאימו טווח, עומס וחזרות עם המאמן ושמרו על תנועה נשלטת."
+    ],
+    "desc": "A wide-grip vertical pull as specified in the coach program. The apparatus and equipment are not specified by the name; do not infer a cable or Hammer machine.",
+    "cues": [
+      "A wide-grip vertical pull as specified in the coach program. The apparatus and equipment are not specified by the name; do not infer a cable or Hammer machine.",
+      "Adjust range, load and repetitions with your coach and keep the movement controlled."
+    ]
+  },
+  "movement-narrow-grip-pulldown": {
+    "sourceDesc": "משיכה אנכית באחיזה צרה לפי תוכנית המאמן. סוג המתקן וכיוון כפות הידיים אינם מצוינים בשם; אין להסיק כבל, מכונת המר או אחיזה ניטרלית.",
+    "sourceCues": [
+      "משיכה אנכית באחיזה צרה לפי תוכנית המאמן. סוג המתקן וכיוון כפות הידיים אינם מצוינים בשם; אין להסיק כבל, מכונת המר או אחיזה ניטרלית.",
+      "התאימו טווח, עומס וחזרות עם המאמן ושמרו על תנועה נשלטת."
+    ],
+    "desc": "A narrow-grip vertical pull as specified in the coach program. The apparatus and palm orientation are not specified by the name; do not infer a cable, Hammer machine, or neutral grip.",
+    "cues": [
+      "A narrow-grip vertical pull as specified in the coach program. The apparatus and palm orientation are not specified by the name; do not infer a cable, Hammer machine, or neutral grip.",
+      "Adjust range, load and repetitions with your coach and keep the movement controlled."
+    ]
+  }
+}
