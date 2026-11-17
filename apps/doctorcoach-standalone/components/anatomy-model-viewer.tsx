@@ -1,4 +1,5 @@
 'use client';
+import {readAnatomyView,writeAnatomyView} from '../lib/anatomy-view-storage';
 import type {ExerciseMuscleLink} from '../lib/anatomy-exercise-profiles';
 import type {AnatomyExerciseRole} from '../lib/anatomy-exercises';
 import {ExerciseMuscleSummary} from './exercise-muscle-summary';
@@ -16,13 +17,14 @@ import {structureRolesForLinks,exerciseStructureRoles,exerciseCoverage,anatomyRo
 import {anatomyHiddenStructures,type MuscleDepth} from '../lib/anatomy-depth';
 
 /** One owned scene at a time. Only validated bundled assets; no remote URLs or uploads. */
-export function AnatomyModelViewer({model,language,onExercise,onMuscle,onRegion,initialSelection,exerciseId,muscleLinks,overlayTitle,onSelectStructure,autoOpen=false}:{model:AnatomyModel;language:'he'|'en';onExercise:(id:string)=>void;onMuscle:(slug:string)=>void;onRegion?:(id:string)=>void;initialSelection?:string;exerciseId?:string;muscleLinks?:readonly ExerciseMuscleLink[];overlayTitle?:string;onSelectStructure?:(id:string|null)=>void;autoOpen?:boolean}){
+export function AnatomyModelViewer({model,language,onExercise,onMuscle,onRegion,initialSelection,exerciseId,muscleLinks,overlayTitle,onSelectStructure,persistView=true,autoOpen=false}:{model:AnatomyModel;language:'he'|'en';onExercise:(id:string)=>void;onMuscle:(slug:string)=>void;onRegion?:(id:string)=>void;initialSelection?:string;exerciseId?:string;muscleLinks?:readonly ExerciseMuscleLink[];overlayTitle?:string;onSelectStructure?:(id:string|null)=>void;persistView?:boolean;autoOpen?:boolean}){
  const he=language==='he',t=anatomyLabels[language],key='dc-'+model.id+'-view';
  const layers=[...new Set(model.structures.map(s=>s.layer))];
  const host=useRef<HTMLDivElement|null>(null),controller=useRef<Awaited<ReturnType<typeof createAnatomyCanvas>>|null>(null),camera=useRef<CameraState|null>(null);
  const [hydrated,setHydrated]=useState(false),[started,start]=useState(false),[loaded,setLoaded]=useState(false),[error,setError]=useState(false),[attempt,retry]=useState(0);
- const [selection,select]=useState<string|null>(null),[visible,setVisible]=useState<Set<AtlasLayer>>(new Set(layers)),[isolated,isolate]=useState(false);
- useEffect(()=>{onSelectStructure?.(selection);},[selection,onSelectStructure]);
+ const [selection,setSelection]=useState<string|null>(null),[visible,setVisible]=useState<Set<AtlasLayer>>(new Set(layers)),[isolated,isolate]=useState(false);
+ const onSelection=useRef(onSelectStructure);onSelection.current=onSelectStructure;
+ function select(id:string|null){setSelection(id);onSelection.current?.(id);}
  const [hidden,setHidden]=useState<Set<string>>(new Set()),[query,setQuery]=useState('');
  const [depths,setDepths]=useState<Set<MuscleDepth>>(new Set(['superficial','deep'])),[bodySide,setBodySide]=useState<'both'|'left'|'right'>('both'),[hideHistory,setHideHistory]=useState<string[]>([]);
  const [navigationArea,setNavigationArea]=useState('all');
@@ -37,11 +39,11 @@ export function AnatomyModelViewer({model,language,onExercise,onMuscle,onRegion,
  useEffect(()=>{if(!annotationRef.current)return;const observer=new ResizeObserver(()=>{const bounds=annotationRef.current?.getBoundingClientRect();if(bounds)setLabelSize({width:Math.ceil(bounds.width),height:Math.ceil(bounds.height)});});observer.observe(annotationRef.current);return()=>observer.disconnect();},[selection,hover,loaded,language,!!anchor]);
  useEffect(()=>{setDetailsOpen(false);},[selection]);
  const state=useRef({started,selection,visible:[...visible],isolated,navigationArea,hidden:[...hidden]});state.current={started,selection,visible:[...visible],isolated,navigationArea,hidden:[...hidden]};
- const persist=useRef(()=>{});persist.current=()=>{try{sessionStorage.setItem(key,JSON.stringify({...state.current,camera:camera.current}));}catch{}};
+ const persist=useRef(()=>{});persist.current=()=>{writeAnatomyView(key,{...state.current,camera:camera.current},persistView)};
  useEffect(()=>{
-  try{const saved=JSON.parse(sessionStorage.getItem(key)??'null');if(saved?.started)start(true);if(model.structures.some(s=>s.id===saved?.selection))select(saved.selection);if(Array.isArray(saved?.visible))setVisible(new Set(layers.filter(l=>saved.visible.includes(l))));isolate(saved?.isolated===true);camera.current=readCameraState(saved?.camera);}catch{}
-  try{const saved=JSON.parse(sessionStorage.getItem(key)??'null');if(Array.isArray(saved?.hidden))setHidden(new Set(model.structures.filter(s=>saved.hidden.includes(s.id)).map(s=>s.id)));}catch{}
-  if(model.id==='detailed')try{const saved=JSON.parse(sessionStorage.getItem(key)??'null');if(anatomyNavigationAreas.some(a=>a.id===saved?.navigationArea))setNavigationArea(saved.navigationArea);}catch{}
+  try{const saved=readAnatomyView(key,persistView);if(saved?.started)start(true);if(model.structures.some(s=>s.id===saved?.selection))setSelection(saved.selection);if(Array.isArray(saved?.visible))setVisible(new Set(layers.filter(l=>saved.visible.includes(l))));isolate(saved?.isolated===true);camera.current=readCameraState(saved?.camera);}catch{}
+  try{const saved=readAnatomyView(key,persistView);if(Array.isArray(saved?.hidden))setHidden(new Set(model.structures.filter(s=>saved.hidden.includes(s.id)).map(s=>s.id)));}catch{}
+  if(model.id==='detailed')try{const saved=readAnatomyView(key,persistView);if(anatomyNavigationAreas.some(a=>a.id===saved?.navigationArea))setNavigationArea(saved.navigationArea);}catch{}
   if(autoOpen)start(true);setHydrated(true);
  },[key]); // Each model is keyed by its catalog ID in the parent.
  const requestedSelection=useRef(initialSelection);
@@ -49,11 +51,11 @@ export function AnatomyModelViewer({model,language,onExercise,onMuscle,onRegion,
   const newlyRequested=requestedSelection.current!==initialSelection;requestedSelection.current=initialSelection;
   if(initialSelection&&model.structures.some(s=>s.id===initialSelection)){
    // A reload preserves deliberate hiding; a new navigation request reveals its target.
-   let savedHidden=false;try{savedHidden=JSON.parse(sessionStorage.getItem(key)??'null')?.hidden?.includes(initialSelection)===true;}catch{}
-   if(!newlyRequested&&savedHidden){select(null);isolate(false);return;}
-   select(initialSelection);start(true);setVisible(new Set(layers));isolate(false);
+   let savedHidden=false;try{savedHidden=readAnatomyView(key,persistView)?.hidden?.includes(initialSelection)===true;}catch{}
+   if(!newlyRequested&&savedHidden){setSelection(null);isolate(false);return;}
+   setSelection(initialSelection);start(true);setVisible(new Set(layers));isolate(false);
    setHidden(previous=>{const next=new Set(previous);next.delete(initialSelection);return next;});
-  }else if(initialSelection){select(null);isolate(false);}
+  }else if(initialSelection){setSelection(null);isolate(false);}
  },[initialSelection,model,key]);
  useEffect(()=>{if(hydrated)persist.current();},[started,selection,visible,isolated,hidden,navigationArea,hydrated]);
  const selected=model.structures.find(s=>s.id===selection),learningId=selected?.learningId??selection,card=learningId&&!model.overview?learningCard(learningId):undefined;

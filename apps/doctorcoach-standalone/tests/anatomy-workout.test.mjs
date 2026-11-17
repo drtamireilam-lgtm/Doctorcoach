@@ -25,3 +25,5 @@ test('anterior and lateral deltoid remain distinct, detailed source geometry mat
 test('alias mappings and legacy day defaults are retained without merging duplicate occurrences',()=>{
  const s=summarize([item('bench',2,{dayId:undefined}),item('bench',2,{dayId:undefined})]);const row=s.muscles.find(m=>m.slug==='pectoralis-major');assert.equal(row.counts.primary,4);assert.equal(row.contributions.length,2);assert.deepEqual(row.contributions.map(c=>c.dayId),['1','1']);
 });
+
+test('prescription bounds accept20 and disclose21 instead of inflating totals',()=>{const s=summarize([item('barbell-bench',20),item('barbell-bench',21)]);assert.equal(s.muscles.find(m=>m.slug==='pectoralis-major').counts.primary,20);assert.deepEqual(s.unmapped,[{index:1,reason:'invalid-sets'}]);});

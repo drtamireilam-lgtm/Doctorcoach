@@ -12,7 +12,7 @@ export function workoutMuscleSummary(items:readonly PlanItem[]){
  items.forEach((item,index)=>{
   const links=exerciseAnatomyLinks(item.exerciseId),working=links.filter((link):link is ExerciseMuscleLink&{role:WorkingMuscleRole}=>link.role!=='stretch');
   if(workoutSection(item)!=='main'||item.cardio||links.length>0&&!working.length){excluded++;return;}
-  if(!Number.isSafeInteger(item.sets)||item.sets<=0){unmapped.push({index,reason:'invalid-sets'});return;}
+  if(!Number.isSafeInteger(item.sets)||item.sets<=0||item.sets>20){unmapped.push({index,reason:'invalid-sets'});return;}
   if(!working.length){unmapped.push({index,reason:'unmapped'});return;}
   const seen=new Set<string>();for(const link of working){const key=link.slug+':'+(link.part??'');if(seen.has(key))continue;seen.add(key);let row=muscles.get(key);if(!row){row={slug:link.slug,...link.part?{part:link.part}:{},key,counts:{primary:0,secondary:0,stabilizer:0},contributions:[]};muscles.set(key,row);}row.counts[link.role]+=item.sets;row.contributions.push({index,exerciseId:item.exerciseId,dayId:item.dayId??'1',sets:item.sets,role:link.role});}
  });
