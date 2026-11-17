@@ -46,10 +46,11 @@ export function readExcelWorkbook(bytes:Uint8Array):ExcelSheet[]{
     if(++cellCount>16000)throw new Error('הגיליון מכיל יותר מדי תאים.');
     const address=/^([A-Z]+)([1-9]\d*)$/.exec(c['@r']??'');if(!address||Number(address[2])!==rowIndex+1)throw new Error('כתובת תא אינה תקינה.');
     if(addresses.has(address[1]))throw new Error('הקובץ מכיל כתובת תא כפולה. תקנו את קובץ המקור.');addresses.add(address[1]);
-    const col=[...address[1]].reduce((n,ch)=>n*26+ch.charCodeAt(0)-64,0)-1;if(col>=32)continue;
+    const col=[...address[1]].reduce((n,ch)=>n*26+ch.charCodeAt(0)-64,0)-1;
     const sharedReference=String(c.v??'').trim(),sharedIndex=Number(sharedReference);
     if(c['@t']==='s'&&sharedReference&&(!/^\+?\d+$/.test(sharedReference)||!Number.isSafeInteger(sharedIndex)||sharedIndex>=strings.length))throw new Error('הפניה לטקסט בתא Excel אינה תקינה. שמרו מחדש את קובץ המקור.');
     let value=c['@t']==='s'?(sharedReference?strings[sharedIndex]:''):c['@t']==='inlineStr'?text(c.is):text(c.v);
+    if(col>=32){if(c.f!==undefined||value.trim())throw new Error('הייבוא תומך בעד 32 עמודות בגיליון.');continue;}
     const format=formats.get(String(cellFormats[Number(c['@s']??0)]?.['@numFmtId']));
     let dateConverted=false;
     // Recover the displayed day-month text, not an assumed repetition target.
