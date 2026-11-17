@@ -8,8 +8,11 @@ const exerciseFor=(id:string)=>exercises.find(e=>e.id===id);
 import {defaultPrescription} from './training.ts';
 export const anatomyRoleColors:Record<AnatomyExerciseRole,string>={primary:'#ffb84d',secondary:'#58b7ff',stabilizer:'#bc8cff',stretch:'#80dfbb'};
 export function exerciseStructureRoles(model:AnatomyModel,exerciseId:string){
- const links=exerciseAnatomyLinks(exerciseId),result=new Map<string,AnatomyExerciseRole>();
- for(const structure of model.structures){if(structure.layer!=='muscle')continue;const link=links.find(l=>exerciseStructureMatches(structure,l));if(link)result.set(structure.id,link.role);}return result;
+ return structureRolesForLinks(model,exerciseAnatomyLinks(exerciseId));
+}
+export function structureRolesForLinks(model:AnatomyModel,links:readonly ExerciseMuscleLink[]){
+ const result=new Map<string,AnatomyExerciseRole>(),ordered=[...links].sort((a,b)=>['primary','secondary','stabilizer','stretch'].indexOf(a.role)-['primary','secondary','stabilizer','stretch'].indexOf(b.role));
+ for(const structure of model.structures){if(structure.layer!=='muscle')continue;const link=ordered.find(l=>exerciseStructureMatches(structure,l));if(link)result.set(structure.id,link.role);}return result;
 }
 export function exerciseAtlasHash(id:string){const canonical=exerciseAliases[id]??id;return exerciseFor(canonical)?'#learn?atlas=detailed&exercise='+encodeURIComponent(canonical):null;}
 export function programExercisePayload(id:string,dayId:string){if(!exerciseFor(id)||!/^\d{1,2}$/.test(dayId)||Number(dayId)<1||Number(dayId)>14)throw new Error('בחרו תרגיל ויום אימון תקינים.');return {...defaultPrescription(id),dayId,occurrenceId:crypto.randomUUID()};}
