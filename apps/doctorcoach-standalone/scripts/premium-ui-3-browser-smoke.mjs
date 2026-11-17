@@ -123,7 +123,7 @@ try{
   assert.notEqual(await first.locator('.smart-set-metrics strong').textContent(),'—');
   await first.locator('.set-save').click();await first.locator('.set-save.saved').waitFor({state:'attached'});await first.locator('[data-completed-summary]').waitFor();
   if(!offline){await first.locator('.set-entry-body').waitFor({state:'hidden'});await page.waitForFunction(()=>{const edit=document.querySelector('.set-line .set-edit');return edit&&!edit.disabled&&edit===document.activeElement;});}
-  else await first.getByRole('button',{name:language==='en'?'Close editing':'סגירת העריכה',exact:true}).click();
+  else await first.locator('.set-edit').click();
   await first.locator('.set-next').click();await page.waitForFunction(()=>document.querySelectorAll('.set-line')[1]===document.activeElement);
 
   let persisted=(await trainingFixture.training.feed(client.userId)).active;
