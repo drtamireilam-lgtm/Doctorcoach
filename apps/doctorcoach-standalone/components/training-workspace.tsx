@@ -21,7 +21,7 @@ import {CardioProgress} from './cardio-progress';
 import {workoutExportCsv} from '../lib/workout-export';
 import {workoutProgress} from '../lib/workout-progress';
 import {LoadUnitPicker,useLoadUnit} from './load-unit-picker';
-import {fromKg,toKg,hasTotalLoad} from '../lib/load-units';
+import {fromKg,toKg,hasTotalLoad,hasExternalResistance} from '../lib/load-units';
 import {NextWorkoutSet,ExerciseJumpLinks} from './workout-navigation';
 import {workoutNavigationTargets,workoutExerciseAnchor,workoutSetAnchor} from '../lib/workout-navigation';
 import {FinishWorkoutDialog,SavedWorkout} from './workout-finish';
@@ -56,6 +56,7 @@ import {workoutSection,workoutSections,type WorkoutSection} from '../lib/workout
 import {VideoWorkspace} from './video-workspace';
 import {WorkoutDemo} from './workout-demo';
 import {CareSelect} from './care-ui';
+import {TrainingInsights} from './training-insights';
 import {PerformancePanel} from './performance-workspace';
 import {workoutStartReady} from '../lib/workout-start-state';
 import {requestId as createRequestId} from '../lib/request-id';
@@ -152,7 +153,7 @@ function SetLine({item,index,controller,onDirty,hasOtherDraft}:{item:SessionExer
   useEffect(()=>{const old=previousSaved.current,fresh={...saved,targetRpe:savedTarget};previousSaved.current=fresh;setDraft(d=>mergeSetDraft(old,fresh,d));},[saved.done,saved.amount,saved.weight,saved.actualRpe,saved.painDuring,saved.weightSource,savedTarget]);
   const dirty=draft.weightSource!==saved.weightSource||draft.amount!==saved.amount||draft.weight!==saved.weight||draft.actualRpe!==saved.actualRpe||draft.painDuring!==saved.painDuring||draft.targetRpe!==savedTarget;
   useEffect(()=>{const key=planItemKey(item)+':'+index;onDirty(key,dirty);return()=>onDirty(key,false)},[item.occurrenceId,item.exerciseId,index,dirty,onDirty]);
-  const estimate=hasTotalLoad(item)?setEstimated1RM(draft,item.unit):null;const suggestion=previewNextSetLoad(item,index,controller.feed.active??{before:0,after:null},draft,toKg(step,displayUnit));
+  const estimate=hasExternalResistance(item)?setEstimated1RM(draft,item.unit):null;const suggestion=previewNextSetLoad(item,index,controller.feed.active??{before:0,after:null},draft,toKg(step,displayUnit));
   const opening=index===0&&!saved.done&&!(active?.before)&&!item.results.some(s=>(s.painDuring??0)>0)?openingSetLoad(item,controller.feed.history,active??undefined):null;
   const pending=active?workoutNavigationTargets(active).pending:null;
   const isNext=pending?.item===item&&pending.index===index;
@@ -245,7 +246,7 @@ export function HistoryWorkspace({controller,go}:WorkspaceProps) {
   return <Localize>{<div><div className="workspace-heading"><div><span className="eyebrow">התמדה שאפשר לראות</span><h1>ההתקדמות שלי</h1><p>אפשר לסדר את כרטיסי ההתקדמות לפי מה שחשוב לכם.</p></div><button className="button secondary" disabled={!history.length||controller.auth!=='ready'} onClick={download}><Download size={18}/>ייצוא CSV</button></div>
     <RetrospectiveWorkout controller={controller}/>{controller.auth==='ready'&&<><ActivityDashboard expanded/><CardioProgress history={history}/></>}{controller.auth==='ready'&&<ProgressOverview controller={controller} go={s=>go(s as Parameters<typeof go>[0])} painChart={painChart}>
     <details className="panel browse-advanced"><summary>הסיכום השבועי שלי</summary><WeeklyProgressCard/></details><details className="panel browse-advanced"><summary>סיכום כלל האימונים</summary><dl className="care-definition"><dt>אימונים מפורטים שנשמרו</dt><dd>{controller.feed.stats.total}</dd><dt>סטים שבוצעו</dt><dd>{controller.feed.stats.sets}</dd></dl></details>
-    {history.length>0&&<PerformancePanel history={history}/>}
+    {history.length>0&&<><PerformancePanel history={history}/><TrainingInsights history={history}/></>}
     <>{history.length?<details className="panel browse-advanced"><summary id="workout-history-list">האימונים שלך · {history.length}</summary><p className="history-limit">מציגים עד 50 אימונים אחרונים</p><div className="history-sessions">{history.map(s=><HistoryItem key={s.id} session={s} controller={controller}/>)}</div></details>:<div className="panel compact-empty"><Activity size={34}/><h3>האימון הראשון יופיע כאן</h3><p>התחילו אימון מתוך התוכנית, סמנו סטים ובחרו ״סיום ושמירת אימון״.</p><button className="button primary" onClick={()=>go('plan')}>לתוכנית שלי</button></div>}</>
     {!!legacy.length&&<details className="panel legacy-history"><summary>רישומים מהגרסה הקודמת</summary><p>נשמרו כפי שתועדו, ללא פירוט סטים. אינם כלולים בסיכום האימונים המפורטים.</p><div className="legacy-table"><table><thead><tr><th>תאריך</th><th>תרגילים</th><th>כאב לפני</th><th>כאב אחרי</th></tr></thead><tbody>{legacy.map(l=><tr key={l.id}><td>{formatDate(l.createdAt)}</td><td>{l.exerciseCount}</td><td>{l.before}</td><td>{l.after}</td></tr>)}</tbody></table></div></details>}
     </ProgressOverview>}

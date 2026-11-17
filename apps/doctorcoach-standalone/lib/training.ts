@@ -1,7 +1,7 @@
 import {parseImportSource,parseSetReps,type ImportSource} from './import-source.ts';
 import {parseCardioPrescription,isCardioExerciseId,type CardioPrescription} from './cardio.ts';
 import type {CardioExecution} from './cardio-player.ts';
-import {parseLoadMetadata,fromKg,hasTotalLoad,type LoadMetadata} from './load-units.ts';
+import {parseLoadMetadata,fromKg,hasExternalResistance,type LoadMetadata} from './load-units.ts';
 import type {EffortScale} from './effort.ts';
 import type {CustomExercise} from './custom-exercise-types.ts';
 import {defaultWorkoutSection,workoutSection,type WorkoutSection} from './workout-sections.ts';
@@ -155,7 +155,7 @@ export function estimated1RM(weight:number|null,reps:number|null):number|null {
 }
 export function nextLoad(item:SessionExercise,session:TrainingSession):{weight:number|null;text:string} {
   if(item.cardio)return {weight:null,text:'אירובי אינו כולל הצעות משקל.'};
-  if(!hasTotalLoad(item))return {weight:null,text:'יש להזין עומס כולל במפורש לפני חישוב עומס.'};
+  if(!hasExternalResistance(item))return {weight:null,text:'יש להזין עומס כולל במפורש לפני חישוב עומס.'};
   if(workoutSection(item)!=='main')return {weight:null,text:'הצעת משקל זמינה לתרגילי האימון בלבד, לא לחימום או למתיחות.'};
   const sets=item.results.filter(s=>s.done);
   if(session.before===null)return {weight:null,text:'לא דווח כאב לפני האימון; אין מספיק מידע להצעת עומס.'};

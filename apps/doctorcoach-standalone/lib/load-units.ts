@@ -5,6 +5,8 @@ export const toKg=(value:number,unit:LoadUnit)=>unit==='lb'?value*poundsToKg:val
 export const fromKg=(value:number,unit:LoadUnit)=>unit==='lb'?value/poundsToKg:value;
 export const displayLoad=(weight:number,unit:LoadUnit)=>fromKg(weight,unit);
 export const hasTotalLoad=(item:{load?:LoadMetadata})=>item.load?.basis!=='per-side';
+/** Assistance-machine values are ambiguous and cannot represent external resistance in derived metrics. */
+export const hasExternalResistance=(item:{exerciseId?:string;load?:LoadMetadata})=>hasTotalLoad(item)&&item.exerciseId!=='assisted-pull-up';
 export function parseLoadMetadata(raw:unknown,weight:number):LoadMetadata|undefined{
  if(raw==null)return undefined;
  if(typeof raw!=='object'||Array.isArray(raw))throw new Error('Invalid load metadata.');
