@@ -1,0 +1,11 @@
+# Work handoff for anatomical content
+
+Use [the content template](EXERCISE_ANIMATION_CONTENT_TEMPLATE.md) to submit one Hebrew/English specification per canonical exercise and variant. Include the movement phases, teaching cues, role rationale, references and named reviewer decision. Keep engineering calibration in the repository.
+
+The atlas provides source-neutral individual muscles with stable sides and names in the musculoskeletal model inventory in `apps/doctorcoach-standalone/lib/anatomy-models.ts` and its generated source metadata. Use actual model IDs such as `left-biceps-brachii`, `right-brachialis`, and `right-brachioradialis`. Resolve atlas IDs and verify that each mapped structure is a muscle before assigning roles. Keep claims qualitative. A phase annotation needs explicit review for that phase and technique.
+
+The present driver supports fixed source-space axes, pivots, rigid bone descendants, a bounded relative flexion angle, repetition duration and phase labels. It maintains neutral source muscle geometry. The model has no animation armature, skin weights, attachment map or morph targets. The curl reference is LAB prototype content. The bench clip is inherited illustrative media. The interactive bench and squat variants are blocked as linked calibration, support and equipment constraints remain open.
+
+To release a reviewed animation, implement and verify the source-bound movement, inspect all phases at app scale, review the anatomy and labels, and update the technical and content states separately. Public eligibility requires `ready`, `approved`, and `public`. Record the reviewer decision, source digest and test evidence in the review. An animator can author compatible motion clips or collaborate on joint/contact calibration. An anatomy artist is needed for verified attachment-preserving deformation or a compatible skinned source, with asset provenance retained.
+
+The next content step is to review the standing bilateral curl study, then specify the bar grip and forearm orientation for the loaded variant. After the initial variants are complete, use hammer curl as a candidate for reusing elbow motion after neutral-grip calibration. Consider sit-to-stand after the lower-limb and support constraints are demonstrated.

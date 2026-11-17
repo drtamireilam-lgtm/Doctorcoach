@@ -12,25 +12,38 @@ import {createJointRig} from './anatomy-joint-rig';
 import type {JointMovement,JointSide} from './anatomy-joint-movements';
 import type {JointScope} from './anatomy-joint-context';
 export type AnatomyCamera='front'|'back'|'left'|'right';
+export class AnatomyRendererUnavailable extends Error {
+ constructor(cause:unknown){super('Anatomy rendering is unavailable',{cause});}
+}
 /** A single owned scene. Render only on changes; stop listeners and free all GPU resources. */
 export async function createAnatomyCanvas(host:HTMLElement,onSelect:(id:string|null)=>void,signal:AbortSignal,options:{model?:AnatomyModel;onPainPick?:(point:PainPoint,placement:'surface'|'centre',view:AnatomyCamera)=>void;camera?:CameraState|null;onCameraChange?:(state:CameraState)=>void;onAnchor?:(point:{x:number;y:number;width:number;height:number;obscured:boolean}|null)=>void;onHover?:(id:string|null)=>void;motion?:ExerciseMotionProfile;jointMotion?:{movement:JointMovement;side:JointSide}}={}){
  const modelSpec=options.model??anatomyModels[1];
- const response=await fetch(modelSpec.src,{signal});
- if(!response.ok)throw new Error('Model request failed');
- const bytes=await decodeAnatomyAsset(await response.arrayBuffer(),modelSpec,signal);
- await validateAnatomyAsset(bytes,modelSpec);
  if(signal.aborted)throw new DOMException('Aborted','AbortError');
- const gltf=await new GLTFLoader().parseAsync(bytes,'');
- const model=gltf.scene;const meshes:THREE.Mesh[]=[];
- model.traverse(object=>{if(object instanceof THREE.Mesh)meshes.push(object);});
+ let renderer:THREE.WebGLRenderer;
+ try{renderer=new THREE.WebGLRenderer({antialias:true,alpha:true,powerPreference:'low-power'});}catch(cause){throw new AnatomyRendererUnavailable(cause);}
+ const releaseRenderer=()=>{renderer.dispose();renderer.forceContextLoss();};
+ const meshes:THREE.Mesh[]=[];
  const releaseModel=()=>{for(const mesh of meshes){mesh.geometry.dispose();for(const material of Array.isArray(mesh.material)?mesh.material:[mesh.material])material.dispose();}};
- if(signal.aborted){releaseModel();throw new DOMException('Aborted','AbortError');}
- prepareAnatomyMaterials(meshes,new Map(modelSpec.structures.map(s=>[s.id,s.layer])));
+ let model:THREE.Object3D;
  let rig:ReturnType<typeof createExerciseRig>|undefined;
  let jointRig:ReturnType<typeof createJointRig>|undefined;
- try{if(options.motion&&options.jointMotion)throw new Error('Only one motion adapter per scene');if(options.motion)rig=createExerciseRig(model,meshes,modelSpec,options.motion);if(options.jointMotion){jointRig=createJointRig(model,meshes,modelSpec);jointRig.configure(options.jointMotion.movement,options.jointMotion.side);}}catch(cause){jointRig?.dispose();releaseModel();throw cause;}
- let renderer:THREE.WebGLRenderer;
- try{renderer=new THREE.WebGLRenderer({antialias:true,alpha:true,powerPreference:'low-power'});}catch(cause){rig?.dispose();jointRig?.dispose();releaseModel();throw cause;}
+ try{
+  const response=await fetch(modelSpec.src,{signal});
+  if(!response.ok)throw new Error('Model request failed');
+  const bytes=await decodeAnatomyAsset(await response.arrayBuffer(),modelSpec,signal);
+  await validateAnatomyAsset(bytes,modelSpec);
+  if(signal.aborted)throw new DOMException('Aborted','AbortError');
+  const gltf=await new GLTFLoader().parseAsync(bytes,'');
+  model=gltf.scene;
+  model.traverse(object=>{if(object instanceof THREE.Mesh)meshes.push(object);});
+  if(signal.aborted)throw new DOMException('Aborted','AbortError');
+  prepareAnatomyMaterials(meshes,new Map(modelSpec.structures.map(s=>[s.id,s.layer])));
+  if(options.motion&&options.jointMotion)throw new Error('Only one motion adapter per scene');
+  if(options.motion)rig=createExerciseRig(model,meshes,modelSpec,options.motion);
+  if(options.jointMotion){jointRig=createJointRig(model,meshes,modelSpec);jointRig.configure(options.jointMotion.movement,options.jointMotion.side);}
+ }catch(cause){
+  rig?.dispose();jointRig?.dispose();releaseModel();releaseRenderer();throw cause;
+ }
  renderer.setPixelRatio(Math.min(window.devicePixelRatio,1.5));renderer.outputColorSpace=THREE.SRGBColorSpace;
  renderer.toneMapping=THREE.ACESFilmicToneMapping;renderer.toneMappingExposure=1.0;
  const scene=new THREE.Scene();scene.add(model);
@@ -87,7 +100,7 @@ export async function createAnatomyCanvas(host:HTMLElement,onSelect:(id:string|n
  const hover=(event:PointerEvent)=>{if(event.pointerType!=='mouse'||pointers.size||!options.onHover||event.timeStamp-hoverAt<80)return;hoverAt=event.timeStamp;const bounds=renderer.domElement.getBoundingClientRect();raycaster.setFromCamera(new THREE.Vector2((event.clientX-bounds.left)/bounds.width*2-1,-(event.clientY-bounds.top)/bounds.height*2+1),camera);const id=raycaster.intersectObjects(meshes.filter(m=>m.visible),false)[0]?.object.name??null;if(id&&id!==hoverId){hoverId=id;options.onHover(id);projectAnchor();}};
  const leave=(event:PointerEvent)=>{if(event.relatedTarget instanceof Element&&event.relatedTarget.closest('.anatomy-annotation-card'))return;hoverId=null;options.onHover?.(null);projectAnchor();};
  const canvas=renderer.domElement;canvas.addEventListener('pointerdown',pointerDown);canvas.addEventListener('pointerup',pointerUp);canvas.addEventListener('pointercancel',cancel);canvas.addEventListener('pointermove',hover);canvas.addEventListener('pointerleave',leave);
- function dispose(){if(disposed)return;disposed=true;observer.disconnect();controls.removeEventListener('change',render);controls.removeEventListener('end',remember);controls.dispose();canvas.removeEventListener('pointerdown',pointerDown);canvas.removeEventListener('pointerup',pointerUp);canvas.removeEventListener('pointercancel',cancel);canvas.removeEventListener('pointermove',hover);canvas.removeEventListener('pointerleave',leave);rig?.dispose();jointRig?.dispose();marker.geometry.dispose();marker.material.dispose();releaseModel();renderer.dispose();renderer.forceContextLoss();canvas.remove();signal.removeEventListener('abort',dispose);}
+ function dispose(){if(disposed)return;disposed=true;observer.disconnect();controls.removeEventListener('change',render);controls.removeEventListener('end',remember);controls.dispose();canvas.removeEventListener('pointerdown',pointerDown);canvas.removeEventListener('pointerup',pointerUp);canvas.removeEventListener('pointercancel',cancel);canvas.removeEventListener('pointermove',hover);canvas.removeEventListener('pointerleave',leave);rig?.dispose();jointRig?.dispose();marker.geometry.dispose();marker.material.dispose();releaseModel();releaseRenderer();canvas.remove();signal.removeEventListener('abort',dispose);}
  signal.addEventListener('abort',dispose,{once:true});
  function focusIds(ids:readonly string[],visibleOnly=true){
   const wanted=new Set(ids),targets=meshes.filter(m=>wanted.has(m.name)&&(!visibleOnly||m.visible));if(!targets.length)return;
@@ -97,7 +110,7 @@ export async function createAnatomyCanvas(host:HTMLElement,onSelect:(id:string|n
   const distance=Math.max(extent.length()/2/Math.sin(halfFov)*1.1,controls.minDistance*1.1);
   controls.target.copy(target);camera.position.copy(target).addScaledVector(direction,distance);controls.update();render();remember();
  }
- return {dispose,snapshot,setPainMarker(point:PainPoint|null){marker.visible=!!point;renderer.domElement.dataset.painMarker=point?'visible':'hidden';if(point)marker.position.set(point.x,point.y,point.z).multiply(modelSize).add(modelBounds.min);render();},placePainAtStructure(id:string){const mesh=meshes.find(m=>m.name===id&&m.visible);if(mesh)options.onPainPick?.(normalizedPoint(id,new THREE.Box3().setFromObject(mesh).getCenter(new THREE.Vector3())),'centre',painView());},setJointMovement(movement:JointMovement,side:JointSide){jointRig?.configure(movement,side);render();},setJointScope(scope:JointScope){if(jointRig?.setScope(scope))render();},focusJointContext(){if(jointRig)focusIds(jointRig.contextIds(),false);},setJointPose(phase:number,reference=false,bones=true,muscles=false){jointRig?.pose(phase,reference,bones,muscles);render();},setJointNeutral(bones=true,muscles=false,movement?:JointMovement,side:JointSide='both'){jointRig?.neutral(bones,muscles,movement,side);render();},setExercisePose(degrees:number,mode:MotionMode,bones=true,muscles=true){rig?.pose(degrees,mode,bones,muscles);render();},focus(id:string){focusIds([id]);},focusStructures(ids:readonly string[]){focusIds(ids,false);},pan(horizontal:number,vertical:number){
+ return {dispose,snapshot,setPainMarker(point:PainPoint|null){marker.visible=!!point;renderer.domElement.dataset.painMarker=point?'visible':'hidden';if(point)marker.position.set(point.x,point.y,point.z).multiply(modelSize).add(modelBounds.min);render();},placePainAtStructure(id:string){const mesh=meshes.find(m=>m.name===id&&m.visible);if(mesh)options.onPainPick?.(normalizedPoint(id,new THREE.Box3().setFromObject(mesh).getCenter(new THREE.Vector3())),'centre',painView());},setJointMovement(movement:JointMovement,side:JointSide){jointRig?.configure(movement,side);render();},setJointScope(scope:JointScope){if(jointRig?.setScope(scope))render();},focusJointContext(){if(jointRig)focusIds(jointRig.contextIds(),false);},setJointPose(phase:number,reference=false,bones=true,muscles=false){jointRig?.pose(phase,reference,bones,muscles);render();},setJointNeutral(bones=true,muscles=false,movement?:JointMovement,side:JointSide='both'){jointRig?.neutral(bones,muscles,movement,side);render();},setExercisePose(degrees:number,mode:MotionMode,bones=true,muscles=true,selectedMuscle:string|null=null){rig?.pose(degrees,mode,bones,muscles,selectedMuscle);render();},focus(id:string){focusIds([id]);},focusStructures(ids:readonly string[]){focusIds(ids,false);},pan(horizontal:number,vertical:number){
   const distance=-camera.position.distanceTo(controls.target)*.12;
   const offset=new THREE.Vector3().setFromMatrixColumn(camera.matrix,0).multiplyScalar(horizontal*distance)
    .addScaledVector(new THREE.Vector3().setFromMatrixColumn(camera.matrix,1),vertical*distance);

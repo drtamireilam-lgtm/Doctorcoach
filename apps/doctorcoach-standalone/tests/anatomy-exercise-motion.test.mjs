@@ -36,5 +36,14 @@ test('runtime adapter preserves source buffers, only moves declared descendants 
  assert.ok(meshes.filter(m=>model.structures.find(s=>s.id===m.name).layer==='muscle').every(m=>!m.visible));
  rig.pose(100,'muscles',true,true);root.updateMatrixWorld(true);assert.ok(target.localToWorld(new THREE.Vector3().fromArray(original,0)).distanceTo(rest)<1e-7);assert.ok(meshes.find(m=>m.name==='left-biceps-brachii').visible);assert.ok(!meshes.find(m=>m.name==='right-gluteus-maximus').visible);
  for(const [id,role] of Object.entries(p.roles)){const mesh=meshes.find(m=>m.name===id);assert.equal('#'+mesh.material.color.getHexString(),anatomyRoleColors[role],id+' shares the atlas role palette');}
+ const selected=meshes.find(mesh=>mesh.name==='left-biceps-brachii');
+ const counterpart=meshes.find(mesh=>mesh.name==='right-biceps-brachii');
+ const roleColor=selected.material.color.clone();
+ rig.pose(0,'muscles',true,true,selected.name);
+ assert.ok(selected.material.color.equals(roleColor),'selection preserves the muscle role color');
+ assert.notEqual(selected.material.emissive.getHex(),counterpart.material.emissive.getHex(),'selection distinguishes one of the same-role muscles');
+ rig.pose(0,'muscles',true,true);
+ assert.equal(selected.material.emissive.getHex(),counterpart.material.emissive.getHex(),'reset clears the selected muscle emissive color');
+ assert.ok(selected.material.color.equals(roleColor),'reset retains role highlighting');
  rig.pose(0,'muscles',false,true);assert.equal(target.visible,false);rig.dispose();for(const m of meshes){m.geometry.dispose();m.material.dispose();}
 });
