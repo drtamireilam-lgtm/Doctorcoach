@@ -94,3 +94,14 @@
 .set-calculation-details>summary{min-height:44px;align-content:center;cursor:pointer;color:var(--dc-text-secondary,var(--muted))}
 .set-calculation-details>small{display:block;margin-block:8px;line-height:1.6;color:var(--dc-text-secondary,var(--muted))}
 .workout-workspace [data-save-state="pending"]{color:var(--dc-gold,var(--text))}
+
+.workout-set-readback{list-style:none;padding:0;margin:14px 0;display:grid;gap:10px;min-width:0}
+.workout-set-readback>li{padding:14px;border:1px solid var(--dc-border,var(--line));border-radius:12px;background:var(--dc-surface-elevated,var(--raised));min-width:0}
+.workout-set-readback header{display:flex;justify-content:space-between;align-items:baseline;gap:12px;flex-wrap:wrap}
+.workout-set-readback header>span{font-size:.8rem;color:var(--dc-text-secondary,var(--muted))}
+.workout-set-readback dl{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin:12px 0 0}
+.workout-set-readback dl>div{min-width:0;overflow-wrap:anywhere}
+.workout-set-readback dt{font-size:.78rem;color:var(--dc-text-secondary,var(--muted))}
+.workout-set-readback dd{margin:5px 0 0;font-variant-numeric:tabular-nums;font-weight:650}
+.finish-set-details>summary{min-height:44px;align-content:center;cursor:pointer}
+.history-session:focus{outline:2px solid var(--dc-cyan,var(--text));outline-offset:4px}

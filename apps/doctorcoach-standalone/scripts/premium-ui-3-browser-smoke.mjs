@@ -1,3 +1,4 @@
+import {workoutHistoryAnchor} from '../lib/workout-history-navigation.ts';
 import {workoutExerciseAnchor} from '../lib/workout-navigation.ts';
 import {verifyWorkoutRecovery} from './fixtures/workout-recovery-browser.mjs';
 // Actual application components, synthetic local responses only. No remote service access.
@@ -151,7 +152,7 @@ try{
   await page.locator('.finish-card .button.primary').click();const dialog=page.getByRole('dialog');
   await dialog.locator('input').first().fill('0');await dialog.locator('button[type=submit]').click();await page.locator('.workout-saved').waitFor();
   if(workout4){await page.getByRole('heading',{name:language==='en'?'Workout saved':'האימון נשמר',exact:true}).waitFor();assert.match(await page.locator('.workout-finish-stats').textContent(),/1,246[.,]3/);await page.evaluate(()=>scrollTo(0,0));await page.screenshot({path:join(evidence,`workout-complete-${width}-${language}.png`),fullPage:true});}
-  await page.locator('.workout-saved .button.primary').click();await page.locator('#workout-history-list').click();
+  await page.locator('.workout-saved .button.primary').click();await page.waitForFunction(id=>{const row=document.getElementById(id);return row?.open&&document.activeElement===row;},workoutHistoryAnchor(started.id));await page.locator('.history-session [data-recorded-set=done]').first().waitFor();
   persisted=await trainingFixture.training.feed(client.userId);assert.equal(persisted.active,null);assert.equal(persisted.history.length,1);assert.equal(persisted.history[0].completedSets,workout4?2:1);assert.equal(persisted.history[0].items[0].results[0].weight,61.5);
   await page.evaluate(()=>scrollTo(0,0));await page.screenshot({path:join(evidence,`workout-history-${width}-${language}.png`),fullPage:true});
   workoutChecks.push({language,width,save:true,edit:true,reload:true,finish:true,history:true,nextLoad:true,recovery});console.log('PASS SQLite workout save/edit/reload/finish/history/next-load',theme,language,width);
