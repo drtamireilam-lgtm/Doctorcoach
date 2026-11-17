@@ -3,8 +3,14 @@ on:
   push:
     branches:
       - feature/anatomy-asset-safety-stage36
+      - feat/anatomy-4-20261116
     paths:
       - 'apps/doctorcoach-standalone/**'
+      - '.github/workflows/anatomy-validation.yml'
+  pull_request:
+    paths:
+      - 'apps/doctorcoach-standalone/**'
+      - 'docs/anatomy/**'
       - '.github/workflows/anatomy-validation.yml'
   workflow_dispatch:
 permissions:
@@ -12,7 +18,7 @@ permissions:
 jobs:
   anatomy-validation:
     runs-on: ubuntu-latest
-    timeout-minutes: 20
+    timeout-minutes: 30
     defaults:
       run:
         working-directory: apps/doctorcoach-standalone
@@ -30,16 +36,63 @@ jobs:
       - name: TypeScript and complete unit suite
         run: npm run typecheck && npm test
       - name: Build isolated LAB candidate (no deployment)
+        if: ${{ !cancelled() }}
         run: npm run build:standalone && node standalone/scripts/check-isolated-staging.mjs dist/server/wrangler.json
         env:
           DC_ISOLATED_STAGING_BUILD: 'true'
       - name: Install test browser
+        if: ${{ !cancelled() }}
         run: pnpm exec playwright install --with-deps chromium
+      - name: Verify projected annotations and responsive viewer
+        if: ${{ !cancelled() }}
+        run: node scripts/anatomy/annotations-smoke.mjs
+        env:
+          ANATOMY_EVIDENCE_DIR: /tmp/dc-anatomy-evidence/annotations
+      - name: Verify detailed whole-body atlas and source depth controls
+        if: ${{ !cancelled() }}
+        run: node scripts/anatomy/detailed-smoke.mjs
       - name: Render and interact with the actual app
+        if: ${{ !cancelled() }}
         run: npm run test:anatomy:browser
       - uses: actions/upload-artifact@v4
         if: always()
         with:
           name: anatomy-browser-evidence
           path: /tmp/dc-anatomy-evidence/
+          if-no-files-found: ignore
+
+  pain-workout-validation:
+    strategy:
+      fail-fast: false
+      matrix:
+        width: [320, 390, 430, 768]
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    defaults:
+      run:
+        working-directory: apps/doctorcoach-standalone
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+      - uses: pnpm/action-setup@v4
+        with:
+          version: '11.25.0'
+          package_json_file: apps/doctorcoach-standalone/package.json
+      - name: Install locked dependencies
+        run: pnpm install --frozen-lockfile
+      - name: Prepare verified anatomy source
+        run: node scripts/anatomy/prepare-detailed.mjs
+      - name: Install test browser
+        run: pnpm exec playwright install --with-deps chromium
+      - name: Verify anatomy training links and private pain workflow
+        env:
+          DC_ANATOMY_WIDTH: ${{ matrix.width }}
+        run: node scripts/anatomy/training-pain-smoke.mjs
+      - uses: actions/upload-artifact@v4
+        if: ${{ !cancelled() }}
+        with:
+          name: pain-workout-browser-evidence-${{ matrix.width }}
+          path: /tmp/dc-anatomy-evidence/training-pain/
           if-no-files-found: ignore

@@ -1,0 +1,35 @@
+name: Anatomy live public LAB
+on:
+  pull_request:
+    paths:
+      - 'apps/doctorcoach-standalone/**'
+      - '.github/workflows/anatomy-live-public.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  public-lab:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    defaults:
+      run:
+        working-directory: apps/doctorcoach-standalone
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+      - uses: pnpm/action-setup@v4
+        with:
+          version: '11.25.0'
+          package_json_file: apps/doctorcoach-standalone/package.json
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm exec playwright install --with-deps chromium
+      - name: Verify anonymous public live model (no writes)
+        run: node scripts/anatomy/live-public-probe.mjs
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: anatomy-live-public-evidence
+          path: /tmp/dc-anatomy-live-public/
+          if-no-files-found: error

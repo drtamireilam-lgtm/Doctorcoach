@@ -1,4 +1,5 @@
 import * as THREE from 'three';
+import {anatomyRoleColors} from './anatomy-training.ts';
 import {mergeGeometries} from 'three/addons/utils/BufferGeometryUtils.js';
 import type {AnatomyModel} from './anatomy-models.ts';
 import {boundedDegrees,type ExerciseMotionProfile,type MotionMode} from './anatomy-exercise-motion.ts';
@@ -35,8 +36,8 @@ export function createExerciseRig(root:THREE.Object3D,meshes:THREE.Mesh[],model:
   groups.forEach((g,i)=>g.quaternion.setFromAxisAngle(axes[i],angle));markers.forEach(m=>{m.visible=mode==='joints'&&bones;});
   for(const batch of batches){batch.visible=bones;const material=batch.material as THREE.MeshStandardMaterial;material.transparent=neutral;material.opacity=neutral?.2:1;material.depthWrite=!neutral;}
   for(const mesh of meshes){const s=byId.get(mesh.name);if(!s)continue;const role=profile.roles[s.id];mesh.visible=s.layer==='bone'?bones:neutral&&muscles&&!!role;
-   const color=s.layer==='bone'?0xe5dac2:role==='primary'?0xef7858:role==='secondary'?0xf7c653:0x58bde9;
-   for(const material of Array.isArray(mesh.material)?mesh.material:[mesh.material])if(material instanceof THREE.MeshStandardMaterial){material.color.setHex(color);material.transparent=neutral&&s.layer==='bone';material.opacity=neutral&&s.layer==='bone'?.2:1;material.depthWrite=!(neutral&&s.layer==='bone');}
+   const color=s.layer==='bone'?'#e5dac2':role?anatomyRoleColors[role]:'#58bde9';
+   for(const material of Array.isArray(mesh.material)?mesh.material:[mesh.material])if(material instanceof THREE.MeshStandardMaterial){material.color.set(color);material.transparent=neutral&&s.layer==='bone';material.opacity=neutral&&s.layer==='bone'?.2:1;material.depthWrite=!(neutral&&s.layer==='bone');}
   }
  },dispose(){if(disposed)return;disposed=true;for(const mesh of [...markers,...batches]){mesh.parent?.remove(mesh);mesh.geometry.dispose();(mesh.material as THREE.Material).dispose();}for(const [mesh,mask] of boneLayers)mesh.layers.mask=mask;for(const group of groups){for(const mesh of [...group.children]){root.add(mesh);mesh.position.add(group.position);}root.remove(group);}}};
  rig.pose(0,'motion');return rig;

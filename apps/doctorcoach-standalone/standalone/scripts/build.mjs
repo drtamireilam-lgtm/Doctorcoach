@@ -4,6 +4,7 @@ import {fileURLToPath} from 'node:url';
 const root=fileURLToPath(new URL('../../',import.meta.url));
 process.chdir(root);
 await import('../../scripts/prepare-pdf-assets.mjs');
+await import('../../scripts/anatomy/prepare-detailed.mjs');
 const result=spawnSync(process.execPath,[fileURLToPath(new URL('../../node_modules/vinext/dist/cli.js',import.meta.url)),'build'],{
  cwd:root,stdio:'inherit',timeout:180000,
  env:{...process.env,DC_BUILD_TARGET:'standalone',WRANGLER_SEND_METRICS:'false',CLOUDFLARE_CF_FETCH_ENABLED:'false'},

@@ -1,0 +1,72 @@
+[
+  {
+    "id": "head",
+    "he": "ראש ופנים",
+    "en": "Head & face"
+  },
+  {
+    "id": "neck",
+    "he": "צוואר",
+    "en": "Neck"
+  },
+  {
+    "id": "shoulder",
+    "he": "כתפיים",
+    "en": "Shoulders"
+  },
+  {
+    "id": "chest",
+    "he": "חזה",
+    "en": "Chest"
+  },
+  {
+    "id": "back",
+    "he": "גב ועמוד שדרה",
+    "en": "Back & spine"
+  },
+  {
+    "id": "abdomen",
+    "he": "בטן",
+    "en": "Abdomen"
+  },
+  {
+    "id": "pelvis",
+    "he": "אגן וישבן",
+    "en": "Pelvis & glutes"
+  },
+  {
+    "id": "arm",
+    "he": "זרוע",
+    "en": "Upper arm"
+  },
+  {
+    "id": "forearm",
+    "he": "אמה",
+    "en": "Forearm"
+  },
+  {
+    "id": "hand",
+    "he": "כף יד",
+    "en": "Hand"
+  },
+  {
+    "id": "thigh",
+    "he": "ירך",
+    "en": "Thigh"
+  },
+  {
+    "id": "knee",
+    "he": "ברך",
+    "en": "Knee"
+  },
+  {
+    "id": "lowerleg",
+    "he": "שוק",
+    "en": "Lower leg"
+  },
+  {
+    "id": "foot",
+    "he": "כף רגל",
+    "en": "Foot"
+  }
+]

@@ -1,0 +1,26 @@
+{
+  "checks": [
+    "individual hide, persistence, restore and isolation",
+    "English and Hebrew structure search",
+    "pan moves target and camera without changing zoom",
+    "Hebrew RTL retains selection",
+    "body real GLB renders and previous scene disposes",
+    "skeleton real GLB renders and previous scene disposes",
+    "musculoskeletal real GLB renders and previous scene disposes",
+    "arm real GLB renders and previous scene disposes",
+    "forearm real GLB renders and previous scene disposes",
+    "hand real GLB renders and previous scene disposes",
+    "hip real GLB renders and previous scene disposes",
+    "knee real GLB renders and previous scene disposes",
+    "lowerleg real GLB renders and previous scene disposes",
+    "foot real GLB renders and previous scene disposes",
+    "spine real GLB renders and previous scene disposes",
+    "torso real GLB renders and previous scene disposes",
+    "neck real GLB renders and previous scene disposes",
+    "thigh real GLB renders and previous scene disposes",
+    "whole-body skeleton preserves 201 structures, real bilateral side labels, independent hiding and Hebrew isolation",
+    "combined 379-structure model renders distinct bone/muscle layers, bilateral canonical learning, hidden-layer reload and Hebrew muscle isolation"
+  ],
+  "errors": [],
+  "scope": "Chromium software WebGL, simulated 390px mobile; viewer harness, no authenticated application regression"
+}

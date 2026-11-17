@@ -13,7 +13,8 @@ const canonical=new Map([...raw.map(m=>[m.slug,m]),...extra.map(m=>[m.muscle_id,
 // Load the same catalog module without requiring a browser or a TSX runner.
 let catalogSource=readFileSync(new URL('../lib/anatomy.ts',import.meta.url),'utf8');
 for(const [binding,file] of [['raw','muscles'],['extra','additional-muscles'],['regionSeed','regions'],['injurySeed','injuries'],['matrix','injury-matrix'],['movements','movements']])catalogSource=catalogSource.replace(new RegExp(`import ${binding} from '[^']+';`),`const ${binding}=${JSON.stringify(json(file))};`);
-catalogSource=catalogSource.replace("import {exercises} from './content';",`const exercises=${JSON.stringify(exercises)};`).replace("import {exerciseAliases} from './rehab-exercises';",'const exerciseAliases={};');
+// The data URL has no relative base; resolve the real shared module explicitly.
+catalogSource=catalogSource.replaceAll("'./anatomy-catalog'",JSON.stringify(new URL('../lib/anatomy-catalog.ts',import.meta.url).href));
 const catalog=await import('data:text/javascript;base64,'+Buffer.from(ts.transpileModule(catalogSource,{compilerOptions:{module:ts.ModuleKind.ESNext,target:ts.ScriptTarget.ES2022}}).outputText).toString('base64'));
 test('all retained muscles remain searchable and have a reachable region',()=>{
  assert.equal(catalog.muscles.length,canonical.size);

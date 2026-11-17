@@ -1,3 +1,4 @@
+import * as painContext from '../lib/anatomy-pain-context.ts';
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import vm from 'node:vm';
@@ -6,11 +7,11 @@ import ts from 'typescript';
 import * as jsx from 'react/jsx-runtime';
 function fixture(patch){
  const states=[],exports={};let cursor=0,saved=null,closed=0;
- const modules={'react':{useState(initial){const i=cursor++;if(!(i in states))states[i]=initial;return [states[i],v=>{states[i]=v;}];}},'react/jsx-runtime':jsx,'./language-provider':{Localize:'Localize'},'./ui/dialog':Object.fromEntries(['Dialog','DialogContent','DialogTitle','DialogDescription','DialogClose'].map(k=>[k,k])),'../lib/workout-finish':{},'../lib/training':{},'./video-workspace':{}};
+ const modules={'react':{useState(initial){const i=cursor++;if(!(i in states))states[i]=initial;return [states[i],v=>{states[i]=v;}];}},'react/jsx-runtime':jsx,'./language-provider':{Localize:'Localize'},'./ui/dialog':Object.fromEntries(['Dialog','DialogContent','DialogTitle','DialogDescription','DialogClose'].map(k=>[k,k])),'../lib/anatomy-pain-context':painContext,'./workout-pain-report':{WorkoutPainReport:'WorkoutPainReport'},'../lib/workout-finish':{},'../lib/training':{},'./video-workspace':{}};
  vm.runInNewContext(ts.transpileModule(readFileSync(new URL('../components/workout-finish.tsx',import.meta.url),'utf8'),{compilerOptions:{module:ts.ModuleKind.CommonJS,jsx:ts.JsxEmit.ReactJSX}}).outputText,{exports,require:k=>modules[k]});
- const render=(open=true)=>{cursor=0;return exports.FinishWorkoutDialog({controller:{busy:false,patch,feed:{history:[]}},session:{},open,onClose:()=>{closed++;},onSaved:s=>{saved=s;}});};
+ const render=(open=true)=>{cursor=0;return exports.FinishWorkoutDialog({controller:{busy:false,patch,feed:{history:[]}},session:{id:'synthetic-session',items:[],status:'active'},open,onClose:()=>{closed++;},onSaved:s=>{saved=s;}});};
  function find(node,predicate){if(!node||typeof node!=='object')return null;if(predicate(node))return node;for(const child of [node.props?.children].flat(Infinity)){const result=find(child,predicate);if(result)return result;}return null;}
- return {render,find,renderSaved:()=>exports.SavedWorkout({session:{},controller:{feed:{history:[]}},go:()=>{}}),get saved(){return saved;},get closed(){return closed;}};
+ return {render,find,renderSaved:()=>exports.SavedWorkout({session:{id:'synthetic-session',items:[],status:'active'},controller:{feed:{history:[]}},go:()=>{}}),get saved(){return saved;},get closed(){return closed;}};
 }
 test('finish waits for completed server response before acknowledging save',async()=>{
  let resolve;const pending=new Promise(r=>{resolve=r;});const f=fixture(()=>pending);

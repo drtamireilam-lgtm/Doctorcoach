@@ -1,12 +1,16 @@
 'use client';
+import {exerciseAtlasHash} from '../lib/anatomy-training';
 import {useLanguage} from './language-provider';
-import {exerciseMuscles,anatomyHash,learningCard,anatomyLabels} from '../lib/anatomy-learning';
+import {anatomyHash,learningCard} from '../lib/anatomy-learning';
 import {anatomy3dLabEnabled} from '../lib/anatomy-lab';
 import {modelRegionForMuscle} from '../lib/anatomy-models';
-import {muscles} from '../lib/anatomy';
-import {stretchingTargets} from '../lib/stretch-anatomy-targets';
-export function ExerciseAnatomyLinks({exerciseId}:{exerciseId:string}){
- const {language}=useLanguage();const activeLinks=exerciseMuscles(exerciseId);const links=[...activeLinks,...stretchingTargets(exerciseId).filter(slug=>!activeLinks.some(link=>link.slug===slug)).map(slug=>({slug,role:'stretch' as const}))];const t=anatomyLabels[language];
- if(!links.length)return null;
- return <nav className="atlas-exercise-links" aria-label={language==='he'?'ללמוד על השרירים':'Learn about the muscles'} data-no-translate><h3>{language==='he'?'ללמוד על השרירים':'Learn about the muscles'}</h3>{links.map(link=>{const m=muscles.find(m=>m.slug===link.slug),card=learningCard(link.slug);return m&&card?<a className="care-pill" key={m.slug} href={anatomyHash({region:modelRegionForMuscle(m.slug,card.region,anatomy3dLabEnabled),muscle:m.slug,side:'both',view:card.view})} onClick={e=>{if(window.location.hash===e.currentTarget.hash){e.preventDefault();window.dispatchEvent(new HashChangeEvent('hashchange'));}}}>{language==='he'?m.name:m.en} · {link.role==='stretch'?(language==='he'?'שריר מטרה למתיחה':'Stretch target'):t[link.role]} ↗</a>:null;})}</nav>;
+import {exerciseAnatomyLinks} from '../lib/anatomy-exercises';
+import {ExerciseMuscleSummary} from './exercise-muscle-summary';
+export function ExerciseAnatomyLinks({exerciseId,includePainLink=true}:{exerciseId:string;includePainLink?:boolean}){
+ const {language}=useLanguage(),he=language==='he',links=exerciseAnatomyLinks(exerciseId),atlas=exerciseAtlasHash(exerciseId);
+ return <nav className="atlas-exercise-links" aria-label={he?'ללמוד על השרירים':'Learn about the muscles'} data-no-translate>
+  <ExerciseMuscleSummary exerciseId={exerciseId} language={language} muscleHref={link=>{if(link.part&&anatomy3dLabEnabled)return atlas??undefined;const card=learningCard(link.slug);return card?anatomyHash({region:modelRegionForMuscle(link.slug,card.region,anatomy3dLabEnabled),muscle:link.slug,exercise:exerciseId,side:'both',view:card.view}):undefined;}}/>
+  {anatomy3dLabEnabled&&includePainLink&&<a className="care-pill" href={atlas?'#learn?pain=1&exercise='+encodeURIComponent(exerciseId):'#learn?pain=1'}>{he?'דיווח כאב בהקשר לתרגיל':'Report pain in this exercise context'}</a>}
+  {anatomy3dLabEnabled&&atlas&&links.length>0&&<a className="button secondary" href={atlas}>{he?'הצגת כל השרירים על מודל הגוף':'Show all muscles on the body model'}</a>}
+ </nav>;
 }
