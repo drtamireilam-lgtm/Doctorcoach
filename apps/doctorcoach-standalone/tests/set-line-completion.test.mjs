@@ -100,3 +100,12 @@ test('completion focus survives server acknowledgement before delayed draft clea
  assert.equal(doc.activeElement,doc.body);controller.busy=false;draw();render.flush();
  assert.equal(doc.activeElement,edit);
 });
+test('confirmed saved-set primary action cannot undo completion after autosave',async()=>{
+ const item={...training.defaultPrescription('goblet'),name:'Synthetic squat',results:[{done:true,weight:20,amount:8,actualRpe:7}]};
+ let writes=0;const controller={busy:false,feed:{active:{id:'confirmed',items:[item],before:0},history:[]},patch:()=>{writes++;return null}};
+ const render=setLine(),draw=()=>nodes(render({item,index:0,controller,hasOtherDraft:false,onDirty:()=>{}}));
+ draw().find(n=>n.props?.className==='set-edit').props.onClick();
+ await draw().find(n=>n.props?.className?.startsWith('set-save')).props.onClick();
+ assert.equal(writes,0);assert.equal(item.results[0].done,true);
+ assert.equal(draw().find(n=>n.props?.className==='set-entry-body').props.hidden,true);
+});

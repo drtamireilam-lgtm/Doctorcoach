@@ -12,3 +12,5 @@ Task ledger: implementation in progress. Existing mechanisms reused; no new reco
 Review: 0 Critical, 3 Important. Fixed in one RED/GREEN pass: saved per-side basis, visible saved pain/withheld-load reason, and focus handoff after delayed cache acknowledgement. New component regression tests failed before fixes. No deferred minors.
 
 Local browser preflight was blocked by Chromium process singleton socket restrictions; no application browser assertion ran locally. Use existing GitHub CI for runtime acceptance.
+
+Additional interaction regression found during validation: after autosave, the primary action previously changed into undo-completion. RED/GREEN test now proves confirmed primary action only closes editing; undo remains an explicit separate action in set options.
