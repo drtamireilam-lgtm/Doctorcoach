@@ -10,7 +10,7 @@ import {workoutMuscleSummary,workoutMuscleLinks,workoutPrescriptionName} from '.
 import {exerciseAnatomyLinks} from '../lib/anatomy-exercises';
 import {anatomyRoleColors,exerciseDisplayName,exerciseMuscleName,exerciseStructureMatches} from '../lib/anatomy-training';
 import type {PlanItem} from '../lib/training';
-type Props={items:readonly PlanItem[];days?:readonly {id:string;label:string}[];initialDay?:string};
+type Props={items:readonly PlanItem[];days?:readonly {id:string;label:string}[];initialDay?:string;completedView?:{label:string}};
 const model=anatomyModels.find(m=>m.id==='detailed')!;
 const roles=['primary','secondary','stabilizer'] as const;
 const name=workoutPrescriptionName;
@@ -19,13 +19,13 @@ export function WorkoutMuscleMap(props:Props){
  useEffect(()=>{setOpen(false);},[props.items]);
  return <section className="panel workout-muscle-map-entry no-print" data-no-translate><button className="button secondary" type="button" aria-expanded={open} onClick={()=>setOpen(v=>!v)}>{open?(he?'סגירת מפת שרירי האימון':'Close workout muscle map'):(he?'מפת השרירים של התוכנית':'Program muscle map')}</button>{open&&<WorkoutMuscleMapContent {...props} language={language}/>}</section>;
 }
-export function WorkoutMuscleMapContent({items,days=[],initialDay,language}:Props&{language:'he'|'en'}){
+export function WorkoutMuscleMapContent({items,days=[],initialDay,completedView,language}:Props&{language:'he'|'en'}){
  const he=language==='he',[scope,setScope]=useState(initialDay??days[0]?.id??items[0]?.dayId??'1'),[exercise,setExercise]=useState('all'),[selection,setSelection]=useState<{kind:'list';key:string}|{kind:'model';id:string}|null>(null),[showModel,setShowModel]=useState(true);
  const [learning,setLearning]=useState<WorkoutLearningTarget|null>(null),[learningUnavailable,setLearningUnavailable]=useState(false),returnTo=useRef<WorkoutLearningReturn|null>(null);
  function openLearning(kind:'muscle'|'exercise',id:string,fromMuscle?:string,opener?:HTMLElement){const target=workoutLearningTarget(kind,id,fromMuscle);if(!target){setLearningUnavailable(true);return;}returnTo.current={element:opener??document.activeElement as HTMLElement|null,x:window.scrollX,y:window.scrollY};setLearningUnavailable(false);setLearning(target);}
  useEffect(()=>()=>{returnTo.current=null;},[]);
  const options=useMemo(()=>{const map=new Map(days.map(d=>[d.id,d.label]));for(const item of items){const id=item.dayId??'1';if(!map.has(id))map.set(id,(he?'אימון ':'Workout ')+id);}return [...map].map(([id,label])=>({id,label}));},[days,items,he]);
- const effectiveScope=scope==='week'||options.some(d=>d.id===scope)?scope:options[0]?.id??'1';
+ const effectiveScope=completedView?'week':scope==='week'||options.some(d=>d.id===scope)?scope:options[0]?.id??'1';
  const scopedItems=useMemo(()=>effectiveScope==='week'?items:items.filter(i=>(i.dayId??'1')===effectiveScope),[items,effectiveScope]);
  const summary=useMemo(()=>workoutMuscleSummary(scopedItems),[scopedItems]);
  const mappedIndices=new Set(summary.muscles.flatMap(row=>row.contributions.map(c=>c.index)));
@@ -39,13 +39,15 @@ export function WorkoutMuscleMapContent({items,days=[],initialDay,language}:Prop
  useEffect(()=>{returnTo.current=null;setLearning(null);setLearningUnavailable(false);setExercise('all');setSelection(null);},[items,effectiveScope]);
  useEffect(()=>{if(initialDay)setScope(initialDay);},[initialDay]);
  const labels={primary:he?'עיקרי':'Primary',secondary:he?'מסייע':'Assisting',stabilizer:he?'מייצב':'Stabilizing'};
- const scopeLabel=effectiveScope==='week'?(he?'סיכום שבועי מתוכנן':'Planned weekly overview'):options.find(d=>d.id===effectiveScope)?.label??(he?'האימון':'Workout');
+ const scopeLabel=completedView?completedView.label:effectiveScope==='week'?(he?'סיכום שבועי מתוכנן':'Planned weekly overview'):options.find(d=>d.id===effectiveScope)?.label??(he?'האימון':'Workout');
  return <div className="workout-muscle-map care-stack" dir={he?'rtl':'ltr'} data-no-translate>
-  <h2>{he?'אילו שרירים משתתפים בתוכנית?':'Which muscles participate in the program?'}</h2>
+  <h2>{completedView?(he?'השרירים באימונים שביצעת':'Muscles in your completed workouts'):(he?'אילו שרירים משתתפים בתוכנית?':'Which muscles participate in the program?')}</h2>
+  {!completedView&&<>
   <label>{he?'תצוגת אימון':'Workout scope'}<select value={effectiveScope} onChange={e=>{setScope(e.target.value);setExercise('all');setSelection(null);}}>{options.map(day=><option key={day.id} value={day.id}>{day.label}</option>)}<option value="week">{he?'סיכום שבועי':'Weekly overview'}</option></select></label>
   <p className="care-muted">{he?'הסיכום השבועי מניח שכל אימון בתוכנית מבוצע פעם אחת. הוא אינו לוח אימונים שבועי בפועל.':'The weekly overview assumes each programmed workout is performed once. It is not an actual weekly schedule.'}</p>
+  </>}
   <h3>{scopeLabel}</h3>
-  <p>{he?'סטי עבודה מתוכננים בלבד, ללא אחוזי הפעלה או מדידת עומס. כל תפקיד נספר בנפרד; אותו סט יכול להופיע אצל כמה שרירים.':'Planned working sets only, not activation percentages or a load measurement. Roles are counted separately; one set can contribute to several muscles.'}</p>
+  <p>{completedView?(he?'סטי עבודה שסומנו כבוצעו בלבד. הצבע מציין תפקיד, ולא עוצמה, התאוששות או פציעה. אותו סט יכול להיספר בכמה שרירים.':'Completed working sets only. Colour means role, not intensity, recovery or injury. One set can contribute to several muscles.') :he?'סטי עבודה מתוכננים בלבד, ללא אחוזי הפעלה או מדידת עומס. כל תפקיד נספר בנפרד; אותו סט יכול להופיע אצל כמה שרירים.':'Planned working sets only, not activation percentages or a load measurement. Roles are counted separately; one set can contribute to several muscles.'}</p>
   {!scopedItems.length&&<p role="status">{he?'אין תרגילים באימון הזה.':'No exercises in this workout.'}</p>}
   {summary.excluded>0&&<p>{he?`${summary.excluded} תרגילי חימום, מתיחה או אירובי אינם נכללים בספירת סטי העבודה.`:`${summary.excluded} warmup, stretch or cardio exercises excluded from working-set counts.`}</p>}
   {summary.unmapped.length>0&&<div role="status"><p>{he?'לחלק מהתרגילים אין מיפוי זמין או ספירת סטים תקינה; הם אינם נכללים בסיכום.':'Some exercise mapping is unavailable or has invalid set counts; these exercises are not included in the summary.'}</p><ul>{summary.unmapped.map(issue=><li key={issue.index}>{name(scopedItems[issue.index],language)} · {issue.index+1}: {issue.reason==='invalid-sets'?(he?'מספר הסטים צריך להיות מספר שלם בין 1 ל־20; התרגיל לא נספר עד לתיקון.':'Working sets must be an integer from 1 to 20; excluded until corrected.'):(he?'מיפוי לא זמין':'Mapping unavailable')}</li>)}</ul></div>}
