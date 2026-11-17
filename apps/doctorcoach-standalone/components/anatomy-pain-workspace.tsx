@@ -1,4 +1,6 @@
 'use client';
+import {PainModifications} from './pain-modifications';
+import {defaultPrescription,type PlanItem} from '../lib/training';
 import {useEffect,useRef,useState} from 'react';
 import {painSceneBudget} from '../lib/anatomy-pain-scene-budget';
 import {useLanguage} from './language-provider';
@@ -13,8 +15,8 @@ import {exercises} from '../lib/content';
 const localTime=(date=new Date())=>new Date(date.getTime()-date.getTimezoneOffset()*60000).toISOString().slice(0,16);
 const noop=(_dirty:boolean)=>{};
 const builtins:PainExerciseOption[]=exercises.map(e=>({id:e.id,he:e.name,en:e.en,source:'builtin'}));
-type Props={expectedOwner?:string;auth?:string;context?:PainWorkoutContext;embedded?:boolean;onDirty?:(dirty:boolean)=>void};
-export function AnatomyPainWorkspace({expectedOwner,auth,context,embedded=false,onDirty=noop}:Props){
+type Props={expectedOwner?:string;auth?:string;context?:PainWorkoutContext;embedded?:boolean;onDirty?:(dirty:boolean)=>void;items?:readonly PlanItem[];trainingBlocked?:boolean};
+export function AnatomyPainWorkspace({expectedOwner,auth,context,embedded=false,onDirty=noop,items=[],trainingBlocked=true}:Props){
  const {language}=useLanguage(),he=language==='he',resource=useCareResource<AnatomyPainBundle>('/api/anatomy-pain');
  const sceneToken=useRef(Symbol('pain-workspace'));
  const eligible=!!expectedOwner&&['ready','error','loading'].includes(auth??'');
@@ -27,10 +29,10 @@ export function AnatomyPainWorkspace({expectedOwner,auth,context,embedded=false,
   {embedded?<h3>{title}</h3>:<h1>{title}</h1>}
   <p>{he?'דיווחים פרטיים לחשבון שלך. הסימון אינו אבחנה ואינו משנה את תוכנית האימון.':'Reports are private to your account. Marking pain does not diagnose a condition or change your program.'}</p>
   {!access.show&&<div className="panel"><p role="status">{resource.loading||auth==='loading'?(he?'בודקים גישה ומעדכנים היסטוריה…':'Checking access and updating history…'):resource.status===401||auth==='required'?(he?'יש להתחבר כדי לשמור ולצפות בדיווחים.':'Sign in to save and view reports.'):resource.status===403?(he?'יש לעדכן את ההסכמות בתיק שלי לפני דיווח כאב.':'Update your health consents in My File before using pain reports.'):(he?'לא ניתן לאמת גישה לדיווחים כרגע. הטיוטה באותו חשבון נשארת בזיכרון בלבד.':'Access cannot be verified right now. The same-account draft stays in memory only.')}</p>{resource.status===401||auth==='required'?<a className="button primary" href="/signin-with-chatgpt?return_to=%2F%23learn%3Fpain%3D1" target="_top">{he?'התחברות':'Sign in'}</a>:<button type="button" disabled={resource.loading} onClick={()=>void resource.reload()}>{he?'ניסיון נוסף':'Retry'}</button>}{!embedded&&<a href="#onboarding">{he?'לתיק שלי ולהסכמות':'My File and consents'}</a>}</div>}
-  {access.mount&&resource.data&&<div hidden={!access.show} inert={!access.show}><PrivatePain sceneToken={sceneToken.current} key={resource.data.ownerId} language={language} bundle={resource.data} invalidate={resource.reload} context={context} onDirty={onDirty}/></div>}
+  {access.mount&&resource.data&&<div hidden={!access.show} inert={!access.show}><PrivatePain sceneToken={sceneToken.current} key={resource.data.ownerId} language={language} bundle={resource.data} invalidate={resource.reload} context={context} onDirty={onDirty} items={items} trainingBlocked={trainingBlocked}/></div>}
  </section>;
 }
-function PrivatePain({sceneToken,language,bundle,invalidate,context,onDirty}:{sceneToken:symbol;language:'he'|'en';bundle:AnatomyPainBundle;invalidate:()=>Promise<void>;context?:PainWorkoutContext;onDirty:(dirty:boolean)=>void}){
+function PrivatePain({sceneToken,language,bundle,invalidate,context,onDirty,items,trainingBlocked}:{sceneToken:symbol;language:'he'|'en';bundle:AnatomyPainBundle;invalidate:()=>Promise<void>;context?:PainWorkoutContext;onDirty:(dirty:boolean)=>void;items:readonly PlanItem[];trainingBlocked:boolean}){
  const he=language==='he',catalog=useCareResource<PainCatalog>('/api/anatomy-pain?catalog=1');
  useEffect(()=>{const refresh=()=>{if(!document.hidden)void catalog.reload();};window.addEventListener('focus',refresh);document.addEventListener('visibilitychange',refresh);return()=>{window.removeEventListener('focus',refresh);document.removeEventListener('visibilitychange',refresh);};},[catalog.reload]);
  const [point,setPoint]=useState<PainPoint|null>(null),[placement,setPlacement]=useState<'surface'|'centre'>('surface'),[view,setView]=useState<'front'|'back'|'left'|'right'>('front');
@@ -93,7 +95,7 @@ function PrivatePain({sceneToken,language,bundle,invalidate,context,onDirty}:{sc
   <button type="button" className="button primary" disabled={busy||!!history||!pending.current&&(!point||contextInvalid||setInvalid||intensity===''||!Number.isInteger(Number(intensity))||Number(intensity)<0||Number(intensity)>10||!at)} onClick={()=>void save()}>{busy?(he?'שומרים…':'Saving…'):pending.current?(he?'ניסיון שמירה חוזר':'Retry save'):(he?'שמירת דיווח כאב':'Save pain report')}</button>
   {message&&<p role="status">{message}</p>}{error&&<p role="alert">{error}</p>}</div>
   <section className="panel care-stack" aria-label={he?'היסטוריית דיווחי כאב':'Pain report history'}><h2>{he?'היסטוריית דיווחים':'Report history'}</h2><small>{he?'עד 100 הדיווחים האחרונים. טיוטה שלא נשמרה נמחקת ביציאה מהעמוד או בהחלפת חשבון.':'Up to 100 latest reports. Unsaved drafts clear when leaving or changing accounts.'}</small>
-   <AnatomyPainHistoryComparison records={records} language={language}/>
+<PainModifications key={bundle.ownerId} ownerId={bundle.ownerId} bundle={{...bundle,records}} items={[...items,...records.filter(r=>r.data.exerciseId&&!items.some(i=>i.exerciseId===r.data.exerciseId)).map(r=>({...defaultPrescription(r.data.exerciseId),occurrenceId:r.data.occurrenceId}))]} catalog={exercises} restrictions={{known:items.some(i=>!!i.approvedSubstitutions?.length),approvedOnly:true,hold:trainingBlocked}} onExercise={id=>{if((point||notes||touched||pending.current)&&!window.confirm(he?'יש טיוטת דיווח כאב שלא אושרה. לצאת לתרגיל?':'An unconfirmed pain draft is open. Leave for this exercise?'))return;window.location.hash='#library?exercise='+encodeURIComponent(id);}}/><AnatomyPainHistoryComparison records={records} language={language}/>
    {!records.length&&<p>{he?'אין דיווחים שמורים.':'No saved reports.'}</p>}
    {records.map(r=>{const structure=painStructures.find(s=>s.id===r.data.structureId),exerciseName=he?r.data.exerciseNameHe:r.data.exerciseNameEn;const fallback=exercises.find(e=>e.id===r.data.exerciseId);return <article key={r.id} className="panel"><time dateTime={r.data.occurredAt}>{new Date(r.data.occurredAt).toLocaleString(he?'he-IL':'en-GB')}</time><p>{structure?.[language]} · {he?'עוצמה':'Intensity'} {r.data.intensity}/10 · {timingLabel(r.data.timing)}</p>{r.data.exerciseId&&<p>{exerciseName||(fallback?(he?fallback.name:fallback.en):(he?'תרגיל אישי או היסטורי':'Personal or historical exercise'))}</p>}{r.data.sessionId&&<small>{he?'משויך לאימון':'Linked to a workout'}{r.data.setIndex!==undefined&&` · ${he?'סט עבודה בזמן הדיווח':'Working set at report time'} ${r.data.setIndex+1}`}</small>}{r.data.notes&&<p>{r.data.notes}</p>}{!painCanPlot(r.data)&&<p>{he?'גרסת המודל השתנתה. פרטי הדיווח נשמרו, אך הסמן אינו מוצג על גאומטריה אחרת.':'The model version changed. Report details are retained; the marker is not shown on different geometry.'}</p>}<button type="button" disabled={frozen||!painCanPlot(r.data)} onClick={()=>{setHistory(r);painSceneBudget.activate(sceneToken);}}>{he?'הצגת הנקודה על המודל':'Show point on model'}</button></article>;})}
   </section>
