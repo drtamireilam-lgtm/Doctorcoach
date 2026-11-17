@@ -110,3 +110,9 @@
 .program-quick-actions .button{min-width:0;min-height:44px;padding:8px;font-size:.82rem;white-space:normal;overflow-wrap:anywhere}
 .program-builder-mobile .program-exercise-editor,.program-builder-mobile .coach-exercise-picker{scroll-margin-block-start:96px}
 .program-builder-mobile .program-exercise-editor:focus{outline:2px solid var(--dc-cyan,var(--text));outline-offset:3px}
+
+/* In-editor anatomy remains a local, explicit draft action. */
+.program-anatomy-learning { min-width:0; }
+.program-anatomy-learning > button { width:100%;min-height:44px;white-space:normal;overflow-wrap:anywhere; }
+.program-anatomy-add { border:1px solid var(--line);border-radius:14px;padding:12px;min-width:0; }
+.program-anatomy-add button { min-height:44px;white-space:normal; }
