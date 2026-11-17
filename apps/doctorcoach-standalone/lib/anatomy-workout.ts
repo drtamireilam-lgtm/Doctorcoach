@@ -1,3 +1,4 @@
+import {exerciseFor} from './anatomy-catalog.ts';
 import type {PlanItem} from './training.ts';
 import {workoutSection} from './workout-sections.ts';
 import {exerciseAnatomyLinks} from './anatomy-exercises.ts';
@@ -20,3 +21,8 @@ export function workoutMuscleSummary(items:readonly PlanItem[]){
 }
 /** Aggregate colour means this role exists in at least one included exercise, never intensity. */
 export function workoutMuscleLinks(rows:readonly WorkoutMuscleRow[]):ExerciseMuscleLink[]{return rows.map(row=>({slug:row.slug,...row.part?{part:row.part}:{},role:row.counts.primary?'primary':row.counts.secondary?'secondary':'stabilizer'}));}
+
+export function workoutPrescriptionName(item:PlanItem,language:'he'|'en'){
+ if(item.customExercise)return language==='he'?item.customExercise.name:item.customExercise.en||item.customExercise.name;
+ const exercise=exerciseFor(item.exerciseId);return exercise?(language==='he'?exercise.name:exercise.en):(language==='he'?'תרגיל לא מוכר':'Unknown exercise');
+}
