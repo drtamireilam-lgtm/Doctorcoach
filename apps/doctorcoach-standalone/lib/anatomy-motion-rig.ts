@@ -32,13 +32,13 @@ export function createExerciseRig(root:THREE.Object3D,meshes:THREE.Mesh[],model:
   originals.forEach(m=>{boneLayers.set(m,m.layers.mask);m.layers.set(1);});
  }
  let disposed=false;
- const rig={pose(degrees:number,mode:MotionMode,bones=true,muscles=true){
+ const rig={pose(degrees:number,mode:MotionMode,bones=true,muscles=true,selectedMuscle:string|null=null){
   if(disposed)return;const neutral=mode==='muscles',angle=neutral?0:-boundedDegrees(degrees,profile.maxDegrees)*Math.PI/180;
   groups.forEach((g,i)=>g.quaternion.setFromAxisAngle(axes[i],angle));markers.forEach(m=>{m.visible=mode==='joints'&&bones;});
   for(const batch of batches){batch.visible=bones;const material=batch.material as THREE.MeshStandardMaterial;material.transparent=neutral;material.opacity=neutral?.2:1;material.depthWrite=!neutral;}
   for(const mesh of meshes){const s=byId.get(mesh.name);if(!s)continue;const role=profile.roles[s.id];mesh.visible=s.layer==='bone'?bones:neutral&&muscles&&!!role;
    const color=s.layer==='bone'?'#e5dac2':role?anatomyRoleColors[role]:'#58bde9';
-   for(const material of Array.isArray(mesh.material)?mesh.material:[mesh.material])if(material instanceof THREE.MeshStandardMaterial){material.color.set(color);material.transparent=neutral&&s.layer==='bone';material.opacity=neutral&&s.layer==='bone'?.2:1;material.depthWrite=!(neutral&&s.layer==='bone');}
+   for(const material of Array.isArray(mesh.material)?mesh.material:[mesh.material])if(material instanceof THREE.MeshStandardMaterial){material.color.set(color);material.emissive.set(neutral&&muscles&&s.id===selectedMuscle?'#ffffff':'#000000');material.emissiveIntensity=.4;material.transparent=neutral&&s.layer==='bone';material.opacity=neutral&&s.layer==='bone'?.2:1;material.depthWrite=!(neutral&&s.layer==='bone');}
   }
  },dispose(){if(disposed)return;disposed=true;for(const mesh of [...markers,...batches]){mesh.parent?.remove(mesh);mesh.geometry.dispose();(mesh.material as THREE.Material).dispose();}for(const [mesh,mask] of boneLayers)mesh.layers.mask=mask;for(const group of groups){for(const mesh of [...group.children]){root.add(mesh);mesh.position.add(group.position);}root.remove(group);}}};
  rig.pose(0,'motion');return rig;

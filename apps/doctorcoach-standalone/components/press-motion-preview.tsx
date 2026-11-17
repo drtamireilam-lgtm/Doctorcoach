@@ -3,12 +3,6 @@ import {useState} from 'react';
 import {useLanguage} from './language-provider';
 import {anatomyRoleColors} from '../lib/anatomy-training';
 
-const chestIds=new Set(['bench','barbell-bench','movement-chest-press']);
-const shoulderIds=new Set(['overhead-press','movement-overhead-press']);
-export function pressClipFor(id:string){
- if(chestIds.has(id))return 'bench';
- if(shoulderIds.has(id))return 'overhead';
-}
 export function PressMotionPreview({clip}:{clip:'bench'|'overhead'}){
  const {language}=useLanguage();
  const he=language==='he',chest=clip==='bench';
@@ -20,7 +14,8 @@ export function PressMotionPreview({clip}:{clip:'bench'|'overhead'}){
   <button className="button secondary" type="button" aria-expanded={open} onClick={()=>setOpen(!open)}>{he?'הדגמת תנועה ושרירים':'Movement and muscle demonstration'} · {title}</button>
   {open&&<figure className="panel care-stack" style={{margin:0}}>
    <video key={clip} controls loop playsInline preload="metadata" aria-label={title} src={'/anatomy/motion/'+clip+'.mp4'} style={{width:'100%',borderRadius:12}}/>
-   <figcaption><b>{title}</b><p>{he?'הדמיית תנועה משוערת מהאטלס. הצבעים מציינים את תפקיד השריר לאורך החזרה.':'Illustrative atlas motion. Colors identify muscle roles throughout the repetition.'}</p>
+   <figcaption><b>{title}</b><p>{he?'הדמיית תנועה משוערת מהאטלס. סימון תפקידי השרירים ממתין לסקירה אנטומית.':'Illustrative atlas motion. Muscle-role labels are provisional and await anatomical review.'}</p>
+    {chest&&<p>{he?'הסרטון מציג תנועת לחיצה בשכיבה ללא ספסל, מוט או אחיזה מודליים.':'The clip illustrates supine pressing without a modeled bench, bar or grip.'}</p>}
     <ul><li><strong style={{color:anatomyRoleColors.primary}}>{he?'אגוניסט':'Agonist'}</strong> · {primary}</li>
     <li><strong style={{color:anatomyRoleColors.secondary}}>{he?'סינרגיסטים':'Synergists'}</strong> · {assisting}</li>
     {!chest&&<li><strong style={{color:anatomyRoleColors.stabilizer}}>{he?'מייצב':'Stabilizer'}</strong> · {he?'התת־שכמתי':'Subscapularis'}</li>}</ul>
