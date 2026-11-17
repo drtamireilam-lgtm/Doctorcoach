@@ -72,7 +72,7 @@ export async function verifyWorkoutRecovery({page,fixture,owner,started,language
  await first().locator('.set-save').click();await page.waitForFunction(()=>document.querySelector('.set-line .smart-set-fields input')?.disabled);
  await page.evaluate(()=>window.dispatchEvent(new Event('online')));await page.waitForTimeout(250);
  assert.equal(readCount(),reads,'Online refresh must not overlap an acquired session mutation');
- pausePatch(false);await first().locator('.set-save.saved').waitFor();
+ pausePatch(false);await first().locator('.set-save.saved').waitFor({state:'attached'});await first().locator('[data-completed-summary]').waitFor();
  assert.equal((await fixture.training.feed(owner)).active.items[0].results[0].weight,26);
  console.log('PASS real IndexedDB pending fields → failed save → reload → conflict → explicit discard; owner/CAS isolation',language);
  return {failedWrite:true,disconnection:true,reload:true,refreshedConflict:true,conflictEditsBlocked:true,discardInputLock:true,latestServerDiscard:true,serializedOnlineRefresh:true,ownerIsolation:true,revisionCas:true};

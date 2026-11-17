@@ -110,9 +110,20 @@ try{
   await page.waitForFunction(expected=>document.querySelectorAll('.session-exercise')[0]?.id===expected,benchAnchor);
   const recovery=offline?await verifyWorkoutRecovery({page,fixture:trainingFixture,owner:client.userId,started,language,width,evidence,setFailure:value=>{failSetWrites=value!==false;failTrainingReads=value==='all';},readCount:()=>trainingReads,pausePatch:value=>{if(value)patchGate=new Promise(resolve=>{releasePatch=resolve;});else{releasePatch?.();patchGate=null;releasePatch=null;}}}):null;
   const first=page.locator('.set-line').first(),fields=()=>first.locator('.smart-set-fields input');
-  await fields().nth(0).fill('60');await fields().nth(1).fill('10');await fields().nth(2).fill('6');
+  if(offline)await first.getByRole('button',{name:language==='en'?'Edit set':'עריכת סט',exact:true}).click();
+  await fields().nth(0).fill('');assert.equal(await fields().nth(0).inputValue(),'');
+  await page.waitForTimeout(1100);assert.equal((await trainingFixture.training.feed(client.userId)).active.items[0].results[0].weight,offline?26:20,'Blank load is not silently saved as zero');
+  await page.locator('[data-save-state="pending"]').waitFor();
+  await fields().nth(0).fill('60');await fields().nth(0).press('Enter');assert.equal(await fields().nth(1).evaluate(e=>e===document.activeElement),true,'Enter moves to repetitions');
+  await fields().nth(1).fill('10');await fields().nth(1).press('Enter');assert.equal(await fields().nth(2).evaluate(e=>e===document.activeElement),true,'Enter moves to actual effort');
+  await fields().nth(2).fill('6');await fields().nth(2).press('Enter');assert.equal(await first.locator('.set-save').evaluate(e=>e===document.activeElement),true,'Enter focuses completion without completing automatically');
+  const explanation=first.locator('.set-calculation-details');await explanation.waitFor();assert.equal(await explanation.getAttribute('open'),null,'Calculation detail stays out of the main entry path');
+  await explanation.locator('summary').click();await explanation.locator('[data-load-detail="raw"]').waitFor();await explanation.locator('summary').click();
+
   assert.notEqual(await first.locator('.smart-set-metrics strong').textContent(),'—');
-  await first.locator('.set-save').click();await first.locator('.set-save.saved').waitFor();
+  await first.locator('.set-save').click();await first.locator('.set-save.saved').waitFor({state:'attached'});await first.locator('[data-completed-summary]').waitFor();
+  if(!offline){assert.equal(await first.locator('.set-entry-body').isVisible(),false);assert.equal(await first.locator('.set-edit').evaluate(e=>e===document.activeElement),true,'Collapsing a newly completed set retains keyboard focus');}
+  await first.locator('.set-next').click();assert.equal(await page.locator('.set-line').nth(1).evaluate(e=>e===document.activeElement),true,'Next set is reachable beside the saved result');
   let persisted=(await trainingFixture.training.feed(client.userId)).active;
   assert.equal(persisted.completedSets,1);assert.equal(persisted.items[0].results[0].weight,60);assert.equal(persisted.items[0].results[0].actualRpe,6);assert.ok(persisted.items[0].results[1].weight>60,'Lower actual RPE must suggest more load for the next set');
   if(workout4){
@@ -125,10 +136,13 @@ try{
    assert.notEqual(await timer.locator('output').textContent(),'01:30','Timer survives navigation');await timer.getByRole('button',{name:language==='en'?'Pause':'השהיה',exact:true}).click();
   }
   await page.reload();if(await page.locator('.session-exercise .exercise-disclosure-toggle').first().getAttribute('aria-expanded')==='false')await page.locator('.session-exercise .exercise-disclosure-toggle').first().click();
+  assert.equal(await first.locator('.set-entry-body').isVisible(),false,'Saved sets resume as compact readback');
+  await first.getByRole('button',{name:language==='en'?'Edit set':'עריכת סט',exact:true}).click();
+  assert.equal(await first.locator('.set-entry-body').isVisible(),true,'Editing a completed set is explicit and preserves saved values');
   assert.equal(await fields().nth(0).inputValue(),'60');assert.equal(await fields().nth(2).inputValue(),'6');
-  await fields().nth(0).fill('61.5');await first.locator('.set-save').click();await first.locator('.set-save.saved').waitFor();
+  await fields().nth(0).fill('61.5');await first.locator('.set-save').click();await first.locator('.set-save.saved').waitFor({state:'attached'});await first.locator('[data-completed-summary]').waitFor();
   assert.equal((await trainingFixture.training.feed(client.userId)).active.items[0].results[0].weight,61.5);
-  if(workout4){const second=page.locator('.set-line').nth(1);await second.locator('.smart-set-fields input').nth(0).fill('63.125');const fits=await second.locator('.smart-set-fields input').nth(0).evaluate(input=>{const style=getComputedStyle(input),ctx=document.createElement('canvas').getContext('2d');ctx.font=style.font;const spinner=style.appearance==='textfield'?0:16;return ctx.measureText(input.value).width<=input.clientWidth-parseFloat(style.paddingLeft)-parseFloat(style.paddingRight)-spinner;});assert.equal(fits,true,'Decimal load must fit visibly in the input');await second.locator('.smart-set-fields input').nth(2).fill('8');await second.locator('.set-save').click();await second.locator('.set-save.saved').waitFor();assert.equal((await trainingFixture.training.feed(client.userId)).active.items[0].results[1].weight,63.125);}
+  if(workout4){const second=page.locator('.set-line').nth(1);await second.locator('.smart-set-fields input').nth(0).fill('63.125');const fits=await second.locator('.smart-set-fields input').nth(0).evaluate(input=>{const style=getComputedStyle(input),ctx=document.createElement('canvas').getContext('2d');ctx.font=style.font;const spinner=style.appearance==='textfield'?0:16;return ctx.measureText(input.value).width<=input.clientWidth-parseFloat(style.paddingLeft)-parseFloat(style.paddingRight)-spinner;});assert.equal(fits,true,'Decimal load must fit visibly in the input');await second.locator('.smart-set-fields input').nth(2).fill('8');await second.locator('.set-save').click();await second.locator('.set-save.saved').waitFor({state:'attached'});await second.locator('[data-completed-summary]').waitFor();assert.equal((await trainingFixture.training.feed(client.userId)).active.items[0].results[1].weight,63.125);}
   await page.evaluate(()=>scrollTo(0,0));await page.screenshot({path:join(evidence,`workout-saved-set-${width}-${language}.png`),fullPage:true});
   await page.locator('.finish-card .button.primary').click();const dialog=page.getByRole('dialog');
   await dialog.locator('input').first().fill('0');await dialog.locator('button[type=submit]').click();await page.locator('.workout-saved').waitFor();
