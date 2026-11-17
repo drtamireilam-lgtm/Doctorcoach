@@ -32,6 +32,10 @@ jobs:
           node --experimental-strip-types standalone/scripts/workout-migration-smoke.mjs > .sites-runtime/workout-migration-evidence.json
       - name: Typecheck and build
         run: npm run typecheck && npm run build:standalone
+      - name: Program editor selection dose preview and draft acceptance
+        env:
+          DC_CHROMIUM: /usr/bin/google-chrome
+        run: node --experimental-strip-types scripts/program-editor-ux-browser.mjs
       - name: Active session structure and prescription integrity
         run: node --experimental-strip-types --test tests/session-flexibility*.test.mjs tests/activity-privacy.test.mjs tests/set-line-completion.test.mjs
       - name: Durable draft identity and conflict checks
@@ -66,10 +70,6 @@ jobs:
         env:
           DC_CHROMIUM: /usr/bin/google-chrome
         run: node --experimental-strip-types scripts/program-controls-browser.mjs
-      - name: Program editor selection dose preview and draft acceptance
-        env:
-          DC_CHROMIUM: /usr/bin/google-chrome
-        run: node --experimental-strip-types scripts/program-editor-ux-browser.mjs
       - name: Import rest correction and persistence acceptance
         env:
           DC_IMPORT_CHROMIUM: /usr/bin/google-chrome

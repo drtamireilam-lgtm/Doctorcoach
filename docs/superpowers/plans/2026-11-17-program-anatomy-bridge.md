@@ -13,3 +13,5 @@ Implementation complete: authored exact-muscle options/filter composes with exis
 Final review: one Important Next directive-prologue issue fixed with program-anatomy-client-boundary test RED→GREEN; 26 focused checks pass. No minors or unresolved findings. Full post-fix suite 2,228/2,228, TypeScript and diff checks passed. CI runtime acceptance pending. Existing authored mappings/popovers reused; unknown/custom mappings are not inferred.
 
 CI44124693975 exposed a browser-fixture mismatch: CareSelect uses Radix combobox/option buttons, not native selects. Corrected test interaction to use accessible combobox/option controls; no product changes or weakened assertions. Focus restoration waits for the existing animation-frame completion. Candidate CI rerun required.
+
+CI44126303627 passed all five Hebrew bridge journeys. English fixture expected legacy JSON-only equipment labels, while actual localization adds Machine/All equipment overrides. Corrected fixture to exact bilingual labels from existing UI localization. Moved editor acceptance immediately after build for faster feedback; remaining regressions remain required. No product changes.
