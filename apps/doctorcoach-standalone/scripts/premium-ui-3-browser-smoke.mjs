@@ -110,6 +110,7 @@ try{
   await page.waitForFunction(expected=>document.querySelectorAll('.session-exercise')[0]?.id===expected,benchAnchor);
   const recovery=offline?await verifyWorkoutRecovery({page,fixture:trainingFixture,owner:client.userId,started,language,width,evidence,setFailure:value=>{failSetWrites=value!==false;failTrainingReads=value==='all';},readCount:()=>trainingReads,pausePatch:value=>{if(value)patchGate=new Promise(resolve=>{releasePatch=resolve;});else{releasePatch?.();patchGate=null;releasePatch=null;}}}):null;
   const first=page.locator('.set-line').first(),fields=()=>first.locator('.smart-set-fields input');
+  assert.ok(await page.evaluate(()=>document.querySelector('.set-line').getBoundingClientRect().top<document.querySelector('.session-exercise .atlas-exercise-links').getBoundingClientRect().top),'Set entry must precede optional anatomy information');
   if(offline)await first.getByRole('button',{name:language==='en'?'Edit set':'עריכת סט',exact:true}).click();
   await fields().nth(0).fill('');assert.equal(await fields().nth(0).inputValue(),'');
   await page.waitForTimeout(1100);assert.equal((await trainingFixture.training.feed(client.userId)).active.items[0].results[0].weight,offline?26:20,'Blank load is not silently saved as zero');
@@ -124,6 +125,7 @@ try{
   await first.locator('.set-save').click();await first.locator('.set-save.saved').waitFor({state:'attached'});await first.locator('[data-completed-summary]').waitFor();
   if(!offline){await first.locator('.set-entry-body').waitFor({state:'hidden'});await page.waitForFunction(()=>{const edit=document.querySelector('.set-line .set-edit');return edit&&!edit.disabled&&edit===document.activeElement;});}
   else await first.locator('.set-edit').click();
+  const readback=await first.locator('[data-completed-summary]>div').first().boundingBox(),savedRow=await first.boundingBox();assert.ok(readback.width>=savedRow.width*.7,'Saved readback must retain readable width: '+JSON.stringify({readback,savedRow}));
   await first.locator('.set-next').click();await page.waitForFunction(()=>document.querySelectorAll('.set-line')[1]===document.activeElement);
 
   let persisted=(await trainingFixture.training.feed(client.userId)).active;

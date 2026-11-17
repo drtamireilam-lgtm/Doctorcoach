@@ -14,3 +14,5 @@ Review: 0 Critical, 3 Important. Fixed in one RED/GREEN pass: saved per-side bas
 Local browser preflight was blocked by Chromium process singleton socket restrictions; no application browser assertion ran locally. Use existing GitHub CI for runtime acceptance.
 
 Additional interaction regression found during validation: after autosave, the primary action previously changed into undo-completion. RED/GREEN test now proves confirmed primary action only closes editing; undo remains an explicit separate action in set options.
+
+Runtime screenshot inspection caught a narrow English saved-readback column caused by competing flex children. Changed readback to a full-width grid; added minimum readable-width acceptance. Set entry and exercise jumps now precede optional structure/anatomy information, reducing scrolling before logging. Existing exercise controls remain mounted and available. CI's offline continuation selector was scoped to the unique editor toggle after the two legitimate close buttons became visible.
