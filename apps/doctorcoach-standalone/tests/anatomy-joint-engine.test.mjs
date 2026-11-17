@@ -8,6 +8,7 @@ import {jointContext} from '../lib/anatomy-joint-context.ts';
 import {readFileSync} from 'node:fs';
 import {gunzipSync} from 'node:zlib';
 import * as THREE from 'three';
+import {prepareAnatomyMaterials} from '../lib/anatomy-presentation.ts';
 test('all requested regions are inventoried; unavailable movements cannot silently become generic rotations',()=>{
  assert.equal(jointRegions.length,14);assert.equal(new Set(jointMovements.map(m=>m.id)).size,jointMovements.length);
  const model=anatomyModels.find(m=>m.id==='musculoskeletal'),ids=new Set(model.structures.map(s=>s.id));
@@ -32,7 +33,7 @@ test('pure playback preserves phase while paused and changing speed; reset exten
 function sourceScene(){
  const model=anatomyModels.find(m=>m.id==='musculoskeletal'),root=new THREE.Group(),meshes=[];
  const raw=gunzipSync(readFileSync(new URL('../public'+model.src,import.meta.url))),n=raw.readUInt32LE(12),doc=JSON.parse(raw.subarray(20,20+n)),binary=raw.subarray(28+n),nodes=new Map(doc.nodes.map(n=>[n.name,n]));
- for(const s of model.structures){const p=doc.meshes[nodes.get(s.id).mesh].primitives[0],a=doc.accessors[p.attributes.POSITION],v=doc.bufferViews[a.bufferView],start=(v.byteOffset??0)+(a.byteOffset??0);const pos=new Float32Array(binary.buffer.slice(binary.byteOffset+start,binary.byteOffset+start+a.count*12));const g=new THREE.BufferGeometry();g.setAttribute('position',new THREE.BufferAttribute(pos,3));const m=new THREE.Mesh(g,new THREE.MeshStandardMaterial());m.name=s.id;root.add(m);meshes.push(m);}return {model,root,meshes};
+ for(const s of model.structures){const p=doc.meshes[nodes.get(s.id).mesh].primitives[0],a=doc.accessors[p.attributes.POSITION],v=doc.bufferViews[a.bufferView],start=(v.byteOffset??0)+(a.byteOffset??0);const pos=new Float32Array(binary.buffer.slice(binary.byteOffset+start,binary.byteOffset+start+a.count*12));const g=new THREE.BufferGeometry();g.setAttribute('position',new THREE.BufferAttribute(pos,3));const m=new THREE.Mesh(g,new THREE.MeshStandardMaterial());m.name=s.id;root.add(m);meshes.push(m);}prepareAnatomyMaterials(meshes,new Map(model.structures.map(s=>[s.id,s.layer])));return {model,root,meshes};
 }
 test('source-bound generic rig moves independent sides, retains every source vertex and exactly resets',()=>{
  const {model,root,meshes}=sourceScene(),rest=new Map(meshes.map(m=>[m.name,m.geometry.attributes.position.array.slice()]));
@@ -40,7 +41,7 @@ test('source-bound generic rig moves independent sides, retains every source ver
  const rig=createJointRig(root,meshes,model);const point=id=>{root.updateMatrixWorld(true);return meshes.find(m=>m.name===id).localToWorld(new THREE.Vector3().fromArray(rest.get(id)));};
  for(const movement of jointMovements.filter(m=>m.status==='prototype'))for(const side of ['left','right','both']){
   rig.configure(movement,side);rig.pose(.25,false,true);const active=channelsFor(movement,side),boneSet=new Set(active.flatMap(c=>c.bones));assert.ok(active.length);
-  const batches=[];root.traverse(m=>{if(m.userData.jointBoneBatch)batches.push(m);});const renderedVertices=batches.reduce((n,m)=>n+m.geometry.attributes.position.count,0);const allVertices=meshes.filter(m=>model.structures.find(s=>s.id===m.name).layer==='bone'&&!m.name.endsWith('-patella')).reduce((n,m)=>n+m.geometry.attributes.position.count,0);assert.equal(renderedVertices,allVertices);
+  const batches=[];root.traverse(m=>{if(m.userData.jointBoneBatch)batches.push(m);});assert.ok(batches.every(batch=>batch.material.roughness===meshes.find(m=>model.structures.find(s=>s.id===m.name).layer==='bone').material.roughness),'visible joint bones use atlas finish');const renderedVertices=batches.reduce((n,m)=>n+m.geometry.attributes.position.count,0);const allVertices=meshes.filter(m=>model.structures.find(s=>s.id===m.name).layer==='bone'&&!m.name.endsWith('-patella')).reduce((n,m)=>n+m.geometry.attributes.position.count,0);assert.equal(renderedVertices,allVertices);
   let moved=false;for(const mesh of meshes.filter(m=>model.structures.find(s=>s.id===m.name).layer==='bone')){const before=new THREE.Vector3().fromArray(rest.get(mesh.name));if(boneSet.has(mesh.name)){if(point(mesh.name).distanceTo(before)>.0001)moved=true;}else assert.ok(point(mesh.name).distanceTo(before)<1e-7,mesh.name+' incorrectly moved for '+movement.id);assert.deepEqual(mesh.geometry.attributes.position.array,rest.get(mesh.name));}assert.ok(moved,movement.id+' has no motion');
   rig.neutral(true,true);for(const mesh of meshes)assert.ok(point(mesh.name).distanceTo(new THREE.Vector3().fromArray(rest.get(mesh.name)))<1e-7);assert.ok(meshes.filter(m=>model.structures.find(s=>s.id===m.name).layer==='muscle').every(m=>m.visible));
  }
