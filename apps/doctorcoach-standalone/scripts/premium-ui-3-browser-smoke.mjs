@@ -122,8 +122,10 @@ try{
 
   assert.notEqual(await first.locator('.smart-set-metrics strong').textContent(),'—');
   await first.locator('.set-save').click();await first.locator('.set-save.saved').waitFor({state:'attached'});await first.locator('[data-completed-summary]').waitFor();
-  if(!offline){assert.equal(await first.locator('.set-entry-body').isVisible(),false);assert.equal(await first.locator('.set-edit').evaluate(e=>e===document.activeElement),true,'Collapsing a newly completed set retains keyboard focus');}
-  await first.locator('.set-next').click();assert.equal(await page.locator('.set-line').nth(1).evaluate(e=>e===document.activeElement),true,'Next set is reachable beside the saved result');
+  if(!offline){await first.locator('.set-entry-body').waitFor({state:'hidden'});await page.waitForFunction(()=>{const edit=document.querySelector('.set-line .set-edit');return edit&&!edit.disabled&&edit===document.activeElement;});}
+  else await first.getByRole('button',{name:language==='en'?'Close editing':'סגירת העריכה',exact:true}).click();
+  await first.locator('.set-next').click();await page.waitForFunction(()=>document.querySelectorAll('.set-line')[1]===document.activeElement);
+
   let persisted=(await trainingFixture.training.feed(client.userId)).active;
   assert.equal(persisted.completedSets,1);assert.equal(persisted.items[0].results[0].weight,60);assert.equal(persisted.items[0].results[0].actualRpe,6);assert.ok(persisted.items[0].results[1].weight>60,'Lower actual RPE must suggest more load for the next set');
   if(workout4){
