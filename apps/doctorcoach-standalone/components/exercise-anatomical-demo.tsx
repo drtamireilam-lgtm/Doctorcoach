@@ -1,5 +1,6 @@
 'use client';
 import './anatomy-stage.css';
+import {PressMotionPreview,pressClipFor} from './press-motion-preview';
 import {useEffect,useRef,useState} from 'react';
 import {useLanguage} from './language-provider';
 import {anatomy3dLabEnabled} from '../lib/anatomy-lab';
@@ -10,7 +11,10 @@ import type {createAnatomyCanvas} from '../lib/anatomy-canvas';
 
 export function ExerciseAnatomicalDemo({exerciseId}:{exerciseId:string}){
  const {language}=useLanguage();const [open,setOpen]=useState(false);const profile=motionProfile(exerciseId);
- if(!anatomy3dLabEnabled||!profile)return null;
+ if(!anatomy3dLabEnabled)return null;
+ const clip=pressClipFor(exerciseId);
+ if(clip)return <PressMotionPreview key={exerciseId} clip={clip}/>;
+ if(!profile)return null;
  return <section className="care-stack" data-no-translate><button className="button secondary" type="button" aria-expanded={open} onClick={()=>setOpen(v=>!v)}>{open?(language==='he'?'סגירת הדגמת תלת־ממד':'Close 3D demonstration'):(language==='he'?'הדגמה אנטומית בתלת־ממד':'3D Anatomical Demonstration')}</button>{open&&<MotionPlayer key={exerciseId} profile={profile}/>}</section>;
 }
 
