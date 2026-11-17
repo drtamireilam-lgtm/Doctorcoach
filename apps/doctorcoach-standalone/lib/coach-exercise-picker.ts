@@ -1,3 +1,5 @@
+import {exerciseAnatomyLinks} from './anatomy-exercises.ts';
+import {muscleFor} from './anatomy-catalog.ts';
 import {searchExerciseNames,type NamedExercise} from './exercise-search.ts';
 import {exerciseFamily} from './exercise-families.ts';
 export const equipmentOptions=[{value:'all',label:'כל הציוד'},{value:'dumbbell',label:'משקולות יד'},{value:'barbell',label:'מוט'},{value:'cable',label:'כבל'},{value:'machine',label:'מכונה'},{value:'band',label:'גומייה'},{value:'bodyweight',label:'משקל גוף'},{value:'unknown',label:'ציוד אחר או לא צוין'}];
@@ -8,6 +10,11 @@ export function pickerEquipment(e:NamedExercise):string[]{
  const matches=found.filter(([,pattern])=>pattern.test(text)).map(([key])=>key);
  return matches.length?matches:!e.equipment&&explicit[e.id]?[explicit[e.id]]:['unknown'];
 }
-export function filterCoachExercises<T extends NamedExercise>(items:readonly T[],query:string,group='all',equipment='all',family='all'){
- return searchExerciseNames(items.filter(e=>(group==='all'||(e.group||e.area||'לא צוין')===group)&&(equipment==='all'||pickerEquipment(e).includes(equipment))&&(family==='all'||exerciseFamily(e)===family)),query);
+export function filterCoachExercises<T extends NamedExercise>(items:readonly T[],query:string,group='all',equipment='all',family='all',muscle='all'){
+ return searchExerciseNames(items.filter(e=>(muscle==='all'||exerciseAnatomyLinks(e.id).some(link=>link.slug===muscle))&&(group==='all'||(e.group||e.area||'לא צוין')===group)&&(equipment==='all'||pickerEquipment(e).includes(equipment))&&(family==='all'||exerciseFamily(e)===family)),query);
+}
+
+/** Only authored relationships in the available catalog; names never imply a mapping. */
+export function pickerMuscles(items:readonly NamedExercise[]){
+ return [...new Set(items.flatMap(item=>exerciseAnatomyLinks(item.id).map(link=>link.slug)))].flatMap(slug=>{const muscle=muscleFor(slug);return muscle?[{slug,he:muscle.name,en:muscle.en}]:[];}).sort((a,b)=>a.en.localeCompare(b.en));
 }
