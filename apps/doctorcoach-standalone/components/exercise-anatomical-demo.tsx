@@ -1,4 +1,5 @@
 'use client';
+import './anatomy-stage.css';
 import {useEffect,useRef,useState} from 'react';
 import {useLanguage} from './language-provider';
 import {anatomy3dLabEnabled} from '../lib/anatomy-lab';
@@ -51,7 +52,7 @@ function MotionPlayer({profile}:{profile:ExerciseMotionProfile}){
   {mode==='muscles'?<p role="status">{he?'העצמות והשרירים מוחזרים למנח המקורי. עיוות שרירים בתנועה חסום עד לאימות נקודות החיבור וה־Skinning.':'Bones and muscles return to the original pose. Moving muscle deformation is blocked until attachments and skinning are validated.'}</p>:<p>{he?'השרירים מוסתרים בזמן התנועה כדי לא להציג חיבורים שגויים. סמני המפרקים הם צירים סכמטיים, לא רקמות מפרק.':'Muscles are hidden during motion to avoid incorrect attachments. Joint markers are schematic axes, not joint tissues.'}</p>}
   {!loaded&&!error&&<p role="status">{he?'טוען את המודל האנטומי הקיים…':'Loading the existing anatomical model…'}</p>}
   {error&&<div role="alert"><p>{he?'המודל או נתוני המקור אינם זמינים להדגמה. האטלס וסרטון הביצוע נשארים זמינים.':'Model/source data unavailable for this demonstration. The atlas and execution video remain available.'}</p><button onClick={()=>{setPlaying(false);setAttempt(n=>n+1);}}>{he?'ניסיון נוסף':'Retry'}</button></div>}
-  <div ref={host} className="anatomy-model-canvas" data-motion-angle="0" style={{display:error?'none':'block',height:'min(55vh,480px)',minHeight:280,width:'100%',borderRadius:20,overflow:'hidden',background:'#151d2b'}}/>
+  <div ref={host} className="anatomy-model-canvas anatomy-studio-stage" data-motion-angle="0" style={{display:error?'none':'block',height:'min(55vh,480px)',minHeight:280,width:'100%',borderRadius:20,overflow:'hidden'}}/>
   <p className="care-muted">{he?'גרירה לסיבוב • צביטה או גלילה להגדלה':'Drag to rotate • Pinch or wheel to zoom'}</p>
   <div className="anatomy-region-list"><button type="button" disabled={!loaded||reduced||mode==='muscles'} aria-pressed={playing} onClick={()=>{setAngle(actualAngle.current);setPlaying(v=>!v);}}>{playing?(he?'עצירה':'Pause'):(he?'הפעלה':'Play')}</button><button type="button" disabled={!loaded} onClick={()=>{seek(0);setBones(true);setMuscles(true);controller.current?.setView('front');}}>{he?'איפוס תנועה':'Reset motion'}</button><button type="button" disabled={!loaded} onClick={()=>controller.current?.focus('right-radius')}>{he?'תקריב אמה':'Focus forearm'}</button><button type="button" disabled={!loaded} onClick={()=>controller.current?.setView('front')}>{he?'מבט קדמי':'Front view'}</button></div>
   <label>{he?'מהירות':'Speed'}<select aria-label={he?'מהירות האנימציה':'Animation speed'} value={speed} onChange={e=>setSpeed(Number(e.target.value))}>{[.25,.5,1,1.5,2].map(n=><option key={n} value={n}>{n}×</option>)}</select></label>
