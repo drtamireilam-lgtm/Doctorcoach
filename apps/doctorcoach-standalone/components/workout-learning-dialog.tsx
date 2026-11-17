@@ -5,6 +5,7 @@ import {Localize} from './language-provider';
 import {MuscleExercises} from './anatomy-exercises';
 import {WorkoutDemo} from './workout-demo';
 import {ExerciseMuscleSummary} from './exercise-muscle-summary';
+import {workoutLearningGuidance} from '../lib/workout-learning-guidance';
 import {exerciseFor,muscleFor} from '../lib/anatomy-catalog';
 import {learningCard,anatomyLabels} from '../lib/anatomy-learning';
 import type {WorkoutLearningTarget} from '../lib/workout-learning';
@@ -22,11 +23,12 @@ export function WorkoutLearningContent({target,language,onNavigate}:ContentProps
   </article>;
  }
  const exercise=exerciseFor(target.id);if(!exercise)return <p role="status">{he?'ההסבר לתרגיל הזה עדיין אינו זמין.':'Instructions for this exercise are not available yet.'}</p>;
+ const guidance=workoutLearningGuidance(exercise,language);
  return <Localize><article className="care-stack workout-learning-exercise">
   {target.fromMuscle&&<button type="button" className="text-button" onClick={()=>onNavigate({kind:'muscle',slug:target.fromMuscle!})}>{he?'חזרה לכרטיס השריר':'Back to muscle card'}</button>}
-  <h3>{he?'על התרגיל':'About this exercise'}</h3><p>{exercise.desc}</p>
-  <h3>{he?'דגשים לביצוע':'Technique cues'}</h3><ul>{exercise.cues.map((cue,index)=><li key={index}>{cue}</li>)}</ul>
-  <WorkoutDemo key={exercise.id} exerciseId={exercise.id}/>
+  <h3>{he?'על התרגיל':'About this exercise'}</h3><p role={guidance.available?undefined:'status'}>{guidance.desc}</p>
+  <h3>{he?'דגשים לביצוע':'Technique cues'}</h3><ul>{guidance.cues.map((cue,index)=><li key={index}>{cue}</li>)}</ul>
+  <WorkoutDemo key={exercise.id} exerciseId={exercise.id} readOnly/>
   <ExerciseMuscleSummary exerciseId={exercise.id} language={language} onMuscle={link=>onNavigate({kind:'muscle',slug:link.slug})}/>
   <p className="care-muted">{he?'מידע לימודי בלבד. פתיחת ההסבר אינה מוסיפה תרגיל או משנה את המינון בתוכנית.':'Educational information only. Opening these instructions does not add an exercise or change its program prescription.'}</p>
  </article></Localize>;
