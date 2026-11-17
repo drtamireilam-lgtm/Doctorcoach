@@ -1,9 +1,9 @@
 name: Workout experience candidate acceptance
 on:
   push:
-    branches: ['feat/doctorcoach-3-*', 'feat/retrospective-workouts-*', 'fix/workout-lifecycle-*', 'feat/workout-session-*', 'feat/workout-program-*']
+    branches: ['feat/doctorcoach-3-*', 'feat/retrospective-workouts-*', 'fix/workout-lifecycle-*', 'feat/workout-session-*', 'fix/workout-session-*', 'feat/workout-program-*']
   pull_request:
-    branches: ['feat/completed-workout-*', 'feat/program-editor-*', 'feat/retrospective-workouts-*', 'feat/doctorcoach-3-*', 'codex/public-consult-localization-*', 'fix/workout-lifecycle-*', 'feat/workout-session-*', 'feat/workout-program-*']
+    branches: ['feat/completed-workout-*', 'feat/program-editor-*', 'feat/retrospective-workouts-*', 'feat/doctorcoach-3-*', 'codex/public-consult-localization-*', 'fix/workout-lifecycle-*', 'feat/workout-session-*', 'fix/workout-session-*', 'feat/workout-program-*']
   workflow_dispatch:
 permissions:
   contents: read
