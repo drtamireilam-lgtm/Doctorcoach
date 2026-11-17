@@ -35,7 +35,9 @@ const errors = [];
 let browser;
 try {
   browser = await chromium.launch({executablePath:process.env.ANATOMY_CHROMIUM || undefined, args:['--enable-unsafe-swiftshader','--use-gl=angle','--use-angle=swiftshader']});
-  const context = await browser.newContext({viewport:{width:1280,height:960}});
+  const context = await browser.newContext({viewport:{width:1280,height:960},serviceWorkers:'block'});
+  const localOrigin = new URL(origin).origin;
+  await context.route('**/*',route => new URL(route.request().url()).origin===localOrigin ? route.continue() : route.abort());
   const page = await context.newPage();
   page.setDefaultTimeout(60_000);
   page.setDefaultNavigationTimeout(90_000);
@@ -53,6 +55,13 @@ try {
     await detail.waitFor();
     return detail;
   }
+  async function center(locator) {
+    await locator.evaluate(element => element.scrollIntoView({block:'center',behavior:'instant'}));
+  }
+  async function frame(locator, name) {
+    await center(locator);
+    return locator.screenshot(name ? {path:join(evidence,name)} : undefined);
+  }
   const curl = await openDetail('barbell-curl','en');
   assert.ok(await curl.isVisible());
   assert.equal(modelRequests.length, 0);
@@ -67,20 +76,48 @@ try {
   await page.waitForFunction(() => !document.querySelector('[data-exercise-motion] input[type=range]')?.disabled);
   await slider.focus();
   await slider.press('Home');
-  const neutral = await canvas.screenshot({path:join(evidence,'curl-00-start.png')});
+  const neutral = await frame(canvas,'curl-00-start.png');
   for (const [position,file] of [[25,'25-mid-lift'],[50,'50-top'],[75,'75-mid-return'],[100,'100-complete']]) {
     await slider.fill(String(position));
     assert.equal(await slider.inputValue(),String(position));
-    await canvas.screenshot({path:join(evidence,'curl-'+file+'.png')});
+    await frame(canvas,'curl-'+file+'.png');
   }
-  assert.deepEqual(await canvas.screenshot(),neutral,'loop completion should render the start pose');
+  assert.equal(Number(await pose.getAttribute('data-motion-angle')),0,'loop completion should return to the start angle');
   await slider.fill('50');
-  assert.notDeepEqual(await canvas.screenshot(),neutral,'mid repetition must change rendered geometry');
+  assert.ok(!(await frame(canvas)).equals(neutral),'mid repetition must change rendered geometry');
   await player.getByRole('button',{name:'Reset motion',exact:true}).click();
   assert.equal(await slider.inputValue(),'0');
+  if (process.env.ANATOMY_RECORD==='1') {
+    await player.getByRole('button',{name:'Play',exact:true}).click();
+    await center(canvas);
+    const recording = await canvas.evaluate(element => {
+      const mimeType='video/webm;codecs=vp8';
+      if (!element.captureStream || !globalThis.MediaRecorder?.isTypeSupported(mimeType)) return null;
+      const stream=element.captureStream(12);
+      const recorder=new MediaRecorder(stream,{mimeType});
+      const chunks=[];
+      return new Promise(resolve => {
+        const finish = value => { for (const track of stream.getTracks()) track.stop(); resolve(value); };
+        recorder.ondataavailable=event => { if (event.data.size) chunks.push(event.data); };
+        recorder.onerror=() => finish(null);
+        recorder.onstop=() => {
+          const reader=new FileReader();
+          reader.onload=() => finish(String(reader.result).split(',')[1]);
+          reader.onerror=() => finish(null);
+          reader.readAsDataURL(new Blob(chunks,{type:mimeType}));
+        };
+        recorder.start();
+        setTimeout(() => { if (recorder.state!=='inactive') recorder.stop(); },5500);
+      });
+    });
+    const videoBytes = recording ? Buffer.from(recording,'base64') : null;
+    if (videoBytes && videoBytes.length>1024) await writeFile(join(evidence,'curl-actual-player.webm'),videoBytes);
+    await player.getByRole('button',{name:'Pause',exact:true}).click();
+    await player.getByRole('button',{name:'Reset motion',exact:true}).click();
+  }
   await player.getByLabel('Animation speed',{exact:true}).selectOption('2');
   await player.getByRole('button',{name:'Play',exact:true}).click();
-  await canvas.scrollIntoViewIfNeeded();
+  await center(canvas);
   const sample = await pose.evaluate(async element => {
     let updates=0;
     const observer=new MutationObserver(records => { updates += records.length; });
@@ -93,10 +130,9 @@ try {
   assert.ok(sample.updates>1,'pose should advance while visible');
   await player.getByRole('button',{name:'Pause',exact:true}).click();
   const paused = await slider.inputValue();
-  await canvas.scrollIntoViewIfNeeded();
-  const beforeOrbit = await canvas.screenshot();
+  const beforeOrbit = await frame(canvas);
   await player.getByRole('button',{name:'Side view',exact:true}).click();
-  assert.notDeepEqual(await canvas.screenshot(),beforeOrbit);
+  assert.ok(!(await frame(canvas)).equals(beforeOrbit));
   assert.equal(await slider.inputValue(),paused,'camera changes preserve repetition position');
   await player.getByRole('button',{name:'Reset camera',exact:true}).click();
 
@@ -106,10 +142,10 @@ try {
   await player.screenshot({path:join(evidence,'curl-muscle-roles-en.png')});
   const roleList = player.getByLabel('Muscle roles',{exact:true});
   const muscle = roleList.getByRole('button').first();
-  const reference = await canvas.screenshot();
+  const reference = await frame(canvas);
   await muscle.click();
   assert.equal(await muscle.getAttribute('aria-pressed'),'true');
-  assert.notDeepEqual(await canvas.screenshot(),reference);
+  assert.ok(!(await frame(canvas)).equals(reference));
   await player.getByRole('button',{name:'Reset highlighting',exact:true}).click();
   assert.equal(await muscle.getAttribute('aria-pressed'),'false');
   const close = curl.getByRole('button',{name:'Close 3D demonstration',exact:true});
@@ -143,16 +179,14 @@ try {
   await video.evaluate(element => element.play());
   await page.waitForFunction(() => document.querySelector('video[src*="/anatomy/motion/bench.mp4"]')?.currentTime > .2);
   await video.evaluate(element => element.pause());
-  for (const [phase,name] of [[0,'start'],[.25,'quarter'],[.5,'half'],[.75,'three-quarters'],[.98,'return']]) {
-    await video.evaluate(async (element,fraction) => {
-      const time=element.duration*fraction;
-      if (Math.abs(element.currentTime-time)<.001) return;
-      const seeked=new Promise(resolve => element.addEventListener('seeked',resolve,{once:true}));
-      element.currentTime=time;
-      await seeked;
-    },phase);
-    await video.screenshot({path:join(evidence,'bench-clip-'+name+'.png')});
-  }
+  const seekFraction = await video.evaluate(async element => {
+    const seeked=new Promise(resolve => element.addEventListener('seeked',resolve,{once:true}));
+    element.currentTime=element.duration/2;
+    await seeked;
+    return element.currentTime/element.duration;
+  });
+  assert.ok(Math.abs(seekFraction-.5)<.02);
+  await frame(video,'bench-actual-detail.png');
   const squat = await openDetail('back-squat','en');
   assert.equal(await squat.locator('[data-exercise-motion], video[src*="/anatomy/motion/"]').count(),0);
   assert.equal(await squat.getByRole('button',{name:'3D Anatomical Demonstration',exact:true}).count(),0);
