@@ -50,6 +50,16 @@ const clips = [
   ['face-pull', 679623, anatomyCredit],
   ['cable-er', 469798, anatomyCredit],
   ['band-er', 479463, anatomyCredit],
+  ['dumbbell-curl', 752517, anatomyCredit],
+  ['hammer-curl', 834029, anatomyCredit],
+  ['incline-db-curl', 367562, anatomyCredit],
+  ['preacher-curl', 433911, anatomyCredit],
+  ['cable-curl', 432846, anatomyCredit],
+  ['triceps-pushdown', 328053, anatomyCredit],
+  ['cable-overhead-triceps', 339138, anatomyCredit],
+  ['skull-crusher', 481959, anatomyCredit],
+  ['close-grip-bench', 722601, anatomyCredit],
+  ['wrist-curl', 430917, anatomyCredit],
 ] as const;
 
 // First-party BodyParts3D animations. Only these exact catalog variants have a clip.
