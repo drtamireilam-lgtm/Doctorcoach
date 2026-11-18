@@ -8,6 +8,13 @@ const clips = [
   ['incline-db', 659135],
   ['incline-barbell-bench', 743748],
   ['smith-incline-bench', 668481],
+  ['machine-chest-press', 800623],
+  ['chest-fly', 780826],
+  ['cable-fly', 749807],
+  ['db-fly', 743227],
+  ['push-up', 1407402],
+  ['incline-machine-chest-press', 740616],
+  ['parallel-bar-dip', 1167528],
 ] as const;
 
 // First-party BodyParts3D animations. Only these exact catalog variants have a clip.
