@@ -14,7 +14,7 @@ import {exercises} from './content.ts';
 import {isStaff,isAdmin} from './staff.ts';
 export const MAX_VIDEO_BYTES=25*1024*1024;
 export type VideoFeedback={id:string;authorName:string;content:string;createdAt:string};
-export type VideoAsset={exerciseName?:string;id:string;exerciseId:string;caption:string;sessionId:string|null;setIndex:number|null;occurrenceId?:string|null;mime:string;bytes:number;kind:'demo'|'review';status:string;published:boolean;canDelete:boolean;createdAt:string;feedback:VideoFeedback[]};
+export type VideoAsset={playbackPath?:string;exerciseName?:string;id:string;exerciseId:string;caption:string;sessionId:string|null;setIndex:number|null;occurrenceId?:string|null;mime:string;bytes:number;kind:'demo'|'review';status:string;published:boolean;canDelete:boolean;createdAt:string;feedback:VideoFeedback[]};
 export type AssetRow={id:string;owner_id:string;kind:string;exercise_id:string;caption:string;session_id:string|null;set_index:number|null;occurrence_id:string|null;mime:string;bytes:number;object_key:string;status:string;published:number;created_at:string};
 export function mediaStore(db:D1Database,config:CareConfig={}){
  const care=careStore(db,config);
