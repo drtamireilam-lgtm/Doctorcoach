@@ -5,6 +5,9 @@ const clips = [
   ['barbell-bench', 929335],
   ['bench', 845610],
   ['smith-flat-bench', 769655],
+  ['incline-db', 659135],
+  ['incline-barbell-bench', 743748],
+  ['smith-incline-bench', 668481],
 ] as const;
 
 // First-party BodyParts3D animations. Only these exact catalog variants have a clip.

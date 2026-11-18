@@ -16,7 +16,7 @@ const quads=['rectus-femoris','vastus-lateralis','vastus-medialis','vastus-inter
 const hamstrings=['biceps-femoris-long-head','semitendinosus','semimembranosus'];
 const erectors=['iliocostalis-lumborum','iliocostalis-thoracis','longissimus-thoracis','spinalis-thoracis'];
 const press=[...p('pectoralis-major'),...s('triceps-brachii'),l('deltoid','secondary','anterior')];
-set(['bench','smith-flat-bench','barbell-bench','incline-db','machine-chest-press','incline-barbell-bench','movement-chest-press','incline-machine-chest-press','paused-bench'],press);
+set(['bench','smith-flat-bench','smith-incline-bench','barbell-bench','incline-db','machine-chest-press','incline-barbell-bench','movement-chest-press','incline-machine-chest-press','paused-bench'],press);
 set(['push-up'],[...p('pectoralis-major','triceps-brachii'),l('deltoid','secondary','anterior'),...z('transversus-abdominis')]);
 set(['close-grip-bench','parallel-bar-dip'],[...p('triceps-brachii','pectoralis-major'),l('deltoid','secondary','anterior')]);
 set(['cable-fly','chest-fly','db-fly'],[...p('pectoralis-major'),l('deltoid','secondary','anterior')]);

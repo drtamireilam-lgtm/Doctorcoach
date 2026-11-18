@@ -1,4 +1,16 @@
 {
+  "smith-incline-bench": {
+    "sourceDesc": "כוונו את משענת הספסל לשיפוע חיובי, הורידו את המוט בשליטה לכיוון החזה העליון ולחצו מעלה לאורך מסילות הסמית׳.",
+    "sourceCues": [
+      "כוונו את משענת הספסל לשיפוע חיובי, הורידו את המוט בשליטה לכיוון החזה העליון ולחצו מעלה לאורך מסילות הסמית׳.",
+      "התאימו טווח, עומס וחזרות עם המאמן ושמרו על תנועה נשלטת."
+    ],
+    "desc": "Set the bench to an incline, lower the bar toward the upper chest with control and press up along the Smith machine guides.",
+    "cues": [
+      "Set the bench to an incline, lower the bar toward the upper chest with control and press up along the Smith machine guides.",
+      "Adjust range, load and repetitions with your coach and keep the movement controlled."
+    ]
+  },
   "smith-flat-bench": {
     "sourceDesc": "שכבו על ספסל שטוח וכאשר המוט מעל החזה הורידו אותו בשליטה ולחצו מעלה לאורך המסילות.",
     "sourceCues": [
