@@ -2,7 +2,7 @@ import type {VideoAsset} from './media-store.ts';
 
 const backCredit = 'DoctorCoach · BodyParts3D © DBCLS (CC BY 4.0) · Écorché / Z-Anatomy (Gauthier Kervyn) · Adapted animation: CC BY-SA 4.0';
 
-const legCredit = 'DoctorCoach · BodyParts3D © DBCLS (CC BY 4.0) · Adapted animation: CC BY-SA 4.0';
+const anatomyCredit = 'DoctorCoach · BodyParts3D © DBCLS (CC BY 4.0) · Adapted animation: CC BY-SA 4.0';
 
 const clips = [
   ['barbell-curl', 788428],
@@ -30,16 +30,26 @@ const clips = [
   ['barbell-row', 526529, backCredit],
   ['back-extension', 693100, backCredit],
   ['lat-pulldown', 642990, backCredit],
-  ['back-squat', 955826, legCredit],
-  ['rdl', 906115, legCredit],
-  ['leg-press', 531579, legCredit],
-  ['bulgarian-split-squat', 1115411, legCredit],
-  ['hip-thrust', 1081230, legCredit],
-  ['leg-extension', 501111, legCredit],
-  ['seated-curl', 365648, legCredit],
-  ['adduction', 703113, legCredit],
-  ['standing-calf', 762991, legCredit],
-  ['seated-calf', 704815, legCredit],
+  ['back-squat', 955826, anatomyCredit],
+  ['rdl', 906115, anatomyCredit],
+  ['leg-press', 531579, anatomyCredit],
+  ['bulgarian-split-squat', 1115411, anatomyCredit],
+  ['hip-thrust', 1081230, anatomyCredit],
+  ['leg-extension', 501111, anatomyCredit],
+  ['seated-curl', 365648, anatomyCredit],
+  ['adduction', 703113, anatomyCredit],
+  ['standing-calf', 762991, anatomyCredit],
+  ['seated-calf', 704815, anatomyCredit],
+  ['seated-db-shoulder-press', 763219, anatomyCredit],
+  ['overhead-press', 604632, anatomyCredit],
+  ['landmine', 427681, anatomyCredit],
+  ['lateral-raise', 714389, anatomyCredit],
+  ['cable-lateral-raise', 458824, anatomyCredit],
+  ['machine-lateral-raise', 729300, anatomyCredit],
+  ['rear-delt', 688350, anatomyCredit],
+  ['face-pull', 679623, anatomyCredit],
+  ['cable-er', 469798, anatomyCredit],
+  ['band-er', 479463, anatomyCredit],
 ] as const;
 
 // First-party BodyParts3D animations. Only these exact catalog variants have a clip.
@@ -47,6 +57,7 @@ export const bundledExerciseDemos: VideoAsset[] = clips.map(([exerciseId, bytes,
   id: 'anatomy-demo-' + exerciseId,
   exerciseId,
   playbackPath: '/anatomy/demos/' + exerciseId + '.mp4',
+  posterPath: '/anatomy/demos/posters/' + exerciseId + '.webp',
   caption: credit ?? 'DoctorCoach · BodyParts3D © DBCLS · CC BY 4.0',
   sessionId: null,
   setIndex: null,
