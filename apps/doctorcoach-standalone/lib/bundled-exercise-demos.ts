@@ -2,6 +2,8 @@ import type {VideoAsset} from './media-store.ts';
 
 const backCredit = 'DoctorCoach · BodyParts3D © DBCLS (CC BY 4.0) · Écorché / Z-Anatomy (Gauthier Kervyn) · Adapted animation: CC BY-SA 4.0';
 
+const legCredit = 'DoctorCoach · BodyParts3D © DBCLS (CC BY 4.0) · Adapted animation: CC BY-SA 4.0';
+
 const clips = [
   ['barbell-curl', 788428],
   ['barbell-bench', 929335],
@@ -28,6 +30,16 @@ const clips = [
   ['barbell-row', 526529, backCredit],
   ['back-extension', 693100, backCredit],
   ['lat-pulldown', 642990, backCredit],
+  ['back-squat', 955826, legCredit],
+  ['rdl', 906115, legCredit],
+  ['leg-press', 531579, legCredit],
+  ['bulgarian-split-squat', 1115411, legCredit],
+  ['hip-thrust', 1081230, legCredit],
+  ['leg-extension', 501111, legCredit],
+  ['seated-curl', 365648, legCredit],
+  ['adduction', 703113, legCredit],
+  ['standing-calf', 762991, legCredit],
+  ['seated-calf', 704815, legCredit],
 ] as const;
 
 // First-party BodyParts3D animations. Only these exact catalog variants have a clip.
