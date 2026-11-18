@@ -1,5 +1,7 @@
 import type {VideoAsset} from './media-store.ts';
 
+const backCredit = 'DoctorCoach · BodyParts3D © DBCLS (CC BY 4.0) · Écorché / Z-Anatomy (Gauthier Kervyn) · Adapted animation: CC BY-SA 4.0';
+
 const clips = [
   ['barbell-curl', 788428],
   ['barbell-bench', 929335],
@@ -15,14 +17,25 @@ const clips = [
   ['push-up', 1407402],
   ['incline-machine-chest-press', 740616],
   ['parallel-bar-dip', 1167528],
+  ['chest-row', 480647, backCredit],
+  ['cable-row', 522566, backCredit],
+  ['single-arm-db-row', 354030, backCredit],
+  ['straight-arm-pulldown', 460804, backCredit],
+  ['wide-row', 464311, backCredit],
+  ['assisted-pull-up', 909419, backCredit],
+  ['pullup', 775370, backCredit],
+  ['chinup', 763320, backCredit],
+  ['barbell-row', 526529, backCredit],
+  ['back-extension', 693100, backCredit],
+  ['lat-pulldown', 642990, backCredit],
 ] as const;
 
 // First-party BodyParts3D animations. Only these exact catalog variants have a clip.
-export const bundledExerciseDemos: VideoAsset[] = clips.map(([exerciseId, bytes]) => ({
+export const bundledExerciseDemos: VideoAsset[] = clips.map(([exerciseId, bytes, credit]) => ({
   id: 'anatomy-demo-' + exerciseId,
   exerciseId,
   playbackPath: '/anatomy/demos/' + exerciseId + '.mp4',
-  caption: 'DoctorCoach · BodyParts3D © DBCLS · CC BY 4.0',
+  caption: credit ?? 'DoctorCoach · BodyParts3D © DBCLS · CC BY 4.0',
   sessionId: null,
   setIndex: null,
   mime: 'video/mp4',
