@@ -80,6 +80,16 @@ const clips = [
   ['cable-kickback', 345452, anatomyCredit],
   ['side-abduction', 360994, anatomyCredit],
   ['hip-abduction-machine', 713935, anatomyCredit],
+  ['t-bar-row', 393568, anatomyCredit],
+  ['reverse-pec-deck', 588964, anatomyCredit],
+  ['shrug', 716080, anatomyCredit],
+  ['serratus-punch', 372694, anatomyCredit],
+  ['paused-bench', 351910, anatomyCredit],
+  ['overhead-triceps', 330510, anatomyCredit],
+  ['farmer-carry', 1270775, anatomyCredit],
+  ['cable-abduction', 306328, anatomyCredit],
+  ['paused-squat', 542795, anatomyCredit],
+  ['trap-bar-deadlift', 1215444, anatomyCredit],
 ] as const;
 
 // First-party BodyParts3D animations. Only these exact catalog variants have a clip.
