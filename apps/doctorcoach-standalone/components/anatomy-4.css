@@ -1,3 +1,5 @@
+@import './anatomy-stage.css';
+
 /* Anatomy 4: scoped scene, controls and projected structure annotation. */
 .anatomy-model-viewer {
   display: flex;
@@ -82,7 +84,6 @@
   overflow: hidden;
   border: 1px solid var(--anatomy-border);
   border-radius: 20px;
-  background: linear-gradient(155deg, #1d333e 0%, #0c1720 75%);
 }
 .anatomy-model-viewer .anatomy-viewer-stage .anatomy-model-canvas {
   position: absolute;

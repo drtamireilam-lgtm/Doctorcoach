@@ -3,6 +3,7 @@ import assert from 'node:assert/strict';
 import {readFileSync} from 'node:fs';
 import {gunzipSync} from 'node:zlib';
 import * as THREE from 'three';
+import {prepareAnatomyMaterials} from '../lib/anatomy-presentation.ts';
 import {motionProfile,exercisePoseAngle,rotateJointPoint} from '../lib/anatomy-exercise-motion.ts';
 import {createExerciseRig} from '../lib/anatomy-motion-rig.ts';
 import {anatomyModels} from '../lib/anatomy-models.ts';
@@ -26,10 +27,11 @@ test('runtime adapter preserves source buffers, only moves declared descendants 
  const model=anatomyModels.find(m=>m.id==='musculoskeletal'),p=profile(),root=new THREE.Group(),meshes=[];
  const raw=gunzipSync(readFileSync(new URL('../public'+model.src,import.meta.url)));const n=raw.readUInt32LE(12),doc=JSON.parse(raw.subarray(20,20+n)),binary=raw.subarray(28+n),nodes=new Map(doc.nodes.map(n=>[n.name,n]));
  for(const s of model.structures){const primitive=doc.meshes[nodes.get(s.id).mesh].primitives[0],a=doc.accessors[primitive.attributes.POSITION],v=doc.bufferViews[a.bufferView],start=(v.byteOffset??0)+(a.byteOffset??0);const pos=new Float32Array(binary.buffer.slice(binary.byteOffset+start,binary.byteOffset+start+a.count*12));const g=new THREE.BufferGeometry();g.setAttribute('position',new THREE.BufferAttribute(pos,3));const m=new THREE.Mesh(g,new THREE.MeshStandardMaterial());m.name=s.id;root.add(m);meshes.push(m);}
+ prepareAnatomyMaterials(meshes,new Map(model.structures.map(s=>[s.id,s.layer])));
  const target=meshes.find(m=>m.name==='right-radius'),fixed=meshes.find(m=>m.name==='right-humerus'),original=target.geometry.attributes.position.array.slice();root.updateMatrixWorld(true);const rest=target.localToWorld(new THREE.Vector3().fromArray(original,0));
  assert.throws(()=>createExerciseRig(root,meshes,{...model,asset:{...model.asset,glbSha256:'bad'}},p),/source/i);
  const rig=createExerciseRig(root,meshes,model,p);
- const bones=meshes.filter(m=>model.structures.find(s=>s.id===m.name).layer==='bone'),batches=[];root.traverse(m=>{if(m.isMesh&&m.userData.motionBoneBatch)batches.push(m);});assert.equal(batches.length,3,'static bones and each moving arm need only three draw batches');assert.ok(bones.every(m=>!m.layers.test(new THREE.Layers())));assert.equal(batches.reduce((n,m)=>n+m.geometry.attributes.position.count,0),bones.reduce((n,m)=>n+m.geometry.attributes.position.count,0),'batching retains every source vertex');
+ const bones=meshes.filter(m=>model.structures.find(s=>s.id===m.name).layer==='bone'),batches=[];root.traverse(m=>{if(m.isMesh&&m.userData.motionBoneBatch)batches.push(m);});assert.ok(batches.every(batch=>batch.material.roughness===bones[0].material.roughness),'visible motion bones use the same finish as atlas source bones');assert.equal(batches.length,3,'static bones and each moving arm need only three draw batches');assert.ok(bones.every(m=>!m.layers.test(new THREE.Layers())));assert.equal(batches.reduce((n,m)=>n+m.geometry.attributes.position.count,0),bones.reduce((n,m)=>n+m.geometry.attributes.position.count,0),'batching retains every source vertex');
  rig.pose(100,'motion',true,true);root.updateMatrixWorld(true);assert.ok(target.localToWorld(new THREE.Vector3().fromArray(original,0)).distanceTo(rest)>.01);assert.deepEqual(target.geometry.attributes.position.array,original);assert.equal(fixed.parent,root);
  assert.ok(meshes.filter(m=>model.structures.find(s=>s.id===m.name).layer==='muscle').every(m=>!m.visible));
  rig.pose(100,'muscles',true,true);root.updateMatrixWorld(true);assert.ok(target.localToWorld(new THREE.Vector3().fromArray(original,0)).distanceTo(rest)<1e-7);assert.ok(meshes.find(m=>m.name==='left-biceps-brachii').visible);assert.ok(!meshes.find(m=>m.name==='right-gluteus-maximus').visible);

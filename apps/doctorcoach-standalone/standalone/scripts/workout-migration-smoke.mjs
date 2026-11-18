@@ -25,13 +25,19 @@ try{
  const tables=['program_items','training_sessions','care_programs','coach_program_drafts'];
  const snapshot=async()=>{const records=[];for(const name of tables){const columns=(await db.prepare('PRAGMA table_info('+quote(name)+')').all()).results.map(c=>c.name);const rows=(await db.prepare('SELECT '+columns.map(quote).join(',')+' FROM '+quote(name)).all()).results;records.push({name,columns,rows:rows.map(row=>JSON.stringify(row)).sort()});}return records;};
  const checks=[];
- for(const number of [61,62,63]){
+ for(const number of [61,62,63,64]){
   const before=await snapshot(),file=files.find(f=>Number(f.slice(0,4))===number),sql=read('drizzle/'+file);await db.exec(flatten(sql));
   for(const {name,columns,rows} of before)assert.deepEqual((await db.prepare('SELECT '+columns.map(quote).join(',')+' FROM '+quote(name)).all()).results.map(row=>JSON.stringify(row)).sort(),rows,name+' original values');
   checks.push({file,sha256Lf:createHash('sha256').update(sql.replaceAll('\r\n','\n')).digest('hex'),preservedTables:before.length});
   if(number===61){await db.prepare('INSERT INTO retrospective_workout_drafts VALUES(?,?,?,?)').bind('synthetic-owner','{"requestId":"synthetic-draft"}',7,'2026-11-01').run();tables.push('retrospective_workout_drafts');}
   if(number===62){await db.prepare('INSERT INTO retrospective_workout_revisions VALUES(?,?,?,?,?)').bind('synthetic-completed','synthetic-owner',4,'{"prior":"SYNTHETIC"}','2026-11-02').run();tables.push('retrospective_workout_revisions');}
  }
+ await db.prepare('INSERT INTO pain_modification_reviews(id,owner_id,coach_email,request_json,report_json,actor_id,created_at,updated_at) VALUES(?,?,?,?,?,?,?,?)').bind('synthetic-review','synthetic-owner','coach@example.test','{}','{}','synthetic-owner','2026-11-16','2026-11-16').run();
+ assert.equal((await db.prepare('SELECT COUNT(*) n FROM pain_modification_review_events').first()).n,1);
+ await db.prepare("UPDATE pain_modification_reviews SET state='rejected',version=2,actor_id='synthetic-coach' WHERE id='synthetic-review'").run();
+ assert.equal((await db.prepare('SELECT COUNT(*) n FROM pain_modification_review_events').first()).n,2);
+ await db.prepare("DELETE FROM pain_modification_reviews WHERE id='synthetic-review'").run();
+ assert.equal((await db.prepare('SELECT COUNT(*) n FROM pain_modification_review_events').first()).n,0);
  assert.equal((await db.prepare('SELECT rest_seconds FROM program_items').first()).rest_seconds,null);
  assert.equal((await db.prepare('SELECT retrospective_json FROM training_sessions LIMIT 1').first()).retrospective_json,null);
  for(const value of [-1,1801,1.5,'bad'])await assert.rejects(()=>db.prepare('UPDATE program_items SET rest_seconds=?').bind(value).run(),/CHECK/);
@@ -43,5 +49,5 @@ try{
  await db.prepare('DELETE FROM training_sessions WHERE id=?').bind('synthetic-completed').run();
  assert.equal((await db.prepare('SELECT COUNT(*) n FROM retrospective_workout_revisions').first()).n,0);
  assert.deepEqual((await db.prepare('PRAGMA foreign_key_check').all()).results,[]);
- console.log(JSON.stringify({status:'PASS',runtime:'workerd local D1',requestedRuntimeCompatibilityDate:runtimeDate,targetCompatibilityDate:targetDate,matchesTargetConfigurationDate:runtimeDate===targetDate,labRuntimeVerified:false,offlineOnly:true,remoteVerified:false,upgrades:checks,existingRowsPreserved:true,nullableDefaults:true,restConstraints:true,journalForeignKeyAndCascade:true,deletionBarriers:true},null,2));
+ console.log(JSON.stringify({status:'PASS',runtime:'workerd local D1',requestedRuntimeCompatibilityDate:runtimeDate,targetCompatibilityDate:targetDate,matchesTargetConfigurationDate:runtimeDate===targetDate,labRuntimeVerified:false,offlineOnly:true,remoteVerified:false,upgrades:checks,existingRowsPreserved:true,nullableDefaults:true,restConstraints:true,journalForeignKeyAndCascade:true,painReviewAuditAndCascade:true,deletionBarriers:true},null,2));
 }finally{await mf.dispose();}

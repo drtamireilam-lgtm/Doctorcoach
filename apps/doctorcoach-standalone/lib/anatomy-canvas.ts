@@ -32,7 +32,7 @@ export async function createAnatomyCanvas(host:HTMLElement,onSelect:(id:string|n
  let renderer:THREE.WebGLRenderer;
  try{renderer=new THREE.WebGLRenderer({antialias:true,alpha:true,powerPreference:'low-power'});}catch(cause){rig?.dispose();jointRig?.dispose();releaseModel();throw cause;}
  renderer.setPixelRatio(Math.min(window.devicePixelRatio,1.5));renderer.outputColorSpace=THREE.SRGBColorSpace;
- renderer.toneMapping=THREE.ACESFilmicToneMapping;renderer.toneMappingExposure=1.05;
+ renderer.toneMapping=THREE.ACESFilmicToneMapping;renderer.toneMappingExposure=1.0;
  const scene=new THREE.Scene();scene.add(model);
  const box=new THREE.Box3().setFromObject(model),center=box.getCenter(new THREE.Vector3()),size=box.getSize(new THREE.Vector3());
  model.position.sub(center);model.updateMatrixWorld(true);const radius=Math.max(size.x,size.y,size.z)*1.8;

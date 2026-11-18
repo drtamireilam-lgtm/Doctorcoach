@@ -1,8 +1,8 @@
 import { updateSet, parseRpe, type SessionExercise, type SetResult } from './training.ts';
 
-/** A draft autosave updates fields only; completion and next-load application remain explicit actions. */
-export function setAutosaveAction(item: SessionExercise, index: number, draft: SetResult & { targetRpe: number | null }) {
-  const action = { action: 'set', exerciseId: item.exerciseId, occurrenceId: item.occurrenceId, setIndex: index, ...draft, done: item.results[index].done, autoNextLoad: false };
+/** Autosave never completes a set; an opted-in completed-set correction may refresh its unperformed successor. */
+export function setAutosaveAction(item: SessionExercise, index: number, draft: SetResult & { targetRpe: number | null }, nextLoad?:{enabled:boolean;step:number}) {
+  const action = { action: 'set', exerciseId: item.exerciseId, occurrenceId: item.occurrenceId, setIndex: index, ...draft, done: item.results[index].done, autoNextLoad: item.results[index].done&&nextLoad?.enabled===true, ...(nextLoad?{step:nextLoad.step}:{}) };
   try {
     updateSet([item], action);
     parseRpe(draft.targetRpe);

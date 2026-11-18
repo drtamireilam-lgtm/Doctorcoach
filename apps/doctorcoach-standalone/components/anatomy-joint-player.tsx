@@ -1,4 +1,5 @@
 'use client';
+import './anatomy-stage.css';
 import {useEffect,useRef,useState} from 'react';
 import {anatomyModels} from '../lib/anatomy-models';
 import {jointMovements,jointRegions,movementById,channelsFor,type JointSide} from '../lib/anatomy-joint-movements';
@@ -54,7 +55,7 @@ export function AnatomyJointPlayer({language}:{language:'en'|'he'}){
   {error&&<p role="alert">{he?'נתוני המודל או התנועה אינם זמינים.':'Model or movement data unavailable.'}<button onClick={()=>{stop();setAttempt(n=>n+1);}}>{he?'ניסיון נוסף':'Retry'}</button></p>}
   <div className="anatomy-region-list" aria-label={he?'היקף התצוגה':'View scope'}><button type="button" disabled={!loaded} aria-pressed={scope==='body'} onClick={()=>changeScope('body')}>{he?'גוף מלא':'Full body'}</button><button type="button" disabled={!loaded||movement.status==='blocked'} aria-pressed={scope==='joint'} onClick={()=>changeScope('joint')}>{he?'אזור המפרק':'Joint region'}</button></div>
   <p className="care-muted">{he?'תצוגת אזור המפרק מסתירה אזורים לא קשורים כדי להפחית עומס ציור, ושומרת את גאומטריית המקור ואת שלב התנועה.':'Joint region hides unrelated anatomy to reduce rendering work, preserving source geometry and playback phase.'}</p>
-  <div className="anatomy-model-canvas" ref={host} data-joint-phase="0" style={{height:'min(52vh,440px)',minHeight:280,width:'100%',overflow:'hidden',borderRadius:20,background:'#151d2b'}}/>
+  <div className="anatomy-model-canvas anatomy-studio-stage" ref={host} data-joint-phase="0" style={{height:'min(52vh,440px)',minHeight:280,width:'100%',overflow:'hidden',borderRadius:20}}/>
   <label>{he?'מיקום במחזור':'Cycle position'} <input type="range" aria-label={he?'מיקום במחזור':'Cycle position'} min="0" max="100" step="1" value={Math.round(loopProgress(phase)*100)} disabled={!loaded||reference||movement.status==='blocked'} onChange={e=>{stop();playback.current={...playback.current,phase:Math.acos(1-Number(e.target.value)/50)/(2*Math.PI)};setPhase(playback.current.phase);draw();}}/></label>
   {first&&<p>{he?'טווח שינוי בהדגמה':'Demonstration excursion'}: {excursion}° · {he?'ביחס למנח המקור, לא מדידת ROM. איפוס מחזיר למנח המקור, שאינו בהכרח מנח אנטומי ניטרלי.':'Relative to source pose, not clinical ROM. Reset returns to the source pose, which is not necessarily anatomical neutral.'}</p>}
   {movement.physiologicalRom&&<details><summary>{he?'טווח ייחוס מספרות':'Textbook ROM reference'}</summary><p>{movement.physiologicalRom.degrees}° · {he?'ערך ייחוס תלוי מנח בדיקה; לא כיול למודל או המלצה אישית.':'Position-dependent reference; not model calibration or a personal prescription.'}</p><p lang="en" dir="ltr">{movement.physiologicalRom.context}</p><a href={movement.physiologicalRom.source} target="_blank" rel="noopener noreferrer">{he?'מקור לטווח הייחוס':'ROM reference source'}</a></details>}

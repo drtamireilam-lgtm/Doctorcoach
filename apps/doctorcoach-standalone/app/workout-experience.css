@@ -79,3 +79,40 @@
 .dc-ui3 .smart-set-fields input::-webkit-inner-spin-button,
 .dc-ui3 .smart-set-fields input::-webkit-outer-spin-button{-webkit-appearance:none;margin:0}
 @media(min-width:376px) and (max-width:760px){.dc-ui3 .smart-set-fields{grid-template-columns:minmax(0,1.4fr) minmax(0,.8fr) minmax(0,.8fr)}}
+
+/* Compact readback keeps saved sets editable without repeating the whole form. */
+.set-entry-body{display:grid;gap:12px;min-width:0}
+.set-entry-body[hidden]{display:none!important}
+.set-entry-body>.set-save{width:100%;min-height:48px;grid-column:1/-1;font-size:15px}
+.completed-set-summary{display:grid;grid-template-columns:minmax(0,1fr);align-items:start;gap:10px;min-width:0}
+.completed-set-summary>div{width:100%;min-width:0;overflow-wrap:anywhere}
+.completed-set-summary p{margin:6px 0;font-variant-numeric:tabular-nums}
+.completed-set-summary small{color:var(--dc-text-secondary,var(--muted));line-height:1.6}
+.set-edit{justify-self:start;min-height:44px;border:1px solid var(--dc-border,var(--line));border-radius:10px;background:var(--dc-surface-elevated,var(--raised));color:var(--dc-text-primary,var(--text));padding:8px 12px;font:inherit;cursor:pointer}
+.completed-set-summary>.set-next{justify-self:start;margin-inline-start:0}
+.set-calculation-details{width:100%;font-size:.8rem}
+.set-calculation-details>summary{min-height:44px;align-content:center;cursor:pointer;color:var(--dc-text-secondary,var(--muted))}
+.set-calculation-details>small{display:block;margin-block:8px;line-height:1.6;color:var(--dc-text-secondary,var(--muted))}
+.workout-workspace [data-save-state="pending"]{color:var(--dc-gold,var(--text))}
+
+.workout-set-readback{list-style:none;padding:0;margin:14px 0;display:grid;gap:10px;min-width:0}
+.workout-set-readback>li{padding:14px;border:1px solid var(--dc-border,var(--line));border-radius:12px;background:var(--dc-surface-elevated,var(--raised));min-width:0}
+.workout-set-readback header{display:flex;justify-content:space-between;align-items:baseline;gap:12px;flex-wrap:wrap}
+.workout-set-readback header>span{font-size:.8rem;color:var(--dc-text-secondary,var(--muted))}
+.workout-set-readback dl{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin:12px 0 0}
+.workout-set-readback dl>div{min-width:0;overflow-wrap:anywhere}
+.workout-set-readback dt{font-size:.78rem;color:var(--dc-text-secondary,var(--muted))}
+.workout-set-readback dd{margin:5px 0 0;font-variant-numeric:tabular-nums;font-weight:650}
+.finish-set-details>summary{min-height:44px;align-content:center;cursor:pointer}
+.history-session:focus{outline:2px solid var(--dc-cyan,var(--text));outline-offset:4px}
+
+.program-quick-actions{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;min-width:0}
+.program-quick-actions .button{min-width:0;min-height:44px;padding:8px;font-size:.82rem;white-space:normal;overflow-wrap:anywhere}
+.program-builder-mobile .program-exercise-editor,.program-builder-mobile .coach-exercise-picker{scroll-margin-block-start:96px}
+.program-builder-mobile .program-exercise-editor:focus{outline:2px solid var(--dc-cyan,var(--text));outline-offset:3px}
+
+/* In-editor anatomy remains a local, explicit draft action. */
+.program-anatomy-learning { min-width:0; }
+.program-anatomy-learning > button { width:100%;min-height:44px;white-space:normal;overflow-wrap:anywhere; }
+.program-anatomy-add { border:1px solid var(--line);border-radius:14px;padding:12px;min-width:0; }
+.program-anatomy-add button { min-height:44px;white-space:normal; }

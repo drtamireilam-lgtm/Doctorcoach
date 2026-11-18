@@ -1,4 +1,5 @@
 'use client';
+import type {ReactNode} from 'react';
 import {useCallback,useEffect,useLayoutEffect,useRef,useState} from 'react';
 import {unitMax,type PlanItem} from '../lib/training';
 import {planItemKey,workoutDayId} from '../lib/workout-days';
@@ -8,9 +9,9 @@ import {quickDoseBlocked,quickDosePatch,quickDoseSignature,quickDoseValue,type Q
 import {setProgramDraftDirty,removeProgramDraft} from '../lib/program-draft-navigation';
 import {useLanguage} from './language-provider';
 type Buffer={text:string;base:string;error?:string};
-type Props={items:PlanItem[];onChange:(occurrenceKey:string,patch:Partial<PlanItem>)=>void;disabled?:boolean;onDirtyChange?:(dirty:boolean)=>void};
+type Props={items:PlanItem[];onChange:(occurrenceKey:string,patch:Partial<PlanItem>)=>void;disabled?:boolean;renderActions?:(item:PlanItem)=>ReactNode;onDirtyChange?:(dirty:boolean)=>void};
 const fields:QuickDoseField[]=['sets','reps','rest','effort'];
-function QuickDoseRow({item,onChange,disabled,onDirty}:{item:PlanItem;onChange:Props['onChange'];disabled:boolean;onDirty:(key:string,dirty:boolean)=>void}){
+function QuickDoseRow({item,onChange,disabled,onDirty,renderActions}:{renderActions?:Props['renderActions'];item:PlanItem;onChange:Props['onChange'];disabled:boolean;onDirty:(key:string,dirty:boolean)=>void}){
  const en=useLanguage().language==='en',t=(he:string,eng:string)=>en?eng:he;
  const key=planItemKey(item),rowKey=`${workoutDayId(item)}:${key}:${item.exerciseId}`;
  const [buffers,setBuffers]=useState<Partial<Record<QuickDoseField,Buffer>>>({});
@@ -28,9 +29,9 @@ function QuickDoseRow({item,onChange,disabled,onDirty}:{item:PlanItem;onChange:P
   const label=field==='sets'?t('סטים','Sets'):field==='reps'?(item.unit==='seconds'?t('משך (שניות)','Duration (seconds)'):item.unit==='minutes'?t('משך (דקות)','Duration (minutes)'):t(item.repsMax!=null?'חזרות — מינימום':'חזרות',item.repsMax!=null?'Repetitions — minimum':'Repetitions')):field==='rest'?t('מנוחה (שניות)','Rest (seconds)'):`${effortName(item.effortScale)} ${t('יעד','target')}`;
   const name=`${label} · ${title} · ${key}`;
   return <div key={field} className="care-form" style={{minWidth:0,gap:'0.3rem',alignContent:'start'}}><label className="care-field">{label}<input type="text" inputMode={field==='effort'?'decimal':field==='rest'?'text':'numeric'} aria-label={name} data-quick-field={field} value={buffer?.text??quickDoseValue(item,field)} disabled={disabled||blocked} aria-invalid={!!buffer?.error||!!conflict} placeholder={field==='effort'?(item.effortScale==='rir'?'0–9':'1–10'):undefined} onChange={e=>change(field,e.target.value)} onBlur={()=>commit(field)} onKeyDown={e=>{if(e.key==='Enter'){e.preventDefault();e.stopPropagation();commit(field);}}} style={{width:'100%',minWidth:0}}/></label>{blocked&&<small>{t('מינון לפי סט — ערכו בנפרד בהגדרות המתקדמות.','Per-set prescription — edit individually in advanced settings.')}</small>}{field==='reps'&&item.unit==='reps'&&item.repsMax!=null&&!blocked&&<small>{t(`הגבול העליון ${item.repsMax} נשמר.`,`Upper bound ${item.repsMax} is retained.`)}</small>}{field==='rest'&&<small>{t('0 = ללא מנוחה; ריק = לא צוין. אפשר גם 1.5 min או 1:30.','0 = no rest; blank = unspecified. Also accepts 1.5 min or 1:30.')}</small>}{(buffer?.error||conflict)&&<small role="alert">{buffer?.error??t('השדה השתנה בזמן העריכה. אפסו לפני שמירה.','This field changed while editing. Reset before saving.')}</small>}{buffer&&<button type="button" className="text-button" disabled={disabled} onPointerDown={e=>e.preventDefault()} onMouseDown={e=>e.preventDefault()} onClick={()=>reset(field)}>{t('איפוס השדה לערך העדכני','Reset field to current value')}</button>}</div>;
- })}</div></article>;
+ })}</div>{renderActions?.(item)}</article>;
 }
-export function ProgramQuickDose({items,onChange,disabled=false,onDirtyChange}:Props){
+export function ProgramQuickDose({items,onChange,disabled=false,onDirtyChange,renderActions}:Props){
  const en=useLanguage().language==='en',token=useRef<object>({}),dirtyRows=useRef(new Set<string>()),notify=useRef(onDirtyChange);
  useLayoutEffect(()=>{notify.current=onDirtyChange;},[onDirtyChange]);
  const [dirty,setDirty]=useState(false),active=useRef(true);
@@ -38,5 +39,5 @@ export function ProgramQuickDose({items,onChange,disabled=false,onDirtyChange}:P
  useLayoutEffect(()=>{setProgramDraftDirty(token.current,dirty);},[dirty]);
  useLayoutEffect(()=>{active.current=true;const ownToken=token.current;return()=>{active.current=false;removeProgramDraft(ownToken);notify.current?.(false);};},[]);
  const eligible=items.filter(i=>!i.cardio&&['reps','seconds','minutes'].includes(i.unit));
- return <section className="care-form" aria-label={en?'Quick program dose':'עריכת מינון מהירה'}><p className="care-muted">{en?'Edit a field, then press Enter or leave it to apply. Changes remain in this program draft.':'ערכו שדה ולחצו Enter או צאו ממנו כדי להחיל. השינויים נשארים בטיוטת התוכנית.'}</p>{eligible.map(item=><QuickDoseRow key={`${workoutDayId(item)}:${planItemKey(item)}:${item.exerciseId}`} item={item} onChange={onChange} disabled={disabled} onDirty={onDirty}/>)}{eligible.length!==items.length&&<p className="care-muted">{en?'Cardio remains available in advanced exercise settings.':'אירובי ניתן לעריכה בהגדרות המתקדמות של התרגיל.'}</p>}</section>;
+ return <section className="care-form" aria-label={en?'Quick program dose':'עריכת מינון מהירה'}><p className="care-muted">{en?'Edit a field, then press Enter or leave it to apply. Changes remain in this program draft.':'ערכו שדה ולחצו Enter או צאו ממנו כדי להחיל. השינויים נשארים בטיוטת התוכנית.'}</p>{eligible.map(item=><QuickDoseRow key={`${workoutDayId(item)}:${planItemKey(item)}:${item.exerciseId}`} item={item} onChange={onChange} disabled={disabled} onDirty={onDirty} renderActions={renderActions}/>)}{eligible.length!==items.length&&<p className="care-muted">{en?'Cardio remains available in advanced exercise settings.':'אירובי ניתן לעריכה בהגדרות המתקדמות של התרגיל.'}</p>}</section>;
 }
