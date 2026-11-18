@@ -90,6 +90,11 @@ const clips = [
   ['cable-abduction', 306328, anatomyCredit],
   ['paused-squat', 542795, anatomyCredit],
   ['trap-bar-deadlift', 1215444, anatomyCredit],
+  ['machine-biceps-curl', 509974, anatomyCredit],
+  ['wide-grip-cable-pulldown', 531880, backCredit],
+  ['narrow-grip-cable-pulldown', 317711, backCredit],
+  ['seated-leg-press', 680830, anatomyCredit],
+  ['cable-straight-leg-hip-flexion', 469212, anatomyCredit],
 ] as const;
 
 // First-party BodyParts3D animations. Only these exact catalog variants have a clip.
