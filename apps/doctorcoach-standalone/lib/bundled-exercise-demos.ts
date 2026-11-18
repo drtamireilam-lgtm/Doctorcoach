@@ -70,6 +70,16 @@ const clips = [
   ['hanging-leg-raise', 611524, backCredit],
   ['ab-wheel', 841818, backCredit],
   ['suitcase-carry', 1196036, backCredit],
+  ['deadlift', 947827, anatomyCredit],
+  ['sumo-deadlift', 1202727, anatomyCredit],
+  ['hack-squat', 1224464, anatomyCredit],
+  ['smith-squat', 1013957, anatomyCredit],
+  ['reverse-lunge', 920483, anatomyCredit],
+  ['walking-lunge', 921748, anatomyCredit],
+  ['lying-curl', 500728, anatomyCredit],
+  ['cable-kickback', 345452, anatomyCredit],
+  ['side-abduction', 360994, anatomyCredit],
+  ['hip-abduction-machine', 713935, anatomyCredit],
 ] as const;
 
 // First-party BodyParts3D animations. Only these exact catalog variants have a clip.
