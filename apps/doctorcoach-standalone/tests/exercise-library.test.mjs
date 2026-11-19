@@ -24,3 +24,14 @@ test('Hebrew and English searches normalize whitespace and case and retain group
  assert.deepEqual(filterLibraryExercises(items,{...filters,search:'גב'}).map(e=>e.id),['row']);
  assert.deepEqual(filterLibraryExercises(items,{...filters,search:'סקוואט',kind:'שיקום'}),[]);
 });
+
+test('a specific exercise label round-trips through program import in either language', async () => {
+ const {exercises} = await import('../lib/content.ts');
+ const {matchExerciseForImport} = await import('../lib/exercise-matching.ts');
+ for (const id of ['ecc-calf', 'overhead-press', 'movement-calf-raise', 'movement-overhead-press']) {
+  const item = exercises.find(exercise => exercise.id === id);
+  for (const label of [item.name, item.en]) {
+   assert.equal(matchExerciseForImport(label, exercises, {allowGeneralMovement:true}).exerciseId, id, label);
+  }
+ }
+});
