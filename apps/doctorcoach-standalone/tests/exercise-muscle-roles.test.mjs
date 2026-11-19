@@ -11,3 +11,12 @@ test('every new explicit relationship resolves a known muscle label and has a un
 test('explicit authored roles are not downgraded in common base movements',()=>{for(const slug of ['gluteus-maximus','biceps-femoris-long-head','semitendinosus','semimembranosus'])assert.ok(exerciseAnatomyLinks('deadlift').some(l=>l.slug===slug&&l.role==='primary'));assert.ok(exerciseAnatomyLinks('chinup').some(l=>l.slug==='biceps-brachii'&&l.role==='primary'));assert.ok(exerciseAnatomyLinks('straight-arm-pulldown').some(l=>l.slug==='triceps-brachii'&&l.role==='secondary'));assert.ok(exerciseAnatomyLinks('ab-wheel').some(l=>l.slug==='latissimus-dorsi'&&l.role==='secondary'));for(const id of ['lateral-raise','chest-fly','db-fly'])assert.ok(exerciseAnatomyLinks(id).some(l=>l.slug==='deltoid'&&l.part===(id==='lateral-raise'?'lateral':'anterior')));});
 test('exercise focus uses only visible role geometry including bone isolation',()=>{const roles=training.exerciseStructureRoles(detailed,'bench'),layers=new Set(['bone','muscle']),bone=detailed.structures.find(s=>s.layer==='bone');assert.deepEqual(training.exerciseVisibleRoleIds(detailed,roles,layers,bone.id,new Set()),[]);const muscle=[...roles.keys()][0];assert.deepEqual(training.exerciseVisibleRoleIds(detailed,roles,layers,muscle,new Set()),[muscle]);assert.equal(training.exerciseVisibleRoleIds(detailed,roles,new Set(['bone']),null,new Set()).length,0);});
 test('a role-coloured regional muscle never receives the cyan selected base colour',()=>{assert.equal(training.exerciseMaterialRole('primary',true).selectedBase,false);assert.equal(training.exerciseMaterialRole('secondary',true).selectedBase,false);assert.equal(training.exerciseMaterialRole(undefined,true).selectedBase,true);});
+
+test('every inverse role agrees with the effective exercise profile', async () => {
+ const {muscles} = await import('../lib/anatomy-catalog.ts');
+ for (const muscle of muscles) {
+  for (const link of muscleExerciseLinks(muscle.slug)) {
+   assert.ok(exerciseAnatomyLinks(link.id).some(item => item.slug === muscle.slug && item.role === link.role), link.id + '/' + muscle.slug);
+  }
+ }
+});

@@ -1,0 +1,29 @@
+normalized_sorted_words,candidate_ids,general_movement_policy
+bench press,bench | barbell-bench | movement-chest-press,Review chosen ID against original wording. Fuzzy candidates require manual confirmation.
+calf raise,ecc-calf | movement-calf-raise,Review chosen ID against original wording. Fuzzy candidates require manual confirmation.
+calf raises,ecc-calf | movement-calf-raise,Review chosen ID against original wording. Fuzzy candidates require manual confirmation.
+heel raise,ecc-calf | movement-calf-raise,Review chosen ID against original wording. Fuzzy candidates require manual confirmation.
+heel raises,ecc-calf | movement-calf-raise,Review chosen ID against original wording. Fuzzy candidates require manual confirmation.
+calf raising,ecc-calf | movement-calf-raise,Review chosen ID against original wording. Fuzzy candidates require manual confirmation.
+עליות עקב,ecc-calf | movement-calf-raise,Review chosen ID against original wording. Fuzzy candidates require manual confirmation.
+הרמת עקב,ecc-calf | movement-calf-raise,Review chosen ID against original wording. Fuzzy candidates require manual confirmation.
+הרמות עקבים,ecc-calf | movement-calf-raise,Review chosen ID against original wording. Fuzzy candidates require manual confirmation.
+בהונות על עלייה,ecc-calf | movement-calf-raise,Review chosen ID against original wording. Fuzzy candidates require manual confirmation.
+קאלף רייז,ecc-calf | movement-calf-raise,Review chosen ID against original wording. Fuzzy candidates require manual confirmation.
+bent over row,barbell-row | movement-bent-over-row,Review chosen ID against original wording. Fuzzy candidates require manual confirmation.
+overhead press,overhead-press | movement-overhead-press,Review chosen ID against original wording. Fuzzy candidates require manual confirmation.
+ohp,overhead-press | movement-overhead-press,Review chosen ID against original wording. Fuzzy candidates require manual confirmation.
+lateral raise,lateral-raise | movement-lateral-raise,Review chosen ID against original wording. Fuzzy candidates require manual confirmation.
+fly reverse,rear-delt | movement-rear-delt-fly,Review chosen ID against original wording. Fuzzy candidates require manual confirmation.
+delt fly rear,rear-delt | movement-rear-delt-fly,Review chosen ID against original wording. Fuzzy candidates require manual confirmation.
+deltoid fly posterior,rear-delt | movement-rear-delt-fly,Review chosen ID against original wording. Fuzzy candidates require manual confirmation.
+fly rear shoulder,rear-delt | movement-rear-delt-fly,Review chosen ID against original wording. Fuzzy candidates require manual confirmation.
+אופקית אחורית הרחקה לכתף,rear-delt | movement-rear-delt-fly,Review chosen ID against original wording. Fuzzy candidates require manual confirmation.
+דלט פליי ריר,rear-delt | movement-rear-delt-fly,Review chosen ID against original wording. Fuzzy candidates require manual confirmation.
+delt flyes rear,rear-delt | movement-rear-delt-fly,Review chosen ID against original wording. Fuzzy candidates require manual confirmation.
+deltoid fly rear,rear-delt | movement-rear-delt-fly,Review chosen ID against original wording. Fuzzy candidates require manual confirmation.
+curl leg,seated-curl | lying-curl | movement-leg-curl,Review chosen ID against original wording. Fuzzy candidates require manual confirmation.
+curl hamstring,seated-curl | lying-curl | movement-leg-curl,Review chosen ID against original wording. Fuzzy candidates require manual confirmation.
+ברך כפיפת,seated-curl | lying-curl | movement-leg-curl,Review chosen ID against original wording. Fuzzy candidates require manual confirmation.
+ברכיים כפיפת,seated-curl | lying-curl | movement-leg-curl,Review chosen ID against original wording. Fuzzy candidates require manual confirmation.
+shrug,shrug | movement-shrug,Review chosen ID against original wording. Fuzzy candidates require manual confirmation.

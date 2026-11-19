@@ -52,6 +52,7 @@ export function detailedName(name){
 export function wholeMuscleContext(name){
  const key=clean(name).replace(/ \(2\)$/,'');
  const explicit={
+ 'multifidus lumborum':'multifidus',
  'acromial part of deltoid':'deltoid','clavicular part of deltoid':'deltoid','spinal part of deltoid':'deltoid',
  'abdominal part of pectoralis major':'pectoralis-major','clavicular part of pectoralis major':'pectoralis-major','sternocostal part of pectoralis major':'pectoralis-major',
  'ascending part of trapezius':'trapezius','descending part of trapezius':'trapezius','transverse part of trapezius':'trapezius',

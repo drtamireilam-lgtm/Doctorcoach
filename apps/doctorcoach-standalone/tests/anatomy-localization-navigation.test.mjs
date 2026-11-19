@@ -28,3 +28,11 @@ test('new explicit education links all resolve to existing cards',async()=>{
  assert.equal(structures.find(s=>s.en==='Long head of left biceps femoris').learningId,'biceps-femoris-long-head');
  assert.equal(structures.find(s=>s.en==='Clavicular part of left deltoid').learningScope,'parent');
 });
+
+test('both lumbar multifidus meshes open the existing lower-back muscle card as parent context', () => {
+ for (const side of ['left', 'right']) {
+  const mesh = structures.find(item => item.id === 'detail-' + side + '-multifidus-lumborum');
+  assert.equal(mesh?.learningId, 'multifidus');
+  assert.equal(mesh.learningScope, 'parent');
+ }
+});

@@ -6,7 +6,11 @@ export type AnatomyExerciseRole='primary'|'secondary'|'stabilizer'|'stretch';
 /** Reuse the reviewed catalog relationships; never infer muscle roles from names. */
 export function muscleExerciseLinks(slug:string):{id:string;role:AnatomyExerciseRole}[]{
  const activeMap=new Map((learningCards.find(card=>card.slug===slug)?.links??[]).map(link=>[link.id,{...link}]));
- for(const id of exerciseRoleProfileIds){const link=exerciseRoleProfile(id)?.find(link=>link.slug===slug);if(link&&link.role!=='stretch')activeMap.set(id,{id,role:link.role});}
+ for(const id of exerciseRoleProfileIds){
+  const link=exerciseRoleProfile(id)?.find(link=>link.slug===slug);
+  if(link&&link.role!=='stretch')activeMap.set(id,{id,role:link.role});
+  else activeMap.delete(id);
+ }
  const active=[...activeMap.values()];
  return [...active,...stretchesForMuscle(slug).filter(id=>!active.some(link=>link.id===id)).map(id=>({id,role:'stretch' as const}))];
 }

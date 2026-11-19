@@ -5894,6 +5894,8 @@
       "side": "left",
       "depth": "deep",
       "navigationArea": "back",
+      "learningId": "multifidus",
+      "learningScope": "parent",
       "sources": [
         {
           "elementId": "ecorche:Left multifidus lumborum",
@@ -7400,6 +7402,8 @@
       "side": "right",
       "depth": "deep",
       "navigationArea": "back",
+      "learningId": "multifidus",
+      "learningScope": "parent",
       "sources": [
         {
           "elementId": "ecorche:Right multifidus lumborum",
